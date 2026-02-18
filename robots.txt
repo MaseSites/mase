@@ -1,0 +1,17 @@
+# robots.txt für StudioName
+
+User-agent: *
+Allow: /
+
+# Sitemap Location
+Sitemap: https://www.studioname.ch/sitemap.xml
+
+# Crawl-delay (optional, verhindert Server-Überlastung)
+Crawl-delay: 1
+
+# Häufig gecrawlte Dateien ausschließen
+Disallow: /admin/
+Disallow: /private/
+Disallow: /*.json$
+Disallow: /*?*utm_source=*
+

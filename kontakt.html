@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="de-CH">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Kontakt | MASESites AG</title>
+  <meta name="description" content="Erzähl uns von deinem Projekt. Wir melden uns mit einem klaren Vorschlag.">
+  <link rel="canonical" href="https://www.masesites.ch/kontakt.html">
+
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="ai-assistant.css">
+  <script defer src="script.js"></script>
+  <script defer src="ai-assistant.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Zum Inhalt springen</a>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="logo" href="index.html">
+        <span class="logo-mark">MS</span>
+        MASE
+      </a>
+
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
+        <span class="sr-only">Navigation oeffnen</span>
+        <span class="nav-toggle-bar"></span>
+        <span class="nav-toggle-bar"></span>
+      </button>
+
+      <nav class="site-nav" id="site-nav">
+        <a href="index.html">Home</a>
+        <a href="leistungen.html">Leistungen</a>
+        <a href="preise.html">Preise</a>
+        <a href="ki-assistent.html">KI-Assistent</a>
+        <a href="ueber-uns.html">Über uns</a>
+        <a href="kontakt.html" class="nav-active">Kontakt</a>
+        <a class="button button-primary button-small" href="kontakt.html">Kostenloses Erstgespräch</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="page-hero">
+      <div class="container" data-reveal style="text-align: center; max-width: 700px;">
+        <h1>Lass uns dein Projekt starten</h1>
+        <p class="lead">
+          Schreib uns kurz über dein Vorhaben. Wir melden uns mit einem klaren Vorschlag.
+        </p>
+      </div>
+    </section>
+
+    <section class="contact" aria-labelledby="contact-title">
+      <div class="container contact-grid">
+        <div class="contact-copy" data-reveal>
+          <h2 id="contact-title">Erzähl uns von deinem Projekt</h2>
+          <p>
+            Egal ob neue Website, Überarbeitung oder KI-Integration –
+            wir finden die passende Lösung für dein Business.
+          </p>
+
+          <div class="contact-details" style="margin-top: 2rem;">
+            <h3>Direkter Kontakt</h3>
+            <p><strong>E-Mail:</strong> kontakt@masesites.ch</p>
+            <p><strong>Telefon:</strong> +41 00 000 00 00</p>
+          </div>
+
+          <div class="faq" style="margin-top: 2rem;">
+            <h3>Häufige Fragen</h3>
+            <details>
+              <summary>Wie schnell können wir loslegen?</summary>
+              <p>Nach einem ersten Gespräch können wir meist innerhalb einer Woche starten.</p>
+            </details>
+            <details>
+              <summary>Wie lange dauert ein Projekt?</summary>
+              <p>Landingpages 2-4 Wochen, größere Websites 4-8 Wochen – je nach Umfang.</p>
+            </details>
+            <details>
+              <summary>Was kostet eine Website?</summary>
+              <p>Ab CHF 750 für eine Landingpage bis CHF 2'500 für Premium-Websites. Finale Offerte nach kurzem Call.</p>
+            </details>
+            <details>
+              <summary>Können wir später erweitern?</summary>
+              <p>Ja! Wir bauen skalierbar – Features wie KI-Assistent lassen sich jederzeit ergänzen.</p>
+            </details>
+          </div>
+        </div>
+
+        <form class="contact-form" data-reveal id="contact-form" novalidate>
+          <!-- Honeypot field (hidden) -->
+          <input type="text" name="honeypot" id="honeypot" style="display: none;" tabindex="-1" autocomplete="off">
+
+          <label>
+            Name *
+            <input type="text" name="name" id="contact-name" autocomplete="name" required>
+            <span class="error-message" id="name-error"></span>
+          </label>
+
+          <label>
+            E-Mail *
+            <input type="email" name="email" id="contact-email" autocomplete="email" required>
+            <span class="error-message" id="email-error"></span>
+          </label>
+
+          <label>
+            Firma (optional)
+            <input type="text" name="company" id="contact-company" autocomplete="organization">
+          </label>
+
+          <label>
+            Projektart
+            <select name="project-type" id="contact-project-type">
+              <option value="">Bitte wählen...</option>
+              <option value="neue-website">Neue Website</option>
+              <option value="ueberarbeitung">Website Überarbeitung</option>
+              <option value="ki-assistent">KI-Assistent Integration</option>
+              <option value="seo-performance">SEO & Performance</option>
+              <option value="beratung">Beratung</option>
+              <option value="sonstiges">Sonstiges</option>
+            </select>
+          </label>
+
+          <label>
+            Nachricht *
+            <textarea name="message" id="contact-message" rows="6" required></textarea>
+            <span class="error-message" id="message-error"></span>
+          </label>
+
+          <label class="checkbox-label">
+            <input type="checkbox" name="privacy" id="contact-privacy" required>
+            <span>Ich habe die <a href="datenschutz.html">Datenschutzerklärung</a> gelesen und akzeptiere sie. *</span>
+            <span class="error-message" id="privacy-error"></span>
+          </label>
+
+          <button class="button button-primary" type="submit" id="submit-btn">Anfrage senden</button>
+
+          <p class="form-note">Wir melden uns innerhalb von 24 Stunden.</p>
+
+          <div class="form-success" id="form-success">
+            ✓ Vielen Dank! Wir haben deine Nachricht erhalten und melden uns in 24-48h.
+          </div>
+
+          <div class="form-error" id="form-error">
+            ✗ <span id="error-text">Ein Fehler ist aufgetreten. Bitte versuche es später erneut.</span>
+          </div>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div>
+        <p class="footer-brand">MASESites AG</p>
+        <p>Professionelle Websites & KI-Integration aus der Schweiz.</p>
+      </div>
+      <div>
+        <p class="footer-title">Navigation</p>
+        <a href="index.html">Home</a>
+        <a href="leistungen.html">Leistungen</a>
+        <a href="preise.html">Preise</a>
+        <a href="ki-assistent.html">KI-Assistent</a>
+      </div>
+      <div>
+        <p class="footer-title">Rechtliches</p>
+        <a href="impressum.html">Impressum</a>
+        <a href="datenschutz.html">Datenschutz</a>
+      </div>
+      <div>
+        <p class="footer-title">Kontakt</p>
+        <a href="kontakt.html">Kontaktformular</a>
+        <a href="ueber-uns.html">Über uns</a>
+      </div>
+    </div>
+    <div class="container footer-bottom">
+      <p>Copyright <span id="year"></span> MASESites AG. Alle Rechte vorbehalten.</p>
+    </div>
+  </footer>
+
+  <button class="back-to-top" id="back-to-top" aria-label="Zurück nach oben">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <polyline points="18 15 12 9 6 15"></polyline>
+    </svg>
+  </button>
+</body>
+</html>
+

@@ -1,0 +1,43 @@
+{
+  "name": "masesites-website",
+  "version": "1.0.0",
+  "description": "MASESites AG - Professional Websites & KI-Integration",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js",
+    "serve": "npx serve -l 8000",
+    "validate": "npx html-validate index.html",
+    "lighthouse": "npx lighthouse https://localhost:8000 --view",
+    "minify:css": "npx clean-css-cli -o styles.min.css styles.css",
+    "minify:js": "npx terser script.js -o script.min.js -c -m"
+  },
+  "keywords": [
+    "webdesign",
+    "website",
+    "ki-assistent",
+    "switzerland",
+    "seo",
+    "performance"
+  ],
+  "author": "Matteo & Severin - MASESites AG",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "express": "^4.18.2",
+    "nodemailer": "^6.9.7",
+    "cors": "^2.8.5",
+    "express-rate-limit": "^7.1.5",
+    "dotenv": "^16.3.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2"
+  },
+  "browserslist": [
+    "> 0.5%",
+    "last 2 versions",
+    "not dead",
+    "not IE 11"
+  ]
+}
+

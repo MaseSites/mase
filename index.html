@@ -1,0 +1,349 @@
+<!doctype html>
+<html lang="de-CH">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>StudioName | Premium Webdesign & KI-Assist</title>
+  <meta name="description" content="StudioName baut moderne Websites mit klarem Design, starker Performance und optionalem KI-Assist. Schnell live, sauber umgesetzt.">
+  <meta name="robots" content="index, follow">
+  <meta name="keywords" content="Webdesign Schweiz, KI-Assist, Website erstellen, SEO, Performance, Mobile-first">
+  <meta name="author" content="StudioName">
+  <link rel="canonical" href="https://www.studioname.ch/">
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:title" content="StudioName | Websites, die verkaufen">
+  <meta property="og:description" content="Premium Webdesign, schnelle Umsetzung und optionaler KI-Assist fuer dein Business.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://www.studioname.ch/">
+  <meta property="og:image" content="https://www.studioname.ch/og-image.jpg">
+  <meta property="og:locale" content="de_CH">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="StudioName | Websites, die verkaufen">
+  <meta name="twitter:description" content="Premium Webdesign, schnelle Umsetzung und optionaler KI-Assist fuer dein Business.">
+  <meta name="twitter:image" content="https://www.studioname.ch/og-image.jpg">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+
+  <!-- Preconnect for performance -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <!-- Structured Data (JSON-LD) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ProfessionalService",
+    "name": "StudioName",
+    "description": "Premium Webdesign & KI-Assist aus der Schweiz",
+    "url": "https://www.studioname.ch",
+    "telephone": "+41-00-000-00-00",
+    "email": "hello@studioname.ch",
+    "address": {
+      "@type": "PostalAddress",
+      "addressCountry": "CH"
+    },
+    "priceRange": "CHF 1800-7900",
+    "sameAs": [
+      "https://www.linkedin.com/company/studioname",
+      "https://www.instagram.com/studioname"
+    ]
+  }
+  </script>
+
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="ai-assistant.css">
+  <link rel="stylesheet" href="debug.css">
+  <script defer src="script.js"></script>
+  <script defer src="ai-assistant.js"></script>
+
+  <!-- Google Analytics (replace with your ID) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX', {
+      'anonymize_ip': true,
+      'cookie_flags': 'SameSite=None;Secure'
+    });
+  </script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Zum Inhalt springen</a>
+
+  <header class="site-header" id="top">
+    <div class="container header-inner">
+      <a class="logo" href="index.html" aria-label="MASESites AG Startseite">
+        <span class="logo-mark" aria-hidden="true">MS</span>
+        MASE
+      </a>
+
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
+        <span class="sr-only">Navigation oeffnen</span>
+        <span class="nav-toggle-bar" aria-hidden="true"></span>
+        <span class="nav-toggle-bar" aria-hidden="true"></span>
+      </button>
+
+      <nav class="site-nav" id="site-nav" aria-label="Hauptnavigation">
+        <a href="index.html" class="nav-active">Home</a>
+        <a href="leistungen.html">Leistungen</a>
+        <a href="preise.html">Preise</a>
+        <a href="ki-assistent.html">KI-Assistent</a>
+        <a href="ueber-uns.html">Über uns</a>
+        <a href="kontakt.html">Kontakt</a>
+        <a class="button button-primary button-small" href="kontakt.html">Kostenloses Erstgespräch</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="container hero-grid">
+        <div class="hero-content" data-reveal>
+          <p class="eyebrow">Matteo & Severin. MASESites AG.</p>
+          <h1 id="hero-title">Websites, die verkaufen.</h1>
+          <p class="lead">
+            Professionelle Weblösungen und KI-Integration für moderne Unternehmen.
+          </p>
+          <div class="button-group">
+            <a class="button button-primary" href="kontakt.html">Projekt starten</a>
+            <a class="button button-ghost" href="preise.html">Preise ansehen</a>
+          </div>
+          <div class="hero-badges" aria-label="Vorteile">
+            <span class="badge">Mobile-first</span>
+            <span class="badge">SEO-optimiert</span>
+            <span class="badge">KI-Integration</span>
+          </div>
+        </div>
+
+        <div class="hero-visual" data-reveal>
+          <div class="preview-card interactive-preview" role="img" aria-label="Live Preview Demo">
+            <div class="preview-top">
+              <span></span><span></span><span></span>
+              <p>Live Preview (Demo)</p>
+            </div>
+            <div class="preview-controls">
+              <button class="preview-toggle active" data-mode="design">Design</button>
+              <button class="preview-toggle" data-mode="performance">Performance</button>
+              <button class="preview-toggle" data-mode="ki">KI</button>
+            </div>
+            <div class="preview-body" id="preview-demo">
+              <div class="preview-content" data-content="design">
+                <div class="demo-header">
+                  <div class="demo-nav">
+                    <span class="demo-logo">Logo</span>
+                    <div class="demo-menu">
+                      <span></span><span></span><span></span>
+                    </div>
+                  </div>
+                </div>
+                <div class="demo-hero">
+                  <h3>Professionelles Design</h3>
+                  <p>Klare Struktur, moderne Typografie</p>
+                  <div class="demo-cta"></div>
+                </div>
+              </div>
+              <div class="preview-content hidden" data-content="performance">
+                <div class="demo-metrics">
+                  <div class="metric-item">
+                    <span class="metric-value">95</span>
+                    <span class="metric-label">Speed</span>
+                  </div>
+                  <div class="metric-item">
+                    <span class="metric-value">1.2s</span>
+                    <span class="metric-label">Ladezeit</span>
+                  </div>
+                  <div class="metric-item">
+                    <span class="metric-value">98</span>
+                    <span class="metric-label">SEO</span>
+                  </div>
+                </div>
+              </div>
+              <div class="preview-content hidden" data-content="ki">
+                <div class="demo-chat">
+                  <div class="demo-chat-bubble bot">Hallo! Wie kann ich helfen?</div>
+                  <div class="demo-chat-bubble user">Preise?</div>
+                  <div class="demo-chat-bubble bot">Ab CHF 750</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="trust" aria-labelledby="trust-title">
+      <div class="container" data-reveal>
+        <h2 id="trust-title">Warum StudioName</h2>
+        <div class="trust-grid">
+          <article class="trust-card">
+            <h3>Schnell</h3>
+            <p>Klare Prozesse, kurze Wege, schnelle Live-Schaltung.</p>
+          </article>
+          <article class="trust-card">
+            <h3>Sauberer Code</h3>
+            <p>Minimal, wartbar und für Performance optimiert.</p>
+          </article>
+          <article class="trust-card">
+            <h3>Mobile-first</h3>
+            <p>UX die auf jedem Screen sitzt. Keine Kompromisse.</p>
+          </article>
+          <article class="trust-card">
+            <h3>KI-Integration</h3>
+            <p>Assistenz, die Leads qualifiziert und Fragen klärt.</p>
+          </article>
+        </div>
+
+        <div class="logo-strip" aria-label="Kundenlogos (Platzhalter)">
+          <span>Brand One</span>
+          <span>Brand Two</span>
+          <span>Brand Three</span>
+          <span>Brand Four</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="process" id="ansatz" aria-labelledby="approach-title">
+      <div class="container" data-reveal>
+        <h2 id="approach-title">Unser Ansatz</h2>
+        <div class="process-grid">
+          <div class="process-step">
+            <span>01</span>
+            <h3>Analyse</h3>
+            <p>Wir verstehen dein Business, deine Ziele und deine Zielgruppe. Gemeinsam definieren wir klare Anforderungen.</p>
+          </div>
+          <div class="process-step">
+            <span>02</span>
+            <h3>Design & Entwicklung</h3>
+            <p>Modernes Design trifft auf sauberen Code. Wir bauen deine Website mit Fokus auf Performance und Conversion.</p>
+          </div>
+          <div class="process-step">
+            <span>03</span>
+            <h3>Launch & Optimierung</h3>
+            <p>Gründliches Testing, erfolgreicher Launch und kontinuierliche Optimierung für maximalen Erfolg.</p>
+          </div>
+        </div>
+        <div style="text-align: center; margin-top: 2.5rem;">
+          <a class="button button-primary" href="kontakt.html">Projekt starten</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="ai" id="ki-teaser" aria-labelledby="ai-title">
+      <div class="container ai-grid">
+        <div class="ai-copy" data-reveal>
+          <h2 id="ai-title">KI-Integration – Dein digitaler Mitarbeiter</h2>
+          <p>
+            Unser KI-Assistent arbeitet 24/7 für dich: beantwortet Kundenfragen, sammelt Leads,
+            qualifiziert Anfragen und erklärt deine Produkte oder Services.
+          </p>
+          <ul class="ai-list">
+            <li>Automatische Kundenberatung</li>
+            <li>Lead-Qualifizierung in Echtzeit</li>
+            <li>Individuell mit deinen Inhalten trainierbar</li>
+          </ul>
+          <a class="button button-primary" href="ki-assistent.html">KI-Assistent entdecken</a>
+        </div>
+
+        <div class="ai-demo" data-reveal>
+          <div class="chat-widget" role="img" aria-label="Beispiel fuer einen KI-Chat">
+            <div class="chat-header">
+              <span class="chat-dot"></span>
+              <p>MASESites KI-Assistent</p>
+            </div>
+            <div class="chat-body">
+              <div class="chat-message bot">
+                Hallo! Wie kann ich dir helfen?
+              </div>
+              <div class="chat-message user">
+                Was kostet eine Website?
+              </div>
+              <div class="chat-message bot">
+                Starter ab CHF 1'800. Finale Offerte nach kurzem Call.
+              </div>
+              <div class="chat-message user">
+                Koennt ihr einen Termin einrichten?
+              </div>
+              <div class="chat-message bot">
+                Klar. Hinterlasse kurz deine Kontaktdaten, ich melde mich.
+              </div>
+            </div>
+            <div class="chat-input">
+              <span>Nachricht schreiben...</span>
+              <span class="chat-send">Senden</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="pricing-teaser" id="preise-teaser" aria-labelledby="pricing-teaser-title">
+      <div class="container" data-reveal style="text-align: center;">
+        <h2 id="pricing-teaser-title">Transparente Preise</h2>
+        <p class="lead" style="max-width: 600px; margin: 0 auto 2rem;">
+          Von der Überarbeitung bis zur kompletten Website – modulare Pakete ab CHF 250.
+        </p>
+        <a class="button button-primary" href="preise.html">Alle Preise ansehen</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div>
+        <p class="footer-brand">MASESites AG</p>
+        <p>Professionelle Websites & KI-Integration aus der Schweiz.</p>
+      </div>
+      <div>
+        <p class="footer-title">Navigation</p>
+        <a href="index.html">Home</a>
+        <a href="leistungen.html">Leistungen</a>
+        <a href="preise.html">Preise</a>
+        <a href="ki-assistent.html">KI-Assistent</a>
+      </div>
+      <div>
+        <p class="footer-title">Rechtliches</p>
+        <a href="impressum.html">Impressum</a>
+        <a href="datenschutz.html">Datenschutz</a>
+      </div>
+      <div>
+        <p class="footer-title">Kontakt</p>
+        <a href="kontakt.html">Kontaktformular</a>
+        <a href="ueber-uns.html">Über uns</a>
+      </div>
+    </div>
+    <div class="container footer-bottom">
+      <p>Copyright <span id="year"></span> MASESites AG. Alle Rechte vorbehalten.</p>
+    </div>
+  </footer>
+
+  <!-- Cookie Banner (DSGVO) -->
+  <div class="cookie-banner" id="cookie-banner" role="dialog" aria-labelledby="cookie-title" aria-describedby="cookie-desc">
+    <div class="cookie-content">
+      <h3 id="cookie-title">🍪 Cookie-Hinweis</h3>
+      <p id="cookie-desc">
+        Wir verwenden Cookies und Analyse-Tools, um die Nutzererfahrung zu verbessern.
+        Mit "Akzeptieren" stimmst du der Verwendung zu.
+        <a href="datenschutz.html">Mehr erfahren</a>
+      </p>
+      <div class="cookie-actions">
+        <button class="button button-ghost button-small" id="cookie-reject">Ablehnen</button>
+        <button class="button button-primary button-small" id="cookie-accept">Akzeptieren</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Back to Top Button -->
+  <button class="back-to-top" id="back-to-top" aria-label="Zurück nach oben">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <polyline points="18 15 12 9 6 15"></polyline>
+    </svg>
+  </button>
+</body>
+</html>
+
