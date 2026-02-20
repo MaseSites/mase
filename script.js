@@ -1,4 +1,4 @@
-﻿// ============================================
+﻿﻿// ============================================
 // NAVIGATION TOGGLE
 // ============================================
 const navToggle = document.querySelector('.nav-toggle');
@@ -187,7 +187,7 @@ if (contactForm) {
       showError(emailInput, emailError, 'Bitte gib deine E-Mail ein.');
       isValid = false;
     } else if (!validateEmail(emailInput.value.trim())) {
-      showError(emailInput, emailError, 'Bitte gib eine gÃ¼ltige E-Mail ein.');
+      showError(emailInput, emailError, 'Bitte gib eine gültige E-Mail ein.');
       isValid = false;
     } else {
       clearError(emailInput, emailError);
@@ -206,7 +206,7 @@ if (contactForm) {
 
     // Datenschutz Validierung
     if (!privacyInput.checked) {
-      showError(privacyInput, privacyError, 'Bitte akzeptiere die DatenschutzerklÃ¤rung.');
+      showError(privacyInput, privacyError, 'Bitte akzeptiere die Datenschutzerklärung.');
       isValid = false;
     } else {
       clearError(privacyInput, privacyError);
@@ -232,37 +232,41 @@ if (contactForm) {
 
     // Formular-Daten sammeln
     const formData = new FormData(contactForm);
-    const data = Object.fromEntries(formData.entries());
+    // Honeypot entfernen
+    formData.delete('honeypot');
 
     try {
-      // Send to backend
-      const response = await fetch('/api/contact', {
+      // Senden via Formspree (kein Backend nötig)
+      const response = await fetch('https://formspree.io/f/xrbkgkod', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
+          'Accept': 'application/json',
         },
-        body: JSON.stringify(data),
+        body: formData,
       });
 
       const result = await response.json();
 
-      if (response.ok && result.success) {
-        // Success
+      if (response.ok) {
+        // Erfolg
         if (formSuccess) {
-          formSuccess.textContent = 'âœ“ ' + result.message;
+          formSuccess.textContent = '✓ Vielen Dank! Wir melden uns innerhalb von 24 Stunden.';
           formSuccess.classList.add('visible');
         }
 
-        // Reset form
+        // Formular zurücksetzen
         contactForm.reset();
 
-        // Scroll to success message
+        // Zu Erfolgsmeldung scrollen
         formSuccess?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 
       } else {
-        // Error from server
+        // Fehler vom Server
         if (formError) {
-          document.getElementById('error-text').textContent = result.message || 'Ein Fehler ist aufgetreten.';
+          const msg = (result.errors && result.errors[0] && result.errors[0].message)
+            ? result.errors[0].message
+            : 'Ein Fehler ist aufgetreten. Bitte schreibe direkt an info@masesites.ch';
+          document.getElementById('error-text').textContent = msg;
           formError.classList.add('visible');
         }
       }
@@ -270,13 +274,13 @@ if (contactForm) {
     } catch (error) {
       console.error('Form submission error:', error);
 
-      // Network error
+      // Netzwerkfehler
       if (formError) {
         document.getElementById('error-text').textContent = 'Verbindungsfehler. Bitte schreibe direkt an info@masesites.ch';
         formError.classList.add('visible');
       }
     } finally {
-      // Reset button state
+      // Button zurücksetzen
       submitButton.classList.remove('loading');
       submitButton.disabled = false;
     }
@@ -405,64 +409,54 @@ if ('loading' in HTMLImageElement.prototype) {
 // ============================================
 // DYNAMIC PRICING CALCULATOR
 // ============================================
-const pricingOptions = document.querySelectorAll('.pricing-option-card input[type="radio"]');
-const aiAddon = document.getElementById('ai-addon');
-const pricingBreakdown = document.getElementById('pricing-breakdown');
-const totalPriceDisplay = document.getElementById('total-price');
-const pricingCTA = document.getElementById('pricing-cta');
+document.addEventListener('DOMContentLoaded', function() {
+  const pricingOptions = document.querySelectorAll('.pricing-option-card input[type="radio"]');
+  const aiAddon = document.getElementById('ai-addon');
+  const pricingBreakdown = document.getElementById('pricing-breakdown');
+  const totalPriceDisplay = document.getElementById('total-price');
+  const pricingCTA = document.getElementById('pricing-cta');
 
-let selectedPackage = null;
-let selectedPackagePrice = 0;
-let selectedPackageName = '';
-let aiAddonPrice = 0;
+  if (!pricingOptions.length && !aiAddon) return;
 
-function updatePricingSummary() {
-  // Gesamtpreis = nur einmalige Kosten (KI monatlich separat)
-  let total = selectedPackagePrice + aiAddonPrice;
+  let selectedPackage = null;
+  let selectedPackagePrice = 0;
+  let selectedPackageName = '';
+  let aiAddonPrice = 0;
 
-  // Breakdown anzeigen
-  if (selectedPackage) {
-    let breakdownHTML = '';
+  function formatPrice(price) {
+    return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "'");
+  }
 
-    const formatPrice = (price) => {
-      return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "'");
-    };
+  function updatePricingSummary() {
+    let total = selectedPackagePrice + aiAddonPrice;
 
-    breakdownHTML += `<p class="pricing-summary-item"><span>${selectedPackageName}</span><span>CHF ${formatPrice(selectedPackagePrice)}</span></p>`;
+    if (selectedPackage && pricingBreakdown) {
+      let breakdownHTML = '';
+      breakdownHTML += `<p class="pricing-summary-item"><span>${selectedPackageName}</span><span>CHF ${formatPrice(selectedPackagePrice)}</span></p>`;
 
-    if (aiAddon && aiAddon.checked) {
-      breakdownHTML += `<p class="pricing-summary-item"><span>KI-Assistent (einmalig)</span><span>CHF ${formatPrice(aiAddonPrice)}</span></p>`;
-      breakdownHTML += `<p class="pricing-summary-item" style="font-size:0.85em;color:var(--muted)"><span>KI-Assistent (monatlich)</span><span>CHF 40 / Mt.</span></p>`;
+      if (aiAddon && aiAddon.checked) {
+        breakdownHTML += `<p class="pricing-summary-item"><span>KI-Assistent (einmalig)</span><span>CHF ${formatPrice(aiAddonPrice)}</span></p>`;
+        breakdownHTML += `<p class="pricing-summary-item" style="font-size:0.85em;color:var(--muted)"><span>KI-Assistent (monatlich)</span><span>CHF 40 / Mt.</span></p>`;
+      }
+      pricingBreakdown.innerHTML = breakdownHTML;
+    } else if (pricingBreakdown) {
+      pricingBreakdown.innerHTML = '<p class="pricing-summary-hint">Wähle ein Paket um den Preis zu sehen</p>';
     }
 
-    pricingBreakdown.innerHTML = breakdownHTML;
-  } else {
-    pricingBreakdown.innerHTML = '<p class="pricing-summary-hint">Wähle ein Paket um den Preis zu sehen</p>';
+    if (totalPriceDisplay) {
+      if (aiAddon && aiAddon.checked) {
+        totalPriceDisplay.innerHTML = `CHF ${formatPrice(total)} <small style="font-size:0.55em;font-weight:500;color:var(--muted);display:block">+ CHF 40 / Mt. (KI)</small>`;
+      } else {
+        totalPriceDisplay.textContent = `CHF ${formatPrice(total)}`;
+      }
+    }
+
+    if (pricingCTA) {
+      pricingCTA.disabled = !selectedPackage;
+    }
   }
 
-  // Gesamtpreis (einmalig)
-  const formatPrice = (price) => {
-    return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "'");
-  };
-
-  if (aiAddon && aiAddon.checked) {
-    totalPriceDisplay.innerHTML = `CHF ${formatPrice(total)} <small style="font-size:0.55em;font-weight:500;color:var(--muted);display:block">+ CHF 40 / Mt. (KI)</small>`;
-  } else {
-    totalPriceDisplay.textContent = `CHF ${formatPrice(total)}`;
-  }
-
-  // CTA Button aktivieren/deaktivieren
-  if (selectedPackage) {
-    pricingCTA.disabled = false;
-    pricingCTA.textContent = 'Projekt starten';
-  } else {
-    pricingCTA.disabled = true;
-    pricingCTA.textContent = 'Projekt starten';
-  }
-}
-
-// Event Listener fÃ¼r Package Selection
-if (pricingOptions.length > 0) {
+  // Event Listener für Package Selection
   pricingOptions.forEach(option => {
     option.addEventListener('change', function() {
       if (this.checked) {
@@ -470,7 +464,6 @@ if (pricingOptions.length > 0) {
         const card = this.closest('.pricing-option-card');
         selectedPackagePrice = parseInt(card.getAttribute('data-price'));
 
-        // Name bestimmen
         const packageType = card.getAttribute('data-type');
         const packageName = card.querySelector('h4').textContent;
 
@@ -484,40 +477,33 @@ if (pricingOptions.length > 0) {
       }
     });
   });
-}
 
-// Event Listener fÃ¼r KI-Addon
-if (aiAddon) {
-  aiAddon.addEventListener('change', function() {
-    if (this.checked) {
-      aiAddonPrice = parseInt(this.value);
-    } else {
-      aiAddonPrice = 0;
-    }
-    updatePricingSummary();
-  });
-}
+  // Event Listener für KI-Addon
+  if (aiAddon) {
+    aiAddon.addEventListener('change', function() {
+      aiAddonPrice = this.checked ? parseInt(this.value) : 0;
+      updatePricingSummary();
+    });
+  }
 
-// CTA Button Click Handler
-if (pricingCTA) {
-  pricingCTA.addEventListener('click', function() {
-    if (!this.disabled && selectedPackage) {
-      // Build query parameters
-      const params = new URLSearchParams({
-        package: selectedPackageName,
-        price: selectedPackagePrice,
-        ai: aiAddon && aiAddon.checked ? '1' : '0',
-        total: selectedPackagePrice + aiAddonPrice
-      });
+  // CTA Button Click Handler
+  if (pricingCTA) {
+    pricingCTA.addEventListener('click', function() {
+      if (!this.disabled && selectedPackage) {
+        const params = new URLSearchParams({
+          package: selectedPackageName,
+          price: selectedPackagePrice,
+          ai: aiAddon && aiAddon.checked ? '1' : '0',
+          total: selectedPackagePrice + aiAddonPrice
+        });
+        window.location.href = `kontakt.html?${params.toString()}`;
+      }
+    });
+  }
 
-      // Navigate to contact page with parameters
-      window.location.href = `kontakt.html?${params.toString()}`;
-    }
-  });
-}
-
-// Initial Summary erstellen
-updatePricingSummary();
+  // Initial Summary
+  updatePricingSummary();
+});
 
 // ============================================
 // INTERACTIVE PREVIEW
@@ -547,4 +533,3 @@ if (previewToggles.length > 0) {
     });
   });
 }
-
