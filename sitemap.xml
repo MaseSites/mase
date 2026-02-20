@@ -3,7 +3,7 @@
 
   <!-- Homepage -->
   <url>
-    <loc>https://www.studioname.ch/</loc>
+    <loc>https://www.masesites.ch/</loc>
     <lastmod>2026-02-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
@@ -11,7 +11,7 @@
 
   <!-- Leistungen Section -->
   <url>
-    <loc>https://www.studioname.ch/#leistungen</loc>
+    <loc>https://www.masesites.ch/#leistungen</loc>
     <lastmod>2026-02-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -19,7 +19,7 @@
 
   <!-- Arbeiten Section -->
   <url>
-    <loc>https://www.studioname.ch/#arbeiten</loc>
+    <loc>https://www.masesites.ch/#arbeiten</loc>
     <lastmod>2026-02-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -27,7 +27,7 @@
 
   <!-- Prozess Section -->
   <url>
-    <loc>https://www.studioname.ch/#prozess</loc>
+    <loc>https://www.masesites.ch/#prozess</loc>
     <lastmod>2026-02-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -35,7 +35,7 @@
 
   <!-- KI-Assist Section -->
   <url>
-    <loc>https://www.studioname.ch/#ki</loc>
+    <loc>https://www.masesites.ch/#ki</loc>
     <lastmod>2026-02-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
@@ -43,7 +43,7 @@
 
   <!-- Preise Section -->
   <url>
-    <loc>https://www.studioname.ch/#preise</loc>
+    <loc>https://www.masesites.ch/#preise</loc>
     <lastmod>2026-02-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -51,7 +51,7 @@
 
   <!-- Kontakt Section -->
   <url>
-    <loc>https://www.studioname.ch/#kontakt</loc>
+    <loc>https://www.masesites.ch/#kontakt</loc>
     <lastmod>2026-02-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>

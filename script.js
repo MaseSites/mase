@@ -1,4 +1,4 @@
-// ============================================
+﻿// ============================================
 // NAVIGATION TOGGLE
 // ============================================
 const navToggle = document.querySelector('.nav-toggle');
@@ -187,7 +187,7 @@ if (contactForm) {
       showError(emailInput, emailError, 'Bitte gib deine E-Mail ein.');
       isValid = false;
     } else if (!validateEmail(emailInput.value.trim())) {
-      showError(emailInput, emailError, 'Bitte gib eine gültige E-Mail ein.');
+      showError(emailInput, emailError, 'Bitte gib eine gÃ¼ltige E-Mail ein.');
       isValid = false;
     } else {
       clearError(emailInput, emailError);
@@ -206,7 +206,7 @@ if (contactForm) {
 
     // Datenschutz Validierung
     if (!privacyInput.checked) {
-      showError(privacyInput, privacyError, 'Bitte akzeptiere die Datenschutzerklärung.');
+      showError(privacyInput, privacyError, 'Bitte akzeptiere die DatenschutzerklÃ¤rung.');
       isValid = false;
     } else {
       clearError(privacyInput, privacyError);
@@ -249,7 +249,7 @@ if (contactForm) {
       if (response.ok && result.success) {
         // Success
         if (formSuccess) {
-          formSuccess.textContent = '✓ ' + result.message;
+          formSuccess.textContent = 'âœ“ ' + result.message;
           formSuccess.classList.add('visible');
         }
 
@@ -272,7 +272,7 @@ if (contactForm) {
 
       // Network error
       if (formError) {
-        document.getElementById('error-text').textContent = 'Verbindungsfehler. Bitte schreibe direkt an masesitesinfo@gmail.com';
+        document.getElementById('error-text').textContent = 'Verbindungsfehler. Bitte schreibe direkt an info@masesites.ch';
         formError.classList.add('visible');
       }
     } finally {
@@ -297,11 +297,14 @@ window.addEventListener('DOMContentLoaded', () => {
       let message = `Ich interessiere mich für: ${decodeURIComponent(packageParam)} (CHF ${priceParam})`;
 
       if (aiParam === '1') {
-        message += ' + KI-Assistent (CHF 300)';
+        message += ' + KI-Assistent (CHF 200 einmalig + CHF 40/Mt.)';
       }
 
       if (totalParam) {
-        message += `\n\nGesamtpreis: CHF ${totalParam}`;
+        message += `\n\nEinmaliger Gesamtpreis: CHF ${totalParam}`;
+        if (aiParam === '1') {
+          message += ` + CHF 40/Mt. (KI-Assistent)`;
+        }
       }
 
       message += '\n\n[Bitte ergänze hier deine spezifischen Anforderungen...]';
@@ -309,41 +312,53 @@ window.addEventListener('DOMContentLoaded', () => {
       messageField.value = message;
     }
   }
+
+  // Email-Vorlage Button
+  const emailTemplateBtn = document.getElementById('email-template-btn');
+  if (emailTemplateBtn) {
+    emailTemplateBtn.addEventListener('click', () => {
+      // Heutiges Datum
+      const today = new Date();
+      const dateStr = today.toLocaleDateString('de-CH', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      });
+
+      // Email-Vorlage
+      const subject = 'Anfrage Website-Projekt - ' + dateStr;
+      const body = `Guten Tag,
+
+ich interessiere mich für eine Website-Lösung.
+
+PROJEKTDETAILS:
+- Projektart: [Neue Website / Überarbeitung / KI-Assistent]
+- Gewünschter Umfang: [1 Seite / 3-5 Seiten / 6-10 Seiten]
+- Branche: [z.B. Dienstleistung, E-Commerce, etc.]
+- Ziel: [z.B. Lead-Generierung, Online-Shop, etc.]
+
+ZEITRAHMEN:
+- Gewünschter Start: [Datum]
+- Deadline: [falls vorhanden]
+
+BUDGET:
+- Budget-Rahmen: CHF [ungefähre Vorstellung]
+
+ZUSÄTZLICHE ANFORDERUNGEN:
+- [Hier weitere Wünsche eintragen]
+
+Beste Grüsse
+[Dein Name]
+
+---
+Datum: ${dateStr}`;
+
+      // Öffne Email-Client mit vorausgefüllter Vorlage
+      const mailtoLink = `mailto:info@masesites.ch?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      window.location.href = mailtoLink;
+    });
+  }
 });
-
-      // Erfolg anzeigen
-      formSuccess.classList.add('visible');
-      contactForm.reset();
-
-      // Analytics Event tracken
-      if (window.gtag) {
-        gtag('event', 'form_submission', {
-          'event_category': 'Contact',
-          'event_label': 'Contact Form'
-        });
-      }
-
-      // Erfolg-Nachricht nach 5 Sekunden ausblenden
-      setTimeout(() => {
-        formSuccess.classList.remove('visible');
-      }, 5000);
-
-    } catch (error) {
-      console.error('Fehler beim Senden:', error);
-      alert('Es gab einen Fehler beim Senden. Bitte versuche es erneut oder kontaktiere uns per E-Mail.');
-    } finally {
-      submitButton.classList.remove('loading');
-      submitButton.disabled = false;
-    }
-  });
-
-  // Live-Validierung bei Input
-  [nameInput, emailInput, messageInput].forEach(input => {
-    input.addEventListener('blur', validateForm);
-  });
-
-  privacyInput.addEventListener('change', validateForm);
-}
 
 // ============================================
 // PERFORMANCE MONITORING
@@ -353,7 +368,7 @@ if ('PerformanceObserver' in window) {
   try {
     const observer = new PerformanceObserver((list) => {
       for (const entry of list.getEntries()) {
-        // Analytics Event für Performance senden
+        // Analytics Event fÃ¼r Performance senden
         if (window.gtag && entry.name) {
           gtag('event', 'web_vitals', {
             'event_category': 'Performance',
@@ -368,12 +383,12 @@ if ('PerformanceObserver' in window) {
 
     observer.observe({ entryTypes: ['largest-contentful-paint', 'first-input', 'layout-shift'] });
   } catch (e) {
-    // Browser unterstützt Performance Observer nicht vollständig
+    // Browser unterstÃ¼tzt Performance Observer nicht vollstÃ¤ndig
   }
 }
 
 // ============================================
-// LAZY LOADING IMAGES (falls benötigt)
+// LAZY LOADING IMAGES (falls benÃ¶tigt)
 // ============================================
 if ('loading' in HTMLImageElement.prototype) {
   const images = document.querySelectorAll('img[data-src]');
@@ -381,7 +396,7 @@ if ('loading' in HTMLImageElement.prototype) {
     img.src = img.dataset.src;
   });
 } else {
-  // Fallback für ältere Browser
+  // Fallback fÃ¼r Ã¤ltere Browser
   const script = document.createElement('script');
   script.src = 'https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.3.2/lazysizes.min.js';
   document.body.appendChild(script);
@@ -402,16 +417,22 @@ let selectedPackageName = '';
 let aiAddonPrice = 0;
 
 function updatePricingSummary() {
+  // Gesamtpreis = nur einmalige Kosten (KI monatlich separat)
   let total = selectedPackagePrice + aiAddonPrice;
 
   // Breakdown anzeigen
   if (selectedPackage) {
     let breakdownHTML = '';
 
-    breakdownHTML += `<p class="pricing-summary-item"><span>${selectedPackageName}</span><span>CHF ${selectedPackagePrice.toLocaleString('de-CH')}</span></p>`;
+    const formatPrice = (price) => {
+      return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "'");
+    };
+
+    breakdownHTML += `<p class="pricing-summary-item"><span>${selectedPackageName}</span><span>CHF ${formatPrice(selectedPackagePrice)}</span></p>`;
 
     if (aiAddon && aiAddon.checked) {
-      breakdownHTML += `<p class="pricing-summary-item"><span>KI-Assistent</span><span>CHF ${aiAddonPrice.toLocaleString('de-CH')}</span></p>`;
+      breakdownHTML += `<p class="pricing-summary-item"><span>KI-Assistent (einmalig)</span><span>CHF ${formatPrice(aiAddonPrice)}</span></p>`;
+      breakdownHTML += `<p class="pricing-summary-item" style="font-size:0.85em;color:var(--muted)"><span>KI-Assistent (monatlich)</span><span>CHF 40 / Mt.</span></p>`;
     }
 
     pricingBreakdown.innerHTML = breakdownHTML;
@@ -419,8 +440,16 @@ function updatePricingSummary() {
     pricingBreakdown.innerHTML = '<p class="pricing-summary-hint">Wähle ein Paket um den Preis zu sehen</p>';
   }
 
-  // Gesamtpreis aktualisieren
-  totalPriceDisplay.textContent = `CHF ${total.toLocaleString('de-CH')}`;
+  // Gesamtpreis (einmalig)
+  const formatPrice = (price) => {
+    return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "'");
+  };
+
+  if (aiAddon && aiAddon.checked) {
+    totalPriceDisplay.innerHTML = `CHF ${formatPrice(total)} <small style="font-size:0.55em;font-weight:500;color:var(--muted);display:block">+ CHF 40 / Mt. (KI)</small>`;
+  } else {
+    totalPriceDisplay.textContent = `CHF ${formatPrice(total)}`;
+  }
 
   // CTA Button aktivieren/deaktivieren
   if (selectedPackage) {
@@ -432,7 +461,7 @@ function updatePricingSummary() {
   }
 }
 
-// Event Listener für Package Selection
+// Event Listener fÃ¼r Package Selection
 if (pricingOptions.length > 0) {
   pricingOptions.forEach(option => {
     option.addEventListener('change', function() {
@@ -457,7 +486,7 @@ if (pricingOptions.length > 0) {
   });
 }
 
-// Event Listener für KI-Addon
+// Event Listener fÃ¼r KI-Addon
 if (aiAddon) {
   aiAddon.addEventListener('change', function() {
     if (this.checked) {

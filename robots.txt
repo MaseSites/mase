@@ -1,10 +1,10 @@
-# robots.txt für StudioName
+# robots.txt für MASESites AG
 
 User-agent: *
 Allow: /
 
 # Sitemap Location
-Sitemap: https://www.studioname.ch/sitemap.xml
+Sitemap: https://www.masesites.ch/sitemap.xml
 
 # Crawl-delay (optional, verhindert Server-Überlastung)
 Crawl-delay: 1

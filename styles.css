@@ -233,6 +233,17 @@ small {
   background: var(--accent-strong);
 }
 
+.button-secondary {
+  background: white;
+  color: var(--text);
+  border: 1px solid var(--line);
+}
+
+.button-secondary:hover {
+  background: var(--surface);
+  border-color: var(--accent);
+}
+
 .button-ghost {
   border-color: var(--line);
   color: var(--text);
@@ -754,6 +765,17 @@ small {
   font-weight: 600;
   color: var(--accent-strong);
   margin-bottom: 1.2rem;
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.pricing-addon-monthly {
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--muted);
 }
 
 .pricing-addon-checkbox {
