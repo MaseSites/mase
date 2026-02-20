@@ -1,17 +1,13 @@
-# robots.txt für MASESites AG
+# robots.txt - MASESites AG
 
 User-agent: *
 Allow: /
 
-# Sitemap Location
-Sitemap: https://www.masesites.ch/sitemap.xml
-
-# Crawl-delay (optional, verhindert Server-Überlastung)
-Crawl-delay: 1
-
-# Häufig gecrawlte Dateien ausschließen
 Disallow: /admin/
 Disallow: /private/
-Disallow: /*.json$
-Disallow: /*?*utm_source=*
+Disallow: /node_modules/
+Disallow: /.env
+Disallow: /server.js
+Disallow: /test-*.js
 
+Sitemap: https://www.masesites.ch/sitemap.xml

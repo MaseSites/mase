@@ -13,16 +13,24 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Serve static files
-app.use(express.static(__dirname));
+// 301 Weiterleitungen: .html URLs -> saubere URLs (VOR static middleware, wichtig fuer SEO)
+app.get('/leistungen.html', (req, res) => res.redirect(301, '/leistungen'));
+app.get('/preise.html', (req, res) => res.redirect(301, '/preise'));
+app.get('/ki-assistent.html', (req, res) => res.redirect(301, '/ki-assistent'));
+app.get('/ueber-uns.html', (req, res) => res.redirect(301, '/ueber-uns'));
+app.get('/kontakt.html', (req, res) => res.redirect(301, '/kontakt'));
 
-// Serve HTML files
+// Serve static files (CSS, JS, images – aber keine .html direkt)
+app.use(express.static(__dirname, { extensions: [] }));
+
+// Serve HTML files (clean URLs)
 app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'index.html')));
 app.get('/leistungen', (req, res) => res.sendFile(path.join(__dirname, 'leistungen.html')));
 app.get('/preise', (req, res) => res.sendFile(path.join(__dirname, 'preise.html')));
 app.get('/ki-assistent', (req, res) => res.sendFile(path.join(__dirname, 'ki-assistent.html')));
 app.get('/ueber-uns', (req, res) => res.sendFile(path.join(__dirname, 'ueber-uns.html')));
 app.get('/kontakt', (req, res) => res.sendFile(path.join(__dirname, 'kontakt.html')));
+
 
 // Rate Limiting
 const limiter = rateLimit({
