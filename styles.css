@@ -159,6 +159,9 @@ small {
   align-items: center;
   gap: 0.6rem;
   font-weight: 600;
+  text-transform: none;
+  font-variant: normal;
+  letter-spacing: normal;
 }
 
 .logo-mark {
@@ -205,6 +208,10 @@ small {
   color: var(--text);
 }
 
+.site-nav a:hover {
+  color: var(--accent-strong);
+}
+
 .site-nav.open {
   display: flex;
 }
@@ -231,6 +238,7 @@ small {
 .button-primary:hover {
   transform: translateY(-1px);
   background: var(--accent-strong);
+  color: #ffffff;
 }
 
 .button-secondary {
@@ -242,6 +250,7 @@ small {
 .button-secondary:hover {
   background: var(--surface);
   border-color: var(--accent);
+  color: var(--text);
 }
 
 .button-ghost {
@@ -252,6 +261,7 @@ small {
 
 .button-ghost:hover {
   border-color: var(--accent);
+  color: var(--text);
   box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08);
 }
 
@@ -779,8 +789,9 @@ small {
 }
 
 .pricing-addon-checkbox {
-  display: inline-flex;
+  display: flex;
   align-items: center;
+  justify-content: center;
   gap: 0.6rem;
   cursor: pointer;
   background: white;
@@ -790,18 +801,30 @@ small {
   font-weight: 600;
   color: var(--text);
   transition: all var(--transition);
+  width: 100%;
+  user-select: none;
 }
 
 .pricing-addon-checkbox:hover {
   background: var(--accent-soft);
   transform: translateY(-2px);
   box-shadow: 0 6px 16px rgba(102, 182, 255, 0.2);
+  color: var(--text);
 }
 
 .pricing-addon-checkbox input[type="checkbox"] {
-  width: 20px;
-  height: 20px;
-  cursor: pointer;
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+.pricing-addon-checkbox:has(input:checked) {
+  background: var(--accent-strong);
+  color: #ffffff;
+  border-color: var(--accent-strong);
+  box-shadow: 0 8px 20px rgba(58, 155, 255, 0.3);
 }
 
 /* Preis-Zusammenfassung */

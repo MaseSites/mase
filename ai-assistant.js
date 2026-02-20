@@ -31,11 +31,11 @@ class MASEAssistant {
   createChatWidget() {
     const chatHTML = `
       <div class="ai-chat-widget" id="ai-chat-widget">
-        <button class="ai-chat-toggle" id="ai-chat-toggle" aria-label="KI-Assistent öffnen">
+        <button class="ai-chat-toggle" id="ai-chat-toggle" aria-label="Mase-AI öffnen">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
           </svg>
-          <span class="ai-chat-toggle-text">KI-Assistent testen</span>
+          <span class="ai-chat-toggle-text">Mase-AI</span>
         </button>
         
         <div class="ai-chat-tooltip">
@@ -63,7 +63,7 @@ class MASEAssistant {
                   </svg>
                 </div>
                 <div>
-                  <h3 class="ai-chat-title">MASESites KI-Assistent</h3>
+                <h3 class="ai-chat-title">Mase-AI</h3>
                   <div class="ai-chat-status">Online</div>
                 </div>
               </div>
@@ -182,7 +182,7 @@ class MASEAssistant {
   }
 
   showLiveDemo() {
-    this.sendBotMessage(`Hallo! Ich bin dein MASESites KI-Assistent.<br><br>Ich zeige dir kurz, wie ich arbeite...`);
+    this.sendBotMessage(`Hallo! Ich bin Mase-AI, dein digitaler Assistent.<br><br>Ich zeige dir kurz, wie ich arbeite...`);
 
     setTimeout(() => this.addUserMessage('Was bringt mir ein KI-Assistent?'), 1500);
     setTimeout(() => this.showTypingIndicator(), 1600);

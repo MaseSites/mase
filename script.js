@@ -410,7 +410,8 @@ if ('loading' in HTMLImageElement.prototype) {
 // DYNAMIC PRICING CALCULATOR
 // ============================================
 document.addEventListener('DOMContentLoaded', function() {
-  const pricingOptions = document.querySelectorAll('.pricing-option-card input[type="radio"]');
+  const pricingOptions = document.querySelectorAll('.pricing-option-card input[type="radio"][name="package-type"]');
+  const hostingOptions = document.querySelectorAll('.pricing-option-card input[type="radio"][name="hosting-type"]');
   const aiAddon = document.getElementById('ai-addon');
   const pricingBreakdown = document.getElementById('pricing-breakdown');
   const totalPriceDisplay = document.getElementById('total-price');
@@ -422,22 +423,29 @@ document.addEventListener('DOMContentLoaded', function() {
   let selectedPackagePrice = 0;
   let selectedPackageName = '';
   let aiAddonPrice = 0;
+  let selectedHostingPrice = 0;
+  let selectedHostingName = '';
 
   function formatPrice(price) {
     return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "'");
   }
 
   function updatePricingSummary() {
-    let total = selectedPackagePrice + aiAddonPrice;
+    let total = selectedPackagePrice + aiAddonPrice + selectedHostingPrice;
 
     if (selectedPackage && pricingBreakdown) {
       let breakdownHTML = '';
       breakdownHTML += `<p class="pricing-summary-item"><span>${selectedPackageName}</span><span>CHF ${formatPrice(selectedPackagePrice)}</span></p>`;
 
       if (aiAddon && aiAddon.checked) {
-        breakdownHTML += `<p class="pricing-summary-item"><span>KI-Assistent (einmalig)</span><span>CHF ${formatPrice(aiAddonPrice)}</span></p>`;
-        breakdownHTML += `<p class="pricing-summary-item" style="font-size:0.85em;color:var(--muted)"><span>KI-Assistent (monatlich)</span><span>CHF 40 / Mt.</span></p>`;
+        breakdownHTML += `<p class="pricing-summary-item"><span>Mase-AI (einmalig)</span><span>CHF ${formatPrice(aiAddonPrice)}</span></p>`;
+        breakdownHTML += `<p class="pricing-summary-item" style="font-size:0.85em;color:var(--muted)"><span>Mase-AI (monatlich)</span><span>CHF 40 / Mt.</span></p>`;
       }
+
+      if (selectedHostingName) {
+        breakdownHTML += `<p class="pricing-summary-item"><span>${selectedHostingName}</span><span>CHF ${formatPrice(selectedHostingPrice)}</span></p>`;
+      }
+
       pricingBreakdown.innerHTML = breakdownHTML;
     } else if (pricingBreakdown) {
       pricingBreakdown.innerHTML = '<p class="pricing-summary-hint">Wähle ein Paket um den Preis zu sehen</p>';
@@ -445,7 +453,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     if (totalPriceDisplay) {
       if (aiAddon && aiAddon.checked) {
-        totalPriceDisplay.innerHTML = `CHF ${formatPrice(total)} <small style="font-size:0.55em;font-weight:500;color:var(--muted);display:block">+ CHF 40 / Mt. (KI)</small>`;
+        totalPriceDisplay.innerHTML = `CHF ${formatPrice(total)} <small style="font-size:0.55em;font-weight:500;color:var(--muted);display:block">+ CHF 40 / Mt. (Mase-AI)</small>`;
       } else {
         totalPriceDisplay.textContent = `CHF ${formatPrice(total)}`;
       }
@@ -478,7 +486,23 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
 
-  // Event Listener für KI-Addon
+  // Event Listener für Hosting Selection
+  hostingOptions.forEach(option => {
+    option.addEventListener('change', function() {
+      if (this.checked) {
+        const card = this.closest('.pricing-option-card');
+        selectedHostingPrice = parseInt(card.getAttribute('data-price'));
+        const hostingType = card.getAttribute('data-type');
+        const hostingName = card.querySelector('h4').textContent;
+        if (hostingType === 'domain') selectedHostingName = `Domain (${hostingName})`;
+        else if (hostingType === 'hosting') selectedHostingName = `Hosting (${hostingName}) /Mt.`;
+        else selectedHostingName = `Domain + Hosting Bundle`;
+        updatePricingSummary();
+      }
+    });
+  });
+
+  // Event Listener für Mase-AI Addon
   if (aiAddon) {
     aiAddon.addEventListener('change', function() {
       aiAddonPrice = this.checked ? parseInt(this.value) : 0;
@@ -494,7 +518,7 @@ document.addEventListener('DOMContentLoaded', function() {
           package: selectedPackageName,
           price: selectedPackagePrice,
           ai: aiAddon && aiAddon.checked ? '1' : '0',
-          total: selectedPackagePrice + aiAddonPrice
+          total: selectedPackagePrice + aiAddonPrice + selectedHostingPrice
         });
         window.location.href = `kontakt.html?${params.toString()}`;
       }
