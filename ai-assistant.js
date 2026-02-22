@@ -31,11 +31,11 @@ class MASEAssistant {
   createChatWidget() {
     const chatHTML = `
       <div class="ai-chat-widget" id="ai-chat-widget">
-        <button class="ai-chat-toggle" id="ai-chat-toggle" aria-label="Mase-AI öffnen">
+        <button class="ai-chat-toggle" id="ai-chat-toggle" aria-label="MASE-AI öffnen">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
           </svg>
-          <span class="ai-chat-toggle-text">Mase-AI</span>
+          <span class="ai-chat-toggle-text">MASE-AI</span>
         </button>
         
         <div class="ai-chat-tooltip">
@@ -63,7 +63,7 @@ class MASEAssistant {
                   </svg>
                 </div>
                 <div>
-                <h3 class="ai-chat-title">Mase-AI</h3>
+                <h3 class="ai-chat-title">MASE-AI</h3>
                   <div class="ai-chat-status">Online</div>
                 </div>
               </div>

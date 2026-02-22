@@ -253,30 +253,24 @@ if (contactForm) {
           formSuccess.textContent = '✓ Vielen Dank! Wir melden uns innerhalb von 24 Stunden.';
           formSuccess.classList.add('visible');
         }
-
-        // Formular zurücksetzen
         contactForm.reset();
-
-        // Zu Erfolgsmeldung scrollen
         formSuccess?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-
       } else {
-        // Fehler vom Server
         if (formError) {
+          const errorText = document.getElementById('error-text');
           const msg = (result.errors && result.errors[0] && result.errors[0].message)
             ? result.errors[0].message
             : 'Ein Fehler ist aufgetreten. Bitte schreibe direkt an info@masesites.ch';
-          document.getElementById('error-text').textContent = msg;
+          if (errorText) errorText.textContent = msg;
           formError.classList.add('visible');
         }
       }
 
     } catch (error) {
       console.error('Form submission error:', error);
-
-      // Netzwerkfehler
       if (formError) {
-        document.getElementById('error-text').textContent = 'Verbindungsfehler. Bitte schreibe direkt an info@masesites.ch';
+        const errorText = document.getElementById('error-text');
+        if (errorText) errorText.textContent = 'Verbindungsfehler. Bitte schreibe direkt an info@masesites.ch';
         formError.classList.add('visible');
       }
     } finally {
@@ -298,17 +292,10 @@ window.addEventListener('DOMContentLoaded', () => {
   if (packageParam && priceParam) {
     const messageField = document.getElementById('contact-message');
     if (messageField && !messageField.value) {
-      let message = `Ich interessiere mich für: ${decodeURIComponent(packageParam)} (CHF ${priceParam})`;
+      let message = `Ich interessiere mich für: ${decodeURIComponent(packageParam)}`;
 
       if (aiParam === '1') {
-        message += ' + KI-Assistent (CHF 200 einmalig + CHF 40/Mt.)';
-      }
-
-      if (totalParam) {
-        message += `\n\nEinmaliger Gesamtpreis: CHF ${totalParam}`;
-        if (aiParam === '1') {
-          message += ` + CHF 40/Mt. (KI-Assistent)`;
-        }
+        message += ' + KI-Assistent';
       }
 
       message += '\n\n[Bitte ergänze hier deine spezifischen Anforderungen...]';
@@ -438,8 +425,8 @@ document.addEventListener('DOMContentLoaded', function() {
       breakdownHTML += `<p class="pricing-summary-item"><span>${selectedPackageName}</span><span>CHF ${formatPrice(selectedPackagePrice)}</span></p>`;
 
       if (aiAddon && aiAddon.checked) {
-        breakdownHTML += `<p class="pricing-summary-item"><span>Mase-AI (einmalig)</span><span>CHF ${formatPrice(aiAddonPrice)}</span></p>`;
-        breakdownHTML += `<p class="pricing-summary-item" style="font-size:0.85em;color:var(--muted)"><span>Mase-AI (monatlich)</span><span>CHF 40 / Mt.</span></p>`;
+        breakdownHTML += `<p class="pricing-summary-item"><span>KI-Assistent (einmalig)</span><span>CHF ${formatPrice(aiAddonPrice)}</span></p>`;
+        breakdownHTML += `<p class="pricing-summary-item" style="font-size:0.85em;color:var(--muted)"><span>KI-Assistent (monatlich)</span><span>CHF 40 / Mt.</span></p>`;
       }
 
       if (selectedHostingName) {
@@ -453,7 +440,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     if (totalPriceDisplay) {
       if (aiAddon && aiAddon.checked) {
-        totalPriceDisplay.innerHTML = `CHF ${formatPrice(total)} <small style="font-size:0.55em;font-weight:500;color:var(--muted);display:block">+ CHF 40 / Mt. (Mase-AI)</small>`;
+        totalPriceDisplay.innerHTML = `CHF ${formatPrice(total)} <small style="font-size:0.55em;font-weight:500;color:var(--muted);display:block">+ CHF 40 / Mt. (KI-Assistent)</small>`;
       } else {
         totalPriceDisplay.textContent = `CHF ${formatPrice(total)}`;
       }
@@ -539,17 +526,9 @@ if (previewToggles.length > 0) {
   previewToggles.forEach(toggle => {
     toggle.addEventListener('click', function() {
       const mode = this.getAttribute('data-mode');
-
-      // Remove active from all toggles
       previewToggles.forEach(t => t.classList.remove('active'));
-
-      // Add active to clicked toggle
       this.classList.add('active');
-
-      // Hide all content
       previewContents.forEach(content => content.classList.add('hidden'));
-
-      // Show selected content
       const targetContent = document.querySelector(`[data-content="${mode}"]`);
       if (targetContent) {
         targetContent.classList.remove('hidden');
@@ -557,3 +536,63 @@ if (previewToggles.length > 0) {
     });
   });
 }
+
+// ============================================
+// PROJECT SLIDER (Vanilla JS)
+// ============================================
+(function initSlider() {
+  const track = document.getElementById('slider-track');
+  const dots = document.querySelectorAll('.slider-dot');
+  const prevBtn = document.getElementById('slider-prev');
+  const nextBtn = document.getElementById('slider-next');
+
+  if (!track) return;
+
+  let current = 0;
+  const slides = track.children;
+  const total = slides.length;
+  let autoTimer = null;
+
+  function goTo(index) {
+    current = (index + total) % total;
+    track.style.transform = `translateX(-${current * 100}%)`;
+    dots.forEach((d, i) => d.classList.toggle('active', i === current));
+  }
+
+  function startAuto() {
+    autoTimer = setInterval(() => goTo(current + 1), 5000);
+  }
+
+  function resetAuto() {
+    clearInterval(autoTimer);
+    startAuto();
+  }
+
+  if (prevBtn) {
+    prevBtn.addEventListener('click', () => { goTo(current - 1); resetAuto(); });
+  }
+  if (nextBtn) {
+    nextBtn.addEventListener('click', () => { goTo(current + 1); resetAuto(); });
+  }
+
+  dots.forEach(dot => {
+    dot.addEventListener('click', function() {
+      goTo(parseInt(this.getAttribute('data-index')));
+      resetAuto();
+    });
+  });
+
+  // Touch/swipe support
+  let touchStartX = 0;
+  track.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, { passive: true });
+  track.addEventListener('touchend', e => {
+    const diff = touchStartX - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 50) {
+      goTo(diff > 0 ? current + 1 : current - 1);
+      resetAuto();
+    }
+  }, { passive: true });
+
+  startAuto();
+})();
+

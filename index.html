@@ -126,8 +126,7 @@
   <header class="site-header" id="top">
     <div class="container header-inner">
       <a class="logo" href="index.html" aria-label="MASESites AG Startseite">
-        <span class="logo-mark" aria-hidden="true">MS</span>
-        Mase
+        MASE
       </a>
 
       <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
@@ -251,25 +250,97 @@
     <section class="process" id="ansatz" aria-labelledby="approach-title">
       <div class="container" data-reveal>
         <h2 id="approach-title">Unser Ansatz</h2>
-        <div class="process-grid">
+        <p class="lead" style="margin-bottom:2rem;color:var(--muted)">5 Schritte zum professionellen Ergebnis.</p>
+        <div class="process-grid process-grid-5">
           <div class="process-step">
+            <div class="process-step-icon">🔍</div>
             <span>01</span>
-            <h3>Analyse</h3>
-            <p>Wir verstehen dein Business, deine Ziele und deine Zielgruppe. Gemeinsam definieren wir klare Anforderungen.</p>
+            <h3>Analyse &amp; Strategie</h3>
+            <p>Wir analysieren dein Business, deine Zielgruppe und den Wettbewerb. Klare Ziele, klarer Plan.</p>
           </div>
           <div class="process-step">
+            <div class="process-step-icon">🧩</div>
             <span>02</span>
-            <h3>Design &amp; Entwicklung</h3>
-            <p>Modernes Design trifft auf sauberen Code. Wir bauen deine Website mit Fokus auf Performance und Conversion.</p>
+            <h3>Struktur &amp; UX-Planung</h3>
+            <p>Seitenstruktur, Navigation und User Experience werden vor dem ersten Pixel geplant.</p>
           </div>
           <div class="process-step">
+            <div class="process-step-icon">🎨</div>
             <span>03</span>
-            <h3>Launch &amp; Optimierung</h3>
-            <p>Gr&#252;ndliches Testing, erfolgreicher Launch und kontinuierliche Optimierung f&#252;r maximalen Erfolg.</p>
+            <h3>Modernes Design</h3>
+            <p>Clean, professionell, verkaufsstark. Design das Vertrauen weckt und zum Handeln motiviert.</p>
+          </div>
+          <div class="process-step">
+            <div class="process-step-icon">⚙️</div>
+            <span>04</span>
+            <h3>Saubere Entwicklung</h3>
+            <p>Schneller, wartbarer Code. Mobile-first, SEO-ready und zukunftssicher gebaut.</p>
+          </div>
+          <div class="process-step">
+            <div class="process-step-icon">🚀</div>
+            <span>05</span>
+            <h3>Optimierung &amp; Skalierung</h3>
+            <p>Nach dem Launch analysieren, optimieren und skalieren wir deinen digitalen Auftritt.</p>
           </div>
         </div>
         <div style="text-align: center; margin-top: 2.5rem;">
           <a class="button button-primary" href="kontakt.html">Projekt starten</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Live Preview Slider -->
+    <section class="projects-slider" aria-labelledby="slider-title">
+      <div class="container">
+        <div data-reveal style="text-align:center;max-width:700px;margin:0 auto 0.5rem;">
+          <h2 id="slider-title">Live Preview – Beispielprojekte</h2>
+          <p class="lead" style="color:var(--muted)">So könnten Websites unserer Kunden aussehen.</p>
+        </div>
+        <div class="slider-wrapper" id="main-slider">
+          <div class="slider-track" id="slider-track">
+            <div class="slider-slide">
+              <div class="slider-slide-bg">🎳</div>
+              <div class="slider-slide-content">
+                <span class="slider-slide-tag">Freizeit &amp; Sport</span>
+                <h3>Bowling Center</h3>
+                <p>Moderne Buchungswebsite mit Online-Reservierung, Preisübersicht und Event-Galerie.</p>
+              </div>
+            </div>
+            <div class="slider-slide">
+              <div class="slider-slide-bg">🏥</div>
+              <div class="slider-slide-content">
+                <span class="slider-slide-tag">Gesundheit &amp; Medizin</span>
+                <h3>Arztpraxis Website</h3>
+                <p>Professionelle Praxisseite mit Leistungsübersicht, Öffnungszeiten und Online-Terminanfrage.</p>
+              </div>
+            </div>
+            <div class="slider-slide">
+              <div class="slider-slide-bg">🌯</div>
+              <div class="slider-slide-content">
+                <span class="slider-slide-tag">Gastronomie</span>
+                <h3>Dönerladen Website</h3>
+                <p>Appetitliche Website mit Speisekarte, Bestell-CTA und Standortinformationen.</p>
+              </div>
+            </div>
+            <div class="slider-slide">
+              <div class="slider-slide-bg">💅</div>
+              <div class="slider-slide-content">
+                <span class="slider-slide-tag">Beauty &amp; Wellness</span>
+                <h3>Nagelstudio Website</h3>
+                <p>Elegante Studio-Seite mit Galerie, Preisliste und einfacher Terminbuchung.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="slider-nav">
+          <button class="slider-btn" id="slider-prev" aria-label="Vorheriges Projekt">←</button>
+          <div class="slider-dots" id="slider-dots">
+            <button class="slider-dot active" data-index="0" aria-label="Projekt 1"></button>
+            <button class="slider-dot" data-index="1" aria-label="Projekt 2"></button>
+            <button class="slider-dot" data-index="2" aria-label="Projekt 3"></button>
+            <button class="slider-dot" data-index="3" aria-label="Projekt 4"></button>
+          </div>
+          <button class="slider-btn" id="slider-next" aria-label="Nächstes Projekt">→</button>
         </div>
       </div>
     </section>
@@ -336,8 +407,8 @@
   <footer class="site-footer">
     <div class="container footer-grid">
       <div>
-        <p class="footer-brand">MASESites AG</p>
-        <p>Professionelle Websites &amp; KI-Integration aus der Schweiz.</p>
+        <p class="footer-brand">MASE</p>
+        <p class="footer-desc">Professionelle Websites &amp; KI-Integration aus der Schweiz.</p>
       </div>
       <div>
         <p class="footer-title">Navigation</p>
@@ -347,14 +418,14 @@
         <a href="ki-assistent.html">KI-Assistent</a>
       </div>
       <div>
-        <p class="footer-title">Rechtliches</p>
-        <a href="impressum.html">Impressum</a>
-        <a href="datenschutz.html">Datenschutz</a>
-      </div>
-      <div>
         <p class="footer-title">Kontakt</p>
         <a href="kontakt.html">Kontaktformular</a>
         <a href="ueber-uns.html">&#220;ber uns</a>
+      </div>
+      <div>
+        <p class="footer-title">Rechtliches</p>
+        <a href="impressum.html">Impressum</a>
+        <a href="datenschutz.html">Datenschutz</a>
       </div>
     </div>
     <div class="container footer-bottom">
@@ -365,14 +436,12 @@
   <!-- Cookie Banner (DSGVO) -->
   <div class="cookie-banner" id="cookie-banner" role="dialog" aria-labelledby="cookie-title" aria-describedby="cookie-desc">
     <div class="cookie-content">
-      <h3 id="cookie-title">🍪 Cookie-Hinweis</h3>
-      <p id="cookie-desc">
-        Wir verwenden Cookies und Analyse-Tools, um die Nutzererfahrung zu verbessern.
-        Mit "Akzeptieren" stimmst du der Verwendung zu.
-        <a href="datenschutz.html">Mehr erfahren</a>
-      </p>
+      <div>
+        <h3 id="cookie-title">🍪 Cookie-Hinweis</h3>
+        <p id="cookie-desc">Wir verwenden Cookies für eine optimale Nutzererfahrung. <a href="datenschutz.html">Mehr erfahren</a></p>
+      </div>
       <div class="cookie-actions">
-        <button class="button button-ghost button-small" id="cookie-reject">Ablehnen</button>
+        <button class="button button-ghost button-small" id="cookie-reject">Einstellungen</button>
         <button class="button button-primary button-small" id="cookie-accept">Akzeptieren</button>
       </div>
     </div>
