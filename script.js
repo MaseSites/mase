@@ -235,50 +235,58 @@ if (contactForm) {
     const projectType = document.getElementById('contact-project-type')?.value || '';
     const message = messageInput.value.trim();
 
-    try {
-      const formData = new FormData();
-      formData.append('name', name);
-      formData.append('email', email);
-      formData.append('_subject', 'Neue Anfrage via MASESites Website');
-      formData.append('_replyto', email);
-      formData.append('_captcha', 'false');
-      formData.append('_template', 'table');
-      formData.append('_next', window.location.href);
-      if (company) formData.append('Firma', company);
-      if (projectType) formData.append('Projektart', projectType);
-      formData.append('Nachricht', message);
+    const formData = new FormData();
+    formData.append('name', name);
+    formData.append('email', email);
+    formData.append('_subject', 'Neue Anfrage via MASESites Website');
+    formData.append('_replyto', email);
+    formData.append('_captcha', 'false');
+    formData.append('_template', 'table');
+    if (company) formData.append('Firma', company);
+    if (projectType) formData.append('Projektart', projectType);
+    formData.append('Nachricht', message);
 
-      // Direkt an info@masesites.ch via Formsubmit.co
+    let sent = false;
+
+    try {
       const response = await fetch('https://formsubmit.co/ajax/info@masesites.ch', {
         method: 'POST',
         headers: { 'Accept': 'application/json' },
         body: formData
       });
 
-      const result = await response.json();
-
-      if (result.success === 'true' || result.success === true) {
-        if (formSuccess) {
-          formSuccess.textContent = '✓ Vielen Dank! Wir melden uns innerhalb von 24 Stunden.';
-          formSuccess.classList.add('visible');
-        }
-        contactForm.reset();
-        formSuccess?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      // Wenn HTTP-Status OK (200-299) → Erfolg, egal was JSON sagt
+      if (response.ok) {
+        sent = true;
       } else {
-        throw new Error(result.message || 'Unbekannter Fehler');
+        // Versuche JSON zu lesen für bessere Fehlermeldung
+        try {
+          const result = await response.json();
+          console.error('Formsubmit error:', result);
+        } catch (_) {}
       }
-
     } catch (error) {
-      console.error('Form error:', error);
+      console.error('Network error:', error);
+    }
+
+    if (sent) {
+      if (formSuccess) {
+        formSuccess.textContent = '✓ Vielen Dank! Wir melden uns innerhalb von 24 Stunden.';
+        formSuccess.classList.add('visible');
+      }
+      if (formError) formError.classList.remove('visible');
+      contactForm.reset();
+      formSuccess?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    } else {
       if (formError) {
         const errorText = document.getElementById('error-text');
         if (errorText) errorText.textContent = 'Verbindungsfehler. Bitte schreibe direkt an info@masesites.ch';
         formError.classList.add('visible');
       }
-    } finally {
-      submitButton.classList.remove('loading');
-      submitButton.disabled = false;
     }
+
+    submitButton.classList.remove('loading');
+    submitButton.disabled = false;
   });
 }
 
