@@ -236,7 +236,6 @@ if (contactForm) {
     const message = messageInput.value.trim();
 
     try {
-      // Formsubmit.co – kein Account nötig, erste Nutzung sendet Bestätigungs-E-Mail
       const formData = new FormData();
       formData.append('name', name);
       formData.append('email', email);
@@ -244,11 +243,13 @@ if (contactForm) {
       formData.append('_replyto', email);
       formData.append('_captcha', 'false');
       formData.append('_template', 'table');
+      formData.append('_next', window.location.href);
       if (company) formData.append('Firma', company);
       if (projectType) formData.append('Projektart', projectType);
       formData.append('Nachricht', message);
 
-      const response = await fetch('https://formsubmit.co/ajax/masesitesinfo@gmail.com', {
+      // Direkt an info@masesites.ch via Formsubmit.co
+      const response = await fetch('https://formsubmit.co/ajax/info@masesites.ch', {
         method: 'POST',
         headers: { 'Accept': 'application/json' },
         body: formData
@@ -256,7 +257,7 @@ if (contactForm) {
 
       const result = await response.json();
 
-      if (response.ok && result.success === 'true') {
+      if (result.success === 'true' || result.success === true) {
         if (formSuccess) {
           formSuccess.textContent = '✓ Vielen Dank! Wir melden uns innerhalb von 24 Stunden.';
           formSuccess.classList.add('visible');
@@ -264,25 +265,15 @@ if (contactForm) {
         contactForm.reset();
         formSuccess?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
       } else {
-        throw new Error('Fehler beim Senden');
+        throw new Error(result.message || 'Unbekannter Fehler');
       }
 
     } catch (error) {
       console.error('Form error:', error);
-
-      // Fallback: mailto direkt öffnen
-      const subject = encodeURIComponent('Neue Anfrage via MASESites Website');
-      const body = encodeURIComponent(
-        `Name: ${name}\nE-Mail: ${email}\n` +
-        (company ? `Firma: ${company}\n` : '') +
-        (projectType ? `Projektart: ${projectType}\n` : '') +
-        `\nNachricht:\n${message}`
-      );
-      window.open(`mailto:info@masesites.ch?subject=${subject}&body=${body}`, '_self');
-
-      if (formSuccess) {
-        formSuccess.textContent = '✓ Dein E-Mail-Programm wird geöffnet – bitte Nachricht absenden.';
-        formSuccess.classList.add('visible');
+      if (formError) {
+        const errorText = document.getElementById('error-text');
+        if (errorText) errorText.textContent = 'Verbindungsfehler. Bitte schreibe direkt an info@masesites.ch';
+        formError.classList.add('visible');
       }
     } finally {
       submitButton.classList.remove('loading');
