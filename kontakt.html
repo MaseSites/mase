@@ -110,9 +110,19 @@
           </div>
         </div>
 
-        <form class="contact-form" data-reveal id="contact-form" novalidate>
+        <form class="contact-form" data-reveal id="contact-form" novalidate
+              action="https://formsubmit.co/info@masesites.ch"
+              method="POST"
+              target="hidden-iframe">
+
+          <!-- Formsubmit Konfiguration -->
+          <input type="hidden" name="_subject" value="Neue Anfrage via MASESites Website">
+          <input type="hidden" name="_captcha" value="false">
+          <input type="hidden" name="_template" value="table">
+          <input type="hidden" name="_next" value="https://www.masesites.ch/kontakt.html">
+
           <!-- Honeypot field (hidden) -->
-          <input type="text" name="honeypot" id="honeypot" style="display: none;" tabindex="-1" autocomplete="off">
+          <input type="text" name="_honey" style="display: none;" tabindex="-1" autocomplete="off">
 
           <label>
             Name *
@@ -128,25 +138,25 @@
 
           <label>
             Firma (optional)
-            <input type="text" name="company" id="contact-company" autocomplete="organization">
+            <input type="text" name="Firma" id="contact-company" autocomplete="organization">
           </label>
 
           <label>
             Projektart
-            <select name="project-type" id="contact-project-type">
+            <select name="Projektart" id="contact-project-type">
               <option value="">Bitte wählen...</option>
-              <option value="neue-website">Neue Website</option>
-              <option value="ueberarbeitung">Website Überarbeitung</option>
-              <option value="ki-assistent">KI-Assistent Integration</option>
-              <option value="seo-performance">SEO & Performance</option>
-              <option value="beratung">Beratung</option>
-              <option value="sonstiges">Sonstiges</option>
+              <option value="Neue Website">Neue Website</option>
+              <option value="Website Überarbeitung">Website Überarbeitung</option>
+              <option value="KI-Assistent Integration">KI-Assistent Integration</option>
+              <option value="SEO & Performance">SEO &amp; Performance</option>
+              <option value="Beratung">Beratung</option>
+              <option value="Sonstiges">Sonstiges</option>
             </select>
           </label>
 
           <label>
             Nachricht *
-            <textarea name="message" id="contact-message" rows="6" required></textarea>
+            <textarea name="Nachricht" id="contact-message" rows="6" required></textarea>
             <span class="error-message" id="message-error"></span>
           </label>
 
@@ -158,20 +168,17 @@
 
           <button class="button button-primary" type="submit" id="submit-btn">Anfrage senden</button>
 
-          <button class="button button-secondary" type="button" id="email-template-btn" style="margin-top: 1rem;">
-            📧 Email-Vorlage öffnen
-          </button>
-
-          <p class="form-note"></p>
-
-          <div class="form-success" id="form-success">
+          <div class="form-success" id="form-success" style="display:none;">
             ✓ Vielen Dank! Wir haben deine Nachricht erhalten und melden uns in 24-48h.
           </div>
 
-          <div class="form-error" id="form-error">
-            ✗ <span id="error-text">Ein Fehler ist aufgetreten. Bitte versuche es später erneut.</span>
+          <div class="form-error" id="form-error" style="display:none;">
+            ✗ <span id="error-text">Bitte fülle alle Pflichtfelder aus.</span>
           </div>
         </form>
+
+        <!-- Verstecktes iframe – fängt Formsubmit-Antwort auf, kein Redirect -->
+        <iframe name="hidden-iframe" id="hidden-iframe" style="display:none;" title="Form Target"></iframe>
       </div>
     </section>
   </main>
