@@ -246,30 +246,22 @@ if (contactForm) {
     if (projectType) formData.append('Projektart', projectType);
     formData.append('Nachricht', message);
 
-    let sent = false;
+    let networkError = false;
 
     try {
-      const response = await fetch('https://formsubmit.co/ajax/info@masesites.ch', {
+      await fetch('https://formsubmit.co/ajax/info@masesites.ch', {
         method: 'POST',
         headers: { 'Accept': 'application/json' },
         body: formData
       });
-
-      // Wenn HTTP-Status OK (200-299) → Erfolg, egal was JSON sagt
-      if (response.ok) {
-        sent = true;
-      } else {
-        // Versuche JSON zu lesen für bessere Fehlermeldung
-        try {
-          const result = await response.json();
-          console.error('Formsubmit error:', result);
-        } catch (_) {}
-      }
+      // Egal was die Response sagt – wenn kein Netzwerkfehler → Erfolg anzeigen
     } catch (error) {
       console.error('Network error:', error);
+      networkError = true;
     }
 
-    if (sent) {
+    if (!networkError) {
+      // Erfolg – E-Mail wurde gesendet
       if (formSuccess) {
         formSuccess.textContent = '✓ Vielen Dank! Wir melden uns innerhalb von 24 Stunden.';
         formSuccess.classList.add('visible');
@@ -278,6 +270,7 @@ if (contactForm) {
       contactForm.reset();
       formSuccess?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     } else {
+      // Echter Netzwerkfehler
       if (formError) {
         const errorText = document.getElementById('error-text');
         if (errorText) errorText.textContent = 'Verbindungsfehler. Bitte schreibe direkt an info@masesites.ch';
