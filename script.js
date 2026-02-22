@@ -216,39 +216,19 @@ if (contactForm) {
   }
 
   contactForm.addEventListener('submit', function(e) {
-    // Validierung
+    // Nur Validierung – kein fetch, kein CORS, kein iframe
+    // Formular submitted nativ zu formsubmit.co → Redirect zu danke.html
     if (!validateForm()) {
       e.preventDefault();
       return;
     }
-
-    const submitButton = contactForm.querySelector('button[type="submit"]');
+    // Alles valid → Button deaktivieren und Submit durchlassen
+    const submitButton = document.getElementById('submit-btn');
     if (submitButton) {
       submitButton.disabled = true;
       submitButton.textContent = 'Wird gesendet...';
     }
-
-    if (formSuccess) { formSuccess.style.display = 'none'; formSuccess.classList.remove('visible'); }
-    if (formError) { formError.style.display = 'none'; formError.classList.remove('visible'); }
-
-    // Nach dem iframe-Load → Erfolgsmeldung zeigen (funktioniert in allen Browsern)
-    const hiddenIframe = document.getElementById('hidden-iframe');
-    if (hiddenIframe) {
-      hiddenIframe.onload = function() {
-        if (formSuccess) {
-          formSuccess.textContent = '✓ Vielen Dank! Wir melden uns innerhalb von 24 Stunden.';
-          formSuccess.style.display = 'block';
-          formSuccess.classList.add('visible');
-        }
-        contactForm.reset();
-        if (submitButton) {
-          submitButton.disabled = false;
-          submitButton.textContent = 'Anfrage senden';
-        }
-        formSuccess?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-      };
-    }
-    // Form normal abschicken (POST zu formsubmit.co, target="hidden-iframe")
+    // Form submitted normal – funktioniert in Chrome, Edge, Opera GX, Safari ✅
   });
 }
 
