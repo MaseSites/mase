@@ -292,55 +292,348 @@
     <!-- Live Preview Slider -->
     <section class="projects-slider" aria-labelledby="slider-title">
       <div class="container">
-        <div data-reveal style="text-align:center;max-width:700px;margin:0 auto 0.5rem;">
-          <h2 id="slider-title">Live Preview – Beispielprojekte</h2>
-          <p class="lead" style="color:var(--muted)">So könnten Websites unserer Kunden aussehen.</p>
+        <div data-reveal style="text-align:center;max-width:700px;margin:0 auto 2.5rem;">
+          <h2 id="slider-title" style="color:#f1f5f9;">Live Preview – Beispielprojekte</h2>
+          <p class="lead" style="color:#94a3b8;">So könnten Websites unserer Kunden aussehen.</p>
         </div>
-        <div class="slider-wrapper" id="main-slider">
-          <div class="slider-track" id="slider-track">
-            <div class="slider-slide">
-              <div class="slider-slide-bg">🎳</div>
-              <div class="slider-slide-content">
-                <span class="slider-slide-tag">Freizeit &amp; Sport</span>
-                <h3>Bowling Center</h3>
-                <p>Moderne Buchungswebsite mit Online-Reservierung, Preisübersicht und Event-Galerie.</p>
+
+        <!-- Slider Wrapper -->
+        <div class="lp-slider" id="lp-slider">
+
+          <!-- Slide 1: Bowling Center -->
+          <div class="lp-slide" role="group" aria-label="Slide 1 von 4">
+            <div class="lp-mockup">
+              <!-- Browser chrome -->
+              <div class="lp-browser-bar">
+                <span class="lp-dot lp-dot--red"></span>
+                <span class="lp-dot lp-dot--yellow"></span>
+                <span class="lp-dot lp-dot--green"></span>
+                <span class="lp-url">strikezone-bowling.ch</span>
+              </div>
+              <!-- Site nav -->
+              <div class="lp-site-nav lp-site-nav--dark">
+                <span class="lp-site-logo">STRIKE<span>ZONE</span></span>
+                <div class="lp-site-links">
+                  <span>Bahnen &amp; Preise</span>
+                  <span>Events</span>
+                  <span>Gastronomie</span>
+                  <span>Kontakt</span>
+                  <a class="lp-site-cta">Reservieren</a>
+                </div>
+              </div>
+              <!-- Hero -->
+              <div class="lp-hero lp-hero--bowling">
+                <div class="lp-hero-photo lp-photo--bowling"></div>
+                <div class="lp-hero-overlay"></div>
+                <div class="lp-hero-text">
+                  <p class="lp-overline">Bowling &amp; Entertainment · Zürich Oerlikon</p>
+                  <h2 class="lp-h1">Wo jeder Abend<br>zum Erlebnis wird.</h2>
+                  <p class="lp-subline">12 professionelle Bahnen · Sportbar · Private Events</p>
+                  <div class="lp-btn-row">
+                    <button class="lp-btn lp-btn--primary">Jetzt reservieren</button>
+                    <button class="lp-btn lp-btn--ghost">Preise ansehen</button>
+                  </div>
+                </div>
+              </div>
+              <!-- Info bar -->
+              <div class="lp-infobar lp-infobar--dark">
+                <div class="lp-info-item">
+                  <span class="lp-info-label">Öffnungszeiten</span>
+                  <span class="lp-info-val">Mo–Fr 14:00–01:00 · Sa–So 11:00–01:00</span>
+                </div>
+                <div class="lp-info-item">
+                  <span class="lp-info-label">Preise ab</span>
+                  <span class="lp-info-val">CHF 8.– / Spiel · Schuhe inklusive</span>
+                </div>
+                <div class="lp-info-item">
+                  <span class="lp-info-label">Events</span>
+                  <span class="lp-info-val">Geburtstage · Firmenfeiern · Turniere</span>
+                </div>
+              </div>
+              <!-- Price section strip -->
+              <div class="lp-strip lp-strip--bowling">
+                <div class="lp-strip-col">
+                  <p class="lp-strip-title">Preise</p>
+                  <table class="lp-table">
+                    <tr><td>1 Spiel / Person</td><td><strong>CHF 8.–</strong></td></tr>
+                    <tr><td>Abendtarif (ab 18h)</td><td><strong>CHF 11.–</strong></td></tr>
+                    <tr><td>Gruppe 6+ / Spiel</td><td><strong>CHF 14.–</strong></td></tr>
+                    <tr><td>Schuhe leihen</td><td><strong>inkl.</strong></td></tr>
+                  </table>
+                </div>
+                <div class="lp-strip-col">
+                  <p class="lp-strip-title">Nächste Events</p>
+                  <div class="lp-event-list">
+                    <div class="lp-event"><span class="lp-event-date">15. März</span><span>Firmenturnier «City Cup»</span></div>
+                    <div class="lp-event"><span class="lp-event-date">22. März</span><span>Ladies Night – freier Eintritt</span></div>
+                    <div class="lp-event"><span class="lp-event-date">29. März</span><span>Osterturnier für Familien</span></div>
+                  </div>
+                </div>
+              </div>
+              <!-- Site footer bar -->
+              <div class="lp-footer-bar lp-footer-bar--dark">
+                <span>© 2025 StrikeZone Bowling AG</span>
+                <span>Theaterstrasse 14, 8050 Zürich</span>
+                <span>Impressum · Datenschutz</span>
               </div>
             </div>
-            <div class="slider-slide">
-              <div class="slider-slide-bg">🏥</div>
-              <div class="slider-slide-content">
-                <span class="slider-slide-tag">Gesundheit &amp; Medizin</span>
-                <h3>Arztpraxis Website</h3>
-                <p>Professionelle Praxisseite mit Leistungsübersicht, Öffnungszeiten und Online-Terminanfrage.</p>
-              </div>
-            </div>
-            <div class="slider-slide">
-              <div class="slider-slide-bg">🌯</div>
-              <div class="slider-slide-content">
-                <span class="slider-slide-tag">Gastronomie</span>
-                <h3>Dönerladen Website</h3>
-                <p>Appetitliche Website mit Speisekarte, Bestell-CTA und Standortinformationen.</p>
-              </div>
-            </div>
-            <div class="slider-slide">
-              <div class="slider-slide-bg">💅</div>
-              <div class="slider-slide-content">
-                <span class="slider-slide-tag">Beauty &amp; Wellness</span>
-                <h3>Nagelstudio Website</h3>
-                <p>Elegante Studio-Seite mit Galerie, Preisliste und einfacher Terminbuchung.</p>
-              </div>
+            <div class="lp-caption">
+              <span class="lp-badge">Freizeit &amp; Sport</span>
+              <h3 class="lp-caption-title">Bowling Center</h3>
+              <p class="lp-caption-desc">Dunkles, modernes Design mit Online-Reservierung, Preistabelle und Eventkalender.</p>
             </div>
           </div>
-        </div>
-        <div class="slider-nav">
-          <button class="slider-btn" id="slider-prev" aria-label="Vorheriges Projekt">←</button>
-          <div class="slider-dots" id="slider-dots">
-            <button class="slider-dot active" data-index="0" aria-label="Projekt 1"></button>
-            <button class="slider-dot" data-index="1" aria-label="Projekt 2"></button>
-            <button class="slider-dot" data-index="2" aria-label="Projekt 3"></button>
-            <button class="slider-dot" data-index="3" aria-label="Projekt 4"></button>
+
+          <!-- Slide 2: Arztpraxis -->
+          <div class="lp-slide lp-slide--hidden" role="group" aria-label="Slide 2 von 4">
+            <div class="lp-mockup">
+              <div class="lp-browser-bar">
+                <span class="lp-dot lp-dot--red"></span>
+                <span class="lp-dot lp-dot--yellow"></span>
+                <span class="lp-dot lp-dot--green"></span>
+                <span class="lp-url">praxis-dr-mueller.ch</span>
+              </div>
+              <div class="lp-site-nav lp-site-nav--white">
+                <span class="lp-site-logo lp-site-logo--blue">Praxis<span>Dr. Müller</span></span>
+                <div class="lp-site-links lp-site-links--dark">
+                  <span>Leistungen</span>
+                  <span>Unser Team</span>
+                  <span>Öffnungszeiten</span>
+                  <span>Kontakt</span>
+                  <a class="lp-site-cta lp-site-cta--teal">Termin buchen</a>
+                </div>
+              </div>
+              <div class="lp-hero lp-hero--praxis">
+                <div class="lp-hero-split">
+                  <div class="lp-hero-split-text">
+                    <p class="lp-overline lp-overline--blue">Allgemeinmedizin · Prävention · Hausarzt</p>
+                    <h2 class="lp-h1 lp-h1--dark">Ihre Gesundheit<br>in guten Händen.</h2>
+                    <p class="lp-subline lp-subline--muted">Persönliche Betreuung seit über 15 Jahren. Offene Sprechstunde täglich ab 07:30 Uhr.</p>
+                    <div class="lp-btn-row">
+                      <button class="lp-btn lp-btn--teal">Online Termin anfragen</button>
+                      <button class="lp-btn lp-btn--outline-dark">Leistungen ansehen</button>
+                    </div>
+                  </div>
+                  <div class="lp-hero-split-img lp-photo--praxis"></div>
+                </div>
+              </div>
+              <!-- Leistungen -->
+              <div class="lp-strip lp-strip--white">
+                <p class="lp-strip-title lp-strip-title--dark lp-strip-title--center">Unsere Leistungen</p>
+                <div class="lp-services-grid">
+                  <div class="lp-service-item">
+                    <span class="lp-service-icon lp-si--blue"></span>
+                    <strong>Allgemeinmedizin</strong>
+                    <small>Vorsorge, Impfungen, Labordiagnostik</small>
+                  </div>
+                  <div class="lp-service-item">
+                    <span class="lp-service-icon lp-si--blue"></span>
+                    <strong>Chronische Erkrankungen</strong>
+                    <small>Diabetes, Hypertonie, Schilddrüse</small>
+                  </div>
+                  <div class="lp-service-item">
+                    <span class="lp-service-icon lp-si--blue"></span>
+                    <strong>Ernährungsberatung</strong>
+                    <small>Gewichtsmanagement &amp; Prävention</small>
+                  </div>
+                  <div class="lp-service-item">
+                    <span class="lp-service-icon lp-si--blue"></span>
+                    <strong>Reisemedizin</strong>
+                    <small>Impfberatung, Reise-Checks</small>
+                  </div>
+                </div>
+              </div>
+              <div class="lp-footer-bar lp-footer-bar--white">
+                <span>© 2025 Praxis Dr. Müller</span>
+                <span>Bahnhofstr. 12, 3011 Bern · Tel. 031 000 00 00</span>
+                <span>Impressum · Datenschutz</span>
+              </div>
+            </div>
+            <div class="lp-caption">
+              <span class="lp-badge lp-badge--teal">Gesundheit &amp; Medizin</span>
+              <h3 class="lp-caption-title">Praxis Dr. Müller</h3>
+              <p class="lp-caption-desc">Helles, seriöses Praxis-Design mit Leistungsübersicht, Team und Online-Terminanfrage.</p>
+            </div>
           </div>
-          <button class="slider-btn" id="slider-next" aria-label="Nächstes Projekt">→</button>
+
+          <!-- Slide 3: Dönerladen -->
+          <div class="lp-slide lp-slide--hidden" role="group" aria-label="Slide 3 von 4">
+            <div class="lp-mockup">
+              <div class="lp-browser-bar">
+                <span class="lp-dot lp-dot--red"></span>
+                <span class="lp-dot lp-dot--yellow"></span>
+                <span class="lp-dot lp-dot--green"></span>
+                <span class="lp-url">doener-palace.ch</span>
+              </div>
+              <div class="lp-site-nav lp-site-nav--charcoal">
+                <span class="lp-site-logo lp-site-logo--amber">Döner<span>Palace</span></span>
+                <div class="lp-site-links">
+                  <span>Speisekarte</span>
+                  <span>Über uns</span>
+                  <span>Standort</span>
+                  <a class="lp-site-cta lp-site-cta--amber">Online bestellen</a>
+                </div>
+              </div>
+              <div class="lp-hero lp-hero--doener">
+                <div class="lp-hero-photo lp-photo--doener"></div>
+                <div class="lp-hero-overlay lp-hero-overlay--warm"></div>
+                <div class="lp-hero-text">
+                  <p class="lp-overline">Täglich frisch zubereitet · Zürich Langstrasse</p>
+                  <h2 class="lp-h1">Authentischer Geschmack.<br>Täglich frisch.</h2>
+                  <p class="lp-subline">Halal-zertifiziert · Vegetarisch verfügbar · Lieferung &amp; Abholung</p>
+                  <div class="lp-btn-row">
+                    <button class="lp-btn lp-btn--amber">Jetzt bestellen</button>
+                    <button class="lp-btn lp-btn--ghost">Speisekarte ansehen</button>
+                  </div>
+                </div>
+              </div>
+              <!-- Menu strip -->
+              <div class="lp-strip lp-strip--charcoal">
+                <p class="lp-strip-title">Beliebte Gerichte</p>
+                <div class="lp-menu-grid">
+                  <div class="lp-menu-item">
+                    <div class="lp-menu-photo lp-mp--1"></div>
+                    <div class="lp-menu-info">
+                      <strong>Döner im Fladenbrot</strong>
+                      <small>Kalbfleisch, frische Salate, Knoblauchsauce</small>
+                      <span class="lp-price">CHF 11.–</span>
+                    </div>
+                  </div>
+                  <div class="lp-menu-item">
+                    <div class="lp-menu-photo lp-mp--2"></div>
+                    <div class="lp-menu-info">
+                      <strong>Döner Teller</strong>
+                      <small>Mit Reis, Salat und zwei Saucen</small>
+                      <span class="lp-price">CHF 15.–</span>
+                    </div>
+                  </div>
+                  <div class="lp-menu-item">
+                    <div class="lp-menu-photo lp-mp--3"></div>
+                    <div class="lp-menu-info">
+                      <strong>Falafel Box</strong>
+                      <small>Vegetarisch, mit Hummus &amp; Tabbouleh</small>
+                      <span class="lp-price">CHF 13.–</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="lp-footer-bar lp-footer-bar--charcoal">
+                <span>© 2025 Döner Palace GmbH</span>
+                <span>Langstrasse 44, 8004 Zürich · Tel. 044 000 00 00</span>
+                <span>Impressum · Datenschutz</span>
+              </div>
+            </div>
+            <div class="lp-caption">
+              <span class="lp-badge lp-badge--orange">Gastronomie</span>
+              <h3 class="lp-caption-title">Döner Palace</h3>
+              <p class="lp-caption-desc">Warmes, appetitliches Food-Design mit Speisekarte, echten Preisen und Bestell-CTA.</p>
+            </div>
+          </div>
+
+          <!-- Slide 4: Nagelstudio -->
+          <div class="lp-slide lp-slide--hidden" role="group" aria-label="Slide 4 von 4">
+            <div class="lp-mockup">
+              <div class="lp-browser-bar">
+                <span class="lp-dot lp-dot--red"></span>
+                <span class="lp-dot lp-dot--yellow"></span>
+                <span class="lp-dot lp-dot--green"></span>
+                <span class="lp-url">studio-elara.ch</span>
+              </div>
+              <div class="lp-site-nav lp-site-nav--cream">
+                <span class="lp-site-logo lp-site-logo--rose">Studio<span>Elara</span></span>
+                <div class="lp-site-links lp-site-links--dark">
+                  <span>Leistungen</span>
+                  <span>Galerie</span>
+                  <span>Preise</span>
+                  <span>Über uns</span>
+                  <a class="lp-site-cta lp-site-cta--rose">Termin buchen</a>
+                </div>
+              </div>
+              <div class="lp-hero lp-hero--nails">
+                <div class="lp-hero-split">
+                  <div class="lp-hero-split-text">
+                    <p class="lp-overline lp-overline--rose">Nail Art &amp; Maniküre · Basel</p>
+                    <h2 class="lp-h1 lp-h1--dark">Schönheit<br>im Detail.</h2>
+                    <p class="lp-subline lp-subline--muted">Professionelle Nail-Treatments in entspannter Atmosphäre. Gel, Acryl, Shellac und individuelle Nail Art.</p>
+                    <div class="lp-btn-row">
+                      <button class="lp-btn lp-btn--rose">Termin online buchen</button>
+                      <button class="lp-btn lp-btn--outline-dark">Preisliste ansehen</button>
+                    </div>
+                  </div>
+                  <div class="lp-hero-split-img lp-photo--nails"></div>
+                </div>
+              </div>
+              <!-- Preisliste + Galerie -->
+              <div class="lp-strip lp-strip--cream">
+                <div class="lp-nail-layout">
+                  <div class="lp-nail-prices">
+                    <p class="lp-strip-title lp-strip-title--dark">Preisliste</p>
+                    <table class="lp-table lp-table--light">
+                      <tr><td>Maniküre klassisch</td><td><strong>CHF 45.–</strong></td></tr>
+                      <tr><td>Shellac (UV-Lack)</td><td><strong>CHF 65.–</strong></td></tr>
+                      <tr><td>Gelnägel neu</td><td><strong>CHF 90.–</strong></td></tr>
+                      <tr><td>Gelnägel auffüllen</td><td><strong>CHF 70.–</strong></td></tr>
+                      <tr><td>Nail Art (pro Nagel)</td><td><strong>ab CHF 5.–</strong></td></tr>
+                    </table>
+                  </div>
+                  <div class="lp-nail-gallery">
+                    <div class="lp-gal-grid">
+                      <div class="lp-gal-item lp-gi--1"></div>
+                      <div class="lp-gal-item lp-gi--2"></div>
+                      <div class="lp-gal-item lp-gi--3"></div>
+                      <div class="lp-gal-item lp-gi--4"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="lp-footer-bar lp-footer-bar--cream">
+                <span>© 2025 Studio Elara</span>
+                <span>Freiestrasse 88, 4051 Basel · Tel. 061 000 00 00</span>
+                <span>Impressum · Datenschutz</span>
+              </div>
+            </div>
+            <div class="lp-caption">
+              <span class="lp-badge lp-badge--pink">Beauty &amp; Wellness</span>
+              <h3 class="lp-caption-title">Studio Elara</h3>
+              <p class="lp-caption-desc">Elegantes, feminines Design mit Galerie, Preisliste und direkter Terminbuchung.</p>
+            </div>
+          </div>
+
+          <!-- Arrow Buttons inside slider -->
+          <button class="lp-arrow lp-arrow--prev" id="lp-prev" aria-label="Vorheriges Projekt">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="20" height="20"><polyline points="15 18 9 12 15 6"/></svg>
+          </button>
+          <button class="lp-arrow lp-arrow--next" id="lp-next" aria-label="Nächstes Projekt">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="20" height="20"><polyline points="9 6 15 12 9 18"/></svg>
+          </button>
+        </div>
+
+        <!-- Dot Navigation -->
+        <div class="lp-dots" id="lp-dots" role="tablist" aria-label="Slide Navigation">
+          <button class="lp-dot-btn lp-dot-btn--active" role="tab" aria-selected="true"  aria-label="Slide 1: Bowling Center" data-lp-index="0"></button>
+          <button class="lp-dot-btn" role="tab" aria-selected="false" aria-label="Slide 2: Arztpraxis" data-lp-index="1"></button>
+          <button class="lp-dot-btn" role="tab" aria-selected="false" aria-label="Slide 3: Dönerladen" data-lp-index="2"></button>
+          <button class="lp-dot-btn" role="tab" aria-selected="false" aria-label="Slide 4: Nagelstudio" data-lp-index="3"></button>
+        </div>
+
+        <!-- Thumbnail Strip -->
+        <div class="lp-thumbs" id="lp-thumbs" aria-label="Projekt-Vorschauen">
+          <div class="lp-thumb lp-thumb--active" data-lp-thumb="0" role="button" tabindex="0" aria-label="Bowling Center anzeigen">
+            <div class="lp-thumb-img lp-thumb-img--bowling">🎳</div>
+            <div class="lp-thumb-label">Bowling</div>
+          </div>
+          <div class="lp-thumb" data-lp-thumb="1" role="button" tabindex="0" aria-label="Arztpraxis anzeigen">
+            <div class="lp-thumb-img lp-thumb-img--praxis">⚕️</div>
+            <div class="lp-thumb-label">Praxis</div>
+          </div>
+          <div class="lp-thumb" data-lp-thumb="2" role="button" tabindex="0" aria-label="Dönerladen anzeigen">
+            <div class="lp-thumb-img lp-thumb-img--doener">🌯</div>
+            <div class="lp-thumb-label">Döner</div>
+          </div>
+          <div class="lp-thumb" data-lp-thumb="3" role="button" tabindex="0" aria-label="Nagelstudio anzeigen">
+            <div class="lp-thumb-img lp-thumb-img--nails">💅</div>
+            <div class="lp-thumb-label">Nails</div>
+          </div>
         </div>
       </div>
     </section>
