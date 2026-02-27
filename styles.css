@@ -2044,28 +2044,11 @@ textarea.error {
 /* ============================================
    PRICING CALCULATOR STYLES
    ============================================ */
-.pricing-option-card {
-  cursor: pointer;
-  border: 2px solid var(--line);
-  border-radius: var(--radius);
-  padding: 1.25rem;
-  transition: border-color 0.2s, box-shadow 0.2s, transform 0.15s;
-  display: block;
-  position: relative;
-}
-.pricing-option-card input[type="radio"] {
-  position: absolute;
-  opacity: 0;
-  pointer-events: none;
-}
-.pricing-option-card:hover {
-  border-color: var(--accent-strong);
-  box-shadow: 0 4px 16px rgba(58,155,255,0.12);
-  transform: translateY(-2px);
-}
+
+/* .selected = JS-based selection fallback (works in all browsers) */
 .pricing-option-card.selected {
   border-color: var(--accent-strong);
-  background: rgba(58,155,255,0.06);
+  background: var(--accent-soft);
   box-shadow: 0 4px 20px rgba(58,155,255,0.18);
 }
 .pricing-option-card.selected .pricing-option-price {
