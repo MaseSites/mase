@@ -1,4 +1,4 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="de-CH">
 <head>
   <meta charset="utf-8">
@@ -35,8 +35,8 @@
   </script>
 
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
-  <link rel="stylesheet" href="styles.css">
-  <link rel="stylesheet" href="ai-assistant.css">
+  <link rel="stylesheet" href="styles.css?v=20260327">
+  <link rel="stylesheet" href="ai-assistant.css?v=20260327">
   <script>
     (function () {
       var t = localStorage.getItem('theme');
@@ -50,9 +50,9 @@
       document.documentElement.lang = (lang === 'de' ? 'de-CH' : (lang === 'fr' ? 'fr-CH' : 'en'));
     })();
   </script>
-  <script defer src="theme.js"></script>
-  <script defer src="script.js"></script>
-  <script defer src="ai-assistant.js"></script>
+  <script defer src="theme.js?v=20260327"></script>
+  <script defer src="script.js?v=20260327"></script>
+  <script defer src="ai-assistant.js?v=20260327"></script>
 </head>
 <body>
   <a class="skip-link" href="#main" data-i18n="skip_to_content">Zum Inhalt springen</a>
@@ -122,7 +122,7 @@
               <li><strong>Produkte erklären:</strong> Features, Preise, Vorteile – automatisch</li>
               <li><strong>Support entlasten:</strong> Häufige Fragen automatisch beantworten</li>
             </ul>
-            <p style="margin-top: 1.5rem; color: var(--muted);" data-i18n-html="ai_page_trainable_html">
+            <p style="margin-top: 1.5rem; color: var(--text-muted);" data-i18n-html="ai_page_trainable_html">
               <strong>Individuell trainierbar:</strong> Wir füttern den Assistenten mit deinen Inhalten –
               PDFs, FAQs, Produktbeschreibungen, Website-Texten.
             </p>
@@ -157,7 +157,7 @@
                 <span class="chat-send" data-i18n="ai_page_demo_send">Senden</span>
               </div>
             </div>
-            <p style="text-align: center; margin-top: 1rem; color: var(--muted); font-size: 0.9rem;" data-i18n-html="ai_page_demo_note_html">
+            <p style="text-align: center; margin-top: 1rem; color: var(--text-muted); font-size: 0.9rem;" data-i18n-html="ai_page_demo_note_html">
               <strong>Hinweis:</strong> Dies ist eine Demo. Teste den echten KI-Assistenten unten rechts!
             </p>
           </div>
@@ -227,7 +227,7 @@
     </section>
 
     <!-- Preise -->
-    <section style="background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); padding: 4rem 0;">
+    <section class="ai-pricing-hero" style="background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); padding: 4rem 0;">
       <div class="container" data-reveal style="text-align: center;">
         <h2 data-i18n="ai_page_pricing_title">Preise & Integration</h2>
         <div style="max-width: 600px; margin: 2rem auto;">
@@ -250,7 +250,7 @@
             <p class="pricing-addon-desc" data-i18n="ai_page_pricing_card_desc">Komplett Setup, Training mit deinen Inhalten und Integration in deine Website.</p>
             <p class="pricing-addon-price">CHF 200 <span class="pricing-addon-monthly">+ CHF 40 / Monat</span></p>
 
-            <p style="color: var(--muted); font-size: 0.9rem; margin-top: 1rem;" data-i18n="ai_page_pricing_note">
+            <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 1rem;" data-i18n="ai_page_pricing_note">
               Als Add-on zu jeder Website oder als separate Integration in bestehende Seiten.
             </p>
           </div>
@@ -298,7 +298,7 @@
         <p class="lead" style="max-width: 600px; margin: 0 auto 2rem;" data-i18n="ai_page_live_lead">
           Klicke unten rechts auf den Chat-Button und stelle dem KI-Assistenten deine Fragen.
         </p>
-        <p style="color: var(--muted);" data-i18n="ai_page_live_desc">
+        <p style="color: var(--text-muted);" data-i18n="ai_page_live_desc">
           Du siehst sofort, wie er funktioniert und wie er dein Business unterstützen kann.
         </p>
       </div>
@@ -346,4 +346,5 @@
   </button>
 </body>
 </html>
+
 

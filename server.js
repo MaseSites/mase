@@ -14,6 +14,17 @@ app.use(cors());
 app.use(express.json({ limit: '20kb' }));
 app.use(express.urlencoded({ extended: true, limit: '20kb' }));
 
+// Cache-Control fuer konsistente Live-Darstellung (verhindert stale CSS/JS/HTML nach Deploys)
+app.use((req, res, next) => {
+  const reqPath = req.path || '';
+  if (/\.(css|js|mjs|map)$/i.test(reqPath)) {
+    res.set('Cache-Control', 'public, max-age=0, must-revalidate');
+  } else if (!path.extname(reqPath) || /\.html$/i.test(reqPath)) {
+    res.set('Cache-Control', 'no-store');
+  }
+  next();
+});
+
 // 301 Weiterleitungen: .html URLs -> saubere URLs (VOR static middleware, wichtig fuer SEO)
 app.get('/leistungen.html', (req, res) => res.redirect(301, '/leistungen'));
 app.get('/preise.html', (req, res) => res.redirect(301, '/preise'));
