@@ -75,7 +75,7 @@
   --shadow: 0 18px 40px rgba(0, 0, 0, 0.6);
   
   /* ================= SEMANTIC BACKGROUNDS ================= */
-  --header-bg: rgba(13, 17, 23, 0.97);
+  --header-bg: linear-gradient(180deg, rgba(23, 37, 61, 0.95) 0%, rgba(13, 17, 23, 0.97) 100%);
   --card-bg: #1a1f2e;
   --nav-bg: #1a1f2e;
   --input-bg: #252d3d;
@@ -95,7 +95,17 @@
    DARK MODE ELEMENT OVERRIDES
    ============================================ */
 .dark body { background: var(--bg); color: var(--text); }
-.dark .site-header { background: var(--header-bg); border-color: var(--line); }
+.dark .site-header { 
+  background: var(--header-bg); 
+  border-color: var(--line);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+.dark .logo { color: #ffffff; }
+.dark .logo:hover { color: var(--accent); }
+.dark .nav-toggle { background: var(--surface); border-color: var(--line); }
+.dark .site-nav a { color: var(--text); }
+.dark .site-nav a:hover { color: var(--accent); }
+.dark .button-primary { background: var(--accent-strong); color: white; }
 .dark .site-nav { background: var(--nav-bg); border-color: var(--line); }
 .dark .nav-toggle { background: var(--surface); border-color: var(--line); }
 .dark .nav-toggle-bar { background: var(--text); }
@@ -613,7 +623,7 @@ small {
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
-  padding: 1rem 0;
+  padding: 1.15rem 0;
 }
 
 .logo {
@@ -670,7 +680,7 @@ small {
   font-size: 0.95rem;
   color: var(--text);
   position: relative;
-  padding-bottom: 2px;
+  padding: 0.4rem 0.1rem;
 }
 
 .site-nav a:not(.button)::after {
@@ -749,8 +759,9 @@ small {
 }
 
 .button-small {
-  padding: 0.5rem 1rem;
-  font-size: 0.85rem;
+  padding: 0.42rem 0.88rem;
+  font-size: 0.8rem;
+  line-height: 1.1;
 }
 
 .hero {
@@ -1634,15 +1645,36 @@ select {
 }
 
 @media (min-width: 768px) {
+  .header-inner {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    column-gap: clamp(1rem, 1.8vw, 2rem);
+    min-height: 74px;
+  }
+
   .site-nav {
     position: static;
     display: flex;
     flex-direction: row;
     align-items: center;
-    gap: 1.2rem;
+    justify-self: center;
+    justify-content: center;
+    margin-left: 0;
+    gap: clamp(1.5rem, 2.2vw, 2.4rem);
     box-shadow: none;
     border: none;
-    padding: 0;
+    padding: 0.15rem 0;
+  }
+
+  .header-controls {
+    justify-self: end;
+    margin-left: 0;
+  }
+
+  .site-nav a {
+    font-size: 1rem;
+    padding: 0.5rem 0.15rem;
   }
 
   .nav-toggle {
