@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Döner Palace – Authentisch. Täglich frisch.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',sans-serif;background:#111;color:#f9fafb;line-height:1.6}
+a{color:inherit;text-decoration:none}
+
+/* NAV */
+nav{position:sticky;top:0;z-index:100;background:rgba(17,17,17,.97);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,.06)}
+.nav-inner{max-width:1100px;margin:0 auto;padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:66px}
+.nav-logo{font-size:1.3rem;font-weight:800;letter-spacing:-.02em}
+.nav-logo span{color:#d97706}
+.nav-links{display:flex;gap:2rem;align-items:center;font-size:.88rem;color:rgba(249,250,251,.6)}
+.nav-links a:hover{color:#fff}
+.nav-cta{background:#92400e;color:#fff!important;padding:.5rem 1.2rem;border-radius:6px;font-weight:600;font-size:.85rem;transition:background .2s}
+.nav-cta:hover{background:#78350f}
+.demo-lang-switch{display:flex;gap:.35rem}
+.demo-lang-btn{background:transparent;border:1px solid rgba(255,255,255,.25);color:rgba(249,250,251,.75);padding:.28rem .55rem;border-radius:999px;font-size:.72rem;font-weight:700;cursor:pointer}
+.demo-lang-btn.active{background:#92400e;border-color:#92400e;color:#fff}
+
+/* HERO */
+.hero{position:relative;height:540px;overflow:hidden;display:flex;align-items:center}
+.hero-bg{position:absolute;inset:0;
+  background:radial-gradient(ellipse 55% 65% at 62% 45%,rgba(180,83,9,.28) 0%,transparent 65%),
+    linear-gradient(135deg,#060200 0%,#1a0700 25%,#3a1200 50%,#1a0700 75%,#060200 100%)}
+.hero-bg::before{content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 38% 45% at 60% 42%,rgba(251,191,36,.12) 0%,transparent 60%),
+    linear-gradient(to right,rgba(0,0,0,.82) 0%,rgba(0,0,0,.45) 45%,rgba(0,0,0,.15) 100%)}
+.hero-content{position:relative;z-index:2;max-width:1100px;margin:0 auto;padding:0 2rem}
+.hero-eyebrow{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.14em;color:#d97706;margin-bottom:.85rem}
+.hero h1{font-size:clamp(2.2rem,5vw,3.6rem);font-weight:800;line-height:1.1;letter-spacing:-.03em;margin-bottom:1rem}
+.hero h1 span{color:#f59e0b}
+.hero-sub{font-size:.95rem;color:rgba(249,250,251,.68);margin-bottom:2rem;max-width:480px;line-height:1.65}
+.hero-tags{display:flex;gap:.6rem;flex-wrap:wrap;margin-bottom:2rem}
+.hero-tag{padding:.3rem .8rem;border-radius:999px;font-size:.72rem;font-weight:600;border:1px solid rgba(255,255,255,.15);color:rgba(249,250,251,.7)}
+.btn-row{display:flex;gap:1rem;flex-wrap:wrap}
+.btn{padding:.7rem 1.6rem;border-radius:6px;font-weight:700;font-size:.9rem;border:none;cursor:pointer;transition:all .2s}
+.btn-amber{background:#92400e;color:#fff}
+.btn-amber:hover{background:#78350f;transform:translateY(-1px)}
+.btn-outline{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.25)}
+.btn-outline:hover{border-color:#fff}
+
+/* INFO */
+.infobar{background:#0d0d0d;border-top:1px solid rgba(255,255,255,.05);border-bottom:1px solid rgba(255,255,255,.05)}
+.infobar-inner{max-width:1100px;margin:0 auto;padding:0 2rem;display:flex}
+.info-item{flex:1;padding:1.2rem 1.5rem;border-right:1px solid rgba(255,255,255,.05);display:flex;flex-direction:column;gap:.2rem}
+.info-item:last-child{border-right:none}
+.info-label{font-size:.66rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#d97706}
+.info-val{font-size:.84rem;color:rgba(249,250,251,.65)}
+
+/* SECTION */
+.section{padding:5rem 0}
+.section-inner{max-width:1100px;margin:0 auto;padding:0 2rem}
+.section-label{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.14em;color:#d97706;margin-bottom:.75rem}
+.section-title{font-size:clamp(1.8rem,3vw,2.4rem);font-weight:800;letter-spacing:-.02em;margin-bottom:.75rem}
+.section-sub{color:rgba(249,250,251,.5);max-width:560px;font-size:.92rem}
+
+/* MENU */
+.menu-section{background:#0d0d0d}
+.menu-tabs{display:flex;gap:.5rem;margin-top:2.5rem;margin-bottom:2.5rem;flex-wrap:wrap}
+.menu-tab{padding:.5rem 1.2rem;border-radius:999px;font-size:.82rem;font-weight:600;border:1px solid rgba(255,255,255,.12);color:rgba(249,250,251,.6);cursor:pointer;transition:all .2s}
+.menu-tab.active{background:#92400e;border-color:#92400e;color:#fff}
+.menu-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.25rem}
+.menu-card{background:#1a1a1a;border:1px solid rgba(255,255,255,.06);border-radius:12px;overflow:hidden;transition:transform .2s,border-color .2s}
+.menu-card:hover{transform:translateY(-3px);border-color:#92400e}
+.menu-photo{height:160px;position:relative}
+.mp-1{background:linear-gradient(135deg,#5c2d05 0%,#92400e 40%,#b45309 70%,#d97706 100%)}
+.mp-2{background:linear-gradient(135deg,#4a2500 0%,#7c3408 50%,#a16207 80%,#ca8a04 100%)}
+.mp-3{background:linear-gradient(135deg,#0f3d18 0%,#166534 45%,#15803d 75%,#22c55e 100%)}
+.mp-4{background:linear-gradient(135deg,#450a0a 0%,#7f1d1d 50%,#b91c1c 75%,#ef4444 100%)}
+.mp-5{background:linear-gradient(135deg,#3b0764 0%,#6b21a8 50%,#9333ea 80%,#c084fc 100%)}
+.mp-6{background:linear-gradient(135deg,#064e3b 0%,#065f46 50%,#059669 80%,#10b981 100%)}
+.menu-photo::after{content:'';position:absolute;bottom:0;left:0;right:0;height:40%;background:linear-gradient(to top,rgba(0,0,0,.7),transparent)}
+.menu-info{padding:1.2rem}
+.menu-info h3{font-size:.95rem;font-weight:700;margin-bottom:.3rem}
+.menu-info p{font-size:.8rem;color:rgba(249,250,251,.5);margin-bottom:.75rem;line-height:1.5}
+.menu-footer{display:flex;justify-content:space-between;align-items:center}
+.menu-price{font-size:1.1rem;font-weight:800;color:#f59e0b}
+.menu-tag{font-size:.68rem;padding:.2rem .6rem;border-radius:999px;background:rgba(217,119,6,.15);color:#fbbf24;font-weight:600}
+
+/* STANDORT */
+.location-section{background:#111}
+.location-grid{display:grid;grid-template-columns:1fr 1fr;gap:3rem;margin-top:3rem;align-items:start}
+.map-placeholder{background:#1a1a1a;border:1px solid rgba(255,255,255,.08);border-radius:12px;height:280px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:1rem;color:rgba(249,250,251,.3)}
+.map-placeholder svg{opacity:.3}
+.map-label{font-size:.85rem;font-weight:600}
+.location-info h3{font-size:1.2rem;font-weight:700;margin-bottom:1.5rem}
+.loc-row{display:flex;gap:.75rem;align-items:flex-start;margin-bottom:1.2rem}
+.loc-icon{width:36px;height:36px;border-radius:8px;background:#92400e;flex-shrink:0;margin-top:.1rem}
+.loc-text{font-size:.88rem;color:rgba(249,250,251,.7);line-height:1.55}
+.loc-text strong{display:block;color:#f9fafb;font-weight:600;margin-bottom:.15rem}
+.hours-box{background:#1a1a1a;border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:1.5rem;margin-top:1.5rem}
+.hours-box h4{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#d97706;margin-bottom:1rem}
+.hours-row{display:flex;justify-content:space-between;font-size:.84rem;padding:.4rem 0;border-bottom:1px solid rgba(255,255,255,.05);color:rgba(249,250,251,.65)}
+.hours-row:last-child{border-bottom:none}
+.hours-row span:last-child{font-weight:600;color:#f9fafb}
+
+/* FOOTER */
+footer{background:#080808;padding:3.5rem 0 2rem;border-top:1px solid rgba(255,255,255,.05)}
+.footer-inner{max-width:1100px;margin:0 auto;padding:0 2rem;display:grid;grid-template-columns:2fr 1fr 1fr;gap:3rem}
+.footer-brand{font-size:1.25rem;font-weight:800;margin-bottom:.75rem}
+.footer-brand span{color:#d97706}
+.footer-desc{font-size:.84rem;color:rgba(249,250,251,.35);line-height:1.65}
+.footer-col h4{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:rgba(249,250,251,.25);margin-bottom:1rem}
+.footer-col a{display:block;font-size:.84rem;color:rgba(249,250,251,.45);margin-bottom:.5rem;transition:color .15s}
+.footer-col a:hover{color:#fff}
+.footer-bottom{max-width:1100px;margin:2rem auto 0;padding:1.5rem 2rem 0;border-top:1px solid rgba(255,255,255,.05);font-size:.78rem;color:rgba(249,250,251,.2);display:flex;justify-content:space-between;flex-wrap:wrap;gap:.5rem}
+
+@media(max-width:768px){
+  .nav-links{display:none}
+  .hero{height:460px}
+  .infobar-inner{flex-direction:column}
+  .info-item{border-right:none;border-bottom:1px solid rgba(255,255,255,.05);padding:.85rem 1.5rem}
+  .location-grid{grid-template-columns:1fr}
+  .footer-inner{grid-template-columns:1fr;gap:2rem}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <div class="nav-logo">Döner<span>Palace</span></div>
+    <div class="demo-lang-switch" aria-label="Language switch">
+      <button type="button" class="demo-lang-btn active" data-lang="de">DE</button>
+      <button type="button" class="demo-lang-btn" data-lang="en">EN</button>
+    </div>
+    <div class="nav-links">
+      <a href="#">Speisekarte</a>
+      <a href="#">Über uns</a>
+      <a href="#">Standort</a>
+      <a href="#">Kontakt</a>
+      <a href="#" class="nav-cta">Online bestellen</a>
+    </div>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">Täglich frisch zubereitet · Zürich Langstrasse</p>
+    <h1>Authentischer<br><span>Geschmack.</span><br>Täglich frisch.</h1>
+    <div class="hero-tags">
+      <span class="hero-tag">Halal-zertifiziert</span>
+      <span class="hero-tag">Vegetarisch verfügbar</span>
+      <span class="hero-tag">Lieferung & Abholung</span>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-amber">Jetzt bestellen</button>
+      <button class="btn btn-outline">Speisekarte ansehen</button>
+    </div>
+  </div>
+</section>
+
+<div class="infobar">
+  <div class="infobar-inner">
+    <div class="info-item">
+      <span class="info-label">Mo–Do</span>
+      <span class="info-val">11:00 – 23:00 Uhr</span>
+    </div>
+    <div class="info-item">
+      <span class="info-label">Fr–Sa</span>
+      <span class="info-val">11:00 – 02:00 Uhr</span>
+    </div>
+    <div class="info-item">
+      <span class="info-label">Sonntag</span>
+      <span class="info-val">12:00 – 22:00 Uhr</span>
+    </div>
+    <div class="info-item">
+      <span class="info-label">Lieferung</span>
+      <span class="info-val">Uber Eats · Lieferando</span>
+    </div>
+  </div>
+</div>
+
+<section class="section menu-section">
+  <div class="section-inner">
+    <p class="section-label">Unsere Küche</p>
+    <h2 class="section-title">Beliebte Gerichte</h2>
+    <p class="section-sub">Frische Zutaten, ehrliche Rezepte. Jeden Tag neu zubereitet.</p>
+    <div class="menu-tabs">
+      <button class="menu-tab active">Alles</button>
+      <button class="menu-tab">Döner</button>
+      <button class="menu-tab">Vegetarisch</button>
+      <button class="menu-tab">Tellergericht</button>
+      <button class="menu-tab">Desserts</button>
+    </div>
+    <div class="menu-grid">
+      <div class="menu-card">
+        <div class="menu-photo mp-1"></div>
+        <div class="menu-info">
+          <h3>Döner im Fladenbrot</h3>
+          <p>Kalbfleisch vom Spiess, frische Salate, Tomate, Zwiebeln, Knoblauchsauce</p>
+          <div class="menu-footer"><span class="menu-price">CHF 11.–</span><span class="menu-tag">Bestseller</span></div>
+        </div>
+      </div>
+      <div class="menu-card">
+        <div class="menu-photo mp-2"></div>
+        <div class="menu-info">
+          <h3>Döner Teller</h3>
+          <p>Mit Basmatireis, gemischtem Salat und zwei Saucen nach Wahl</p>
+          <div class="menu-footer"><span class="menu-price">CHF 15.–</span><span class="menu-tag">Sättigend</span></div>
+        </div>
+      </div>
+      <div class="menu-card">
+        <div class="menu-photo mp-3"></div>
+        <div class="menu-info">
+          <h3>Falafel Box</h3>
+          <p>Hausgemachte Falafel, Hummus, Tabbouleh, Pitabrot und Tahini-Sauce</p>
+          <div class="menu-footer"><span class="menu-price">CHF 13.–</span><span class="menu-tag">Vegetarisch</span></div>
+        </div>
+      </div>
+      <div class="menu-card">
+        <div class="menu-photo mp-4"></div>
+        <div class="menu-info">
+          <h3>Lahmacun</h3>
+          <p>Türkische Fladenbrotpizza mit Hackfleisch, Paprika und frischen Kräutern</p>
+          <div class="menu-footer"><span class="menu-price">CHF 9.–</span><span class="menu-tag">Klassiker</span></div>
+        </div>
+      </div>
+      <div class="menu-card">
+        <div class="menu-photo mp-5"></div>
+        <div class="menu-info">
+          <h3>Adana Kebab Teller</h3>
+          <p>Gegrilltes Rinderhack-Spiesli mit Grillgemüse und Joghurtsauce</p>
+          <div class="menu-footer"><span class="menu-price">CHF 17.–</span><span class="menu-tag">Premium</span></div>
+        </div>
+      </div>
+      <div class="menu-card">
+        <div class="menu-photo mp-6"></div>
+        <div class="menu-info">
+          <h3>Vegane Bowl</h3>
+          <p>Quinoa, Kichererbsen, geröstete Aubergine, frische Kräuter, Zitronen-Dressing</p>
+          <div class="menu-footer"><span class="menu-price">CHF 14.–</span><span class="menu-tag">Vegan</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section location-section">
+  <div class="section-inner">
+    <p class="section-label">Wo uns finden</p>
+    <h2 class="section-title">Unser Standort</h2>
+    <div class="location-grid">
+      <div>
+        <div class="map-placeholder">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+          <span class="map-label">Langstrasse 44, 8004 Zürich</span>
+        </div>
+        <button class="btn btn-amber" style="margin-top:1rem;width:100%">In Google Maps öffnen</button>
+      </div>
+      <div class="location-info">
+        <h3>Besuch uns</h3>
+        <div class="loc-row">
+          <div class="loc-icon"></div>
+          <div class="loc-text"><strong>Adresse</strong>Langstrasse 44, 8004 Zürich<br>2 Min. vom Bahnhof Langstrasse</div>
+        </div>
+        <div class="loc-row">
+          <div class="loc-icon"></div>
+          <div class="loc-text"><strong>Telefon</strong>044 000 00 00</div>
+        </div>
+        <div class="loc-row">
+          <div class="loc-icon"></div>
+          <div class="loc-text"><strong>Lieferung</strong>Uber Eats · Lieferando · eigener Kurier</div>
+        </div>
+        <div class="hours-box">
+          <h4>Öffnungszeiten</h4>
+          <div class="hours-row"><span>Mo–Do</span><span>11:00 – 23:00</span></div>
+          <div class="hours-row"><span>Freitag</span><span>11:00 – 02:00</span></div>
+          <div class="hours-row"><span>Samstag</span><span>11:00 – 02:00</span></div>
+          <div class="hours-row"><span>Sonntag</span><span>12:00 – 22:00</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-brand">Döner<span>Palace</span></div>
+      <p class="footer-desc">Authentische türkische Küche in Zürich. Halal-zertifiziert, täglich frisch zubereitet. Lieferung und Abholung verfügbar.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Menü</h4>
+      <a href="#">Döner & Wraps</a>
+      <a href="#">Tellergerichte</a>
+      <a href="#">Vegetarisch</a>
+      <a href="#">Desserts</a>
+    </div>
+    <div class="footer-col">
+      <h4>Info</h4>
+      <a href="#">Standort</a>
+      <a href="#">Online bestellen</a>
+      <a href="#">Über uns</a>
+      <a href="#">Impressum</a>
+      <a href="#">Datenschutz</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 Döner Palace GmbH · Langstrasse 44, 8004 Zürich</span>
+    <span>Impressum · Datenschutz</span>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var supported = ['de', 'en'];
+  var urlLang = new URLSearchParams(window.location.search).get('lang');
+  var stored = localStorage.getItem('lang');
+  var lang = supported.indexOf(urlLang) !== -1 ? urlLang : (supported.indexOf(stored) !== -1 ? stored : 'de');
+
+  var copy = {
+    de: {
+      title: 'Döner Palace – Authentisch. Täglich frisch.',
+      nav: `<a href="#">Speisekarte</a>
+      <a href="#">Über uns</a>
+      <a href="#">Standort</a>
+      <a href="#">Kontakt</a>
+      <a href="#" class="nav-cta">Online bestellen</a>`,
+      hero: `<p class="hero-eyebrow">Täglich frisch zubereitet · Zürich Langstrasse</p>
+    <h1>Authentischer<br><span>Geschmack.</span><br>Täglich frisch.</h1>
+    <div class="hero-tags">
+      <span class="hero-tag">Halal-zertifiziert</span>
+      <span class="hero-tag">Vegetarisch verfügbar</span>
+      <span class="hero-tag">Lieferung & Abholung</span>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-amber">Jetzt bestellen</button>
+      <button class="btn btn-outline">Speisekarte ansehen</button>
+    </div>`,
+      info: `<div class="info-item"><span class="info-label">Mo–Do</span><span class="info-val">11:00 – 23:00 Uhr</span></div>
+    <div class="info-item"><span class="info-label">Fr–Sa</span><span class="info-val">11:00 – 02:00 Uhr</span></div>
+    <div class="info-item"><span class="info-label">Sonntag</span><span class="info-val">12:00 – 22:00 Uhr</span></div>
+    <div class="info-item"><span class="info-label">Lieferung</span><span class="info-val">Uber Eats · Lieferando</span></div>`,
+      menu: `<p class="section-label">Unsere Küche</p>
+    <h2 class="section-title">Beliebte Gerichte</h2>
+    <p class="section-sub">Frische Zutaten, ehrliche Rezepte. Jeden Tag neu zubereitet.</p>
+    <div class="menu-tabs">
+      <button class="menu-tab active">Alles</button>
+      <button class="menu-tab">Döner</button>
+      <button class="menu-tab">Vegetarisch</button>
+      <button class="menu-tab">Tellergericht</button>
+      <button class="menu-tab">Desserts</button>
+    </div>
+    <div class="menu-grid">` + document.querySelector('.menu-grid').innerHTML + `</div>`,
+      location: `<p class="section-label">Wo uns finden</p>
+    <h2 class="section-title">Unser Standort</h2>
+    <div class="location-grid">` + document.querySelector('.location-grid').innerHTML + `</div>`,
+      footerInner: `<div>
+      <div class="footer-brand">Döner<span>Palace</span></div>
+      <p class="footer-desc">Authentische türkische Küche in Zürich. Halal-zertifiziert, täglich frisch zubereitet. Lieferung und Abholung verfügbar.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Menü</h4>
+      <a href="#">Döner &amp; Wraps</a>
+      <a href="#">Tellergerichte</a>
+      <a href="#">Vegetarisch</a>
+      <a href="#">Desserts</a>
+    </div>
+    <div class="footer-col">
+      <h4>Info</h4>
+      <a href="#">Standort</a>
+      <a href="#">Online bestellen</a>
+      <a href="#">Über uns</a>
+      <a href="#">Impressum</a>
+      <a href="#">Datenschutz</a>
+    </div>`,
+      footerBottom: `<span>© 2025 Döner Palace GmbH · Langstrasse 44, 8004 Zürich</span><span>Impressum · Datenschutz</span>`
+    },
+    en: {
+      title: 'Doner Palace – Authentic. Fresh daily.',
+      nav: `<a href="#">Menu</a>
+      <a href="#">About us</a>
+      <a href="#">Location</a>
+      <a href="#">Contact</a>
+      <a href="#" class="nav-cta">Order online</a>`,
+      hero: `<p class="hero-eyebrow">Freshly prepared daily · Zurich Langstrasse</p>
+    <h1>Authentic<br><span>flavor.</span><br>Fresh every day.</h1>
+    <div class="hero-tags">
+      <span class="hero-tag">Halal certified</span>
+      <span class="hero-tag">Vegetarian options</span>
+      <span class="hero-tag">Delivery & pickup</span>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-amber">Order now</button>
+      <button class="btn btn-outline">View menu</button>
+    </div>`,
+      info: `<div class="info-item"><span class="info-label">Mon–Thu</span><span class="info-val">11:00 – 23:00</span></div>
+    <div class="info-item"><span class="info-label">Fri–Sat</span><span class="info-val">11:00 – 02:00</span></div>
+    <div class="info-item"><span class="info-label">Sunday</span><span class="info-val">12:00 – 22:00</span></div>
+    <div class="info-item"><span class="info-label">Delivery</span><span class="info-val">Uber Eats · Lieferando</span></div>`,
+      menu: `<p class="section-label">Our kitchen</p>
+    <h2 class="section-title">Popular dishes</h2>
+    <p class="section-sub">Fresh ingredients, honest recipes. Prepared daily.</p>
+    <div class="menu-tabs">
+      <button class="menu-tab active">All</button>
+      <button class="menu-tab">Doner</button>
+      <button class="menu-tab">Vegetarian</button>
+      <button class="menu-tab">Plate meals</button>
+      <button class="menu-tab">Desserts</button>
+    </div>
+    <div class="menu-grid">` + document.querySelector('.menu-grid').innerHTML + `</div>`,
+      location: `<p class="section-label">Find us</p>
+    <h2 class="section-title">Our location</h2>
+    <div class="location-grid">` + document.querySelector('.location-grid').innerHTML + `</div>`,
+      footerInner: `<div>
+      <div class="footer-brand">Döner<span>Palace</span></div>
+      <p class="footer-desc">Authentic Turkish cuisine in Zurich. Halal certified and freshly prepared every day. Delivery and pickup available.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Menu</h4>
+      <a href="#">Doner &amp; Wraps</a>
+      <a href="#">Plate meals</a>
+      <a href="#">Vegetarian</a>
+      <a href="#">Desserts</a>
+    </div>
+    <div class="footer-col">
+      <h4>Info</h4>
+      <a href="#">Location</a>
+      <a href="#">Order online</a>
+      <a href="#">About us</a>
+      <a href="#">Legal notice</a>
+      <a href="#">Privacy</a>
+    </div>`,
+      footerBottom: `<span>© 2025 Doner Palace GmbH · Langstrasse 44, 8004 Zurich</span><span>Legal notice · Privacy</span>`
+    }
+  };
+
+  var staticSections = {
+    menuGrid: document.querySelector('.menu-grid').innerHTML,
+    locationGrid: document.querySelector('.location-grid').innerHTML
+  };
+
+  function setText(selector, text) {
+    var el = document.querySelector(selector);
+    if (el) el.textContent = text;
+  }
+
+  function setHtml(selector, html) {
+    var el = document.querySelector(selector);
+    if (el) el.innerHTML = html;
+  }
+
+  function apply(nextLang) {
+    var t = copy[nextLang] || copy.de;
+    document.title = t.title;
+    document.querySelector('.nav-links').innerHTML = t.nav;
+    document.querySelector('.hero-content').innerHTML = t.hero;
+    document.querySelector('.infobar-inner').innerHTML = t.info;
+    document.querySelector('.menu-section .section-inner').innerHTML = t.menu;
+    document.querySelector('.location-section .section-inner').innerHTML = t.location;
+    document.querySelector('.footer-inner').innerHTML = t.footerInner;
+    document.querySelector('.footer-bottom').innerHTML = t.footerBottom;
+
+    if (nextLang === 'en') {
+      setHtml('.menu-grid', `<div class="menu-card">
+        <div class="menu-photo mp-1"></div>
+        <div class="menu-info">
+          <h3>Doner in flatbread</h3>
+          <p>Veal from the spit, fresh salad, tomato, onions, garlic sauce</p>
+          <div class="menu-footer"><span class="menu-price">CHF 11.–</span><span class="menu-tag">Bestseller</span></div>
+        </div>
+      </div>
+      <div class="menu-card">
+        <div class="menu-photo mp-2"></div>
+        <div class="menu-info">
+          <h3>Doner plate</h3>
+          <p>With basmati rice, mixed salad and two sauces of your choice</p>
+          <div class="menu-footer"><span class="menu-price">CHF 15.–</span><span class="menu-tag">Hearty</span></div>
+        </div>
+      </div>
+      <div class="menu-card">
+        <div class="menu-photo mp-3"></div>
+        <div class="menu-info">
+          <h3>Falafel box</h3>
+          <p>Homemade falafel, hummus, tabbouleh, pita bread and tahini sauce</p>
+          <div class="menu-footer"><span class="menu-price">CHF 13.–</span><span class="menu-tag">Vegetarian</span></div>
+        </div>
+      </div>
+      <div class="menu-card">
+        <div class="menu-photo mp-4"></div>
+        <div class="menu-info">
+          <h3>Lahmacun</h3>
+          <p>Turkish flatbread pizza with minced meat, peppers and fresh herbs</p>
+          <div class="menu-footer"><span class="menu-price">CHF 9.–</span><span class="menu-tag">Classic</span></div>
+        </div>
+      </div>
+      <div class="menu-card">
+        <div class="menu-photo mp-5"></div>
+        <div class="menu-info">
+          <h3>Adana kebab plate</h3>
+          <p>Grilled minced beef skewer with grilled vegetables and yogurt sauce</p>
+          <div class="menu-footer"><span class="menu-price">CHF 17.–</span><span class="menu-tag">Premium</span></div>
+        </div>
+      </div>
+      <div class="menu-card">
+        <div class="menu-photo mp-6"></div>
+        <div class="menu-info">
+          <h3>Vegan bowl</h3>
+          <p>Quinoa, chickpeas, roasted eggplant, fresh herbs, lemon dressing</p>
+          <div class="menu-footer"><span class="menu-price">CHF 14.–</span><span class="menu-tag">Vegan</span></div>
+        </div>
+      </div>`);
+
+      setHtml('.location-grid', `<div>
+        <div class="map-placeholder">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+          <span class="map-label">Langstrasse 44, 8004 Zurich</span>
+        </div>
+        <button class="btn btn-amber" style="margin-top:1rem;width:100%">Open in Google Maps</button>
+      </div>
+      <div class="location-info">
+        <h3>Visit us</h3>
+        <div class="loc-row"><div class="loc-icon"></div><div class="loc-text"><strong>Address</strong>Langstrasse 44, 8004 Zurich<br>2 min from Langstrasse station</div></div>
+        <div class="loc-row"><div class="loc-icon"></div><div class="loc-text"><strong>Phone</strong>044 000 00 00</div></div>
+        <div class="loc-row"><div class="loc-icon"></div><div class="loc-text"><strong>Delivery</strong>Uber Eats · Lieferando · in-house courier</div></div>
+        <div class="hours-box">
+          <h4>Opening hours</h4>
+          <div class="hours-row"><span>Mon–Thu</span><span>11:00 – 23:00</span></div>
+          <div class="hours-row"><span>Friday</span><span>11:00 – 02:00</span></div>
+          <div class="hours-row"><span>Saturday</span><span>11:00 – 02:00</span></div>
+          <div class="hours-row"><span>Sunday</span><span>12:00 – 22:00</span></div>
+        </div>
+      </div>`);
+    } else {
+      setHtml('.menu-grid', staticSections.menuGrid);
+      setHtml('.location-grid', staticSections.locationGrid);
+    }
+
+    document.documentElement.lang = nextLang;
+    localStorage.setItem('lang', nextLang);
+    var u = new URL(window.location.href);
+    u.searchParams.set('lang', nextLang);
+    history.replaceState(null, '', u.pathname + u.search + u.hash);
+    document.querySelectorAll('.demo-lang-btn').forEach(function (btn) {
+      btn.classList.toggle('active', btn.getAttribute('data-lang') === nextLang);
+    });
+  }
+
+  document.querySelectorAll('.demo-lang-btn').forEach(function (btn) {
+    btn.addEventListener('click', function () { apply(btn.getAttribute('data-lang')); });
+  });
+
+  apply(lang);
+})();
+</script>
+
+</body>
+</html>
+

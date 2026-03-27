@@ -1,4 +1,4 @@
-<!doctype html>
+﻿﻿<!doctype html>
 <html lang="de-CH">
 <head>
   <meta charset="utf-8">
@@ -34,11 +34,25 @@
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="ai-assistant.css">
+  <script>
+    (function () {
+      var t = localStorage.getItem('theme');
+      if (t === 'dark') document.documentElement.classList.add('dark');
+
+      var q = null;
+      try { q = new URLSearchParams(window.location.search).get('lang'); } catch (_) {}
+      var s = localStorage.getItem('lang');
+      var lang = ['de', 'en', 'fr'].indexOf(q) !== -1 ? q : (['de', 'en', 'fr'].indexOf(s) !== -1 ? s : 'de');
+      localStorage.setItem('lang', lang);
+      document.documentElement.lang = (lang === 'de' ? 'de-CH' : (lang === 'fr' ? 'fr-CH' : 'en'));
+    })();
+  </script>
+  <script defer src="theme.js"></script>
   <script defer src="script.js"></script>
   <script defer src="ai-assistant.js"></script>
 </head>
 <body>
-  <a class="skip-link" href="#main">Zum Inhalt springen</a>
+  <a class="skip-link" href="#main" data-i18n="skip_to_content">Zum Inhalt springen</a>
 
   <header class="site-header">
     <div class="container header-inner">
@@ -47,28 +61,45 @@
       </a>
 
       <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
-        <span class="sr-only">Navigation oeffnen</span>
+        <span class="sr-only" data-i18n="nav_toggle">Navigation oeffnen</span>
         <span class="nav-toggle-bar"></span>
         <span class="nav-toggle-bar"></span>
       </button>
 
       <nav class="site-nav" id="site-nav">
-        <a href="index.html">Home</a>
-        <a href="leistungen.html">Leistungen</a>
-        <a href="preise.html">Preise</a>
-        <a href="ki-assistent.html">KI-Assistent</a>
-        <a href="ueber-uns.html">Über uns</a>
-        <a href="kontakt.html" class="nav-active">Kontakt</a>
-        <a class="button button-primary button-small" href="kontakt.html">Kostenloses Erstgespräch</a>
+        <a href="index.html" data-i18n="nav_home">Home</a>
+        <a href="leistungen.html" data-i18n="nav_services">Leistungen</a>
+        <a href="preise.html" data-i18n="nav_prices">Preise</a>
+        <a href="ki-assistent.html" data-i18n="nav_ai">KI-Assistent</a>
+        <a href="ueber-uns.html" data-i18n="nav_about">Über uns</a>
+        <a href="kontakt.html" class="nav-active" data-i18n="nav_contact">Kontakt</a>
+
       </nav>
+      <!-- Controls: Language + Dark Mode -->
+      <div class="header-controls">
+        <div class="lang-switcher" id="lang-switcher">
+          <button class="lang-btn" id="lang-btn" aria-haspopup="true" aria-expanded="false" aria-label="Sprache wählen" data-i18n-aria-label="lang_select_aria">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+            <span id="lang-current">DE</span>
+          </button>
+          <div class="lang-dropdown" id="lang-dropdown">
+            <button class="lang-option active" data-lang="de">🇩🇪 Deutsch</button>
+            <button class="lang-option" data-lang="en">🇬🇧 English</button>
+          </div>
+        </div>
+        <button class="dark-toggle" id="dark-toggle" aria-label="Dark Mode umschalten" data-i18n-aria-label="theme_toggle_aria">
+          <span class="dark-toggle-icon" id="dark-toggle-icon">🌙</span>
+          <span class="dark-toggle-track"><span class="dark-toggle-thumb"></span></span>
+        </button>
+      </div>
     </div>
   </header>
 
   <main id="main">
     <section class="page-hero">
       <div class="container" data-reveal style="text-align: center; max-width: 700px;">
-        <h1>Lass uns dein Projekt starten</h1>
-        <p class="lead">
+        <h1 data-i18n="contact_title">Lass uns dein Projekt starten</h1>
+        <p class="lead" data-i18n="contact_lead">
           Schreib uns kurz über deine Idee. Wir melden uns mit einem klaren Vorschlag.
         </p>
       </div>
@@ -77,99 +108,96 @@
     <section class="contact" aria-labelledby="contact-title">
       <div class="container contact-grid">
         <div class="contact-copy" data-reveal>
-          <h2 id="contact-title">Erzähl uns von deinem Projekt</h2>
-          <p>
+          <h2 id="contact-title" data-i18n="contact_page_intro_title">Erzähl uns von deinem Projekt</h2>
+          <p data-i18n="contact_page_intro_text">
             Egal ob neue Website, Überarbeitung oder KI-Integration –
             wir finden die passende Lösung für dein Business.
           </p>
 
           <div class="contact-details" style="margin-top: 2rem;">
-            <h3>Direkter Kontakt</h3>
-            <p><strong>E-Mail:</strong> <a href="mailto:info@masesites.ch">info@masesites.ch</a></p>
-            <p><strong>Telefon:</strong> Auf Anfrage mit Termin</p>
+            <h3 data-i18n="contact_page_direct_title">Direkter Kontakt</h3>
+            <p data-i18n-html="contact_page_email_html"><strong>E-Mail:</strong> <a href="mailto:info@masesites.ch">info@masesites.ch</a></p>
+            <p data-i18n="contact_page_phone">Telefon: Auf Anfrage mit Termin</p>
           </div>
 
           <div class="faq" style="margin-top: 2rem;">
-            <h3>Häufige Fragen</h3>
+            <h3 data-i18n="contact_page_faq_title">Häufige Fragen</h3>
             <details>
-              <summary>Wie schnell können wir loslegen?</summary>
-              <p>Nach einem ersten Gespräch können wir meist innerhalb einer Woche starten.</p>
+              <summary data-i18n="contact_page_faq_q1">Wie schnell können wir loslegen?</summary>
+              <p data-i18n="contact_page_faq_a1">Nach einem ersten Gespräch können wir meist innerhalb einer Woche starten.</p>
             </details>
             <details>
-              <summary>Wie lange dauert ein Projekt?</summary>
-              <p>Landingpages 2-4 Wochen, größere Websites 4-8 Wochen – je nach Umfang.</p>
+              <summary data-i18n="contact_page_faq_q2">Wie lange dauert ein Projekt?</summary>
+              <p data-i18n="contact_page_faq_a2">Landingpages 2-4 Wochen, größere Websites 4-8 Wochen – je nach Umfang.</p>
             </details>
             <details>
-              <summary>Was kostet eine Website?</summary>
-              <p>Ab CHF 750 für eine Landingpage bis CHF 2'500 für Premium-Websites. Finale Offerte nach kurzem Call.</p>
+              <summary data-i18n="contact_page_faq_q3">Was kostet eine Website?</summary>
+              <p data-i18n="contact_page_faq_a3">Ab CHF 750 für eine Landingpage bis CHF 2'500 für Premium-Websites. Finale Offerte nach kurzem Call.</p>
             </details>
             <details>
-              <summary>Können wir später erweitern?</summary>
-              <p>Ja! Wir bauen skalierbar – Features wie KI-Assistent lassen sich jederzeit ergänzen.</p>
+              <summary data-i18n="contact_page_faq_q4">Können wir später erweitern?</summary>
+              <p data-i18n="contact_page_faq_a4">Ja! Wir bauen skalierbar – Features wie KI-Assistent lassen sich jederzeit ergänzen.</p>
             </details>
           </div>
         </div>
 
-        <form class="contact-form" data-reveal id="contact-form" novalidate
-              action="https://formsubmit.co/info@masesites.ch"
-              method="POST">
+        <form class="contact-form" data-reveal id="contact-form" data-contact-form novalidate method="POST" action="/api/contact">
 
-          <!-- Formsubmit Konfiguration -->
-          <input type="hidden" name="_subject" value="Neue Anfrage via MASESites Website">
-          <input type="hidden" name="_captcha" value="false">
-          <input type="hidden" name="_template" value="table">
-          <input type="hidden" name="_next" value="https://www.masesites.ch/danke.html">
-          <input type="hidden" name="_autoresponse" value="Vielen Dank für deine Anfrage! Wir melden uns innerhalb von 24 Stunden bei dir. – MASESites AG">
+          <input type="hidden" name="pricingSelection" id="contact-pricing-selection" value="">
 
           <!-- Honeypot -->
-          <input type="text" name="_honey" style="display:none;" tabindex="-1" autocomplete="off">
+          <input type="text" name="honeypot" style="display:none;" tabindex="-1" autocomplete="off">
 
           <label>
-            Name *
+            <span data-i18n="form_name">Name *</span>
             <input type="text" name="name" id="contact-name" autocomplete="name" required>
             <span class="error-message" id="name-error"></span>
           </label>
 
           <label>
-            E-Mail *
+            <span data-i18n="form_email">E-Mail *</span>
             <input type="email" name="email" id="contact-email" autocomplete="email" required>
             <span class="error-message" id="email-error"></span>
           </label>
 
           <label>
-            Firma (optional)
-            <input type="text" name="Firma" id="contact-company" autocomplete="organization">
+            <span data-i18n="form_company">Firma (optional)</span>
+            <input type="text" name="company" id="contact-company" autocomplete="organization">
           </label>
 
           <label>
-            Projektart
-            <select name="Projektart" id="contact-project-type">
-              <option value="">Bitte wählen...</option>
-              <option value="Neue Website">Neue Website</option>
-              <option value="Website Überarbeitung">Website Überarbeitung</option>
-              <option value="KI-Assistent Integration">KI-Assistent Integration</option>
-              <option value="SEO &amp; Performance">SEO &amp; Performance</option>
-              <option value="Beratung">Beratung</option>
-              <option value="Sonstiges">Sonstiges</option>
+            <span data-i18n="form_project">Projektart</span>
+            <select name="projectType" id="contact-project-type">
+              <option value="" data-i18n="contact_page_project_select">Bitte wählen...</option>
+              <option value="Neue Website" data-i18n="contact_page_project_new">Neue Website</option>
+              <option value="Website Überarbeitung" data-i18n="contact_page_project_revision">Website Überarbeitung</option>
+              <option value="KI-Assistent Integration" data-i18n="contact_page_project_ai">KI-Assistent Integration</option>
+              <option value="SEO &amp; Performance" data-i18n="contact_page_project_seo">SEO &amp; Performance</option>
+              <option value="Beratung" data-i18n="contact_page_project_consulting">Beratung</option>
+              <option value="Sonstiges" data-i18n="contact_page_project_other">Sonstiges</option>
             </select>
           </label>
 
           <label>
-            Nachricht *
-            <textarea name="Nachricht" id="contact-message" rows="6" required></textarea>
+            <span data-i18n="form_message">Nachricht *</span>
+            <textarea name="message" id="contact-message" rows="6" required></textarea>
             <span class="error-message" id="message-error"></span>
           </label>
 
           <label class="checkbox-label">
             <input type="checkbox" name="privacy" id="contact-privacy" required>
-            <span>Ich habe die <a href="datenschutz.html">Datenschutzerklärung</a> gelesen und akzeptiere sie. *</span>
+            <span data-i18n-html="contact_page_form_privacy_html">Ich habe die <a href="datenschutz.html">Datenschutzerklärung</a> gelesen und akzeptiere sie. *</span>
             <span class="error-message" id="privacy-error"></span>
           </label>
 
-          <button class="button button-primary" type="submit" id="submit-btn">Anfrage senden</button>
+          <button class="button button-primary" type="submit" id="submit-btn" data-i18n="form_submit">Anfrage senden</button>
 
-          <div class="form-error" id="form-error" style="display:none;">
-            ✗ <span id="error-text">Bitte fülle alle Pflichtfelder aus.</span>
+          <div class="form-success" id="form-success" aria-live="polite" data-i18n="contact_page_form_success">
+            ✓ Danke! Deine Anfrage wurde erfolgreich gesendet.
+          </div>
+
+          <div class="form-error" id="form-error" aria-live="polite">
+            ✗ <span id="error-text" data-i18n="contact_page_form_error_required">Bitte fülle alle Pflichtfelder aus.</span>
           </div>
         </form>
       </div>
@@ -180,32 +208,37 @@
     <div class="container footer-grid">
       <div>
         <p class="footer-brand">MASE</p>
-        <p class="footer-desc">Professionelle Websites &amp; KI-Integration aus der Schweiz.</p>
+        <p class="footer-desc" data-i18n="footer_desc">Professionelle Websites &amp; KI-Integration aus der Schweiz.</p>
       </div>
       <div>
-        <p class="footer-title">Navigation</p>
-        <a href="index.html">Home</a>
-        <a href="leistungen.html">Leistungen</a>
-        <a href="preise.html">Preise</a>
-        <a href="ki-assistent.html">KI-Assistent</a>
+        <p class="footer-title" data-i18n="footer_nav">Navigation</p>
+        <a href="index.html" data-i18n="nav_home">Home</a>
+        <a href="leistungen.html" data-i18n="nav_services">Leistungen</a>
+        <a href="preise.html" data-i18n="nav_prices">Preise</a>
+        <a href="ki-assistent.html" data-i18n="nav_ai">KI-Assistent</a>
       </div>
       <div>
-        <p class="footer-title">Kontakt</p>
-        <a href="kontakt.html">Kontaktformular</a>
-        <a href="ueber-uns.html">Über uns</a>
+        <p class="footer-title" data-i18n="footer_contact">Kontakt</p>
+        <a href="kontakt.html" data-i18n="footer_contact_form">Kontaktformular</a>
+        <a href="ueber-uns.html" data-i18n="nav_about">Über uns</a>
       </div>
       <div>
-        <p class="footer-title">Rechtliches</p>
-        <a href="impressum.html">Impressum</a>
-        <a href="datenschutz.html">Datenschutz</a>
+        <p class="footer-title" data-i18n="footer_legal">Rechtliches</p>
+        <a href="impressum.html" data-i18n="footer_impressum">Impressum</a>
+        <a href="datenschutz.html" data-i18n="footer_privacy">Datenschutz</a>
       </div>
     </div>
     <div class="container footer-bottom">
-      <p>Copyright <span id="year"></span> MASESites AG. Alle Rechte vorbehalten.</p>
+      <p>Copyright <span id="year"></span> MASESites AG. <span data-i18n="footer_copy">Alle Rechte vorbehalten.</span></p>
     </div>
   </footer>
 
-  <button class="back-to-top" id="back-to-top" aria-label="Zurück nach oben">
+  <!-- Dark Mode Wave Overlay -->
+  <div id="dark-wave" aria-hidden="true">
+    <canvas id="dark-wave-canvas"></canvas>
+  </div>
+
+    <button class="back-to-top" id="back-to-top" aria-label="Zurück nach oben">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
       <polyline points="18 15 12 9 6 15"></polyline>
     </svg>

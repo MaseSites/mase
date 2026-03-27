@@ -22,6 +22,28 @@
       text-align: center;
       padding: 2rem;
     }
+    .lang-switch {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      display: flex;
+      gap: 0.5rem;
+      z-index: 10;
+    }
+    .lang-switch button {
+      border: 1px solid rgba(255,255,255,0.6);
+      background: rgba(255,255,255,0.15);
+      color: #fff;
+      padding: 0.4rem 0.7rem;
+      border-radius: 999px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    .lang-switch button.active {
+      background: #fff;
+      color: #667eea;
+      border-color: #fff;
+    }
     .container {
       max-width: 600px;
     }
@@ -68,12 +90,65 @@
   </style>
 </head>
 <body>
+  <div class="lang-switch" aria-label="Language Switch">
+    <button type="button" data-lang="de" class="active">DE</button>
+    <button type="button" data-lang="en">EN</button>
+  </div>
   <div class="container">
     <h1>404</h1>
-    <h2>Seite nicht gefunden</h2>
-    <p>Die angeforderte Seite existiert nicht oder wurde verschoben.</p>
-    <a href="/" class="button">ZurÃ¼ck zur Startseite</a>
+    <h2 id="err-title">Seite nicht gefunden</h2>
+    <p id="err-text">Die angeforderte Seite existiert nicht oder wurde verschoben.</p>
+    <a href="/" class="button" id="err-home">Zurück zur Startseite</a>
   </div>
+  <script>
+    (function () {
+      var copy = {
+        de: {
+          title: '404 - Seite nicht gefunden | MASESites AG',
+          heading: 'Seite nicht gefunden',
+          text: 'Die angeforderte Seite existiert nicht oder wurde verschoben.',
+          home: 'Zurück zur Startseite'
+        },
+        en: {
+          title: '404 - Page not found | MASESites AG',
+          heading: 'Page not found',
+          text: 'The requested page does not exist or has been moved.',
+          home: 'Back to home page'
+        }
+      };
+
+      var urlLang = new URLSearchParams(window.location.search).get('lang');
+      var lang = (urlLang === 'en' || urlLang === 'de') ? urlLang : localStorage.getItem('lang');
+      if (lang !== 'en' && lang !== 'de') lang = 'de';
+
+      var title = document.getElementById('err-title');
+      var text = document.getElementById('err-text');
+      var home = document.getElementById('err-home');
+      var buttons = document.querySelectorAll('.lang-switch button');
+
+      function applyLanguage(nextLang) {
+        var t = copy[nextLang] || copy.de;
+        document.title = t.title;
+        document.documentElement.lang = nextLang === 'de' ? 'de-CH' : 'en';
+        title.textContent = t.heading;
+        text.textContent = t.text;
+        home.textContent = t.home;
+        home.setAttribute('href', '/?lang=' + nextLang);
+        buttons.forEach(function (btn) {
+          btn.classList.toggle('active', btn.getAttribute('data-lang') === nextLang);
+        });
+        localStorage.setItem('lang', nextLang);
+      }
+
+      buttons.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          applyLanguage(btn.getAttribute('data-lang'));
+        });
+      });
+
+      applyLanguage(lang);
+    })();
+  </script>
 </body>
 </html>
 

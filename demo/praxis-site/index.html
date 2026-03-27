@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Praxis Dr. Müller – Allgemeinmedizin Bern</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',sans-serif;background:#fff;color:#111827;line-height:1.6}
+a{color:inherit;text-decoration:none}
+
+/* NAV */
+nav{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.96);backdrop-filter:blur(12px);border-bottom:1px solid #e5e7eb}
+.nav-inner{max-width:1100px;margin:0 auto;padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:68px}
+.nav-logo{font-size:1.1rem;font-weight:800;color:#1d4ed8;letter-spacing:-.01em}
+.nav-logo span{color:#374151;font-weight:600}
+.nav-links{display:flex;gap:2rem;align-items:center;font-size:.88rem;color:#4b5563}
+.nav-links a:hover{color:#1d4ed8}
+.nav-cta{background:#0f766e;color:#fff!important;padding:.5rem 1.2rem;border-radius:6px;font-weight:600;font-size:.85rem;transition:background .2s}
+.nav-cta:hover{background:#0d6b63}
+.demo-lang-switch{display:flex;gap:.35rem}
+.demo-lang-btn{background:transparent;border:1px solid #d1d5db;color:#4b5563;padding:.28rem .55rem;border-radius:999px;font-size:.72rem;font-weight:700;cursor:pointer}
+.demo-lang-btn.active{background:#1d4ed8;border-color:#1d4ed8;color:#fff}
+
+/* HERO */
+.hero{background:#f8fafc;padding:5rem 0}
+.hero-inner{max-width:1100px;margin:0 auto;padding:0 2rem;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center}
+.hero-eyebrow{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.14em;color:#2563eb;margin-bottom:.75rem}
+.hero h1{font-size:clamp(2rem,4vw,3rem);font-weight:800;line-height:1.1;letter-spacing:-.03em;margin-bottom:1rem;color:#111827}
+.hero h1 span{color:#2563eb}
+.hero-sub{font-size:.95rem;color:#4b5563;margin-bottom:2rem;line-height:1.65}
+.btn-row{display:flex;gap:1rem;flex-wrap:wrap}
+.btn{padding:.7rem 1.6rem;border-radius:6px;font-weight:700;font-size:.9rem;border:none;cursor:pointer;transition:all .2s}
+.btn-teal{background:#0f766e;color:#fff}
+.btn-teal:hover{background:#0d6b63;transform:translateY(-1px)}
+.btn-outline{background:transparent;color:#374151;border:1px solid #d1d5db}
+.btn-outline:hover{border-color:#6b7280}
+.hero-img{border-radius:16px;overflow:hidden;box-shadow:0 20px 50px rgba(17,24,39,.12)}
+.hero-photo-bg{height:380px;background:linear-gradient(135deg,#dbeafe 0%,#bfdbfe 30%,#93c5fd 60%,#60a5fa 80%,#3b82f6 100%);position:relative}
+.hero-photo-bg::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 55% at 45% 35%,rgba(255,255,255,.65) 0%,transparent 65%)}
+.hero-photo-bg::after{content:'';position:absolute;bottom:0;left:0;right:0;height:40%;background:linear-gradient(to top,rgba(219,234,254,.8),transparent)}
+.trust-badges{display:flex;gap:.75rem;flex-wrap:wrap;margin-top:1.5rem}
+.trust-badge{display:flex;align-items:center;gap:.4rem;padding:.4rem .85rem;background:#eff6ff;border-radius:999px;font-size:.75rem;font-weight:600;color:#1d4ed8;border:1px solid #bfdbfe}
+
+/* INFO */
+.infobar{background:#1d4ed8;padding:1.5rem 0}
+.infobar-inner{max-width:1100px;margin:0 auto;padding:0 2rem;display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem}
+.info-item{text-align:center}
+.info-label{font-size:.68rem;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.6);margin-bottom:.25rem}
+.info-val{font-size:.88rem;color:#fff;font-weight:600}
+
+/* LEISTUNGEN */
+.section{padding:5rem 0}
+.section-inner{max-width:1100px;margin:0 auto;padding:0 2rem}
+.section-label{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.14em;color:#2563eb;margin-bottom:.75rem}
+.section-title{font-size:clamp(1.8rem,3vw,2.3rem);font-weight:800;letter-spacing:-.02em;margin-bottom:.75rem;color:#111827}
+.section-sub{color:#6b7280;max-width:560px;font-size:.92rem;line-height:1.65}
+.services-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1.5rem;margin-top:3rem}
+.service-card{border:1px solid #e5e7eb;border-radius:12px;padding:1.8rem;background:#fff;box-shadow:0 4px 16px rgba(17,24,39,.05);transition:transform .2s,box-shadow .2s,border-color .2s}
+.service-card:hover{transform:translateY(-4px);box-shadow:0 12px 32px rgba(17,24,39,.1);border-color:#bfdbfe}
+.service-icon{width:44px;height:44px;border-radius:10px;background:linear-gradient(135deg,#dbeafe,#3b82f6);margin-bottom:1.2rem}
+.service-card h3{font-size:1rem;font-weight:700;margin-bottom:.5rem;color:#111827}
+.service-card p{font-size:.84rem;color:#6b7280;line-height:1.55;margin:0}
+
+/* TEAM */
+.team-section{background:#f8fafc}
+.team-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:2rem;margin-top:3rem}
+.team-card{text-align:center}
+.team-photo{width:100%;aspect-ratio:1;border-radius:16px;margin-bottom:1rem;position:relative;overflow:hidden}
+.team-bg-1{background:linear-gradient(135deg,#e0f2fe 0%,#7dd3fc 60%,#0ea5e9 100%)}
+.team-bg-2{background:linear-gradient(135deg,#f0fdf4 0%,#86efac 60%,#22c55e 100%)}
+.team-bg-3{background:linear-gradient(135deg,#fef3c7 0%,#fcd34d 60%,#f59e0b 100%)}
+.team-card h3{font-size:.95rem;font-weight:700;color:#111827;margin-bottom:.2rem}
+.team-card p{font-size:.8rem;color:#6b7280}
+
+/* ZEITEN */
+.hours-section{background:#fff}
+.hours-grid{display:grid;grid-template-columns:1fr 1fr;gap:3rem;margin-top:3rem;align-items:start}
+.hours-table{width:100%;border-collapse:collapse}
+.hours-table tr{border-bottom:1px solid #f3f4f6}
+.hours-table td{padding:.85rem 0;font-size:.88rem;color:#374151}
+.hours-table td:last-child{font-weight:600;text-align:right;color:#111827}
+.hours-table tr.today td{color:#0f766e;font-weight:700}
+.contact-card{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:12px;padding:2rem}
+.contact-card h3{font-size:1rem;font-weight:700;margin-bottom:1rem;color:#111827}
+.contact-row{display:flex;align-items:center;gap:.75rem;margin-bottom:.75rem;font-size:.88rem;color:#374151}
+.contact-icon{width:32px;height:32px;border-radius:8px;background:#0f766e;flex-shrink:0}
+
+/* KONTAKTFORMULAR */
+.form-section{background:#f8fafc}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;margin-top:3rem;align-items:start}
+.form-desc p{font-size:.9rem;color:#4b5563;line-height:1.65;margin-bottom:1rem}
+.form-wrap{background:#fff;border:1px solid #e5e7eb;border-radius:16px;padding:2.5rem;box-shadow:0 4px 24px rgba(17,24,39,.06)}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.form-group{display:flex;flex-direction:column;gap:.4rem;margin-bottom:1rem}
+.form-group label{font-size:.8rem;font-weight:600;color:#374151}
+.form-group input,.form-group select,.form-group textarea{padding:.65rem .9rem;border:1px solid #d1d5db;border-radius:8px;font:inherit;font-size:.88rem;outline:none;transition:border-color .2s}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:#2563eb}
+.form-group textarea{height:100px;resize:vertical}
+.form-submit{width:100%;padding:.8rem;background:#0f766e;color:#fff;border:none;border-radius:8px;font-size:.9rem;font-weight:700;cursor:pointer;transition:background .2s}
+.form-submit:hover{background:#0d6b63}
+
+/* FOOTER */
+footer{background:#111827;padding:4rem 0 2rem}
+.footer-inner{max-width:1100px;margin:0 auto;padding:0 2rem;display:grid;grid-template-columns:2fr 1fr 1fr;gap:3rem}
+.footer-brand{font-size:1.1rem;font-weight:800;color:#fff;margin-bottom:.75rem}
+.footer-brand span{color:#60a5fa}
+.footer-desc{font-size:.84rem;color:rgba(255,255,255,.45);line-height:1.65}
+.footer-col h4{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.3);margin-bottom:1rem}
+.footer-col a{display:block;font-size:.84rem;color:rgba(255,255,255,.5);margin-bottom:.5rem;transition:color .15s}
+.footer-col a:hover{color:#fff}
+.footer-bottom{max-width:1100px;margin:2rem auto 0;padding:1.5rem 2rem 0;border-top:1px solid rgba(255,255,255,.07);font-size:.78rem;color:rgba(255,255,255,.25);display:flex;justify-content:space-between;flex-wrap:wrap;gap:.5rem}
+
+@media(max-width:768px){
+  .nav-links{display:none}
+  .hero-inner{grid-template-columns:1fr}
+  .infobar-inner{grid-template-columns:repeat(2,1fr)}
+  .hours-grid,.form-grid{grid-template-columns:1fr}
+  .form-row{grid-template-columns:1fr}
+  .footer-inner{grid-template-columns:1fr;gap:2rem}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <div class="nav-logo">Praxis<span> Dr. Müller</span></div>
+    <div class="demo-lang-switch" aria-label="Language switch">
+      <button type="button" class="demo-lang-btn active" data-lang="de">DE</button>
+      <button type="button" class="demo-lang-btn" data-lang="en">EN</button>
+    </div>
+    <div class="nav-links">
+      <a href="#">Leistungen</a>
+      <a href="#">Unser Team</a>
+      <a href="#">Öffnungszeiten</a>
+      <a href="#">Kontakt</a>
+      <a href="#" class="nav-cta">Termin buchen</a>
+    </div>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-inner">
+    <div>
+      <p class="hero-eyebrow">Allgemeinmedizin · Prävention · Hausarzt</p>
+      <h1>Ihre Gesundheit<br>in <span>guten Händen.</span></h1>
+      <p class="hero-sub">Persönliche Betreuung und umfassende Hausarztmedizin seit über 15 Jahren. Offene Sprechstunde täglich ab 07:30 Uhr – ohne lange Wartezeiten.</p>
+      <div class="btn-row">
+        <button class="btn btn-teal">Online Termin anfragen</button>
+        <button class="btn btn-outline">Leistungen ansehen</button>
+      </div>
+      <div class="trust-badges">
+        <span class="trust-badge">✓ Kassenzulassung</span>
+        <span class="trust-badge">✓ 15+ Jahre Erfahrung</span>
+        <span class="trust-badge">✓ Offene Sprechstunde</span>
+      </div>
+    </div>
+    <div class="hero-img">
+      <div class="hero-photo-bg"></div>
+    </div>
+  </div>
+</section>
+
+<div class="infobar">
+  <div class="infobar-inner">
+    <div class="info-item">
+      <div class="info-label">Mo–Fr</div>
+      <div class="info-val">07:30 – 18:00</div>
+    </div>
+    <div class="info-item">
+      <div class="info-label">Samstag</div>
+      <div class="info-val">09:00 – 12:00</div>
+    </div>
+    <div class="info-item">
+      <div class="info-label">Notfall</div>
+      <div class="info-val">031 000 00 00</div>
+    </div>
+    <div class="info-item">
+      <div class="info-label">Online-Termin</div>
+      <div class="info-val">24/7 verfügbar</div>
+    </div>
+  </div>
+</div>
+
+<section class="section">
+  <div class="section-inner">
+    <p class="section-label">Unsere Leistungen</p>
+    <h2 class="section-title">Umfassende medizinische Versorgung</h2>
+    <p class="section-sub">Von der Vorsorge bis zur Behandlung chronischer Erkrankungen – alles aus einer Hand.</p>
+    <div class="services-grid">
+      <div class="service-card">
+        <div class="service-icon"></div>
+        <h3>Allgemeinmedizin</h3>
+        <p>Umfassende Grundversorgung, Vorsorgeuntersuchungen, Impfungen und Labordiagnostik.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon"></div>
+        <h3>Chronische Erkrankungen</h3>
+        <p>Begleitung bei Diabetes, Bluthochdruck, Schilddrüsenerkrankungen und kardiovaskulären Risiken.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon"></div>
+        <h3>Ernährungsberatung</h3>
+        <p>Individuelles Ernährungscoaching für Gewichtsmanagement, Prävention und Wohlbefinden.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon"></div>
+        <h3>Reisemedizin</h3>
+        <p>Reiseimpfungen, Malaria-Prophylaxe, Gesundheits-Checks vor langen Auslandreisen.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon"></div>
+        <h3>Sportmedizin</h3>
+        <p>Leistungsdiagnostik, Sporttauglichkeitsuntersuchungen und Trainingsberatung.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon"></div>
+        <h3>Kindermedizin</h3>
+        <p>Pädiatrische Grundversorgung, Vorsorgeuntersuchungen U1–U11, Schuleignung.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section team-section">
+  <div class="section-inner">
+    <p class="section-label">Unser Team</p>
+    <h2 class="section-title">Erfahrene Fachkräfte</h2>
+    <p class="section-sub">Unser engagiertes Team steht Ihnen mit Kompetenz und Einfühlungsvermögen zur Seite.</p>
+    <div class="team-grid">
+      <div class="team-card">
+        <div class="team-photo team-bg-1"></div>
+        <h3>Dr. med. Peter Müller</h3>
+        <p>Facharzt Allgemeinmedizin</p>
+      </div>
+      <div class="team-card">
+        <div class="team-photo team-bg-2"></div>
+        <h3>Dr. med. Sarah Keller</h3>
+        <p>Innere Medizin · Prävention</p>
+      </div>
+      <div class="team-card">
+        <div class="team-photo team-bg-3"></div>
+        <h3>Maria Berger, MPA</h3>
+        <p>Medizinische Praxisassistentin</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section hours-section">
+  <div class="section-inner">
+    <p class="section-label">Wir sind für Sie da</p>
+    <h2 class="section-title">Öffnungszeiten</h2>
+    <div class="hours-grid">
+      <div>
+        <table class="hours-table">
+          <tr><td>Montag</td><td>07:30 – 18:00</td></tr>
+          <tr><td>Dienstag</td><td>07:30 – 18:00</td></tr>
+          <tr class="today"><td>Mittwoch</td><td>07:30 – 13:00</td></tr>
+          <tr><td>Donnerstag</td><td>07:30 – 18:00</td></tr>
+          <tr><td>Freitag</td><td>07:30 – 17:00</td></tr>
+          <tr><td>Samstag</td><td>09:00 – 12:00</td></tr>
+          <tr><td>Sonntag</td><td>Geschlossen</td></tr>
+        </table>
+      </div>
+      <div class="contact-card">
+        <h3>Kontakt &amp; Notfall</h3>
+        <div class="contact-row"><div class="contact-icon"></div><span>Bahnhofstrasse 12, 3011 Bern</span></div>
+        <div class="contact-row"><div class="contact-icon"></div><span>031 000 00 00</span></div>
+        <div class="contact-row"><div class="contact-icon"></div><span>info@praxis-mueller.ch</span></div>
+        <div class="contact-row"><div class="contact-icon"></div><span>Notfalldienst: 0900 57 67 47</span></div>
+        <button class="btn btn-teal" style="width:100%;margin-top:1rem">Online Termin anfragen</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section form-section">
+  <div class="section-inner">
+    <p class="section-label">Kontakt</p>
+    <h2 class="section-title">Termin anfragen</h2>
+    <div class="form-grid">
+      <div class="form-desc">
+        <p>Wir antworten in der Regel innerhalb von 24 Stunden. Für dringende Anliegen rufen Sie uns bitte direkt an.</p>
+        <p><strong>Telefon:</strong> 031 000 00 00<br><strong>Sprechstunde:</strong> Mo–Fr 07:30–08:30 ohne Voranmeldung</p>
+      </div>
+      <div class="form-wrap">
+        <div class="form-row">
+          <div class="form-group"><label>Vorname</label><input type="text" placeholder="Max"></div>
+          <div class="form-group"><label>Nachname</label><input type="text" placeholder="Mustermann"></div>
+        </div>
+        <div class="form-group"><label>E-Mail</label><input type="email" placeholder="max@beispiel.ch"></div>
+        <div class="form-group"><label>Telefon</label><input type="tel" placeholder="+41 79 000 00 00"></div>
+        <div class="form-group">
+          <label>Anliegen</label>
+          <select>
+            <option>Erstanmeldung</option>
+            <option>Kontrolle / Nachsorge</option>
+            <option>Impfung</option>
+            <option>Rezept verlängern</option>
+            <option>Anderes</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Nachricht (optional)</label><textarea placeholder="Ihre Nachricht..."></textarea></div>
+        <button class="form-submit">Anfrage senden</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-brand">Praxis <span>Dr. Müller</span></div>
+      <p class="footer-desc">Hausarztpraxis in Bern. Umfassende allgemeinmedizinische Versorgung mit persönlichem Engagement.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Leistungen</h4>
+      <a href="#">Allgemeinmedizin</a>
+      <a href="#">Chronische Erkrankungen</a>
+      <a href="#">Reisemedizin</a>
+      <a href="#">Sportmedizin</a>
+    </div>
+    <div class="footer-col">
+      <h4>Praxis</h4>
+      <a href="#">Unser Team</a>
+      <a href="#">Öffnungszeiten</a>
+      <a href="#">Termin buchen</a>
+      <a href="#">Impressum</a>
+      <a href="#">Datenschutz</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 Praxis Dr. Müller · Bahnhofstrasse 12, 3011 Bern</span>
+    <span>Impressum · Datenschutz</span>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var supported = ['de', 'en'];
+  var urlLang = new URLSearchParams(window.location.search).get('lang');
+  var stored = localStorage.getItem('lang');
+  var lang = supported.indexOf(urlLang) !== -1 ? urlLang : (supported.indexOf(stored) !== -1 ? stored : 'de');
+
+  var deState = {
+    title: document.title,
+    nav: document.querySelector('.nav-links').innerHTML,
+    hero: document.querySelector('.hero-inner').innerHTML,
+    info: document.querySelector('.infobar-inner').innerHTML,
+    services: document.querySelector('.section .section-inner').innerHTML,
+    team: document.querySelector('.team-section .section-inner').innerHTML,
+    hours: document.querySelector('.hours-section .section-inner').innerHTML,
+    form: document.querySelector('.form-section .section-inner').innerHTML,
+    footerInner: document.querySelector('.footer-inner').innerHTML,
+    footerBottom: document.querySelector('.footer-bottom').innerHTML
+  };
+
+  var enState = {
+    title: 'Practice Dr. Mueller – General Medicine Bern',
+    nav: `<a href="#">Services</a><a href="#">Our team</a><a href="#">Opening hours</a><a href="#">Contact</a><a href="#" class="nav-cta">Book appointment</a>`,
+    hero: `<div><p class="hero-eyebrow">General medicine · prevention · family doctor</p><h1>Your health<br>in <span>good hands.</span></h1><p class="hero-sub">Personal care and comprehensive family medicine for over 15 years. Open consultation daily from 07:30 – no long waiting times.</p><div class="btn-row"><button class="btn btn-teal">Request online appointment</button><button class="btn btn-outline">View services</button></div><div class="trust-badges"><span class="trust-badge">✓ Insurance approved</span><span class="trust-badge">✓ 15+ years experience</span><span class="trust-badge">✓ Open consultation</span></div></div><div class="hero-img"><div class="hero-photo-bg"></div></div>`,
+    info: `<div class="info-item"><div class="info-label">Mon–Fri</div><div class="info-val">07:30 – 18:00</div></div><div class="info-item"><div class="info-label">Saturday</div><div class="info-val">09:00 – 12:00</div></div><div class="info-item"><div class="info-label">Emergency</div><div class="info-val">031 000 00 00</div></div><div class="info-item"><div class="info-label">Online booking</div><div class="info-val">Available 24/7</div></div>`,
+    services: `<p class="section-label">Our services</p><h2 class="section-title">Comprehensive medical care</h2><p class="section-sub">From prevention to treatment of chronic conditions – everything from one source.</p><div class="services-grid">
+      <div class="service-card"><div class="service-icon"></div><h3>General medicine</h3><p>Comprehensive primary care, preventive check-ups, vaccinations and lab diagnostics.</p></div>
+      <div class="service-card"><div class="service-icon"></div><h3>Chronic conditions</h3><p>Support for diabetes, high blood pressure, thyroid conditions and cardiovascular risks.</p></div>
+      <div class="service-card"><div class="service-icon"></div><h3>Nutritional counseling</h3><p>Personal nutrition coaching for weight management, prevention and wellbeing.</p></div>
+      <div class="service-card"><div class="service-icon"></div><h3>Travel medicine</h3><p>Travel vaccinations, malaria prevention and health checks before long trips abroad.</p></div>
+      <div class="service-card"><div class="service-icon"></div><h3>Sports medicine</h3><p>Performance diagnostics, fitness-for-sport examinations and training guidance.</p></div>
+      <div class="service-card"><div class="service-icon"></div><h3>Pediatric care</h3><p>Basic pediatric care, preventive exams and school readiness checks.</p></div>
+    </div>`,
+    team: `<p class="section-label">Our team</p><h2 class="section-title">Experienced professionals</h2><p class="section-sub">Our dedicated team supports you with expertise and empathy.</p><div class="team-grid">
+      <div class="team-card"><div class="team-photo team-bg-1"></div><h3>Dr. Peter Mueller</h3><p>Specialist in general medicine</p></div>
+      <div class="team-card"><div class="team-photo team-bg-2"></div><h3>Dr. Sarah Keller</h3><p>Internal medicine · prevention</p></div>
+      <div class="team-card"><div class="team-photo team-bg-3"></div><h3>Maria Berger, MPA</h3><p>Medical practice assistant</p></div>
+    </div>`,
+    hours: `<p class="section-label">We are here for you</p><h2 class="section-title">Opening hours</h2><div class="hours-grid"><div><table class="hours-table"><tr><td>Monday</td><td>07:30 – 18:00</td></tr><tr><td>Tuesday</td><td>07:30 – 18:00</td></tr><tr class="today"><td>Wednesday</td><td>07:30 – 13:00</td></tr><tr><td>Thursday</td><td>07:30 – 18:00</td></tr><tr><td>Friday</td><td>07:30 – 17:00</td></tr><tr><td>Saturday</td><td>09:00 – 12:00</td></tr><tr><td>Sunday</td><td>Closed</td></tr></table></div><div class="contact-card"><h3>Contact &amp; emergency</h3><div class="contact-row"><div class="contact-icon"></div><span>Bahnhofstrasse 12, 3011 Bern</span></div><div class="contact-row"><div class="contact-icon"></div><span>031 000 00 00</span></div><div class="contact-row"><div class="contact-icon"></div><span>info@praxis-mueller.ch</span></div><div class="contact-row"><div class="contact-icon"></div><span>Emergency service: 0900 57 67 47</span></div><button class="btn btn-teal" style="width:100%;margin-top:1rem">Request online appointment</button></div></div>`,
+    form: `<p class="section-label">Contact</p><h2 class="section-title">Request appointment</h2><div class="form-grid"><div class="form-desc"><p>We usually reply within 24 hours. For urgent issues, please call us directly.</p><p><strong>Phone:</strong> 031 000 00 00<br><strong>Open consultation:</strong> Mon–Fri 07:30–08:30 without appointment</p></div><div class="form-wrap"><div class="form-row"><div class="form-group"><label>First name</label><input type="text" placeholder="Max"></div><div class="form-group"><label>Last name</label><input type="text" placeholder="Doe"></div></div><div class="form-group"><label>Email</label><input type="email" placeholder="max@example.ch"></div><div class="form-group"><label>Phone</label><input type="tel" placeholder="+41 79 000 00 00"></div><div class="form-group"><label>Request type</label><select><option>First consultation</option><option>Check-up / follow-up</option><option>Vaccination</option><option>Prescription renewal</option><option>Other</option></select></div><div class="form-group"><label>Message (optional)</label><textarea placeholder="Your message..."></textarea></div><button class="form-submit">Send request</button></div></div>`,
+    footerInner: `<div><div class="footer-brand">Practice <span>Dr. Mueller</span></div><p class="footer-desc">Family practice in Bern. Comprehensive general medical care with personal commitment.</p></div><div class="footer-col"><h4>Services</h4><a href="#">General medicine</a><a href="#">Chronic conditions</a><a href="#">Travel medicine</a><a href="#">Sports medicine</a></div><div class="footer-col"><h4>Practice</h4><a href="#">Our team</a><a href="#">Opening hours</a><a href="#">Book appointment</a><a href="#">Legal notice</a><a href="#">Privacy</a></div>`,
+    footerBottom: `<span>© 2025 Practice Dr. Mueller · Bahnhofstrasse 12, 3011 Bern</span><span>Legal notice · Privacy</span>`
+  };
+
+  function apply(nextLang) {
+    var state = nextLang === 'en' ? enState : deState;
+    document.title = state.title;
+    document.querySelector('.nav-links').innerHTML = state.nav;
+    document.querySelector('.hero-inner').innerHTML = state.hero;
+    document.querySelector('.infobar-inner').innerHTML = state.info;
+    document.querySelector('.section .section-inner').innerHTML = state.services;
+    document.querySelector('.team-section .section-inner').innerHTML = state.team;
+    document.querySelector('.hours-section .section-inner').innerHTML = state.hours;
+    document.querySelector('.form-section .section-inner').innerHTML = state.form;
+    document.querySelector('.footer-inner').innerHTML = state.footerInner;
+    document.querySelector('.footer-bottom').innerHTML = state.footerBottom;
+
+    document.documentElement.lang = nextLang;
+    localStorage.setItem('lang', nextLang);
+    var u = new URL(window.location.href);
+    u.searchParams.set('lang', nextLang);
+    history.replaceState(null, '', u.pathname + u.search + u.hash);
+    document.querySelectorAll('.demo-lang-btn').forEach(function (btn) {
+      btn.classList.toggle('active', btn.getAttribute('data-lang') === nextLang);
+    });
+  }
+
+  document.querySelectorAll('.demo-lang-btn').forEach(function (btn) {
+    btn.addEventListener('click', function () { apply(btn.getAttribute('data-lang')); });
+  });
+
+  apply(lang);
+})();
+</script>
+
+</body>
+</html>
+

@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Studio Elara – Nail Art & Maniküre Basel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',sans-serif;background:#faf7f4;color:#1a1108;line-height:1.6}
+a{color:inherit;text-decoration:none}
+
+/* NAV */
+nav{position:sticky;top:0;z-index:100;background:rgba(250,247,244,.96);backdrop-filter:blur(12px);border-bottom:1px solid #ede8e3}
+.nav-inner{max-width:1100px;margin:0 auto;padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:68px}
+.nav-logo{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;letter-spacing:.02em}
+.nav-logo span{color:#be185d;font-style:italic}
+.nav-links{display:flex;gap:2rem;align-items:center;font-size:.88rem;color:#6b5c52}
+.nav-links a:hover{color:#be185d}
+.nav-cta{background:#be185d;color:#fff!important;padding:.5rem 1.2rem;border-radius:6px;font-weight:600;font-size:.85rem;transition:background .2s}
+.nav-cta:hover{background:#9d1454}
+.demo-lang-switch{display:flex;gap:.35rem}
+.demo-lang-btn{background:transparent;border:1px solid #e5d5df;color:#7a6870;padding:.28rem .55rem;border-radius:999px;font-size:.72rem;font-weight:700;cursor:pointer}
+.demo-lang-btn.active{background:#be185d;border-color:#be185d;color:#fff}
+
+/* HERO */
+.hero{background:#fdf2f8;padding:5rem 0}
+.hero-inner{max-width:1100px;margin:0 auto;padding:0 2rem;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center}
+.hero-eyebrow{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.16em;color:#be185d;margin-bottom:.85rem}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(2.4rem,5vw,3.5rem);font-weight:700;line-height:1.1;letter-spacing:-.01em;margin-bottom:1rem;color:#1a1108}
+.hero h1 span{color:#be185d}
+.hero-sub{font-size:.95rem;color:#6b5c52;margin-bottom:2rem;line-height:1.7}
+.hero-awards{display:flex;flex-direction:column;gap:.6rem;margin-bottom:2rem}
+.hero-award{display:flex;align-items:center;gap:.6rem;font-size:.82rem;color:#4a3728}
+.hero-award-dot{width:8px;height:8px;border-radius:50%;background:#be185d;flex-shrink:0}
+.btn-row{display:flex;gap:1rem;flex-wrap:wrap}
+.btn{padding:.7rem 1.6rem;border-radius:6px;font-weight:700;font-size:.9rem;border:none;cursor:pointer;transition:all .2s}
+.btn-rose{background:#be185d;color:#fff}
+.btn-rose:hover{background:#9d1454;transform:translateY(-1px)}
+.btn-outline{background:transparent;color:#374151;border:1px solid #d1d5db}
+.btn-outline:hover{border-color:#be185d;color:#be185d}
+.hero-visual{position:relative}
+.hero-gallery{display:grid;grid-template-columns:1fr 1fr;gap:.75rem}
+.hero-gal-item{border-radius:12px;overflow:hidden;position:relative}
+.hero-gal-item:first-child{grid-row:span 2}
+.hg-1{height:100%;min-height:280px;background:linear-gradient(135deg,#fce7f3 0%,#fbcfe8 30%,#f9a8d4 60%,#ec4899 100%)}
+.hg-2{height:160px;background:linear-gradient(135deg,#fdf2f8 0%,#fce7f3 40%,#fbcfe8 80%,#f9a8d4 100%)}
+.hg-3{height:160px;background:linear-gradient(135deg,#fff7ed 0%,#fed7aa 40%,#fb923c 80%,#ea580c 100%)}
+.hg-inner-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(190,24,93,.12) 0%,transparent 60%)}
+
+/* LEISTUNGEN */
+.section{padding:5rem 0}
+.section-inner{max-width:1100px;margin:0 auto;padding:0 2rem}
+.section-label{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.16em;color:#be185d;margin-bottom:.75rem}
+.section-title{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,3vw,2.4rem);font-weight:700;letter-spacing:-.01em;margin-bottom:.75rem;color:#1a1108}
+.section-sub{color:#6b5c52;max-width:560px;font-size:.92rem;line-height:1.65}
+.services-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.5rem;margin-top:3rem}
+.service-card{background:#fff;border:1px solid #ede8e3;border-radius:14px;padding:2rem;text-align:center;transition:transform .2s,box-shadow .2s,border-color .2s}
+.service-card:hover{transform:translateY(-4px);box-shadow:0 12px 32px rgba(190,24,93,.08);border-color:#fbcfe8}
+.service-icon{width:52px;height:52px;border-radius:14px;margin:0 auto 1.2rem;background:linear-gradient(135deg,#fce7f3,#be185d)}
+.service-card h3{font-size:.95rem;font-weight:700;margin-bottom:.5rem;color:#1a1108}
+.service-card p{font-size:.82rem;color:#6b5c52;line-height:1.55;margin:0}
+.service-price{display:inline-block;margin-top:.75rem;font-size:.88rem;font-weight:700;color:#be185d}
+
+/* GALLERY */
+.gallery-section{background:#fff}
+.gallery-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:.75rem;margin-top:3rem}
+.gallery-item{border-radius:12px;overflow:hidden;aspect-ratio:3/4;transition:transform .2s;cursor:pointer}
+.gallery-item:hover{transform:scale(1.02)}
+.gallery-item:nth-child(1){aspect-ratio:3/5}
+.gallery-item:nth-child(5){grid-column:span 2;aspect-ratio:2/1}
+.gi-1{background:linear-gradient(135deg,#fda4af 0%,#fb7185 40%,#f43f5e 80%,#be123c 100%)}
+.gi-2{background:linear-gradient(135deg,#f9a8d4 0%,#f472b6 40%,#db2777 80%,#9d174d 100%)}
+.gi-3{background:linear-gradient(135deg,#fde68a 0%,#fbbf24 40%,#d97706 80%,#92400e 100%)}
+.gi-4{background:linear-gradient(135deg,#e9d5ff 0%,#c084fc 40%,#9333ea 80%,#6b21a8 100%)}
+.gi-5{background:linear-gradient(135deg,#fbcfe8 0%,#f9a8d4 25%,#f472b6 50%,#db2777 75%,#9d174d 100%)}
+.gi-6{background:linear-gradient(135deg,#bfdbfe 0%,#93c5fd 40%,#3b82f6 80%,#1d4ed8 100%)}
+.gi-7{background:linear-gradient(135deg,#d1fae5 0%,#6ee7b7 40%,#10b981 80%,#065f46 100%)}
+.gi-8{background:linear-gradient(135deg,#fed7aa 0%,#fb923c 40%,#ea580c 80%,#9a3412 100%)}
+
+/* PREISLISTE */
+.pricing-section{background:#fdf2f8}
+.pricing-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.5rem;margin-top:3rem}
+.pricing-card{background:#fff;border:1px solid #fce7f3;border-radius:14px;overflow:hidden}
+.pricing-card-header{background:linear-gradient(135deg,#fce7f3,#fbcfe8);padding:1.5rem 1.8rem 1.2rem}
+.pricing-card-header h3{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;color:#1a1108;margin-bottom:.25rem}
+.pricing-card-header p{font-size:.78rem;color:#6b5c52;margin:0}
+.pricing-list{padding:1.2rem 1.8rem}
+.price-row{display:flex;justify-content:space-between;align-items:center;padding:.55rem 0;border-bottom:1px solid #fce7f3;font-size:.87rem}
+.price-row:last-child{border-bottom:none}
+.price-name{color:#374151}
+.price-amt{font-weight:700;color:#be185d}
+.pricing-cta{padding:1.2rem 1.8rem;padding-top:.5rem}
+.pricing-cta-btn{width:100%;padding:.65rem;background:#be185d;color:#fff;border:none;border-radius:8px;font-size:.88rem;font-weight:700;cursor:pointer;transition:background .2s}
+.pricing-cta-btn:hover{background:#9d1454}
+
+/* BUCHUNG */
+.booking-section{background:#fff}
+.booking-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;margin-top:3rem;align-items:start}
+.booking-info h3{font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:700;margin-bottom:1.2rem;color:#1a1108}
+.booking-info p{font-size:.9rem;color:#6b5c52;line-height:1.7;margin-bottom:1rem}
+.contact-detail{display:flex;gap:.75rem;align-items:center;margin-bottom:.75rem;font-size:.88rem;color:#374151}
+.contact-icon{width:34px;height:34px;border-radius:8px;background:linear-gradient(135deg,#fce7f3,#be185d);flex-shrink:0}
+.form-wrap{background:#fdf2f8;border:1px solid #fce7f3;border-radius:16px;padding:2.5rem}
+.form-group{display:flex;flex-direction:column;gap:.4rem;margin-bottom:1rem}
+.form-group label{font-size:.8rem;font-weight:600;color:#374151}
+.form-group input,.form-group select,.form-group textarea{padding:.65rem .9rem;border:1px solid #fce7f3;border-radius:8px;font:inherit;font-size:.88rem;background:#fff;outline:none;transition:border-color .2s}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:#be185d}
+.form-group textarea{height:90px;resize:vertical}
+.form-submit{width:100%;padding:.8rem;background:#be185d;color:#fff;border:none;border-radius:8px;font-size:.9rem;font-weight:700;cursor:pointer;transition:background .2s}
+.form-submit:hover{background:#9d1454}
+
+/* FOOTER */
+footer{background:#1a0c0c;padding:4rem 0 2rem}
+.footer-inner{max-width:1100px;margin:0 auto;padding:0 2rem;display:grid;grid-template-columns:2fr 1fr 1fr;gap:3rem}
+.footer-brand{font-family:'Playfair Display',serif;font-size:1.25rem;font-weight:700;color:#fff;margin-bottom:.75rem}
+.footer-brand span{color:#f9a8d4;font-style:italic}
+.footer-desc{font-size:.84rem;color:rgba(255,255,255,.35);line-height:1.65}
+.footer-col h4{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.25);margin-bottom:1rem}
+.footer-col a{display:block;font-size:.84rem;color:rgba(255,255,255,.45);margin-bottom:.5rem;transition:color .15s}
+.footer-col a:hover{color:#f9a8d4}
+.footer-bottom{max-width:1100px;margin:2rem auto 0;padding:1.5rem 2rem 0;border-top:1px solid rgba(255,255,255,.06);font-size:.78rem;color:rgba(255,255,255,.2);display:flex;justify-content:space-between;flex-wrap:wrap;gap:.5rem}
+
+@media(max-width:768px){
+  .nav-links{display:none}
+  .hero-inner,.booking-grid{grid-template-columns:1fr}
+  .gallery-grid{grid-template-columns:repeat(2,1fr)}
+  .gallery-item:nth-child(5){grid-column:span 1;aspect-ratio:3/4}
+  .footer-inner{grid-template-columns:1fr;gap:2rem}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <div class="nav-logo">Studio<span> Elara</span></div>
+    <div class="demo-lang-switch" aria-label="Language switch">
+      <button type="button" class="demo-lang-btn active" data-lang="de">DE</button>
+      <button type="button" class="demo-lang-btn" data-lang="en">EN</button>
+    </div>
+    <div class="nav-links">
+      <a href="#">Leistungen</a>
+      <a href="#">Galerie</a>
+      <a href="#">Preise</a>
+      <a href="#">Über uns</a>
+      <a href="#" class="nav-cta">Termin buchen</a>
+    </div>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-inner">
+    <div>
+      <p class="hero-eyebrow">Nail Art &amp; Maniküre · Basel</p>
+      <h1>Schönheit<br>im <span>Detail.</span></h1>
+      <p class="hero-sub">Professionelle Nail-Treatments in entspannter, eleganter Atmosphäre. Gel, Acryl, Shellac und individuelle Nail Art – auf Ihre Wünsche zugeschnitten.</p>
+      <div class="hero-awards">
+        <span class="hero-award"><span class="hero-award-dot"></span>Über 500 zufriedene Kundinnen</span>
+        <span class="hero-award"><span class="hero-award-dot"></span>Premium Qualitätsprodukte</span>
+        <span class="hero-award"><span class="hero-award-dot"></span>Online-Terminbuchung 24/7</span>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-rose">Termin online buchen</button>
+        <button class="btn btn-outline">Preisliste ansehen</button>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="hero-gallery">
+        <div class="hero-gal-item"><div class="hg-1"></div><div class="hg-inner-overlay"></div></div>
+        <div class="hero-gal-item"><div class="hg-2"></div></div>
+        <div class="hero-gal-item"><div class="hg-3"></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="section-inner">
+    <p class="section-label">Was wir anbieten</p>
+    <h2 class="section-title">Unsere Leistungen</h2>
+    <p class="section-sub">Hochwertige Treatments mit Premium-Produkten. Jede Behandlung ist auf Sie persönlich abgestimmt.</p>
+    <div class="services-grid">
+      <div class="service-card">
+        <div class="service-icon"></div>
+        <h3>Klassische Maniküre</h3>
+        <p>Nagelpflege, Formgebung, Cutikula-Behandlung und Hochglanzlack.</p>
+        <span class="service-price">ab CHF 45.–</span>
+      </div>
+      <div class="service-card">
+        <div class="service-icon"></div>
+        <h3>Shellac / UV-Lack</h3>
+        <p>Langanhaltende Farbe mit Shellac – bis zu 3 Wochen ohne Absplittern.</p>
+        <span class="service-price">ab CHF 65.–</span>
+      </div>
+      <div class="service-card">
+        <div class="service-icon"></div>
+        <h3>Gelnägel Neuanlage</h3>
+        <p>Vollständige Neuanlage mit hochwertigem Gel – Länge und Form nach Wunsch.</p>
+        <span class="service-price">ab CHF 90.–</span>
+      </div>
+      <div class="service-card">
+        <div class="service-icon"></div>
+        <h3>Nail Art &amp; Design</h3>
+        <p>Individuelle Muster, French, Farbverläufe, Strassapplikationen und mehr.</p>
+        <span class="service-price">ab CHF 5.– / Nagel</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section gallery-section">
+  <div class="section-inner">
+    <p class="section-label">Inspiration</p>
+    <h2 class="section-title">Unsere Arbeiten</h2>
+    <p class="section-sub">Jedes Set ist ein Unikat. Lass dich von unserer Galerie inspirieren.</p>
+    <div class="gallery-grid">
+      <div class="gallery-item"><div class="gi-1" style="height:100%"></div></div>
+      <div class="gallery-item"><div class="gi-2" style="height:100%"></div></div>
+      <div class="gallery-item"><div class="gi-3" style="height:100%"></div></div>
+      <div class="gallery-item"><div class="gi-4" style="height:100%"></div></div>
+      <div class="gallery-item"><div class="gi-5" style="height:100%"></div></div>
+      <div class="gallery-item"><div class="gi-6" style="height:100%"></div></div>
+      <div class="gallery-item"><div class="gi-7" style="height:100%"></div></div>
+      <div class="gallery-item"><div class="gi-8" style="height:100%"></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="section pricing-section">
+  <div class="section-inner">
+    <p class="section-label">Transparente Preise</p>
+    <h2 class="section-title">Preisliste</h2>
+    <p class="section-sub">Faire Preise für höchste Qualität. Keine versteckten Kosten.</p>
+    <div class="pricing-grid">
+      <div class="pricing-card">
+        <div class="pricing-card-header">
+          <h3>Maniküre &amp; Lackierung</h3>
+          <p>Klassische Nagelpflege</p>
+        </div>
+        <div class="pricing-list">
+          <div class="price-row"><span class="price-name">Maniküre klassisch</span><span class="price-amt">CHF 45.–</span></div>
+          <div class="price-row"><span class="price-name">Shellac (UV-Lack)</span><span class="price-amt">CHF 65.–</span></div>
+          <div class="price-row"><span class="price-name">Shellac entfernen</span><span class="price-amt">CHF 20.–</span></div>
+          <div class="price-row"><span class="price-name">Französische Maniküre</span><span class="price-amt">CHF 55.–</span></div>
+        </div>
+        <div class="pricing-cta"><button class="pricing-cta-btn">Termin buchen</button></div>
+      </div>
+      <div class="pricing-card">
+        <div class="pricing-card-header">
+          <h3>Gelnägel</h3>
+          <p>Langanhaltende Gel-Modellage</p>
+        </div>
+        <div class="pricing-list">
+          <div class="price-row"><span class="price-name">Gelnägel Neuanlage</span><span class="price-amt">CHF 90.–</span></div>
+          <div class="price-row"><span class="price-name">Gelnägel auffüllen</span><span class="price-amt">CHF 70.–</span></div>
+          <div class="price-row"><span class="price-name">Gel entfernen</span><span class="price-amt">CHF 25.–</span></div>
+          <div class="price-row"><span class="price-name">Reparatur pro Nagel</span><span class="price-amt">CHF 8.–</span></div>
+        </div>
+        <div class="pricing-cta"><button class="pricing-cta-btn">Termin buchen</button></div>
+      </div>
+      <div class="pricing-card">
+        <div class="pricing-card-header">
+          <h3>Nail Art &amp; Extras</h3>
+          <p>Individuelle Designs</p>
+        </div>
+        <div class="pricing-list">
+          <div class="price-row"><span class="price-name">Nail Art pro Nagel</span><span class="price-amt">ab CHF 5.–</span></div>
+          <div class="price-row"><span class="price-name">Farbverlauf (Ombré)</span><span class="price-amt">CHF 25.–</span></div>
+          <div class="price-row"><span class="price-name">Strass-Applikation</span><span class="price-amt">ab CHF 8.–</span></div>
+          <div class="price-row"><span class="price-name">Hand-Peeling</span><span class="price-amt">CHF 18.–</span></div>
+        </div>
+        <div class="pricing-cta"><button class="pricing-cta-btn">Termin buchen</button></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section booking-section">
+  <div class="section-inner">
+    <p class="section-label">Reservierung</p>
+    <h2 class="section-title">Termin buchen</h2>
+    <div class="booking-grid">
+      <div class="booking-info">
+        <h3>Wir freuen uns auf dich</h3>
+        <p>Buche deinen Wunschtermin direkt online oder ruf uns an. Wir beraten dich gerne zu allen Leistungen und helfen dir, das perfekte Set zu finden.</p>
+        <p><strong>Adresse:</strong> Freiestrasse 88, 4051 Basel<br><strong>Öffnungszeiten:</strong> Di–Sa 09:00–19:00 Uhr</p>
+        <div class="contact-detail"><div class="contact-icon"></div><span>061 000 00 00</span></div>
+        <div class="contact-detail"><div class="contact-icon"></div><span>info@studio-elara.ch</span></div>
+        <div class="contact-detail"><div class="contact-icon"></div><span>@studio.elara (Instagram)</span></div>
+      </div>
+      <div class="form-wrap">
+        <div class="form-group"><label>Name</label><input type="text" placeholder="Dein Name"></div>
+        <div class="form-group"><label>Telefon / E-Mail</label><input type="text" placeholder="+41 79 000 00 00 oder E-Mail"></div>
+        <div class="form-group">
+          <label>Gewünschte Leistung</label>
+          <select>
+            <option>Maniküre klassisch</option>
+            <option>Shellac</option>
+            <option>Gelnägel Neuanlage</option>
+            <option>Gelnägel auffüllen</option>
+            <option>Nail Art</option>
+            <option>Anderes</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Wunschdatum / -uhrzeit</label><input type="text" placeholder="z.B. Freitag 15:00"></div>
+        <div class="form-group"><label>Wünsche oder Hinweise</label><textarea placeholder="Farbe, Design, Allergien..."></textarea></div>
+        <button class="form-submit">Termin anfragen</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-brand">Studio <span>Elara</span></div>
+      <p class="footer-desc">Premium Nail Studio in Basel. Individuelle Nail Art, Gelnägel und klassische Maniküre in entspannter Atmosphäre.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Leistungen</h4>
+      <a href="#">Maniküre</a>
+      <a href="#">Shellac</a>
+      <a href="#">Gelnägel</a>
+      <a href="#">Nail Art</a>
+    </div>
+    <div class="footer-col">
+      <h4>Studio</h4>
+      <a href="#">Galerie</a>
+      <a href="#">Preise</a>
+      <a href="#">Termin buchen</a>
+      <a href="#">Impressum</a>
+      <a href="#">Datenschutz</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 Studio Elara · Freiestrasse 88, 4051 Basel</span>
+    <span>Impressum · Datenschutz</span>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var supported = ['de', 'en'];
+  var urlLang = new URLSearchParams(window.location.search).get('lang');
+  var stored = localStorage.getItem('lang');
+  var lang = supported.indexOf(urlLang) !== -1 ? urlLang : (supported.indexOf(stored) !== -1 ? stored : 'de');
+
+  var sections = document.querySelectorAll('section.section');
+  var deState = {
+    title: document.title,
+    nav: document.querySelector('.nav-links').innerHTML,
+    hero: document.querySelector('.hero-inner').innerHTML,
+    services: sections[0].querySelector('.section-inner').innerHTML,
+    gallery: document.querySelector('.gallery-section .section-inner').innerHTML,
+    pricing: document.querySelector('.pricing-section .section-inner').innerHTML,
+    booking: document.querySelector('.booking-section .section-inner').innerHTML,
+    footerInner: document.querySelector('.footer-inner').innerHTML,
+    footerBottom: document.querySelector('.footer-bottom').innerHTML
+  };
+
+  var enState = {
+    title: 'Studio Elara – Nail Art & Manicure Basel',
+    nav: `<a href="#">Services</a><a href="#">Gallery</a><a href="#">Pricing</a><a href="#">About us</a><a href="#" class="nav-cta">Book now</a>`,
+    hero: `<div>
+      <p class="hero-eyebrow">Nail Art &amp; Manicure · Basel</p>
+      <h1>Beauty<br>in the <span>details.</span></h1>
+      <p class="hero-sub">Professional nail treatments in a relaxed, elegant atmosphere. Gel, acrylic, shellac and custom nail art tailored to you.</p>
+      <div class="hero-awards">
+        <span class="hero-award"><span class="hero-award-dot"></span>Over 500 happy clients</span>
+        <span class="hero-award"><span class="hero-award-dot"></span>Premium quality products</span>
+        <span class="hero-award"><span class="hero-award-dot"></span>24/7 online booking</span>
+      </div>
+      <div class="btn-row"><button class="btn btn-rose">Book online</button><button class="btn btn-outline">View pricing</button></div>
+    </div>
+    <div class="hero-visual"><div class="hero-gallery"><div class="hero-gal-item"><div class="hg-1"></div><div class="hg-inner-overlay"></div></div><div class="hero-gal-item"><div class="hg-2"></div></div><div class="hero-gal-item"><div class="hg-3"></div></div></div></div>`,
+    services: `<p class="section-label">What we offer</p><h2 class="section-title">Our services</h2><p class="section-sub">High-quality treatments with premium products. Every treatment is tailored to you personally.</p><div class="services-grid">
+      <div class="service-card"><div class="service-icon"></div><h3>Classic manicure</h3><p>Nail care, shaping, cuticle treatment and glossy polish.</p><span class="service-price">from CHF 45.–</span></div>
+      <div class="service-card"><div class="service-icon"></div><h3>Shellac / UV polish</h3><p>Long-lasting shellac color – up to 3 weeks without chipping.</p><span class="service-price">from CHF 65.–</span></div>
+      <div class="service-card"><div class="service-icon"></div><h3>New gel set</h3><p>Full new gel application – length and shape to your preference.</p><span class="service-price">from CHF 90.–</span></div>
+      <div class="service-card"><div class="service-icon"></div><h3>Nail art &amp; design</h3><p>Custom patterns, French style, gradients, rhinestones and more.</p><span class="service-price">from CHF 5.– / nail</span></div>
+    </div>`,
+    gallery: `<p class="section-label">Inspiration</p><h2 class="section-title">Our work</h2><p class="section-sub">Every set is unique. Get inspired by our gallery.</p>` + document.querySelector('.gallery-grid').outerHTML,
+    pricing: `<p class="section-label">Transparent pricing</p><h2 class="section-title">Price list</h2><p class="section-sub">Fair prices for top quality. No hidden costs.</p><div class="pricing-grid">
+      <div class="pricing-card">
+        <div class="pricing-card-header"><h3>Manicure &amp; polish</h3><p>Classic nail care</p></div>
+        <div class="pricing-list">
+          <div class="price-row"><span class="price-name">Classic manicure</span><span class="price-amt">CHF 45.–</span></div>
+          <div class="price-row"><span class="price-name">Shellac (UV polish)</span><span class="price-amt">CHF 65.–</span></div>
+          <div class="price-row"><span class="price-name">Shellac removal</span><span class="price-amt">CHF 20.–</span></div>
+          <div class="price-row"><span class="price-name">French manicure</span><span class="price-amt">CHF 55.–</span></div>
+        </div>
+        <div class="pricing-cta"><button class="pricing-cta-btn">Book now</button></div>
+      </div>
+      <div class="pricing-card">
+        <div class="pricing-card-header"><h3>Gel nails</h3><p>Long-lasting gel modeling</p></div>
+        <div class="pricing-list">
+          <div class="price-row"><span class="price-name">New gel set</span><span class="price-amt">CHF 90.–</span></div>
+          <div class="price-row"><span class="price-name">Gel refill</span><span class="price-amt">CHF 70.–</span></div>
+          <div class="price-row"><span class="price-name">Gel removal</span><span class="price-amt">CHF 25.–</span></div>
+          <div class="price-row"><span class="price-name">Repair per nail</span><span class="price-amt">CHF 8.–</span></div>
+        </div>
+        <div class="pricing-cta"><button class="pricing-cta-btn">Book now</button></div>
+      </div>
+      <div class="pricing-card">
+        <div class="pricing-card-header"><h3>Nail art &amp; extras</h3><p>Individual designs</p></div>
+        <div class="pricing-list">
+          <div class="price-row"><span class="price-name">Nail art per nail</span><span class="price-amt">from CHF 5.–</span></div>
+          <div class="price-row"><span class="price-name">Gradient (ombré)</span><span class="price-amt">CHF 25.–</span></div>
+          <div class="price-row"><span class="price-name">Rhinestone application</span><span class="price-amt">from CHF 8.–</span></div>
+          <div class="price-row"><span class="price-name">Hand peeling</span><span class="price-amt">CHF 18.–</span></div>
+        </div>
+        <div class="pricing-cta"><button class="pricing-cta-btn">Book now</button></div>
+      </div>
+    </div>`,
+    booking: `<p class="section-label">Reservation</p><h2 class="section-title">Book your appointment</h2><div class="booking-grid"><div class="booking-info"><h3>We look forward to seeing you</h3><p>Book your preferred appointment online or call us. We are happy to advise you on all services and help you find the perfect set.</p><p><strong>Address:</strong> Freiestrasse 88, 4051 Basel<br><strong>Opening hours:</strong> Tue–Sat 09:00–19:00</p><div class="contact-detail"><div class="contact-icon"></div><span>061 000 00 00</span></div><div class="contact-detail"><div class="contact-icon"></div><span>info@studio-elara.ch</span></div><div class="contact-detail"><div class="contact-icon"></div><span>@studio.elara (Instagram)</span></div></div><div class="form-wrap"><div class="form-group"><label>Name</label><input type="text" placeholder="Your name"></div><div class="form-group"><label>Phone / Email</label><input type="text" placeholder="+41 79 000 00 00 or email"></div><div class="form-group"><label>Desired service</label><select><option>Classic manicure</option><option>Shellac</option><option>New gel set</option><option>Gel refill</option><option>Nail art</option><option>Other</option></select></div><div class="form-group"><label>Preferred date / time</label><input type="text" placeholder="e.g. Friday 3:00 PM"></div><div class="form-group"><label>Notes or requests</label><textarea placeholder="Color, design, allergies..."></textarea></div><button class="form-submit">Request appointment</button></div></div>`,
+    footerInner: `<div><div class="footer-brand">Studio <span>Elara</span></div><p class="footer-desc">Premium nail studio in Basel. Custom nail art, gel nails and classic manicure in a relaxed atmosphere.</p></div><div class="footer-col"><h4>Services</h4><a href="#">Manicure</a><a href="#">Shellac</a><a href="#">Gel nails</a><a href="#">Nail art</a></div><div class="footer-col"><h4>Studio</h4><a href="#">Gallery</a><a href="#">Pricing</a><a href="#">Book now</a><a href="#">Legal notice</a><a href="#">Privacy</a></div>`,
+    footerBottom: `<span>© 2025 Studio Elara · Freiestrasse 88, 4051 Basel</span><span>Legal notice · Privacy</span>`
+  };
+
+  function apply(nextLang) {
+    var state = nextLang === 'en' ? enState : deState;
+    document.title = state.title;
+    document.querySelector('.nav-links').innerHTML = state.nav;
+    document.querySelector('.hero-inner').innerHTML = state.hero;
+    sections[0].querySelector('.section-inner').innerHTML = state.services;
+    document.querySelector('.gallery-section .section-inner').innerHTML = state.gallery;
+    document.querySelector('.pricing-section .section-inner').innerHTML = state.pricing;
+    document.querySelector('.booking-section .section-inner').innerHTML = state.booking;
+    document.querySelector('.footer-inner').innerHTML = state.footerInner;
+    document.querySelector('.footer-bottom').innerHTML = state.footerBottom;
+
+    document.documentElement.lang = nextLang;
+    localStorage.setItem('lang', nextLang);
+    var u = new URL(window.location.href);
+    u.searchParams.set('lang', nextLang);
+    history.replaceState(null, '', u.pathname + u.search + u.hash);
+    document.querySelectorAll('.demo-lang-btn').forEach(function (btn) {
+      btn.classList.toggle('active', btn.getAttribute('data-lang') === nextLang);
+    });
+  }
+
+  document.querySelectorAll('.demo-lang-btn').forEach(function (btn) {
+    btn.addEventListener('click', function () { apply(btn.getAttribute('data-lang')); });
+  });
+
+  apply(lang);
+})();
+</script>
+
+</body>
+</html>
+

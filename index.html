@@ -105,6 +105,22 @@
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="ai-assistant.css">
   <link rel="stylesheet" href="debug.css">
+  <!-- Apply stored theme/lang before first paint to avoid flash -->
+  <script>
+    (function () {
+      var theme = localStorage.getItem('theme');
+      if (theme === 'dark') document.documentElement.classList.add('dark');
+      if (!theme) localStorage.setItem('theme', 'light');
+
+      var lang = localStorage.getItem('lang');
+      if (!lang || ['de', 'en', 'fr'].indexOf(lang) === -1) {
+        lang = 'de';
+        localStorage.setItem('lang', lang);
+      }
+      document.documentElement.lang = (lang === 'de' ? 'de-CH' : lang);
+    })();
+  </script>
+  <script defer src="theme.js"></script>
   <script defer src="script.js"></script>
   <script defer src="ai-assistant.js"></script>
 
@@ -130,20 +146,41 @@
       </a>
 
       <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
-        <span class="sr-only">Navigation oeffnen</span>
+        <span class="sr-only" data-i18n="nav_toggle">Navigation öffnen</span>
         <span class="nav-toggle-bar" aria-hidden="true"></span>
         <span class="nav-toggle-bar" aria-hidden="true"></span>
       </button>
 
       <nav class="site-nav" id="site-nav" aria-label="Hauptnavigation">
-        <a href="index.html" class="nav-active">Home</a>
-        <a href="leistungen.html">Leistungen</a>
-        <a href="preise.html">Preise</a>
-        <a href="ki-assistent.html">KI-Assistent</a>
-        <a href="ueber-uns.html">&#220;ber uns</a>
-        <a href="kontakt.html">Kontakt</a>
-        <a class="button button-primary button-small" href="kontakt.html">Kostenloses Erstgesp&#228;ch</a>
+        <a href="index.html" class="nav-active" data-i18n="nav_home">Home</a>
+        <a href="leistungen.html" data-i18n="nav_services">Leistungen</a>
+        <a href="preise.html" data-i18n="nav_prices">Preise</a>
+        <a href="ki-assistent.html" data-i18n="nav_ai">KI-Assistent</a>
+        <a href="ueber-uns.html" data-i18n="nav_about">&#220;ber uns</a>
+        <a href="kontakt.html" data-i18n="nav_contact">Kontakt</a>
+        <a class="button button-primary button-small" href="kontakt.html" data-i18n="nav_cta">Kostenloses Erstgespräch</a>
       </nav>
+
+      <!-- Controls: Language + Dark Mode -->
+      <div class="header-controls">
+        <!-- Language Switcher -->
+        <div class="lang-switcher" id="lang-switcher">
+          <button class="lang-btn" id="lang-btn" aria-haspopup="true" aria-expanded="false" aria-label="Sprache wählen" data-i18n-aria-label="lang_select_aria">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+            <span id="lang-current">DE</span>
+          </button>
+          <div class="lang-dropdown" id="lang-dropdown">
+            <button class="lang-option active" data-lang="de">DE - Deutsch</button>
+            <button class="lang-option" data-lang="en">EN - English</button>
+            <button class="lang-option" data-lang="fr">FR - Français</button>
+          </div>
+        </div>
+        <!-- Dark Mode Toggle -->
+        <button class="dark-toggle" id="dark-toggle" aria-label="Dark Mode umschalten" data-i18n-aria-label="theme_toggle_aria">
+          <span class="dark-toggle-icon" id="dark-toggle-icon">🌙</span>
+          <span class="dark-toggle-track"><span class="dark-toggle-thumb"></span></span>
+        </button>
+      </div>
     </div>
   </header>
 
@@ -151,97 +188,73 @@
     <section class="hero" aria-labelledby="hero-title">
       <div class="container hero-grid">
         <div class="hero-content" data-reveal>
-          <p class="eyebrow">Matteo &amp; Severin. MASESites AG.</p>
-          <h1 id="hero-title">Websites, die verkaufen.</h1>
-          <p class="lead">
-            Professionelle Webl&#246;sungen und KI-Integration f&#252;r moderne Unternehmen.
+          <p class="eyebrow" data-i18n="hero_eyebrow">Matteo &amp; Severin. MASESites AG.</p>
+          <h1 id="hero-title" data-i18n="hero_title">Websites, die verkaufen.</h1>
+          <p class="lead" data-i18n="hero_lead">
+            Professionelle Weblo&#776;sungen und KI-Integration fu&#776;r moderne Unternehmen.
           </p>
           <div class="button-group">
-            <a class="button button-primary" href="kontakt.html">Projekt starten</a>
-            <a class="button button-ghost" href="preise.html">Preise ansehen</a>
+            <a class="button button-primary" href="kontakt.html" data-i18n="hero_cta_primary">Projekt starten</a>
+            <a class="button button-ghost" href="preise.html" data-i18n="hero_cta_secondary">Preise ansehen</a>
           </div>
           <div class="hero-badges" aria-label="Vorteile">
-            <span class="badge">Mobile-first</span>
-            <span class="badge">SEO-optimiert</span>
-            <span class="badge">KI-Integration</span>
+            <span class="badge" data-i18n="badge_mobile">Mobile-first</span>
+            <span class="badge" data-i18n="badge_seo">SEO-optimiert</span>
+            <span class="badge" data-i18n="badge_ai">KI-Integration</span>
           </div>
         </div>
 
         <div class="hero-visual" data-reveal>
-          <div class="preview-card interactive-preview" role="img" aria-label="Live Preview Demo">
-            <div class="preview-top">
-              <span></span><span></span><span></span>
-              <p>Live Preview (Demo)</p>
-            </div>
-            <div class="preview-controls">
-              <button class="preview-toggle active" data-mode="design">Design</button>
-              <button class="preview-toggle" data-mode="performance">Performance</button>
-              <button class="preview-toggle" data-mode="ki">KI</button>
-            </div>
-            <div class="preview-body" id="preview-demo">
-              <div class="preview-content" data-content="design">
-                <div class="demo-header">
-                  <div class="demo-nav">
-                    <span class="demo-logo">Logo</span>
-                    <div class="demo-menu">
-                      <span></span><span></span><span></span>
-                    </div>
-                  </div>
-                </div>
-                <div class="demo-hero">
-                  <h3>Professionelles Design</h3>
-                  <p>Klare Struktur, moderne Typografie</p>
-                  <div class="demo-cta"></div>
-                </div>
+          <article id="live-preview-card" class="preview-card-compact" role="img" aria-label="Live-Vorschau Demo kompakt">
+            <header class="preview-compact-header">
+              <p class="preview-compact-kicker">Live-Vorschau (Demo)</p>
+            </header>
+
+            <div class="preview-compact-body">
+              <div class="preview-compact-intro">
+                <p class="preview-compact-brand">DesignLeistungKI</p>
+                <h3 class="preview-compact-title">Professionelles Design</h3>
+                <p class="preview-compact-subtext">Klare Struktur. Moderne Typografie.</p>
               </div>
-              <div class="preview-content hidden" data-content="performance">
-                <div class="demo-metrics">
-                  <div class="metric-item">
-                    <span class="metric-value">95</span>
-                    <span class="metric-label">Speed</span>
-                  </div>
-                  <div class="metric-item">
-                    <span class="metric-value">1.2s</span>
-                    <span class="metric-label">Ladezeit</span>
-                  </div>
-                  <div class="metric-item">
-                    <span class="metric-value">98</span>
-                    <span class="metric-label">SEO</span>
-                  </div>
-                </div>
-              </div>
-              <div class="preview-content hidden" data-content="ki">
-                <div class="demo-chat">
-                  <div class="demo-chat-bubble bot">Hallo! Wie kann ich helfen?</div>
-                  <div class="demo-chat-bubble user">Preise?</div>
-                  <div class="demo-chat-bubble bot">Ab CHF 750</div>
-                </div>
+
+              <div class="preview-compact-stats" aria-label="Leistungswerte">
+                <div class="preview-stat"><span class="preview-stat-value">95</span> <span class="preview-stat-label">Speed</span></div>
+                <div class="preview-stat"><span class="preview-stat-value">1.2s</span> <span class="preview-stat-label">Ladezeit</span></div>
+                <div class="preview-stat"><span class="preview-stat-value">98</span> <span class="preview-stat-label">SEO</span></div>
               </div>
             </div>
-          </div>
+
+            <footer class="preview-compact-footer">
+              <div class="preview-compact-price-wrap">
+                <p class="preview-compact-price">Ab CHF 750</p>
+                <p class="preview-compact-price-meta">Startpreis</p>
+              </div>
+              <a class="preview-compact-cta" href="kontakt.html">Projekt starten</a>
+            </footer>
+          </article>
         </div>
       </div>
     </section>
 
     <section class="trust" aria-labelledby="trust-title">
       <div class="container" data-reveal>
-        <h2 id="trust-title">Warum MASE</h2>
+        <h2 id="trust-title" data-i18n="trust_title">Warum MASE</h2>
         <div class="trust-grid">
           <article class="trust-card">
-            <h3>Schnell</h3>
-            <p>Klare Prozesse, kurze Wege, schnelle Live-Schaltung.</p>
+            <h3 data-i18n="trust_speed">Schnell</h3>
+            <p data-i18n="trust_speed_desc">Klare Prozesse, kurze Wege, schnelle Live-Schaltung.</p>
           </article>
           <article class="trust-card">
-            <h3>Sauberer Code</h3>
-            <p>Minimal, wartbar und f&#252;r Performance optimiert.</p>
+            <h3 data-i18n="trust_code">Sauberer Code</h3>
+            <p data-i18n="trust_code_desc">Minimal, wartbar und f&#252;r Performance optimiert.</p>
           </article>
           <article class="trust-card">
-            <h3>Mobile-first</h3>
-            <p>UX die auf jedem Screen sitzt. Keine Kompromisse.</p>
+            <h3 data-i18n="trust_mobile">Mobile-first</h3>
+            <p data-i18n="trust_mobile_desc">UX die auf jedem Screen sitzt. Keine Kompromisse.</p>
           </article>
           <article class="trust-card">
-            <h3>KI-Integration</h3>
-            <p>Assistenz, die Leads qualifiziert und Fragen kl&#228;rt.</p>
+            <h3 data-i18n="trust_ki">KI-Integration</h3>
+            <p data-i18n="trust_ki_desc">Assistenz, die Leads qualifiziert und Fragen kl&#228;rt.</p>
           </article>
         </div>
       </div>
@@ -249,42 +262,42 @@
 
     <section class="process" id="ansatz" aria-labelledby="approach-title">
       <div class="container" data-reveal>
-        <h2 id="approach-title">Unser Ansatz</h2>
-        <p class="lead" style="margin-bottom:2rem;color:var(--muted)">5 Schritte zum professionellen Ergebnis.</p>
+        <h2 id="approach-title" data-i18n="process_title">Unser Ansatz</h2>
+        <p class="lead" style="margin-bottom:2rem;color:var(--muted);" data-i18n="process_lead">5 Schritte zum professionellen Ergebnis.</p>
         <div class="process-grid process-grid-5">
           <div class="process-step">
             <div class="process-step-icon">🔍</div>
             <span>01</span>
-            <h3>Analyse &amp; Strategie</h3>
-            <p>Wir analysieren dein Business, deine Zielgruppe und den Wettbewerb. Klare Ziele, klarer Plan.</p>
+            <h3 data-i18n="process_1_title">Analyse &amp; Strategie</h3>
+            <p data-i18n="process_1_desc">Wir analysieren dein Business, deine Zielgruppe und den Wettbewerb. Klare Ziele, klarer Plan.</p>
           </div>
           <div class="process-step">
             <div class="process-step-icon">🧩</div>
             <span>02</span>
-            <h3>Struktur &amp; UX-Planung</h3>
-            <p>Seitenstruktur, Navigation und User Experience werden vor dem ersten Pixel geplant.</p>
+            <h3 data-i18n="process_2_title">Struktur &amp; UX-Planung</h3>
+            <p data-i18n="process_2_desc">Seitenstruktur, Navigation und User Experience werden vor dem ersten Pixel geplant.</p>
           </div>
           <div class="process-step">
             <div class="process-step-icon">🎨</div>
             <span>03</span>
-            <h3>Modernes Design</h3>
-            <p>Clean, professionell, verkaufsstark. Design das Vertrauen weckt und zum Handeln motiviert.</p>
+            <h3 data-i18n="process_3_title">Modernes Design</h3>
+            <p data-i18n="process_3_desc">Clean, professionell, verkaufsstark. Design das Vertrauen weckt und zum Handeln motiviert.</p>
           </div>
           <div class="process-step">
             <div class="process-step-icon">⚙️</div>
             <span>04</span>
-            <h3>Saubere Entwicklung</h3>
-            <p>Schneller, wartbarer Code. Mobile-first, SEO-ready und zukunftssicher gebaut.</p>
+            <h3 data-i18n="process_4_title">Saubere Entwicklung</h3>
+            <p data-i18n="process_4_desc">Schneller, wartbarer Code. Mobile-first, SEO-ready und zukunftssicher gebaut.</p>
           </div>
           <div class="process-step">
             <div class="process-step-icon">🚀</div>
             <span>05</span>
-            <h3>Optimierung &amp; Skalierung</h3>
-            <p>Nach dem Launch analysieren, optimieren und skalieren wir deinen digitalen Auftritt.</p>
+            <h3 data-i18n="process_5_title">Optimierung &amp; Skalierung</h3>
+            <p data-i18n="process_5_desc">Nach dem Launch analysieren, optimieren und skalieren wir deinen digitalen Auftritt.</p>
           </div>
         </div>
         <div style="text-align: center; margin-top: 2.5rem;">
-          <a class="button button-primary" href="kontakt.html">Projekt starten</a>
+          <a class="button button-primary" href="kontakt.html" data-i18n="services_cta_primary">Projekt starten</a>
         </div>
       </div>
     </section>
@@ -292,348 +305,74 @@
     <!-- Live Preview Slider -->
     <section class="projects-slider" aria-labelledby="slider-title">
       <div class="container">
-        <div data-reveal style="text-align:center;max-width:700px;margin:0 auto 2.5rem;">
-          <h2 id="slider-title" style="color:#f1f5f9;">Live Preview – Beispielprojekte</h2>
-          <p class="lead" style="color:#94a3b8;">So könnten Websites unserer Kunden aussehen.</p>
+        <div data-reveal class="section-intro section-intro-centered">
+          <h2 id="slider-title">Live Preview – Sample Projects</h2>
+          <p class="lead">Here's how your website could look.</p>
         </div>
 
-        <!-- Slider Wrapper -->
-        <div class="lp-slider" id="lp-slider">
-
-          <!-- Slide 1: Bowling Center -->
-          <div class="lp-slide" role="group" aria-label="Slide 1 von 4">
-            <div class="lp-mockup">
-              <!-- Browser chrome -->
-              <div class="lp-browser-bar">
-                <span class="lp-dot lp-dot--red"></span>
-                <span class="lp-dot lp-dot--yellow"></span>
-                <span class="lp-dot lp-dot--green"></span>
-                <span class="lp-url">strikezone-bowling.ch</span>
-              </div>
-              <!-- Site nav -->
-              <div class="lp-site-nav lp-site-nav--dark">
-                <span class="lp-site-logo">STRIKE<span>ZONE</span></span>
-                <div class="lp-site-links">
-                  <span>Bahnen &amp; Preise</span>
-                  <span>Events</span>
-                  <span>Gastronomie</span>
-                  <span>Kontakt</span>
-                  <a class="lp-site-cta">Reservieren</a>
-                </div>
-              </div>
-              <!-- Hero -->
-              <div class="lp-hero lp-hero--bowling">
-                <div class="lp-hero-photo lp-photo--bowling"></div>
-                <div class="lp-hero-overlay"></div>
-                <div class="lp-hero-text">
-                  <p class="lp-overline">Bowling &amp; Entertainment · Zürich Oerlikon</p>
-                  <h2 class="lp-h1">Wo jeder Abend<br>zum Erlebnis wird.</h2>
-                  <p class="lp-subline">12 professionelle Bahnen · Sportbar · Private Events</p>
-                  <div class="lp-btn-row">
-                    <button class="lp-btn lp-btn--primary">Jetzt reservieren</button>
-                    <button class="lp-btn lp-btn--ghost">Preise ansehen</button>
-                  </div>
-                </div>
-              </div>
-              <!-- Info bar -->
-              <div class="lp-infobar lp-infobar--dark">
-                <div class="lp-info-item">
-                  <span class="lp-info-label">Öffnungszeiten</span>
-                  <span class="lp-info-val">Mo–Fr 14:00–01:00 · Sa–So 11:00–01:00</span>
-                </div>
-                <div class="lp-info-item">
-                  <span class="lp-info-label">Preise ab</span>
-                  <span class="lp-info-val">CHF 8.– / Spiel · Schuhe inklusive</span>
-                </div>
-                <div class="lp-info-item">
-                  <span class="lp-info-label">Events</span>
-                  <span class="lp-info-val">Geburtstage · Firmenfeiern · Turniere</span>
-                </div>
-              </div>
-              <!-- Price section strip -->
-              <div class="lp-strip lp-strip--bowling">
-                <div class="lp-strip-col">
-                  <p class="lp-strip-title">Preise</p>
-                  <table class="lp-table">
-                    <tr><td>1 Spiel / Person</td><td><strong>CHF 8.–</strong></td></tr>
-                    <tr><td>Abendtarif (ab 18h)</td><td><strong>CHF 11.–</strong></td></tr>
-                    <tr><td>Gruppe 6+ / Spiel</td><td><strong>CHF 14.–</strong></td></tr>
-                    <tr><td>Schuhe leihen</td><td><strong>inkl.</strong></td></tr>
-                  </table>
-                </div>
-                <div class="lp-strip-col">
-                  <p class="lp-strip-title">Nächste Events</p>
-                  <div class="lp-event-list">
-                    <div class="lp-event"><span class="lp-event-date">15. März</span><span>Firmenturnier «City Cup»</span></div>
-                    <div class="lp-event"><span class="lp-event-date">22. März</span><span>Ladies Night – freier Eintritt</span></div>
-                    <div class="lp-event"><span class="lp-event-date">29. März</span><span>Osterturnier für Familien</span></div>
-                  </div>
-                </div>
-              </div>
-              <!-- Site footer bar -->
-              <div class="lp-footer-bar lp-footer-bar--dark">
-                <span>© 2025 StrikeZone Bowling AG</span>
-                <span>Theaterstrasse 14, 8050 Zürich</span>
-                <span>Impressum · Datenschutz</span>
-              </div>
-            </div>
-            <div class="lp-caption">
-              <span class="lp-badge">Freizeit &amp; Sport</span>
-              <h3 class="lp-caption-title">Bowling Center</h3>
-              <p class="lp-caption-desc">Dunkles, modernes Design mit Online-Reservierung, Preistabelle und Eventkalender.</p>
-            </div>
+        <div class="lp-slider" id="lp-slider" data-reveal>
+          <div class="lp-slide" role="group" aria-label="Slide 1 of 4">
+            <article class="lp-card">
+              <p class="lp-card-domain">Freizeit &amp; Sport</p>
+              <h3 class="lp-card-title">Bowling Center</h3>
+              <p class="lp-card-text">Klares, modernes Layout mit Fokus auf Buchung und Events.</p>
+              <ul class="lp-card-list">
+                <li>Hero mit starker Message</li>
+                <li>Preisstruktur in wenigen Blöcken</li>
+                <li>Sichtbarer Reservieren-CTA</li>
+              </ul>
+              <a class="lp-card-button" href="demo/bowling-site/index.html">Projekt ansehen</a>
+            </article>
           </div>
 
-          <!-- Slide 2: Arztpraxis -->
-          <div class="lp-slide lp-slide--hidden" role="group" aria-label="Slide 2 von 4">
-            <div class="lp-mockup">
-              <div class="lp-browser-bar">
-                <span class="lp-dot lp-dot--red"></span>
-                <span class="lp-dot lp-dot--yellow"></span>
-                <span class="lp-dot lp-dot--green"></span>
-                <span class="lp-url">praxis-dr-mueller.ch</span>
-              </div>
-              <div class="lp-site-nav lp-site-nav--white">
-                <span class="lp-site-logo lp-site-logo--blue">Praxis<span>Dr. Müller</span></span>
-                <div class="lp-site-links lp-site-links--dark">
-                  <span>Leistungen</span>
-                  <span>Unser Team</span>
-                  <span>Öffnungszeiten</span>
-                  <span>Kontakt</span>
-                  <a class="lp-site-cta lp-site-cta--teal">Termin buchen</a>
-                </div>
-              </div>
-              <div class="lp-hero lp-hero--praxis">
-                <div class="lp-hero-split">
-                  <div class="lp-hero-split-text">
-                    <p class="lp-overline lp-overline--blue">Allgemeinmedizin · Prävention · Hausarzt</p>
-                    <h2 class="lp-h1 lp-h1--dark">Ihre Gesundheit<br>in guten Händen.</h2>
-                    <p class="lp-subline lp-subline--muted">Persönliche Betreuung seit über 15 Jahren. Offene Sprechstunde täglich ab 07:30 Uhr.</p>
-                    <div class="lp-btn-row">
-                      <button class="lp-btn lp-btn--teal">Online Termin anfragen</button>
-                      <button class="lp-btn lp-btn--outline-dark">Leistungen ansehen</button>
-                    </div>
-                  </div>
-                  <div class="lp-hero-split-img lp-photo--praxis"></div>
-                </div>
-              </div>
-              <!-- Leistungen -->
-              <div class="lp-strip lp-strip--white">
-                <p class="lp-strip-title lp-strip-title--dark lp-strip-title--center">Unsere Leistungen</p>
-                <div class="lp-services-grid">
-                  <div class="lp-service-item">
-                    <span class="lp-service-icon lp-si--blue"></span>
-                    <strong>Allgemeinmedizin</strong>
-                    <small>Vorsorge, Impfungen, Labordiagnostik</small>
-                  </div>
-                  <div class="lp-service-item">
-                    <span class="lp-service-icon lp-si--blue"></span>
-                    <strong>Chronische Erkrankungen</strong>
-                    <small>Diabetes, Hypertonie, Schilddrüse</small>
-                  </div>
-                  <div class="lp-service-item">
-                    <span class="lp-service-icon lp-si--blue"></span>
-                    <strong>Ernährungsberatung</strong>
-                    <small>Gewichtsmanagement &amp; Prävention</small>
-                  </div>
-                  <div class="lp-service-item">
-                    <span class="lp-service-icon lp-si--blue"></span>
-                    <strong>Reisemedizin</strong>
-                    <small>Impfberatung, Reise-Checks</small>
-                  </div>
-                </div>
-              </div>
-              <div class="lp-footer-bar lp-footer-bar--white">
-                <span>© 2025 Praxis Dr. Müller</span>
-                <span>Bahnhofstr. 12, 3011 Bern · Tel. 031 000 00 00</span>
-                <span>Impressum · Datenschutz</span>
-              </div>
-            </div>
-            <div class="lp-caption">
-              <span class="lp-badge lp-badge--teal">Gesundheit &amp; Medizin</span>
-              <h3 class="lp-caption-title">Praxis Dr. Müller</h3>
-              <p class="lp-caption-desc">Helles, seriöses Praxis-Design mit Leistungsübersicht, Team und Online-Terminanfrage.</p>
-            </div>
+          <div class="lp-slide lp-slide--hidden" role="group" aria-label="Slide 2 of 4">
+            <article class="lp-card">
+              <p class="lp-card-domain">Gesundheit &amp; Medizin</p>
+              <h3 class="lp-card-title">Praxis Website</h3>
+              <p class="lp-card-text">Seriöses Design mit ruhiger Typografie und klarer Navigation.</p>
+              <ul class="lp-card-list">
+                <li>Saubere Leistungsübersicht</li>
+                <li>Kontakt und Öffnungszeiten im Fokus</li>
+                <li>Termin-CTA klar platziert</li>
+              </ul>
+              <a class="lp-card-button" href="demo/praxis-site/index.html">Projekt ansehen</a>
+            </article>
           </div>
 
-          <!-- Slide 3: Dönerladen -->
-          <div class="lp-slide lp-slide--hidden" role="group" aria-label="Slide 3 von 4">
-            <div class="lp-mockup">
-              <div class="lp-browser-bar">
-                <span class="lp-dot lp-dot--red"></span>
-                <span class="lp-dot lp-dot--yellow"></span>
-                <span class="lp-dot lp-dot--green"></span>
-                <span class="lp-url">doener-palace.ch</span>
-              </div>
-              <div class="lp-site-nav lp-site-nav--charcoal">
-                <span class="lp-site-logo lp-site-logo--amber">Döner<span>Palace</span></span>
-                <div class="lp-site-links">
-                  <span>Speisekarte</span>
-                  <span>Über uns</span>
-                  <span>Standort</span>
-                  <a class="lp-site-cta lp-site-cta--amber">Online bestellen</a>
-                </div>
-              </div>
-              <div class="lp-hero lp-hero--doener">
-                <div class="lp-hero-photo lp-photo--doener"></div>
-                <div class="lp-hero-overlay lp-hero-overlay--warm"></div>
-                <div class="lp-hero-text">
-                  <p class="lp-overline">Täglich frisch zubereitet · Zürich Langstrasse</p>
-                  <h2 class="lp-h1">Authentischer Geschmack.<br>Täglich frisch.</h2>
-                  <p class="lp-subline">Halal-zertifiziert · Vegetarisch verfügbar · Lieferung &amp; Abholung</p>
-                  <div class="lp-btn-row">
-                    <button class="lp-btn lp-btn--amber">Jetzt bestellen</button>
-                    <button class="lp-btn lp-btn--ghost">Speisekarte ansehen</button>
-                  </div>
-                </div>
-              </div>
-              <!-- Menu strip -->
-              <div class="lp-strip lp-strip--charcoal">
-                <p class="lp-strip-title">Beliebte Gerichte</p>
-                <div class="lp-menu-grid">
-                  <div class="lp-menu-item">
-                    <div class="lp-menu-photo lp-mp--1"></div>
-                    <div class="lp-menu-info">
-                      <strong>Döner im Fladenbrot</strong>
-                      <small>Kalbfleisch, frische Salate, Knoblauchsauce</small>
-                      <span class="lp-price">CHF 11.–</span>
-                    </div>
-                  </div>
-                  <div class="lp-menu-item">
-                    <div class="lp-menu-photo lp-mp--2"></div>
-                    <div class="lp-menu-info">
-                      <strong>Döner Teller</strong>
-                      <small>Mit Reis, Salat und zwei Saucen</small>
-                      <span class="lp-price">CHF 15.–</span>
-                    </div>
-                  </div>
-                  <div class="lp-menu-item">
-                    <div class="lp-menu-photo lp-mp--3"></div>
-                    <div class="lp-menu-info">
-                      <strong>Falafel Box</strong>
-                      <small>Vegetarisch, mit Hummus &amp; Tabbouleh</small>
-                      <span class="lp-price">CHF 13.–</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="lp-footer-bar lp-footer-bar--charcoal">
-                <span>© 2025 Döner Palace GmbH</span>
-                <span>Langstrasse 44, 8004 Zürich · Tel. 044 000 00 00</span>
-                <span>Impressum · Datenschutz</span>
-              </div>
-            </div>
-            <div class="lp-caption">
-              <span class="lp-badge lp-badge--orange">Gastronomie</span>
-              <h3 class="lp-caption-title">Döner Palace</h3>
-              <p class="lp-caption-desc">Warmes, appetitliches Food-Design mit Speisekarte, echten Preisen und Bestell-CTA.</p>
-            </div>
+          <div class="lp-slide lp-slide--hidden" role="group" aria-label="Slide 3 of 4">
+            <article class="lp-card">
+              <p class="lp-card-domain">Gastronomie</p>
+              <h3 class="lp-card-title">Dönerladen</h3>
+              <p class="lp-card-text">Konzentriert auf Speisekarte, Bestellung und Standortinfos.</p>
+              <ul class="lp-card-list">
+                <li>Kompakte Menüstruktur</li>
+                <li>Schnelle mobile Lesbarkeit</li>
+                <li>Direkter Bestell-Button</li>
+              </ul>
+              <a class="lp-card-button" href="demo/doener-site/index.html">Projekt ansehen</a>
+            </article>
           </div>
 
-          <!-- Slide 4: Nagelstudio -->
-          <div class="lp-slide lp-slide--hidden" role="group" aria-label="Slide 4 von 4">
-            <div class="lp-mockup">
-              <div class="lp-browser-bar">
-                <span class="lp-dot lp-dot--red"></span>
-                <span class="lp-dot lp-dot--yellow"></span>
-                <span class="lp-dot lp-dot--green"></span>
-                <span class="lp-url">studio-elara.ch</span>
-              </div>
-              <div class="lp-site-nav lp-site-nav--cream">
-                <span class="lp-site-logo lp-site-logo--rose">Studio<span>Elara</span></span>
-                <div class="lp-site-links lp-site-links--dark">
-                  <span>Leistungen</span>
-                  <span>Galerie</span>
-                  <span>Preise</span>
-                  <span>Über uns</span>
-                  <a class="lp-site-cta lp-site-cta--rose">Termin buchen</a>
-                </div>
-              </div>
-              <div class="lp-hero lp-hero--nails">
-                <div class="lp-hero-split">
-                  <div class="lp-hero-split-text">
-                    <p class="lp-overline lp-overline--rose">Nail Art &amp; Maniküre · Basel</p>
-                    <h2 class="lp-h1 lp-h1--dark">Schönheit<br>im Detail.</h2>
-                    <p class="lp-subline lp-subline--muted">Professionelle Nail-Treatments in entspannter Atmosphäre. Gel, Acryl, Shellac und individuelle Nail Art.</p>
-                    <div class="lp-btn-row">
-                      <button class="lp-btn lp-btn--rose">Termin online buchen</button>
-                      <button class="lp-btn lp-btn--outline-dark">Preisliste ansehen</button>
-                    </div>
-                  </div>
-                  <div class="lp-hero-split-img lp-photo--nails"></div>
-                </div>
-              </div>
-              <!-- Preisliste + Galerie -->
-              <div class="lp-strip lp-strip--cream">
-                <div class="lp-nail-layout">
-                  <div class="lp-nail-prices">
-                    <p class="lp-strip-title lp-strip-title--dark">Preisliste</p>
-                    <table class="lp-table lp-table--light">
-                      <tr><td>Maniküre klassisch</td><td><strong>CHF 45.–</strong></td></tr>
-                      <tr><td>Shellac (UV-Lack)</td><td><strong>CHF 65.–</strong></td></tr>
-                      <tr><td>Gelnägel neu</td><td><strong>CHF 90.–</strong></td></tr>
-                      <tr><td>Gelnägel auffüllen</td><td><strong>CHF 70.–</strong></td></tr>
-                      <tr><td>Nail Art (pro Nagel)</td><td><strong>ab CHF 5.–</strong></td></tr>
-                    </table>
-                  </div>
-                  <div class="lp-nail-gallery">
-                    <div class="lp-gal-grid">
-                      <div class="lp-gal-item lp-gi--1"></div>
-                      <div class="lp-gal-item lp-gi--2"></div>
-                      <div class="lp-gal-item lp-gi--3"></div>
-                      <div class="lp-gal-item lp-gi--4"></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="lp-footer-bar lp-footer-bar--cream">
-                <span>© 2025 Studio Elara</span>
-                <span>Freiestrasse 88, 4051 Basel · Tel. 061 000 00 00</span>
-                <span>Impressum · Datenschutz</span>
-              </div>
-            </div>
-            <div class="lp-caption">
-              <span class="lp-badge lp-badge--pink">Beauty &amp; Wellness</span>
-              <h3 class="lp-caption-title">Studio Elara</h3>
-              <p class="lp-caption-desc">Elegantes, feminines Design mit Galerie, Preisliste und direkter Terminbuchung.</p>
-            </div>
+          <div class="lp-slide lp-slide--hidden" role="group" aria-label="Slide 4 of 4">
+            <article class="lp-card">
+              <p class="lp-card-domain">Beauty &amp; Wellness</p>
+              <h3 class="lp-card-title">Nagelstudio</h3>
+              <p class="lp-card-text">Elegantes One-Page-Design mit Services, Galerie und Buchung.</p>
+              <ul class="lp-card-list">
+                <li>Klare Service-Kategorien</li>
+                <li>Stimmige Preisdarstellung</li>
+                <li>Termin-CTA ohne Ablenkung</li>
+              </ul>
+              <a class="lp-card-button" href="demo/nagelstudio-site/index.html">Projekt ansehen</a>
+            </article>
           </div>
-
-          <!-- Arrow Buttons inside slider -->
-          <button class="lp-arrow lp-arrow--prev" id="lp-prev" aria-label="Vorheriges Projekt">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="20" height="20"><polyline points="15 18 9 12 15 6"/></svg>
-          </button>
-          <button class="lp-arrow lp-arrow--next" id="lp-next" aria-label="Nächstes Projekt">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="20" height="20"><polyline points="9 6 15 12 9 18"/></svg>
-          </button>
         </div>
 
-        <!-- Dot Navigation -->
-        <div class="lp-dots" id="lp-dots" role="tablist" aria-label="Slide Navigation">
-          <button class="lp-dot-btn lp-dot-btn--active" role="tab" aria-selected="true"  aria-label="Slide 1: Bowling Center" data-lp-index="0"></button>
-          <button class="lp-dot-btn" role="tab" aria-selected="false" aria-label="Slide 2: Arztpraxis" data-lp-index="1"></button>
-          <button class="lp-dot-btn" role="tab" aria-selected="false" aria-label="Slide 3: Dönerladen" data-lp-index="2"></button>
-          <button class="lp-dot-btn" role="tab" aria-selected="false" aria-label="Slide 4: Nagelstudio" data-lp-index="3"></button>
-        </div>
-
-        <!-- Thumbnail Strip -->
-        <div class="lp-thumbs" id="lp-thumbs" aria-label="Projekt-Vorschauen">
-          <div class="lp-thumb lp-thumb--active" data-lp-thumb="0" role="button" tabindex="0" aria-label="Bowling Center anzeigen">
-            <div class="lp-thumb-img lp-thumb-img--bowling">🎳</div>
-            <div class="lp-thumb-label">Bowling</div>
-          </div>
-          <div class="lp-thumb" data-lp-thumb="1" role="button" tabindex="0" aria-label="Arztpraxis anzeigen">
-            <div class="lp-thumb-img lp-thumb-img--praxis">⚕️</div>
-            <div class="lp-thumb-label">Praxis</div>
-          </div>
-          <div class="lp-thumb" data-lp-thumb="2" role="button" tabindex="0" aria-label="Dönerladen anzeigen">
-            <div class="lp-thumb-img lp-thumb-img--doener">🌯</div>
-            <div class="lp-thumb-label">Döner</div>
-          </div>
-          <div class="lp-thumb" data-lp-thumb="3" role="button" tabindex="0" aria-label="Nagelstudio anzeigen">
-            <div class="lp-thumb-img lp-thumb-img--nails">💅</div>
-            <div class="lp-thumb-label">Nails</div>
-          </div>
+        <div class="lp-dots" id="lp-dots" role="tablist" aria-label="Slide navigation">
+          <button class="lp-dot-btn lp-dot-btn--active" role="tab" aria-selected="true" aria-label="Slide 1" data-lp-index="0"></button>
+          <button class="lp-dot-btn" role="tab" aria-selected="false" aria-label="Slide 2" data-lp-index="1"></button>
+          <button class="lp-dot-btn" role="tab" aria-selected="false" aria-label="Slide 3" data-lp-index="2"></button>
+          <button class="lp-dot-btn" role="tab" aria-selected="false" aria-label="Slide 4" data-lp-index="3"></button>
         </div>
       </div>
     </section>
@@ -641,17 +380,17 @@
     <section class="ai" id="ki-teaser" aria-labelledby="ai-title">
       <div class="container ai-grid">
         <div class="ai-copy" data-reveal>
-          <h2 id="ai-title">KI-Integration &#8211; Dein digitaler Mitarbeiter</h2>
-          <p>
+          <h2 id="ai-title" data-i18n="ai_title">KI-Integration &#8211; Dein digitaler Mitarbeiter</h2>
+          <p data-i18n="ai_desc">
             Unser KI-Assistent arbeitet 24/7 f&#252;r dich: beantwortet Kundenfragen, sammelt Leads,
             qualifiziert Anfragen und erkl&#228;rt deine Produkte oder Services.
           </p>
           <ul class="ai-list">
-            <li>Automatische Kundenberatung</li>
-            <li>Lead-Qualifizierung in Echtzeit</li>
-            <li>Individuell mit deinen Inhalten trainierbar</li>
+            <li data-i18n="ai_feature_1">Automatische Kundenberatung</li>
+            <li data-i18n="ai_feature_2">Lead-Qualifizierung in Echtzeit</li>
+            <li data-i18n="ai_feature_3">Individuell mit deinen Inhalten trainierbar</li>
           </ul>
-          <a class="button button-primary" href="ki-assistent.html">KI-Assistent entdecken</a>
+          <a class="button button-primary" href="ki-assistent.html" data-i18n="ai_link">KI-Assistent entdecken</a>
         </div>
 
         <div class="ai-demo" data-reveal>
@@ -688,11 +427,11 @@
 
     <section class="pricing-teaser" id="preise-teaser" aria-labelledby="pricing-teaser-title">
       <div class="container" data-reveal style="text-align: center;">
-        <h2 id="pricing-teaser-title">Transparente Preise</h2>
-        <p class="lead" style="max-width: 600px; margin: 0 auto 2rem;">
+        <h2 id="pricing-teaser-title" data-i18n="pricing_teaser">Transparente Preise</h2>
+        <p class="lead" style="max-width: 600px; margin: 0 auto 2rem;" data-i18n="pricing_teaser_lead">
           Von der &#220;berarbeitung bis zur kompletten Website &#8211; modulare Pakete ab CHF 250.
         </p>
-        <a class="button button-primary" href="preise.html">Alle Preise ansehen</a>
+        <a class="button button-primary" href="preise.html" data-i18n="pricing_teaser_link">Alle Preise ansehen</a>
       </div>
     </section>
   </main>
@@ -701,47 +440,58 @@
     <div class="container footer-grid">
       <div>
         <p class="footer-brand">MASE</p>
-        <p class="footer-desc">Professionelle Websites &amp; KI-Integration aus der Schweiz.</p>
+        <p class="footer-desc" data-i18n="footer_desc">Professionelle Websites &amp; KI-Integration aus der Schweiz.</p>
       </div>
       <div>
-        <p class="footer-title">Navigation</p>
-        <a href="index.html">Home</a>
-        <a href="leistungen.html">Leistungen</a>
-        <a href="preise.html">Preise</a>
-        <a href="ki-assistent.html">KI-Assistent</a>
+        <p class="footer-title" data-i18n="footer_nav">Navigation</p>
+        <a href="index.html" data-i18n="nav_home">Home</a>
+        <a href="leistungen.html" data-i18n="nav_services">Leistungen</a>
+        <a href="preise.html" data-i18n="nav_prices">Preise</a>
+        <a href="ki-assistent.html" data-i18n="nav_ai">KI-Assistent</a>
       </div>
       <div>
-        <p class="footer-title">Kontakt</p>
-        <a href="kontakt.html">Kontaktformular</a>
-        <a href="ueber-uns.html">&#220;ber uns</a>
+        <p class="footer-title" data-i18n="footer_contact">Kontakt</p>
+        <a href="kontakt.html" data-i18n="footer_contact_form">Kontaktformular</a>
+        <a href="ueber-uns.html" data-i18n="nav_about">&#220;ber uns</a>
       </div>
       <div>
-        <p class="footer-title">Rechtliches</p>
-        <a href="impressum.html">Impressum</a>
-        <a href="datenschutz.html">Datenschutz</a>
+        <p class="footer-title" data-i18n="footer_legal">Rechtliches</p>
+        <a href="impressum.html" data-i18n="footer_impressum">Impressum</a>
+        <a href="datenschutz.html" data-i18n="footer_privacy">Datenschutz</a>
       </div>
     </div>
     <div class="container footer-bottom">
-      <p>Copyright <span id="year"></span> MASESites AG. Alle Rechte vorbehalten.</p>
+      <p>Copyright <span id="year"></span> MASESites AG. <span data-i18n="footer_copy">Alle Rechte vorbehalten.</span></p>
     </div>
   </footer>
+
+  <!-- Dark Mode Wave Overlay -->
+  <div id="dark-wave" aria-hidden="true">
+    <canvas id="dark-wave-canvas"></canvas>
+  </div>
 
   <!-- Cookie Banner (DSGVO) -->
   <div class="cookie-banner" id="cookie-banner" role="dialog" aria-labelledby="cookie-title" aria-describedby="cookie-desc">
     <div class="cookie-content">
       <div>
-        <h3 id="cookie-title">🍪 Cookie-Hinweis</h3>
-        <p id="cookie-desc">Wir verwenden Cookies für eine optimale Nutzererfahrung. <a href="datenschutz.html">Mehr erfahren</a></p>
+        <h3 id="cookie-title">🍪 <span data-i18n="cookie_title">Cookie-Hinweis</span></h3>
+        <p id="cookie-desc"><span data-i18n="cookie_desc">Wir verwenden Cookies für eine optimale Nutzererfahrung.</span> <a href="datenschutz.html" data-i18n="cookie_link">Mehr erfahren</a></p>
       </div>
       <div class="cookie-actions">
-        <button class="button button-ghost button-small" id="cookie-reject">Einstellungen</button>
-        <button class="button button-primary button-small" id="cookie-accept">Akzeptieren</button>
+        <button class="button button-ghost button-small" id="cookie-reject" data-i18n="cookie_settings">Einstellungen</button>
+        <button class="button button-primary button-small" id="cookie-accept" data-i18n="cookie_accept">Akzeptieren</button>
       </div>
     </div>
   </div>
 
+  <!-- Sticky CTA -->
+  <a class="sticky-cta" id="sticky-cta" href="kontakt.html">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+    Projekt starten
+  </a>
+
   <!-- Back to Top Button -->
-  <button class="back-to-top" id="back-to-top" aria-label="Zur&#252;ck nach oben">
+  <button class="back-to-top" id="back-to-top" aria-label="Zurück nach oben" data-i18n-aria-label="back_to_top_aria">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
       <polyline points="18 15 12 9 6 15"></polyline>
     </svg>

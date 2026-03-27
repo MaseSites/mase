@@ -9,9 +9,10 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Middleware
+app.disable('x-powered-by');
 app.use(cors());
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.json({ limit: '20kb' }));
+app.use(express.urlencoded({ extended: true, limit: '20kb' }));
 
 // 301 Weiterleitungen: .html URLs -> saubere URLs (VOR static middleware, wichtig fuer SEO)
 app.get('/leistungen.html', (req, res) => res.redirect(301, '/leistungen'));
@@ -36,11 +37,36 @@ app.get('/kontakt', (req, res) => res.sendFile(path.join(__dirname, 'kontakt.htm
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 5,
-  message: 'Zu viele Anfragen. Bitte versuche es später erneut.'
+  standardHeaders: true,
+  legacyHeaders: false,
+  handler: (req, res) => {
+    res.status(429).json({
+      success: false,
+      code: 'RATE_LIMITED',
+      message: 'Zu viele Anfragen. Bitte versuche es spaeter erneut.'
+    });
+  }
 });
 
 // Email Transporter Setup
 let transporter;
+
+function escapeHtml(value) {
+  return String(value || '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
+function normalizeBoolean(value) {
+  return value === true || value === 'true' || value === 'on' || value === '1' || value === 1;
+}
+
+function sanitizeText(value, maxLength) {
+  return String(value || '').trim().slice(0, maxLength);
+}
 
 async function setupEmailTransporter() {
   if (process.env.SENDGRID_API_KEY) {
@@ -57,20 +83,28 @@ async function setupEmailTransporter() {
 
   } else if (process.env.SMTP_HOST) {
     // Custom SMTP
+    const smtpPort = parseInt(process.env.SMTP_PORT, 10) || 587;
+    const smtpUser = process.env.SMTP_USER || process.env.EMAIL_USER;
+    const smtpPassword = process.env.SMTP_PASSWORD || process.env.EMAIL_PASSWORD;
+
+    if (!smtpUser || !smtpPassword) {
+      throw new Error('SMTP_USER/EMAIL_USER und SMTP_PASSWORD/EMAIL_PASSWORD muessen gesetzt sein.');
+    }
+
     transporter = nodemailer.createTransport({
       host: process.env.SMTP_HOST,
-      port: parseInt(process.env.SMTP_PORT) || 587,
-      secure: process.env.SMTP_PORT === '465',
+      port: smtpPort,
+      secure: smtpPort === 465,
       auth: {
-        user: process.env.SMTP_USER || process.env.EMAIL_USER,
-        pass: process.env.SMTP_PASSWORD || process.env.EMAIL_PASSWORD
+        user: smtpUser,
+        pass: smtpPassword
       },
-      tls: {
-        rejectUnauthorized: false
-      }
+      tls: process.env.SMTP_TLS_SERVERNAME
+        ? { servername: process.env.SMTP_TLS_SERVERNAME }
+        : undefined
     });
     console.log(`[OK] Email: SMTP ${process.env.SMTP_HOST} konfiguriert`);
-    console.log(`     Absender : ${process.env.SMTP_USER}`);
+    console.log(`     Absender : ${smtpUser}`);
     console.log(`     Empfaenger: ${process.env.EMAIL_TO}`);
 
   } else if (process.env.EMAIL_USER && process.env.EMAIL_PASSWORD &&
@@ -118,26 +152,67 @@ async function setupEmailTransporter() {
       console.error('[FEHLER] Test-Account Fehler:', err.message);
     }
   }
+
+  if (transporter) {
+    await transporter.verify();
+    console.log('[OK] Email-Transport Verbindung geprueft');
+  }
 }
 
 // Initialize transporter
-setupEmailTransporter();
+setupEmailTransporter().catch((err) => {
+  transporter = null;
+  console.error('[FEHLER] Email Transporter Setup fehlgeschlagen:', err.message);
+});
 
 // Contact Form Endpoint
 app.post('/api/contact', limiter, async (req, res) => {
   try {
-    const { name, email, company, projectType, message, privacy, honeypot } = req.body;
+    const {
+      name: rawName,
+      email: rawEmail,
+      company: rawCompany,
+      projectType: rawProjectType,
+      message: rawMessage,
+      privacy: rawPrivacy,
+      honeypot: rawHoneypot,
+      pricingSelection: rawPricingSelection
+    } = req.body || {};
 
-    // Spam check
-    if (honeypot) {
-      return res.status(400).json({ success: false, message: 'Spam detected' });
+    if (!transporter) {
+      return res.status(503).json({
+        success: false,
+        code: 'EMAIL_NOT_CONFIGURED',
+        message: 'Email-Dienst ist aktuell nicht verfuegbar. Bitte versuche es spaeter erneut.'
+      });
     }
 
-    // Validation
+    const name = sanitizeText(rawName, 120);
+    const email = sanitizeText(rawEmail, 254).toLowerCase();
+    const company = sanitizeText(rawCompany, 120);
+    const projectType = sanitizeText(rawProjectType, 100);
+    const message = sanitizeText(rawMessage, 4000);
+    const privacy = normalizeBoolean(rawPrivacy);
+    const honeypot = sanitizeText(rawHoneypot, 200);
+    const pricingSelection = sanitizeText(rawPricingSelection, 2000);
+
+    if (honeypot) {
+      return res.status(400).json({ success: false, code: 'SPAM_DETECTED', message: 'Spam erkannt.' });
+    }
+
     if (!name || !email || !message || !privacy) {
       return res.status(400).json({
         success: false,
+        code: 'VALIDATION_REQUIRED_FIELDS',
         message: 'Bitte fuelle alle Pflichtfelder aus.'
+      });
+    }
+
+    if (name.length < 2) {
+      return res.status(400).json({
+        success: false,
+        code: 'VALIDATION_NAME',
+        message: 'Bitte gib einen gueltigen Namen ein.'
       });
     }
 
@@ -145,16 +220,41 @@ app.post('/api/contact', limiter, async (req, res) => {
     if (!emailRegex.test(email)) {
       return res.status(400).json({
         success: false,
+        code: 'VALIDATION_EMAIL',
         message: 'Bitte gib eine gueltige E-Mail-Adresse ein.'
       });
     }
 
+    if (message.length < 10) {
+      return res.status(400).json({
+        success: false,
+        code: 'VALIDATION_MESSAGE',
+        message: 'Bitte gib eine aussagekraeftige Nachricht mit mindestens 10 Zeichen ein.'
+      });
+    }
+
+    const safeName = escapeHtml(name);
+    const safeEmail = escapeHtml(email);
+    const safeCompany = escapeHtml(company);
+    const safeProjectType = escapeHtml(projectType);
+    const safeMessage = escapeHtml(message);
+    const safePricingSelection = escapeHtml(pricingSelection);
+    const safeSubjectName = name.replace(/[\r\n]+/g, ' ').slice(0, 80);
+
     // Email to MASESites
+    const pricingSelectionBlock = pricingSelection
+      ? `
+            <tr>
+              <td style="padding: 10px 0; font-weight: bold; vertical-align: top;">Auswahl:</td>
+              <td style="padding: 10px 0; white-space: pre-line;">${safePricingSelection}</td>
+            </tr>`
+      : '';
+
     const mailToCompany = {
       from: `"MASESites AG" <${process.env.SMTP_USER || 'info@masesites.ch'}>`,
       to: process.env.EMAIL_TO || 'info@masesites.ch',
       replyTo: email,
-      subject: `Neue Kontaktanfrage von ${name} - MASESites`,
+      subject: `Neue Kontaktanfrage von ${safeSubjectName} - MASESites`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
           <h2 style="color: #6aa9ff; border-bottom: 2px solid #6aa9ff; padding-bottom: 10px;">
@@ -163,26 +263,27 @@ app.post('/api/contact', limiter, async (req, res) => {
           <table style="width: 100%; margin: 20px 0;">
             <tr>
               <td style="padding: 10px 0; font-weight: bold; width: 150px;">Name:</td>
-              <td style="padding: 10px 0;">${name}</td>
+              <td style="padding: 10px 0;">${safeName}</td>
             </tr>
             <tr>
               <td style="padding: 10px 0; font-weight: bold;">E-Mail:</td>
-              <td style="padding: 10px 0;"><a href="mailto:${email}">${email}</a></td>
+              <td style="padding: 10px 0;"><a href="mailto:${safeEmail}">${safeEmail}</a></td>
             </tr>
             ${company ? `
             <tr>
               <td style="padding: 10px 0; font-weight: bold;">Firma:</td>
-              <td style="padding: 10px 0;">${company}</td>
+              <td style="padding: 10px 0;">${safeCompany}</td>
             </tr>` : ''}
             ${projectType ? `
             <tr>
               <td style="padding: 10px 0; font-weight: bold;">Projektart:</td>
-              <td style="padding: 10px 0;">${projectType}</td>
+              <td style="padding: 10px 0;">${safeProjectType}</td>
             </tr>` : ''}
+            ${pricingSelectionBlock}
           </table>
           <div style="background: #f6f9ff; padding: 20px; border-left: 4px solid #6aa9ff; margin: 20px 0;">
             <p style="margin: 0 0 10px 0; font-weight: bold;">Nachricht:</p>
-            <p style="margin: 0; color: #334155; white-space: pre-line;">${message}</p>
+            <p style="margin: 0; color: #334155; white-space: pre-line;">${safeMessage}</p>
           </div>
           <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 30px 0;">
           <p style="font-size: 12px; color: #94a3b8;">
@@ -201,6 +302,14 @@ app.post('/api/contact', limiter, async (req, res) => {
     }
 
     // Bestaetigung an User
+    const userPricingSection = pricingSelection
+      ? `
+          <div style="background: #f6f9ff; padding: 20px; border-radius: 8px; margin: 20px 0;">
+            <p style="margin: 0 0 10px 0; font-weight: bold; color: #334155;">Deine gewaehlten Pakete:</p>
+            <p style="margin: 0; color: #64748b; white-space: pre-line;">${safePricingSelection}</p>
+          </div>`
+      : '';
+
     const mailToUser = {
       from: `"MASESites AG" <${process.env.SMTP_USER || 'info@masesites.ch'}>`,
       to: email,
@@ -208,12 +317,13 @@ app.post('/api/contact', limiter, async (req, res) => {
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
           <h2 style="color: #6aa9ff;">Vielen Dank fuer deine Anfrage!</h2>
-          <p>Hallo ${name},</p>
+          <p>Hallo ${safeName},</p>
           <p>wir haben deine Nachricht erhalten und melden uns innerhalb von <strong>24-48 Stunden</strong> bei dir.</p>
           <div style="background: #f6f9ff; padding: 20px; border-radius: 8px; margin: 20px 0;">
             <p style="margin: 0 0 10px 0; font-weight: bold; color: #334155;">Deine Nachricht:</p>
-            <p style="margin: 0; color: #64748b; white-space: pre-line;">${message}</p>
+            <p style="margin: 0; color: #64748b; white-space: pre-line;">${safeMessage}</p>
           </div>
+          ${userPricingSection}
           <p style="color: #64748b;">
             Falls du noch Fragen hast, erreichst du uns jederzeit:
           </p>
@@ -238,8 +348,9 @@ app.post('/api/contact', limiter, async (req, res) => {
     await transporter.sendMail(mailToUser);
     console.log('[OK] Bestaetigung an User gesendet');
 
-    res.json({
+    res.status(200).json({
       success: true,
+      code: 'CONTACT_SENT',
       message: 'Nachricht erfolgreich gesendet! Wir melden uns in 24-48h.'
     });
 
@@ -247,6 +358,7 @@ app.post('/api/contact', limiter, async (req, res) => {
     console.error('[FEHLER] Email Error:', error.message);
     res.status(500).json({
       success: false,
+      code: 'MAIL_SEND_FAILED',
       message: 'Ein Fehler ist aufgetreten. Bitte schreibe direkt an info@masesites.ch oder rufe an: 078 215 89 22'
     });
   }

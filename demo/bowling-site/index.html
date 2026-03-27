@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>StrikeZone Bowling – Zürich Oerlikon</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',sans-serif;background:#0a0f1a;color:#f1f5f9;line-height:1.6}
+a{color:inherit;text-decoration:none}
+
+/* NAV */
+nav{position:sticky;top:0;z-index:100;background:rgba(10,15,26,.95);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,.07)}
+.nav-inner{max-width:1100px;margin:0 auto;padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:64px}
+.nav-logo{font-size:1.4rem;font-weight:800;letter-spacing:-.02em}
+.nav-logo span{color:#3b82f6}
+.nav-links{display:flex;gap:2rem;align-items:center;font-size:.9rem;color:rgba(241,245,249,.7)}
+.nav-links a:hover{color:#fff}
+.nav-cta{background:#2563eb;color:#fff!important;padding:.5rem 1.2rem;border-radius:6px;font-weight:600;font-size:.85rem;transition:background .2s}
+.nav-cta:hover{background:#1d4ed8}
+.demo-lang-switch{display:flex;gap:.35rem}
+.demo-lang-btn{background:transparent;border:1px solid rgba(255,255,255,.25);color:rgba(241,245,249,.75);padding:.28rem .55rem;border-radius:999px;font-size:.72rem;font-weight:700;cursor:pointer}
+.demo-lang-btn.active{background:#2563eb;border-color:#2563eb;color:#fff}
+
+/* HERO */
+.hero{position:relative;height:520px;overflow:hidden;display:flex;align-items:center}
+.hero-bg{position:absolute;inset:0;background:
+  linear-gradient(to bottom, #080400 0%, #1a0d03 20%, #2c1805 40%, #1a0d03 80%, #080400 100%);
+}
+.hero-bg::before{
+  content:'';position:absolute;inset:0;
+  background:
+    repeating-linear-gradient(90deg,transparent 0,transparent 60px,rgba(140,90,30,.08) 60px,rgba(140,90,30,.08) 62px),
+    repeating-linear-gradient(90deg,transparent 0,transparent 120px,rgba(140,90,30,.05) 120px,rgba(140,90,30,.05) 122px);
+}
+.hero-bg::after{
+  content:'';position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 30% 20% at 50% 15%,rgba(255,240,180,.22) 0%,transparent 70%),
+    linear-gradient(to right,rgba(0,0,0,.75) 0%,rgba(0,0,0,.3) 55%,transparent 100%);
+}
+/* lane lines */
+.lanes{position:absolute;inset:0;display:flex;justify-content:center;gap:0;pointer-events:none}
+.lane{width:70px;height:100%;background:linear-gradient(to bottom,rgba(120,75,25,.35) 0%,rgba(80,50,15,.15) 100%);border-left:1px solid rgba(160,100,30,.12)}
+
+.hero-content{position:relative;z-index:2;max-width:1100px;margin:0 auto;padding:0 2rem}
+.hero-eyebrow{font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.15em;color:#3b82f6;margin-bottom:1rem}
+.hero h1{font-size:clamp(2.2rem,5vw,3.5rem);font-weight:800;line-height:1.1;letter-spacing:-.03em;margin-bottom:1rem}
+.hero h1 span{color:#3b82f6}
+.hero-sub{font-size:1rem;color:rgba(241,245,249,.7);margin-bottom:2rem;max-width:480px}
+.btn-row{display:flex;gap:1rem;flex-wrap:wrap}
+.btn{padding:.7rem 1.6rem;border-radius:6px;font-weight:700;font-size:.9rem;border:none;cursor:pointer;transition:all .2s}
+.btn-primary{background:#2563eb;color:#fff}
+.btn-primary:hover{background:#1d4ed8;transform:translateY(-1px)}
+.btn-outline{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.3)}
+.btn-outline:hover{border-color:#fff;background:rgba(255,255,255,.07)}
+
+/* INFO BAR */
+.infobar{background:#060e1c;border-top:1px solid rgba(255,255,255,.06);border-bottom:1px solid rgba(255,255,255,.06)}
+.infobar-inner{max-width:1100px;margin:0 auto;padding:0 2rem;display:flex}
+.info-item{flex:1;padding:1.1rem 1.5rem;border-right:1px solid rgba(255,255,255,.06);display:flex;flex-direction:column;gap:.2rem}
+.info-item:last-child{border-right:none}
+.info-label{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#3b82f6}
+.info-val{font-size:.85rem;color:rgba(241,245,249,.75)}
+
+/* SECTION HEADER */
+.section{padding:5rem 0}
+.section-inner{max-width:1100px;margin:0 auto;padding:0 2rem}
+.section-label{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.15em;color:#3b82f6;margin-bottom:.75rem}
+.section-title{font-size:clamp(1.8rem,3vw,2.4rem);font-weight:800;letter-spacing:-.02em;margin-bottom:1rem}
+.section-sub{color:rgba(241,245,249,.6);max-width:560px;font-size:.95rem}
+
+/* PRICING */
+.pricing-section{background:#07101e}
+.pricing-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.5rem;margin-top:3rem}
+.price-card{background:#0f1d2e;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:2rem;text-align:center;transition:transform .2s,border-color .2s}
+.price-card:hover{transform:translateY(-4px);border-color:#3b82f6}
+.price-card.featured{border-color:#3b82f6;background:linear-gradient(135deg,#0f1d2e,#0d2044)}
+.price-label{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.5);margin-bottom:.5rem}
+.price-amount{font-size:2.6rem;font-weight:800;color:#fff;line-height:1}
+.price-amount span{font-size:1rem;font-weight:500;color:rgba(255,255,255,.5)}
+.price-desc{font-size:.82rem;color:rgba(241,245,249,.55);margin-top:.6rem;line-height:1.5}
+.badge-featured{display:inline-block;background:#2563eb;color:#fff;font-size:.65rem;font-weight:700;padding:.2rem .65rem;border-radius:999px;margin-bottom:.6rem;text-transform:uppercase;letter-spacing:.05em}
+
+/* EVENTS */
+.events-section{background:#0a0f1a}
+.events-grid{display:grid;gap:1rem;margin-top:2.5rem}
+.event-card{background:#0f1d2e;border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:1.4rem 1.8rem;display:flex;align-items:center;gap:2rem;transition:border-color .2s}
+.event-card:hover{border-color:#3b82f6}
+.event-date-block{text-align:center;min-width:56px}
+.event-day{font-size:1.8rem;font-weight:800;line-height:1;color:#3b82f6}
+.event-month{font-size:.65rem;font-weight:600;text-transform:uppercase;color:rgba(241,245,249,.45);letter-spacing:.08em}
+.event-info h3{font-size:1rem;font-weight:700;margin-bottom:.25rem}
+.event-info p{font-size:.82rem;color:rgba(241,245,249,.55);margin:0}
+.event-cta{margin-left:auto;flex-shrink:0}
+
+/* GALLERY */
+.gallery-section{background:#07101e;padding-bottom:6rem}
+.gallery-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:.75rem;margin-top:2.5rem}
+.gallery-item{border-radius:10px;overflow:hidden;aspect-ratio:4/3;position:relative}
+.gallery-item:nth-child(1){grid-column:span 2;grid-row:span 2;aspect-ratio:auto}
+.gal-bg{width:100%;height:100%;min-height:160px}
+.gal-1{background:linear-gradient(135deg,#0a0400 0%,#2a1000 40%,#3a1a05 70%,#1a0800 100%)}
+.gal-2{background:linear-gradient(135deg,#070d1c 0%,#0f1d3a 50%,#1a2e52 100%)}
+.gal-3{background:linear-gradient(135deg,#1a0800 0%,#3d1c07 50%,#5a2a0b 100%)}
+.gal-4{background:linear-gradient(135deg,#050b18 0%,#0c1730 50%,#162540 100%)}
+.gal-5{background:linear-gradient(135deg,#0a1520 0%,#162540 50%,#1e3558 100%)}
+
+/* FOOTER */
+footer{background:#040810;border-top:1px solid rgba(255,255,255,.06);padding:3rem 0 2rem}
+.footer-inner{max-width:1100px;margin:0 auto;padding:0 2rem;display:grid;grid-template-columns:2fr 1fr 1fr;gap:3rem}
+.footer-brand{font-size:1.3rem;font-weight:800;margin-bottom:.75rem}
+.footer-brand span{color:#3b82f6}
+.footer-desc{font-size:.85rem;color:rgba(241,245,249,.45);line-height:1.6}
+.footer-col h4{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:rgba(241,245,249,.35);margin-bottom:1rem}
+.footer-col a{display:block;font-size:.85rem;color:rgba(241,245,249,.55);margin-bottom:.5rem;transition:color .15s}
+.footer-col a:hover{color:#fff}
+.footer-bottom{max-width:1100px;margin:2rem auto 0;padding:1.5rem 2rem 0;border-top:1px solid rgba(255,255,255,.05);font-size:.8rem;color:rgba(241,245,249,.3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:.5rem}
+
+@media(max-width:768px){
+  .nav-links{display:none}
+  .hero{height:420px}
+  .infobar-inner{flex-direction:column}
+  .info-item{border-right:none;border-bottom:1px solid rgba(255,255,255,.06)}
+  .gallery-grid{grid-template-columns:repeat(2,1fr)}
+  .gallery-item:nth-child(1){grid-column:span 1;grid-row:span 1}
+  .footer-inner{grid-template-columns:1fr;gap:2rem}
+  .event-card{flex-wrap:wrap}
+  .event-cta{margin-left:0}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <div class="nav-logo">STRIKE<span>ZONE</span></div>
+    <div class="demo-lang-switch" aria-label="Language switch">
+      <button type="button" class="demo-lang-btn active" data-lang="de">DE</button>
+      <button type="button" class="demo-lang-btn" data-lang="en">EN</button>
+    </div>
+    <div class="nav-links">
+      <a href="#">Bahnen &amp; Preise</a>
+      <a href="#">Events</a>
+      <a href="#">Gastronomie</a>
+      <a href="#">Galerie</a>
+      <a href="#">Kontakt</a>
+      <a href="#" class="nav-cta">Jetzt reservieren</a>
+    </div>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="lanes">
+    <div class="lane"></div><div class="lane"></div><div class="lane"></div>
+    <div class="lane"></div><div class="lane"></div><div class="lane"></div>
+    <div class="lane"></div><div class="lane"></div>
+  </div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">Bowling &amp; Entertainment · Zürich Oerlikon</p>
+    <h1>Wo jeder Abend<br>zum <span>Erlebnis</span> wird.</h1>
+    <p class="hero-sub">12 professionelle Bahnen · Sportbar · Private Events · Catering</p>
+    <div class="btn-row">
+      <button class="btn btn-primary">Jetzt reservieren</button>
+      <button class="btn btn-outline">Preise ansehen</button>
+    </div>
+  </div>
+</section>
+
+<div class="infobar">
+  <div class="infobar-inner">
+    <div class="info-item">
+      <span class="info-label">Öffnungszeiten</span>
+      <span class="info-val">Mo–Fr 14:00–01:00 · Sa–So 11:00–01:00</span>
+    </div>
+    <div class="info-item">
+      <span class="info-label">Preise ab</span>
+      <span class="info-val">CHF 8.– / Spiel · Schuhe inklusive</span>
+    </div>
+    <div class="info-item">
+      <span class="info-label">Events</span>
+      <span class="info-val">Geburtstage · Firmenfeiern · Turniere</span>
+    </div>
+    <div class="info-item">
+      <span class="info-label">Bahnen</span>
+      <span class="info-val">12 professionelle Bowling-Bahnen</span>
+    </div>
+  </div>
+</div>
+
+<section class="section pricing-section">
+  <div class="section-inner">
+    <p class="section-label">Tarife</p>
+    <h2 class="section-title">Transparente Preise</h2>
+    <p class="section-sub">Faire Tarife für jeden Anlass – Einzelspieler, Gruppen und Events.</p>
+    <div class="pricing-grid">
+      <div class="price-card">
+        <p class="price-label">Tagstarif</p>
+        <div class="price-amount">8.–<span>CHF</span></div>
+        <p class="price-desc">pro Spiel / Person · Mo–Fr bis 18:00 · Schuhe inklusive</p>
+      </div>
+      <div class="price-card featured">
+        <span class="badge-featured">Abend</span>
+        <p class="price-label">Abendtarif</p>
+        <div class="price-amount">11.–<span>CHF</span></div>
+        <p class="price-desc">ab 18:00 Uhr · Schuhe inklusive · Tischreservation empfohlen</p>
+      </div>
+      <div class="price-card">
+        <p class="price-label">Gruppe 6+</p>
+        <div class="price-amount">14.–<span>CHF</span></div>
+        <p class="price-desc">pro Spiel / Person · ab 6 Personen · inkl. Schuhverleih</p>
+      </div>
+      <div class="price-card">
+        <p class="price-label">Schuhe</p>
+        <div class="price-amount"><span style="font-size:1.2rem">inkl.</span></div>
+        <p class="price-desc">Im Preis inbegriffen · alle Grössen verfügbar</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section events-section">
+  <div class="section-inner">
+    <p class="section-label">Veranstaltungen</p>
+    <h2 class="section-title">Nächste Events</h2>
+    <p class="section-sub">Regelmässige Events für Sportler, Firmen und Familien.</p>
+    <div class="events-grid">
+      <div class="event-card">
+        <div class="event-date-block">
+          <div class="event-day">15</div>
+          <div class="event-month">März</div>
+        </div>
+        <div class="event-info">
+          <h3>Firmenturnier «City Cup»</h3>
+          <p>Teams zu je 4–6 Personen · Preisgeld · Catering inklusive</p>
+        </div>
+        <div class="event-cta"><button class="btn btn-primary" style="font-size:.82rem;padding:.5rem 1rem">Anmelden</button></div>
+      </div>
+      <div class="event-card">
+        <div class="event-date-block">
+          <div class="event-day">22</div>
+          <div class="event-month">März</div>
+        </div>
+        <div class="event-info">
+          <h3>Ladies Night – freier Eintritt</h3>
+          <p>Für alle Frauen · DJ · Cocktailbar · Schuhe gratis</p>
+        </div>
+        <div class="event-cta"><button class="btn btn-outline" style="font-size:.82rem;padding:.5rem 1rem">Mehr erfahren</button></div>
+      </div>
+      <div class="event-card">
+        <div class="event-date-block">
+          <div class="event-day">29</div>
+          <div class="event-month">März</div>
+        </div>
+        <div class="event-info">
+          <h3>Osterturnier für Familien</h3>
+          <p>Kinder bis 12 kostenlos · Sonderpreise · Preise zu gewinnen</p>
+        </div>
+        <div class="event-cta"><button class="btn btn-primary" style="font-size:.82rem;padding:.5rem 1rem">Anmelden</button></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section gallery-section">
+  <div class="section-inner">
+    <p class="section-label">Eindrücke</p>
+    <h2 class="section-title">Unsere Anlage</h2>
+    <p class="section-sub">Modernste Ausstattung, professionelle Bahnen und einzigartige Atmosphäre.</p>
+    <div class="gallery-grid">
+      <div class="gallery-item"><div class="gal-bg gal-1"></div></div>
+      <div class="gallery-item"><div class="gal-bg gal-2"></div></div>
+      <div class="gallery-item"><div class="gal-bg gal-3"></div></div>
+      <div class="gallery-item"><div class="gal-bg gal-4"></div></div>
+      <div class="gallery-item"><div class="gal-bg gal-5"></div></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-brand">STRIKE<span>ZONE</span></div>
+      <p class="footer-desc">Professionelles Bowling-Center im Herzen von Zürich Oerlikon. 12 Bahnen, Sportbar und unvergessliche Events.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Navigation</h4>
+      <a href="#">Bahnen &amp; Preise</a>
+      <a href="#">Events</a>
+      <a href="#">Gastronomie</a>
+      <a href="#">Galerie</a>
+    </div>
+    <div class="footer-col">
+      <h4>Kontakt</h4>
+      <a href="#">Theaterstrasse 14, 8050 Zürich</a>
+      <a href="#">044 000 00 00</a>
+      <a href="#">info@strikezone.ch</a>
+      <a href="#">Impressum</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 StrikeZone Bowling AG</span>
+    <span>Impressum · Datenschutz · AGB</span>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var supported = ['de', 'en'];
+  var urlLang = new URLSearchParams(window.location.search).get('lang');
+  var stored = localStorage.getItem('lang');
+  var lang = supported.indexOf(urlLang) !== -1 ? urlLang : (supported.indexOf(stored) !== -1 ? stored : 'de');
+
+  var copy = {
+    de: {
+      title: 'StrikeZone Bowling – Zürich Oerlikon',
+      nav: `<a href="#">Bahnen &amp; Preise</a>
+      <a href="#">Events</a>
+      <a href="#">Gastronomie</a>
+      <a href="#">Galerie</a>
+      <a href="#">Kontakt</a>
+      <a href="#" class="nav-cta">Jetzt reservieren</a>`,
+      hero: `<p class="hero-eyebrow">Bowling &amp; Entertainment · Zürich Oerlikon</p>
+    <h1>Wo jeder Abend<br>zum <span>Erlebnis</span> wird.</h1>
+    <p class="hero-sub">12 professionelle Bahnen · Sportbar · Private Events · Catering</p>
+    <div class="btn-row">
+      <button class="btn btn-primary">Jetzt reservieren</button>
+      <button class="btn btn-outline">Preise ansehen</button>
+    </div>`,
+      info: `<div class="info-item">
+      <span class="info-label">Öffnungszeiten</span>
+      <span class="info-val">Mo–Fr 14:00–01:00 · Sa–So 11:00–01:00</span>
+    </div>
+    <div class="info-item">
+      <span class="info-label">Preise ab</span>
+      <span class="info-val">CHF 8.– / Spiel · Schuhe inklusive</span>
+    </div>
+    <div class="info-item">
+      <span class="info-label">Events</span>
+      <span class="info-val">Geburtstage · Firmenfeiern · Turniere</span>
+    </div>
+    <div class="info-item">
+      <span class="info-label">Bahnen</span>
+      <span class="info-val">12 professionelle Bowling-Bahnen</span>
+    </div>`,
+      pricing: `<p class="section-label">Tarife</p>
+    <h2 class="section-title">Transparente Preise</h2>
+    <p class="section-sub">Faire Tarife für jeden Anlass – Einzelspieler, Gruppen und Events.</p>
+    <div class="pricing-grid">
+      <div class="price-card">
+        <p class="price-label">Tagstarif</p>
+        <div class="price-amount">8.–<span>CHF</span></div>
+        <p class="price-desc">pro Spiel / Person · Mo–Fr bis 18:00 · Schuhe inklusive</p>
+      </div>
+      <div class="price-card featured">
+        <span class="badge-featured">Abend</span>
+        <p class="price-label">Abendtarif</p>
+        <div class="price-amount">11.–<span>CHF</span></div>
+        <p class="price-desc">ab 18:00 Uhr · Schuhe inklusive · Tischreservation empfohlen</p>
+      </div>
+      <div class="price-card">
+        <p class="price-label">Gruppe 6+</p>
+        <div class="price-amount">14.–<span>CHF</span></div>
+        <p class="price-desc">pro Spiel / Person · ab 6 Personen · inkl. Schuhverleih</p>
+      </div>
+      <div class="price-card">
+        <p class="price-label">Schuhe</p>
+        <div class="price-amount"><span style="font-size:1.2rem">inkl.</span></div>
+        <p class="price-desc">Im Preis inbegriffen · alle Grössen verfügbar</p>
+      </div>
+    </div>`,
+      events: `<p class="section-label">Veranstaltungen</p>
+    <h2 class="section-title">Nächste Events</h2>
+    <p class="section-sub">Regelmässige Events für Sportler, Firmen und Familien.</p>
+    <div class="events-grid">
+      <div class="event-card">
+        <div class="event-date-block"><div class="event-day">15</div><div class="event-month">März</div></div>
+        <div class="event-info"><h3>Firmenturnier «City Cup»</h3><p>Teams zu je 4–6 Personen · Preisgeld · Catering inklusive</p></div>
+        <div class="event-cta"><button class="btn btn-primary" style="font-size:.82rem;padding:.5rem 1rem">Anmelden</button></div>
+      </div>
+      <div class="event-card">
+        <div class="event-date-block"><div class="event-day">22</div><div class="event-month">März</div></div>
+        <div class="event-info"><h3>Ladies Night – freier Eintritt</h3><p>Für alle Frauen · DJ · Cocktailbar · Schuhe gratis</p></div>
+        <div class="event-cta"><button class="btn btn-outline" style="font-size:.82rem;padding:.5rem 1rem">Mehr erfahren</button></div>
+      </div>
+      <div class="event-card">
+        <div class="event-date-block"><div class="event-day">29</div><div class="event-month">März</div></div>
+        <div class="event-info"><h3>Osterturnier für Familien</h3><p>Kinder bis 12 kostenlos · Sonderpreise · Preise zu gewinnen</p></div>
+        <div class="event-cta"><button class="btn btn-primary" style="font-size:.82rem;padding:.5rem 1rem">Anmelden</button></div>
+      </div>
+    </div>`,
+      gallery: `<p class="section-label">Eindrücke</p>
+    <h2 class="section-title">Unsere Anlage</h2>
+    <p class="section-sub">Modernste Ausstattung, professionelle Bahnen und einzigartige Atmosphäre.</p>
+    <div class="gallery-grid">
+      <div class="gallery-item"><div class="gal-bg gal-1"></div></div>
+      <div class="gallery-item"><div class="gal-bg gal-2"></div></div>
+      <div class="gallery-item"><div class="gal-bg gal-3"></div></div>
+      <div class="gallery-item"><div class="gal-bg gal-4"></div></div>
+      <div class="gallery-item"><div class="gal-bg gal-5"></div></div>
+    </div>`,
+      footerInner: `<div>
+      <div class="footer-brand">STRIKE<span>ZONE</span></div>
+      <p class="footer-desc">Professionelles Bowling-Center im Herzen von Zürich Oerlikon. 12 Bahnen, Sportbar und unvergessliche Events.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Navigation</h4>
+      <a href="#">Bahnen &amp; Preise</a>
+      <a href="#">Events</a>
+      <a href="#">Gastronomie</a>
+      <a href="#">Galerie</a>
+    </div>
+    <div class="footer-col">
+      <h4>Kontakt</h4>
+      <a href="#">Theaterstrasse 14, 8050 Zürich</a>
+      <a href="#">044 000 00 00</a>
+      <a href="#">info@strikezone.ch</a>
+      <a href="#">Impressum</a>
+    </div>`,
+      footerBottom: `<span>© 2025 StrikeZone Bowling AG</span><span>Impressum · Datenschutz · AGB</span>`
+    },
+    en: {
+      title: 'StrikeZone Bowling – Zurich Oerlikon',
+      nav: `<a href="#">Lanes &amp; Pricing</a>
+      <a href="#">Events</a>
+      <a href="#">Food & Drinks</a>
+      <a href="#">Gallery</a>
+      <a href="#">Contact</a>
+      <a href="#" class="nav-cta">Book now</a>`,
+      hero: `<p class="hero-eyebrow">Bowling &amp; Entertainment · Zurich Oerlikon</p>
+    <h1>Where every night<br>becomes an <span>experience</span>.</h1>
+    <p class="hero-sub">12 professional lanes · Sports bar · Private events · Catering</p>
+    <div class="btn-row">
+      <button class="btn btn-primary">Book now</button>
+      <button class="btn btn-outline">View pricing</button>
+    </div>`,
+      info: `<div class="info-item">
+      <span class="info-label">Opening hours</span>
+      <span class="info-val">Mon–Fri 14:00–01:00 · Sat–Sun 11:00–01:00</span>
+    </div>
+    <div class="info-item">
+      <span class="info-label">Prices from</span>
+      <span class="info-val">CHF 8.– / game · shoes included</span>
+    </div>
+    <div class="info-item">
+      <span class="info-label">Events</span>
+      <span class="info-val">Birthdays · Corporate events · Tournaments</span>
+    </div>
+    <div class="info-item">
+      <span class="info-label">Lanes</span>
+      <span class="info-val">12 professional bowling lanes</span>
+    </div>`,
+      pricing: `<p class="section-label">Rates</p>
+    <h2 class="section-title">Transparent pricing</h2>
+    <p class="section-sub">Fair rates for every occasion – solo players, groups and events.</p>
+    <div class="pricing-grid">
+      <div class="price-card">
+        <p class="price-label">Day rate</p>
+        <div class="price-amount">8.–<span>CHF</span></div>
+        <p class="price-desc">per game / person · Mon–Fri until 18:00 · shoes included</p>
+      </div>
+      <div class="price-card featured">
+        <span class="badge-featured">Evening</span>
+        <p class="price-label">Evening rate</p>
+        <div class="price-amount">11.–<span>CHF</span></div>
+        <p class="price-desc">from 18:00 · shoes included · table booking recommended</p>
+      </div>
+      <div class="price-card">
+        <p class="price-label">Group 6+</p>
+        <div class="price-amount">14.–<span>CHF</span></div>
+        <p class="price-desc">per game / person · from 6 people · including shoe rental</p>
+      </div>
+      <div class="price-card">
+        <p class="price-label">Shoes</p>
+        <div class="price-amount"><span style="font-size:1.2rem">incl.</span></div>
+        <p class="price-desc">Included in the price · all sizes available</p>
+      </div>
+    </div>`,
+      events: `<p class="section-label">Events</p>
+    <h2 class="section-title">Upcoming events</h2>
+    <p class="section-sub">Regular events for athletes, companies and families.</p>
+    <div class="events-grid">
+      <div class="event-card">
+        <div class="event-date-block"><div class="event-day">15</div><div class="event-month">Mar</div></div>
+        <div class="event-info"><h3>Corporate tournament "City Cup"</h3><p>Teams of 4–6 people · prize money · catering included</p></div>
+        <div class="event-cta"><button class="btn btn-primary" style="font-size:.82rem;padding:.5rem 1rem">Register</button></div>
+      </div>
+      <div class="event-card">
+        <div class="event-date-block"><div class="event-day">22</div><div class="event-month">Mar</div></div>
+        <div class="event-info"><h3>Ladies Night – free entry</h3><p>For all women · DJ · cocktail bar · free shoe rental</p></div>
+        <div class="event-cta"><button class="btn btn-outline" style="font-size:.82rem;padding:.5rem 1rem">Learn more</button></div>
+      </div>
+      <div class="event-card">
+        <div class="event-date-block"><div class="event-day">29</div><div class="event-month">Mar</div></div>
+        <div class="event-info"><h3>Easter family tournament</h3><p>Kids under 12 free · specials · prizes to win</p></div>
+        <div class="event-cta"><button class="btn btn-primary" style="font-size:.82rem;padding:.5rem 1rem">Register</button></div>
+      </div>
+    </div>`,
+      gallery: `<p class="section-label">Impressions</p>
+    <h2 class="section-title">Our venue</h2>
+    <p class="section-sub">State-of-the-art equipment, professional lanes and a unique atmosphere.</p>
+    <div class="gallery-grid">
+      <div class="gallery-item"><div class="gal-bg gal-1"></div></div>
+      <div class="gallery-item"><div class="gal-bg gal-2"></div></div>
+      <div class="gallery-item"><div class="gal-bg gal-3"></div></div>
+      <div class="gallery-item"><div class="gal-bg gal-4"></div></div>
+      <div class="gallery-item"><div class="gal-bg gal-5"></div></div>
+    </div>`,
+      footerInner: `<div>
+      <div class="footer-brand">STRIKE<span>ZONE</span></div>
+      <p class="footer-desc">Professional bowling center in the heart of Zurich Oerlikon. 12 lanes, sports bar and unforgettable events.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Navigation</h4>
+      <a href="#">Lanes &amp; Pricing</a>
+      <a href="#">Events</a>
+      <a href="#">Food & Drinks</a>
+      <a href="#">Gallery</a>
+    </div>
+    <div class="footer-col">
+      <h4>Contact</h4>
+      <a href="#">Theaterstrasse 14, 8050 Zurich</a>
+      <a href="#">044 000 00 00</a>
+      <a href="#">info@strikezone.ch</a>
+      <a href="#">Legal notice</a>
+    </div>`,
+      footerBottom: `<span>© 2025 StrikeZone Bowling AG</span><span>Legal notice · Privacy · Terms</span>`
+    }
+  };
+
+  function apply(nextLang) {
+    var t = copy[nextLang] || copy.de;
+    document.title = t.title;
+    document.querySelector('.nav-links').innerHTML = t.nav;
+    document.querySelector('.hero-content').innerHTML = t.hero;
+    document.querySelector('.infobar-inner').innerHTML = t.info;
+    document.querySelector('.pricing-section .section-inner').innerHTML = t.pricing;
+    document.querySelector('.events-section .section-inner').innerHTML = t.events;
+    document.querySelector('.gallery-section .section-inner').innerHTML = t.gallery;
+    document.querySelector('.footer-inner').innerHTML = t.footerInner;
+    document.querySelector('.footer-bottom').innerHTML = t.footerBottom;
+
+    document.documentElement.lang = nextLang;
+    localStorage.setItem('lang', nextLang);
+    var u = new URL(window.location.href);
+    u.searchParams.set('lang', nextLang);
+    history.replaceState(null, '', u.pathname + u.search + u.hash);
+    document.querySelectorAll('.demo-lang-btn').forEach(function (btn) {
+      btn.classList.toggle('active', btn.getAttribute('data-lang') === nextLang);
+    });
+  }
+
+  document.querySelectorAll('.demo-lang-btn').forEach(function (btn) {
+    btn.addEventListener('click', function () { apply(btn.getAttribute('data-lang')); });
+  });
+
+  apply(lang);
+})();
+</script>
+
+</body>
+</html>
+

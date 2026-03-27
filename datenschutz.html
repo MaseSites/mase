@@ -1,4 +1,4 @@
-﻿<!doctype html>
+﻿﻿<!doctype html>
 <html lang="de-CH">
 <head>
   <meta charset="utf-8">
@@ -10,73 +10,106 @@
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="ai-assistant.css">
+  <script>
+    (function () {
+      var t = localStorage.getItem('theme');
+      if (t === 'dark') document.documentElement.classList.add('dark');
+
+      var q = null;
+      try { q = new URLSearchParams(window.location.search).get('lang'); } catch (_) {}
+      var s = localStorage.getItem('lang');
+      var lang = ['de', 'en', 'fr'].indexOf(q) !== -1 ? q : (['de', 'en', 'fr'].indexOf(s) !== -1 ? s : 'de');
+      localStorage.setItem('lang', lang);
+      document.documentElement.lang = (lang === 'de' ? 'de-CH' : (lang === 'fr' ? 'fr-CH' : 'en'));
+    })();
+  </script>
+  <script defer src="theme.js"></script>
   <script defer src="script.js"></script>
   <script defer src="ai-assistant.js"></script>
 </head>
 <body>
-  <a class="skip-link" href="#main">Zum Inhalt springen</a>
+  <a class="skip-link" href="#main" data-i18n="skip_to_content">Zum Inhalt springen</a>
   <header class="site-header">
     <div class="container header-inner">
       <a class="logo" href="index.html">MASE</a>
       <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
-        <span class="sr-only">Navigation oeffnen</span>
+        <span class="sr-only" data-i18n="nav_toggle">Navigation oeffnen</span>
         <span class="nav-toggle-bar"></span>
         <span class="nav-toggle-bar"></span>
       </button>
       <nav class="site-nav" id="site-nav">
-        <a href="index.html">Home</a>
-        <a href="leistungen.html">Leistungen</a>
-        <a href="preise.html">Preise</a>
-        <a href="ki-assistent.html">KI-Assistent</a>
-        <a href="ueber-uns.html">Über uns</a>
-        <a href="kontakt.html">Kontakt</a>
-        <a class="button button-primary button-small" href="kontakt.html">Kostenloses Erstgespräch</a>
+        <a href="index.html" data-i18n="nav_home">Home</a>
+        <a href="leistungen.html" data-i18n="nav_services">Leistungen</a>
+        <a href="preise.html" data-i18n="nav_prices">Preise</a>
+        <a href="ki-assistent.html" data-i18n="nav_ai">KI-Assistent</a>
+        <a href="ueber-uns.html" data-i18n="nav_about">Über uns</a>
+        <a href="kontakt.html" data-i18n="nav_contact">Kontakt</a>
+
       </nav>
+      <!-- Controls: Language + Dark Mode -->
+      <div class="header-controls">
+        <div class="lang-switcher" id="lang-switcher">
+          <button class="lang-btn" id="lang-btn" aria-haspopup="true" aria-expanded="false" aria-label="Sprache wählen" data-i18n-aria-label="lang_select_aria">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+            <span id="lang-current">DE</span>
+          </button>
+          <div class="lang-dropdown" id="lang-dropdown">
+            <button class="lang-option active" data-lang="de">🇩🇪 Deutsch</button>
+            <button class="lang-option" data-lang="en">🇬🇧 English</button>
+          </div>
+        </div>
+        <button class="dark-toggle" id="dark-toggle" aria-label="Dark Mode umschalten" data-i18n-aria-label="theme_toggle_aria">
+          <span class="dark-toggle-icon" id="dark-toggle-icon">🌙</span>
+          <span class="dark-toggle-track"><span class="dark-toggle-thumb"></span></span>
+        </button>
+      </div>
     </div>
   </header>
   <main id="main">
     <section class="page-hero">
       <div class="container" style="max-width:800px;">
-        <h1>Datenschutzerklärung</h1>
-        <p class="lead">Transparenz über die Verarbeitung Ihrer Daten.</p>
+        <h1 data-i18n="privacy_title">Datenschutzerklärung</h1>
+        <p class="lead" data-i18n="privacy_lead">Transparenz über die Verarbeitung Ihrer Daten.</p>
       </div>
     </section>
     <section style="padding: 3rem 0 5rem;">
       <div class="container" style="max-width:800px;">
-        <h2>1. Verantwortliche Stelle</h2>
-        <p><strong>MASESites AG</strong><br>
-        E-Mail: <a href="mailto:info@masesites.ch">info@masesites.ch</a></p>
+        <div data-i18n-html="privacy_content">
+          <h2>1. Verantwortliche Stelle</h2>
+          <p><strong>MASESites AG</strong><br>
+          E-Mail: <a href="mailto:info@masesites.ch">info@masesites.ch</a></p>
 
-        <h2>2. Erfassung und Verarbeitung personenbezogener Daten</h2>
-        <h3>2.1 Kontaktformular</h3>
-        <p>Wenn Sie uns über das Kontaktformular kontaktieren, werden folgende Daten erfasst:</p>
-        <ul>
-          <li>Name</li>
-          <li>E-Mail-Adresse</li>
-          <li>Firma (optional)</li>
-          <li>Nachrichtentext</li>
-        </ul>
-        <p><strong>Zweck:</strong> Bearbeitung Ihrer Anfrage<br>
-        <strong>Rechtsgrundlage:</strong> Einwilligung (Art. 6 Abs. 1 lit. a DSGVO)<br>
-        <strong>Speicherdauer:</strong> Bis zur vollständigen Bearbeitung, danach Löschung</p>
+          <h2>2. Erfassung und Verarbeitung personenbezogener Daten</h2>
+          <h3>2.1 Kontaktformular</h3>
+          <p>Wenn Sie uns über das Kontaktformular kontaktieren, werden folgende Daten erfasst:</p>
+          <ul>
+            <li>Name</li>
+            <li>E-Mail-Adresse</li>
+            <li>Firma (optional)</li>
+            <li>Nachrichtentext</li>
+          </ul>
+          <p><strong>Zweck:</strong> Bearbeitung Ihrer Anfrage<br>
+          <strong>Rechtsgrundlage:</strong> Einwilligung (Art. 6 Abs. 1 lit. a DSGVO)<br>
+          <strong>Speicherdauer:</strong> Bis zur vollständigen Bearbeitung, danach Löschung</p>
 
-        <h3>2.2 Cookies</h3>
-        <p>Wir verwenden Cookies zur Verbesserung der Nutzererfahrung.</p>
-        <p><strong>Technisch notwendige Cookies:</strong><br>
-        <code>cookie-consent</code>: Speichert Ihre Cookie-Einstellung (365 Tage)</p>
-        <p><strong>Analytics-Cookies (nur mit Einwilligung):</strong><br>
-        Google Analytics zur Analyse des Nutzerverhaltens. IP-Anonymisierung ist aktiviert.</p>
+          <h3>2.2 Cookies</h3>
+          <p>Wir verwenden Cookies zur Verbesserung der Nutzererfahrung.</p>
+          <p><strong>Technisch notwendige Cookies:</strong><br>
+          <code>cookie-consent</code>: Speichert Ihre Cookie-Einstellung (365 Tage)</p>
+          <p><strong>Analytics-Cookies (nur mit Einwilligung):</strong><br>
+          Google Analytics zur Analyse des Nutzerverhaltens. IP-Anonymisierung ist aktiviert.</p>
 
-        <h2>3. Ihre Rechte</h2>
-        <p>Sie haben das Recht auf Auskunft, Berichtigung, Löschung und Einschränkung der Verarbeitung Ihrer Daten. Bitte kontaktieren Sie uns unter <a href="mailto:info@masesites.ch">info@masesites.ch</a>.</p>
+          <h2>3. Ihre Rechte</h2>
+          <p>Sie haben das Recht auf Auskunft, Berichtigung, Löschung und Einschränkung der Verarbeitung Ihrer Daten. Bitte kontaktieren Sie uns unter <a href="mailto:info@masesites.ch">info@masesites.ch</a>.</p>
 
-        <h2>4. Datensicherheit</h2>
-        <p>Wir setzen technische und organisatorische Sicherheitsmassnahmen ein, um Ihre Daten gegen Manipulation, Verlust und unberechtigten Zugriff zu schützen. Unsere Website nutzt SSL-Verschlüsselung (HTTPS).</p>
+          <h2>4. Datensicherheit</h2>
+          <p>Wir setzen technische und organisatorische Sicherheitsmassnahmen ein, um Ihre Daten gegen Manipulation, Verlust und unberechtigten Zugriff zu schützen. Unsere Website nutzt SSL-Verschlüsselung (HTTPS).</p>
 
-        <h2>5. Externe Dienste</h2>
-        <p>Wir nutzen <strong>Formspree</strong> für die Verarbeitung von Kontaktformularen. Dabei werden die von Ihnen eingegebenen Daten an Formspree Inc. übermittelt. Weitere Informationen: <a href="https://formspree.io/legal/privacy-policy" target="_blank" rel="noopener">formspree.io/legal/privacy-policy</a></p>
+          <h2>5. Externe Dienste</h2>
+          <p>Wir nutzen <strong>Formspree</strong> für die Verarbeitung von Kontaktformularen. Dabei werden die von Ihnen eingegebenen Daten an Formspree Inc. übermittelt. Weitere Informationen: <a href="https://formspree.io/legal/privacy-policy" target="_blank" rel="noopener">formspree.io/legal/privacy-policy</a></p>
 
-        <p style="color:var(--muted);margin-top:3rem;font-size:0.9rem;">Stand: Februar 2026</p>
+          <p style="color:var(--muted);margin-top:3rem;font-size:0.9rem;">Stand: Februar 2026</p>
+        </div>
       </div>
     </section>
   </main>
@@ -84,31 +117,36 @@
     <div class="container footer-grid">
       <div>
         <p class="footer-brand">MASE</p>
-        <p class="footer-desc">Professionelle Websites &amp; KI-Integration aus der Schweiz.</p>
+        <p class="footer-desc" data-i18n="footer_desc">Professionelle Websites &amp; KI-Integration aus der Schweiz.</p>
       </div>
       <div>
-        <p class="footer-title">Navigation</p>
-        <a href="index.html">Home</a>
-        <a href="leistungen.html">Leistungen</a>
-        <a href="preise.html">Preise</a>
-        <a href="ki-assistent.html">KI-Assistent</a>
+        <p class="footer-title" data-i18n="footer_nav">Navigation</p>
+        <a href="index.html" data-i18n="nav_home">Home</a>
+        <a href="leistungen.html" data-i18n="nav_services">Leistungen</a>
+        <a href="preise.html" data-i18n="nav_prices">Preise</a>
+        <a href="ki-assistent.html" data-i18n="nav_ai">KI-Assistent</a>
       </div>
       <div>
-        <p class="footer-title">Kontakt</p>
-        <a href="kontakt.html">Kontaktformular</a>
-        <a href="ueber-uns.html">Über uns</a>
+        <p class="footer-title" data-i18n="footer_contact">Kontakt</p>
+        <a href="kontakt.html" data-i18n="footer_contact_form">Kontaktformular</a>
+        <a href="ueber-uns.html" data-i18n="nav_about">Über uns</a>
       </div>
       <div>
-        <p class="footer-title">Rechtliches</p>
-        <a href="impressum.html">Impressum</a>
-        <a href="datenschutz.html" class="nav-active">Datenschutz</a>
+        <p class="footer-title" data-i18n="footer_legal">Rechtliches</p>
+        <a href="impressum.html" data-i18n="footer_impressum">Impressum</a>
+        <a href="datenschutz.html" class="nav-active" data-i18n="footer_privacy">Datenschutz</a>
       </div>
     </div>
     <div class="container footer-bottom">
-      <p>Copyright <span id="year"></span> MASESites AG. Alle Rechte vorbehalten.</p>
+      <p>Copyright <span id="year"></span> MASESites AG. <span data-i18n="footer_copy">Alle Rechte vorbehalten.</span></p>
     </div>
   </footer>
-  <button class="back-to-top" id="back-to-top" aria-label="Zurück nach oben">
+  <!-- Dark Mode Wave Overlay -->
+  <div id="dark-wave" aria-hidden="true">
+    <canvas id="dark-wave-canvas"></canvas>
+  </div>
+
+    <button class="back-to-top" id="back-to-top" aria-label="Zurück nach oben">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
       <polyline points="18 15 12 9 6 15"></polyline>
     </svg>
