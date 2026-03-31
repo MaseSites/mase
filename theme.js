@@ -16,7 +16,7 @@
       nav_home:        'Home',
       nav_services:    'Leistungen',
       nav_prices:      'Preise',
-      nav_ai:          'KI-Assistent',
+      nav_ai:          'KI Assistent',
       nav_about:       'Über uns',
       nav_contact:     'Kontakt',
       nav_cta:         'Kostenloses Erstgespräch',
@@ -982,7 +982,7 @@
     }
   };
 
-  var supportedLangs = ['de', 'en', 'fr'];
+  var supportedLangs = ['de', 'en'];
 
   function isSupportedLang(lang) {
     return supportedLangs.indexOf(lang) !== -1;
@@ -1036,7 +1036,7 @@
     });
 
     // Update HTML lang attr
-    document.documentElement.lang = safeLang === 'de' ? 'de-CH' : (safeLang === 'fr' ? 'fr-CH' : 'en');
+    document.documentElement.lang = safeLang === 'de' ? 'de-CH' : 'en';
 
     var langCurrent = document.getElementById('lang-current');
     if (langCurrent) langCurrent.textContent = safeLang.toUpperCase();
@@ -1243,6 +1243,10 @@
     updateToggleUI(!!dark);
   }
 
+  function setThemeTransitionState(active) {
+    document.documentElement.classList.toggle('theme-switching', !!active);
+  }
+
   function updateToggleUI(dark) {
     var icon = document.getElementById('dark-toggle-icon');
     if (icon) icon.textContent = dark ? '☀️' : '🌙';
@@ -1259,12 +1263,18 @@
     localStorage.setItem('theme', isDark ? 'dark' : 'light');
 
     if (!animated || prefersReducedMotion) {
+      setThemeTransitionState(true);
       applyThemeInstant(isDark);
+      setTimeout(function () {
+        setThemeTransitionState(false);
+      }, 480);
       return;
     }
 
+    setThemeTransitionState(true);
     playPaintSplash(isDark, function () {
       updateToggleUI(isDark);
+      setThemeTransitionState(false);
       themeTransitionRunning = false;
     });
   }

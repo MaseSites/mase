@@ -2,13 +2,19 @@
 <html lang="de-CH">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Mehrsprachigkeits-Test</title>
   <style>
-    body { font-family: sans-serif; max-width: 800px; margin: 2rem auto; }
+    body { font-family: sans-serif; max-width: 800px; margin: 2rem auto; padding: 0 1rem; }
     .test-result { margin: 1rem 0; padding: 1rem; border: 1px solid #ccc; }
     .pass { background: #d4edda; border-color: #28a745; }
     .fail { background: #f8d7da; border-color: #dc3545; }
     button { padding: 0.5rem 1rem; margin: 0.5rem; cursor: pointer; }
+
+    @media (max-width: 640px) {
+      body { margin: 1rem auto; }
+      button { width: 100%; margin: 0.35rem 0; }
+    }
   </style>
 </head>
 <body>

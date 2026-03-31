@@ -29,6 +29,10 @@ class MASEAssistant {
   }
 
   createChatWidget() {
+    if (document.getElementById('ai-chat-widget')) {
+      return;
+    }
+
     const chatHTML = `
       <div class="ai-chat-widget" id="ai-chat-widget">
         <button class="ai-chat-toggle" id="ai-chat-toggle" aria-label="Mase-AI öffnen">
