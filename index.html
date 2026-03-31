@@ -155,7 +155,7 @@
         <a href="index.html" class="nav-active" data-i18n="nav_home">Home</a>
         <a href="leistungen.html" data-i18n="nav_services">Leistungen</a>
         <a href="preise.html" data-i18n="nav_prices">Preise</a>
-        <a href="ki-assistent.html" data-i18n="nav_ai">KI-Assistent</a>
+        <a href="ki-assistent.html" data-i18n="nav_ai">KI Assistent</a>
         <a href="ueber-uns.html" data-i18n="nav_about">&#220;ber uns</a>
         <a href="kontakt.html" data-i18n="nav_contact">Kontakt</a>
         <a class="button button-primary button-small" href="kontakt.html" data-i18n="nav_cta">Kostenloses Erstgespräch</a>
@@ -172,7 +172,6 @@
           <div class="lang-dropdown" id="lang-dropdown">
             <button class="lang-option active" data-lang="de">DE - Deutsch</button>
             <button class="lang-option" data-lang="en">EN - English</button>
-            <button class="lang-option" data-lang="fr">FR - Français</button>
           </div>
         </div>
         <!-- Dark Mode Toggle -->
@@ -205,32 +204,41 @@
         </div>
 
         <div class="hero-visual" data-reveal>
-          <article id="live-preview-card" class="preview-card-compact" role="img" aria-label="Live-Vorschau Demo kompakt">
-            <header class="preview-compact-header">
-              <p class="preview-compact-kicker">Live-Vorschau (Demo)</p>
-            </header>
+          <article class="hero-configurator" id="hero-configurator" aria-label="Interaktiver Website-Konfigurator">
+            <h3 class="hero-configurator-title">Erstelle deine Website in 30 Sekunden</h3>
 
-            <div class="preview-compact-body">
-              <div class="preview-compact-intro">
-                <p class="preview-compact-brand">DesignLeistungKI</p>
-                <h3 class="preview-compact-title">Professionelles Design</h3>
-                <p class="preview-compact-subtext">Klare Struktur. Moderne Typografie.</p>
-              </div>
-
-              <div class="preview-compact-stats" aria-label="Leistungswerte">
-                <div class="preview-stat"><span class="preview-stat-value">95</span> <span class="preview-stat-label">Speed</span></div>
-                <div class="preview-stat"><span class="preview-stat-value">1.2s</span> <span class="preview-stat-label">Ladezeit</span></div>
-                <div class="preview-stat"><span class="preview-stat-value">98</span> <span class="preview-stat-label">SEO</span></div>
+            <div class="hero-configurator-step">
+              <p class="hero-configurator-label">1. Branche</p>
+              <div class="hero-configurator-options" role="group" aria-label="Branche auswählen">
+                <button type="button" class="hero-config-btn active" data-config-industry="fitness">Fitness</button>
+                <button type="button" class="hero-config-btn" data-config-industry="restaurant">Restaurant</button>
+                <button type="button" class="hero-config-btn" data-config-industry="immobilien">Immobilien</button>
+                <button type="button" class="hero-config-btn" data-config-industry="unternehmen">Unternehmen</button>
               </div>
             </div>
 
-            <footer class="preview-compact-footer">
-              <div class="preview-compact-price-wrap">
-                <p class="preview-compact-price">Ab CHF 750</p>
-                <p class="preview-compact-price-meta">Startpreis</p>
+            <div class="hero-configurator-step">
+              <p class="hero-configurator-label">2. Ziel</p>
+              <div class="hero-configurator-options" role="group" aria-label="Ziel auswählen">
+                <button type="button" class="hero-config-btn active" data-config-goal="kunden">Mehr Kunden</button>
+                <button type="button" class="hero-config-btn" data-config-goal="verkaeufe">Mehr Verkäufe</button>
+                <button type="button" class="hero-config-btn" data-config-goal="branding">Branding</button>
               </div>
-              <a class="preview-compact-cta" href="kontakt.html">Projekt starten</a>
-            </footer>
+            </div>
+
+            <div class="hero-configurator-preview" aria-live="polite">
+              <p class="hero-configurator-preview-title" id="hero-config-preview-title">Fitness Website</p>
+              <p class="hero-configurator-preview-goal" id="hero-config-preview-goal">Fokus: Mehr Kunden</p>
+              <div class="hero-configurator-kpis">
+                <span class="hero-configurator-kpi" id="hero-config-kpi-one">+120% Anfragen</span>
+                <span class="hero-configurator-kpi" id="hero-config-kpi-two">1.2s Ladezeit</span>
+              </div>
+            </div>
+
+            <div class="hero-configurator-footer">
+              <p class="hero-configurator-price" id="hero-config-price">Ab CHF 750</p>
+              <a class="hero-configurator-cta" href="kontakt.html">Jetzt starten</a>
+            </div>
           </article>
         </div>
       </div>
@@ -447,7 +455,7 @@
         <a href="index.html" data-i18n="nav_home">Home</a>
         <a href="leistungen.html" data-i18n="nav_services">Leistungen</a>
         <a href="preise.html" data-i18n="nav_prices">Preise</a>
-        <a href="ki-assistent.html" data-i18n="nav_ai">KI-Assistent</a>
+        <a href="ki-assistent.html" data-i18n="nav_ai">KI Assistent</a>
       </div>
       <div>
         <p class="footer-title" data-i18n="footer_contact">Kontakt</p>
@@ -498,5 +506,6 @@
   </button>
 </body>
 </html>
+
 
 

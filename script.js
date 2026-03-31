@@ -103,12 +103,133 @@ document.querySelectorAll('#year').forEach(el => {
   const btn = document.getElementById('back-to-top');
   const cta = document.getElementById('sticky-cta');
   if (!btn && !cta) return;
+
+  function scrollToTopSafe() {
+    try {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } catch (e) {
+      window.scrollTo(0, 0);
+    }
+  }
+
   window.addEventListener('scroll', () => {
     const past = window.scrollY > 500;
     if (btn) btn.classList.toggle('visible', past);
     if (cta) cta.classList.toggle('visible', past);
   }, { passive: true });
-  if (btn) btn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+  if (btn) btn.addEventListener('click', scrollToTopSafe);
+})();
+
+// ============================================
+// HERO WEBSITE CONFIGURATOR (index.html)
+// ============================================
+(function() {
+  const root = document.getElementById('hero-configurator');
+  if (!root) return;
+
+  const industryButtons = Array.from(root.querySelectorAll('[data-config-industry]'));
+  const goalButtons = Array.from(root.querySelectorAll('[data-config-goal]'));
+  const previewTitle = document.getElementById('hero-config-preview-title');
+  const previewGoal = document.getElementById('hero-config-preview-goal');
+  const kpiOne = document.getElementById('hero-config-kpi-one');
+  const kpiTwo = document.getElementById('hero-config-kpi-two');
+  const priceEl = document.getElementById('hero-config-price');
+
+  if (!previewTitle || !previewGoal || !kpiOne || !kpiTwo || !priceEl) return;
+
+  const industries = {
+    fitness: {
+      label: 'Fitness Website',
+      kpiOne: '+120% Anfragen',
+      kpiTwo: '1.2s Ladezeit',
+      basePrice: 750
+    },
+    restaurant: {
+      label: 'Restaurant Website',
+      kpiOne: '+85% Reservierungen',
+      kpiTwo: '1.4s Ladezeit',
+      basePrice: 790
+    },
+    immobilien: {
+      label: 'Immobilien Website',
+      kpiOne: '+140% Leads',
+      kpiTwo: '1.3s Ladezeit',
+      basePrice: 950
+    },
+    unternehmen: {
+      label: 'Unternehmens Website',
+      kpiOne: '+95% Kontaktanfragen',
+      kpiTwo: '1.2s Ladezeit',
+      basePrice: 850
+    }
+  };
+
+  const goals = {
+    kunden: { label: 'Mehr Kunden', priceDelta: 0 },
+    verkaeufe: { label: 'Mehr Verkäufe', priceDelta: 120 },
+    branding: { label: 'Branding', priceDelta: 70 }
+  };
+
+  let selectedIndustry = 'fitness';
+  let selectedGoal = 'kunden';
+
+  function formatCHF(value) {
+    return 'Ab CHF ' + value.toLocaleString('de-CH');
+  }
+
+  function markActive(buttons, key, attributeName) {
+    buttons.forEach((btn) => {
+      const isActive = btn.getAttribute(attributeName) === key;
+      btn.classList.toggle('active', isActive);
+      btn.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+    });
+  }
+
+  function renderConfigurator() {
+    const industry = industries[selectedIndustry];
+    const goal = goals[selectedGoal];
+    if (!industry || !goal) return;
+
+    const price = industry.basePrice + goal.priceDelta;
+
+    previewTitle.textContent = industry.label;
+    previewGoal.textContent = 'Fokus: ' + goal.label;
+    kpiOne.textContent = industry.kpiOne;
+    kpiTwo.textContent = industry.kpiTwo;
+    priceEl.textContent = formatCHF(price);
+  }
+
+  function animateAndRender() {
+    root.classList.add('is-updating');
+    renderConfigurator();
+    window.setTimeout(() => {
+      root.classList.remove('is-updating');
+    }, 220);
+  }
+
+  industryButtons.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const value = btn.getAttribute('data-config-industry');
+      if (!value || value === selectedIndustry) return;
+      selectedIndustry = value;
+      markActive(industryButtons, value, 'data-config-industry');
+      animateAndRender();
+    });
+  });
+
+  goalButtons.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const value = btn.getAttribute('data-config-goal');
+      if (!value || value === selectedGoal) return;
+      selectedGoal = value;
+      markActive(goalButtons, value, 'data-config-goal');
+      animateAndRender();
+    });
+  });
+
+  markActive(industryButtons, selectedIndustry, 'data-config-industry');
+  markActive(goalButtons, selectedGoal, 'data-config-goal');
+  renderConfigurator();
 })();
 
 // ============================================
@@ -235,7 +356,7 @@ document.querySelectorAll('#year').forEach(el => {
 
       if (hType === 'hosting') {
         monthly += hPrice;
-        lines.push(hName + ': ' + formatCHF(hPrice) + labels.monthlyShort);
+        lines.push(hName + ': ' + formatCHFFixed(hPrice) + labels.monthlyShort);
       } else {
         oneTime += hPrice;
         lines.push(hName + ': ' + formatCHF(hPrice) + labels.yearShort);
@@ -245,10 +366,10 @@ document.querySelectorAll('#year').forEach(el => {
     if (aiSelected) {
       oneTime += 200;
       monthly += 40;
-      lines.push(labels.aiLabel + ': ' + formatCHF(200) + labels.oneTime + ' + ' + formatCHF(40) + labels.monthlyShort);
+      lines.push(labels.aiLabel + ': ' + formatCHFFixed(200) + labels.oneTime + ' + ' + formatCHFFixed(40) + labels.monthlyShort);
     }
 
-    var total = formatCHF(oneTime) + (monthly > 0 ? ' + ' + formatCHF(monthly) + labels.monthlyShort : '');
+    var total = formatCHF(oneTime) + (monthly > 0 ? ' + ' + formatCHFFixed(monthly) + labels.monthlyShort : '');
 
     return {
       packageName: selectedPackageName,
@@ -260,6 +381,10 @@ document.querySelectorAll('#year').forEach(el => {
 
   function formatCHF(n) {
     return 'etwa CHF ' + n.toLocaleString('de-CH');
+  }
+
+  function formatCHFFixed(n) {
+    return 'CHF ' + n.toLocaleString('de-CH');
   }
 
   function recalc() {
@@ -285,7 +410,7 @@ document.querySelectorAll('#year').forEach(el => {
       var hName  = hVal ? (names[hVal.value] || labels.hostingFallback) : labels.hostingFallback;
       if (hType === 'hosting') {
         monthly += hPrice;
-        lines.push('<span>' + hName + '</span><span>' + formatCHF(hPrice) + labels.monthlyShort + '</span>');
+        lines.push('<span>' + hName + '</span><span>' + formatCHFFixed(hPrice) + labels.monthlyShort + '</span>');
       } else {
         oneTime += hPrice;
         lines.push('<span>' + hName + '</span><span>' + formatCHF(hPrice) + labels.yearShort + '</span>');
@@ -295,7 +420,7 @@ document.querySelectorAll('#year').forEach(el => {
     if (aiSelected) {
       oneTime += 200;
       monthly += 40;
-      lines.push('<span>' + labels.aiLabel + '</span><span>' + formatCHF(200) + labels.oneTime + ' + ' + formatCHF(40) + labels.monthlyShort + '</span>');
+      lines.push('<span>' + labels.aiLabel + '</span><span>' + formatCHFFixed(200) + labels.oneTime + ' + ' + formatCHFFixed(40) + labels.monthlyShort + '</span>');
     }
 
     // Render breakdown
@@ -305,16 +430,13 @@ document.querySelectorAll('#year').forEach(el => {
       var html = '<div class="pricing-breakdown-lines">';
       lines.forEach(function (l) { html += '<div class="pricing-breakdown-line">' + l + '</div>'; });
       html += '</div>';
-      if (monthly > 0) {
-        html += '<p class="pricing-monthly-note">+ ' + formatCHF(monthly) + labels.monthlyNote + '</p>';
-      }
       breakdownEl.innerHTML = html;
     }
 
     // Total
     totalEl.textContent = formatCHF(oneTime);
     if (monthly > 0) {
-      totalEl.textContent += ' + ' + formatCHF(monthly) + labels.monthlyShort;
+      totalEl.textContent += ' + ' + formatCHFFixed(monthly) + labels.monthlyShort;
     }
 
     // Enable CTA only if a package is selected
@@ -408,7 +530,11 @@ document.querySelectorAll('#year').forEach(el => {
     ctaBtn.addEventListener('click', function () {
       var selection = buildPricingSelection();
       try {
-        localStorage.setItem('mase_pricing_selection', JSON.stringify(selection));
+        if (selection && selection.packageName) {
+          localStorage.setItem('mase_pricing_selection', JSON.stringify(selection));
+        } else {
+          localStorage.removeItem('mase_pricing_selection');
+        }
       } catch (_) {
         // no-op if storage is unavailable
       }
@@ -538,9 +664,9 @@ document.querySelectorAll('#year').forEach(el => {
   function getCurrentLang() {
     var q = null;
     try { q = new URLSearchParams(window.location.search).get('lang'); } catch (_) {}
-    if (q === 'de' || q === 'en' || q === 'fr') return q;
+    if (q === 'de' || q === 'en') return q;
     var s = localStorage.getItem('lang');
-    if (s === 'de' || s === 'en' || s === 'fr') return s;
+    if (s === 'de' || s === 'en') return s;
     return 'de';
   }
 
@@ -607,7 +733,8 @@ document.querySelectorAll('#year').forEach(el => {
       var raw = localStorage.getItem('mase_pricing_selection');
       if (!raw) return null;
       var parsed = JSON.parse(raw);
-      if (!parsed || !Array.isArray(parsed.lines)) return null;
+      if (!parsed || typeof parsed.packageName !== 'string') return null;
+      if (!parsed.packageName.trim()) return null;
       return parsed;
     } catch (_) {
       return null;
@@ -615,11 +742,8 @@ document.querySelectorAll('#year').forEach(el => {
   }
 
   function buildPricingSummaryText(selection) {
-    if (!selection || !selection.lines || selection.lines.length === 0) return '';
-    var header = '--- Ausgewaehltes Paket ---';
-    var lines = selection.lines.join('\n');
-    var total = selection.total ? ('Gesamt: ' + selection.total) : '';
-    return [header, lines, total].filter(Boolean).join('\n');
+    if (!selection || !selection.packageName) return '';
+    return 'Ausgewaehltes Paket: ' + selection.packageName;
   }
 
   function prefillPricingSelection() {

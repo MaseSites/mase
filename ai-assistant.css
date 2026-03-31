@@ -17,7 +17,7 @@
   align-items: center;
   gap: 0.6rem;
   box-shadow: 0 8px 30px rgba(58, 155, 255, 0.4);
-  transition: all 0.3s ease;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
   z-index: 9998;
   font-weight: 600;
   font-size: 0.95rem;
@@ -36,8 +36,8 @@
 }
 
 .ai-chat-toggle:hover {
-  transform: scale(1.05) translateY(-2px);
-  box-shadow: 0 12px 40px rgba(58, 155, 255, 0.7);
+  transform: translateY(-1px);
+  box-shadow: 0 10px 28px rgba(58, 155, 255, 0.5);
   animation: none;
 }
 
@@ -191,6 +191,17 @@
   transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
   z-index: 9997;
   border: 1px solid rgba(226, 232, 240, 0.8);
+}
+
+@supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
+  .ai-chat-container {
+    background: #ffffff;
+  }
+
+  .dark .ai-chat-container {
+    background: #111827;
+    border-color: #374151;
+  }
 }
 
 .ai-chat-container.open {
@@ -543,8 +554,8 @@
 }
 
 .ai-chat-send:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(58, 155, 255, 0.3);
+  transform: translateY(-1px);
+  box-shadow: 0 3px 10px rgba(58, 155, 255, 0.25);
 }
 
 .ai-chat-send svg {
@@ -559,6 +570,8 @@
     right: 1rem;
     padding: 0.8rem 1.2rem;
     font-size: 0.9rem;
+    animation: none;
+    overflow: hidden;
   }
 
   .ai-chat-toggle-text {
@@ -593,6 +606,20 @@
 
   .ai-info-box {
     font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 360px) {
+  .ai-chat-toggle {
+    left: 1rem;
+    right: 1rem;
+    justify-content: center;
+    padding: 0.75rem 1rem;
+  }
+
+  .ai-chat-tooltip,
+  .ai-welcome-bubble {
+    display: none;
   }
 }
 

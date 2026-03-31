@@ -12,6 +12,7 @@ Das Kontaktformular sendet automatisch Emails an **info@masesites.ch**.
    - Gehe zu "App-Passwörter"
    - Wähle "Mail" und "Sonstiges Gerät"
    - Kopiere das generierte Passwort (16 Zeichen)
+   
 
 2. **.env Datei bearbeiten:**
    ```
