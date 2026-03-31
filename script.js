@@ -235,7 +235,7 @@ document.querySelectorAll('#year').forEach(el => {
 
       if (hType === 'hosting') {
         monthly += hPrice;
-        lines.push(hName + ': ' + formatCHF(hPrice) + labels.monthlyShort);
+        lines.push(hName + ': ' + formatCHFFixed(hPrice) + labels.monthlyShort);
       } else {
         oneTime += hPrice;
         lines.push(hName + ': ' + formatCHF(hPrice) + labels.yearShort);
@@ -245,10 +245,10 @@ document.querySelectorAll('#year').forEach(el => {
     if (aiSelected) {
       oneTime += 200;
       monthly += 40;
-      lines.push(labels.aiLabel + ': ' + formatCHF(200) + labels.oneTime + ' + ' + formatCHF(40) + labels.monthlyShort);
+      lines.push(labels.aiLabel + ': ' + formatCHFFixed(200) + labels.oneTime + ' + ' + formatCHFFixed(40) + labels.monthlyShort);
     }
 
-    var total = formatCHF(oneTime) + (monthly > 0 ? ' + ' + formatCHF(monthly) + labels.monthlyShort : '');
+    var total = formatCHF(oneTime) + (monthly > 0 ? ' + ' + formatCHFFixed(monthly) + labels.monthlyShort : '');
 
     return {
       packageName: selectedPackageName,
@@ -260,6 +260,10 @@ document.querySelectorAll('#year').forEach(el => {
 
   function formatCHF(n) {
     return 'etwa CHF ' + n.toLocaleString('de-CH');
+  }
+
+  function formatCHFFixed(n) {
+    return 'CHF ' + n.toLocaleString('de-CH');
   }
 
   function recalc() {
@@ -285,7 +289,7 @@ document.querySelectorAll('#year').forEach(el => {
       var hName  = hVal ? (names[hVal.value] || labels.hostingFallback) : labels.hostingFallback;
       if (hType === 'hosting') {
         monthly += hPrice;
-        lines.push('<span>' + hName + '</span><span>' + formatCHF(hPrice) + labels.monthlyShort + '</span>');
+        lines.push('<span>' + hName + '</span><span>' + formatCHFFixed(hPrice) + labels.monthlyShort + '</span>');
       } else {
         oneTime += hPrice;
         lines.push('<span>' + hName + '</span><span>' + formatCHF(hPrice) + labels.yearShort + '</span>');
@@ -295,7 +299,7 @@ document.querySelectorAll('#year').forEach(el => {
     if (aiSelected) {
       oneTime += 200;
       monthly += 40;
-      lines.push('<span>' + labels.aiLabel + '</span><span>' + formatCHF(200) + labels.oneTime + ' + ' + formatCHF(40) + labels.monthlyShort + '</span>');
+      lines.push('<span>' + labels.aiLabel + '</span><span>' + formatCHFFixed(200) + labels.oneTime + ' + ' + formatCHFFixed(40) + labels.monthlyShort + '</span>');
     }
 
     // Render breakdown
@@ -305,16 +309,13 @@ document.querySelectorAll('#year').forEach(el => {
       var html = '<div class="pricing-breakdown-lines">';
       lines.forEach(function (l) { html += '<div class="pricing-breakdown-line">' + l + '</div>'; });
       html += '</div>';
-      if (monthly > 0) {
-        html += '<p class="pricing-monthly-note">+ ' + formatCHF(monthly) + labels.monthlyNote + '</p>';
-      }
       breakdownEl.innerHTML = html;
     }
 
     // Total
     totalEl.textContent = formatCHF(oneTime);
     if (monthly > 0) {
-      totalEl.textContent += ' + ' + formatCHF(monthly) + labels.monthlyShort;
+      totalEl.textContent += ' + ' + formatCHFFixed(monthly) + labels.monthlyShort;
     }
 
     // Enable CTA only if a package is selected
@@ -408,7 +409,11 @@ document.querySelectorAll('#year').forEach(el => {
     ctaBtn.addEventListener('click', function () {
       var selection = buildPricingSelection();
       try {
-        localStorage.setItem('mase_pricing_selection', JSON.stringify(selection));
+        if (selection && selection.packageName) {
+          localStorage.setItem('mase_pricing_selection', JSON.stringify(selection));
+        } else {
+          localStorage.removeItem('mase_pricing_selection');
+        }
       } catch (_) {
         // no-op if storage is unavailable
       }
@@ -538,9 +543,9 @@ document.querySelectorAll('#year').forEach(el => {
   function getCurrentLang() {
     var q = null;
     try { q = new URLSearchParams(window.location.search).get('lang'); } catch (_) {}
-    if (q === 'de' || q === 'en' || q === 'fr') return q;
+    if (q === 'de' || q === 'en') return q;
     var s = localStorage.getItem('lang');
-    if (s === 'de' || s === 'en' || s === 'fr') return s;
+    if (s === 'de' || s === 'en') return s;
     return 'de';
   }
 
@@ -607,7 +612,8 @@ document.querySelectorAll('#year').forEach(el => {
       var raw = localStorage.getItem('mase_pricing_selection');
       if (!raw) return null;
       var parsed = JSON.parse(raw);
-      if (!parsed || !Array.isArray(parsed.lines)) return null;
+      if (!parsed || typeof parsed.packageName !== 'string') return null;
+      if (!parsed.packageName.trim()) return null;
       return parsed;
     } catch (_) {
       return null;
@@ -615,11 +621,8 @@ document.querySelectorAll('#year').forEach(el => {
   }
 
   function buildPricingSummaryText(selection) {
-    if (!selection || !selection.lines || selection.lines.length === 0) return '';
-    var header = '--- Ausgewaehltes Paket ---';
-    var lines = selection.lines.join('\n');
-    var total = selection.total ? ('Gesamt: ' + selection.total) : '';
-    return [header, lines, total].filter(Boolean).join('\n');
+    if (!selection || !selection.packageName) return '';
+    return 'Ausgewaehltes Paket: ' + selection.packageName;
   }
 
   function prefillPricingSelection() {

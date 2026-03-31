@@ -46,6 +46,7 @@
     }
     .container {
       max-width: 600px;
+      width: 100%;
     }
     h1 {
       font-size: 8rem;
@@ -80,11 +81,29 @@
       box-shadow: 0 6px 30px rgba(0,0,0,0.3);
     }
     @media (max-width: 640px) {
+      body {
+        padding: 1.25rem;
+      }
+
+      .lang-switch {
+        position: static;
+        justify-content: center;
+        margin-bottom: 1rem;
+      }
+
       h1 {
         font-size: 5rem;
       }
       h2 {
         font-size: 1.5rem;
+      }
+
+      p {
+        font-size: 1rem;
+      }
+
+      .button {
+        width: 100%;
       }
     }
   </style>

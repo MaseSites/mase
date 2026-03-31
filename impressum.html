@@ -1,4 +1,4 @@
-﻿﻿<!doctype html>
+﻿<!doctype html>
 <html lang="de-CH">
 <head>
   <meta charset="utf-8">
@@ -20,7 +20,7 @@
       var s = localStorage.getItem('lang');
       var lang = ['de', 'en', 'fr'].indexOf(q) !== -1 ? q : (['de', 'en', 'fr'].indexOf(s) !== -1 ? s : 'de');
       localStorage.setItem('lang', lang);
-      document.documentElement.lang = (lang === 'de' ? 'de-CH' : (lang === 'fr' ? 'fr-CH' : 'en'));
+      document.documentElement.lang = (lang === 'de' ? 'de-CH' : 'en');
     })();
   </script>
   <script defer src="theme.js?v=20260327"></script>
@@ -41,7 +41,7 @@
         <a href="index.html" data-i18n="nav_home">Home</a>
         <a href="leistungen.html" data-i18n="nav_services">Leistungen</a>
         <a href="preise.html" data-i18n="nav_prices">Preise</a>
-        <a href="ki-assistent.html" data-i18n="nav_ai">KI-Assistent</a>
+        <a href="ki-assistent.html" data-i18n="nav_ai">KI Assistent</a>
         <a href="ueber-uns.html" data-i18n="nav_about">Über uns</a>
         <a href="kontakt.html" data-i18n="nav_contact">Kontakt</a>
         <a class="button button-primary button-small" href="kontakt.html" data-i18n="nav_cta">Kostenloses Erstgespräch</a>
@@ -109,7 +109,7 @@
         <a href="index.html" data-i18n="nav_home">Home</a>
         <a href="leistungen.html" data-i18n="nav_services">Leistungen</a>
         <a href="preise.html" data-i18n="nav_prices">Preise</a>
-        <a href="ki-assistent.html" data-i18n="nav_ai">KI-Assistent</a>
+        <a href="ki-assistent.html" data-i18n="nav_ai">KI Assistent</a>
       </div>
       <div>
         <p class="footer-title" data-i18n="footer_contact">Kontakt</p>
@@ -138,4 +138,5 @@
   </button>
 </body>
 </html>
+
 

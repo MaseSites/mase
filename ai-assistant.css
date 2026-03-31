@@ -559,6 +559,8 @@
     right: 1rem;
     padding: 0.8rem 1.2rem;
     font-size: 0.9rem;
+    animation: none;
+    overflow: hidden;
   }
 
   .ai-chat-toggle-text {
@@ -593,6 +595,20 @@
 
   .ai-info-box {
     font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 360px) {
+  .ai-chat-toggle {
+    left: 1rem;
+    right: 1rem;
+    justify-content: center;
+    padding: 0.75rem 1rem;
+  }
+
+  .ai-chat-tooltip,
+  .ai-welcome-bubble {
+    display: none;
   }
 }
 
