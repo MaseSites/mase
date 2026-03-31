@@ -103,12 +103,133 @@ document.querySelectorAll('#year').forEach(el => {
   const btn = document.getElementById('back-to-top');
   const cta = document.getElementById('sticky-cta');
   if (!btn && !cta) return;
+
+  function scrollToTopSafe() {
+    try {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } catch (e) {
+      window.scrollTo(0, 0);
+    }
+  }
+
   window.addEventListener('scroll', () => {
     const past = window.scrollY > 500;
     if (btn) btn.classList.toggle('visible', past);
     if (cta) cta.classList.toggle('visible', past);
   }, { passive: true });
-  if (btn) btn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+  if (btn) btn.addEventListener('click', scrollToTopSafe);
+})();
+
+// ============================================
+// HERO WEBSITE CONFIGURATOR (index.html)
+// ============================================
+(function() {
+  const root = document.getElementById('hero-configurator');
+  if (!root) return;
+
+  const industryButtons = Array.from(root.querySelectorAll('[data-config-industry]'));
+  const goalButtons = Array.from(root.querySelectorAll('[data-config-goal]'));
+  const previewTitle = document.getElementById('hero-config-preview-title');
+  const previewGoal = document.getElementById('hero-config-preview-goal');
+  const kpiOne = document.getElementById('hero-config-kpi-one');
+  const kpiTwo = document.getElementById('hero-config-kpi-two');
+  const priceEl = document.getElementById('hero-config-price');
+
+  if (!previewTitle || !previewGoal || !kpiOne || !kpiTwo || !priceEl) return;
+
+  const industries = {
+    fitness: {
+      label: 'Fitness Website',
+      kpiOne: '+120% Anfragen',
+      kpiTwo: '1.2s Ladezeit',
+      basePrice: 750
+    },
+    restaurant: {
+      label: 'Restaurant Website',
+      kpiOne: '+85% Reservierungen',
+      kpiTwo: '1.4s Ladezeit',
+      basePrice: 790
+    },
+    immobilien: {
+      label: 'Immobilien Website',
+      kpiOne: '+140% Leads',
+      kpiTwo: '1.3s Ladezeit',
+      basePrice: 950
+    },
+    unternehmen: {
+      label: 'Unternehmens Website',
+      kpiOne: '+95% Kontaktanfragen',
+      kpiTwo: '1.2s Ladezeit',
+      basePrice: 850
+    }
+  };
+
+  const goals = {
+    kunden: { label: 'Mehr Kunden', priceDelta: 0 },
+    verkaeufe: { label: 'Mehr Verkäufe', priceDelta: 120 },
+    branding: { label: 'Branding', priceDelta: 70 }
+  };
+
+  let selectedIndustry = 'fitness';
+  let selectedGoal = 'kunden';
+
+  function formatCHF(value) {
+    return 'Ab CHF ' + value.toLocaleString('de-CH');
+  }
+
+  function markActive(buttons, key, attributeName) {
+    buttons.forEach((btn) => {
+      const isActive = btn.getAttribute(attributeName) === key;
+      btn.classList.toggle('active', isActive);
+      btn.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+    });
+  }
+
+  function renderConfigurator() {
+    const industry = industries[selectedIndustry];
+    const goal = goals[selectedGoal];
+    if (!industry || !goal) return;
+
+    const price = industry.basePrice + goal.priceDelta;
+
+    previewTitle.textContent = industry.label;
+    previewGoal.textContent = 'Fokus: ' + goal.label;
+    kpiOne.textContent = industry.kpiOne;
+    kpiTwo.textContent = industry.kpiTwo;
+    priceEl.textContent = formatCHF(price);
+  }
+
+  function animateAndRender() {
+    root.classList.add('is-updating');
+    renderConfigurator();
+    window.setTimeout(() => {
+      root.classList.remove('is-updating');
+    }, 220);
+  }
+
+  industryButtons.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const value = btn.getAttribute('data-config-industry');
+      if (!value || value === selectedIndustry) return;
+      selectedIndustry = value;
+      markActive(industryButtons, value, 'data-config-industry');
+      animateAndRender();
+    });
+  });
+
+  goalButtons.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const value = btn.getAttribute('data-config-goal');
+      if (!value || value === selectedGoal) return;
+      selectedGoal = value;
+      markActive(goalButtons, value, 'data-config-goal');
+      animateAndRender();
+    });
+  });
+
+  markActive(industryButtons, selectedIndustry, 'data-config-industry');
+  markActive(goalButtons, selectedGoal, 'data-config-goal');
+  renderConfigurator();
 })();
 
 // ============================================
