@@ -8,13 +8,54 @@ require('dotenv').config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+const allowedOrigins = [
+  'http://127.0.0.1:5500',
+  'http://localhost:5500',
+  'http://127.0.0.1:3000',
+  'http://localhost:3000',
+  'https://www.masesites.ch',
+  'https://masesites.ch'
+].concat(
+  (process.env.CORS_ORIGINS || '')
+    .split(',')
+    .map((origin) => origin.trim())
+    .filter(Boolean)
+);
+
 // Middleware
 app.disable('x-powered-by');
-app.use(cors());
+app.use(cors({
+  origin: (origin, callback) => {
+    // Allow same-origin/server-to-server calls without Origin header.
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.indexOf(origin) !== -1) return callback(null, true);
+    return callback(new Error(`CORS_NOT_ALLOWED: ${origin}`));
+  },
+  methods: ['GET', 'POST', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Accept']
+}));
 app.use(express.json({ limit: '20kb' }));
 app.use(express.urlencoded({ extended: true, limit: '20kb' }));
 
-// Cache-Control fuer konsistente Live-Darstellung (verhindert stale CSS/JS/HTML nach Deploys)
+app.use((err, req, res, next) => {
+  if (err && typeof err.message === 'string' && err.message.indexOf('CORS_NOT_ALLOWED:') === 0) {
+    const deniedOrigin = err.message.replace('CORS_NOT_ALLOWED: ', '');
+    console.error('[FEHLER] CORS blockiert Origin:', deniedOrigin);
+    return res.status(403).json({
+      success: false,
+      code: 'CORS_NOT_ALLOWED',
+      message: 'Origin ist für diese API nicht erlaubt.'
+    });
+  }
+  return next(err);
+});
+
+app.use('/api/contact', (req, res, next) => {
+  console.log(`[API] ${req.method} /api/contact from ${req.headers.origin || 'same-origin/no-origin'}`);
+  next();
+});
+
+// Cache-Control für konsistente Live-Darstellung (verhindert stale CSS/JS/HTML nach Deploys)
 app.use((req, res, next) => {
   const reqPath = req.path || '';
   if (/\.(css|js|mjs|map)$/i.test(reqPath)) {
@@ -25,7 +66,7 @@ app.use((req, res, next) => {
   next();
 });
 
-// 301 Weiterleitungen: .html URLs -> saubere URLs (VOR static middleware, wichtig fuer SEO)
+// 301 Weiterleitungen: .html URLs -> saubere URLs (VOR static middleware, wichtig für SEO)
 app.get('/leistungen.html', (req, res) => res.redirect(301, '/leistungen'));
 app.get('/preise.html', (req, res) => res.redirect(301, '/preise'));
 app.get('/ki-assistent.html', (req, res) => res.redirect(301, '/ki-assistent'));
@@ -54,7 +95,7 @@ const limiter = rateLimit({
     res.status(429).json({
       success: false,
       code: 'RATE_LIMITED',
-      message: 'Zu viele Anfragen. Bitte versuche es spaeter erneut.'
+      message: 'Zu viele Anfragen. Bitte versuche es später erneut.'
     });
   }
 });
@@ -99,7 +140,7 @@ async function setupEmailTransporter() {
     const smtpPassword = process.env.SMTP_PASSWORD || process.env.EMAIL_PASSWORD;
 
     if (!smtpUser || !smtpPassword) {
-      throw new Error('SMTP_USER/EMAIL_USER und SMTP_PASSWORD/EMAIL_PASSWORD muessen gesetzt sein.');
+      throw new Error('SMTP_USER/EMAIL_USER und SMTP_PASSWORD/EMAIL_PASSWORD müssen gesetzt sein.');
     }
 
     transporter = nodemailer.createTransport({
@@ -116,7 +157,7 @@ async function setupEmailTransporter() {
     });
     console.log(`[OK] Email: SMTP ${process.env.SMTP_HOST} konfiguriert`);
     console.log(`     Absender : ${smtpUser}`);
-    console.log(`     Empfaenger: ${process.env.EMAIL_TO}`);
+    console.log(`     Empfänger: ${process.env.EMAIL_TO}`);
 
   } else if (process.env.EMAIL_USER && process.env.EMAIL_PASSWORD &&
              process.env.EMAIL_USER !== 'deine-gmail@gmail.com' &&
@@ -138,7 +179,7 @@ async function setupEmailTransporter() {
     console.log('[!] EMAIL NOCH NICHT KONFIGURIERT');
     console.log('-------------------------------------------');
     console.log('So richtest du es ein:');
-    console.log('   1. Oeffne .env Datei');
+    console.log('   1. Öffne .env Datei');
     console.log('   2. Trage SMTP_HOST, SMTP_USER, SMTP_PASSWORD ein');
     console.log('   3. Starte Server neu: node server.js');
     console.log('-------------------------------------------');
@@ -154,7 +195,7 @@ async function setupEmailTransporter() {
           pass: testAccount.pass
         }
       });
-      console.log('[TEST] Laeuft im TEST-MODUS (Ethereal)');
+      console.log('[TEST] Läuft im TEST-MODUS (Ethereal)');
       console.log('[TEST] Test-Emails ansehen: https://ethereal.email');
       console.log('[TEST] Login:', testAccount.user);
       console.log('[TEST] Passwort:', testAccount.pass);
@@ -166,7 +207,7 @@ async function setupEmailTransporter() {
 
   if (transporter) {
     await transporter.verify();
-    console.log('[OK] Email-Transport Verbindung geprueft');
+    console.log('[OK] Email-Transport Verbindung geprüft');
   }
 }
 
@@ -190,11 +231,22 @@ app.post('/api/contact', limiter, async (req, res) => {
       pricingSelection: rawPricingSelection
     } = req.body || {};
 
+    console.log('[API] /api/contact payload received:', {
+      hasName: !!rawName,
+      hasEmail: !!rawEmail,
+      hasCompany: !!rawCompany,
+      hasProjectType: !!rawProjectType,
+      messageLength: String(rawMessage || '').length,
+      privacy: rawPrivacy,
+      hasHoneypot: !!rawHoneypot,
+      hasPricingSelection: !!rawPricingSelection
+    });
+
     if (!transporter) {
       return res.status(503).json({
         success: false,
         code: 'EMAIL_NOT_CONFIGURED',
-        message: 'Email-Dienst ist aktuell nicht verfuegbar. Bitte versuche es spaeter erneut.'
+        message: 'Email-Dienst ist aktuell nicht verfügbar. Bitte versuche es später erneut.'
       });
     }
 
@@ -215,7 +267,7 @@ app.post('/api/contact', limiter, async (req, res) => {
       return res.status(400).json({
         success: false,
         code: 'VALIDATION_REQUIRED_FIELDS',
-        message: 'Bitte fuelle alle Pflichtfelder aus.'
+        message: 'Bitte fülle alle Pflichtfelder aus.'
       });
     }
 
@@ -223,7 +275,7 @@ app.post('/api/contact', limiter, async (req, res) => {
       return res.status(400).json({
         success: false,
         code: 'VALIDATION_NAME',
-        message: 'Bitte gib einen gueltigen Namen ein.'
+        message: 'Bitte gib einen gültigen Namen ein.'
       });
     }
 
@@ -232,7 +284,7 @@ app.post('/api/contact', limiter, async (req, res) => {
       return res.status(400).json({
         success: false,
         code: 'VALIDATION_EMAIL',
-        message: 'Bitte gib eine gueltige E-Mail-Adresse ein.'
+        message: 'Bitte gib eine gültige E-Mail-Adresse ein.'
       });
     }
 
@@ -240,7 +292,7 @@ app.post('/api/contact', limiter, async (req, res) => {
       return res.status(400).json({
         success: false,
         code: 'VALIDATION_MESSAGE',
-        message: 'Bitte gib eine aussagekraeftige Nachricht mit mindestens 10 Zeichen ein.'
+        message: 'Bitte gib eine aussagekräftige Nachricht mit mindestens 10 Zeichen ein.'
       });
     }
 
@@ -298,7 +350,7 @@ app.post('/api/contact', limiter, async (req, res) => {
           </div>
           <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 30px 0;">
           <p style="font-size: 12px; color: #94a3b8;">
-            Gesendet ueber MASESites Kontaktformular<br>
+            Gesendet über MASESites Kontaktformular<br>
             ${new Date().toLocaleString('de-CH')}
           </p>
         </div>
@@ -312,11 +364,11 @@ app.post('/api/contact', limiter, async (req, res) => {
       console.log('[INFO] Vorschau:', nodemailer.getTestMessageUrl(info));
     }
 
-    // Bestaetigung an User
+    // Bestätigung an User
     const userPricingSection = pricingSelection
       ? `
           <div style="background: #f6f9ff; padding: 20px; border-radius: 8px; margin: 20px 0;">
-            <p style="margin: 0 0 10px 0; font-weight: bold; color: #334155;">Deine gewaehlten Pakete:</p>
+            <p style="margin: 0 0 10px 0; font-weight: bold; color: #334155;">Deine gewählten Pakete:</p>
             <p style="margin: 0; color: #64748b; white-space: pre-line;">${safePricingSelection}</p>
           </div>`
       : '';
@@ -327,7 +379,7 @@ app.post('/api/contact', limiter, async (req, res) => {
       subject: 'Deine Anfrage bei MASESites AG',
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
-          <h2 style="color: #6aa9ff;">Vielen Dank fuer deine Anfrage!</h2>
+          <h2 style="color: #6aa9ff;">Vielen Dank für deine Anfrage!</h2>
           <p>Hallo ${safeName},</p>
           <p>wir haben deine Nachricht erhalten und melden uns innerhalb von <strong>24-48 Stunden</strong> bei dir.</p>
           <div style="background: #f6f9ff; padding: 20px; border-radius: 8px; margin: 20px 0;">
@@ -345,7 +397,7 @@ app.post('/api/contact', limiter, async (req, res) => {
           </div>
           <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 30px 0;">
           <p style="color: #64748b;">
-            Mit freundlichen Gruessen,<br>
+            Mit freundlichen Grüßen,<br>
             <strong style="color: #334155;">Matteo &amp; Severin</strong><br>
             MASESites AG
           </p>
@@ -357,7 +409,7 @@ app.post('/api/contact', limiter, async (req, res) => {
     };
 
     await transporter.sendMail(mailToUser);
-    console.log('[OK] Bestaetigung an User gesendet');
+    console.log('[OK] Bestätigung an User gesendet');
 
     res.status(200).json({
       success: true,
@@ -366,11 +418,26 @@ app.post('/api/contact', limiter, async (req, res) => {
     });
 
   } catch (error) {
-    console.error('[FEHLER] Email Error:', error.message);
-    res.status(500).json({
+    console.error('[FEHLER] Email Error:', {
+      message: error && error.message,
+      code: error && error.code,
+      stack: error && error.stack
+    });
+
+    var statusCode = 500;
+    var errorCode = 'MAIL_SEND_FAILED';
+    var errorMessage = 'Ein Fehler ist aufgetreten. Bitte schreibe direkt an info@masesites.ch oder rufe an: 078 215 89 22';
+
+    if (error && (error.code === 'EAUTH' || error.code === 'ESOCKET' || error.code === 'ECONNECTION' || error.code === 'ETIMEDOUT')) {
+      statusCode = 502;
+      errorCode = 'SMTP_CONNECTION_FAILED';
+      errorMessage = 'SMTP-Verbindung fehlgeschlagen. Bitte prüfe die E-Mail-Konfiguration auf dem Server.';
+    }
+
+    res.status(statusCode).json({
       success: false,
-      code: 'MAIL_SEND_FAILED',
-      message: 'Ein Fehler ist aufgetreten. Bitte schreibe direkt an info@masesites.ch oder rufe an: 078 215 89 22'
+      code: errorCode,
+      message: errorMessage
     });
   }
 });

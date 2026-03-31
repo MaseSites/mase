@@ -121,118 +121,6 @@ document.querySelectorAll('#year').forEach(el => {
 })();
 
 // ============================================
-// HERO WEBSITE CONFIGURATOR (index.html)
-// ============================================
-(function() {
-  const root = document.getElementById('hero-configurator');
-  if (!root) return;
-
-  const industryButtons = Array.from(root.querySelectorAll('[data-config-industry]'));
-  const goalButtons = Array.from(root.querySelectorAll('[data-config-goal]'));
-  const previewTitle = document.getElementById('hero-config-preview-title');
-  const previewGoal = document.getElementById('hero-config-preview-goal');
-  const kpiOne = document.getElementById('hero-config-kpi-one');
-  const kpiTwo = document.getElementById('hero-config-kpi-two');
-  const priceEl = document.getElementById('hero-config-price');
-
-  if (!previewTitle || !previewGoal || !kpiOne || !kpiTwo || !priceEl) return;
-
-  const industries = {
-    fitness: {
-      label: 'Fitness Website',
-      kpiOne: '+120% Anfragen',
-      kpiTwo: '1.2s Ladezeit',
-      basePrice: 750
-    },
-    restaurant: {
-      label: 'Restaurant Website',
-      kpiOne: '+85% Reservierungen',
-      kpiTwo: '1.4s Ladezeit',
-      basePrice: 790
-    },
-    immobilien: {
-      label: 'Immobilien Website',
-      kpiOne: '+140% Leads',
-      kpiTwo: '1.3s Ladezeit',
-      basePrice: 950
-    },
-    unternehmen: {
-      label: 'Unternehmens Website',
-      kpiOne: '+95% Kontaktanfragen',
-      kpiTwo: '1.2s Ladezeit',
-      basePrice: 850
-    }
-  };
-
-  const goals = {
-    kunden: { label: 'Mehr Kunden', priceDelta: 0 },
-    verkaeufe: { label: 'Mehr Verkäufe', priceDelta: 120 },
-    branding: { label: 'Branding', priceDelta: 70 }
-  };
-
-  let selectedIndustry = 'fitness';
-  let selectedGoal = 'kunden';
-
-  function formatCHF(value) {
-    return 'Ab CHF ' + value.toLocaleString('de-CH');
-  }
-
-  function markActive(buttons, key, attributeName) {
-    buttons.forEach((btn) => {
-      const isActive = btn.getAttribute(attributeName) === key;
-      btn.classList.toggle('active', isActive);
-      btn.setAttribute('aria-pressed', isActive ? 'true' : 'false');
-    });
-  }
-
-  function renderConfigurator() {
-    const industry = industries[selectedIndustry];
-    const goal = goals[selectedGoal];
-    if (!industry || !goal) return;
-
-    const price = industry.basePrice + goal.priceDelta;
-
-    previewTitle.textContent = industry.label;
-    previewGoal.textContent = 'Fokus: ' + goal.label;
-    kpiOne.textContent = industry.kpiOne;
-    kpiTwo.textContent = industry.kpiTwo;
-    priceEl.textContent = formatCHF(price);
-  }
-
-  function animateAndRender() {
-    root.classList.add('is-updating');
-    renderConfigurator();
-    window.setTimeout(() => {
-      root.classList.remove('is-updating');
-    }, 220);
-  }
-
-  industryButtons.forEach((btn) => {
-    btn.addEventListener('click', () => {
-      const value = btn.getAttribute('data-config-industry');
-      if (!value || value === selectedIndustry) return;
-      selectedIndustry = value;
-      markActive(industryButtons, value, 'data-config-industry');
-      animateAndRender();
-    });
-  });
-
-  goalButtons.forEach((btn) => {
-    btn.addEventListener('click', () => {
-      const value = btn.getAttribute('data-config-goal');
-      if (!value || value === selectedGoal) return;
-      selectedGoal = value;
-      markActive(goalButtons, value, 'data-config-goal');
-      animateAndRender();
-    });
-  });
-
-  markActive(industryButtons, selectedIndustry, 'data-config-industry');
-  markActive(goalButtons, selectedGoal, 'data-config-goal');
-  renderConfigurator();
-})();
-
-// ============================================
 // PRICING CALCULATOR (preise.html)
 // ============================================
 (function () {
@@ -675,7 +563,7 @@ document.querySelectorAll('#year').forEach(el => {
     var messages = {
       de: {
         required: 'Bitte fuelle alle Pflichtfelder aus.',
-        invalidEmail: 'Bitte gib eine gueltige E-Mail-Adresse ein.',
+        invalidEmail: 'Bitte gib eine gültige E-Mail-Adresse ein.',
         messageTooShort: 'Bitte gib eine aussagekraeftige Nachricht mit mindestens 10 Zeichen ein.',
         rateLimited: 'Zu viele Anfragen. Bitte versuche es in einigen Minuten erneut.',
         sending: 'Wird gesendet...',
@@ -769,6 +657,23 @@ document.querySelectorAll('#year').forEach(el => {
     return String(value || '').trim().slice(0, maxLength);
   }
 
+  function resolveContactEndpoint() {
+    var action = form.getAttribute('action') || '/api/contact';
+    if (/^https?:\/\//i.test(action)) return action;
+
+    var isLocalHost = /^(localhost|127\.0\.0\.1)$/i.test(window.location.hostname);
+    var currentPort = window.location.port || '';
+    var normalizedAction = action.charAt(0) === '/' ? action : ('/' + action);
+
+    // Local dev: always target backend on localhost:3000 for consistency.
+    if (isLocalHost && currentPort && currentPort !== '3000') {
+      return window.location.protocol + '//localhost:3000' + normalizedAction;
+    }
+
+    // Production/same-origin fallback.
+    return normalizedAction;
+  }
+
   function validatePayload(data) {
     var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!data.name || !data.email || !data.message || !data.privacy) {
@@ -815,7 +720,21 @@ document.querySelectorAll('#year').forEach(el => {
         return;
       }
 
-      var endpoint = form.getAttribute('action') || '/api/contact';
+      var endpoint = resolveContactEndpoint();
+      var isLocalDebug = /^(localhost|127\.0\.0\.1)$/i.test(window.location.hostname);
+      if (isLocalDebug) {
+        console.info('[Kontaktformular] Sende Request an:', endpoint);
+        console.info('[Kontaktformular] Payload:', {
+          name: data.name,
+          email: data.email,
+          company: data.company,
+          projectType: data.projectType,
+          messageLength: data.message.length,
+          privacy: data.privacy,
+          hasPricingSelection: !!data.pricingSelection
+        });
+      }
+
       var response = await fetch(endpoint, {
         method: 'POST',
         headers: {
@@ -831,6 +750,14 @@ document.querySelectorAll('#year').forEach(el => {
         try { payload = await response.json(); } catch (_) { payload = {}; }
       }
 
+      if (isLocalDebug) {
+        console.info('[Kontaktformular] API Antwort:', {
+          status: response.status,
+          ok: response.ok,
+          payload: payload
+        });
+      }
+
       if (response.ok && payload.success) {
         setMessage(successBox, payload.message || getFormMessage('success'), 'success');
         form.reset();
@@ -840,7 +767,10 @@ document.querySelectorAll('#year').forEach(el => {
       } else {
         setMessage(errorBox, (payload && payload.message) || getFormMessage('connection'), 'error');
       }
-    } catch (_) {
+    } catch (err) {
+      if (/^(localhost|127\.0\.0\.1)$/i.test(window.location.hostname)) {
+        console.error('[Kontaktformular] Netzwerk-/Fetch-Fehler:', err);
+      }
       setMessage(errorBox, getFormMessage('connection'), 'error');
     } finally {
       isSubmitting = false;

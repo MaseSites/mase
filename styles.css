@@ -3501,175 +3501,179 @@ section {
 }
 
 /* ============================================
-   HERO WEBSITE CONFIGURATOR
+   HERO BENEFIT SALES CARD
    ============================================ */
-.hero-configurator {
+.hero-benefit-card {
   width: 100%;
   max-width: 380px;
-  padding: 20px;
-  border-radius: 18px;
-  background: #ffffff;
-  border: 1px solid rgba(15, 23, 42, 0.08);
-  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.08);
+  padding: 22px;
+  border-radius: 20px;
+  background: linear-gradient(180deg, #ffffff 0%, #fbfdff 100%);
+  border: 1px solid rgba(58, 155, 255, 0.14);
+  box-shadow: 0 14px 30px rgba(15, 23, 42, 0.09);
   display: grid;
   gap: 14px;
   color: #111111;
+  transition: transform 0.24s ease, box-shadow 0.24s ease;
 }
 
-.hero-configurator-title {
+.hero-benefit-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 18px 36px rgba(15, 23, 42, 0.12);
+}
+
+.hero-benefit-badge {
   margin: 0;
-  font-size: 1.2rem;
+  width: fit-content;
+  max-width: 100%;
+  padding: 6px 11px;
+  border-radius: 999px;
+  background: rgba(58, 155, 255, 0.12);
+  color: #0f4a8a;
+  border: 1px solid rgba(58, 155, 255, 0.24);
+  font-size: 0.76rem;
+  font-weight: 700;
   line-height: 1.25;
+}
+
+.hero-benefit-title {
+  margin: 0;
+  font-size: 1.58rem;
+  line-height: 1.12;
+  letter-spacing: -0.01em;
   font-weight: 800;
-  color: #111111;
-}
-
-.hero-configurator-step {
-  display: grid;
-  gap: 8px;
-}
-
-.hero-configurator-label {
-  margin: 0;
-  font-size: 0.78rem;
-  line-height: 1.2;
-  color: #4b5563;
-  font-weight: 700;
-}
-
-.hero-configurator-options {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.hero-config-btn {
-  border: 1px solid #d1d5db;
-  background: #ffffff;
-  color: #111111;
-  border-radius: 999px;
-  padding: 8px 12px;
-  font-size: 0.82rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.22s ease, border-color 0.22s ease, color 0.22s ease, transform 0.22s ease;
-}
-
-.hero-config-btn:hover {
-  background: #f3f4f6;
-  border-color: #9ca3af;
-}
-
-.hero-config-btn.active {
-  background: #16a34a;
-  border-color: #16a34a;
-  color: #ffffff;
-}
-
-.hero-config-btn.active:hover {
-  background: #15803d;
-  border-color: #15803d;
-}
-
-.hero-configurator-preview {
-  border: 1px solid #e5e7eb;
-  border-radius: 14px;
-  padding: 14px;
-  background: #f8fafc;
-  display: grid;
-  gap: 6px;
-  transition: opacity 0.26s ease, transform 0.26s ease;
-}
-
-.hero-configurator-preview-title {
-  margin: 0;
-  font-size: 1rem;
-  font-weight: 800;
-  line-height: 1.2;
-  color: #111111;
-}
-
-.hero-configurator-preview-goal {
-  margin: 0;
-  font-size: 0.82rem;
-  line-height: 1.3;
-  color: #4b5563;
-}
-
-.hero-configurator-kpis {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-
-.hero-configurator-kpi {
-  display: inline-flex;
-  align-items: center;
-  min-height: 28px;
-  padding: 4px 10px;
-  border-radius: 999px;
-  background: #ffffff;
-  border: 1px solid #dbe2ea;
-  font-size: 0.78rem;
-  font-weight: 700;
   color: #0f172a;
 }
 
-.hero-configurator-footer {
+.hero-benefit-subtitle {
+  margin: 0;
+  font-size: 0.94rem;
+  line-height: 1.5;
+  color: #475569;
+}
+
+.hero-benefit-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+}
+
+.hero-benefit-item {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-height: 36px;
+  padding: 7px 10px;
+  border-radius: 11px;
+  background: rgba(240, 252, 247, 0.95);
+  border: 1px solid rgba(22, 163, 74, 0.2);
+  color: #0f172a;
+  font-size: 0.86rem;
+  font-weight: 600;
+}
+
+.hero-benefit-check {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #16a34a;
+  color: #ffffff;
+  font-size: 0.72rem;
+  font-weight: 800;
+  flex-shrink: 0;
+}
+
+.hero-benefit-trust {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.hero-benefit-trust-item {
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  color: #1e3a8a;
+  font-size: 0.76rem;
+  font-weight: 700;
+}
+
+.hero-benefit-footer {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
+  padding-top: 6px;
+  border-top: 1px solid rgba(58, 155, 255, 0.16);
 }
 
-.hero-configurator-price {
+.hero-benefit-pricing {
+  display: grid;
+  gap: 2px;
+}
+
+.hero-benefit-price {
   margin: 0;
-  font-size: 1.16rem;
+  font-size: 1.18rem;
+  line-height: 1.1;
   font-weight: 800;
-  color: #111111;
+  color: #0f172a;
 }
 
-.hero-configurator-cta {
+.hero-benefit-note {
+  margin: 0;
+  font-size: 0.8rem;
+  line-height: 1.3;
+  color: #0f766e;
+  font-weight: 700;
+}
+
+.hero-benefit-cta {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   min-height: 42px;
-  padding: 0 18px;
-  border-radius: 10px;
-  background: #16a34a;
+  padding: 0 16px;
+  border-radius: 11px;
+  background: linear-gradient(135deg, #0f766e, #0b5f58);
   color: #ffffff;
   text-decoration: none;
   font-size: 0.86rem;
   font-weight: 700;
-  box-shadow: 0 8px 18px rgba(22, 163, 74, 0.28);
+  box-shadow: 0 8px 18px rgba(15, 118, 110, 0.28);
   transition: transform 0.24s ease, background-color 0.24s ease, box-shadow 0.24s ease;
 }
 
-.hero-configurator-cta:hover {
+.hero-benefit-cta:hover {
   transform: scale(1.03);
-  background: #15803d;
-  box-shadow: 0 10px 22px rgba(21, 128, 61, 0.3);
-}
-
-.hero-configurator.is-updating .hero-configurator-preview,
-.hero-configurator.is-updating .hero-configurator-price {
-  opacity: 0.55;
-  transform: translateY(2px);
+  background: #0b665f;
+  box-shadow: 0 10px 22px rgba(11, 102, 95, 0.3);
 }
 
 @media (max-width: 640px) {
-  .hero-configurator {
-    max-width: 360px;
+  .hero-benefit-card {
+    max-width: 100%;
     padding: 18px;
-    border-radius: 16px;
+    border-radius: 18px;
+    gap: 12px;
   }
 
-  .hero-configurator-footer {
+  .hero-benefit-title {
+    font-size: 1.42rem;
+  }
+
+  .hero-benefit-footer {
     flex-direction: column;
     align-items: stretch;
   }
 
-  .hero-configurator-cta {
+  .hero-benefit-cta {
     width: 100%;
   }
 }
@@ -3793,4 +3797,393 @@ pre {
   .sticky-cta {
     display: none !important;
   }
+}
+
+/* ============================================
+   Premium Agency Refinement (Homepage)
+   ============================================ */
+.process-lead {
+  margin-bottom: 2rem;
+  color: var(--text-muted);
+  max-width: 760px;
+}
+
+.process-step-icon svg {
+  width: 22px;
+  height: 22px;
+}
+
+.process-step {
+  background: linear-gradient(180deg, #fbfdff 0%, #f4f8ff 100%);
+  border-color: #d5e3f8;
+}
+
+.process-step p {
+  margin-bottom: 0;
+  color: var(--text-muted);
+}
+
+.process-cta-wrap {
+  text-align: center;
+  margin-top: 2.4rem;
+}
+
+.code-proof {
+  padding: 5rem 0;
+  background: linear-gradient(180deg, #ffffff 0%, #f4f8ff 100%);
+  border-top: 1px solid #e2eaf5;
+  border-bottom: 1px solid #e2eaf5;
+}
+
+.code-proof-grid {
+  display: grid;
+  gap: 2rem;
+  align-items: center;
+}
+
+.code-proof-copy .lead {
+  color: var(--text-muted);
+}
+
+.code-proof-points {
+  margin: 1.25rem 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.7rem;
+}
+
+.code-proof-points li {
+  position: relative;
+  padding-left: 1.4rem;
+  color: var(--text-secondary);
+}
+
+.code-proof-points li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.52rem;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--accent-strong);
+}
+
+.code-proof-panel {
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid #c7d9f4;
+  background: #0d1a2a;
+  box-shadow: 0 24px 44px rgba(13, 26, 42, 0.28);
+}
+
+.code-proof-header {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.8rem 1rem;
+  background: #0a1422;
+  border-bottom: 1px solid rgba(191, 219, 254, 0.22);
+}
+
+.code-proof-header span {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #334155;
+}
+
+.code-proof-header span:first-child { background: #ef4444; }
+.code-proof-header span:nth-child(2) { background: #f59e0b; }
+.code-proof-header span:nth-child(3) { background: #22c55e; }
+
+.code-proof-header p {
+  margin: 0 0 0 0.4rem;
+  color: #bfdbfe;
+  font-size: 0.8rem;
+}
+
+.code-proof-snippet {
+  margin: 0;
+  padding: 1.25rem;
+  color: #e2e8f0;
+  line-height: 1.62;
+  font-size: 0.88rem;
+  white-space: pre;
+  overflow-x: auto;
+}
+
+.lp-card-link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+  transition: transform 0.24s ease, box-shadow 0.24s ease, border-color 0.24s ease;
+}
+
+.lp-card-open {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.56rem 0.9rem;
+  border-radius: 999px;
+  border: 1px solid #c8d9f5;
+  color: var(--accent-strong);
+  font-weight: 700;
+  font-size: 0.86rem;
+  background: #f8fbff;
+}
+
+.lp-card-open::after {
+  content: "->";
+  font-weight: 700;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .lp-card-link:hover {
+    transform: translateY(-4px);
+    border-color: #9cbcf0;
+    box-shadow: 0 20px 34px rgba(13, 36, 75, 0.13);
+  }
+
+  .lp-card-link:hover .lp-card-open {
+    border-color: var(--accent-strong);
+    background: #eff6ff;
+  }
+}
+
+.lp-card-link:focus-visible {
+  outline: 3px solid rgba(0, 81, 186, 0.33);
+  outline-offset: 3px;
+}
+
+.ai-list-product {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: 0.65rem;
+}
+
+.ai-list-product li {
+  position: relative;
+  padding-left: 1.3rem;
+}
+
+.ai-list-product li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.58rem;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--accent-strong);
+}
+
+.ai-trust-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+}
+
+.ai-trust-row span {
+  padding: 0.36rem 0.75rem;
+  border-radius: 999px;
+  border: 1px solid #cddcf2;
+  background: #f7fbff;
+  font-size: 0.8rem;
+  color: #1e3a5f;
+  font-weight: 600;
+}
+
+.ai-cta-row {
+  margin-top: 1.1rem;
+}
+
+.ai-chat-pro {
+  border: 1px solid #c8d9f5;
+  box-shadow: 0 22px 34px rgba(15, 23, 42, 0.14);
+}
+
+.ai-chat-pro .chat-header {
+  justify-content: flex-start;
+}
+
+.ai-chat-status {
+  margin-left: auto;
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: #0f766e;
+  background: #ecfdf5;
+  border: 1px solid #a7f3d0;
+  padding: 0.25rem 0.55rem;
+  border-radius: 999px;
+}
+
+.ai-chat-benefits {
+  padding: 0.9rem 1.2rem 1.1rem;
+  border-top: 1px solid #dbe8fa;
+  background: #f8fbff;
+  display: grid;
+  gap: 0.35rem;
+}
+
+.ai-chat-benefits p {
+  margin: 0;
+  color: #304862;
+  font-size: 0.84rem;
+}
+
+.pricing-teaser-inner {
+  text-align: center;
+}
+
+.pricing-teaser-lead {
+  max-width: 600px;
+  margin: 0 auto 2rem;
+}
+
+@media (min-width: 960px) {
+  .code-proof-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .code-proof {
+    padding: 3.4rem 0;
+  }
+
+  .ai-trust-row {
+    gap: 0.45rem;
+  }
+
+  .ai-trust-row span {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+.page-hero-inner {
+  text-align: center;
+  max-width: 800px;
+}
+
+.page-hero-inner-narrow {
+  max-width: 700px;
+}
+
+.section-clean {
+  padding: 4rem 0;
+}
+
+.section-soft {
+  background: #f8fafc;
+}
+
+.section-faq {
+  padding: 4rem 0;
+}
+
+.section-cta-clean {
+  padding: 4rem 0;
+  text-align: center;
+}
+
+.section-title-centered {
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+.section-lead-centered {
+  max-width: 600px;
+  margin: 0 auto 2rem;
+}
+
+.section-subtext-centered {
+  color: var(--text-muted);
+}
+
+.faq-centered {
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.pricing-section-spacing {
+  margin-top: 2.5rem;
+}
+
+.pricing-options-hosting {
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.pricing-option-meta {
+  font-size: 0.6em;
+  font-weight: 500;
+}
+
+.ai-grid-top {
+  align-items: start;
+}
+
+.service-list-spaced {
+  margin-top: 1.5rem;
+}
+
+.ai-note {
+  margin-top: 1.5rem;
+  color: var(--text-muted);
+}
+
+.ai-demo-note {
+  text-align: center;
+  margin-top: 1rem;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+.service-detail-compact {
+  margin-bottom: 0;
+}
+
+.ai-pricing-hero {
+  background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+  padding: 4rem 0;
+}
+
+.ai-pricing-wrap {
+  text-align: center;
+}
+
+.ai-pricing-card-wrap {
+  max-width: 600px;
+  margin: 2rem auto;
+}
+
+.pricing-addon-flat {
+  margin: 0;
+}
+
+.ai-pricing-card-title {
+  margin-top: 2rem;
+}
+
+.ai-pricing-note {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  margin-top: 1rem;
+}
+
+.ai-pricing-cta-wrap {
+  margin-top: 2.5rem;
+}
+
+.contact-details-spaced,
+.faq-spaced {
+  margin-top: 2rem;
+}
+
+.honeypot-field {
+  display: none;
 }
