@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="de-CH">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mehrsprachigkeits-Test</title>
+  <style>
+    body { font-family: sans-serif; max-width: 800px; margin: 2rem auto; padding: 0 1rem; }
+    .test-result { margin: 1rem 0; padding: 1rem; border: 1px solid #ccc; }
+    .pass { background: #d4edda; border-color: #28a745; }
+    .fail { background: #f8d7da; border-color: #dc3545; }
+    button { padding: 0.5rem 1rem; margin: 0.5rem; cursor: pointer; }
+
+    @media (max-width: 640px) {
+      body { margin: 1rem auto; }
+      button { width: 100%; margin: 0.35rem 0; }
+    }
+  </style>
+</head>
+<body>
+  <h1>🌍 Mehrsprachigkeits-Test für MASESites</h1>
+
+  <div>
+    <button onclick="testEnglish()">Test Englisch</button>
+    <button onclick="testGerman()">Test Deutsch</button>
+    <button onclick="testFrench()">Test Französisch</button>
+    <button onclick="checkLocalStorage()">Check LocalStorage</button>
+  </div>
+
+  <div id="results"></div>
+
+  <script>
+    // Inline theme.js translations
+    var translations = {
+      de: {
+        hero_title: 'Websites, die verkaufen.',
+        nav_home: 'Home',
+        nav_services: 'Leistungen',
+        services_title: 'Unsere Leistungen',
+        trust_title: 'Warum MASE',
+        process_title: 'Unser Ansatz',
+        pricing_headline: 'Hole das Maximum aus deiner Website'
+      },
+      en: {
+        hero_title: 'Websites that sell.',
+        nav_home: 'Home',
+        nav_services: 'Services',
+        services_title: 'Our Services',
+        trust_title: 'Why MASE',
+        process_title: 'Our Approach',
+        pricing_headline: 'Get the most out of your website'
+      },
+      fr: {
+        hero_title: 'Des sites web qui vendent.',
+        nav_home: 'Accueil',
+        nav_services: 'Services',
+        services_title: 'Nos Services',
+        trust_title: 'Pourquoi MASE',
+        process_title: 'Notre Approche',
+        pricing_headline: 'Tirez le meilleur parti de votre site web'
+      }
+    };
+
+    function testLang(lang) {
+      const testKeys = ['hero_title', 'nav_home', 'services_title', 'trust_title', 'process_title', 'pricing_headline'];
+      const results = document.getElementById('results');
+      const expected = translations[lang];
+
+      let html = `<h2>Test: ${lang.toUpperCase()}</h2>`;
+      let allPass = true;
+
+      testKeys.forEach(key => {
+        const hasKey = key in expected;
+        const value = expected[key] || 'FEHLT';
+        const status = hasKey ? 'pass' : 'fail';
+        allPass = allPass && hasKey;
+
+        html += `<div class="test-result ${status}">
+          <strong>${key}:</strong> "${value}"
+        </div>`;
+      });
+
+      results.innerHTML = html;
+      return allPass;
+    }
+
+    function testEnglish() {
+      testLang('en');
+      localStorage.setItem('lang', 'en');
+    }
+
+    function testGerman() {
+      testLang('de');
+      localStorage.setItem('lang', 'de');
+    }
+
+    function testFrench() {
+      testLang('fr');
+      localStorage.setItem('lang', 'fr');
+    }
+
+    function checkLocalStorage() {
+      const results = document.getElementById('results');
+      const lang = localStorage.getItem('lang') || 'nicht gesetzt';
+      const theme = localStorage.getItem('theme') || 'nicht gesetzt';
+
+      results.innerHTML = `
+        <h2>LocalStorage Status</h2>
+        <div class="test-result pass">
+          <strong>Sprache (lang):</strong> ${lang}
+        </div>
+        <div class="test-result pass">
+          <strong>Thema (theme):</strong> ${theme}
+        </div>
+      `;
+    }
+
+    // Auto-Test beim Laden
+    window.addEventListener('load', () => {
+      const results = document.getElementById('results');
+      results.innerHTML = '<p>Klicke auf einen Button um Tests zu starten.</p>';
+    });
+  </script>
+</body>
+</html>
+

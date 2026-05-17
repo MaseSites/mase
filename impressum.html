@@ -4,7 +4,6 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Impressum | MASESites AG</title>
-  <meta name="description" content="Impressum und rechtliche Angaben der MASESites AG, Schweiz.">
   <meta name="robots" content="noindex, follow">
   <link rel="canonical" href="https://www.masesites.ch/impressum">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
@@ -19,9 +18,9 @@
       var q = null;
       try { q = new URLSearchParams(window.location.search).get('lang'); } catch (_) {}
       var s = localStorage.getItem('lang');
-      var lang = ['de', 'en'].indexOf(q) !== -1 ? q : (['de', 'en'].indexOf(s) !== -1 ? s : 'de');
+      var lang = ['de', 'en', 'fr'].indexOf(q) !== -1 ? q : (['de', 'en', 'fr'].indexOf(s) !== -1 ? s : 'de');
       localStorage.setItem('lang', lang);
-      document.documentElement.lang = lang === 'de' ? 'de-CH' : 'en';
+      document.documentElement.lang = (lang === 'de' ? 'de-CH' : 'en');
     })();
   </script>
   <script defer src="/theme.js?v=20260327"></script>
@@ -41,7 +40,7 @@
         <span class="nav-toggle-bar"></span>
         <span class="nav-toggle-bar"></span>
       </button>
-      <nav class="site-nav" id="site-nav" aria-label="Hauptnavigation">
+      <nav class="site-nav" id="site-nav">
         <a href="index.html" data-i18n="nav_home">Home</a>
         <a href="leistungen.html" data-i18n="nav_services">Leistungen</a>
         <a href="preise.html" data-i18n="nav_prices">Preise</a>
@@ -57,8 +56,8 @@
             <span id="lang-current">DE</span>
           </button>
           <div class="lang-dropdown" id="lang-dropdown">
-            <button class="lang-option active" data-lang="de">DE - Deutsch</button>
-            <button class="lang-option" data-lang="en">EN - English</button>
+            <button class="lang-option active" data-lang="de">🇩🇪 Deutsch</button>
+            <button class="lang-option" data-lang="en">🇬🇧 English</button>
           </div>
         </div>
         <button class="dark-toggle" id="dark-toggle" aria-label="Dark Mode umschalten" data-i18n-aria-label="theme_toggle_aria">
@@ -71,66 +70,32 @@
 
   <main id="main">
     <section class="page-hero">
-      <div class="container page-hero-inner" data-reveal>
-        <p class="eyebrow">Rechtliches</p>
-        <h1>Impressum</h1>
+      <div class="container" data-reveal style="text-align: center; max-width: 700px;">
+        <h1 data-i18n="impressum_title">Impressum</h1>
+        <p class="lead" data-i18n="impressum_lead">Angaben gemäss Art. 5 DSG (Schweiz)</p>
       </div>
     </section>
 
-    <section class="section-clean">
-      <div class="container" data-reveal style="max-width: 720px; margin: 0 auto;">
-
-        <h2>Angaben gemäss Art. 13 ZGB</h2>
-
-        <h3 style="margin-top: 2rem;">Unternehmen</h3>
-        <p>
-          MASESites AG<br>
-          Schweiz
-        </p>
-
-        <h3 style="margin-top: 2rem;">Kontakt</h3>
-        <p>
-          E-Mail: <a href="mailto:info@masesites.ch">info@masesites.ch</a><br>
-          Telefon: <a href="tel:+41782158922">+41 78 215 89 22</a>
-        </p>
-
-        <h3 style="margin-top: 2rem;">Geschäftsführung</h3>
-        <p>
-          Matteo (Design &amp; Frontend)<br>
-          Severin (Entwicklung &amp; KI)
-        </p>
-
-        <h3 style="margin-top: 2rem;">Handelsregister</h3>
-        <p>
-          Die Gesellschaft befindet sich im Aufbau. Angaben zum Handelsregistereintrag
-          werden nach erfolgter Eintragung nachgetragen.
-        </p>
-
-        <h3 style="margin-top: 2rem;">Haftungsausschluss</h3>
-        <p>
-          Trotz sorgfältiger inhaltlicher Kontrolle übernehmen wir keine Haftung für die Inhalte
-          externer Links. Für den Inhalt verlinkter Seiten sind ausschliesslich deren Betreiber
-          verantwortlich. Alle Inhalte dieser Website sind urheberrechtlich geschützt.
-        </p>
-
-        <h3 style="margin-top: 2rem;">Urheberrecht</h3>
-        <p>
-          Die auf dieser Website veröffentlichten Inhalte und Werke unterliegen dem schweizerischen
-          Urheberrecht. Die Vervielfältigung, Bearbeitung, Verbreitung oder jede Art der Verwertung
-          ausserhalb der Grenzen des Urheberrechts bedarf der schriftlichen Zustimmung des jeweiligen
-          Autors bzw. Erstellers.
-        </p>
-
-        <h3 style="margin-top: 2rem;">Streitbeilegung</h3>
-        <p>
-          Wir sind nicht bereit oder verpflichtet, an Streitbeilegungsverfahren vor einer
-          Verbraucherschlichtungsstelle teilzunehmen.
-        </p>
-
-        <p style="margin-top: 3rem; color: var(--text-muted); font-size: 0.9rem;">
-          Stand: Mai 2026
-        </p>
-
+    <section style="padding: 3rem 0 5rem;">
+      <div class="container" data-reveal style="max-width: 800px;">
+        <div data-i18n-html="impressum_content">
+          <h2>Betreiber der Website</h2>
+          <p><strong>MASESites AG</strong><br>Schweiz</p>
+          <h2>Kontakt</h2>
+          <p><strong>E-Mail:</strong> <a href="mailto:info@masesites.ch">info@masesites.ch</a><br>
+          <strong>Telefon:</strong> Auf Anfrage mit Termin</p>
+          <h2>Vertretungsberechtigte Personen</h2>
+          <p>Matteo &amp; Severin (Gründer)</p>
+          <h2>Haftungsausschluss</h2>
+          <h3>Haftung für Inhalte</h3>
+          <p>Die Inhalte unserer Seiten wurden mit grösster Sorgfalt erstellt. Für die Richtigkeit, Vollständigkeit und Aktualität der Inhalte können wir jedoch keine Gewähr übernehmen.</p>
+          <h3>Haftung für Links</h3>
+          <p>Unser Angebot enthält Links zu externen Websites Dritter, auf deren Inhalte wir keinen Einfluss haben.</p>
+          <h3>Urheberrecht</h3>
+          <p>Die durch die Seitenbetreiber erstellten Inhalte unterliegen dem schweizerischen Urheberrecht.</p>
+          <h2>Konzept &amp; Realisierung</h2>
+          <p><strong>Design &amp; Entwicklung:</strong> MASESites AG – <a href="https://www.masesites.ch">www.masesites.ch</a></p>
+        </div>
       </div>
     </section>
   </main>
@@ -164,9 +129,14 @@
     </div>
   </footer>
 
-  <div id="dark-wave" aria-hidden="true"><canvas id="dark-wave-canvas"></canvas></div>
-  <button class="back-to-top" id="back-to-top" aria-label="Zurück nach oben" data-i18n-aria-label="back_to_top_aria">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="18 15 12 9 6 15"></polyline></svg>
+  <div id="dark-wave" aria-hidden="true">
+    <canvas id="dark-wave-canvas"></canvas>
+  </div>
+
+  <button class="back-to-top" id="back-to-top" aria-label="Zurück nach oben">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <polyline points="18 15 12 9 6 15"></polyline>
+    </svg>
   </button>
 </body>
 </html>

@@ -3,15 +3,35 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Über uns | MASESites AG – Matteo & Severin</title>
-  <meta name="description" content="MASESites AG wurde von Matteo und Severin gegründet. Wir bauen klare, schnelle Websites und KI-Assistenten für Unternehmen in der Schweiz.">
+  <title>Über uns | Matteo &amp; Severin – MASESites AG Schweiz</title>
+  <meta name="description" content="MASESites AG wurde von Matteo und Severin gegründet. Wir bauen moderne, schnelle und saubere Websites für Unternehmen in der Schweiz.">
   <meta name="robots" content="index, follow">
-  <meta property="og:title" content="Über uns | MASESites AG">
-  <meta property="og:description" content="Wer steckt hinter MASESites? Matteo & Severin – zwei Entwickler mit dem Ziel, Websites zu bauen die wirklich verkaufen.">
+  <meta name="keywords" content="MASESites AG, Webdesign Agentur Schweiz, Matteo Severin, Website Agentur Schweiz, wer ist MASESites, MASESites Gruender">
+  <meta property="og:title" content="Über uns – MASESites AG">
+  <meta property="og:description" content="Matteo und Severin bauen moderne Websites für Unternehmen in der Schweiz. Fokus auf Qualität, Struktur und Zukunftssicherheit.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://www.masesites.ch/ueber-uns">
   <meta property="og:locale" content="de_CH">
+  <meta property="og:site_name" content="MASESites AG">
   <link rel="canonical" href="https://www.masesites.ch/ueber-uns">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "AboutPage",
+    "name": "Über MASESites AG",
+    "url": "https://www.masesites.ch/ueber-uns",
+    "description": "MASESites AG – gegründet von Matteo und Severin. Professionelle Websites für die Schweiz.",
+    "about": {
+      "@type": "Organization",
+      "name": "MASESites AG",
+      "founder": [
+        { "@type": "Person", "name": "Matteo" },
+        { "@type": "Person", "name": "Severin" }
+      ]
+    }
+  }
+  </script>
+
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <link rel="stylesheet" href="/styles.css?v=20260327">
   <link rel="stylesheet" href="/ai-assistant.css?v=20260327">
@@ -21,12 +41,13 @@
     (function () {
       var t = localStorage.getItem('theme');
       if (t === 'dark') document.documentElement.classList.add('dark');
+
       var q = null;
       try { q = new URLSearchParams(window.location.search).get('lang'); } catch (_) {}
       var s = localStorage.getItem('lang');
-      var lang = ['de', 'en'].indexOf(q) !== -1 ? q : (['de', 'en'].indexOf(s) !== -1 ? s : 'de');
+      var lang = ['de', 'en', 'fr'].indexOf(q) !== -1 ? q : (['de', 'en', 'fr'].indexOf(s) !== -1 ? s : 'de');
       localStorage.setItem('lang', lang);
-      document.documentElement.lang = lang === 'de' ? 'de-CH' : 'en';
+      document.documentElement.lang = (lang === 'de' ? 'de-CH' : 'en');
     })();
   </script>
   <script defer src="/theme.js?v=20260327"></script>
@@ -40,13 +61,17 @@
 
   <header class="site-header">
     <div class="container header-inner">
-      <a class="logo" href="index.html">MASE</a>
+      <a class="logo" href="index.html">
+        MASE
+      </a>
+
       <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
         <span class="sr-only" data-i18n="nav_toggle">Navigation öffnen</span>
         <span class="nav-toggle-bar"></span>
         <span class="nav-toggle-bar"></span>
       </button>
-      <nav class="site-nav" id="site-nav" aria-label="Hauptnavigation">
+
+      <nav class="site-nav" id="site-nav">
         <a href="index.html" data-i18n="nav_home">Home</a>
         <a href="leistungen.html" data-i18n="nav_services">Leistungen</a>
         <a href="preise.html" data-i18n="nav_prices">Preise</a>
@@ -54,7 +79,9 @@
         <a href="ueber-uns.html" class="nav-active" data-i18n="nav_about">Über uns</a>
         <a href="kontakt.html" data-i18n="nav_contact">Kontakt</a>
         <a class="button button-primary button-small" href="kontakt.html" data-i18n="nav_cta">Kostenloses Erstgespräch</a>
+
       </nav>
+      <!-- Controls: Language + Dark Mode -->
       <div class="header-controls">
         <div class="lang-switcher" id="lang-switcher">
           <button class="lang-btn" id="lang-btn" aria-haspopup="true" aria-expanded="false" aria-label="Sprache wählen" data-i18n-aria-label="lang_select_aria">
@@ -62,8 +89,8 @@
             <span id="lang-current">DE</span>
           </button>
           <div class="lang-dropdown" id="lang-dropdown">
-            <button class="lang-option active" data-lang="de">DE - Deutsch</button>
-            <button class="lang-option" data-lang="en">EN - English</button>
+            <button class="lang-option active" data-lang="de">🇩🇪 Deutsch</button>
+            <button class="lang-option" data-lang="en">🇬🇧 English</button>
           </div>
         </div>
         <button class="dark-toggle" id="dark-toggle" aria-label="Dark Mode umschalten" data-i18n-aria-label="theme_toggle_aria">
@@ -76,97 +103,68 @@
 
   <main id="main">
     <section class="page-hero">
-      <div class="container page-hero-inner" data-reveal>
-        <p class="eyebrow">Matteo &amp; Severin</p>
-        <h1>Wir bauen Websites, die wirken.</h1>
-        <p class="lead">
-          Klare Struktur. Sauberer Code. Ehrliche Kommunikation.
-          Das sind die Grundsätze, nach denen wir jedes Projekt angehen.
+      <div class="container" data-reveal style="text-align: center; max-width: 700px;">
+        <h1 data-i18n="about_page_hero_title">Wer steckt hinter MASESites?</h1>
+        <p class="lead" data-i18n="about_page_hero_lead">
+          Zwei Köpfe, ein Ziel: Moderne Websites, die wirklich funktionieren.
         </p>
       </div>
     </section>
 
-    <!-- Gründer-Story -->
-    <section class="section-clean">
-      <div class="container" data-reveal style="max-width: 780px; margin: 0 auto;">
-        <h2>Warum MASESites?</h2>
-        <p class="lead" style="margin-bottom: 1.5rem;">
-          Wir haben zu oft erlebt, wie gute Unternehmen mit schlechten Websites unsichtbar bleiben.
-          Zu viel Wirrwarr, zu wenig Klarheit, keine messbaren Ergebnisse.
-        </p>
-        <p>
-          MASESites entstand aus dem Wunsch, das besser zu machen. Nicht mit teuren Agenturen,
-          die Prozesse aufblähen, sondern mit zwei Leuten, die schnell denken, sauber bauen
-          und immer klare Antworten geben.
-        </p>
-        <p>
-          Der Name MASE setzt sich aus unseren Anfangsbuchstaben zusammen:
-          <strong>MA</strong>tteo und <strong>SE</strong>verin. Kein Zufall – wir stehen persönlich hinter jedem Projekt.
-        </p>
-      </div>
-    </section>
-
-    <!-- Team -->
-    <section class="section-soft section-clean">
-      <div class="container" data-reveal>
-        <h2 class="section-title-centered">Das Team</h2>
-        <div class="trust-grid" style="max-width: 700px; margin: 2rem auto 0; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">
-          <article class="trust-card" style="text-align: center;">
-            <div style="width: 72px; height: 72px; border-radius: 50%; background: linear-gradient(135deg, #0f766e, #0b5f58); display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; font-size: 1.6rem; font-weight: 800; color: white; letter-spacing: 0.02em;">M</div>
-            <h3 style="margin-bottom: 0.4rem;">Matteo</h3>
-            <p class="eyebrow" style="margin-bottom: 0.75rem;">Design &amp; Frontend</p>
-            <p style="color: var(--text-muted); font-size: 0.92rem;">
-              Zuständig für alles, was der Nutzer sieht: klare Struktur, modernes Design und
-              eine UX, die Besucher zu Kunden macht.
+    <section style="padding: 4rem 0;">
+      <div class="container">
+        <div class="about-content" data-reveal>
+          <div class="about-text">
+            <h2 data-i18n="about_page_story_title">Unsere Geschichte</h2>
+            <p data-i18n-html="about_page_story_p1_html">
+              MASESites AG wurde von <strong>Matteo</strong> und <strong>Severin</strong> gegründet.
+              Unser Ziel ist klar: Moderne, klare und leistungsstarke Websites bauen, die echte Resultate liefern.
             </p>
-          </article>
-          <article class="trust-card" style="text-align: center;">
-            <div style="width: 72px; height: 72px; border-radius: 50%; background: linear-gradient(135deg, #0051ba, #003d82); display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; font-size: 1.6rem; font-weight: 800; color: white; letter-spacing: 0.02em;">S</div>
-            <h3 style="margin-bottom: 0.4rem;">Severin</h3>
-            <p class="eyebrow" style="margin-bottom: 0.75rem;">Entwicklung &amp; KI</p>
-            <p style="color: var(--text-muted); font-size: 0.92rem;">
-              Zuständig für sauberen Code, schnelle Ladezeiten, KI-Integration und
-              technische Qualität, die man nicht sieht – aber spürt.
+            <p data-i18n="about_page_story_p2">
+              Wir glauben an ehrliche Arbeit, sauberen Code und transparente Kommunikation.
+              Keine falschen Versprechen, keine Fake-Referenzen – nur solide Handarbeit mit Fokus auf Qualität.
             </p>
-          </article>
+            <p data-i18n="about_page_story_p3">
+              Mit unserem Hintergrund in Webentwicklung und Design verbinden wir technisches Know-how
+              mit einem Gespür für gutes Design. Das Ergebnis: Websites, die nicht nur gut aussehen,
+              sondern auch verkaufen.
+            </p>
+          </div>
+        </div>
+
+        <div class="values-grid" data-reveal style="margin-top: 4rem;">
+          <h2 style="grid-column: 1 / -1; text-align: center; margin-bottom: 2rem;" data-i18n="about_page_values_title">Unsere Werte</h2>
+
+          <div class="trust-card">
+            <h3 data-i18n="about_page_value_honesty_title">Ehrlichkeit</h3>
+            <p data-i18n="about_page_value_honesty_desc">Keine Fake-Cases, keine erfundenen Zahlen. Nur ehrliche, transparente Arbeit.</p>
+          </div>
+
+          <div class="trust-card">
+            <h3 data-i18n="about_page_value_quality_title">Saubere Arbeit</h3>
+            <p data-i18n="about_page_value_quality_desc">Qualität vor Schnelligkeit. Jede Zeile Code wird mit Sorgfalt geschrieben.</p>
+          </div>
+
+          <div class="trust-card">
+            <h3 data-i18n="about_page_value_comms_title">Klare Kommunikation</h3>
+            <p data-i18n="about_page_value_comms_desc">Du weißt immer, wo dein Projekt steht. Keine Überraschungen.</p>
+          </div>
+
+          <div class="trust-card">
+            <h3 data-i18n="about_page_value_results_title">Fokus auf Resultate</h3>
+            <p data-i18n="about_page_value_results_desc">Deine Website muss verkaufen. Conversion steht im Mittelpunkt.</p>
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- Werte -->
-    <section class="section-clean">
-      <div class="container" data-reveal>
-        <h2 class="section-title-centered">Unsere Werte</h2>
-        <div class="trust-grid" style="margin-top: 2rem;">
-          <article class="trust-card">
-            <h3>Ehrlichkeit</h3>
-            <p>Wir versprechen nur, was wir halten können. Kein Marketing-Bla-Bla, keine aufgeblähten Angebote. Klare Preise, klare Erwartungen.</p>
-          </article>
-          <article class="trust-card">
-            <h3>Qualität</h3>
-            <p>Wir bauen Websites, auf die wir stolz sind. Sauberer Code, durchdachtes Design, keine Abkürzungen – auch wenn es mal länger dauert.</p>
-          </article>
-          <article class="trust-card">
-            <h3>Klarheit</h3>
-            <p>Klare Kommunikation in jede Richtung. Du weisst immer, wo wir stehen, was als nächstes kommt und warum wir was tun.</p>
-          </article>
-          <article class="trust-card">
-            <h3>Wirkung</h3>
-            <p>Eine schöne Website ist kein Selbstzweck. Wir optimieren auf Anfragen, Leads und messbare Ergebnisse – nicht auf Awards.</p>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <!-- CTA -->
-    <section class="section-cta-clean">
-      <div class="container" data-reveal>
-        <h2>Bereit, zusammenzuarbeiten?</h2>
-        <p class="lead section-lead-centered">Erzähl uns von deinem Projekt. Wir antworten innerhalb von 24 Stunden.</p>
-        <div class="button-group" style="justify-content: center;">
-          <a class="button button-primary" href="kontakt.html">Projekt starten</a>
-          <a class="button button-ghost" href="leistungen.html">Unsere Leistungen</a>
-        </div>
+    <section class="cta-section" style="background: #f8fafc; padding: 4rem 0;">
+      <div class="container" data-reveal style="text-align: center;">
+        <h2 data-i18n="about_page_cta_title">Lass uns dein Projekt besprechen</h2>
+        <p class="lead" style="max-width: 600px; margin: 0 auto 2rem;" data-i18n="about_page_cta_lead">
+          Wir freuen uns, von deinem Projekt zu hören.
+        </p>
+        <a class="button button-primary" href="kontakt.html" data-i18n="about_page_cta_button">Kontakt aufnehmen</a>
       </div>
     </section>
   </main>
@@ -200,9 +198,15 @@
     </div>
   </footer>
 
-  <div id="dark-wave" aria-hidden="true"><canvas id="dark-wave-canvas"></canvas></div>
-  <button class="back-to-top" id="back-to-top" aria-label="Zurück nach oben" data-i18n-aria-label="back_to_top_aria">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="18 15 12 9 6 15"></polyline></svg>
+  <!-- Dark Mode Wave Overlay -->
+  <div id="dark-wave" aria-hidden="true">
+    <canvas id="dark-wave-canvas"></canvas>
+  </div>
+
+  <button class="back-to-top" id="back-to-top" aria-label="Zurück nach oben">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <polyline points="18 15 12 9 6 15"></polyline>
+    </svg>
   </button>
 </body>
 </html>
