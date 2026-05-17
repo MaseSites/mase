@@ -1,0 +1,24 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><link rel="stylesheet" href="_base.css"></head>
+<body>
+<style>
+  .scale { display: grid; gap: 10px; }
+  .step { display: grid; grid-template-columns: 80px 1fr 90px; align-items: center; gap: 12px; }
+  .step .name { font-size: 12px; font-weight: 600; color: var(--fg-1); font-family: var(--font-mono); }
+  .step .bar { height: 18px; background: linear-gradient(90deg, #0f766e, #0b5f58); border-radius: 999px; }
+  .step .val { font-family: var(--font-mono); font-size: 11px; color: var(--fg-3); text-align: right; }
+</style>
+<div class="card-grid">
+  <div class="scale">
+    <div class="step"><span class="name">--space-1</span><span class="bar" style="width:4px"></span><span class="val">4px</span></div>
+    <div class="step"><span class="name">--space-2</span><span class="bar" style="width:8px"></span><span class="val">8px</span></div>
+    <div class="step"><span class="name">--space-3</span><span class="bar" style="width:12px"></span><span class="val">12px</span></div>
+    <div class="step"><span class="name">--space-4</span><span class="bar" style="width:16px"></span><span class="val">16px</span></div>
+    <div class="step"><span class="name">--space-5</span><span class="bar" style="width:24px"></span><span class="val">24px</span></div>
+    <div class="step"><span class="name">--space-6</span><span class="bar" style="width:32px"></span><span class="val">32px</span></div>
+    <div class="step"><span class="name">--space-7</span><span class="bar" style="width:48px"></span><span class="val">48px</span></div>
+    <div class="step"><span class="name">--space-8</span><span class="bar" style="width:64px"></span><span class="val">64px</span></div>
+    <div class="step"><span class="name">--space-9</span><span class="bar" style="width:80px"></span><span class="val">80px · section padding</span></div>
+  </div>
+</div>
+</body></html>

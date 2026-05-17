@@ -1,0 +1,428 @@
+<!doctype html>
+<html lang="de-CH">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Praxis Dr. Huber | Allgemeinmedizin Zürich</title>
+  <meta name="description" content="Praxis Dr. med. Stefan Huber – Allgemeinmedizin und Hausarzt in Zürich. Terminvereinbarung online oder telefonisch.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --c-bg: #f8fafc;
+      --c-surface: #ffffff;
+      --c-accent: #0051ba;
+      --c-accent-light: #e8f0fb;
+      --c-accent-dark: #003d82;
+      --c-text: #1e293b;
+      --c-muted: #64748b;
+      --c-border: #e2e8f0;
+      --c-success: #0f766e;
+      --radius: 16px;
+      --font: 'Inter', system-ui, sans-serif;
+      --shadow: 0 1px 3px rgba(0,0,0,.06), 0 4px 16px rgba(0,0,0,.06);
+    }
+
+    html { scroll-behavior: smooth; }
+    body { background: var(--c-bg); color: var(--c-text); font-family: var(--font); line-height: 1.65; }
+    a { color: var(--c-accent); text-decoration: none; }
+
+    .container { max-width: 1080px; margin: 0 auto; padding: 0 1.5rem; }
+
+    /* NAV */
+    nav {
+      background: var(--c-surface); border-bottom: 1px solid var(--c-border);
+      position: sticky; top: 0; z-index: 100;
+      box-shadow: 0 1px 8px rgba(0,0,0,.04);
+    }
+    .nav-inner {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1rem 1.5rem; max-width: 1080px; margin: 0 auto;
+    }
+    .nav-logo { display: flex; align-items: center; gap: .625rem; }
+    .nav-logo-icon {
+      width: 38px; height: 38px; border-radius: 10px;
+      background: var(--c-accent); display: flex; align-items: center;
+      justify-content: center; font-size: 1.1rem;
+    }
+    .nav-logo-name { font-weight: 800; font-size: 1rem; color: var(--c-text); }
+    .nav-logo-sub { font-size: .75rem; color: var(--c-muted); }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a { color: var(--c-muted); font-size: .875rem; font-weight: 500; transition: color .15s; }
+    .nav-links a:hover { color: var(--c-text); }
+    .nav-cta {
+      background: var(--c-accent); color: #fff; font-weight: 700; font-size: .875rem;
+      padding: .55rem 1.25rem; border-radius: 8px; transition: background .15s;
+    }
+    .nav-cta:hover { background: var(--c-accent-dark); }
+
+    /* HERO */
+    .hero {
+      background: linear-gradient(135deg, var(--c-accent) 0%, var(--c-accent-dark) 100%);
+      color: #fff; padding: 5rem 0 4rem;
+    }
+    .hero-grid { display: grid; grid-template-columns: 1fr 380px; gap: 4rem; align-items: center; }
+    .hero-eyebrow {
+      font-size: .78rem; font-weight: 700; text-transform: uppercase; letter-spacing: .1em;
+      color: rgba(255,255,255,.65); margin-bottom: .75rem;
+    }
+    .hero h1 {
+      font-size: clamp(2rem, 4vw, 3rem); font-weight: 800; line-height: 1.15;
+      letter-spacing: -.03em; margin-bottom: 1.25rem;
+    }
+    .hero-lead { font-size: 1.05rem; color: rgba(255,255,255,.85); max-width: 50ch; margin-bottom: 2rem; }
+    .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .btn-white {
+      background: #fff; color: var(--c-accent); font-weight: 700; font-size: .95rem;
+      padding: .8rem 1.75rem; border-radius: 10px; transition: opacity .15s;
+    }
+    .btn-white:hover { opacity: .92; }
+    .btn-outline-white {
+      border: 2px solid rgba(255,255,255,.5); color: #fff; font-weight: 600;
+      padding: .8rem 1.75rem; border-radius: 10px; transition: border-color .15s;
+    }
+    .btn-outline-white:hover { border-color: #fff; }
+    .hero-card {
+      background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.2);
+      border-radius: var(--radius); padding: 1.75rem; backdrop-filter: blur(8px);
+    }
+    .hero-card-title { font-size: .8rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: rgba(255,255,255,.7); margin-bottom: 1.25rem; }
+    .opening-row { display: flex; justify-content: space-between; align-items: center; padding: .5rem 0; border-bottom: 1px solid rgba(255,255,255,.1); font-size: .875rem; }
+    .opening-row:last-child { border-bottom: none; }
+    .opening-time { font-weight: 600; }
+    .badge-open {
+      background: rgba(15,118,110,.25); border: 1px solid rgba(15,118,110,.4);
+      color: #5eead4; font-size: .7rem; font-weight: 700; padding: .15rem .5rem;
+      border-radius: 100px; text-transform: uppercase; letter-spacing: .04em;
+    }
+
+    /* LEISTUNGEN */
+    .leistungen-section { padding: 5rem 0; }
+    .section-header { margin-bottom: 3rem; }
+    .eyebrow {
+      font-size: .75rem; font-weight: 700; text-transform: uppercase; letter-spacing: .1em;
+      color: var(--c-accent); margin-bottom: .6rem;
+    }
+    .section-title { font-size: clamp(1.6rem, 3vw, 2.25rem); font-weight: 800; letter-spacing: -.03em; }
+    .section-lead { color: var(--c-muted); margin-top: .5rem; max-width: 55ch; }
+    .leistungen-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.25rem; }
+    .leistung-card {
+      background: var(--c-surface); border: 1px solid var(--c-border);
+      border-radius: var(--radius); padding: 1.5rem;
+      box-shadow: var(--shadow); transition: box-shadow .2s, border-color .2s;
+    }
+    .leistung-card:hover { box-shadow: 0 4px 24px rgba(0,81,186,.1); border-color: var(--c-accent-light); }
+    .leistung-icon {
+      width: 44px; height: 44px; border-radius: 10px;
+      background: var(--c-accent-light); display: flex; align-items: center;
+      justify-content: center; font-size: 1.25rem; margin-bottom: 1rem;
+    }
+    .leistung-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: .35rem; }
+    .leistung-card p { font-size: .875rem; color: var(--c-muted); }
+
+    /* TEAM */
+    .team-section { background: var(--c-accent-light); padding: 5rem 0; }
+    .team-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem; margin-top: 3rem; }
+    .team-card {
+      background: var(--c-surface); border: 1px solid var(--c-border);
+      border-radius: var(--radius); padding: 2rem; text-align: center;
+      box-shadow: var(--shadow);
+    }
+    .team-avatar {
+      width: 80px; height: 80px; border-radius: 50%; margin: 0 auto 1rem;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.75rem; font-weight: 800; color: #fff;
+    }
+    .team-card h3 { font-size: 1.05rem; font-weight: 700; margin-bottom: .2rem; }
+    .team-role { font-size: .825rem; color: var(--c-accent); font-weight: 600; margin-bottom: .75rem; }
+    .team-desc { font-size: .85rem; color: var(--c-muted); }
+
+    /* KONTAKT */
+    .kontakt-section { padding: 5rem 0; }
+    .kontakt-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: start; }
+    .kontakt-info { display: flex; flex-direction: column; gap: 1.25rem; margin-top: 2rem; }
+    .info-row {
+      display: flex; align-items: flex-start; gap: 1rem;
+      background: var(--c-surface); border: 1px solid var(--c-border);
+      border-radius: var(--radius); padding: 1.25rem;
+      box-shadow: var(--shadow);
+    }
+    .info-icon {
+      width: 40px; height: 40px; border-radius: 10px; background: var(--c-accent-light);
+      display: flex; align-items: center; justify-content: center; font-size: 1.1rem; flex-shrink: 0;
+    }
+    .info-label { font-size: .75rem; font-weight: 700; color: var(--c-muted); text-transform: uppercase; letter-spacing: .06em; }
+    .info-value { font-size: .95rem; font-weight: 600; margin-top: .2rem; }
+    .termin-form {
+      background: var(--c-surface); border: 1px solid var(--c-border);
+      border-radius: var(--radius); padding: 2rem; box-shadow: var(--shadow);
+    }
+    .termin-form h3 { font-size: 1.15rem; font-weight: 700; margin-bottom: 1.5rem; }
+    .form-fields { display: flex; flex-direction: column; gap: 1rem; }
+    .field-group { display: flex; flex-direction: column; gap: .35rem; }
+    .field-group label { font-size: .8rem; font-weight: 600; color: var(--c-muted); }
+    .field-group input, .field-group select, .field-group textarea {
+      border: 1px solid var(--c-border); border-radius: 8px; padding: .7rem .9rem;
+      font-family: var(--font); font-size: .9rem; color: var(--c-text);
+      background: var(--c-bg); outline: none; transition: border-color .15s;
+    }
+    .field-group input:focus, .field-group select:focus, .field-group textarea:focus {
+      border-color: var(--c-accent);
+    }
+    .field-group textarea { resize: vertical; min-height: 80px; }
+    .form-submit {
+      width: 100%; background: var(--c-accent); color: #fff; border: none;
+      border-radius: 10px; padding: .85rem; font-size: .95rem; font-weight: 700;
+      font-family: var(--font); cursor: pointer; transition: background .15s; margin-top: .5rem;
+    }
+    .form-submit:hover { background: var(--c-accent-dark); }
+
+    /* FOOTER */
+    footer {
+      background: var(--c-text); color: rgba(255,255,255,.7);
+      padding: 2rem 0;
+    }
+    .footer-inner { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
+    .footer-brand { color: #fff; font-weight: 700; font-size: .95rem; }
+    .footer-info { font-size: .825rem; }
+    .mase-badge {
+      font-size: .75rem; background: rgba(255,255,255,.1);
+      border: 1px solid rgba(255,255,255,.15); padding: .3rem .75rem; border-radius: 100px;
+    }
+    .mase-badge a { color: rgba(255,255,255,.6); text-decoration: underline; text-underline-offset: 2px; }
+
+    @media (max-width: 768px) {
+      .hero-grid { grid-template-columns: 1fr; }
+      .hero-card { display: none; }
+      .kontakt-grid { grid-template-columns: 1fr; }
+      .nav-links { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="nav-inner">
+      <div class="nav-logo">
+        <div class="nav-logo-icon">🏥</div>
+        <div>
+          <div class="nav-logo-name">Dr. med. Huber</div>
+          <div class="nav-logo-sub">Allgemeinmedizin · Zürich</div>
+        </div>
+      </div>
+      <ul class="nav-links">
+        <li><a href="#leistungen">Leistungen</a></li>
+        <li><a href="#team">Team</a></li>
+        <li><a href="#kontakt">Öffnungszeiten</a></li>
+      </ul>
+      <a class="nav-cta" href="#kontakt">Termin vereinbaren</a>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div class="container">
+      <div class="hero-grid">
+        <div>
+          <p class="hero-eyebrow">Hausarztpraxis Zürich Wiedikon</p>
+          <h1>Medizinische Versorgung, der Sie vertrauen können.</h1>
+          <p class="hero-lead">
+            Wir begleiten Sie und Ihre Familie als Hausarztpraxis mit persönlicher Betreuung,
+            kurzen Wartezeiten und modernster Diagnostik.
+          </p>
+          <div class="hero-actions">
+            <a class="btn-white" href="#kontakt">Termin vereinbaren</a>
+            <a class="btn-outline-white" href="#leistungen">Unsere Leistungen</a>
+          </div>
+        </div>
+        <div class="hero-card">
+          <div class="hero-card-title">Öffnungszeiten</div>
+          <div class="opening-row">
+            <span>Mo / Mi / Fr</span>
+            <span class="opening-time">08:00–12:00</span>
+          </div>
+          <div class="opening-row">
+            <span></span>
+            <span class="opening-time">14:00–17:30</span>
+          </div>
+          <div class="opening-row">
+            <span>Di / Do</span>
+            <span class="opening-time">08:00–12:00</span>
+          </div>
+          <div class="opening-row">
+            <span></span>
+            <span class="opening-time">14:00–19:00</span>
+          </div>
+          <div class="opening-row">
+            <span>Samstag</span>
+            <span class="opening-time">09:00–12:00</span>
+          </div>
+          <div class="opening-row" style="margin-top:.75rem; padding-top:.75rem; border-top: 1px solid rgba(255,255,255,.15);">
+            <span>Notfall</span>
+            <span class="badge-open">24h erreichbar</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="leistungen-section" id="leistungen">
+    <div class="container">
+      <div class="section-header">
+        <p class="eyebrow">Leistungen</p>
+        <h2 class="section-title">Was wir für Sie tun</h2>
+        <p class="section-lead">Von der Vorsorge bis zur Akutversorgung – als Hausarzt sind wir Ihr erster Anlaufpunkt.</p>
+      </div>
+      <div class="leistungen-grid">
+        <div class="leistung-card">
+          <div class="leistung-icon">🩺</div>
+          <h3>Allgemeinmedizin</h3>
+          <p>Diagnose und Behandlung akuter und chronischer Erkrankungen. Hausbesuche auf Anfrage.</p>
+        </div>
+        <div class="leistung-card">
+          <div class="leistung-icon">💉</div>
+          <h3>Impfungen</h3>
+          <p>Alle empfohlenen Impfungen des BAG. Reiseimpfungen und Impfberatung für jedes Alter.</p>
+        </div>
+        <div class="leistung-card">
+          <div class="leistung-icon">❤️</div>
+          <h3>Vorsorge & Check-up</h3>
+          <p>Jährliche Gesundheitschecks, Blutuntersuchungen, Herzvorsorge und Krebsfrüherkennung.</p>
+        </div>
+        <div class="leistung-card">
+          <div class="leistung-icon">🔬</div>
+          <h3>Labor & Diagnostik</h3>
+          <p>Praxislabor mit schnellen Ergebnissen, EKG, Lungenfunktion und Ultraschall.</p>
+        </div>
+        <div class="leistung-card">
+          <div class="leistung-icon">🧒</div>
+          <h3>Pädiatrie</h3>
+          <p>Kinderuntersuchungen, Wachstumskontrollen und Impfberatung für Kinder und Jugendliche.</p>
+        </div>
+        <div class="leistung-card">
+          <div class="leistung-icon">📋</div>
+          <h3>Chronische Erkrankungen</h3>
+          <p>Langzeitbegleitung bei Diabetes, Bluthochdruck, Schilddrüsenerkrankungen u.v.m.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="team-section" id="team">
+    <div class="container">
+      <p class="eyebrow">Das Team</p>
+      <h2 class="section-title">Ihr persönliches Praxis-Team</h2>
+      <div class="team-grid">
+        <div class="team-card">
+          <div class="team-avatar" style="background: linear-gradient(135deg, #0051ba, #003d82);">H</div>
+          <h3>Dr. med. Stefan Huber</h3>
+          <div class="team-role">Facharzt Allgemeine Innere Medizin</div>
+          <p class="team-desc">15 Jahre Erfahrung in der Hausarztmedizin. Spezialisiert auf Kardiologie und Präventivmedizin.</p>
+        </div>
+        <div class="team-card">
+          <div class="team-avatar" style="background: linear-gradient(135deg, #0f766e, #0b5f58);">M</div>
+          <h3>Dr. med. Sara Müller</h3>
+          <div class="team-role">Assistenzärztin</div>
+          <p class="team-desc">Schwerpunkt Pädiatrie und Frauenmedizin. Spricht Deutsch, Englisch und Französisch.</p>
+        </div>
+        <div class="team-card">
+          <div class="team-avatar" style="background: linear-gradient(135deg, #7c3aed, #5b21b6);">K</div>
+          <h3>Katharina Steiner</h3>
+          <div class="team-role">Leitende MPA</div>
+          <p class="team-desc">Koordiniert Termine, Labor und alles rund um Ihren Praxisbesuch mit grösster Sorgfalt.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="kontakt-section" id="kontakt">
+    <div class="container">
+      <p class="eyebrow">Kontakt & Termin</p>
+      <h2 class="section-title">Wir sind für Sie da</h2>
+      <div class="kontakt-grid" style="margin-top:2.5rem;">
+        <div>
+          <div class="kontakt-info">
+            <div class="info-row">
+              <div class="info-icon">📍</div>
+              <div>
+                <div class="info-label">Adresse</div>
+                <div class="info-value">Wiedikerstrasse 55, 8003 Zürich</div>
+              </div>
+            </div>
+            <div class="info-row">
+              <div class="info-icon">📞</div>
+              <div>
+                <div class="info-label">Telefon</div>
+                <div class="info-value"><a href="tel:+41441234567">044 123 45 67</a></div>
+              </div>
+            </div>
+            <div class="info-row">
+              <div class="info-icon">✉️</div>
+              <div>
+                <div class="info-label">E-Mail</div>
+                <div class="info-value"><a href="mailto:praxis@drhuber.ch">praxis@drhuber.ch</a></div>
+              </div>
+            </div>
+            <div class="info-row">
+              <div class="info-icon">🚌</div>
+              <div>
+                <div class="info-label">Anfahrt</div>
+                <div class="info-value">Tram 8 / Bus 89 bis «Bezirksgebäude»</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="termin-form">
+          <h3>Termin anfragen</h3>
+          <form class="form-fields" onsubmit="return false;">
+            <div class="field-group">
+              <label>Ihr Name</label>
+              <input type="text" placeholder="Vorname Nachname">
+            </div>
+            <div class="field-group">
+              <label>Telefonnummer</label>
+              <input type="tel" placeholder="+41 79 000 00 00">
+            </div>
+            <div class="field-group">
+              <label>Grund des Besuchs</label>
+              <select>
+                <option value="">Bitte wählen…</option>
+                <option>Akute Beschwerden</option>
+                <option>Routinekontrolle / Check-up</option>
+                <option>Impfung</option>
+                <option>Blutuntersuchung</option>
+                <option>Rezept / Überweisung</option>
+                <option>Anderes</option>
+              </select>
+            </div>
+            <div class="field-group">
+              <label>Gewünschter Termin</label>
+              <input type="date">
+            </div>
+            <div class="field-group">
+              <label>Ergänzende Angaben (optional)</label>
+              <textarea placeholder="Beschreiben Sie kurz Ihr Anliegen…"></textarea>
+            </div>
+            <button type="submit" class="form-submit" onclick="this.textContent='✓ Anfrage gesendet!'">Termin anfragen</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container footer-inner">
+      <div>
+        <div class="footer-brand">Praxis Dr. med. Stefan Huber</div>
+        <div class="footer-info" style="margin-top:.3rem">Wiedikerstrasse 55 · 8003 Zürich · 044 123 45 67</div>
+      </div>
+      <div class="mase-badge">
+        Demo-Website von <a href="https://masesites.ch" target="_blank" rel="noopener">MASESites</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

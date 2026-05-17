@@ -1,0 +1,39 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><link rel="stylesheet" href="_base.css"></head>
+<body>
+<style>
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  label.field { display: grid; gap: 6px; font-size: 13px; font-weight: 600; color: var(--fg-1); }
+  .ctrl {
+    min-height: 44px; border-radius: 10px; border: 1px solid #d4d4d4;
+    padding: 10px 14px; font: inherit; color: var(--fg-1); background: #f9f9f9;
+    width: 100%;
+  }
+  .ctrl:focus { outline: 2px solid #0051ba; outline-offset: 2px; border-color: #0051ba; background: #fff; }
+  textarea.ctrl { min-height: 92px; resize: vertical; }
+  select.ctrl { appearance: none; -webkit-appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23404040' d='M6 9L1 4h10z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; padding-right: 32px; }
+  .check { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--fg-1); }
+  .check input { width: 18px; height: 18px; accent-color: #0f766e; }
+  .hint { font-size: 12px; color: var(--fg-3); }
+</style>
+<div class="card-grid">
+  <div class="grid">
+    <label class="field">Name
+      <input class="ctrl" type="text" placeholder="Vor- und Nachname"/>
+    </label>
+    <label class="field">E-Mail
+      <input class="ctrl" type="email" value="info@masesites.ch"/>
+    </label>
+  </div>
+  <label class="field">Paket
+    <select class="ctrl"><option>Neue Website · ab CHF 750</option><option>Überarbeitung · ab CHF 250</option><option>+ KI-Assistent · CHF 300</option></select>
+  </label>
+  <label class="field">Nachricht
+    <textarea class="ctrl" placeholder="Was möchtest du umsetzen?"></textarea>
+  </label>
+  <div style="display:flex; gap:18px; align-items:center;">
+    <label class="check"><input type="checkbox" checked/> Ich akzeptiere die Datenschutzerklärung</label>
+    <span class="hint">44px hit target · 10px radius · #f9f9f9 fill</span>
+  </div>
+</div>
+</body></html>

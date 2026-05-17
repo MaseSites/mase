@@ -1,0 +1,57 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><link rel="stylesheet" href="_base.css"></head>
+<body>
+<style>
+  body { background: #f8fafc; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .trust-card {
+    padding: 18px; border-radius: 12px; background: #fff; border: 1px solid #d4d4d4;
+    box-shadow: 0 14px 30px rgba(15, 23, 42, 0.05);
+  }
+  .trust-card h3 { margin: 0 0 6px; font-size: 1.05rem; font-weight: 700; color: #000; }
+  .trust-card p { margin: 0; font-size: 0.92rem; color: #404040; line-height: 1.55; }
+  .process-step {
+    padding: 18px; border-radius: 12px;
+    background: linear-gradient(180deg, #fbfdff 0%, #f4f8ff 100%);
+    border: 1px solid #d5e3f8;
+    transition: transform .22s ease, box-shadow .22s ease;
+  }
+  .process-step .icon {
+    width: 40px; height: 40px; border-radius: 10px;
+    background: rgba(0,102,204,0.12); display: grid; place-items: center;
+    color: #0051ba; margin-bottom: 12px;
+  }
+  .process-step .icon svg { width: 20px; height: 20px; }
+  .process-step .num { font-weight: 600; color: #0051ba; font-size: 0.85rem; }
+  .process-step h3 { margin: 4px 0 6px; font-size: 1.05rem; color: #000; font-weight: 700; }
+  .process-step p { margin: 0; font-size: 0.88rem; color: #404040; line-height: 1.5; }
+</style>
+<div class="card-grid">
+  <div class="grid">
+    <article class="trust-card">
+      <h3>Schnell</h3>
+      <p>Klare Prozesse, kurze Wege, schnelle Live-Schaltung.</p>
+    </article>
+    <article class="trust-card">
+      <h3>Sauberer Code</h3>
+      <p>Minimal, wartbar und für Performance optimiert.</p>
+    </article>
+    <article class="process-step">
+      <div class="icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="6"/><line x1="16" y1="16" x2="21" y2="21"/></svg>
+      </div>
+      <span class="num">01</span>
+      <h3>Analyse &amp; Strategie</h3>
+      <p>Wir analysieren dein Business, deine Zielgruppe und den Wettbewerb.</p>
+    </article>
+    <article class="process-step">
+      <div class="icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 15l8-8 5 5-8 8H4v-5z"/><path d="M14 7l3 3"/></svg>
+      </div>
+      <span class="num">03</span>
+      <h3>Modernes Design</h3>
+      <p>Clean, professionell, verkaufsstark. Design das Vertrauen weckt.</p>
+    </article>
+  </div>
+</div>
+</body></html>

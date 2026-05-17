@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="de-CH">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MASE — Marketing site UI kit (animated)</title>
+  <link rel="icon" type="image/svg+xml" href="../../assets/favicon.svg" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="animations.css" />
+
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+</head>
+<body>
+  <div id="app" data-screen-label="MASE marketing site"></div>
+
+  <!-- Tweaks shell (must load before App so it can hook up) -->
+  <script type="text/babel" src="tweaks-panel.jsx"></script>
+
+  <!-- Animation primitives -->
+  <script type="text/babel" src="Animations.jsx"></script>
+  <script type="text/babel" src="SmokeTransition.jsx"></script>
+
+  <!-- Components -->
+  <script type="text/babel" src="SiteHeader.jsx"></script>
+  <script type="text/babel" src="Hero.jsx"></script>
+  <script type="text/babel" src="TrustGrid.jsx"></script>
+  <script type="text/babel" src="ProcessSteps.jsx"></script>
+  <script type="text/babel" src="ChatWidget.jsx"></script>
+  <script type="text/babel" src="AiSection.jsx"></script>
+  <script type="text/babel" src="PricingTeaser.jsx"></script>
+  <script type="text/babel" src="PricingSection.jsx"></script>
+  <script type="text/babel" src="ContactSection.jsx"></script>
+  <script type="text/babel" src="SiteFooter.jsx"></script>
+
+  <!-- App -->
+  <script type="text/babel">
+    const { useState, useEffect } = React;
+
+    const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+      "intensity": "full",
+      "marquee": true,
+      "scrollProgress": true,
+      "heroMesh": true,
+      "tilt": true,
+      "chatAutoplay": true,
+      "smokeTransition": true
+    }/*EDITMODE-END*/;
+
+    function App() {
+      const [page, setPage] = useState("Home");
+      const [preselectedProject, setPreselectedProject] = useState(null);
+      const [tweaks, setTweak] = useTweaks(TWEAK_DEFAULTS);
+      const [dark, setDark] = useState(false);
+      const [smokeKey, setSmokeKey] = useState(0);
+      const [smokeDir, setSmokeDir] = useState(true); // true = going to dark
+
+      // Apply intensity class + chat autoplay flag
+      useEffect(() => {
+        const root = document.documentElement;
+        root.classList.toggle("anim-calm", tweaks.intensity === "calm");
+        window.__maseChatAutoplay = !!tweaks.chatAutoplay;
+      }, [tweaks.intensity, tweaks.chatAutoplay]);
+
+      // Apply dark mode class
+      useEffect(() => {
+        document.documentElement.classList.toggle("dark", dark);
+      }, [dark]);
+
+      const toggleDark = () => {
+        if (tweaks.smokeTransition && tweaks.intensity !== "calm") {
+          setSmokeDir(!dark);     // direction = where we're heading
+          setSmokeKey((k) => k + 1);
+          // Theme flip happens via onMidpoint inside <SmokeTransition>.
+        } else {
+          setDark((d) => !d);
+        }
+      };
+
+      // Always start at top on nav
+      useEffect(() => { window.scrollTo({ top: 0, behavior: "instant" }); }, [page]);
+
+      const go = (p) => setPage(p);
+
+      let view;
+      if (page === "Home") {
+        view = (
+          <React.Fragment>
+            <Hero onCta={(action) => {
+              if (action === "pricing") go("Preise");
+              else go("Kontakt");
+            }} />
+            {tweaks.marquee && <Marquee />}
+            <TrustGrid />
+            <ProcessSteps />
+            <AiSection />
+            <PricingTeaser />
+          </React.Fragment>
+        );
+      } else if (page === "Preise") {
+        view = <PricingSection onChoose={({ base }) => {
+          setPreselectedProject(base === "starter" ? "Neue Website" : base === "premium" ? "Neue Website" : "Neue Website");
+          go("Kontakt");
+        }} />;
+      } else if (page === "KI Assistent") {
+        view = <AiSection />;
+      } else if (page === "Kontakt") {
+        view = <ContactSection initialProject={preselectedProject} />;
+      } else {
+        view = (
+          <section style={{ padding: "120px 0" }}>
+            <div className="container" style={{ textAlign: "center" }}>
+              <p className="eyebrow">{page}</p>
+              <h1>Section noch nicht im Kit</h1>
+              <p className="lead" style={{ margin: "0 auto 1.5rem", maxWidth: "52ch" }}>
+                Diese Seite gibt es im Original-Code (<code style={{ fontFamily: "var(--font-mono)" }}>{page.toLowerCase()}.html</code>),
+                ist aber kein Bestandteil des Kits.
+              </p>
+              <button className="btn btn-primary" onClick={() => go("Home")}>Zurück zur Startseite</button>
+            </div>
+          </section>
+        );
+      }
+
+      return (
+        <React.Fragment>
+          {tweaks.scrollProgress && <ScrollProgress />}
+          <SiteHeader
+            active={page}
+            onNav={go}
+            dark={dark}
+            onToggleDark={toggleDark}
+          />
+          <main>{view}</main>
+          <SiteFooter />
+          <StickyCtaAnimated onClick={() => go("Kontakt")} />
+
+          <SmokeTransition
+            trigger={smokeKey}
+            toDark={smokeDir}
+            onMidpoint={() => {
+              document.documentElement.classList.add("theme-switching");
+              setDark(smokeDir);
+              setTimeout(() => document.documentElement.classList.remove("theme-switching"), 600);
+            }}
+          />
+
+          <TweaksPanel title="Tweaks">
+            <TweakSection label="Animation">
+              <TweakRadio
+                label="Intensity"
+                value={tweaks.intensity}
+                onChange={(v) => setTweak("intensity", v)}
+                options={["full", "calm"]}
+              />
+              <TweakToggle
+                label="Hero gradient mesh"
+                value={tweaks.heroMesh}
+                onChange={(v) => setTweak("heroMesh", v)}
+              />
+              <TweakToggle
+                label="Card tilt (Hero)"
+                value={tweaks.tilt}
+                onChange={(v) => setTweak("tilt", v)}
+              />
+              <TweakToggle
+                label="Marquee row"
+                value={tweaks.marquee}
+                onChange={(v) => setTweak("marquee", v)}
+              />
+              <TweakToggle
+                label="Scroll progress bar"
+                value={tweaks.scrollProgress}
+                onChange={(v) => setTweak("scrollProgress", v)}
+              />
+              <TweakToggle
+                label="Chat autoplay"
+                value={tweaks.chatAutoplay}
+                onChange={(v) => setTweak("chatAutoplay", v)}
+              />
+              <TweakToggle
+                label="Smoke theme transition"
+                value={tweaks.smokeTransition}
+                onChange={(v) => setTweak("smokeTransition", v)}
+              />
+            </TweakSection>
+          </TweaksPanel>
+
+          {/* Side-effect: toggle hero mesh + tilt via CSS hooks */}
+          <style>{`
+            ${!tweaks.heroMesh ? ".hero-mesh { display: none; }" : ""}
+            ${!tweaks.tilt ? ".tilt-wrap .tilt { transform: none !important; }" : ""}
+          `}</style>
+        </React.Fragment>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById("app")).render(<App />);
+  </script>
+</body>
+</html>

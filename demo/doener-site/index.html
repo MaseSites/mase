@@ -1,0 +1,363 @@
+<!doctype html>
+<html lang="de-CH">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bosporus Döner | Frisch. Schnell. Lecker.</title>
+  <meta name="description" content="Bosporus Döner Zürich – handgemachte Döner, Dürüm und Tellergerichte. Täglich frisch. Jetzt bestellen oder abholen.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --c-bg: #111111;
+      --c-surface: #1a1a1a;
+      --c-surface2: #242424;
+      --c-red: #dc2626;
+      --c-red-light: rgba(220,38,38,.12);
+      --c-orange: #ea580c;
+      --c-gold: #f59e0b;
+      --c-text: #fafafa;
+      --c-muted: #a3a3a3;
+      --c-border: rgba(255,255,255,.08);
+      --radius: 14px;
+      --font: 'Inter', system-ui, sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+    body { background: var(--c-bg); color: var(--c-text); font-family: var(--font); line-height: 1.6; }
+    a { color: var(--c-red); text-decoration: none; }
+
+    .container { max-width: 1040px; margin: 0 auto; padding: 0 1.25rem; }
+
+    /* NAV */
+    nav {
+      background: rgba(17,17,17,.95); backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--c-border); position: sticky; top: 0; z-index: 100;
+    }
+    .nav-inner {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: .875rem 1.25rem; max-width: 1040px; margin: 0 auto;
+    }
+    .nav-logo { font-size: 1.2rem; font-weight: 900; letter-spacing: -.02em; }
+    .nav-logo span { color: var(--c-red); }
+    .nav-links { display: flex; gap: 1.75rem; list-style: none; }
+    .nav-links a { color: var(--c-muted); font-size: .875rem; font-weight: 500; transition: color .15s; }
+    .nav-links a:hover { color: var(--c-text); }
+    .nav-order {
+      background: var(--c-red); color: #fff; font-weight: 800; font-size: .875rem;
+      padding: .5rem 1.25rem; border-radius: 8px; transition: background .15s;
+    }
+    .nav-order:hover { background: #b91c1c; }
+
+    /* HERO */
+    .hero {
+      padding: 4rem 0 3rem;
+      background:
+        radial-gradient(ellipse 60% 80% at 80% 50%, rgba(220,38,38,.12) 0%, transparent 60%),
+        radial-gradient(ellipse 40% 60% at 15% 80%, rgba(234,88,12,.08) 0%, transparent 60%),
+        var(--c-bg);
+    }
+    .hero-grid { display: grid; grid-template-columns: 1fr auto; gap: 2rem; align-items: center; }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: .4rem;
+      background: var(--c-red-light); border: 1px solid rgba(220,38,38,.25);
+      color: #fca5a5; font-size: .75rem; font-weight: 700;
+      padding: .3rem .75rem; border-radius: 100px; margin-bottom: 1.25rem;
+      text-transform: uppercase; letter-spacing: .06em;
+    }
+    .hero h1 {
+      font-size: clamp(2.5rem, 5vw, 3.75rem); font-weight: 900; line-height: 1.05;
+      letter-spacing: -.04em; margin-bottom: 1rem;
+    }
+    .hero h1 em { font-style: normal; color: var(--c-red); }
+    .hero-sub { font-size: 1.05rem; color: var(--c-muted); max-width: 44ch; margin-bottom: 2rem; }
+    .hero-actions { display: flex; gap: .75rem; }
+    .btn-red {
+      background: var(--c-red); color: #fff; font-weight: 800; font-size: .95rem;
+      padding: .8rem 1.75rem; border-radius: 10px; transition: background .15s; border: none;
+      cursor: pointer; font-family: var(--font);
+    }
+    .btn-red:hover { background: #b91c1c; }
+    .btn-ghost {
+      border: 1px solid var(--c-border); color: var(--c-text); font-weight: 600;
+      padding: .8rem 1.5rem; border-radius: 10px; transition: border-color .15s; font-size: .95rem;
+    }
+    .btn-ghost:hover { border-color: rgba(255,255,255,.25); }
+    .hero-pill {
+      background: var(--c-surface); border: 1px solid var(--c-border); border-radius: var(--radius);
+      padding: 1.5rem 1.75rem; text-align: center; min-width: 160px;
+    }
+    .hero-pill-num { font-size: 2.5rem; font-weight: 900; color: var(--c-red); line-height: 1; }
+    .hero-pill-label { font-size: .8rem; color: var(--c-muted); margin-top: .3rem; font-weight: 500; }
+
+    /* SPEISEKARTE */
+    .menu-section { padding: 4.5rem 0; }
+    .eyebrow { font-size: .72rem; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: var(--c-red); margin-bottom: .6rem; }
+    .section-title { font-size: clamp(1.6rem, 3vw, 2.25rem); font-weight: 800; letter-spacing: -.03em; margin-bottom: .5rem; }
+    .section-lead { color: var(--c-muted); max-width: 52ch; }
+
+    .menu-tabs { display: flex; gap: .5rem; margin: 2rem 0; flex-wrap: wrap; }
+    .menu-tab {
+      padding: .45rem 1rem; border-radius: 100px; font-size: .85rem; font-weight: 600;
+      border: 1px solid var(--c-border); background: transparent; color: var(--c-muted);
+      cursor: pointer; font-family: var(--font); transition: all .15s;
+    }
+    .menu-tab.active, .menu-tab:hover {
+      background: var(--c-red); color: #fff; border-color: var(--c-red);
+    }
+
+    .menu-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem; }
+    .menu-card {
+      background: var(--c-surface); border: 1px solid var(--c-border);
+      border-radius: var(--radius); padding: 1.25rem 1.5rem;
+      display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem;
+      transition: border-color .2s;
+    }
+    .menu-card:hover { border-color: rgba(220,38,38,.3); }
+    .menu-name { font-size: .975rem; font-weight: 700; margin-bottom: .25rem; }
+    .menu-desc { font-size: .8rem; color: var(--c-muted); }
+    .menu-price { font-size: 1.05rem; font-weight: 900; color: var(--c-gold); white-space: nowrap; }
+    .menu-add {
+      display: block; margin-top: .5rem; font-size: .75rem; font-weight: 600;
+      background: var(--c-red-light); border: 1px solid rgba(220,38,38,.25);
+      color: #fca5a5; padding: .2rem .6rem; border-radius: 6px; cursor: pointer;
+      text-align: center;
+    }
+    .menu-add:hover { background: var(--c-red); color: #fff; border-color: var(--c-red); }
+
+    /* INFO SECTION */
+    .info-section {
+      background: var(--c-surface); border-top: 1px solid var(--c-border);
+      border-bottom: 1px solid var(--c-border); padding: 4.5rem 0;
+    }
+    .info-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-top: 3rem; }
+    .info-card { text-align: center; }
+    .info-icon { font-size: 2.5rem; margin-bottom: .75rem; }
+    .info-title { font-size: 1rem; font-weight: 700; margin-bottom: .35rem; }
+    .info-text { font-size: .875rem; color: var(--c-muted); }
+
+    /* ORDER CTA */
+    .order-section {
+      padding: 5rem 0; text-align: center;
+      background: radial-gradient(ellipse 60% 80% at 50% 50%, rgba(220,38,38,.1) 0%, transparent 70%);
+    }
+    .order-section .section-title { font-size: clamp(2rem, 4vw, 3rem); margin-bottom: .75rem; }
+    .order-options { display: flex; justify-content: center; gap: 1.5rem; margin-top: 2.5rem; flex-wrap: wrap; }
+    .order-option {
+      background: var(--c-surface); border: 1px solid var(--c-border);
+      border-radius: var(--radius); padding: 2rem 2.5rem; text-align: center; min-width: 200px;
+      transition: border-color .2s;
+    }
+    .order-option:hover { border-color: rgba(220,38,38,.4); }
+    .order-option-icon { font-size: 2.25rem; margin-bottom: .75rem; }
+    .order-option h3 { font-size: 1rem; font-weight: 700; margin-bottom: .35rem; }
+    .order-option p { font-size: .825rem; color: var(--c-muted); margin-bottom: 1rem; }
+    .order-option .btn-red { display: block; width: 100%; font-size: .875rem; padding: .65rem 1rem; }
+
+    /* FOOTER */
+    footer { background: var(--c-surface); border-top: 1px solid var(--c-border); padding: 2rem 0; }
+    .footer-inner { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+    .footer-brand { font-weight: 900; font-size: 1rem; }
+    .footer-brand span { color: var(--c-red); }
+    .footer-meta { font-size: .8rem; color: var(--c-muted); }
+    .mase-badge {
+      font-size: .75rem; color: var(--c-muted); background: var(--c-surface2);
+      border: 1px solid var(--c-border); padding: .3rem .75rem; border-radius: 100px;
+    }
+    .mase-badge a { color: var(--c-muted); text-decoration: underline; text-underline-offset: 2px; }
+
+    @media (max-width: 640px) {
+      .nav-links { display: none; }
+      .hero-grid { grid-template-columns: 1fr; }
+      .hero-pill { display: none; }
+      .info-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="nav-inner">
+      <div class="nav-logo">🌯 <span>Bosporus</span> Döner</div>
+      <ul class="nav-links">
+        <li><a href="#menu">Speisekarte</a></li>
+        <li><a href="#info">Infos</a></li>
+        <li><a href="#bestellen">Bestellen</a></li>
+      </ul>
+      <a class="nav-order" href="#bestellen">Jetzt bestellen</a>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div class="container">
+      <div class="hero-grid">
+        <div>
+          <div class="hero-badge">🔥 Täglich frisch – seit 2008</div>
+          <h1>Frisch.<br><em>Schnell.</em><br>Lecker.</h1>
+          <p class="hero-sub">Handgemachte Döner, Dürüm und Tellergerichte aus hochwertigen Zutaten. Täglich bis 23:00 Uhr geöffnet.</p>
+          <div class="hero-actions">
+            <a class="btn-red" href="#menu">Speisekarte ansehen</a>
+            <a class="btn-ghost" href="#bestellen">Abholen oder liefern</a>
+          </div>
+        </div>
+        <div style="display:flex;gap:1rem;flex-direction:column;align-items:center">
+          <div class="hero-pill">
+            <div class="hero-pill-num">16</div>
+            <div class="hero-pill-label">Jahre Erfahrung</div>
+          </div>
+          <div class="hero-pill">
+            <div class="hero-pill-num">⭐ 4.8</div>
+            <div class="hero-pill-label">Google-Bewertung</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="menu-section" id="menu">
+    <div class="container">
+      <p class="eyebrow">Speisekarte</p>
+      <h2 class="section-title">Was darf's sein?</h2>
+      <p class="section-lead">Alles wird vor Ort frisch zubereitet. Vegetarische Optionen immer verfügbar.</p>
+
+      <div class="menu-tabs">
+        <button class="menu-tab active">Döner & Dürüm</button>
+        <button class="menu-tab">Tellergerichte</button>
+        <button class="menu-tab">Vegetarisch</button>
+        <button class="menu-tab">Getränke</button>
+      </div>
+
+      <div class="menu-grid">
+        <div class="menu-card">
+          <div>
+            <div class="menu-name">Döner im Fladenbrot</div>
+            <div class="menu-desc">Hähnchen oder Rind, Salat, Sosse nach Wahl</div>
+            <span class="menu-add">+ Bestellen</span>
+          </div>
+          <div>
+            <div class="menu-price">CHF 12.50</div>
+          </div>
+        </div>
+        <div class="menu-card">
+          <div>
+            <div class="menu-name">Dürüm Wrap</div>
+            <div class="menu-desc">Im Lavash-Brot gerollt, mit extra Knoblauchsosse</div>
+            <span class="menu-add">+ Bestellen</span>
+          </div>
+          <div>
+            <div class="menu-price">CHF 13.50</div>
+          </div>
+        </div>
+        <div class="menu-card">
+          <div>
+            <div class="menu-name">Döner-Box</div>
+            <div class="menu-desc">Fleisch, Salat, Pommes und Sosse in der Schachtel</div>
+            <span class="menu-add">+ Bestellen</span>
+          </div>
+          <div>
+            <div class="menu-price">CHF 16.90</div>
+          </div>
+        </div>
+        <div class="menu-card">
+          <div>
+            <div class="menu-name">Iskender Teller</div>
+            <div class="menu-desc">Döner auf Pita, Tomatensauce, gebräunte Butter, Joghurt</div>
+            <span class="menu-add">+ Bestellen</span>
+          </div>
+          <div>
+            <div class="menu-price">CHF 22.00</div>
+          </div>
+        </div>
+        <div class="menu-card">
+          <div>
+            <div class="menu-name">Lahmacun (2 Stück)</div>
+            <div class="menu-desc">Dünnes Fladenbrot mit Hackfleisch-Belag, Salat</div>
+            <span class="menu-add">+ Bestellen</span>
+          </div>
+          <div>
+            <div class="menu-price">CHF 14.50</div>
+          </div>
+        </div>
+        <div class="menu-card">
+          <div>
+            <div class="menu-name">Kinderdöner</div>
+            <div class="menu-desc">Kleines Fladenbrot, nur Hähnchen, milder Joghurt</div>
+            <span class="menu-add">+ Bestellen</span>
+          </div>
+          <div>
+            <div class="menu-price">CHF 8.50</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="info-section" id="info">
+    <div class="container">
+      <p class="eyebrow">Infos</p>
+      <h2 class="section-title">Gut zu wissen</h2>
+      <div class="info-grid">
+        <div class="info-card">
+          <div class="info-icon">🕐</div>
+          <div class="info-title">Öffnungszeiten</div>
+          <div class="info-text">Mo–Sa 10:00–23:00 Uhr<br>Sonntag 11:00–22:00 Uhr<br>Kein Ruhetag</div>
+        </div>
+        <div class="info-card">
+          <div class="info-icon">📍</div>
+          <div class="info-title">Standort</div>
+          <div class="info-text">Langstrasse 88<br>8004 Zürich<br>3 Min. vom Bhf. Langstrasse</div>
+        </div>
+        <div class="info-card">
+          <div class="info-icon">🚀</div>
+          <div class="info-title">Lieferung</div>
+          <div class="info-text">Lieferzonen: Kreis 4 & 5<br>Ab CHF 20 Bestellwert<br>Lieferzeit: 25–40 Min.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="order-section" id="bestellen">
+    <div class="container">
+      <p class="eyebrow">Bestellen</p>
+      <h2 class="section-title">Hunger? Wir liefern.</h2>
+      <p class="section-lead" style="max-width:44ch; margin:0 auto;">Bestell direkt per Telefon zum Abholen oder über unsere Lieferpartner.</p>
+      <div class="order-options">
+        <div class="order-option">
+          <div class="order-option-icon">📞</div>
+          <h3>Telefon</h3>
+          <p>Vorbestellen zum Abholen – kein Warten an der Kasse</p>
+          <a class="btn-red" href="tel:+41441112233">044 111 22 33</a>
+        </div>
+        <div class="order-option">
+          <div class="order-option-icon">🛵</div>
+          <h3>Lieferung</h3>
+          <p>Über unsere Partner in 25–40 Minuten an deine Tür</p>
+          <button class="btn-red" onclick="this.textContent='Weiterleitung…'">Jetzt bestellen</button>
+        </div>
+        <div class="order-option">
+          <div class="order-option-icon">🏃</div>
+          <h3>Abholen</h3>
+          <p>Direkt im Laden abholen – schnell und ohne Wartezeit</p>
+          <a class="btn-red" href="#info">Standort ansehen</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container footer-inner">
+      <div>
+        <div class="footer-brand">🌯 <span>Bosporus</span> Döner</div>
+        <div class="footer-meta" style="margin-top:.3rem">Langstrasse 88 · 8004 Zürich · 044 111 22 33</div>
+      </div>
+      <div class="mase-badge">
+        Demo-Website von <a href="https://masesites.ch" target="_blank" rel="noopener">MASESites</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

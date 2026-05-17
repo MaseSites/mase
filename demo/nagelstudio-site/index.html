@@ -1,0 +1,380 @@
+<!doctype html>
+<html lang="de-CH">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Studio Belle | Nagelstudio Zürich</title>
+  <meta name="description" content="Studio Belle – Ihr Nagelstudio in Zürich. Gel, Acryl, Maniküre und Pediküre. Jetzt Termin buchen.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --c-bg: #fdf8f4;
+      --c-surface: #ffffff;
+      --c-blush: #fce7e0;
+      --c-blush2: #fdf0ec;
+      --c-gold: #b8860b;
+      --c-gold-light: #f3e3c3;
+      --c-rose: #c0556a;
+      --c-rose-dark: #9b3d52;
+      --c-text: #1a1a1a;
+      --c-muted: #6b5b55;
+      --c-border: #e8d8d0;
+      --radius: 20px;
+      --font: 'Inter', system-ui, sans-serif;
+      --font-display: 'Playfair Display', Georgia, serif;
+      --shadow: 0 2px 8px rgba(192,85,106,.08), 0 8px 24px rgba(192,85,106,.06);
+    }
+
+    html { scroll-behavior: smooth; }
+    body { background: var(--c-bg); color: var(--c-text); font-family: var(--font); line-height: 1.65; }
+    a { color: var(--c-rose); text-decoration: none; }
+
+    .container { max-width: 1060px; margin: 0 auto; padding: 0 1.5rem; }
+
+    /* NAV */
+    nav {
+      background: rgba(253,248,244,.95); backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--c-border); position: sticky; top: 0; z-index: 100;
+    }
+    .nav-inner {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1rem 1.5rem; max-width: 1060px; margin: 0 auto;
+    }
+    .nav-logo { font-family: var(--font-display); font-size: 1.3rem; letter-spacing: .01em; }
+    .nav-logo span { color: var(--c-rose); }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a { color: var(--c-muted); font-size: .875rem; font-weight: 500; transition: color .15s; }
+    .nav-links a:hover { color: var(--c-text); }
+    .nav-cta {
+      background: var(--c-rose); color: #fff; font-weight: 700; font-size: .875rem;
+      padding: .55rem 1.25rem; border-radius: 50px; transition: background .15s;
+    }
+    .nav-cta:hover { background: var(--c-rose-dark); }
+
+    /* HERO */
+    .hero { padding: 5rem 0 4rem; position: relative; overflow: hidden; }
+    .hero::before {
+      content: ''; position: absolute; top: -40%; right: -15%;
+      width: 600px; height: 600px; border-radius: 50%;
+      background: radial-gradient(circle, var(--c-blush) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-grid { display: grid; grid-template-columns: 1fr 420px; gap: 4rem; align-items: center; }
+    .hero-tag {
+      display: inline-flex; align-items: center; gap: .4rem;
+      background: var(--c-gold-light); color: var(--c-gold);
+      font-size: .78rem; font-weight: 700; padding: .3rem .8rem;
+      border-radius: 100px; margin-bottom: 1.5rem; letter-spacing: .05em; text-transform: uppercase;
+    }
+    .hero h1 {
+      font-family: var(--font-display); font-size: clamp(2.5rem, 5vw, 4rem);
+      font-weight: 800; line-height: 1.1; letter-spacing: -.01em; margin-bottom: 1.25rem;
+      color: var(--c-text);
+    }
+    .hero h1 em { font-style: italic; color: var(--c-rose); }
+    .hero-lead { font-size: 1.05rem; color: var(--c-muted); max-width: 44ch; margin-bottom: 2rem; }
+    .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .btn-rose {
+      background: var(--c-rose); color: #fff; font-weight: 700; font-size: .95rem;
+      padding: .85rem 2rem; border-radius: 50px; transition: background .15s;
+      border: none; cursor: pointer; font-family: var(--font);
+    }
+    .btn-rose:hover { background: var(--c-rose-dark); }
+    .btn-soft {
+      background: var(--c-blush); color: var(--c-rose); font-weight: 700; font-size: .95rem;
+      padding: .85rem 2rem; border-radius: 50px; transition: background .15s;
+    }
+    .btn-soft:hover { background: #f9d5cb; }
+    .hero-trust { display: flex; gap: 1.5rem; margin-top: 2.5rem; }
+    .trust-item { text-align: center; }
+    .trust-num { font-size: 1.75rem; font-weight: 800; color: var(--c-rose); font-family: var(--font-display); }
+    .trust-label { font-size: .78rem; color: var(--c-muted); margin-top: .1rem; }
+    /* Gallery placeholder grid */
+    .hero-gallery { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 180px 120px 180px; gap: 8px; border-radius: var(--radius); overflow: hidden; }
+    .gallery-cell { border-radius: 10px; background: var(--c-blush); }
+    .gallery-cell:nth-child(1) { background: linear-gradient(135deg, #fce7e0, #f9c8bc); grid-row: 1; }
+    .gallery-cell:nth-child(2) { background: linear-gradient(135deg, #f3e3c3, #e8c97a); grid-row: 1; }
+    .gallery-cell:nth-child(3) { background: linear-gradient(135deg, #e8d0f8, #d4a8f0); grid-column: 1 / -1; grid-row: 2; border-radius: 10px; display:flex; align-items:center; justify-content:center; font-size:1.75rem; letter-spacing: .5rem; }
+    .gallery-cell:nth-child(4) { background: linear-gradient(135deg, #c8e6f9, #9ed4f7); grid-row: 3; }
+    .gallery-cell:nth-child(5) { background: linear-gradient(135deg, #fce7e0, #fbbfad); grid-row: 3; }
+
+    /* SERVICES */
+    .services-section { padding: 5rem 0; }
+    .eyebrow { font-size: .72rem; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: var(--c-rose); margin-bottom: .6rem; }
+    .section-title { font-family: var(--font-display); font-size: clamp(1.75rem, 3vw, 2.5rem); font-weight: 700; letter-spacing: -.01em; margin-bottom: .5rem; }
+    .section-lead { color: var(--c-muted); max-width: 50ch; }
+    .services-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1.25rem; margin-top: 3rem; }
+    .service-card {
+      background: var(--c-surface); border: 1px solid var(--c-border);
+      border-radius: var(--radius); padding: 1.75rem;
+      box-shadow: var(--shadow); transition: box-shadow .2s, border-color .2s;
+    }
+    .service-card:hover { box-shadow: 0 4px 24px rgba(192,85,106,.15); border-color: #f0bec8; }
+    .service-icon { font-size: 1.75rem; margin-bottom: 1rem; }
+    .service-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: .4rem; }
+    .service-card p { font-size: .85rem; color: var(--c-muted); }
+
+    /* PRICING */
+    .pricing-section { background: var(--c-blush2); padding: 5rem 0; }
+    .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.25rem; margin-top: 3rem; }
+    .pricing-cat { background: var(--c-surface); border: 1px solid var(--c-border); border-radius: var(--radius); padding: 1.75rem; box-shadow: var(--shadow); }
+    .pricing-cat h3 { font-size: 1rem; font-weight: 700; margin-bottom: 1.25rem; padding-bottom: .75rem; border-bottom: 1px solid var(--c-border); display:flex; align-items:center; gap:.5rem; }
+    .pricing-item { display: flex; justify-content: space-between; align-items: center; padding: .45rem 0; font-size: .875rem; }
+    .pricing-item + .pricing-item { border-top: 1px solid #f5ece8; }
+    .pricing-name { color: var(--c-text); }
+    .pricing-price { font-weight: 700; color: var(--c-rose); }
+    .pricing-note { font-size: .78rem; color: var(--c-muted); margin-top: 1rem; }
+
+    /* GALLERY */
+    .gallery-section { padding: 5rem 0; }
+    .gallery-full { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 3rem; }
+    .gallery-item {
+      aspect-ratio: 1; border-radius: 14px; overflow: hidden;
+      background: var(--c-blush); transition: transform .2s;
+    }
+    .gallery-item:hover { transform: scale(1.02); }
+    .gallery-item:nth-child(1) { background: linear-gradient(135deg, #fce7e0, #f9c8bc); }
+    .gallery-item:nth-child(2) { background: linear-gradient(135deg, #f3e3c3, #e5c572); }
+    .gallery-item:nth-child(3) { background: linear-gradient(135deg, #e8d0f8, #c8a2e8); }
+    .gallery-item:nth-child(4) { background: linear-gradient(135deg, #c8e6f9, #9ed4f7); }
+    .gallery-item:nth-child(5) { background: linear-gradient(135deg, #d4f4e0, #96ddb4); }
+    .gallery-item:nth-child(6) { background: linear-gradient(135deg, #ffd6e0, #ffb3c6); }
+    .gallery-item:nth-child(7) { background: linear-gradient(135deg, #fff0c8, #fdd879); }
+    .gallery-item:nth-child(8) { background: linear-gradient(135deg, #e0d4f8, #c4adf0); }
+    .gallery-inner { width:100%; height:100%; display:flex; align-items:center; justify-content:center; font-size:2rem; }
+
+    /* BOOKING */
+    .booking-section {
+      padding: 5rem 0; text-align: center;
+      background: linear-gradient(135deg, var(--c-rose) 0%, var(--c-rose-dark) 100%); color: #fff;
+    }
+    .booking-section .eyebrow { color: rgba(255,255,255,.65); }
+    .booking-section .section-title { color: #fff; font-size: clamp(2rem, 4vw, 3rem); }
+    .booking-lead { color: rgba(255,255,255,.8); max-width: 44ch; margin: .75rem auto 2.5rem; }
+    .booking-options { display: flex; justify-content: center; gap: 1.25rem; flex-wrap: wrap; }
+    .booking-opt {
+      background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.25);
+      border-radius: var(--radius); padding: 1.75rem 2rem; min-width: 200px; text-align: center;
+      transition: background .15s;
+    }
+    .booking-opt:hover { background: rgba(255,255,255,.2); }
+    .booking-opt-icon { font-size: 2rem; margin-bottom: .6rem; }
+    .booking-opt h3 { font-size: .95rem; font-weight: 700; margin-bottom: .3rem; }
+    .booking-opt p { font-size: .8rem; color: rgba(255,255,255,.7); margin-bottom: 1rem; }
+    .btn-booking {
+      display: block; background: #fff; color: var(--c-rose); font-weight: 700; font-size: .875rem;
+      padding: .6rem 1.25rem; border-radius: 50px; transition: opacity .15s;
+    }
+    .btn-booking:hover { opacity: .9; }
+
+    /* FOOTER */
+    footer { background: var(--c-text); color: rgba(255,255,255,.6); padding: 2rem 0; }
+    .footer-inner { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
+    .footer-brand { color: #fff; font-family: var(--font-display); font-size: 1.1rem; }
+    .footer-meta { font-size: .8rem; }
+    .mase-badge {
+      font-size: .75rem; background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.15); padding: .3rem .75rem; border-radius: 100px;
+    }
+    .mase-badge a { color: rgba(255,255,255,.5); text-decoration: underline; text-underline-offset: 2px; }
+
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .hero-grid { grid-template-columns: 1fr; }
+      .hero-gallery { display: none; }
+      .hero-trust { gap: 1rem; }
+      .gallery-full { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="nav-inner">
+      <div class="nav-logo"><span>Studio</span> Belle 💅</div>
+      <ul class="nav-links">
+        <li><a href="#services">Services</a></li>
+        <li><a href="#preise">Preise</a></li>
+        <li><a href="#galerie">Galerie</a></li>
+        <li><a href="#termin">Kontakt</a></li>
+      </ul>
+      <a class="nav-cta" href="#termin">Termin buchen</a>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div class="container">
+      <div class="hero-grid">
+        <div>
+          <div class="hero-tag">✨ Top-bewertet in Zürich</div>
+          <h1>Nägel, die<br><em>begeistern.</em></h1>
+          <p class="hero-lead">Professionelle Nail-Art, Gel-Verlängerungen und Pflegebehandlungen in entspannter Atmosphäre. Ihr Wohlbefinden steht im Mittelpunkt.</p>
+          <div class="hero-actions">
+            <a class="btn-rose" href="#termin">Termin buchen</a>
+            <a class="btn-soft" href="#services">Services ansehen</a>
+          </div>
+          <div class="hero-trust">
+            <div class="trust-item">
+              <div class="trust-num">⭐ 4.9</div>
+              <div class="trust-label">Google-Rating</div>
+            </div>
+            <div class="trust-item">
+              <div class="trust-num">8+</div>
+              <div class="trust-label">Jahre Erfahrung</div>
+            </div>
+            <div class="trust-item">
+              <div class="trust-num">2'000+</div>
+              <div class="trust-label">zufriedene Kundinnen</div>
+            </div>
+          </div>
+        </div>
+        <div class="hero-gallery" aria-hidden="true">
+          <div class="gallery-cell"></div>
+          <div class="gallery-cell"></div>
+          <div class="gallery-cell">💅 ✨ 🌸</div>
+          <div class="gallery-cell"></div>
+          <div class="gallery-cell"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="services-section" id="services">
+    <div class="container">
+      <p class="eyebrow">Unsere Services</p>
+      <h2 class="section-title">Alles für schöne Nägel</h2>
+      <p class="section-lead">Von der klassischen Maniküre bis zur aufwendigen Nail-Art – wir bieten alles aus einer Hand.</p>
+      <div class="services-grid">
+        <div class="service-card">
+          <div class="service-icon">💅</div>
+          <h3>Gel-Verlängerung</h3>
+          <p>Professionelle Verlängerung mit Gel-Systemen für natürlich wirkende, langlebige Nägel.</p>
+        </div>
+        <div class="service-card">
+          <div class="service-icon">✨</div>
+          <h3>Nail-Art & Design</h3>
+          <p>Von einfarbig bis aufwendig – wir setzen Ihre Wünsche in echte Kunstwerke um.</p>
+        </div>
+        <div class="service-card">
+          <div class="service-icon">🌸</div>
+          <h3>Klassische Maniküre</h3>
+          <p>Feilen, pflegen, lackieren. Inklusive Handmassage und Nagelhaut-Behandlung.</p>
+        </div>
+        <div class="service-card">
+          <div class="service-icon">🦶</div>
+          <h3>Pediküre</h3>
+          <p>Verwöhnende Fussbehandlung mit Peeling, Massage und Lack-Finish.</p>
+        </div>
+        <div class="service-card">
+          <div class="service-icon">💎</div>
+          <h3>Acryl-System</h3>
+          <p>Extra-starke Acryl-Aufbauten, ideal für kurze oder schwache Nägel.</p>
+        </div>
+        <div class="service-card">
+          <div class="service-icon">🌿</div>
+          <h3>Nagelpflege / Wellness</h3>
+          <p>Reparatur, Stärkung und Erholungskuren für strapazierten oder gerissenen Nägeln.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="pricing-section" id="preise">
+    <div class="container">
+      <p class="eyebrow">Preise</p>
+      <h2 class="section-title">Transparente Preisgestaltung</h2>
+      <p class="section-lead">Keine versteckten Kosten. Alle Preise in CHF inkl. Material.</p>
+      <div class="pricing-grid">
+        <div class="pricing-cat">
+          <h3>💅 Gel & Acryl</h3>
+          <div class="pricing-item"><span class="pricing-name">Gel-Modellage (neu)</span><span class="pricing-price">CHF 95</span></div>
+          <div class="pricing-item"><span class="pricing-name">Gel-Auffüllung</span><span class="pricing-price">CHF 65</span></div>
+          <div class="pricing-item"><span class="pricing-name">Acryl-Modellage (neu)</span><span class="pricing-price">CHF 105</span></div>
+          <div class="pricing-item"><span class="pricing-name">Acryl-Auffüllung</span><span class="pricing-price">CHF 70</span></div>
+          <div class="pricing-item"><span class="pricing-name">Gel-Abnahme</span><span class="pricing-price">CHF 25</span></div>
+          <p class="pricing-note">* Preise je nach Nagelform und -länge</p>
+        </div>
+        <div class="pricing-cat">
+          <h3>✨ Nail-Art</h3>
+          <div class="pricing-item"><span class="pricing-name">French Tip</span><span class="pricing-price">ab CHF 15</span></div>
+          <div class="pricing-item"><span class="pricing-name">Ombré / Babyboomer</span><span class="pricing-price">ab CHF 20</span></div>
+          <div class="pricing-item"><span class="pricing-name">Motive (pro Nagel)</span><span class="pricing-price">ab CHF 5</span></div>
+          <div class="pricing-item"><span class="pricing-name">Glitter & Chrome</span><span class="pricing-price">ab CHF 15</span></div>
+          <div class="pricing-item"><span class="pricing-name">Full Nail-Art (Set)</span><span class="pricing-price">ab CHF 60</span></div>
+        </div>
+        <div class="pricing-cat">
+          <h3>🌸 Maniküre & Pediküre</h3>
+          <div class="pricing-item"><span class="pricing-name">Klassische Maniküre</span><span class="pricing-price">CHF 45</span></div>
+          <div class="pricing-item"><span class="pricing-name">Mit Gel-Lack</span><span class="pricing-price">CHF 65</span></div>
+          <div class="pricing-item"><span class="pricing-name">Pediküre klassisch</span><span class="pricing-price">CHF 55</span></div>
+          <div class="pricing-item"><span class="pricing-name">Pediküre mit Lack</span><span class="pricing-price">CHF 70</span></div>
+          <div class="pricing-item"><span class="pricing-name">Wellness-Paket (beides)</span><span class="pricing-price">CHF 115</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="gallery-section" id="galerie">
+    <div class="container">
+      <p class="eyebrow">Galerie</p>
+      <h2 class="section-title">Unsere Arbeiten</h2>
+      <p class="section-lead">Eindrücke aus dem Studio – jeder Satz Nägel ein Unikat.</p>
+      <div class="gallery-full" aria-label="Galerie unserer Nail-Art Arbeiten">
+        <div class="gallery-item"><div class="gallery-inner">💅</div></div>
+        <div class="gallery-item"><div class="gallery-inner">✨</div></div>
+        <div class="gallery-item"><div class="gallery-inner">🌸</div></div>
+        <div class="gallery-item"><div class="gallery-inner">💎</div></div>
+        <div class="gallery-item"><div class="gallery-inner">🌺</div></div>
+        <div class="gallery-item"><div class="gallery-inner">🦋</div></div>
+        <div class="gallery-item"><div class="gallery-inner">⭐</div></div>
+        <div class="gallery-item"><div class="gallery-inner">🎀</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="booking-section" id="termin">
+    <div class="container">
+      <p class="eyebrow">Termin</p>
+      <h2 class="section-title">Bereit für schöne Nägel?</h2>
+      <p class="booking-lead">Buchen Sie Ihren Termin online, per Telefon oder direkt auf Instagram. Wir freuen uns auf Sie!</p>
+      <div class="booking-options">
+        <div class="booking-opt">
+          <div class="booking-opt-icon">📱</div>
+          <h3>Online buchen</h3>
+          <p>24/7 verfügbar, sofortige Bestätigung</p>
+          <a class="btn-booking" href="#" onclick="this.textContent='Weiterleitung…'; return false;">Termin wählen</a>
+        </div>
+        <div class="booking-opt">
+          <div class="booking-opt-icon">📞</div>
+          <h3>Telefonisch</h3>
+          <p>Mo–Sa 09:00–19:00 Uhr</p>
+          <a class="btn-booking" href="tel:+41441234567">044 123 45 67</a>
+        </div>
+        <div class="booking-opt">
+          <div class="booking-opt-icon">📍</div>
+          <h3>Adresse</h3>
+          <p>Seestrasse 22, 8002 Zürich<br>Tram 7 «Enge»</p>
+          <a class="btn-booking" href="#" onclick="return false;">Route anzeigen</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container footer-inner">
+      <div>
+        <div class="footer-brand">Studio Belle 💅</div>
+        <div class="footer-meta" style="margin-top:.3rem">Seestrasse 22 · 8002 Zürich · 044 123 45 67</div>
+      </div>
+      <div class="mase-badge">
+        Demo-Website von <a href="https://masesites.ch" target="_blank" rel="noopener">MASESites</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

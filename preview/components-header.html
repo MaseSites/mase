@@ -1,0 +1,57 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><link rel="stylesheet" href="_base.css"></head>
+<body style="padding: 0;">
+<style>
+  body { background: #fff; }
+  .header {
+    background: rgba(255,255,255,0.96);
+    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid #d4d4d4;
+    padding: 14px 24px;
+    display: flex; align-items: center; gap: 22px;
+  }
+  .logo { font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; font-size: 1.4rem; color: #000; }
+  nav { display: flex; gap: 18px; flex: 1; }
+  nav a { font-size: 0.92rem; font-weight: 500; color: #000; padding: 6px 4px; position: relative; }
+  nav a.active { color: #0051ba; }
+  nav a.active::after { content: ""; position: absolute; left: 0; right: 0; bottom: -2px; height: 2px; border-radius: 999px; background: #0051ba; }
+  .ctrls { display: flex; align-items: center; gap: 10px; }
+  .lang {
+    display: inline-flex; align-items: center; gap: 6px; padding: 6px 10px;
+    border: 1px solid #d4d4d4; border-radius: 10px; font-size: 0.82rem; font-weight: 600;
+  }
+  .toggle {
+    width: 44px; height: 24px; border-radius: 999px;
+    background: #f1f5f9; border: 1px solid #d4d4d4;
+    display: inline-flex; align-items: center; padding: 0 3px;
+  }
+  .toggle .thumb { width: 18px; height: 18px; border-radius: 50%; background: #fff; box-shadow: 0 2px 6px rgba(0,0,0,.15); }
+  .cta {
+    background: linear-gradient(135deg, #0f766e 0%, #0b5f58 100%);
+    color: #fff; padding: 8px 14px; border-radius: 999px;
+    font-size: 0.78rem; font-weight: 700;
+    box-shadow: 0 8px 18px rgba(15,118,110,0.28);
+  }
+  .legend { padding: 12px 24px 0; font-size: 12px; color: var(--fg-3); }
+</style>
+<div class="header">
+  <span class="logo">MASE</span>
+  <nav>
+    <a href="#" class="active">Home</a>
+    <a href="#">Leistungen</a>
+    <a href="#">Preise</a>
+    <a href="#">KI Assistent</a>
+    <a href="#">Über uns</a>
+    <a href="#">Kontakt</a>
+  </nav>
+  <div class="ctrls">
+    <span class="lang">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+      DE
+    </span>
+    <span class="toggle"><span class="thumb"></span></span>
+    <a class="cta" href="#">Kostenloses Erstgespräch</a>
+  </div>
+</div>
+<div class="legend">Sticky header · backdrop-filter blur(12px) · 1px bottom border · 2px underline on active nav</div>
+</body></html>

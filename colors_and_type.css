@@ -1,0 +1,257 @@
+/* =============================================================
+   MASE Design System — colors_and_type.css
+   Tokens extracted from MASESites AG production site
+   ============================================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+:root {
+  /* ============================================================
+     COLOR — BRAND
+     ============================================================
+     MASE uses a dual-accent system:
+       • TEAL (deep, gradient) — primary CTA color on production
+         (the production .button-primary is overridden to a teal
+          gradient #0f766e → #0b5f58)
+       • BLUE — links, badges, hover/focus tints, chat avatars,
+         dark-mode primary
+     The CSS variables below preserve both, with teal as the
+     “primary action” token and blue as the “accent/link” token.
+     ============================================================ */
+
+  /* --- Primary CTA (teal) --- */
+  --mase-teal-600:        #0f766e;  /* gradient top */
+  --mase-teal-700:        #0b5f58;  /* gradient bottom */
+  --mase-teal-800:        #0b665f;  /* hover state */
+  --mase-teal-50:         #ecfdf5;  /* soft surface */
+  --mase-teal-100:        #a7f3d0;  /* soft border */
+  --mase-teal-cta:        linear-gradient(135deg, #0f766e 0%, #0b5f58 100%);
+  --mase-teal-shadow:     0 14px 26px rgba(15, 118, 110, 0.22);
+  --mase-teal-shadow-sm:  0 8px 18px rgba(15, 118, 110, 0.28);
+
+  /* --- Accent (blue) --- */
+  --mase-blue-400:        #3a9bff;  /* favicon / shadow tint */
+  --mase-blue-500:        #66b6ff;  /* light-blue brand tint */
+  --mase-blue-600:        #0066cc;  /* accent */
+  --mase-blue-700:        #0051ba;  /* accent-strong */
+  --mase-blue-800:        #003d82;  /* link-hover */
+  --mase-blue-50:         #f6f9ff;  /* surface */
+  --mase-blue-soft:       rgba(0, 102, 204, 0.12);
+
+  /* --- Neutrals --- */
+  --mase-white:           #ffffff;
+  --mase-ink-900:         #000000;
+  --mase-ink-800:         #0a0e27;  /* footer */
+  --mase-ink-700:         #1a1a1a;
+  --mase-ink-600:         #404040;
+  --mase-ink-500:         #666666;
+  --mase-ink-400:         #475569;  /* slate-soft text */
+  --mase-line:            #d4d4d4;
+  --mase-surface:         #f6f9ff;
+  --mase-surface-2:       #f8fafc;
+  --mase-surface-3:       #f8fbff;
+
+  /* --- Status --- */
+  --mase-success-bg:      #dcfce7;
+  --mase-success-fg:      #166534;
+  --mase-error-bg:        #fee2e2;
+  --mase-error-fg:        #7f1d1d;
+  --mase-warning-bg:      #fef3c7;
+  --mase-warning-fg:      #78350f;
+
+  /* ============================================================
+     COLOR — SEMANTIC TOKENS (light theme)
+     ============================================================ */
+  --bg:                   var(--mase-white);
+  --surface:              var(--mase-surface);
+  --surface-2:            var(--mase-surface-2);
+  --card-bg:              var(--mase-white);
+  --footer-bg:            var(--mase-ink-800);
+  --footer-fg:            var(--mase-white);
+
+  --fg:                   var(--mase-ink-900);     /* fg1 */
+  --fg-1:                 var(--mase-ink-900);
+  --fg-2:                 var(--mase-ink-700);     /* secondary text */
+  --fg-3:                 var(--mase-ink-600);     /* muted text */
+  --fg-4:                 var(--mase-ink-500);     /* subtle text */
+  --fg-slate:             var(--mase-ink-400);     /* cool muted */
+
+  --line:                 var(--mase-line);
+  --border:               var(--mase-line);
+
+  --link:                 var(--mase-blue-700);
+  --link-hover:           var(--mase-blue-800);
+
+  --accent:               var(--mase-blue-600);
+  --accent-strong:        var(--mase-blue-700);
+  --accent-soft:          var(--mase-blue-soft);
+
+  --action:               var(--mase-teal-600);    /* primary CTA solid */
+  --action-strong:        var(--mase-teal-700);
+  --action-gradient:      var(--mase-teal-cta);
+
+  /* ============================================================
+     RADII / SHADOWS / SPACING
+     ============================================================ */
+  --radius-sm:            12px;
+  --radius:               18px;
+  --radius-lg:            24px;
+  --radius-pill:          999px;
+
+  --shadow-xs:            0 4px 12px rgba(0, 0, 0, 0.06);
+  --shadow-sm:            0 8px 25px rgba(0, 0, 0, 0.06);
+  --shadow:               0 18px 40px rgba(0, 0, 0, 0.12);
+  --shadow-card:          0 14px 30px rgba(15, 23, 42, 0.05);
+  --shadow-hover:         0 12px 28px rgba(15, 23, 42, 0.08);
+  --shadow-cta:           var(--mase-teal-shadow);
+
+  --space-1:              4px;
+  --space-2:              8px;
+  --space-3:              12px;
+  --space-4:              16px;
+  --space-5:              24px;
+  --space-6:              32px;
+  --space-7:              48px;
+  --space-8:              64px;
+  --space-9:              80px;
+
+  --container:            1240px;
+  --transition:           220ms ease;
+
+  /* ============================================================
+     TYPOGRAPHY
+     ============================================================ */
+  --font-sans:            "Inter", "Segoe UI", system-ui, -apple-system,
+                          BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+  --font-mono:            "JetBrains Mono", ui-monospace, SFMono-Regular,
+                          Menlo, Consolas, monospace;
+
+  /* Type scale (fluid where it makes sense, matching production) */
+  --type-display:         clamp(2.4rem, 5vw, 3.6rem); /* h1 */
+  --type-h2:              clamp(1.9rem, 4vw, 2.6rem);
+  --type-h3:              1.2rem;
+  --type-lead:            1.1rem;
+  --type-body:            1rem;
+  --type-small:           0.875rem;
+  --type-xs:              0.75rem;
+  --type-eyebrow:         0.75rem;
+
+  --leading-tight:        1.15;
+  --leading-snug:         1.35;
+  --leading-base:         1.6;
+
+  --tracking-wide:        0.04em;
+  --tracking-eyebrow:     0.18em;
+  --tracking-logo:        0.1em;
+}
+
+/* ============================================================
+   DARK THEME OVERRIDES
+   ============================================================ */
+.dark, [data-theme="dark"] {
+  --bg:               #0d1117;
+  --surface:          #1a1f2e;
+  --surface-2:        #1a1f2e;
+  --card-bg:          #1a1f2e;
+  --footer-bg:        #080c15;
+  --footer-fg:        #ffffff;
+
+  --fg:               #ffffff;
+  --fg-1:             #ffffff;
+  --fg-2:             #e2e8f0;
+  --fg-3:             #cbd5e0;
+  --fg-4:             #a0aec0;
+  --fg-slate:         #a8b4c7;
+
+  --line:             #404854;
+  --border:           #404854;
+
+  --link:             #60a5fa;
+  --link-hover:       #93c5fd;
+  --accent:           #60a5fa;
+  --accent-strong:    #3b82f6;
+  --accent-soft:      rgba(96, 165, 250, 0.15);
+}
+
+/* ============================================================
+   SEMANTIC ELEMENT STYLES
+   ============================================================ */
+body {
+  font-family: var(--font-sans);
+  font-size: var(--type-body);
+  line-height: var(--leading-base);
+  color: var(--fg);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-sans);
+  font-weight: 700;
+  line-height: var(--leading-tight);
+  color: var(--fg);
+  margin: 0 0 1rem;
+}
+
+h1 { font-size: var(--type-display); letter-spacing: -0.01em; }
+h2 { font-size: var(--type-h2);     letter-spacing: -0.005em; }
+h3 { font-size: var(--type-h3);     font-weight: 700; }
+h4 { font-size: 1rem;               font-weight: 700; }
+
+p {
+  margin: 0 0 1rem;
+  color: var(--fg);
+  line-height: var(--leading-base);
+}
+
+a {
+  color: var(--fg);
+  text-decoration: none;
+  transition: color var(--transition);
+}
+a:hover { color: var(--accent-strong); }
+
+code, pre, kbd, samp {
+  font-family: var(--font-mono);
+  font-size: 0.92em;
+}
+
+small, .small { font-size: var(--type-small); }
+
+/* ============================================================
+   UTILITY CLASSES
+   ============================================================ */
+.eyebrow {
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-eyebrow);
+  font-size: var(--type-eyebrow);
+  font-weight: 600;
+  color: var(--accent-strong);
+}
+
+.lead {
+  font-size: var(--type-lead);
+  color: var(--fg);
+  line-height: var(--leading-base);
+}
+
+.muted    { color: var(--fg-3); }
+.subtle   { color: var(--fg-4); }
+
+.container {
+  width: min(100%, var(--container));
+  margin: 0 auto;
+  padding-inline: 24px;
+}
+
+/* ============================================================
+   NOTES
+   ------------------------------------------------------------
+   • Font: Inter (Google Fonts, 400/500/600/700/800).
+     No font files are bundled; loaded via @import above.
+   • The MASE wordmark is rendered as plain text in Inter 700,
+     uppercase, letter-spacing 0.1em — see .logo styles.
+   • Production overrides .button-primary to a TEAL gradient,
+     so primary CTAs are teal even though links/badges are blue.
+   ============================================================ */

@@ -1,0 +1,54 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><link rel="stylesheet" href="_base.css"></head>
+<body>
+<style>
+  body { background: #f8fafc; }
+  .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; padding: 8px 0; }
+  .shadow-card {
+    background: #fff; border-radius: 12px; border: 1px solid var(--line);
+    padding: 16px; min-height: 80px;
+  }
+  .shadow-card.xs    { box-shadow: 0 4px 12px rgba(0,0,0,0.06); }
+  .shadow-card.sm    { box-shadow: 0 8px 25px rgba(0,0,0,.06); }
+  .shadow-card.card  { box-shadow: 0 14px 30px rgba(15, 23, 42, 0.05); }
+  .shadow-card.hover { box-shadow: 0 12px 28px rgba(15, 23, 42, 0.08); transform: translateY(-3px); }
+  .shadow-card.lg    { box-shadow: 0 18px 40px rgba(0, 0, 0, 0.12); }
+  .shadow-card.cta   {
+    background: linear-gradient(135deg, #0f766e 0%, #0b5f58 100%);
+    box-shadow: 0 14px 26px rgba(15, 118, 110, 0.22);
+    color: #fff; border: 0;
+  }
+  .name { font-size: 13px; font-weight: 600; color: var(--fg-1); }
+  .shadow-card.cta .name { color: #fff; }
+  .value { font-family: var(--font-mono); font-size: 11px; color: var(--fg-3); margin-top: 4px; line-height: 1.45; }
+  .shadow-card.cta .value { color: rgba(255,255,255,.85); }
+</style>
+<div class="card-grid">
+  <div class="grid">
+    <div class="shadow-card xs">
+      <div class="name">--shadow-xs</div>
+      <div class="value">0 4px 12px rgba(0,0,0,.06)</div>
+    </div>
+    <div class="shadow-card sm">
+      <div class="name">--shadow-sm · cards at rest</div>
+      <div class="value">0 8px 25px rgba(0,0,0,.06)</div>
+    </div>
+    <div class="shadow-card card">
+      <div class="name">--shadow-card</div>
+      <div class="value">0 14px 30px rgba(15,23,42,.05)</div>
+    </div>
+    <div class="shadow-card hover">
+      <div class="name">--shadow-hover · card lift</div>
+      <div class="value">0 12px 28px rgba(15,23,42,.08) + translateY(-3px)</div>
+    </div>
+    <div class="shadow-card lg">
+      <div class="name">--shadow · chat / hero preview</div>
+      <div class="value">0 18px 40px rgba(0,0,0,.12)</div>
+    </div>
+    <div class="shadow-card cta">
+      <div class="name">--shadow-cta · primary button</div>
+      <div class="value">0 14px 26px rgba(15,118,110,.22)</div>
+    </div>
+  </div>
+</div>
+</body></html>

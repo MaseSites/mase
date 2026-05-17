@@ -1,0 +1,51 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><link rel="stylesheet" href="_base.css"></head>
+<body>
+<style>
+  body { background: #f6f9ff; padding: 18px; }
+  .card {
+    width: 380px; padding: 22px; border-radius: 20px;
+    background: #fff; border: 1px solid rgba(15, 23, 42, 0.06);
+    box-shadow: 0 14px 30px rgba(15, 23, 42, 0.06);
+    display: grid; gap: 12px;
+  }
+  .badge {
+    width: fit-content; padding: 5px 10px; border-radius: 999px;
+    background: #ecfdf5; color: #0f766e; border: 1px solid #a7f3d0;
+    font-size: 11px; font-weight: 700;
+  }
+  .title { margin: 0; font-size: 1.45rem; font-weight: 800; color: #000; line-height: 1.15; letter-spacing: -0.01em; }
+  .subtitle { margin: 0; font-size: 0.92rem; color: #475569; line-height: 1.5; }
+  .list { list-style: none; padding: 0; margin: 4px 0 0; display: grid; gap: 6px; }
+  .item { display: flex; align-items: center; gap: 10px; font-size: 0.88rem; color: #000; }
+  .check { width: 20px; height: 20px; border-radius: 999px; background: #ecfdf5; color: #0f766e; display: grid; place-items: center; font-weight: 700; font-size: 12px; border: 1px solid #a7f3d0; }
+  .trust { display: flex; flex-wrap: wrap; gap: 6px; padding-top: 4px; }
+  .trust span { padding: 4px 9px; border-radius: 999px; background: #f1f5f9; color: #475569; font-size: 0.74rem; font-weight: 600; }
+  .footer { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-top: 6px; border-top: 1px solid rgba(15,23,42,0.06); margin-top: 4px; }
+  .price { margin: 0; font-size: 1.1rem; font-weight: 800; color: #000; }
+  .cta {
+    display: inline-flex; align-items: center; justify-content: center;
+    min-height: 38px; padding: 0 14px; border-radius: 11px;
+    background: linear-gradient(135deg, #0f766e, #0b5f58);
+    color: #fff; text-decoration: none; font-size: 0.84rem; font-weight: 700;
+    box-shadow: 0 8px 18px rgba(15, 118, 110, 0.28);
+  }
+</style>
+<article class="card">
+  <span class="badge">Für Unternehmen, die online Kunden gewinnen wollen</span>
+  <h3 class="title">Deine Website arbeitet für dich</h3>
+  <p class="subtitle">Klar aufgebaut. Schnell geladen. Auf mehr Anfragen optimiert.</p>
+  <ul class="list">
+    <li class="item"><span class="check">✓</span>Mehr Vertrauen bei neuen Kunden</li>
+    <li class="item"><span class="check">✓</span>Mehr Anfragen über deine Website</li>
+    <li class="item"><span class="check">✓</span>Modern auf jedem Gerät</li>
+  </ul>
+  <div class="trust">
+    <span>Mobile-first</span><span>SEO-optimiert</span><span>Schnelle Ladezeit</span>
+  </div>
+  <div class="footer">
+    <p class="price">Ab CHF 750</p>
+    <a class="cta" href="#">Projekt starten</a>
+  </div>
+</article>
+</body></html>
