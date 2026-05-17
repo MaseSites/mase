@@ -84,6 +84,7 @@
   <link rel="stylesheet" href="/debug.css?v=20260327">
   <link rel="stylesheet" href="/mase-animations.css?v=20260516">
   <link rel="stylesheet" href="/mase-scroll-animations.css?v=20260517">
+  <link rel="stylesheet" href="/flair.css?v=20260517">
   <script>
     (function () {
       var t = localStorage.getItem('theme');
@@ -101,8 +102,17 @@
   <script defer src="/ai-assistant.js?v=20260327"></script>
   <script defer src="/mase-animations.js?v=20260516"></script>
   <script defer src="/mase-scroll-animations.js?v=20260517"></script>
+  <script defer src="/flair.js?v=20260517"></script>
 </head>
 <body>
+  <div class="mase-spray" aria-hidden="true">
+    <span class="mase-spray__blob s1"></span>
+    <span class="mase-spray__blob s2"></span>
+    <span class="mase-spray__blob s3"></span>
+    <span class="mase-spray__blob s4"></span>
+    <span class="mase-spray__blob s5"></span>
+    <span class="mase-spray__blob s6"></span>
+  </div>
   <a class="skip-link" href="#main" data-i18n="skip_to_content">Zum Inhalt springen</a>
 
   <header class="site-header">
@@ -162,6 +172,8 @@
         </div>
       </div>
     </section>
+
+    <div data-mase-marquee></div>
 
     <!-- Warum MASE -->
     <section class="trust-section" style="padding: 5rem 0;">
