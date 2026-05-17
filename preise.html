@@ -25,7 +25,6 @@
     "priceCurrency": "CHF"
   }
   </script>
-
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <link rel="stylesheet" href="/styles.css?v=20260327">
   <link rel="stylesheet" href="/ai-assistant.css?v=20260327">
@@ -35,7 +34,6 @@
     (function () {
       var t = localStorage.getItem('theme');
       if (t === 'dark') document.documentElement.classList.add('dark');
-
       var q = null;
       try { q = new URLSearchParams(window.location.search).get('lang'); } catch (_) {}
       var s = localStorage.getItem('lang');
@@ -49,22 +47,28 @@
   <script defer src="/ai-assistant.js?v=20260327"></script>
   <script defer src="/mase-animations.js?v=20260516"></script>
   <script defer src="/mase-scroll-animations.js?v=20260517"></script>
+  <style>
+    .pricing-card-badge { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--accent-strong); margin-bottom: 0.75rem; }
+    .pricing-price { font-size: 2rem; font-weight: 800; color: var(--text); margin-bottom: 0.25rem; }
+    .pricing-period { font-size: 0.9rem; font-weight: 400; color: var(--muted); }
+    .pricing-price-sub { font-size: 0.9rem; color: var(--muted); margin-bottom: 1rem; }
+    .pricing-card--featured { border-color: var(--accent-strong) !important; box-shadow: 0 0 0 2px var(--accent-soft); }
+    .pricing-ai-card { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; background: var(--surface); border-radius: var(--radius); padding: 2rem; border: 1px solid var(--line); }
+    @media (max-width: 768px) { .pricing-ai-card { grid-template-columns: 1fr; } }
+    .pricing-ai-info { display: grid; gap: 0.75rem; }
+  </style>
 </head>
 <body>
   <a class="skip-link" href="#main" data-i18n="skip_to_content">Zum Inhalt springen</a>
 
   <header class="site-header">
     <div class="container header-inner">
-      <a class="logo" href="index.html">
-        MASE
-      </a>
-
+      <a class="logo" href="index.html">MASE</a>
       <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
         <span class="sr-only" data-i18n="nav_toggle">Navigation öffnen</span>
         <span class="nav-toggle-bar"></span>
         <span class="nav-toggle-bar"></span>
       </button>
-
       <nav class="site-nav" id="site-nav">
         <a href="index.html" data-i18n="nav_home">Home</a>
         <a href="leistungen.html" data-i18n="nav_services">Leistungen</a>
@@ -73,9 +77,7 @@
         <a href="ueber-uns.html" data-i18n="nav_about">Über uns</a>
         <a href="kontakt.html" data-i18n="nav_contact">Kontakt</a>
         <a class="button button-primary button-small" href="kontakt.html" data-i18n="nav_cta">Kostenloses Erstgespräch</a>
-
       </nav>
-      <!-- Controls: Language + Dark Mode -->
       <div class="header-controls">
         <div class="lang-switcher" id="lang-switcher">
           <button class="lang-btn" id="lang-btn" aria-haspopup="true" aria-expanded="false" aria-label="Sprache wählen" data-i18n-aria-label="lang_select_aria">
@@ -97,273 +99,202 @@
 
   <main id="main">
     <section class="page-hero">
-      <div class="container page-hero-inner" data-reveal>
+      <div class="container" data-reveal style="text-align: center; max-width: 700px;">
         <h1 data-i18n="pricing_headline">Hole das Maximum aus deiner Website</h1>
-        <p class="lead" data-i18n="pricing_subline">
-          Wähle dein Paket, kombiniere flexibel und erhalte eine klare, nachvollziehbare Preisstruktur.
+        <p class="lead" data-i18n="pricing_subline">Wähle dein Paket. Kombiniere flexibel.</p>
+      </div>
+    </section>
+
+    <!-- Website Überarbeitung -->
+    <section style="padding: 4rem 0;">
+      <div class="container" data-reveal>
+        <div class="pricing-section-header" style="text-align:center; margin-bottom: 2.5rem;">
+          <h2 data-i18n="pricing_revision_title">Website Überarbeitung</h2>
+          <p data-i18n="pricing_revision_desc">Bestehende Website verbessern</p>
+        </div>
+        <div class="pricing-grid">
+          <div class="pricing-card" data-package="revision-starter" data-price="250">
+            <div class="pricing-card-badge" data-i18n="pricing_starter">Starter</div>
+            <div class="pricing-price">CHF 250</div>
+            <ul data-i18n-html="pricing_revision_starter_list_html">
+              <li>Kleine Design-Anpassungen</li>
+              <li>Textkorrekturen</li>
+              <li>Kleine Performance-Optimierung</li>
+            </ul>
+            <a class="button button-secondary" href="kontakt.html?package=revision-starter" data-i18n="pricing_cta_start">Projekt starten</a>
+          </div>
+          <div class="pricing-card pricing-card--featured" data-package="revision-plus" data-price="500">
+            <div class="pricing-card-badge" data-i18n="pricing_plus">Plus</div>
+            <div class="pricing-price">CHF 500</div>
+            <ul data-i18n-html="pricing_revision_plus_list_html">
+              <li>Design-Verbesserung</li>
+              <li>Mobile-Optimierung</li>
+              <li>SEO-Basis Check</li>
+            </ul>
+            <a class="button button-primary" href="kontakt.html?package=revision-plus" data-i18n="pricing_cta_start">Projekt starten</a>
+          </div>
+          <div class="pricing-card" data-package="revision-pro" data-price="800">
+            <div class="pricing-card-badge" data-i18n="pricing_pro">Pro</div>
+            <div class="pricing-price">CHF 800</div>
+            <ul data-i18n-html="pricing_revision_pro_list_html">
+              <li>Komplettes Redesign einzelner Seiten</li>
+              <li>Struktur-Optimierung</li>
+              <li>Performance + SEO Optimierung</li>
+              <li>Conversion-Verbesserung</li>
+            </ul>
+            <a class="button button-secondary" href="kontakt.html?package=revision-pro" data-i18n="pricing_cta_start">Projekt starten</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Neue Website -->
+    <section style="padding: 4rem 0; background: var(--surface);">
+      <div class="container" data-reveal>
+        <div class="pricing-section-header" style="text-align:center; margin-bottom: 2.5rem;">
+          <h2 data-i18n="pricing_newsite_title">Neue Website erstellen</h2>
+          <p data-i18n="pricing_newsite_desc">Komplett neu aufbauen</p>
+        </div>
+        <div class="pricing-grid">
+          <div class="pricing-card" data-package="new-starter" data-price="750">
+            <div class="pricing-card-badge" data-i18n="pricing_starter">Starter</div>
+            <div class="pricing-price">CHF 750</div>
+            <ul data-i18n-html="pricing_new_starter_list_html">
+              <li>1 Landingpage</li>
+              <li>Kontaktformular</li>
+              <li>Basis SEO</li>
+            </ul>
+            <a class="button button-secondary" href="kontakt.html?package=new-starter" data-i18n="pricing_cta_start">Projekt starten</a>
+          </div>
+          <div class="pricing-card pricing-card--featured" data-package="new-business" data-price="1300">
+            <div class="pricing-card-badge" data-i18n="pricing_business">Business</div>
+            <div class="pricing-price">CHF 1'300</div>
+            <ul data-i18n-html="pricing_new_business_list_html">
+              <li>Mehrere Seiten</li>
+              <li>SEO-Optimierung</li>
+              <li>Struktur + UX Fokus</li>
+            </ul>
+            <a class="button button-primary" href="kontakt.html?package=new-business" data-i18n="pricing_cta_start">Projekt starten</a>
+          </div>
+          <div class="pricing-card" data-package="new-premium" data-price="2500">
+            <div class="pricing-card-badge" data-i18n="pricing_premium">Premium</div>
+            <div class="pricing-price">CHF 2'500</div>
+            <ul data-i18n-html="pricing_new_premium_list_html">
+              <li>Individuelles Design</li>
+              <li>Performance-Optimierung</li>
+              <li>Erweiterte SEO</li>
+              <li>Conversion-Fokus</li>
+              <li>Sauberer Code</li>
+            </ul>
+            <a class="button button-secondary" href="kontakt.html?package=new-premium" data-i18n="pricing_cta_start">Projekt starten</a>
+          </div>
+        </div>
+        <p class="pricing-note-center" style="text-align:center; margin-top:1.5rem; color:var(--muted); font-size:0.9rem;" data-i18n="pricing_note">
+          Finale Offerte nach kurzem Call.
         </p>
       </div>
     </section>
 
-    <section class="pricing" id="preise" aria-labelledby="pricing-title">
+    <!-- KI-Assistent Add-on -->
+    <section style="padding: 4rem 0;">
       <div class="container" data-reveal>
-        <div class="pricing-modular">
-          <!-- Überarbeitung -->
-          <div class="pricing-section">
-            <h3 class="pricing-section-title" data-i18n="pricing_revision_title">Website Überarbeitung</h3>
-            <p class="pricing-section-desc" data-i18n="pricing_revision_desc">Bestehende Website verbessern</p>
-
-            <div class="pricing-options">
-              <label class="pricing-option-card" data-type="revision" data-price="250">
-                <input type="radio" name="package-type" value="revision-starter">
-                <div class="pricing-option-content">
-                  <div class="pricing-option-header">
-                    <h4 data-i18n="pricing_starter">Starter</h4>
-                    <p class="pricing-option-price">etwa CHF 250</p>
-                  </div>
-                  <ul class="pricing-option-list" data-i18n-html="pricing_revision_starter_list_html">
-                    <li>Kleine Design-Anpassungen</li>
-                    <li>Textkorrekturen</li>
-                    <li>Kleine Performance-Optimierung</li>
-                  </ul>
-                </div>
-              </label>
-
-              <label class="pricing-option-card" data-type="revision" data-price="300">
-                <input type="radio" name="package-type" value="revision-plus">
-                <div class="pricing-option-content">
-                  <div class="pricing-option-header">
-                    <h4 data-i18n="pricing_plus">Plus</h4>
-                    <p class="pricing-option-price">etwa CHF 300</p>
-                  </div>
-                  <ul class="pricing-option-list" data-i18n-html="pricing_revision_plus_list_html">
-                    <li>Design-Verbesserung</li>
-                    <li>Mobile-Optimierung</li>
-                    <li>SEO-Basis Check</li>
-                  </ul>
-                </div>
-              </label>
-
-              <label class="pricing-option-card" data-type="revision" data-price="1000">
-                <input type="radio" name="package-type" value="revision-pro">
-                <div class="pricing-option-content">
-                  <div class="pricing-option-header">
-                    <h4 data-i18n="pricing_pro">Pro</h4>
-                    <p class="pricing-option-price">etwa CHF 1'000</p>
-                  </div>
-                  <ul class="pricing-option-list" data-i18n-html="pricing_revision_pro_list_html">
-                    <li>Komplettes Redesign einzelner Seiten</li>
-                    <li>Struktur-Optimierung</li>
-                    <li>Performance + SEO Optimierung</li>
-                    <li>Conversion-Verbesserung</li>
-                  </ul>
-                </div>
-              </label>
+        <div class="pricing-ai-card">
+          <div class="chat-widget-mini">
+            <div class="chat-header-mini">
+              <span class="chat-dot-mini" style="background: var(--accent);"></span>
+              <p data-i18n="pricing_ai_title">KI-Assistent</p>
+            </div>
+            <div class="chat-body-mini">
+              <div class="chat-message-mini bot" data-i18n="pricing_ai_chat_bot">Hallo! Wie kann ich helfen?</div>
+              <div class="chat-message-mini user" data-i18n="pricing_ai_chat_user">Was kostet eine Website?</div>
+              <div class="chat-message-mini bot" data-i18n="pricing_ai_chat_reply">Ab CHF 750. Soll ich mehr erklären?</div>
             </div>
           </div>
-
-          <!-- Neue Website -->
-          <div class="pricing-section">
-            <h3 class="pricing-section-title" data-i18n="pricing_newsite_title">Neue Website erstellen</h3>
-            <p class="pricing-section-desc" data-i18n="pricing_newsite_desc">Komplett neu aufbauen</p>
-
-            <div class="pricing-options">
-              <label class="pricing-option-card" data-type="new" data-price="750">
-                <input type="radio" name="package-type" value="new-starter">
-                <div class="pricing-option-content">
-                  <div class="pricing-option-header">
-                    <h4 data-i18n="pricing_starter">Starter</h4>
-                    <p class="pricing-option-price">etwa CHF 750</p>
-                  </div>
-                  <ul class="pricing-option-list" data-i18n-html="pricing_new_starter_list_html">
-                    <li>1 Landingpage</li>
-                    <li>Kontaktformular</li>
-                    <li>Basis SEO</li>
-                  </ul>
-                </div>
-              </label>
-
-              <label class="pricing-option-card" data-type="new" data-price="1300">
-                <input type="radio" name="package-type" value="new-business">
-                <div class="pricing-option-content">
-                  <div class="pricing-option-header">
-                    <h4 data-i18n="pricing_business">Business</h4>
-                    <p class="pricing-option-price">etwa CHF 1'300</p>
-                  </div>
-                  <ul class="pricing-option-list" data-i18n-html="pricing_new_business_list_html">
-                    <li>Mehrere Seiten</li>
-                    <li>SEO-Optimierung</li>
-                    <li>Struktur + UX Fokus</li>
-                  </ul>
-                </div>
-              </label>
-
-              <label class="pricing-option-card" data-type="new" data-price="2500">
-                <input type="radio" name="package-type" value="new-premium">
-                <div class="pricing-option-content">
-                  <div class="pricing-option-header">
-                    <h4 data-i18n="pricing_premium">Premium</h4>
-                    <p class="pricing-option-price">etwa CHF 2'500</p>
-                  </div>
-                  <ul class="pricing-option-list" data-i18n-html="pricing_new_premium_list_html">
-                    <li>Individuelles Design</li>
-                    <li>Performance-Optimierung</li>
-                    <li>Erweiterte SEO</li>
-                    <li>Conversion-Fokus</li>
-                    <li>Sauberer Code</li>
-                  </ul>
-                </div>
-              </label>
-            </div>
+          <div class="pricing-ai-info">
+            <h2 data-i18n="pricing_ai_title">KI-Assistent</h2>
+            <p data-i18n="pricing_ai_desc">24/7 Antworten. Lead-Qualifizierung. Automatische Kundenberatung.</p>
+            <div class="pricing-price">CHF 200 <span class="pricing-period">Setup</span></div>
+            <div style="color: var(--muted); font-size: 0.9rem; margin-bottom: 1rem;" data-i18n="pricing_ai_monthly">+ CHF 40 / Monat</div>
+            <a class="button button-primary" href="kontakt.html?project=ai" data-i18n="pricing_ai_add">KI-Assistent hinzufügen</a>
           </div>
-
-          <!-- KI-Assistent Add-on -->
-          <div class="pricing-addon">
-            <div class="pricing-addon-visual">
-              <div class="chat-widget-mini">
-                <div class="chat-header-mini">
-                  <span class="chat-dot-mini"></span>
-                  <p>MASE-AI</p>
-                </div>
-                <div class="chat-body-mini">
-                  <div class="chat-message-mini bot" data-i18n="pricing_ai_chat_bot">Hallo! Wie kann ich helfen?</div>
-                  <div class="chat-message-mini user" data-i18n="pricing_ai_chat_user">Was kostet eine Website?</div>
-                  <div class="chat-message-mini bot" data-i18n="pricing_ai_chat_reply">Ab CHF 750. Soll ich mehr erklären?</div>
-                </div>
-              </div>
-            </div>
-
-            <h3 class="pricing-addon-title" data-i18n="pricing_ai_title">KI-Assistent</h3>
-            <p class="pricing-addon-desc" data-i18n="pricing_ai_desc">24/7 Antworten. Lead-Qualifizierung. Automatische Kundenberatung.</p>
-            <p class="pricing-addon-price">+ CHF 200 <span class="pricing-addon-monthly" data-i18n="pricing_ai_monthly">+ CHF 40 / Monat</span></p>
-
-            <label class="pricing-addon-checkbox" id="ai-addon-label">
-              <input type="checkbox" id="ai-addon" value="200">
-              <span id="ai-addon-text" data-i18n="pricing_ai_add">KI-Assistent hinzufügen</span>
-            </label>
-          </div>
-        </div>
-
-        <!-- Hosting & Domain Add-ons -->
-        <div class="pricing-section pricing-section-spacing">
-          <h3 class="pricing-section-title" data-i18n="pricing_domain_heading">Domain & Hosting</h3>
-          <p class="pricing-section-desc" data-i18n="pricing_domain_desc">Wir kümmern uns um alles – du musst nichts selbst aufsetzen</p>
-          <div class="pricing-options pricing-options-hosting">
-
-            <label class="pricing-option-card" data-type="domain" data-price="15">
-              <input type="radio" name="hosting-type" value="domain-only">
-              <div class="pricing-option-content">
-                <div class="pricing-option-header">
-                  <h4 data-i18n="pricing_domain">Domain</h4>
-                  <p class="pricing-option-price">etwa CHF 15 <small class="pricing-option-meta">/Jahr</small></p>
-                </div>
-                  <ul class="pricing-option-list" data-i18n-html="pricing_domain_list_html">
-                  <li>Wunschdomain registrieren</li>
-                  <li>.ch / .com / .net</li>
-                  <li>DNS-Konfiguration</li>
-                </ul>
-              </div>
-            </label>
-
-            <label class="pricing-option-card" data-type="hosting" data-price="20">
-              <input type="radio" name="hosting-type" value="hosting-monthly">
-              <div class="pricing-option-content">
-                <div class="pricing-option-header">
-                  <h4 data-i18n="pricing_hosting">Hosting</h4>
-                  <p class="pricing-option-price">CHF 20 <small class="pricing-option-meta">/Monat</small></p>
-                </div>
-                  <ul class="pricing-option-list" data-i18n-html="pricing_hosting_list_html">
-                  <li>Schneller Schweizer Server</li>
-                  <li>SSL-Zertifikat (HTTPS)</li>
-                  <li>Tägliche Backups</li>
-                  <li>99.9% Uptime Garantie</li>
-                </ul>
-              </div>
-            </label>
-
-            <label class="pricing-option-card bundle-highlight" data-type="bundle" data-price="220">
-              <input type="radio" name="hosting-type" value="bundle">
-              <div class="pricing-option-content">
-                <div class="pricing-option-header">
-                  <h4 data-i18n="pricing_bundle">Bundle</h4>
-                  <p class="pricing-option-price">etwa CHF 220 <small class="pricing-option-meta">/Jahr</small></p>
-                </div>
-                  <ul class="pricing-option-list" data-i18n-html="pricing_bundle_list_html">
-                  <li>Domain + 12 Mt. Hosting</li>
-                  <li>2 Monate gratis</li>
-                  <li>SSL + Backups inklusive</li>
-                  <li>Einrichtung inklusive</li>
-                </ul>
-              </div>
-            </label>
-
-          </div>
-        </div>
-
-        <!-- Preis-Zusammenfassung -->
-        <div class="pricing-summary" id="pricing-summary">
-          <div class="pricing-summary-content">
-            <div class="pricing-summary-breakdown" id="pricing-breakdown">
-              <p class="pricing-summary-hint" data-i18n="pricing_summary_hint">Wähle ein Paket um den Preis zu sehen</p>
-            </div>
-            <div class="pricing-summary-total">
-              <span data-i18n="pricing_total_label">Gesamtpreis</span>
-              <span class="pricing-total-amount" id="total-price">etwa CHF 0</span>
-            </div>
-          </div>
-          <button class="button button-primary button-large" id="pricing-cta" disabled>
-            <span data-i18n="pricing_cta_start">Projekt starten</span>
-          </button>
-        </div>
-
-        <p class="pricing-note" data-i18n="pricing_note">Finale Offerte nach kurzem Call.</p>
-
-        <div class="pricing-guidance" data-reveal>
-          <div class="pricing-guidance-box">
-            <h3>Wichtiger Hinweis zu den Preisen</h3>
-            <p>Die angegebenen Preise dienen als Richtwerte. Jedes Projekt wird individuell berechnet.</p>
-            <p>Der finale Preis kann je nach Aufwand, Design und Funktionen variieren.</p>
-            <p>Beispiel: Ein Paket für CHF 2'700 mit 10 Webseiten ist eine ungefähre Schätzung. Nach der Besprechung erstellen wir ein genaues, verbindliches Angebot.</p>
-            <p class="pricing-guidance-short">Kurz: Alle Preise sind Richtpreise. Du erhältst immer ein individuelles Angebot nach Analyse deiner Anforderungen.</p>
-          </div>
-
         </div>
       </div>
     </section>
 
-    <!-- FAQ Sektion -->
-    <section class="section-soft section-faq">
+    <!-- Domain & Hosting -->
+    <section style="padding: 4rem 0; background: var(--surface);">
       <div class="container" data-reveal>
-        <h2 class="section-title-centered" data-i18n="pricing_faq_title">Häufige Fragen zu Preisen</h2>
-        <div class="faq faq-centered">
-          <details>
-            <summary data-i18n="pricing_faq_q1">Was ist im Preis enthalten?</summary>
-            <p data-i18n="pricing_faq_a1">Design, Entwicklung, Performance-Optimierung, SEO-Basis, Kontaktformular, DSGVO-Setup und 2-3 Feedback-Runden.</p>
-          </details>
-          <details>
-            <summary data-i18n="pricing_faq_q2">Gibt es versteckte Kosten?</summary>
-            <p data-i18n="pricing_faq_a2">Nein. Die Preise sind transparent. Hosting und Domain musst du separat organisieren (ca. CHF 10-30/Monat).</p>
-          </details>
-          <details>
-            <summary data-i18n="pricing_faq_q3">Wie läuft die Zahlung ab?</summary>
-            <p data-i18n="pricing_faq_a3">50% Anzahlung bei Projektstart, 50% bei Fertigstellung. Rechnung per E-Mail.</p>
-          </details>
-          <details>
-            <summary data-i18n="pricing_faq_q4">Kann ich später upgraden?</summary>
-            <p data-i18n="pricing_faq_a4">Ja! Du kannst jederzeit Funktionen wie KI-Assistent, zusätzliche Seiten oder Features hinzufügen.</p>
-          </details>
+        <div class="pricing-section-header" style="text-align:center; margin-bottom: 2.5rem;">
+          <h2 data-i18n="pricing_domain_heading">Domain &amp; Hosting Bundle</h2>
+          <p data-i18n="pricing_domain_desc">Wir kümmern uns um alles – du musst nichts selbst aufsetzen</p>
+        </div>
+        <div class="pricing-grid">
+          <div class="pricing-card">
+            <div class="pricing-card-badge" data-i18n="pricing_domain">Domain</div>
+            <div class="pricing-price">CHF 20 <span class="pricing-period">/ Jahr</span></div>
+            <ul data-i18n-html="pricing_domain_list_html">
+              <li>Wunschdomain registrieren</li>
+              <li>.ch / .com / .net</li>
+              <li>DNS-Konfiguration</li>
+            </ul>
+          </div>
+          <div class="pricing-card">
+            <div class="pricing-card-badge" data-i18n="pricing_hosting">Hosting</div>
+            <div class="pricing-price">CHF 15 <span class="pricing-period">/ Monat</span></div>
+            <ul data-i18n-html="pricing_hosting_list_html">
+              <li>Schneller Schweizer Server</li>
+              <li>SSL-Zertifikat (HTTPS)</li>
+              <li>Tägliche Backups</li>
+              <li>99.9% Uptime Garantie</li>
+            </ul>
+          </div>
+          <div class="pricing-card pricing-card--featured">
+            <div class="pricing-card-badge" data-i18n="pricing_bundle">Bundle</div>
+            <div class="pricing-price">CHF 160 <span class="pricing-period">/ Jahr</span></div>
+            <ul data-i18n-html="pricing_bundle_list_html">
+              <li>Domain + 12 Mt. Hosting</li>
+              <li>2 Monate gratis</li>
+              <li>SSL + Backups inklusive</li>
+              <li>Einrichtung inklusive</li>
+            </ul>
+            <a class="button button-primary" href="kontakt.html?project=new-website" data-i18n="pricing_cta_start">Projekt starten</a>
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- CTA -->
-    <section class="section-cta-clean">
-      <div class="container" data-reveal>
+    <!-- FAQ -->
+    <section style="padding: 4rem 0;">
+      <div class="container" data-reveal style="max-width: 800px;">
+        <h2 style="text-align:center; margin-bottom: 2rem;" data-i18n="pricing_faq_title">Häufige Fragen zu Preisen</h2>
+        <div class="faq-list">
+          <div class="faq-item">
+            <p class="faq-q"><strong data-i18n="pricing_faq_q1">Was ist im Preis enthalten?</strong></p>
+            <p class="faq-a" data-i18n="pricing_faq_a1">Design, Entwicklung, Performance-Optimierung, SEO-Basis, Kontaktformular, DSGVO-Setup und 2-3 Feedback-Runden.</p>
+          </div>
+          <div class="faq-item">
+            <p class="faq-q"><strong data-i18n="pricing_faq_q2">Gibt es versteckte Kosten?</strong></p>
+            <p class="faq-a" data-i18n="pricing_faq_a2">Nein. Die Preise sind transparent. Hosting und Domain musst du separat organisieren (ca. CHF 10-30/Monat).</p>
+          </div>
+          <div class="faq-item">
+            <p class="faq-q"><strong data-i18n="pricing_faq_q3">Wie läuft die Zahlung ab?</strong></p>
+            <p class="faq-a" data-i18n="pricing_faq_a3">50% Anzahlung bei Projektstart, 50% bei Fertigstellung. Rechnung per E-Mail.</p>
+          </div>
+          <div class="faq-item">
+            <p class="faq-q"><strong data-i18n="pricing_faq_q4">Kann ich später upgraden?</strong></p>
+            <p class="faq-a" data-i18n="pricing_faq_a4">Ja! Du kannst jederzeit Funktionen wie KI-Assistent, zusätzliche Seiten oder Features hinzufügen.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta-section" style="background: var(--surface); padding: 4rem 0;">
+      <div class="container" data-reveal style="text-align: center;">
         <h2 data-i18n="pricing_final_cta_title">Bereit für dein Projekt?</h2>
-        <p class="lead section-lead-centered" data-i18n="pricing_final_cta_lead">
+        <p class="lead" style="max-width: 600px; margin: 0 auto 2rem;" data-i18n="pricing_final_cta_lead">
           Lass uns gemeinsam die beste Lösung für dein Business finden.
         </p>
-        <a class="button button-primary" href="kontakt.html" data-i18n="nav_cta">Kostenloses Erstgespräch</a>
+        <a class="button button-primary" href="kontakt.html" data-i18n="pricing_cta_start">Projekt starten</a>
       </div>
     </section>
   </main>
@@ -397,19 +328,14 @@
     </div>
   </footer>
 
-  <!-- Dark Mode Wave Overlay -->
   <div id="dark-wave" aria-hidden="true">
     <canvas id="dark-wave-canvas"></canvas>
   </div>
 
-    <button class="back-to-top" id="back-to-top" aria-label="Zurück nach oben">
+  <button class="back-to-top" id="back-to-top" aria-label="Zurück nach oben">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
       <polyline points="18 15 12 9 6 15"></polyline>
     </svg>
   </button>
 </body>
 </html>
-
-
-
-

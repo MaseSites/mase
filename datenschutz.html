@@ -4,7 +4,6 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Datenschutz | MASESites AG</title>
-  <meta name="description" content="Datenschutzerklärung der MASESites AG gemäss Schweizer Datenschutzgesetz (DSG).">
   <meta name="robots" content="noindex, follow">
   <link rel="canonical" href="https://www.masesites.ch/datenschutz">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
@@ -19,9 +18,9 @@
       var q = null;
       try { q = new URLSearchParams(window.location.search).get('lang'); } catch (_) {}
       var s = localStorage.getItem('lang');
-      var lang = ['de', 'en'].indexOf(q) !== -1 ? q : (['de', 'en'].indexOf(s) !== -1 ? s : 'de');
+      var lang = ['de', 'en', 'fr'].indexOf(q) !== -1 ? q : (['de', 'en', 'fr'].indexOf(s) !== -1 ? s : 'de');
       localStorage.setItem('lang', lang);
-      document.documentElement.lang = lang === 'de' ? 'de-CH' : 'en';
+      document.documentElement.lang = (lang === 'de' ? 'de-CH' : 'en');
     })();
   </script>
   <script defer src="/theme.js?v=20260327"></script>
@@ -41,7 +40,7 @@
         <span class="nav-toggle-bar"></span>
         <span class="nav-toggle-bar"></span>
       </button>
-      <nav class="site-nav" id="site-nav" aria-label="Hauptnavigation">
+      <nav class="site-nav" id="site-nav">
         <a href="index.html" data-i18n="nav_home">Home</a>
         <a href="leistungen.html" data-i18n="nav_services">Leistungen</a>
         <a href="preise.html" data-i18n="nav_prices">Preise</a>
@@ -57,8 +56,8 @@
             <span id="lang-current">DE</span>
           </button>
           <div class="lang-dropdown" id="lang-dropdown">
-            <button class="lang-option active" data-lang="de">DE - Deutsch</button>
-            <button class="lang-option" data-lang="en">EN - English</button>
+            <button class="lang-option active" data-lang="de">🇩🇪 Deutsch</button>
+            <button class="lang-option" data-lang="en">🇬🇧 English</button>
           </div>
         </div>
         <button class="dark-toggle" id="dark-toggle" aria-label="Dark Mode umschalten" data-i18n-aria-label="theme_toggle_aria">
@@ -71,133 +70,30 @@
 
   <main id="main">
     <section class="page-hero">
-      <div class="container page-hero-inner" data-reveal>
-        <p class="eyebrow">Rechtliches</p>
-        <h1>Datenschutzerklärung</h1>
-        <p class="lead">Wir nehmen den Schutz Ihrer persönlichen Daten ernst.</p>
+      <div class="container" data-reveal style="text-align: center; max-width: 700px;">
+        <h1 data-i18n="privacy_title">Datenschutzerklärung</h1>
+        <p class="lead" data-i18n="privacy_lead">Transparenz über die Verarbeitung Ihrer Daten.</p>
       </div>
     </section>
 
-    <section class="section-clean">
-      <div class="container" data-reveal style="max-width: 720px; margin: 0 auto;">
-
-        <h2>1. Verantwortliche Stelle</h2>
-        <p>
-          Verantwortlich für die Datenbearbeitung auf dieser Website ist:<br><br>
-          MASESites AG<br>
-          Schweiz<br>
-          E-Mail: <a href="mailto:info@masesites.ch">info@masesites.ch</a><br>
-          Telefon: <a href="tel:+41782158922">+41 78 215 89 22</a>
-        </p>
-
-        <h2 style="margin-top: 2.5rem;">2. Grundsätze der Datenbearbeitung</h2>
-        <p>
-          Wir erheben und bearbeiten Personendaten nur, soweit dies für die Erbringung
-          unserer Leistungen notwendig ist oder Sie uns ausdrücklich die Einwilligung dazu erteilt
-          haben. Wir halten uns dabei an die Vorgaben des Schweizer Datenschutzgesetzes (DSG).
-        </p>
-
-        <h2 style="margin-top: 2.5rem;">3. Erhobene Daten und Verwendungszweck</h2>
-
-        <h3 style="margin-top: 1.5rem;">3.1 Kontaktformular</h3>
-        <p>
-          Wenn Sie unser Kontaktformular nutzen, werden folgende Daten erhoben:
-        </p>
-        <ul style="padding-left: 1.5rem; margin-top: 0.5rem;">
-          <li>Name</li>
-          <li>E-Mail-Adresse</li>
-          <li>Telefonnummer (optional)</li>
-          <li>Nachrichteninhalt</li>
-        </ul>
-        <p style="margin-top: 0.75rem;">
-          Diese Daten verwenden wir ausschliesslich zur Beantwortung Ihrer Anfrage und
-          zur Durchführung vorvertraglicher Massnahmen. Eine Weitergabe an Dritte erfolgt nicht.
-        </p>
-
-        <h3 style="margin-top: 1.5rem;">3.2 Server-Logfiles</h3>
-        <p>
-          Beim Besuch unserer Website werden automatisch folgende Informationen durch den
-          Webserver erfasst:
-        </p>
-        <ul style="padding-left: 1.5rem; margin-top: 0.5rem;">
-          <li>IP-Adresse (anonymisiert)</li>
-          <li>Datum und Uhrzeit des Zugriffs</li>
-          <li>Browsertyp und -version</li>
-          <li>Aufgerufene URL</li>
-        </ul>
-        <p style="margin-top: 0.75rem;">
-          Diese Daten dienen der Sicherheit und Stabilität des Betriebs und werden nach 30 Tagen
-          automatisch gelöscht.
-        </p>
-
-        <h3 style="margin-top: 1.5rem;">3.3 Cookies &amp; localStorage</h3>
-        <p>
-          Unsere Website verwendet kein Tracking. Wir setzen ausschliesslich technisch notwendige
-          Einstellungen im <code style="font-family: var(--font-mono);">localStorage</code> Ihres Browsers:
-        </p>
-        <ul style="padding-left: 1.5rem; margin-top: 0.5rem;">
-          <li><strong>theme</strong>: Ihre gewählte Farbgebung (Hell/Dunkel)</li>
-          <li><strong>lang</strong>: Ihre bevorzugte Sprache (DE/EN)</li>
-          <li><strong>cookie_consent</strong>: Bestätigung des Cookie-Hinweises</li>
-        </ul>
-        <p style="margin-top: 0.75rem;">
-          Diese Daten verlassen Ihr Gerät nicht und werden an keinen Dritten übermittelt.
-        </p>
-
-        <h3 style="margin-top: 1.5rem;">3.4 KI-Assistent (optional)</h3>
-        <p>
-          Wenn Sie den optionalen KI-Assistenten auf unserer Website verwenden, werden Ihre
-          Eingaben zur Beantwortung an die OpenAI API übermittelt. Es gelten zusätzlich die
-          Datenschutzbestimmungen von OpenAI. Standardmässig läuft der Assistent im Offline-Modus
-          ohne externe API-Verbindung.
-        </p>
-
-        <h2 style="margin-top: 2.5rem;">4. Weitergabe von Daten</h2>
-        <p>
-          Wir geben Ihre Daten nicht an Dritte weiter, ausser wenn dies zur Vertragserfüllung
-          notwendig ist (z.B. Hosting-Provider) oder wir gesetzlich dazu verpflichtet sind.
-          Alle Dienstleister, die wir einsetzen, sind vertraglich zur Einhaltung des Datenschutzes
-          verpflichtet.
-        </p>
-
-        <h2 style="margin-top: 2.5rem;">5. Speicherdauer</h2>
-        <p>
-          Personendaten werden nur so lange gespeichert, wie es für den jeweiligen Zweck notwendig
-          ist oder gesetzliche Aufbewahrungspflichten es erfordern. Kontaktanfragen werden nach
-          spätestens 2 Jahren gelöscht, sofern kein Vertragsverhältnis entstanden ist.
-        </p>
-
-        <h2 style="margin-top: 2.5rem;">6. Ihre Rechte</h2>
-        <p>Sie haben das Recht auf:</p>
-        <ul style="padding-left: 1.5rem; margin-top: 0.5rem;">
-          <li><strong>Auskunft</strong>: Welche Daten wir über Sie gespeichert haben</li>
-          <li><strong>Berichtigung</strong>: Korrektur unrichtiger Daten</li>
-          <li><strong>Löschung</strong>: Löschung Ihrer Daten (soweit keine Aufbewahrungspflicht besteht)</li>
-          <li><strong>Einschränkung</strong>: Einschränkung der Bearbeitung Ihrer Daten</li>
-          <li><strong>Widerspruch</strong>: Widerspruch gegen die Datenbearbeitung</li>
-        </ul>
-        <p style="margin-top: 0.75rem;">
-          Zur Ausübung Ihrer Rechte wenden Sie sich an:
-          <a href="mailto:info@masesites.ch">info@masesites.ch</a>
-        </p>
-
-        <h2 style="margin-top: 2.5rem;">7. Datensicherheit</h2>
-        <p>
-          Wir setzen technische und organisatorische Sicherheitsmassnahmen ein, um Ihre Daten
-          gegen Verlust, Manipulation und unbefugten Zugriff zu schützen. Unsere Website wird
-          ausschliesslich über HTTPS ausgeliefert.
-        </p>
-
-        <h2 style="margin-top: 2.5rem;">8. Änderungen dieser Datenschutzerklärung</h2>
-        <p>
-          Wir behalten uns vor, diese Datenschutzerklärung bei Bedarf zu aktualisieren.
-          Die aktuelle Version ist stets auf dieser Seite verfügbar.
-        </p>
-
-        <p style="margin-top: 3rem; color: var(--text-muted); font-size: 0.9rem;">
-          Stand: Mai 2026
-        </p>
-
+    <section style="padding: 3rem 0 5rem;">
+      <div class="container" data-reveal style="max-width: 800px;">
+        <div data-i18n-html="privacy_content">
+          <h2>1. Verantwortliche Stelle</h2>
+          <p><strong>MASESites AG</strong><br>
+          E-Mail: <a href="mailto:info@masesites.ch">info@masesites.ch</a></p>
+          <h2>2. Erfassung und Verarbeitung personenbezogener Daten</h2>
+          <h3>2.1 Kontaktformular</h3>
+          <p>Wenn Sie uns über das Kontaktformular kontaktieren, werden Name, E-Mail-Adresse, Firma und Nachrichtentext erfasst.</p>
+          <h3>2.2 Cookies</h3>
+          <p>Wir verwenden Cookies zur Verbesserung der Nutzererfahrung.</p>
+          <h2>3. Ihre Rechte</h2>
+          <p>Sie haben das Recht auf Auskunft, Berichtigung, Löschung und Einschränkung der Verarbeitung. Kontakt: <a href="mailto:info@masesites.ch">info@masesites.ch</a></p>
+          <h2>4. Datensicherheit</h2>
+          <p>Wir nutzen SSL-Verschlüsselung (HTTPS) und technische Sicherheitsmassnahmen.</p>
+          <h2>5. Externe Dienste</h2>
+          <p>Wir nutzen <strong>Formspree</strong> für Kontaktformulare. Weitere Infos: <a href="https://formspree.io/legal/privacy-policy" target="_blank" rel="noopener">formspree.io/legal/privacy-policy</a></p>
+        </div>
       </div>
     </section>
   </main>
@@ -231,9 +127,14 @@
     </div>
   </footer>
 
-  <div id="dark-wave" aria-hidden="true"><canvas id="dark-wave-canvas"></canvas></div>
-  <button class="back-to-top" id="back-to-top" aria-label="Zurück nach oben" data-i18n-aria-label="back_to_top_aria">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="18 15 12 9 6 15"></polyline></svg>
+  <div id="dark-wave" aria-hidden="true">
+    <canvas id="dark-wave-canvas"></canvas>
+  </div>
+
+  <button class="back-to-top" id="back-to-top" aria-label="Zurück nach oben">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <polyline points="18 15 12 9 6 15"></polyline>
+    </svg>
   </button>
 </body>
 </html>

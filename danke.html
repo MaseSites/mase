@@ -14,7 +14,6 @@
     (function () {
       var t = localStorage.getItem('theme');
       if (t === 'dark') document.documentElement.classList.add('dark');
-
       var q = null;
       try { q = new URLSearchParams(window.location.search).get('lang'); } catch (_) {}
       var s = localStorage.getItem('lang');
@@ -28,8 +27,6 @@
   <script defer src="/ai-assistant.js?v=20260327"></script>
   <script defer src="/mase-animations.js?v=20260516"></script>
   <script defer src="/mase-scroll-animations.js?v=20260517"></script>
-  <!-- Auto-Redirect nach 5 Sekunden zurück zur Startseite -->
-  <meta http-equiv="refresh" content="5;url=index.html">
 </head>
 <body>
   <a class="skip-link" href="#main" data-i18n="skip_to_content">Zum Inhalt springen</a>
@@ -50,9 +47,7 @@
         <a href="ueber-uns.html" data-i18n="nav_about">Über uns</a>
         <a href="kontakt.html" data-i18n="nav_contact">Kontakt</a>
         <a class="button button-primary button-small" href="kontakt.html" data-i18n="nav_cta">Kostenloses Erstgespräch</a>
-
       </nav>
-      <!-- Controls: Language + Dark Mode -->
       <div class="header-controls">
         <div class="lang-switcher" id="lang-switcher">
           <button class="lang-btn" id="lang-btn" aria-haspopup="true" aria-expanded="false" aria-label="Sprache wählen" data-i18n-aria-label="lang_select_aria">
@@ -73,20 +68,20 @@
   </header>
 
   <main id="main">
-    <section style="padding: 8rem 0; text-align: center;">
-      <div class="container" style="max-width: 600px;">
-        <div style="font-size: 4rem; margin-bottom: 1.5rem;">✅</div>
-        <h1 style="margin-bottom: 1rem;" data-i18n="thanks_title">Vielen Dank!</h1>
-        <p class="lead" style="color: var(--text-muted); margin-bottom: 2rem;" data-i18n-html="thanks_message_html">
+    <section class="page-hero" style="min-height: 70vh; display: flex; align-items: center;">
+      <div class="container" data-reveal style="text-align: center; max-width: 600px;">
+        <div style="font-size: 4rem; margin-bottom: 1rem;">✓</div>
+        <h1 data-i18n="thanks_title">Vielen Dank!</h1>
+        <p class="lead" data-i18n-html="thanks_message_html">
           Deine Nachricht ist bei uns angekommen.<br>
           Wir melden uns innerhalb von <strong>24 Stunden</strong> bei dir.
         </p>
-        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 2rem;" data-i18n="thanks_redirect">
+        <p style="color: var(--muted); margin-top: 1rem;" data-i18n="thanks_redirect">
           Du wirst in 5 Sekunden automatisch weitergeleitet...
         </p>
-        <div class="button-group" style="justify-content: center;">
+        <div style="display: flex; gap: 1rem; justify-content: center; margin-top: 2rem; flex-wrap: wrap;">
           <a class="button button-primary" href="index.html" data-i18n="thanks_home">Zurück zur Startseite</a>
-          <a class="button button-ghost" href="leistungen.html" data-i18n="thanks_services">Unsere Leistungen</a>
+          <a class="button button-secondary" href="leistungen.html" data-i18n="thanks_services">Unsere Leistungen</a>
         </div>
       </div>
     </section>
@@ -120,9 +115,15 @@
       <p>Copyright <span id="year"></span> MASESites AG. <span data-i18n="footer_copy">Alle Rechte vorbehalten.</span></p>
     </div>
   </footer>
+
+  <div id="dark-wave" aria-hidden="true">
+    <canvas id="dark-wave-canvas"></canvas>
+  </div>
+
+  <button class="back-to-top" id="back-to-top" aria-label="Zurück nach oben">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <polyline points="18 15 12 9 6 15"></polyline>
+    </svg>
+  </button>
 </body>
 </html>
-
-
-
-

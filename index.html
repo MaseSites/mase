@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>MASESites AG | Webdesign & KI-Assistent Schweiz</title>
+  <title>MASESites AG | Webdesign &amp; KI-Assistent Schweiz</title>
   <meta name="description" content="MASESites AG – professionelles Webdesign, Webentwicklung und KI-Assistent aus der Schweiz. Websites erstellen lassen ab CHF 750. Schnell, sauber, modern.">
   <meta name="robots" content="index, follow">
   <meta name="keywords" content="MASESites, Webdesign Schweiz, Website erstellen Schweiz, Webseite erstellen lassen, KI-Assistent Website, Webentwicklung Schweiz, Website generieren, professionelle Website, Homepage erstellen, Landingpage Schweiz, SEO Schweiz, Website KMU, Webdesign Agentur Schweiz, MASESites AG">
@@ -11,8 +11,7 @@
   <meta name="google-site-verification" content="RcPpgYuAtr7I0TKlf33YawD5uCt9LpOqx5lhIFnox0c">
   <link rel="canonical" href="https://www.masesites.ch/">
 
-  <!-- Open Graph / Facebook -->
-  <meta property="og:title" content="MASESites AG | Webdesign & KI-Assistent Schweiz">
+  <meta property="og:title" content="MASESites AG | Webdesign &amp; KI-Assistent Schweiz">
   <meta property="og:description" content="Professionelles Webdesign, Webentwicklung und KI-Assistent aus der Schweiz. Websites ab CHF 750. Schnell, sauber, modern.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://www.masesites.ch/">
@@ -20,22 +19,18 @@
   <meta property="og:locale" content="de_CH">
   <meta property="og:site_name" content="MASESites AG">
 
-  <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="MASESites AG | Webdesign & KI-Assistent Schweiz">
+  <meta name="twitter:title" content="MASESites AG | Webdesign &amp; KI-Assistent Schweiz">
   <meta name="twitter:description" content="Professionelles Webdesign und KI-Assistent aus der Schweiz. Websites ab CHF 750.">
   <meta name="twitter:image" content="https://www.masesites.ch/og-image.jpg">
 
-  <!-- Favicon -->
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <link rel="icon" type="image/png" href="favicon.png">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
 
-  <!-- Preconnect for performance -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-  <!-- Structured Data (JSON-LD) -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -47,20 +42,14 @@
     "logo": "https://www.masesites.ch/favicon.png",
     "telephone": "+41782158922",
     "email": "info@masesites.ch",
-    "address": {
-      "@type": "PostalAddress",
-      "addressCountry": "CH"
-    },
+    "address": { "@type": "PostalAddress", "addressCountry": "CH" },
     "priceRange": "CHF 250 - CHF 2500",
     "foundingDate": "2024",
     "founder": [
       { "@type": "Person", "name": "Matteo" },
       { "@type": "Person", "name": "Severin" }
     ],
-    "areaServed": {
-      "@type": "Country",
-      "name": "Schweiz"
-    },
+    "areaServed": { "@type": "Country", "name": "Schweiz" },
     "sameAs": []
   }
   </script>
@@ -72,10 +61,7 @@
     "url": "https://www.masesites.ch",
     "potentialAction": {
       "@type": "SearchAction",
-      "target": {
-        "@type": "EntryPoint",
-        "urlTemplate": "https://www.masesites.ch/?q={search_term_string}"
-      },
+      "target": { "@type": "EntryPoint", "urlTemplate": "https://www.masesites.ch/?q={search_term_string}" },
       "query-input": "required name=search_term_string"
     }
   }
@@ -85,20 +71,11 @@
     "@context": "https://schema.org",
     "@type": "Service",
     "serviceType": "Webdesign",
-    "name": "Webdesign & Webentwicklung Schweiz",
+    "name": "Webdesign &amp; Webentwicklung Schweiz",
     "description": "Professionelle Websites für KMU, Dienstleister und Online-Shops. Mobile-first, schnell, sauber.",
-    "provider": {
-      "@type": "Organization",
-      "name": "MASESites AG",
-      "url": "https://www.masesites.ch"
-    },
+    "provider": { "@type": "Organization", "name": "MASESites AG", "url": "https://www.masesites.ch" },
     "areaServed": "CH",
-    "offers": {
-      "@type": "AggregateOffer",
-      "lowPrice": "250",
-      "highPrice": "2500",
-      "priceCurrency": "CHF"
-    }
+    "offers": { "@type": "AggregateOffer", "lowPrice": "250", "highPrice": "2500", "priceCurrency": "CHF" }
   }
   </script>
 
@@ -107,19 +84,16 @@
   <link rel="stylesheet" href="/debug.css?v=20260327">
   <link rel="stylesheet" href="/mase-animations.css?v=20260516">
   <link rel="stylesheet" href="/mase-scroll-animations.css?v=20260517">
-  <!-- Apply stored theme/lang before first paint to avoid flash -->
   <script>
     (function () {
-      var theme = localStorage.getItem('theme');
-      if (theme === 'dark') document.documentElement.classList.add('dark');
-      if (!theme) localStorage.setItem('theme', 'light');
-
-      var lang = localStorage.getItem('lang');
-      if (!lang || ['de', 'en', 'fr'].indexOf(lang) === -1) {
-        lang = 'de';
-        localStorage.setItem('lang', lang);
-      }
-      document.documentElement.lang = (lang === 'de' ? 'de-CH' : lang);
+      var t = localStorage.getItem('theme');
+      if (t === 'dark') document.documentElement.classList.add('dark');
+      var q = null;
+      try { q = new URLSearchParams(window.location.search).get('lang'); } catch (_) {}
+      var s = localStorage.getItem('lang');
+      var lang = ['de', 'en', 'fr'].indexOf(q) !== -1 ? q : (['de', 'en', 'fr'].indexOf(s) !== -1 ? s : 'de');
+      localStorage.setItem('lang', lang);
+      document.documentElement.lang = (lang === 'de' ? 'de-CH' : 'en');
     })();
   </script>
   <script defer src="/theme.js?v=20260327"></script>
@@ -127,58 +101,38 @@
   <script defer src="/ai-assistant.js?v=20260327"></script>
   <script defer src="/mase-animations.js?v=20260516"></script>
   <script defer src="/mase-scroll-animations.js?v=20260517"></script>
-
-  <!-- Google Analytics (replace with your ID) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-XXXXXXXXXX', {
-      'anonymize_ip': true,
-      'cookie_flags': 'SameSite=None;Secure'
-    });
-  </script>
 </head>
 <body>
-  <a class="skip-link" href="#main">Zum Inhalt springen</a>
+  <a class="skip-link" href="#main" data-i18n="skip_to_content">Zum Inhalt springen</a>
 
-  <header class="site-header" id="top">
+  <header class="site-header">
     <div class="container header-inner">
-      <a class="logo" href="index.html" aria-label="MASESites AG Startseite">
-        MASE
-      </a>
-
+      <a class="logo" href="index.html">MASE</a>
       <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
         <span class="sr-only" data-i18n="nav_toggle">Navigation öffnen</span>
-        <span class="nav-toggle-bar" aria-hidden="true"></span>
-        <span class="nav-toggle-bar" aria-hidden="true"></span>
+        <span class="nav-toggle-bar"></span>
+        <span class="nav-toggle-bar"></span>
       </button>
-
-      <nav class="site-nav" id="site-nav" aria-label="Hauptnavigation">
+      <nav class="site-nav" id="site-nav">
         <a href="index.html" class="nav-active" data-i18n="nav_home">Home</a>
         <a href="leistungen.html" data-i18n="nav_services">Leistungen</a>
         <a href="preise.html" data-i18n="nav_prices">Preise</a>
         <a href="ki-assistent.html" data-i18n="nav_ai">KI Assistent</a>
-        <a href="ueber-uns.html" data-i18n="nav_about">&#220;ber uns</a>
+        <a href="ueber-uns.html" data-i18n="nav_about">Über uns</a>
         <a href="kontakt.html" data-i18n="nav_contact">Kontakt</a>
         <a class="button button-primary button-small" href="kontakt.html" data-i18n="nav_cta">Kostenloses Erstgespräch</a>
       </nav>
-
-      <!-- Controls: Language + Dark Mode -->
       <div class="header-controls">
-        <!-- Language Switcher -->
         <div class="lang-switcher" id="lang-switcher">
           <button class="lang-btn" id="lang-btn" aria-haspopup="true" aria-expanded="false" aria-label="Sprache wählen" data-i18n-aria-label="lang_select_aria">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
             <span id="lang-current">DE</span>
           </button>
           <div class="lang-dropdown" id="lang-dropdown">
-            <button class="lang-option active" data-lang="de">DE - Deutsch</button>
-            <button class="lang-option" data-lang="en">EN - English</button>
+            <button class="lang-option active" data-lang="de">🇩🇪 Deutsch</button>
+            <button class="lang-option" data-lang="en">🇬🇧 English</button>
           </div>
         </div>
-        <!-- Dark Mode Toggle -->
         <button class="dark-toggle" id="dark-toggle" aria-label="Dark Mode umschalten" data-i18n-aria-label="theme_toggle_aria">
           <span class="dark-toggle-icon" id="dark-toggle-icon">🌙</span>
           <span class="dark-toggle-track"><span class="dark-toggle-thumb"></span></span>
@@ -188,327 +142,199 @@
   </header>
 
   <main id="main">
-    <section class="hero" aria-labelledby="hero-title">
-      <div class="container hero-grid">
+
+    <!-- Hero -->
+    <section class="hero">
+      <div class="container">
         <div class="hero-content" data-reveal>
           <p class="eyebrow" data-i18n="hero_eyebrow">Matteo &amp; Severin. MASESites AG.</p>
-          <h1 id="hero-title" data-i18n="hero_title">Websites, die verkaufen.</h1>
-          <p class="lead" data-i18n="hero_lead">
-            Professionelle Weblösungen und KI-Integration für moderne Unternehmen.
-          </p>
+          <h1 data-i18n="hero_title">Websites, die verkaufen.</h1>
+          <p class="lead" data-i18n="hero_lead">Professionelle Weblösungen und KI-Integration für moderne Unternehmen.</p>
           <div class="button-group">
             <a class="button button-primary" href="kontakt.html" data-i18n="hero_cta_primary">Projekt starten</a>
-            <a class="button button-ghost" href="preise.html" data-i18n="hero_cta_secondary">Preise ansehen</a>
+            <a class="button button-secondary" href="preise.html" data-i18n="hero_cta_secondary">Preise ansehen</a>
           </div>
-          <div class="hero-badges" aria-label="Vorteile">
+          <div class="hero-badges">
             <span class="badge" data-i18n="badge_mobile">Mobile-first</span>
             <span class="badge" data-i18n="badge_seo">SEO-optimiert</span>
             <span class="badge" data-i18n="badge_ai">KI-Integration</span>
           </div>
         </div>
-
-        <div class="hero-visual" data-reveal>
-          <article class="hero-benefit-card" aria-label="Vorteile einer Website mit MASESites">
-            <p class="hero-benefit-badge">Für Unternehmen, die online Kunden gewinnen wollen</p>
-            <h3 class="hero-benefit-title">Deine Website arbeitet für dich</h3>
-            <p class="hero-benefit-subtitle">Klar aufgebaut. Schnell geladen. Auf mehr Anfragen optimiert.</p>
-
-            <ul class="hero-benefit-list" aria-label="Kundenvorteile">
-              <li class="hero-benefit-item"><span class="hero-benefit-check" aria-hidden="true">✓</span><span>Mehr Vertrauen bei neuen Kunden</span></li>
-              <li class="hero-benefit-item"><span class="hero-benefit-check" aria-hidden="true">✓</span><span>Mehr Anfragen über deine Website</span></li>
-              <li class="hero-benefit-item"><span class="hero-benefit-check" aria-hidden="true">✓</span><span>Modern auf jedem Gerät</span></li>
-            </ul>
-
-            <div class="hero-benefit-trust" aria-label="Qualitätsmerkmale">
-              <span class="hero-benefit-trust-item">Mobile-first</span>
-              <span class="hero-benefit-trust-item">SEO-optimiert</span>
-              <span class="hero-benefit-trust-item">Schnelle Ladezeit</span>
-            </div>
-
-            <div class="hero-benefit-footer">
-              <div class="hero-benefit-pricing">
-                <p class="hero-benefit-price">Ab CHF 750</p>
-              </div>
-              <a class="hero-benefit-cta" href="kontakt.html">Projekt starten</a>
-            </div>
-          </article>
-        </div>
       </div>
     </section>
 
-    <div data-mase-marquee></div>
-
-    <section class="trust" aria-labelledby="trust-title">
-      <div class="container" data-reveal>
-        <h2 id="trust-title" data-i18n="trust_title">Warum MASE</h2>
-        <div class="trust-grid">
-          <article class="trust-card">
+    <!-- Warum MASE -->
+    <section class="trust-section" style="padding: 5rem 0;">
+      <div class="container">
+        <h2 style="text-align:center; margin-bottom: 2.5rem;" data-reveal data-i18n="trust_title">Warum MASE</h2>
+        <div class="values-grid" data-reveal>
+          <div class="trust-card">
             <h3 data-i18n="trust_speed">Schnell</h3>
             <p data-i18n="trust_speed_desc">Klare Prozesse, kurze Wege, schnelle Live-Schaltung.</p>
-          </article>
-          <article class="trust-card">
+          </div>
+          <div class="trust-card">
             <h3 data-i18n="trust_code">Sauberer Code</h3>
-            <p data-i18n="trust_code_desc">Minimal, wartbar und f&#252;r Performance optimiert.</p>
-          </article>
-          <article class="trust-card">
+            <p data-i18n="trust_code_desc">Minimal, wartbar und für Performance optimiert.</p>
+          </div>
+          <div class="trust-card">
             <h3 data-i18n="trust_mobile">Mobile-first</h3>
             <p data-i18n="trust_mobile_desc">UX die auf jedem Screen sitzt. Keine Kompromisse.</p>
-          </article>
-          <article class="trust-card">
+          </div>
+          <div class="trust-card">
             <h3 data-i18n="trust_ki">KI-Integration</h3>
-            <p data-i18n="trust_ki_desc">Assistenz, die Leads qualifiziert und Fragen kl&#228;rt.</p>
-          </article>
+            <p data-i18n="trust_ki_desc">Assistenz, die Leads qualifiziert und Fragen klärt.</p>
+          </div>
         </div>
       </div>
     </section>
 
-    <section class="process" id="ansatz" aria-labelledby="approach-title">
-      <div class="container" data-reveal>
-        <h2 id="approach-title" data-i18n="process_title">Unser Ansatz</h2>
-        <p class="lead process-lead" data-i18n="process_lead">5 klare Schritte vom Erstgespräch bis zur messbaren Wirkung.</p>
-        <div class="process-grid process-grid-5">
+    <!-- Unser Ansatz -->
+    <section style="padding: 5rem 0; background: var(--surface);">
+      <div class="container">
+        <div data-reveal style="text-align:center; margin-bottom: 3rem;">
+          <h2 data-i18n="process_title">Unser Ansatz</h2>
+          <p class="lead" data-i18n="process_lead">5 Schritte zum professionellen Ergebnis.</p>
+        </div>
+        <div class="process-grid" data-reveal>
           <div class="process-step">
-            <div class="process-step-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                <circle cx="11" cy="11" r="6"></circle>
-                <line x1="16" y1="16" x2="21" y2="21"></line>
-              </svg>
-            </div>
             <span>01</span>
             <h3 data-i18n="process_1_title">Analyse &amp; Strategie</h3>
             <p data-i18n="process_1_desc">Wir analysieren dein Business, deine Zielgruppe und den Wettbewerb. Klare Ziele, klarer Plan.</p>
           </div>
           <div class="process-step">
-            <div class="process-step-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                <path d="M8 7h8"></path>
-                <path d="M8 12h8"></path>
-                <path d="M8 17h5"></path>
-                <rect x="3" y="4" width="18" height="16" rx="3"></rect>
-              </svg>
-            </div>
             <span>02</span>
             <h3 data-i18n="process_2_title">Struktur &amp; UX-Planung</h3>
             <p data-i18n="process_2_desc">Seitenstruktur, Navigation und User Experience werden vor dem ersten Pixel geplant.</p>
           </div>
           <div class="process-step">
-            <div class="process-step-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                <path d="M4 15l8-8 5 5-8 8H4v-5z"></path>
-                <path d="M14 7l3 3"></path>
-              </svg>
-            </div>
             <span>03</span>
             <h3 data-i18n="process_3_title">Modernes Design</h3>
             <p data-i18n="process_3_desc">Clean, professionell, verkaufsstark. Design das Vertrauen weckt und zum Handeln motiviert.</p>
           </div>
           <div class="process-step">
-            <div class="process-step-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                <circle cx="12" cy="12" r="3.5"></circle>
-                <path d="M12 2v3"></path>
-                <path d="M12 19v3"></path>
-                <path d="M2 12h3"></path>
-                <path d="M19 12h3"></path>
-              </svg>
-            </div>
             <span>04</span>
             <h3 data-i18n="process_4_title">Saubere Entwicklung</h3>
             <p data-i18n="process_4_desc">Schneller, wartbarer Code. Mobile-first, SEO-ready und zukunftssicher gebaut.</p>
           </div>
           <div class="process-step">
-            <div class="process-step-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                <path d="M5 19c2-4 6-8 10-10 0 0 2 4 0 8-2 4-6 6-10 7z"></path>
-                <path d="M9 15l-3 3"></path>
-              </svg>
-            </div>
             <span>05</span>
             <h3 data-i18n="process_5_title">Optimierung &amp; Skalierung</h3>
             <p data-i18n="process_5_desc">Nach dem Launch analysieren, optimieren und skalieren wir deinen digitalen Auftritt.</p>
           </div>
         </div>
-        <div class="process-cta-wrap">
-          <a class="button button-primary" href="kontakt.html" data-i18n="services_cta_primary">Projekt starten</a>
-        </div>
       </div>
     </section>
 
-    <section class="code-proof" aria-labelledby="code-proof-title">
-      <div class="container code-proof-grid" data-reveal>
-        <div class="code-proof-copy">
-          <h2 id="code-proof-title">Technische Qualität, die man sieht</h2>
-          <p class="lead">Wir entwickeln nicht nur schöne Oberflächen, sondern auch saubere Systeme: wartbar, performant und auf Wachstum vorbereitet.</p>
-          <ul class="code-proof-points">
-            <li>Semantisches HTML für Struktur und SEO</li>
-            <li>Klare Komponenten statt chaotischer Einzellösungen</li>
-            <li>Saubere Formvalidierung und verlässliche API-Anbindung</li>
-          </ul>
-        </div>
-        <div class="code-proof-panel" aria-label="Beispiel einer strukturierten Codevorschau">
-          <div class="code-proof-header">
-            <span></span><span></span><span></span>
-            <p>mase-project/src/contact/submit-handler.js</p>
-          </div>
-          <pre class="code-proof-snippet"><code>const payload = sanitizeContactForm(formData);
-const validationError = validateContactPayload(payload);
-
-if (validationError) {
-  return showFormError(validationError);
-}
-
-const response = await postContactRequest(payload);
-return response.ok ? showSuccess() : showFormError(response.message);</code></pre>
-        </div>
-      </div>
-    </section>
-
-    <!-- Live Preview Slider -->
-    <section class="projects-slider" aria-labelledby="slider-title">
+    <!-- Live-Vorschau -->
+    <section style="padding: 5rem 0;">
       <div class="container">
-        <div data-reveal class="section-intro section-intro-centered">
-          <h2 id="slider-title">Live Preview - Beispielprojekte</h2>
-          <p class="lead">So könnte dein nächster professioneller Webauftritt aussehen. Klicke auf ein Projekt für die Live-Vorschau.</p>
+        <div data-reveal style="text-align:center; margin-bottom: 3rem;">
+          <h2 data-i18n="live_preview_title">Live-Vorschau – Beispielprojekte</h2>
+          <p class="lead" data-i18n="live_preview_subtitle">So könnten Websites unserer Kunden aussehen.</p>
         </div>
-
-        <div class="lp-slider" id="lp-slider" data-reveal>
-          <div class="lp-slide" role="group" aria-label="Slide 1 of 4">
-            <a class="lp-card lp-card-link" href="demo/bowling-site/index.html" aria-label="Bowling Center live ansehen">
-              <p class="lp-card-domain">Freizeit &amp; Sport</p>
-              <h3 class="lp-card-title">Bowling Center</h3>
-              <p class="lp-card-text">Klares, modernes Layout mit Fokus auf Buchung und Events.</p>
-              <ul class="lp-card-list">
-                <li>Hero mit starker Message</li>
-                <li>Preisstruktur in wenigen Blöcken</li>
-                <li>Sichtbarer Reservieren-CTA</li>
-              </ul>
-              <span class="lp-card-open">Projekt öffnen</span>
-            </a>
-          </div>
-
-          <div class="lp-slide lp-slide--hidden" role="group" aria-label="Slide 2 of 4">
-            <a class="lp-card lp-card-link" href="demo/praxis-site/index.html" aria-label="Praxis Website live ansehen">
-              <p class="lp-card-domain">Gesundheit &amp; Medizin</p>
-              <h3 class="lp-card-title">Praxis Website</h3>
-              <p class="lp-card-text">Seriöses Design mit ruhiger Typografie und klarer Navigation.</p>
-              <ul class="lp-card-list">
-                <li>Saubere Leistungsübersicht</li>
-                <li>Kontakt und Öffnungszeiten im Fokus</li>
-                <li>Termin-CTA klar platziert</li>
-              </ul>
-              <span class="lp-card-open">Projekt öffnen</span>
-            </a>
-          </div>
-
-          <div class="lp-slide lp-slide--hidden" role="group" aria-label="Slide 3 of 4">
-            <a class="lp-card lp-card-link" href="demo/doener-site/index.html" aria-label="Dönerladen live ansehen">
-              <p class="lp-card-domain">Gastronomie</p>
-              <h3 class="lp-card-title">Dönerladen</h3>
-              <p class="lp-card-text">Konzentriert auf Speisekarte, Bestellung und Standortinfos.</p>
-              <ul class="lp-card-list">
-                <li>Kompakte Menüstruktur</li>
-                <li>Schnelle mobile Lesbarkeit</li>
-                <li>Direkter Bestell-Button</li>
-              </ul>
-              <span class="lp-card-open">Projekt öffnen</span>
-            </a>
-          </div>
-
-          <div class="lp-slide lp-slide--hidden" role="group" aria-label="Slide 4 of 4">
-            <a class="lp-card lp-card-link" href="demo/nagelstudio-site/index.html" aria-label="Nagelstudio live ansehen">
-              <p class="lp-card-domain">Beauty &amp; Wellness</p>
-              <h3 class="lp-card-title">Nagelstudio</h3>
-              <p class="lp-card-text">Elegantes One-Page-Design mit Services, Galerie und Buchung.</p>
-              <ul class="lp-card-list">
-                <li>Klare Service-Kategorien</li>
-                <li>Stimmige Preisdarstellung</li>
-                <li>Termin-CTA ohne Ablenkung</li>
-              </ul>
-              <span class="lp-card-open">Projekt öffnen</span>
-            </a>
-          </div>
-        </div>
-
-        <div class="lp-dots" id="lp-dots" role="tablist" aria-label="Slide navigation">
-          <button class="lp-dot-btn lp-dot-btn--active" role="tab" aria-selected="true" aria-label="Slide 1" data-lp-index="0"></button>
-          <button class="lp-dot-btn" role="tab" aria-selected="false" aria-label="Slide 2" data-lp-index="1"></button>
-          <button class="lp-dot-btn" role="tab" aria-selected="false" aria-label="Slide 3" data-lp-index="2"></button>
-          <button class="lp-dot-btn" role="tab" aria-selected="false" aria-label="Slide 4" data-lp-index="3"></button>
+        <div class="values-grid" data-reveal>
+          <a class="preview-card" href="demo/bowling-site/index.html" target="_blank" rel="noopener" style="text-decoration:none; color:inherit; display:block;">
+            <div class="preview-top">
+              <span></span><span></span><span></span>
+              <small style="margin-left:0.5rem; font-size:0.75rem; color:var(--text-muted);">strikezone.ch</small>
+            </div>
+            <div class="preview-body" style="background:#111; min-height:140px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:0.5rem;">
+              <span style="font-size:3rem;">🎳</span>
+              <p style="font-size:0.85rem; color:#f97316; font-weight:600;">Strike Zone</p>
+              <p style="font-size:0.8rem; color:#888;">Bowling Center</p>
+            </div>
+          </a>
+          <a class="preview-card" href="demo/praxis-site/index.html" target="_blank" rel="noopener" style="text-decoration:none; color:inherit; display:block;">
+            <div class="preview-top">
+              <span></span><span></span><span></span>
+              <small style="margin-left:0.5rem; font-size:0.75rem; color:var(--text-muted);">praxis-mueller.ch</small>
+            </div>
+            <div class="preview-body" style="background:#e8f0fb; min-height:140px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:0.5rem;">
+              <span style="font-size:3rem;">🏥</span>
+              <p style="font-size:0.85rem; color:#0051ba; font-weight:600;">Praxis Dr. Müller</p>
+              <p style="font-size:0.8rem; color:#64748b;">Arztpraxis</p>
+            </div>
+          </a>
+          <a class="preview-card" href="demo/doener-site/index.html" target="_blank" rel="noopener" style="text-decoration:none; color:inherit; display:block;">
+            <div class="preview-top">
+              <span></span><span></span><span></span>
+              <small style="margin-left:0.5rem; font-size:0.75rem; color:var(--text-muted);">kebab-palace.ch</small>
+            </div>
+            <div class="preview-body" style="background:#1a1a1a; min-height:140px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:0.5rem;">
+              <span style="font-size:3rem;">🌯</span>
+              <p style="font-size:0.85rem; color:#dc2626; font-weight:600;">Kebab Palace</p>
+              <p style="font-size:0.8rem; color:#888;">Restaurant</p>
+            </div>
+          </a>
+          <a class="preview-card" href="demo/nagelstudio-site/index.html" target="_blank" rel="noopener" style="text-decoration:none; color:inherit; display:block;">
+            <div class="preview-top">
+              <span></span><span></span><span></span>
+              <small style="margin-left:0.5rem; font-size:0.75rem; color:var(--text-muted);">nails-co.ch</small>
+            </div>
+            <div class="preview-body" style="background:#fdf2f8; min-height:140px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:0.5rem;">
+              <span style="font-size:3rem;">💅</span>
+              <p style="font-size:0.85rem; color:#be185d; font-weight:600;">Nails &amp; Co.</p>
+              <p style="font-size:0.8rem; color:#9d174d;">Nagelstudio</p>
+            </div>
+          </a>
         </div>
       </div>
     </section>
 
-    <section class="ai" id="ki-teaser" aria-labelledby="ai-title">
-      <div class="container ai-grid">
-        <div class="ai-copy" data-reveal>
-          <h2 id="ai-title" data-i18n="ai_title">KI-Integration - dein digitaler Mitarbeiter</h2>
-          <p data-i18n="ai_desc">
-            Unser KI-Assistent arbeitet 24/7 für dich: beantwortet Kundenfragen, sammelt Leads,
-            qualifiziert Anfragen und erklärt deine Produkte oder Services.
-          </p>
-          <ul class="ai-list ai-list-product">
-            <li data-i18n="ai_feature_1">Automatische Kundenberatung in Echtzeit</li>
-            <li data-i18n="ai_feature_2">Lead-Qualifizierung mit Übergabe an dein Team</li>
-            <li data-i18n="ai_feature_3">Auf deine Leistungen und Tonalität trainiert</li>
-          </ul>
-          <div class="ai-trust-row" aria-label="KI-Nutzen auf einen Blick">
-            <span>Für KMU und Dienstleister</span>
-            <span>Antworten in Sekunden</span>
-            <span>Setup ab CHF 200</span>
-          </div>
-          <div class="button-group ai-cta-row">
+    <!-- KI-Integration Teaser -->
+    <section style="padding: 5rem 0; background: var(--surface);">
+      <div class="container">
+        <div class="ai-grid" data-reveal>
+          <div class="ai-copy">
+            <h2 data-i18n="ai_title">KI-Integration – Dein digitaler Mitarbeiter</h2>
+            <p data-i18n="ai_desc">Unser KI-Assistent arbeitet 24/7 für dich: beantwortet Kundenfragen, sammelt Leads, qualifiziert Anfragen und erklärt deine Produkte oder Services.</p>
+            <ul class="feature-list">
+              <li data-i18n="ai_feature_1">Automatische Kundenberatung</li>
+              <li data-i18n="ai_feature_2">Lead-Qualifizierung in Echtzeit</li>
+              <li data-i18n="ai_feature_3">Individuell mit deinen Inhalten trainierbar</li>
+            </ul>
             <a class="button button-primary" href="ki-assistent.html" data-i18n="ai_link">KI-Assistent entdecken</a>
-            <a class="button button-ghost" href="kontakt.html">Kostenloses Erstgespräch</a>
           </div>
-        </div>
-
-        <div class="ai-demo" data-reveal>
-          <div class="chat-widget ai-chat-pro" role="img" aria-label="Beispiel für einen KI-Chat">
+          <div class="chat-widget">
             <div class="chat-header">
-              <span class="chat-dot"></span>
-              <p>MASESites KI-Assistent</p>
-              <span class="ai-chat-status">Online</span>
+              <span class="chat-dot" style="background: var(--accent);"></span>
+              <p style="margin:0; font-size:0.9rem; font-weight:600; margin-left:0.5rem;">MASE KI-Assistent</p>
             </div>
             <div class="chat-body">
-              <div class="chat-message bot">
-                Hallo! Wie kann ich dir helfen?
-              </div>
-              <div class="chat-message user">
-                Was kostet eine Website?
-              </div>
-              <div class="chat-message bot">
-                Starter ab CHF 750. Finale Offerte nach kurzem Call.
-              </div>
-              <div class="chat-message user">
-                Könnt ihr einen Termin einrichten?
-              </div>
-              <div class="chat-message bot">
-                Klar. Hinterlasse kurz deine Kontaktdaten, ich melde mich.
-              </div>
+              <div class="chat-message bot" data-i18n="ai_chat_1">Hallo! Wie kann ich dir helfen?</div>
+              <div class="chat-message user" data-i18n="ai_chat_2">Was kostet eine Website?</div>
+              <div class="chat-message bot" data-i18n="ai_chat_3">Ab CHF 750. Soll ich mehr erklären?</div>
             </div>
             <div class="chat-input">
-              <span>Nachricht schreiben...</span>
-              <span class="chat-send">Senden</span>
-            </div>
-            <div class="ai-chat-benefits">
-              <p><strong>Leads:</strong> automatisch vorqualifiziert</p>
-              <p><strong>Verfügbarkeit:</strong> 24/7 ohne Wartezeit</p>
-              <p><strong>Kosten:</strong> CHF 200 Setup + CHF 40 / Monat</p>
+              <input type="text" placeholder="Deine Frage..." aria-label="Chatfrage" disabled>
+              <button class="chat-send" disabled>&#8594;</button>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <section class="pricing-teaser" id="preise-teaser" aria-labelledby="pricing-teaser-title">
-      <div class="container pricing-teaser-inner" data-reveal>
-        <h2 id="pricing-teaser-title" data-i18n="pricing_teaser">Transparente Preise</h2>
-        <p class="lead pricing-teaser-lead" data-i18n="pricing_teaser_lead">
-          Von der Überarbeitung bis zur kompletten Website - modulare Pakete ab CHF 250.
-        </p>
-        <a class="button button-primary" href="preise.html" data-i18n="pricing_teaser_link">Alle Preise ansehen</a>
+    <!-- Preise Teaser -->
+    <section style="padding: 5rem 0;">
+      <div class="container" data-reveal style="text-align: center; max-width: 700px;">
+        <h2 data-i18n="pricing_teaser">Transparente Preise</h2>
+        <p class="lead" data-i18n="pricing_teaser_lead">Von der Überarbeitung bis zur kompletten Website – modulare Pakete ab CHF 250.</p>
+        <div style="display: flex; gap: 1rem; justify-content: center; margin-top: 2rem; flex-wrap: wrap;">
+          <a class="button button-primary" href="preise.html" data-i18n="pricing_teaser_link">Alle Preise ansehen</a>
+          <a class="button button-secondary" href="kontakt.html" data-i18n="nav_cta">Kostenloses Erstgespräch</a>
+        </div>
       </div>
     </section>
+
+    <!-- Final CTA -->
+    <section class="cta-section" style="background: var(--surface); padding: 5rem 0;">
+      <div class="container" data-reveal style="text-align: center; max-width: 700px;">
+        <h2 data-i18n="services_cta_title">Bereit für dein Projekt?</h2>
+        <p class="lead" data-i18n="services_cta_lead">Lass uns gemeinsam deine perfekte Website-Lösung finden.</p>
+        <a class="button button-primary" href="kontakt.html" style="margin-top: 2rem;" data-i18n="hero_cta_primary">Projekt starten</a>
+      </div>
+    </section>
+
   </main>
 
   <footer class="site-footer">
@@ -527,7 +353,7 @@ return response.ok ? showSuccess() : showFormError(response.message);</code></pr
       <div>
         <p class="footer-title" data-i18n="footer_contact">Kontakt</p>
         <a href="kontakt.html" data-i18n="footer_contact_form">Kontaktformular</a>
-        <a href="ueber-uns.html" data-i18n="nav_about">&#220;ber uns</a>
+        <a href="ueber-uns.html" data-i18n="nav_about">Über uns</a>
       </div>
       <div>
         <p class="footer-title" data-i18n="footer_legal">Rechtliches</p>
@@ -540,40 +366,14 @@ return response.ok ? showSuccess() : showFormError(response.message);</code></pr
     </div>
   </footer>
 
-  <!-- Dark Mode Wave Overlay -->
   <div id="dark-wave" aria-hidden="true">
     <canvas id="dark-wave-canvas"></canvas>
   </div>
 
-  <!-- Cookie Banner (DSGVO) -->
-  <div class="cookie-banner" id="cookie-banner" role="dialog" aria-labelledby="cookie-title" aria-describedby="cookie-desc">
-    <div class="cookie-content">
-      <div>
-        <h3 id="cookie-title">🍪 <span data-i18n="cookie_title">Cookie-Hinweis</span></h3>
-        <p id="cookie-desc"><span data-i18n="cookie_desc">Wir verwenden Cookies für eine optimale Nutzererfahrung.</span> <a href="datenschutz.html" data-i18n="cookie_link">Mehr erfahren</a></p>
-      </div>
-      <div class="cookie-actions">
-        <button class="button button-ghost button-small" id="cookie-reject" data-i18n="cookie_settings">Einstellungen</button>
-        <button class="button button-primary button-small" id="cookie-accept" data-i18n="cookie_accept">Akzeptieren</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Sticky CTA -->
-  <a class="sticky-cta" id="sticky-cta" href="kontakt.html">
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
-    Projekt starten
-  </a>
-
-  <!-- Back to Top Button -->
-  <button class="back-to-top" id="back-to-top" aria-label="Zurück nach oben" data-i18n-aria-label="back_to_top_aria">
+  <button class="back-to-top" id="back-to-top" aria-label="Zurück nach oben">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
       <polyline points="18 15 12 9 6 15"></polyline>
     </svg>
   </button>
 </body>
 </html>
-
-
-
-

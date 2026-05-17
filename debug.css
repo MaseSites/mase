@@ -1,1 +1,52 @@
-/* debug.css — dev-only shim, intentionally empty in production */
+/* ============================================
+   DEBUG MODE - Uncomment to see all sections
+   ============================================ */
+
+/*
+* {
+  outline: 1px solid rgba(255, 0, 0, 0.1) !important;
+}
+
+section {
+  outline: 2px solid rgba(0, 0, 255, 0.3) !important;
+  min-height: 100px !important;
+  background: rgba(102, 182, 255, 0.05) !important;
+}
+
+.container {
+  outline: 1px dashed rgba(0, 255, 0, 0.3) !important;
+}
+
+[data-reveal] {
+  outline: 2px solid rgba(255, 165, 0, 0.5) !important;
+}
+*/
+
+/* ============================================
+   CRITICAL FIXES - DO NOT REMOVE
+   ============================================ */
+
+/* Ensure all content is visible by default */
+[data-reveal] {
+  opacity: 1 !important;
+  transform: none !important;
+  visibility: visible !important;
+}
+
+/* Ensure sections have minimum height */
+section {
+  min-height: 50px;
+}
+
+/* No hidden overflow on body/html */
+html, body {
+  overflow-x: hidden;
+  overflow-y: auto !important;
+}
+
+/* Main must be visible */
+main {
+  opacity: 1 !important;
+  visibility: visible !important;
+  display: block !important;
+}
