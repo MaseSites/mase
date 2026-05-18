@@ -102,22 +102,30 @@
   </header>
 
   <main id="main">
-    <section class="page-hero">
-      <div class="container" data-reveal style="text-align: center; max-width: 700px;">
-        <h1 data-i18n="services_title">Unsere Leistungen</h1>
+    <section class="page-hero leistungen-hero">
+      <div class="container leistungen-hero-inner" data-reveal>
+        <span class="eyebrow">MASESites AG</span>
+        <h1>Alles, was deine<br><span class="accent-gradient">Website braucht.</span></h1>
         <p class="lead" data-i18n="services_lead">Von Design über Entwicklung bis zur KI-Integration – alles aus einer Hand.</p>
+        <div class="ls-service-pills">
+          <span class="ls-pill">01 Webdesign</span>
+          <span class="ls-pill">02 Webentwicklung</span>
+          <span class="ls-pill">03 SEO &amp; Performance</span>
+          <span class="ls-pill">04 KI-Assistent</span>
+        </div>
       </div>
     </section>
 
     <div class="services" id="leistungen">
     <!-- Webdesign -->
-    <section style="padding: 4rem 0;">
+    <section class="ls-section" style="padding: 4rem 0;">
       <div class="container">
         <div class="service-detail" data-reveal>
           <div class="service-detail-content">
-            <h2 data-i18n="services_webdesign_h">Webdesign</h2>
-            <p data-i18n="services_webdesign_p">UX/UI mit Fokus auf Conversion und Nutzerfreundlichkeit.</p>
-            <ul data-i18n-html="services_webdesign_list_html">
+            <span class="eyebrow">01 — Webdesign</span>
+            <h2 data-i18n="services_webdesign_h">Design, das Vertrauen schafft</h2>
+            <p data-i18n="services_webdesign_p">Dein erster Eindruck entscheidet. Wir gestalten Websites, die professionell wirken, sofort überzeugen und Besucher zu Kunden machen.</p>
+            <ul class="ls-checks" data-i18n-html="services_webdesign_list_html">
               <li><strong>Modernes Design:</strong> Clean, professionell und zeitgemäß</li>
               <li><strong>Struktur &amp; Klarheit:</strong> Intuitive Navigation und klare Hierarchie</li>
               <li><strong>Conversion-Optimierung:</strong> Jedes Element zielt auf Handlung ab</li>
@@ -127,17 +135,32 @@
             <a class="button button-primary" href="kontakt.html?project=new-website" data-i18n="services_webdesign_cta">Design anfragen</a>
           </div>
           <div class="service-detail-visual">
-            <div class="preview-mockup">
-              <div class="mockup-bar"></div>
-              <div class="mockup-content">
-                <div class="mockup-hero"></div>
-                <div class="mockup-grid">
-                  <div class="mockup-card"></div>
-                  <div class="mockup-card"></div>
-                  <div class="mockup-card"></div>
+            <div class="design-card-showcase">
+              <div class="dcs-header">
+                <span class="dcs-dot" style="background:#ef4444;"></span>
+                <span class="dcs-dot" style="background:#f59e0b;"></span>
+                <span class="dcs-dot" style="background:#22c55e;"></span>
+                <span class="dcs-url">masesites.ch</span>
+              </div>
+              <div class="dcs-body">
+                <div class="dcs-palette">
+                  <span class="dcs-swatch" style="background:#0f766e;" title="Teal"></span>
+                  <span class="dcs-swatch" style="background:#0066cc;" title="Blue"></span>
+                  <span class="dcs-swatch" style="background:#0a0e27;" title="Ink"></span>
+                  <span class="dcs-swatch" style="background:#f6f9ff; border: 1px solid #d4d4d4;" title="Surface"></span>
+                </div>
+                <p class="dcs-headline">Websites, die verkaufen.</p>
+                <p class="dcs-sub">Mobile-first · SEO-ready · Schnell</p>
+                <div class="dcs-ui-row">
+                  <div class="dcs-img-block"></div>
+                  <div class="dcs-text-block">
+                    <div class="dcs-line dcs-line--wide"></div>
+                    <div class="dcs-line"></div>
+                    <div class="dcs-line dcs-line--short"></div>
+                    <div class="dcs-btn-preview">Projekt starten</div>
+                  </div>
                 </div>
               </div>
-              <p class="preview-label" data-i18n="services_webdesign_preview_label">Design Preview</p>
             </div>
           </div>
         </div>
@@ -145,13 +168,14 @@
     </section>
 
     <!-- Webentwicklung -->
-    <section style="padding: 4rem 0; background: var(--surface);">
+    <section class="ls-section" style="padding: 4rem 0; background: var(--surface);">
       <div class="container">
         <div class="service-detail service-detail-reverse" data-reveal>
           <div class="service-detail-content">
-            <h2 data-i18n="services_webdev_h">Webentwicklung</h2>
-            <p data-i18n="services_webdev_p">Sauberer Code, der Performance und Skalierbarkeit garantiert.</p>
-            <ul data-i18n-html="services_webdev_list_html">
+            <span class="eyebrow">02 — Webentwicklung</span>
+            <h2 data-i18n="services_webdev_h">Code, der wirklich performt</h2>
+            <p data-i18n="services_webdev_p">Sauberer, wartbarer Code ist kein Nice-to-have. Er ist das Fundament für Geschwindigkeit, Sicherheit und langfristigen Erfolg.</p>
+            <ul class="ls-checks" data-i18n-html="services_webdev_list_html">
               <li><strong>Sauberer Code:</strong> Modern, wartbar und zukunftssicher</li>
               <li><strong>Performance-Optimiert:</strong> Schnelle Ladezeiten garantiert</li>
               <li><strong>Skalierbar:</strong> Wächst mit deinem Business</li>
@@ -162,10 +186,19 @@
           </div>
           <div class="service-detail-visual">
             <div class="code-preview">
-              <div class="code-line"><span class="code-tag">&lt;section</span> <span class="code-attr">class</span>=<span class="code-str">"hero"</span><span class="code-tag">&gt;</span></div>
-              <div class="code-line indent"><span class="code-tag">&lt;h1&gt;</span>Websites, die verkaufen<span class="code-tag">&lt;/h1&gt;</span></div>
-              <div class="code-line indent"><span class="code-tag">&lt;a</span> <span class="code-attr">class</span>=<span class="code-str">"button"</span><span class="code-tag">&gt;</span>Jetzt starten<span class="code-tag">&lt;/a&gt;</span></div>
-              <div class="code-line"><span class="code-tag">&lt;/section&gt;</span></div>
+              <div class="code-preview-header">
+                <span class="cp-dot" style="background:#ef4444;"></span>
+                <span class="cp-dot" style="background:#f59e0b;"></span>
+                <span class="cp-dot" style="background:#22c55e;"></span>
+                <span class="cp-filename">contact-handler.js</span>
+              </div>
+              <div class="code-preview-body">
+                <div class="code-line"><span class="code-ln">1</span><span class="code-kw">const</span> <span class="code-var">payload</span> = <span class="code-fn">sanitize</span>(<span class="code-var">formData</span>);</div>
+                <div class="code-line"><span class="code-ln">2</span><span class="code-kw">const</span> <span class="code-var">err</span> = <span class="code-fn">validate</span>(<span class="code-var">payload</span>);</div>
+                <div class="code-line"><span class="code-ln">3</span><span class="code-kw">if</span> (<span class="code-var">err</span>) <span class="code-kw">return</span> <span class="code-fn">showError</span>(<span class="code-var">err</span>);</div>
+                <div class="code-line"><span class="code-ln">4</span><span class="code-kw">const</span> <span class="code-var">res</span> = <span class="code-kw">await</span> <span class="code-fn">post</span>(<span class="code-var">payload</span>);</div>
+                <div class="code-line"><span class="code-ln">5</span><span class="code-kw">return</span> <span class="code-var">res</span>.<span class="code-fn">ok</span> ? <span class="code-fn">showSuccess</span>() : <span class="code-fn">showError</span>();</div>
+              </div>
             </div>
           </div>
         </div>
@@ -173,23 +206,20 @@
     </section>
 
     <!-- SEO & Performance -->
-    <section style="padding: 4rem 0;">
+    <section class="ls-section" style="padding: 4rem 0;">
       <div class="container">
         <div class="service-detail" data-reveal>
           <div class="service-detail-content">
-            <h2 data-i18n="services_seo_h">SEO &amp; Performance</h2>
-            <p data-i18n="services_seo_p">Technische Optimierung für maximale Sichtbarkeit und Speed.</p>
-            <ul data-i18n-html="services_seo_list_html">
+            <span class="eyebrow">03 — SEO &amp; Performance</span>
+            <h2 data-i18n="services_seo_h">Sichtbar bei Google</h2>
+            <p data-i18n="services_seo_p">Technische Optimierung für maximale Reichweite. Wir sorgen dafür, dass deine Website gefunden wird – und schnell lädt.</p>
+            <ul class="ls-checks" data-i18n-html="services_seo_list_html">
               <li><strong>Technische Optimierung:</strong> Core Web Vitals erfüllt</li>
               <li><strong>Strukturierte Inhalte:</strong> Schema.org und Meta-Tags</li>
-              <li><strong>Schnelle Ladezeiten:</strong> Unter 3 Sekunden garantiert</li>
+              <li><strong>Schnelle Ladezeiten:</strong> Unter 2 Sekunden garantiert</li>
               <li><strong>Mobile-First:</strong> Google-konform optimiert</li>
               <li><strong>Analytics-Integration:</strong> Messbare Erfolge</li>
             </ul>
-            <div class="metric-inline">
-              <span class="metric-value-sm">1.2s</span>
-              <span class="metric-label-sm" data-i18n="services_metric_loadtime">Ladezeit</span>
-            </div>
             <a class="button button-primary" href="kontakt.html?project=seo" data-i18n="services_seo_cta">SEO anfragen</a>
           </div>
           <div class="service-detail-visual">
@@ -197,10 +227,26 @@
               <div class="perf-score">98</div>
               <div class="perf-label">Performance Score</div>
               <div class="perf-bars">
-                <div class="perf-bar" style="--w:98%"></div>
-                <div class="perf-bar" style="--w:95%"></div>
-                <div class="perf-bar" style="--w:100%"></div>
-                <div class="perf-bar" style="--w:92%"></div>
+                <div class="perf-bar-row">
+                  <span class="perf-bar-label">Performance</span>
+                  <div class="perf-bar" style="--w:98%;"></div>
+                  <span class="perf-bar-val">98</span>
+                </div>
+                <div class="perf-bar-row">
+                  <span class="perf-bar-label">Accessibility</span>
+                  <div class="perf-bar" style="--w:95%;"></div>
+                  <span class="perf-bar-val">95</span>
+                </div>
+                <div class="perf-bar-row">
+                  <span class="perf-bar-label">Best Practices</span>
+                  <div class="perf-bar" style="--w:100%;"></div>
+                  <span class="perf-bar-val">100</span>
+                </div>
+                <div class="perf-bar-row">
+                  <span class="perf-bar-label">SEO</span>
+                  <div class="perf-bar" style="--w:100%;"></div>
+                  <span class="perf-bar-val">100</span>
+                </div>
               </div>
             </div>
           </div>
@@ -209,13 +255,14 @@
     </section>
 
     <!-- KI-Assistent -->
-    <section style="padding: 4rem 0; background: var(--surface);">
+    <section class="ls-section" style="padding: 4rem 0; background: var(--surface);">
       <div class="container">
         <div class="service-detail service-detail-reverse" data-reveal>
           <div class="service-detail-content">
-            <h2 data-i18n="services_ki_h">KI-Assistent Integration</h2>
-            <p data-i18n="services_ki_p">Intelligente Automatisierung für 24/7 Kundenservice.</p>
-            <ul data-i18n-html="services_ai_list_html">
+            <span class="eyebrow">04 — KI-Assistent</span>
+            <h2 data-i18n="services_ki_h">KI arbeitet für dich</h2>
+            <p data-i18n="services_ki_p">Dein digitaler Mitarbeiter – rund um die Uhr verfügbar, immer höflich, nie krank. Der KI-Assistent beantwortet Fragen, qualifiziert Leads und schläft nie.</p>
+            <ul class="ls-checks" data-i18n-html="services_ai_list_html">
               <li><strong>24/7 Kundenberatung:</strong> Automatische Antworten rund um die Uhr</li>
               <li><strong>Lead-Qualifizierung:</strong> Vorqualifizierung von Anfragen</li>
               <li><strong>Automatische Antworten:</strong> FAQ und Produkterklärungen</li>
@@ -226,14 +273,21 @@
           </div>
           <div class="service-detail-visual">
             <div class="chat-widget-mini">
-              <div class="chat-header-mini">
-                <span class="chat-dot-mini" style="background: var(--accent);"></span>
-                <p data-i18n="services_ai_chat_bot">Wie kann ich helfen?</p>
+              <div class="chat-header-mini chat-header-mini--colored">
+                <span class="chat-status-dot"></span>
+                <p>MASE KI-Assistent</p>
+                <span class="chat-online-badge">Online</span>
               </div>
               <div class="chat-body-mini">
                 <div class="chat-message-mini bot" data-i18n="services_ai_chat_bot">Wie kann ich helfen?</div>
                 <div class="chat-message-mini user" data-i18n="services_ai_chat_user">Was sind die Preise?</div>
                 <div class="chat-message-mini bot" data-i18n="services_ai_chat_reply">Ab CHF 750. Soll ich Details zeigen?</div>
+              </div>
+              <div class="chat-input-mini">
+                <span class="chat-input-placeholder">Nachricht schreiben…</span>
+                <span class="chat-send-btn">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                </span>
               </div>
             </div>
           </div>
@@ -242,16 +296,19 @@
     </section>
 
     </div><!-- /.services#leistungen -->
-    <section class="cta-section" style="padding: 4rem 0;">
+
+    <section class="cta-section cta-section-dark" style="padding: 5rem 0;">
       <div class="container" data-reveal style="text-align: center;">
+        <span class="eyebrow" style="color: rgba(255,255,255,0.55);">Nächster Schritt</span>
         <h2 data-i18n="services_cta_title">Bereit für dein Projekt?</h2>
         <p class="lead" style="max-width: 600px; margin: 0 auto 2rem;" data-i18n="services_cta_lead">
           Lass uns gemeinsam deine perfekte Website-Lösung finden.
         </p>
         <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
           <a class="button button-primary" href="kontakt.html" data-i18n="services_cta_primary">Projekt starten</a>
-          <a class="button button-secondary" href="preise.html" data-i18n="services_cta_secondary">Preise ansehen</a>
+          <a class="button button-ghost" href="preise.html" data-i18n="services_cta_secondary">Preise ansehen</a>
         </div>
+        <p class="ls-cta-trust">Kostenloses Erstgespräch · Kein Risiko · Schweizer Qualität</p>
       </div>
     </section>
   </main>
