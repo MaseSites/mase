@@ -4187,3 +4187,109 @@ pre {
 .honeypot-field {
   display: none;
 }
+
+/* ============================================
+   DARK MODE v2 — comprehensive text & component fixes
+   Covers all sections with hardcoded light colors
+   ============================================ */
+
+/* --- Hero Benefit Card --- */
+.dark .hero-benefit-card {
+  background: linear-gradient(180deg, #1a2035 0%, #151c2e 100%);
+  border-color: rgba(96, 165, 250, 0.18);
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.5);
+  color: var(--text);
+}
+.dark .hero-benefit-badge {
+  background: rgba(96, 165, 250, 0.14);
+  color: var(--accent);
+  border-color: rgba(96, 165, 250, 0.28);
+}
+.dark .hero-benefit-title  { color: var(--text); }
+.dark .hero-benefit-subtitle { color: var(--text-muted); }
+.dark .hero-benefit-item {
+  background: rgba(22, 163, 74, 0.1);
+  border-color: rgba(22, 163, 74, 0.22);
+  color: var(--text);
+}
+.dark .hero-benefit-trust-item {
+  background: rgba(96, 165, 250, 0.1);
+  border-color: rgba(96, 165, 250, 0.22);
+  color: var(--accent);
+}
+.dark .hero-benefit-footer { border-top-color: rgba(96, 165, 250, 0.14); }
+.dark .hero-benefit-price  { color: var(--text); }
+
+/* --- Chat body & messages --- */
+.dark .chat-body { background: #0f1422; }
+.dark .chat-header { border-bottom-color: var(--line); }
+.dark .chat-header p  { color: var(--text); }
+.dark .chat-message.user {
+  background: rgba(96, 165, 250, 0.16);
+  border-color: rgba(96, 165, 250, 0.3);
+  color: var(--text);
+}
+.dark .chat-dot { background: #34d399; }
+
+/* --- AI section pills & chat extras --- */
+.dark .ai-trust-row span {
+  background: rgba(96, 165, 250, 0.1);
+  border-color: rgba(96, 165, 250, 0.24);
+  color: var(--accent);
+}
+.dark .ai-chat-pro { border-color: rgba(96, 165, 250, 0.2); }
+.dark .ai-chat-status {
+  color: #34d399;
+  background: rgba(6, 78, 59, 0.45);
+  border-color: rgba(52, 211, 153, 0.3);
+}
+.dark .ai-chat-benefits {
+  background: rgba(15, 20, 34, 0.9);
+  border-top-color: rgba(96, 165, 250, 0.14);
+}
+.dark .ai-chat-benefits p { color: var(--text-muted); }
+.dark .ai-list-product li { color: var(--text); }
+
+/* --- Process step icons --- */
+.dark .process-step-icon {
+  background: rgba(96, 165, 250, 0.12);
+  color: var(--accent);
+}
+
+/* --- Trust cards text (explicit for nested elements) --- */
+.dark .trust-card h3,
+.dark .trust-card p { color: var(--text); }
+
+/* --- lp-card in dark slider --- */
+.dark .lp-card {
+  background: var(--card-bg);
+  border-color: var(--line);
+}
+.dark .lp-card-domain { color: var(--accent); }
+.dark .lp-card-title  { color: var(--text); }
+.dark .lp-card-text,
+.dark .lp-card-list   { color: var(--text-muted); }
+.dark .lp-card-open   { color: var(--accent); }
+.dark .lp-dot-btn     { background: var(--line); }
+.dark .lp-dot-btn--active { background: var(--accent); }
+
+/* --- Code-proof copy text (complement flair backdrop) --- */
+.dark .code-proof-copy h2 { color: var(--text); }
+.dark .code-proof-copy .lead { color: var(--text-muted); }
+.dark .code-proof-points li  { color: var(--text-secondary); }
+
+/* --- Pricing teaser text --- */
+.dark .pricing-teaser h2 { color: var(--text); }
+.dark .pricing-teaser .lead { color: var(--text-muted); }
+
+/* --- Section backgrounds that use inline styles --- */
+.dark section[style*="background: var(--surface)"] { background: var(--surface) !important; }
+
+/* --- Smooth transition for all newly-covered elements --- */
+.dark .hero-benefit-card,
+.dark .ai-trust-row span,
+.dark .ai-chat-status,
+.dark .ai-chat-benefits,
+.dark .lp-card {
+  transition: background-color 400ms ease, border-color 400ms ease, color 400ms ease;
+}
