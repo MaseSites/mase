@@ -154,21 +154,45 @@
   <main id="main">
 
     <!-- Hero -->
-    <section class="hero">
-      <div class="container">
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="container hero-grid">
         <div class="hero-content" data-reveal>
           <p class="eyebrow" data-i18n="hero_eyebrow">Matteo &amp; Severin. MASESites AG.</p>
-          <h1 data-i18n="hero_title">Websites, die verkaufen.</h1>
+          <h1 id="hero-title" data-i18n="hero_title">Websites, die verkaufen.</h1>
           <p class="lead" data-i18n="hero_lead">Professionelle Weblösungen und KI-Integration für moderne Unternehmen.</p>
           <div class="button-group">
             <a class="button button-primary" href="kontakt.html" data-i18n="hero_cta_primary">Projekt starten</a>
-            <a class="button button-secondary" href="preise.html" data-i18n="hero_cta_secondary">Preise ansehen</a>
+            <a class="button button-ghost" href="preise.html" data-i18n="hero_cta_secondary">Preise ansehen</a>
           </div>
-          <div class="hero-badges">
+          <div class="hero-badges" aria-label="Vorteile">
             <span class="badge" data-i18n="badge_mobile">Mobile-first</span>
             <span class="badge" data-i18n="badge_seo">SEO-optimiert</span>
             <span class="badge" data-i18n="badge_ai">KI-Integration</span>
           </div>
+        </div>
+
+        <div class="hero-visual" data-reveal>
+          <article class="hero-benefit-card" aria-label="Vorteile einer Website mit MASESites">
+            <p class="hero-benefit-badge">Für Unternehmen, die online Kunden gewinnen wollen</p>
+            <h3 class="hero-benefit-title">Deine Website arbeitet für dich</h3>
+            <p class="hero-benefit-subtitle">Klar aufgebaut. Schnell geladen. Auf mehr Anfragen optimiert.</p>
+            <ul class="hero-benefit-list" aria-label="Kundenvorteile">
+              <li class="hero-benefit-item"><span class="hero-benefit-check" aria-hidden="true">✓</span><span>Mehr Vertrauen bei neuen Kunden</span></li>
+              <li class="hero-benefit-item"><span class="hero-benefit-check" aria-hidden="true">✓</span><span>Mehr Anfragen über deine Website</span></li>
+              <li class="hero-benefit-item"><span class="hero-benefit-check" aria-hidden="true">✓</span><span>Modern auf jedem Gerät</span></li>
+            </ul>
+            <div class="hero-benefit-trust" aria-label="Qualitätsmerkmale">
+              <span class="hero-benefit-trust-item">Mobile-first</span>
+              <span class="hero-benefit-trust-item">SEO-optimiert</span>
+              <span class="hero-benefit-trust-item">Schnelle Ladezeit</span>
+            </div>
+            <div class="hero-benefit-footer">
+              <div class="hero-benefit-pricing">
+                <p class="hero-benefit-price">Ab CHF 750</p>
+              </div>
+              <a class="hero-benefit-cta" href="kontakt.html" data-i18n="hero_cta_primary">Projekt starten</a>
+            </div>
+          </article>
         </div>
       </div>
     </section>
@@ -176,150 +200,251 @@
     <div data-mase-marquee></div>
 
     <!-- Warum MASE -->
-    <section class="trust-section" style="padding: 5rem 0;">
-      <div class="container">
-        <h2 style="text-align:center; margin-bottom: 2.5rem;" data-reveal data-i18n="trust_title">Warum MASE</h2>
-        <div class="values-grid" data-reveal>
-          <div class="trust-card">
+    <section class="trust" aria-labelledby="trust-title">
+      <div class="container" data-reveal>
+        <h2 id="trust-title" data-i18n="trust_title">Warum MASE</h2>
+        <div class="trust-grid">
+          <article class="trust-card">
             <h3 data-i18n="trust_speed">Schnell</h3>
             <p data-i18n="trust_speed_desc">Klare Prozesse, kurze Wege, schnelle Live-Schaltung.</p>
-          </div>
-          <div class="trust-card">
+          </article>
+          <article class="trust-card">
             <h3 data-i18n="trust_code">Sauberer Code</h3>
             <p data-i18n="trust_code_desc">Minimal, wartbar und für Performance optimiert.</p>
-          </div>
-          <div class="trust-card">
+          </article>
+          <article class="trust-card">
             <h3 data-i18n="trust_mobile">Mobile-first</h3>
             <p data-i18n="trust_mobile_desc">UX die auf jedem Screen sitzt. Keine Kompromisse.</p>
-          </div>
-          <div class="trust-card">
+          </article>
+          <article class="trust-card">
             <h3 data-i18n="trust_ki">KI-Integration</h3>
             <p data-i18n="trust_ki_desc">Assistenz, die Leads qualifiziert und Fragen klärt.</p>
-          </div>
+          </article>
         </div>
       </div>
     </section>
 
     <!-- Unser Ansatz -->
-    <section style="padding: 5rem 0; background: var(--surface);">
+    <section class="process" id="ansatz" aria-labelledby="approach-title">
       <div class="container">
         <div data-reveal style="text-align:center; margin-bottom: 3rem;">
-          <h2 data-i18n="process_title">Unser Ansatz</h2>
-          <p class="lead" data-i18n="process_lead">5 Schritte zum professionellen Ergebnis.</p>
+          <h2 id="approach-title" data-i18n="process_title">Unser Ansatz</h2>
+          <p class="lead" data-i18n="process_lead">5 klare Schritte vom Erstgespräch bis zur messbaren Wirkung.</p>
         </div>
-        <div class="process-grid" data-reveal>
+        <div class="process-grid process-grid-5" data-reveal>
           <div class="process-step">
+            <div class="process-step-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <circle cx="11" cy="11" r="6"></circle>
+                <line x1="16" y1="16" x2="21" y2="21"></line>
+              </svg>
+            </div>
             <span>01</span>
             <h3 data-i18n="process_1_title">Analyse &amp; Strategie</h3>
             <p data-i18n="process_1_desc">Wir analysieren dein Business, deine Zielgruppe und den Wettbewerb. Klare Ziele, klarer Plan.</p>
           </div>
           <div class="process-step">
+            <div class="process-step-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <path d="M8 7h8"></path>
+                <path d="M8 12h8"></path>
+                <path d="M8 17h5"></path>
+                <rect x="3" y="4" width="18" height="16" rx="3"></rect>
+              </svg>
+            </div>
             <span>02</span>
             <h3 data-i18n="process_2_title">Struktur &amp; UX-Planung</h3>
             <p data-i18n="process_2_desc">Seitenstruktur, Navigation und User Experience werden vor dem ersten Pixel geplant.</p>
           </div>
           <div class="process-step">
+            <div class="process-step-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <path d="M4 15l8-8 5 5-8 8H4v-5z"></path>
+                <path d="M14 7l3 3"></path>
+              </svg>
+            </div>
             <span>03</span>
             <h3 data-i18n="process_3_title">Modernes Design</h3>
             <p data-i18n="process_3_desc">Clean, professionell, verkaufsstark. Design das Vertrauen weckt und zum Handeln motiviert.</p>
           </div>
           <div class="process-step">
+            <div class="process-step-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <circle cx="12" cy="12" r="3.5"></circle>
+                <path d="M12 2v3"></path>
+                <path d="M12 19v3"></path>
+                <path d="M2 12h3"></path>
+                <path d="M19 12h3"></path>
+              </svg>
+            </div>
             <span>04</span>
             <h3 data-i18n="process_4_title">Saubere Entwicklung</h3>
             <p data-i18n="process_4_desc">Schneller, wartbarer Code. Mobile-first, SEO-ready und zukunftssicher gebaut.</p>
           </div>
           <div class="process-step">
+            <div class="process-step-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <path d="M5 19c2-4 6-8 10-10 0 0 2 4 0 8-2 4-6 6-10 7z"></path>
+                <path d="M9 15l-3 3"></path>
+              </svg>
+            </div>
             <span>05</span>
             <h3 data-i18n="process_5_title">Optimierung &amp; Skalierung</h3>
             <p data-i18n="process_5_desc">Nach dem Launch analysieren, optimieren und skalieren wir deinen digitalen Auftritt.</p>
           </div>
         </div>
+        <div class="process-cta-wrap" data-reveal>
+          <a class="button button-primary" href="kontakt.html" data-i18n="hero_cta_primary">Projekt starten</a>
+        </div>
       </div>
     </section>
 
-    <!-- Live-Vorschau -->
-    <section style="padding: 5rem 0;">
-      <div class="container">
-        <div data-reveal style="text-align:center; margin-bottom: 3rem;">
-          <h2 data-i18n="live_preview_title">Live-Vorschau – Beispielprojekte</h2>
-          <p class="lead" data-i18n="live_preview_subtitle">So könnten Websites unserer Kunden aussehen.</p>
+    <!-- Technische Qualität -->
+    <section class="code-proof" aria-labelledby="code-proof-title">
+      <div class="container code-proof-grid" data-reveal>
+        <div class="code-proof-copy">
+          <h2 id="code-proof-title">Technische Qualität, die man sieht</h2>
+          <p class="lead">Wir entwickeln nicht nur schöne Oberflächen, sondern auch saubere Systeme: wartbar, performant und auf Wachstum vorbereitet.</p>
+          <ul class="code-proof-points">
+            <li>Semantisches HTML für Struktur und SEO</li>
+            <li>Klare Komponenten statt chaotischer Einzellösungen</li>
+            <li>Saubere Formvalidierung und verlässliche API-Anbindung</li>
+          </ul>
         </div>
-        <div class="values-grid" data-reveal>
-          <a class="preview-card" href="demo/bowling-site/index.html" target="_blank" rel="noopener" style="text-decoration:none; color:inherit; display:block;">
-            <div class="preview-top">
-              <span></span><span></span><span></span>
-              <small style="margin-left:0.5rem; font-size:0.75rem; color:var(--text-muted);">strikezone.ch</small>
-            </div>
-            <div class="preview-body" style="background:#111; min-height:140px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:0.5rem;">
-              <span style="font-size:3rem;">🎳</span>
-              <p style="font-size:0.85rem; color:#f97316; font-weight:600;">Strike Zone</p>
-              <p style="font-size:0.8rem; color:#888;">Bowling Center</p>
-            </div>
-          </a>
-          <a class="preview-card" href="demo/praxis-site/index.html" target="_blank" rel="noopener" style="text-decoration:none; color:inherit; display:block;">
-            <div class="preview-top">
-              <span></span><span></span><span></span>
-              <small style="margin-left:0.5rem; font-size:0.75rem; color:var(--text-muted);">praxis-mueller.ch</small>
-            </div>
-            <div class="preview-body" style="background:#e8f0fb; min-height:140px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:0.5rem;">
-              <span style="font-size:3rem;">🏥</span>
-              <p style="font-size:0.85rem; color:#0051ba; font-weight:600;">Praxis Dr. Müller</p>
-              <p style="font-size:0.8rem; color:#64748b;">Arztpraxis</p>
-            </div>
-          </a>
-          <a class="preview-card" href="demo/doener-site/index.html" target="_blank" rel="noopener" style="text-decoration:none; color:inherit; display:block;">
-            <div class="preview-top">
-              <span></span><span></span><span></span>
-              <small style="margin-left:0.5rem; font-size:0.75rem; color:var(--text-muted);">kebab-palace.ch</small>
-            </div>
-            <div class="preview-body" style="background:#1a1a1a; min-height:140px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:0.5rem;">
-              <span style="font-size:3rem;">🌯</span>
-              <p style="font-size:0.85rem; color:#dc2626; font-weight:600;">Kebab Palace</p>
-              <p style="font-size:0.8rem; color:#888;">Restaurant</p>
-            </div>
-          </a>
-          <a class="preview-card" href="demo/nagelstudio-site/index.html" target="_blank" rel="noopener" style="text-decoration:none; color:inherit; display:block;">
-            <div class="preview-top">
-              <span></span><span></span><span></span>
-              <small style="margin-left:0.5rem; font-size:0.75rem; color:var(--text-muted);">nails-co.ch</small>
-            </div>
-            <div class="preview-body" style="background:#fdf2f8; min-height:140px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:0.5rem;">
-              <span style="font-size:3rem;">💅</span>
-              <p style="font-size:0.85rem; color:#be185d; font-weight:600;">Nails &amp; Co.</p>
-              <p style="font-size:0.8rem; color:#9d174d;">Nagelstudio</p>
-            </div>
-          </a>
+        <div class="code-proof-panel" aria-label="Beispiel einer strukturierten Codevorschau">
+          <div class="code-proof-header">
+            <span></span><span></span><span></span>
+            <p>mase-project/src/contact/submit-handler.js</p>
+          </div>
+          <pre class="code-proof-snippet"><code>const payload = sanitizeContactForm(formData);
+const validationError = validateContactPayload(payload);
+
+if (validationError) {
+  return showFormError(validationError);
+}
+
+const response = await postContactRequest(payload);
+return response.ok ? showSuccess() : showFormError(response.message);</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- Live-Vorschau Beispielprojekte -->
+    <section class="projects-slider" aria-labelledby="slider-title">
+      <div class="container">
+        <div data-reveal class="section-intro section-intro-centered">
+          <h2 id="slider-title" data-i18n="live_preview_title">Live Preview – Beispielprojekte</h2>
+          <p class="lead" data-i18n="live_preview_subtitle">So könnte dein nächster professioneller Webauftritt aussehen. Klicke auf ein Projekt für die Live-Vorschau.</p>
+        </div>
+
+        <div class="lp-slider" id="lp-slider" data-reveal>
+          <div class="lp-slide" role="group" aria-label="Slide 1 of 4">
+            <a class="lp-card lp-card-link" href="demo/bowling-site/index.html" target="_blank" rel="noopener" aria-label="Bowling Center live ansehen">
+              <p class="lp-card-domain">Freizeit &amp; Sport</p>
+              <h3 class="lp-card-title">Bowling Center</h3>
+              <p class="lp-card-text">Klares, modernes Layout mit Fokus auf Buchung und Events.</p>
+              <ul class="lp-card-list">
+                <li>Hero mit starker Message</li>
+                <li>Preisstruktur in wenigen Blöcken</li>
+                <li>Sichtbarer Reservieren-CTA</li>
+              </ul>
+              <span class="lp-card-open">Projekt öffnen</span>
+            </a>
+          </div>
+          <div class="lp-slide lp-slide--hidden" role="group" aria-label="Slide 2 of 4">
+            <a class="lp-card lp-card-link" href="demo/praxis-site/index.html" target="_blank" rel="noopener" aria-label="Praxis Website live ansehen">
+              <p class="lp-card-domain">Gesundheit &amp; Medizin</p>
+              <h3 class="lp-card-title">Praxis Website</h3>
+              <p class="lp-card-text">Seriöses Design mit ruhiger Typografie und klarer Navigation.</p>
+              <ul class="lp-card-list">
+                <li>Saubere Leistungsübersicht</li>
+                <li>Kontakt und Öffnungszeiten im Fokus</li>
+                <li>Termin-CTA klar platziert</li>
+              </ul>
+              <span class="lp-card-open">Projekt öffnen</span>
+            </a>
+          </div>
+          <div class="lp-slide lp-slide--hidden" role="group" aria-label="Slide 3 of 4">
+            <a class="lp-card lp-card-link" href="demo/doener-site/index.html" target="_blank" rel="noopener" aria-label="Dönerladen live ansehen">
+              <p class="lp-card-domain">Gastronomie</p>
+              <h3 class="lp-card-title">Dönerladen</h3>
+              <p class="lp-card-text">Konzentriert auf Speisekarte, Bestellung und Standortinfos.</p>
+              <ul class="lp-card-list">
+                <li>Kompakte Menüstruktur</li>
+                <li>Schnelle mobile Lesbarkeit</li>
+                <li>Direkter Bestell-Button</li>
+              </ul>
+              <span class="lp-card-open">Projekt öffnen</span>
+            </a>
+          </div>
+          <div class="lp-slide lp-slide--hidden" role="group" aria-label="Slide 4 of 4">
+            <a class="lp-card lp-card-link" href="demo/nagelstudio-site/index.html" target="_blank" rel="noopener" aria-label="Nagelstudio live ansehen">
+              <p class="lp-card-domain">Beauty &amp; Wellness</p>
+              <h3 class="lp-card-title">Nagelstudio</h3>
+              <p class="lp-card-text">Elegantes One-Page-Design mit Services, Galerie und Buchung.</p>
+              <ul class="lp-card-list">
+                <li>Klare Service-Kategorien</li>
+                <li>Stimmige Preisdarstellung</li>
+                <li>Termin-CTA ohne Ablenkung</li>
+              </ul>
+              <span class="lp-card-open">Projekt öffnen</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="lp-dots" id="lp-dots" role="tablist" aria-label="Slide navigation">
+          <button class="lp-dot-btn lp-dot-btn--active" role="tab" aria-selected="true" aria-label="Slide 1" data-lp-index="0"></button>
+          <button class="lp-dot-btn" role="tab" aria-selected="false" aria-label="Slide 2" data-lp-index="1"></button>
+          <button class="lp-dot-btn" role="tab" aria-selected="false" aria-label="Slide 3" data-lp-index="2"></button>
+          <button class="lp-dot-btn" role="tab" aria-selected="false" aria-label="Slide 4" data-lp-index="3"></button>
         </div>
       </div>
     </section>
 
     <!-- KI-Integration Teaser -->
-    <section style="padding: 5rem 0; background: var(--surface);">
-      <div class="container">
-        <div class="ai-grid" data-reveal>
-          <div class="ai-copy">
-            <h2 data-i18n="ai_title">KI-Integration – Dein digitaler Mitarbeiter</h2>
-            <p data-i18n="ai_desc">Unser KI-Assistent arbeitet 24/7 für dich: beantwortet Kundenfragen, sammelt Leads, qualifiziert Anfragen und erklärt deine Produkte oder Services.</p>
-            <ul class="feature-list">
-              <li data-i18n="ai_feature_1">Automatische Kundenberatung</li>
-              <li data-i18n="ai_feature_2">Lead-Qualifizierung in Echtzeit</li>
-              <li data-i18n="ai_feature_3">Individuell mit deinen Inhalten trainierbar</li>
-            </ul>
-            <a class="button button-primary" href="ki-assistent.html" data-i18n="ai_link">KI-Assistent entdecken</a>
+    <section class="ai" id="ki-teaser" aria-labelledby="ai-title">
+      <div class="container ai-grid">
+        <div class="ai-copy" data-reveal>
+          <h2 id="ai-title" data-i18n="ai_title">KI-Integration – dein digitaler Mitarbeiter</h2>
+          <p data-i18n="ai_desc">Unser KI-Assistent arbeitet 24/7 für dich: beantwortet Kundenfragen, sammelt Leads, qualifiziert Anfragen und erklärt deine Produkte oder Services.</p>
+          <ul class="ai-list ai-list-product">
+            <li data-i18n="ai_feature_1">Automatische Kundenberatung in Echtzeit</li>
+            <li data-i18n="ai_feature_2">Lead-Qualifizierung mit Übergabe an dein Team</li>
+            <li data-i18n="ai_feature_3">Auf deine Leistungen und Tonalität trainiert</li>
+          </ul>
+          <div class="ai-trust-row" aria-label="KI-Nutzen auf einen Blick">
+            <span>Für KMU und Dienstleister</span>
+            <span>Antworten in Sekunden</span>
+            <span>Setup ab CHF 200</span>
           </div>
-          <div class="chat-widget">
+          <div class="button-group ai-cta-row">
+            <a class="button button-primary" href="ki-assistent.html" data-i18n="ai_link">KI-Assistent entdecken</a>
+            <a class="button button-ghost" href="kontakt.html" data-i18n="nav_cta">Kostenloses Erstgespräch</a>
+          </div>
+        </div>
+
+        <div class="ai-demo" data-reveal>
+          <div class="chat-widget ai-chat-pro" role="img" aria-label="Beispiel für einen KI-Chat">
             <div class="chat-header">
-              <span class="chat-dot" style="background: var(--accent);"></span>
-              <p style="margin:0; font-size:0.9rem; font-weight:600; margin-left:0.5rem;">MASE KI-Assistent</p>
+              <span class="chat-dot"></span>
+              <p>MASESites KI-Assistent</p>
+              <span class="ai-chat-status">Online</span>
             </div>
             <div class="chat-body">
               <div class="chat-message bot" data-i18n="ai_chat_1">Hallo! Wie kann ich dir helfen?</div>
               <div class="chat-message user" data-i18n="ai_chat_2">Was kostet eine Website?</div>
-              <div class="chat-message bot" data-i18n="ai_chat_3">Ab CHF 750. Soll ich mehr erklären?</div>
+              <div class="chat-message bot" data-i18n="ai_chat_3">Starter ab CHF 750. Finale Offerte nach kurzem Call.</div>
+              <div class="chat-message user">Könnt ihr einen Termin einrichten?</div>
+              <div class="chat-message bot">Klar. Hinterlasse kurz deine Kontaktdaten, ich melde mich.</div>
             </div>
             <div class="chat-input">
-              <input type="text" placeholder="Deine Frage..." aria-label="Chatfrage" disabled>
-              <button class="chat-send" disabled>&#8594;</button>
+              <span>Nachricht schreiben...</span>
+              <span class="chat-send">Senden</span>
+            </div>
+            <div class="ai-chat-benefits">
+              <p><strong>Leads:</strong> automatisch vorqualifiziert</p>
+              <p><strong>Verfügbarkeit:</strong> 24/7 ohne Wartezeit</p>
+              <p><strong>Kosten:</strong> CHF 200 Setup + CHF 40 / Monat</p>
             </div>
           </div>
         </div>
@@ -327,23 +452,14 @@
     </section>
 
     <!-- Preise Teaser -->
-    <section style="padding: 5rem 0;">
-      <div class="container" data-reveal style="text-align: center; max-width: 700px;">
-        <h2 data-i18n="pricing_teaser">Transparente Preise</h2>
-        <p class="lead" data-i18n="pricing_teaser_lead">Von der Überarbeitung bis zur kompletten Website – modulare Pakete ab CHF 250.</p>
-        <div style="display: flex; gap: 1rem; justify-content: center; margin-top: 2rem; flex-wrap: wrap;">
+    <section class="pricing-teaser" id="preise-teaser" aria-labelledby="pricing-teaser-title">
+      <div class="container pricing-teaser-inner" data-reveal>
+        <h2 id="pricing-teaser-title" data-i18n="pricing_teaser">Transparente Preise</h2>
+        <p class="lead pricing-teaser-lead" data-i18n="pricing_teaser_lead">Von der Überarbeitung bis zur kompletten Website – modulare Pakete ab CHF 250.</p>
+        <div class="button-group" style="justify-content:center;">
           <a class="button button-primary" href="preise.html" data-i18n="pricing_teaser_link">Alle Preise ansehen</a>
-          <a class="button button-secondary" href="kontakt.html" data-i18n="nav_cta">Kostenloses Erstgespräch</a>
+          <a class="button button-ghost" href="kontakt.html" data-i18n="nav_cta">Kostenloses Erstgespräch</a>
         </div>
-      </div>
-    </section>
-
-    <!-- Final CTA -->
-    <section class="cta-section" style="background: var(--surface); padding: 5rem 0;">
-      <div class="container" data-reveal style="text-align: center; max-width: 700px;">
-        <h2 data-i18n="services_cta_title">Bereit für dein Projekt?</h2>
-        <p class="lead" data-i18n="services_cta_lead">Lass uns gemeinsam deine perfekte Website-Lösung finden.</p>
-        <a class="button button-primary" href="kontakt.html" style="margin-top: 2rem;" data-i18n="hero_cta_primary">Projekt starten</a>
       </div>
     </section>
 
