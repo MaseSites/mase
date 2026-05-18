@@ -4269,14 +4269,27 @@ pre {
 .dark .lp-card-title  { color: var(--text); }
 .dark .lp-card-text,
 .dark .lp-card-list   { color: var(--text-muted); }
-.dark .lp-card-open   { color: var(--accent); }
-.dark .lp-dot-btn     { background: var(--line); }
+.dark .lp-card-open {
+  color: var(--accent);
+  background: rgba(96, 165, 250, 0.1);
+  border-color: rgba(96, 165, 250, 0.28);
+}
+.dark .lp-card-link:hover .lp-card-open {
+  background: rgba(96, 165, 250, 0.18);
+  border-color: rgba(96, 165, 250, 0.45);
+}
+.dark .lp-dot-btn { background: var(--line); }
 .dark .lp-dot-btn--active { background: var(--accent); }
 
-/* --- Code-proof copy text (complement flair backdrop) --- */
+/* --- Code-proof: fix hardcoded borders + copy text --- */
+.dark .code-proof {
+  border-top-color: rgba(255, 255, 255, 0.06);
+  border-bottom-color: rgba(255, 255, 255, 0.06);
+}
 .dark .code-proof-copy h2 { color: var(--text); }
 .dark .code-proof-copy .lead { color: var(--text-muted); }
 .dark .code-proof-points li  { color: var(--text-secondary); }
+.dark .code-proof-points li::before { background: var(--accent); }
 
 /* --- Pricing teaser text --- */
 .dark .pricing-teaser h2 { color: var(--text); }
