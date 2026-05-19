@@ -260,6 +260,7 @@
   position: relative;
   display: flex;
   align-items: center;
+  isolation: isolate;
 }
 .lang-btn {
   display: flex;
@@ -285,16 +286,14 @@
 }
 .lang-dropdown {
   display: none;
-  position: absolute;
-  top: calc(100% + 8px);
-  right: 0;
+  position: fixed;
   background: var(--nav-bg, white);
   border: 1px solid var(--line);
   border-radius: var(--radius-sm);
   box-shadow: var(--shadow);
-  min-width: 100px;
+  min-width: 120px;
   overflow: hidden;
-  z-index: 200;
+  z-index: 99998;
 }
 .lang-dropdown.open { display: block; }
 .lang-option {
