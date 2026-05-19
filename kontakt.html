@@ -59,28 +59,28 @@
     <span class="mase-spray__blob s5"></span>
     <span class="mase-spray__blob s6"></span>
   </div>
-  <a class="skip-link" href="#main">Zum Inhalt springen</a>
+  <a class="skip-link" href="#main" data-i18n="skip_to_content">Zum Inhalt springen</a>
 
   <header class="site-header">
     <div class="container header-inner">
       <a class="logo" href="index.html">MASE</a>
       <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
-        <span class="sr-only">Navigation öffnen</span>
+        <span class="sr-only" data-i18n="nav_toggle">Navigation öffnen</span>
         <span class="nav-toggle-bar"></span>
         <span class="nav-toggle-bar"></span>
       </button>
       <nav class="site-nav" id="site-nav">
-        <a href="index.html">Home</a>
-        <a href="leistungen.html">Leistungen</a>
-        <a href="preise.html">Preise</a>
-        <a href="ki-assistent.html">KI Assistent</a>
-        <a href="ueber-uns.html">Über uns</a>
-        <a href="kontakt.html" class="nav-active">Kontakt</a>
-        <a class="button button-primary button-small" href="kontakt.html">Kostenloses Erstgespräch</a>
+        <a href="index.html" data-i18n="nav_home">Home</a>
+        <a href="leistungen.html" data-i18n="nav_services">Leistungen</a>
+        <a href="preise.html" data-i18n="nav_prices">Preise</a>
+        <a href="ki-assistent.html" data-i18n="nav_ai">KI Assistent</a>
+        <a href="ueber-uns.html" data-i18n="nav_about">Über uns</a>
+        <a href="kontakt.html" class="nav-active" data-i18n="nav_contact">Kontakt</a>
+        <a class="button button-primary button-small" href="kontakt.html" data-i18n="nav_cta">Kostenloses Erstgespräch</a>
       </nav>
       <div class="header-controls">
         <div class="lang-switcher" id="lang-switcher">
-          <button class="lang-btn" id="lang-btn" aria-haspopup="true" aria-expanded="false" aria-label="Sprache wählen">
+          <button class="lang-btn" id="lang-btn" aria-haspopup="true" aria-expanded="false" aria-label="Sprache wählen" data-i18n-aria-label="lang_select_aria">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
             <span id="lang-current">DE</span>
           </button>
@@ -89,7 +89,7 @@
             <button class="lang-option" data-lang="en">🇬🇧 English</button>
           </div>
         </div>
-        <button class="dark-toggle" id="dark-toggle" aria-label="Dark Mode umschalten">
+        <button class="dark-toggle" id="dark-toggle" aria-label="Dark Mode umschalten" data-i18n-aria-label="theme_toggle_aria">
           <span class="dark-toggle-icon" id="dark-toggle-icon">🌙</span>
           <span class="dark-toggle-track"><span class="dark-toggle-thumb"></span></span>
         </button>
@@ -102,13 +102,13 @@
     <!-- HERO -->
     <section class="ktk-hero">
       <div class="container ktk-hero-inner" data-reveal>
-        <p class="ktk-hero-eyebrow">✉ Kostenlose Erstberatung</p>
-        <h1>Dein Projekt<br>startet <span class="accent-gradient">jetzt</span></h1>
-        <p class="lead">Erzähl uns von deiner Idee — wir melden uns innerhalb von 24 Stunden mit einem konkreten Vorschlag.</p>
+        <p class="ktk-hero-eyebrow" data-i18n="ktk_hero_eyebrow">✉ Kostenlose Erstberatung</p>
+        <h1 data-i18n-html="ktk_hero_title_html">Dein Projekt<br>startet <span class="accent-gradient">jetzt</span></h1>
+        <p class="lead" data-i18n="ktk_hero_lead">Erzähl uns von deiner Idee — wir melden uns innerhalb von 24 Stunden mit einem konkreten Vorschlag.</p>
         <div class="ktk-hero-badges">
-          <span class="ktk-hero-badge">✓ Antwort in 24h</span>
-          <span class="ktk-hero-badge">✓ Kostenloses Erstgespräch</span>
-          <span class="ktk-hero-badge">✓ Kein Risiko</span>
+          <span class="ktk-hero-badge" data-i18n="ktk_badge_1">✓ Antwort in 24h</span>
+          <span class="ktk-hero-badge" data-i18n="ktk_badge_2">✓ Kostenloses Erstgespräch</span>
+          <span class="ktk-hero-badge" data-i18n="ktk_badge_3">✓ Kein Risiko</span>
         </div>
       </div>
     </section>
@@ -120,8 +120,8 @@
 
           <!-- Left info panel -->
           <div class="ktk-info">
-            <p class="ktk-info-label">Direkter Kontakt</p>
-            <h2 class="ktk-info-heading">Schreib uns an</h2>
+            <p class="ktk-info-label" data-i18n="ktk_info_label">Direkter Kontakt</p>
+            <h2 class="ktk-info-heading" data-i18n="ktk_info_heading">Schreib uns an</h2>
             <a class="ktk-info-email" href="mailto:info@masesites.ch">
               info@masesites.ch
             </a>
@@ -130,35 +130,35 @@
               <div class="ktk-trust-item">
                 <span class="ktk-trust-check">⚡</span>
                 <div class="ktk-trust-text">
-                  <strong>Schnelle Antwort</strong>
-                  Wir melden uns innerhalb von 24 Stunden — garantiert.
+                  <strong data-i18n="ktk_trust_1_title">Schnelle Antwort</strong>
+                  <span data-i18n="ktk_trust_1_desc">Wir melden uns innerhalb von 24 Stunden — garantiert.</span>
                 </div>
               </div>
               <div class="ktk-trust-item">
                 <span class="ktk-trust-check">🎯</span>
                 <div class="ktk-trust-text">
-                  <strong>Kostenlose Beratung</strong>
-                  Erstes Gespräch ohne Verpflichtung und ohne versteckte Kosten.
+                  <strong data-i18n="ktk_trust_2_title">Kostenlose Beratung</strong>
+                  <span data-i18n="ktk_trust_2_desc">Erstes Gespräch ohne Verpflichtung und ohne versteckte Kosten.</span>
                 </div>
               </div>
               <div class="ktk-trust-item">
                 <span class="ktk-trust-check">🔒</span>
                 <div class="ktk-trust-text">
-                  <strong>DSGVO-konform</strong>
-                  Deine Daten sind sicher. Keine Weitergabe an Dritte.
+                  <strong data-i18n="ktk_trust_3_title">DSGVO-konform</strong>
+                  <span data-i18n="ktk_trust_3_desc">Deine Daten sind sicher. Keine Weitergabe an Dritte.</span>
                 </div>
               </div>
               <div class="ktk-trust-item">
                 <span class="ktk-trust-check">🇨🇭</span>
                 <div class="ktk-trust-text">
-                  <strong>Aus der Schweiz</strong>
-                  Schweizer Qualität und Zuverlässigkeit — persönlich und direkt.
+                  <strong data-i18n="ktk_trust_4_title">Aus der Schweiz</strong>
+                  <span data-i18n="ktk_trust_4_desc">Schweizer Qualität und Zuverlässigkeit — persönlich und direkt.</span>
                 </div>
               </div>
             </div>
             <div class="ktk-response">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0;opacity:0.8"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-              Antwortzeit: durchschnittlich <strong style="color:white; margin-left:0.2rem;">unter 4 Stunden</strong>
+              <span data-i18n-html="ktk_response_html">Antwortzeit: durchschnittlich <strong style="color:white; margin-left:0.2rem;">unter 4 Stunden</strong></span>
             </div>
           </div>
 
@@ -168,13 +168,13 @@
             <!-- Pre-fill banner (shown when coming from preise.html) -->
             <div class="ktk-prefill-banner" id="ktk-prefill-banner" style="display:none">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0;margin-top:1px"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
-              <span>Paket-Konfiguration übernommen — ergänze deine Kontaktdaten und sende die Anfrage ab.</span>
+              <span data-i18n="ktk_prefill_banner">Paket-Konfiguration übernommen — ergänze deine Kontaktdaten und sende die Anfrage ab.</span>
             </div>
 
             <!-- Error banner -->
             <div class="ktk-error-banner" id="ktk-error-banner" role="alert">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0;margin-top:1px"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-              <span id="ktk-error-text">Es ist ein Fehler aufgetreten. Bitte versuche es erneut oder schreib uns direkt an <a href="mailto:info@masesites.ch">info@masesites.ch</a>.</span>
+              <span id="ktk-error-text" data-i18n-html="ktk_error_html">Es ist ein Fehler aufgetreten. Bitte versuche es erneut oder schreib uns direkt an <a href="mailto:info@masesites.ch">info@masesites.ch</a>.</span>
             </div>
 
             <form id="contact-form" novalidate>
@@ -186,45 +186,45 @@
 
               <div class="ktk-form-row">
                 <div class="ktk-form-group" id="fg-name">
-                  <label for="name">Name *</label>
-                  <input class="ktk-input" type="text" id="name" name="name" required autocomplete="name" placeholder="Max Muster">
-                  <p class="ktk-field-error" id="err-name">Bitte gib deinen Namen ein.</p>
+                  <label for="name" data-i18n="ktk_label_name">Name *</label>
+                  <input class="ktk-input" type="text" id="name" name="name" required autocomplete="name" placeholder="Max Muster" data-i18n-placeholder="ktk_placeholder_name">
+                  <p class="ktk-field-error" id="err-name" data-i18n="ktk_err_name">Bitte gib deinen Namen ein.</p>
                 </div>
                 <div class="ktk-form-group" id="fg-email">
-                  <label for="email">E-Mail *</label>
-                  <input class="ktk-input" type="email" id="email" name="email" required autocomplete="email" placeholder="max@firma.ch">
-                  <p class="ktk-field-error" id="err-email">Bitte gib eine gültige E-Mail ein.</p>
+                  <label for="email" data-i18n="ktk_label_email">E-Mail *</label>
+                  <input class="ktk-input" type="email" id="email" name="email" required autocomplete="email" placeholder="max@firma.ch" data-i18n-placeholder="ktk_placeholder_email">
+                  <p class="ktk-field-error" id="err-email" data-i18n="ktk_err_email">Bitte gib eine gültige E-Mail ein.</p>
                 </div>
               </div>
 
               <div class="ktk-form-row">
                 <div class="ktk-form-group">
-                  <label for="company">Firma <span style="font-weight:400;opacity:0.6">(optional)</span></label>
-                  <input class="ktk-input" type="text" id="company" name="company" autocomplete="organization" placeholder="Firma AG">
+                  <label for="company" data-i18n-html="ktk_label_company_html">Firma <span style="font-weight:400;opacity:0.6">(optional)</span></label>
+                  <input class="ktk-input" type="text" id="company" name="company" autocomplete="organization" placeholder="Firma AG" data-i18n-placeholder="ktk_placeholder_company">
                 </div>
                 <div class="ktk-form-group">
-                  <label for="project">Projektart</label>
+                  <label for="project" data-i18n="ktk_label_project">Projektart</label>
                   <select class="ktk-select ktk-input" id="project" name="project">
-                    <option value="">Bitte wählen...</option>
-                    <option value="new-website">Neue Website</option>
-                    <option value="revision">Website Überarbeitung</option>
-                    <option value="ai">KI-Assistent Integration</option>
-                    <option value="seo">SEO &amp; Performance</option>
-                    <option value="consulting">Beratung</option>
-                    <option value="other">Sonstiges</option>
+                    <option value="" data-i18n="contact_page_project_select">Bitte wählen...</option>
+                    <option value="new-website" data-i18n="contact_page_project_new">Neue Website</option>
+                    <option value="revision" data-i18n="contact_page_project_revision">Website Überarbeitung</option>
+                    <option value="ai" data-i18n="contact_page_project_ai">KI-Assistent Integration</option>
+                    <option value="seo" data-i18n="contact_page_project_seo">SEO &amp; Performance</option>
+                    <option value="consulting" data-i18n="contact_page_project_consulting">Beratung</option>
+                    <option value="other" data-i18n="contact_page_project_other">Sonstiges</option>
                   </select>
                 </div>
               </div>
 
               <div class="ktk-form-group" id="fg-message">
-                <label for="message">Nachricht * <span class="ktk-char-count" id="char-count" style="float:right; font-weight:400">0 / 2000</span></label>
-                <textarea class="ktk-textarea" id="message" name="message" rows="5" required maxlength="2000" placeholder="Erzähl uns von deinem Projekt — Ziele, Zeitplan, Budget..."></textarea>
-                <p class="ktk-field-error" id="err-message">Bitte schreib uns eine kurze Nachricht.</p>
+                <label for="message"><span data-i18n="ktk_label_message">Nachricht *</span> <span class="ktk-char-count" id="char-count" style="float:right; font-weight:400">0 / 2000</span></label>
+                <textarea class="ktk-textarea" id="message" name="message" rows="5" required maxlength="2000" placeholder="Erzähl uns von deinem Projekt — Ziele, Zeitplan, Budget..." data-i18n-placeholder="ktk_placeholder_message"></textarea>
+                <p class="ktk-field-error" id="err-message" data-i18n="ktk_err_message">Bitte schreib uns eine kurze Nachricht.</p>
               </div>
 
               <div class="ktk-privacy">
                 <input type="checkbox" id="privacy-checkbox" name="privacy" required>
-                <label for="privacy-checkbox">
+                <label for="privacy-checkbox" data-i18n-html="ktk_privacy_html">
                   Ich habe die <a href="datenschutz.html">Datenschutzerklärung</a> gelesen und akzeptiere sie. *
                 </label>
               </div>
@@ -232,13 +232,13 @@
               <button type="submit" class="ktk-submit" id="ktk-submit">
                 <div class="ktk-submit-spinner"></div>
                 <span class="ktk-submit-label" style="display:flex;align-items:center;gap:0.5rem;">
-                  Anfrage absenden
+                  <span data-i18n="ktk_submit">Anfrage absenden</span>
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
                 </span>
               </button>
 
               <p class="ktk-mailto-fallback" style="text-align:center; margin-top:1rem;">
-                Oder direkt per E-Mail: <a href="mailto:info@masesites.ch">info@masesites.ch</a>
+                <span data-i18n="ktk_mailto_text">Oder direkt per E-Mail:</span> <a href="mailto:info@masesites.ch">info@masesites.ch</a>
               </p>
             </form>
 
@@ -249,10 +249,10 @@
                   <polyline points="20 6 9 17 4 12"></polyline>
                 </svg>
               </div>
-              <h2>Anfrage gesendet!</h2>
-              <p>Danke für deine Nachricht. Wir melden uns innerhalb von 24 Stunden bei dir — meistens schon früher.</p>
+              <h2 data-i18n="ktk_success_title">Anfrage gesendet!</h2>
+              <p data-i18n="ktk_success_text">Danke für deine Nachricht. Wir melden uns innerhalb von 24 Stunden bei dir — meistens schon früher.</p>
               <p class="ktk-mailto-fallback" style="margin-top:1.2rem;">
-                Keine E-Mail erhalten? Schreib direkt an <a href="mailto:info@masesites.ch">info@masesites.ch</a>
+                <span data-i18n="ktk_success_fallback_text">Keine E-Mail erhalten? Schreib direkt an</span> <a href="mailto:info@masesites.ch">info@masesites.ch</a>
               </p>
             </div>
 
@@ -267,28 +267,28 @@
     <div class="container footer-grid">
       <div>
         <p class="footer-brand">MASE</p>
-        <p class="footer-desc">Professionelle Websites &amp; KI-Integration aus der Schweiz.</p>
+        <p class="footer-desc" data-i18n="footer_desc">Professionelle Websites &amp; KI-Integration aus der Schweiz.</p>
       </div>
       <div>
-        <p class="footer-title">Navigation</p>
-        <a href="index.html">Home</a>
-        <a href="leistungen.html">Leistungen</a>
-        <a href="preise.html">Preise</a>
-        <a href="ki-assistent.html">KI Assistent</a>
+        <p class="footer-title" data-i18n="footer_nav">Navigation</p>
+        <a href="index.html" data-i18n="nav_home">Home</a>
+        <a href="leistungen.html" data-i18n="nav_services">Leistungen</a>
+        <a href="preise.html" data-i18n="nav_prices">Preise</a>
+        <a href="ki-assistent.html" data-i18n="nav_ai">KI Assistent</a>
       </div>
       <div>
-        <p class="footer-title">Kontakt</p>
-        <a href="kontakt.html">Kontaktformular</a>
-        <a href="ueber-uns.html">Über uns</a>
+        <p class="footer-title" data-i18n="footer_contact">Kontakt</p>
+        <a href="kontakt.html" data-i18n="footer_contact_form">Kontaktformular</a>
+        <a href="ueber-uns.html" data-i18n="nav_about">Über uns</a>
       </div>
       <div>
-        <p class="footer-title">Rechtliches</p>
-        <a href="impressum.html">Impressum</a>
-        <a href="datenschutz.html">Datenschutz</a>
+        <p class="footer-title" data-i18n="footer_legal">Rechtliches</p>
+        <a href="impressum.html" data-i18n="footer_impressum">Impressum</a>
+        <a href="datenschutz.html" data-i18n="footer_privacy">Datenschutz</a>
       </div>
     </div>
     <div class="container footer-bottom">
-      <p>Copyright <span id="year"></span> MASESites AG. Alle Rechte vorbehalten.</p>
+      <p>Copyright <span id="year"></span> MASESites AG. <span data-i18n="footer_copy">Alle Rechte vorbehalten.</span></p>
     </div>
   </footer>
 
