@@ -1680,6 +1680,13 @@
     });
   }
 
+  function positionDropdown(langBtn, dropdown) {
+    var rect = langBtn.getBoundingClientRect();
+    dropdown.style.top  = (rect.bottom + 8) + 'px';
+    dropdown.style.right = (window.innerWidth - rect.right) + 'px';
+    dropdown.style.left  = 'auto';
+  }
+
   function initLanguage() {
     var langBtn = document.getElementById('lang-btn');
     var dropdown = document.getElementById('lang-dropdown');
@@ -1690,16 +1697,30 @@
 
     if (langBtn.dataset.bound !== 'true') {
       langBtn.dataset.bound = 'true';
+
       langBtn.addEventListener('click', function (e) {
         e.stopPropagation();
-        var open = dropdown.classList.toggle('open');
-        langBtn.setAttribute('aria-expanded', String(open));
+        var isOpen = dropdown.classList.contains('open');
+        if (!isOpen) {
+          positionDropdown(langBtn, dropdown);
+          dropdown.classList.add('open');
+          langBtn.setAttribute('aria-expanded', 'true');
+        } else {
+          dropdown.classList.remove('open');
+          langBtn.setAttribute('aria-expanded', 'false');
+        }
       });
 
       document.addEventListener('click', function () {
         if (dropdown.classList.contains('open')) {
           dropdown.classList.remove('open');
           langBtn.setAttribute('aria-expanded', 'false');
+        }
+      });
+
+      window.addEventListener('resize', function () {
+        if (dropdown.classList.contains('open')) {
+          positionDropdown(langBtn, dropdown);
         }
       });
 
