@@ -51,7 +51,9 @@
       document.documentElement.lang = (lang === 'de' ? 'de-CH' : 'en');
     })();
   </script>
-  <script defer src="/theme.js?v=20260327"></script>
+    <script src="/supabase-config.js"></script>
+  <script src="/tracker.js"></script>
+<script defer src="/theme.js?v=20260327"></script>
   <script defer src="/script.js?v=20260327"></script>
   <script defer src="/ai-assistant.js?v=20260327"></script>
   <script defer src="/mase-animations.js?v=20260516"></script>
@@ -476,6 +478,31 @@
         wrap.innerHTML = '<div class="ki-msg-bubble">' + text + '</div>';
         body.appendChild(wrap);
         body.scrollTop = body.scrollHeight;
+
+        // Log demo chat interaction to Supabase
+        var cfg = window.MASE_SUPABASE;
+        if (cfg && cfg.url && cfg.url.indexOf('PASTE_') !== 0) {
+          var sid = (window.MASE_TRACK && window.MASE_TRACK.sessionId) ||
+                    sessionStorage.getItem('mase_sid') || 'ki-demo';
+          fetch(cfg.url + '/rest/v1/mase_chat_messages', {
+            method: 'POST',
+            headers: {
+              'Content-Type':  'application/json',
+              'apikey':        cfg.anonKey,
+              'Authorization': 'Bearer ' + cfg.anonKey,
+              'Prefer':        'return=minimal'
+            },
+            body: JSON.stringify({
+              session_id: sid,
+              role:       type === 'user' ? 'user' : 'bot',
+              message:    text.slice(0, 500),
+              page_url:   'ki-assistent.html',
+              page_title: document.title,
+              language:   lang
+            }),
+            keepalive: true
+          }).catch(function(){});
+        }
       }
 
       function showTyping() {

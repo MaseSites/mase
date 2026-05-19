@@ -3,9 +3,37 @@
 // ============================================
 
 // OpenAI API Configuration
-const OPENAI_API_KEY = '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';
+const OPENAI_API_KEY = '';
 const OPENAI_MODEL = 'gpt-4';
-const USE_OPENAI = false; // Setze auf true wenn API Key gültig ist
+const USE_OPENAI = false;
+
+// ---- Supabase logging helper ----
+function maseLog(table, payload) {
+  var cfg = window.MASE_SUPABASE;
+  if (!cfg || !cfg.url || cfg.url.indexOf('PASTE_') === 0) return;
+  fetch(cfg.url + '/rest/v1/' + table, {
+    method:  'POST',
+    headers: {
+      'Content-Type':  'application/json',
+      'apikey':        cfg.anonKey,
+      'Authorization': 'Bearer ' + cfg.anonKey,
+      'Prefer':        'return=minimal'
+    },
+    body: JSON.stringify(payload),
+    keepalive: true
+  }).catch(function () {});
+}
+
+function maseSessionId() {
+  if (window.MASE_TRACK) return window.MASE_TRACK.sessionId;
+  var key = 'mase_sid';
+  var sid = sessionStorage.getItem(key);
+  if (!sid) {
+    sid = 'sess_' + Date.now() + '_' + Math.random().toString(36).slice(2,9);
+    sessionStorage.setItem(key, sid);
+  }
+  return sid;
+}
 
 class MASEAssistant {
   constructor() {
@@ -431,11 +459,25 @@ ANTWORTEN
 
     this.conversationHistory.push({ role: 'user', message });
     this.saveConversationToStorage();
+
+    // Log to Supabase
+    maseLog('mase_chat_messages', {
+      session_id: maseSessionId(),
+      role:       'user',
+      message:    message,
+      page_url:   location.pathname.replace(/^\//, '') || 'index.html',
+      page_title: document.title,
+      language:   localStorage.getItem('lang') || 'de'
+    });
+
+    // Detect lead intent and log keywords
+    this._detectLeadIntent(message);
   }
 
   sendBotMessage(message, delay = 0) {
     setTimeout(() => {
       const messagesContainer = document.getElementById('ai-chat-messages');
+      const plain = message.replace(/<[^>]+>/g, '').trim(); // strip HTML for logging
       const messageHTML = `
         <div class="ai-message ai-message-bot">
           <div class="ai-message-avatar">
@@ -449,9 +491,41 @@ ANTWORTEN
       messagesContainer.insertAdjacentHTML('beforeend', messageHTML);
       this.scrollToBottom();
 
-      this.conversationHistory.push({ role: 'bot', message });
+      this.conversationHistory.push({ role: 'bot', message: plain });
       this.saveConversationToStorage();
+
+      // Log bot message to Supabase
+      maseLog('mase_chat_messages', {
+        session_id: maseSessionId(),
+        role:       'bot',
+        message:    plain.slice(0, 1000),
+        page_url:   location.pathname.replace(/^\//, '') || 'index.html',
+        page_title: document.title,
+        language:   localStorage.getItem('lang') || 'de'
+      });
     }, delay);
+  }
+
+  _detectLeadIntent(message) {
+    var lower = message.toLowerCase();
+    var interest = null;
+    if (/preis|kosten|chf|budget/.test(lower))         interest = 'Preise';
+    else if (/ki|assistent|chatbot/.test(lower))        interest = 'KI-Assistent';
+    else if (/termin|call|kontakt|anfrage/.test(lower)) interest = 'Kontakt';
+    else if (/leistung|service|was macht/.test(lower))  interest = 'Leistungen';
+    else if (/webdesign|website|webseite/.test(lower))  interest = 'Webdesign';
+
+    if (interest) {
+      this.leadData.ziel = interest;
+      // Log lead intent
+      maseLog('mase_leads', {
+        session_id:       maseSessionId(),
+        service_interest: interest,
+        message:          message.slice(0, 500),
+        source:           'chatbot',
+        status:           'new'
+      });
+    }
   }
 
   showTypingIndicator() {
