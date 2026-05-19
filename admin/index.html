@@ -395,8 +395,8 @@
 
     // Password correct — prompt for service_role key
     var skey = prompt('Supabase Service-Role Key eingeben\n(Einstellungen → API → service_role):');
-    if (!skey || !skey.startsWith('eyJ')) {
-      loginErr.textContent = 'Kein gultig Service-Role Key.';
+    if (!skey || (!skey.startsWith('eyJ') && !skey.startsWith('sb_secret_'))) {
+      loginErr.textContent = 'Kein gultiger Service-Role Key.';
       return;
     }
     SERVICE_KEY = skey.trim();
