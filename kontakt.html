@@ -393,28 +393,37 @@
         /* Web3Forms API → forwards to info@masesites.ch
            ACCESS KEY: get yours free at https://web3forms.com (enter info@masesites.ch)
            Then replace YOUR_WEB3FORMS_ACCESS_KEY below with the key from your email. */
-        var payload = Object.assign({}, data, {
-          access_key: '93163040-1784-4bbb-a903-8b6929a5d97a',
+        var base = {
           subject: 'Neue Anfrage über MASESites.ch',
           from_name: 'MASESites Kontaktformular',
-          cc: 'severin.buerki9@gmail.com',
           botcheck: ''
-        });
+        };
 
-        var res = await fetch('https://api.web3forms.com/submit', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-          body: JSON.stringify(payload)
-        });
+        /* Two parallel submissions — one per recipient */
+        var [res1, res2] = await Promise.all([
+          fetch('https://api.web3forms.com/submit', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+            body: JSON.stringify(Object.assign({}, data, base, {
+              access_key: '93163040-1784-4bbb-a903-8b6929a5d97a' /* info@masesites.ch */
+            }))
+          }),
+          fetch('https://api.web3forms.com/submit', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+            body: JSON.stringify(Object.assign({}, data, base, {
+              access_key: 'f1e9b09d-27dc-4999-af61-0b3a7990071f' /* severin.buerki9@gmail.com */
+            }))
+          })
+        ]);
 
-        var json = await res.json();
-
-        if (json.success) {
-          /* ---- SUCCESS ---- */
+        var json1 = await res1.json();
+        /* Gmail key is optional — only require the primary to succeed */
+        if (json1.success) {
           form.style.display = 'none';
           successEl.style.display = 'flex';
         } else {
-          throw new Error(json.message || 'Unbekannter Fehler');
+          throw new Error(json1.message || 'Unbekannter Fehler');
         }
       } catch (err) {
         submitBtn.disabled = false;
