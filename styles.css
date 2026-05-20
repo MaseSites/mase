@@ -697,6 +697,8 @@ small {
   height: 2px;
   background: var(--text);
   border-radius: 999px;
+  transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s ease;
+  transform-origin: center;
 }
 
 .site-nav {
@@ -711,6 +713,9 @@ small {
   display: none;
   flex-direction: column;
   gap: 0.6rem;
+  z-index: 1001;
+  max-width: min(320px, calc(100vw - 24px));
+  min-width: 200px;
 }
 
 .site-nav a {
@@ -718,8 +723,11 @@ small {
   line-height: 1;
   color: var(--text);
   position: relative;
-  padding: 8px 12px;
+  padding: 11px 12px;
   white-space: nowrap;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
 }
 
 .site-nav a:not(.button)::after {
@@ -1904,8 +1912,8 @@ select {
 /* Back to Top Button */
 .back-to-top {
   position: fixed;
-  bottom: 2rem;
-  right: 2rem;
+  bottom: 6rem;
+  right: 1.25rem;
   width: 48px;
   height: 48px;
   border-radius: 50%;
@@ -1932,7 +1940,7 @@ select {
 
 .back-to-top:hover {
   background: var(--accent);
-  transform: translateY(-4px);
+  box-shadow: 0 12px 28px rgba(58, 155, 255, 0.4);
 }
 
 .back-to-top svg {
@@ -5432,4 +5440,226 @@ pre {
   @keyframes ktkSuccessRing { from { transform:none; opacity:1; } }
   @keyframes ktkCheckDraw { to { stroke-dashoffset:0; } }
   @keyframes ktkFadeUp { from { opacity:1; transform:none; } }
+}
+
+/* ============================================================
+   MOBILE-FIRST GLOBAL FIXES
+   ============================================================ */
+
+/* 1. Prevent any horizontal scroll */
+html {
+  overflow-x: hidden;
+}
+body {
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+
+/* 2. All images scale within their container */
+img, video, iframe {
+  max-width: 100%;
+  height: auto;
+}
+
+/* 3. Remove 300ms tap delay and highlight flash on all interactive elements */
+a,
+button,
+[role="button"],
+input,
+select,
+textarea,
+label,
+.button,
+.nav-toggle,
+.lang-btn,
+.dark-toggle,
+.lang-option,
+.back-to-top,
+.sticky-cta,
+.ai-chat-toggle {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* 4. Minimum 44×44 touch targets for key controls */
+.nav-toggle {
+  min-width: 44px;
+  min-height: 44px;
+  cursor: pointer;
+}
+
+.lang-btn,
+.dark-toggle {
+  min-height: 40px;
+}
+
+/* 5. Hamburger → X animation when nav is open */
+.nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(1) {
+  transform: translateY(6px) rotate(45deg);
+}
+.nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(2) {
+  opacity: 0;
+  transform: scaleX(0);
+}
+.nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(3) {
+  transform: translateY(-6px) rotate(-45deg);
+}
+
+/* 6. Slide-in animation when mobile nav opens */
+@keyframes mobileNavIn {
+  from { opacity: 0; transform: translateY(-6px) scale(0.98); }
+  to   { opacity: 1; transform: translateY(0)   scale(1); }
+}
+
+/* Slide-in animation for mobile nav (all non-desktop) */
+@media (max-width: 1179px) {
+  .site-nav.open {
+    animation: mobileNavIn 0.22s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+  .site-nav {
+    max-height: calc(100dvh - 80px);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .site-nav a {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+/* Full-width dropdown only on phones (< 600px) */
+@media (max-width: 599px) {
+  .site-nav {
+    left: 0;
+    right: 0;
+    max-width: none;
+    min-width: 0;
+    border-radius: 0 0 var(--radius-sm) var(--radius-sm);
+  }
+
+  /* CTA button inside nav should be full width */
+  .site-nav .button {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* 7. Fixed-element stacking — keep chat toggle, back-to-top and sticky-cta from overlapping */
+@media (max-width: 640px) {
+  /* AI chat toggle: stays bottom-right */
+  .ai-chat-toggle {
+    bottom: 1rem;
+    right: 1rem;
+    z-index: 9998;
+  }
+
+  /* Back-to-top: sit above the AI toggle */
+  .back-to-top {
+    bottom: 5.5rem;
+    right: 1rem;
+    z-index: 997;
+  }
+
+  /* Sticky CTA: sit above back-to-top */
+  .sticky-cta {
+    bottom: 9.5rem;
+    right: 1rem;
+    font-size: 0.8rem;
+    padding: 0.6rem 1rem;
+  }
+
+  /* Cookie banner: make sure it doesn't eat entire screen */
+  .cookie-banner {
+    bottom: 0.75rem;
+    border-radius: var(--radius-sm);
+    padding: 1.1rem 1.25rem;
+  }
+
+  /* Hero benefit card should never overflow viewport */
+  .hero-benefit-card {
+    max-width: 100%;
+    width: 100%;
+  }
+
+  /* Section titles on mobile */
+  h1 { font-size: clamp(1.75rem, 8vw, 2.8rem); }
+  h2 { font-size: clamp(1.4rem, 6vw, 2.2rem); }
+
+  /* Pricing option cards: stack fully and don't overflow */
+  .pricing-option-card {
+    min-width: 0;
+    width: 100%;
+  }
+
+  /* Prevent iOS auto-zoom on form focus (requires font-size >= 16px) */
+  input:not([type="checkbox"]):not([type="radio"]),
+  select,
+  textarea {
+    font-size: max(16px, 1em);
+    min-height: 44px;
+  }
+
+  /* Process grid: single column */
+  .process-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Footer grid: 2 columns on small screens */
+  .footer-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
+}
+
+/* 8. Very small screens (iPhone SE, etc.) */
+@media (max-width: 390px) {
+  .container {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+
+  .header-inner {
+    gap: 0.5rem;
+  }
+
+  /* Lang button: show flag only */
+  .lang-btn {
+    padding: 0.45rem 0.55rem;
+    gap: 0.2rem;
+  }
+
+  /* Shrink logo slightly */
+  .logo {
+    font-size: 1.2rem;
+  }
+
+  /* Buttons in hero: always stack */
+  .hero-content .button-group {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  .hero-content .button-group .button {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* Trust grid: 2 columns */
+  .trust-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* 9. Dark mode mobile nav background fix */
+.dark .site-nav {
+  background: var(--nav-bg);
+  border-color: var(--line);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.55);
+}
+
+/* 10. Smooth scrolling on touch (iOS momentum) */
+.ai-chat-messages,
+.feed-list,
+.tbl-wrap,
+.site-nav {
+  -webkit-overflow-scrolling: touch;
 }
