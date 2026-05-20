@@ -3710,11 +3710,6 @@ section {
 /* ============================================
    RESPONSIVE HARDENING (ALL CORE PAGES)
    ============================================ */
-html,
-body {
-  overflow-x: hidden;
-}
-
 pre,
 code,
 kbd,
