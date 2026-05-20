@@ -5446,13 +5446,11 @@ pre {
    MOBILE-FIRST GLOBAL FIXES
    ============================================================ */
 
-/* 1. Prevent any horizontal scroll */
-html {
-  overflow-x: hidden;
-}
+/* 1. Prevent horizontal scroll without breaking position:sticky
+   CRITICAL: overflow on the html element propagates to the viewport and BREAKS sticky.
+   Only apply to body — clip does not create a scroll container, so sticky still works. */
 body {
-  overflow-x: hidden;
-  max-width: 100vw;
+  overflow-x: clip;
 }
 
 /* 2. All images scale within their container */
