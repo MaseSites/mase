@@ -1766,7 +1766,9 @@ select {
   }
 
   .site-nav {
+    top: 74px;
     right: clamp(22px, 3vw, 34px);
+    max-height: calc(100dvh - 82px);
   }
 }
 
@@ -5487,15 +5489,12 @@ label,
 }
 
 /* 5. Hamburger → X animation when nav is open */
-.nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(1) {
-  transform: translateY(6px) rotate(45deg);
-}
+/* 2-bar X: sr-only is nth-child(1), bars are nth-child(2) and nth-child(3) */
 .nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(2) {
-  opacity: 0;
-  transform: scaleX(0);
+  transform: translateY(3px) rotate(45deg);
 }
 .nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(3) {
-  transform: translateY(-6px) rotate(-45deg);
+  transform: translateY(-3px) rotate(-45deg);
 }
 
 /* 6. Slide-in animation when mobile nav opens */
@@ -5504,36 +5503,55 @@ label,
   to   { opacity: 1; transform: translateY(0)   scale(1); }
 }
 
-/* Slide-in animation for mobile nav (all non-desktop) */
+/* 6b. Mobile nav: position:fixed (not absolute) so iOS backdrop-filter on the header
+   does NOT clip pointer events of the dropdown outside the header's bounds */
 @media (max-width: 1179px) {
-  .site-nav.open {
-    animation: mobileNavIn 0.22s cubic-bezier(0.22, 1, 0.36, 1) both;
-  }
   .site-nav {
-    max-height: calc(100dvh - 80px);
+    position: fixed;
+    top: 68px;
+    right: clamp(16px, 4vw, 34px);
+    max-height: calc(100dvh - 76px);
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
   }
-  .site-nav a {
-    overflow: hidden;
-    text-overflow: ellipsis;
+  .site-nav.open {
+    animation: mobileNavIn 0.22s cubic-bezier(0.22, 1, 0.36, 1) both;
   }
 }
 
-/* Full-width dropdown only on phones (< 600px) */
-@media (max-width: 599px) {
+/* Full-width nav on phones (< 640px): lower top matches 60px header */
+@media (max-width: 639px) {
   .site-nav {
+    top: 60px;
     left: 0;
     right: 0;
     max-width: none;
     min-width: 0;
     border-radius: 0 0 var(--radius-sm) var(--radius-sm);
+    max-height: calc(100dvh - 60px);
   }
-
-  /* CTA button inside nav should be full width */
   .site-nav .button {
     width: 100%;
     justify-content: center;
+  }
+}
+
+/* 7a. Header layout fix on phones < 640px
+   - space-between with 3 items puts burger in center → switch to flex-start + margin-left:auto
+   - header-inner padding:0 overrides container's 24px → restore it via higher-specificity rule */
+@media (max-width: 639px) {
+  .site-header .container {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+  .header-inner {
+    justify-content: flex-start;
+    min-height: 60px;
+    gap: 0.5rem;
+  }
+  .header-controls {
+    margin-left: auto;
+    gap: 0.5rem;
   }
 }
 
