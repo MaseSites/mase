@@ -83,13 +83,23 @@
 
   /* ---- Badges ---- */
   .badge { display: inline-block; padding: 2px 8px; border-radius: 20px; font-size: 11px; font-weight: 600; }
-  .badge-new    { background: rgba(99,102,241,.2); color: #818cf8; }
-  .badge-contacted { background: rgba(59,130,246,.2); color: #60a5fa; }
-  .badge-qualified { background: rgba(34,197,94,.2); color: #4ade80; }
-  .badge-closed { background: rgba(148,163,184,.15); color: #94a3b8; }
-  .badge-lost   { background: rgba(239,68,68,.2); color: #f87171; }
-  .badge-user   { background: rgba(99,102,241,.15); color: #818cf8; }
-  .badge-bot    { background: rgba(139,92,246,.15); color: #a78bfa; }
+  .badge-new          { background: rgba(99,102,241,.2);  color: #818cf8; }
+  .badge-in_progress  { background: rgba(234,179,8,.2);   color: #fbbf24; }
+  .badge-contacted    { background: rgba(59,130,246,.2);  color: #60a5fa; }
+  .badge-done         { background: rgba(34,197,94,.2);   color: #4ade80; }
+  .badge-qualified    { background: rgba(34,197,94,.2);   color: #4ade80; }
+  .badge-closed       { background: rgba(148,163,184,.15);color: #94a3b8; }
+  .badge-lost         { background: rgba(239,68,68,.2);   color: #f87171; }
+  .badge-user         { background: rgba(99,102,241,.15); color: #818cf8; }
+  .badge-bot          { background: rgba(139,92,246,.15); color: #a78bfa; }
+
+  /* Category badges */
+  .badge-cat-new_lead        { background: rgba(99,102,241,.2);  color: #818cf8; }
+  .badge-cat-question        { background: rgba(148,163,184,.15);color: #94a3b8; }
+  .badge-cat-meeting_request { background: rgba(234,179,8,.2);   color: #fbbf24; }
+  .badge-cat-website_request { background: rgba(59,130,246,.2);  color: #60a5fa; }
+  .badge-cat-support         { background: rgba(239,68,68,.2);   color: #f87171; }
+  .badge-cat-other           { background: rgba(148,163,184,.1); color: #64748b; }
 
   /* ---- Status select ---- */
   .status-sel { background: var(--surface2); border: 1px solid var(--border); border-radius: 6px; padding: 4px 8px; color: var(--text); font-size: 12px; cursor: pointer; }
@@ -249,13 +259,21 @@
     <div class="view" id="view-leads">
       <div class="toolbar">
         <input type="text" class="search-input" id="lead-search" placeholder="Suche Leads...">
+        <select class="filter-sel" id="lead-category-filter">
+          <option value="">Alle Kategorien</option>
+          <option value="new_lead">Neuer Lead</option>
+          <option value="question">Frage</option>
+          <option value="meeting_request">Termin-Anfrage</option>
+          <option value="website_request">Website-Anfrage</option>
+          <option value="support">Support</option>
+          <option value="other">Sonstiges</option>
+        </select>
         <select class="filter-sel" id="lead-status-filter">
           <option value="">Alle Status</option>
           <option value="new">Neu</option>
+          <option value="in_progress">In Bearbeitung</option>
           <option value="contacted">Kontaktiert</option>
-          <option value="qualified">Qualifiziert</option>
-          <option value="closed">Gewonnen</option>
-          <option value="lost">Verloren</option>
+          <option value="done">Erledigt</option>
         </select>
       </div>
       <div class="card">
@@ -269,14 +287,14 @@
               <tr>
                 <th>Datum</th>
                 <th>Name / Email</th>
+                <th>Kategorie</th>
                 <th>Service</th>
                 <th>Nachricht</th>
-                <th>Quelle</th>
                 <th>Status</th>
               </tr>
             </thead>
             <tbody id="leads-tbody">
-              <tr><td colspan="6" class="loading"><div class="spinner"></div></td></tr>
+              <tr><td colspan="7" class="loading"><div class="spinner"></div></td></tr>
             </tbody>
           </table>
         </div>
@@ -354,19 +372,8 @@
 (function () {
   'use strict';
 
-  var SERVICE_KEY = ''; // Will be entered after login
-  var HASH_TARGET = '';
+  var ADMIN_TOKEN = ''; // Received from server after login — never leaves memory
   var charts = {};
-
-  function getConfig() { return window.MASE_SUPABASE; }
-
-  // ---- SHA-256 ----
-  async function sha256(str) {
-    var buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
-    return Array.from(new Uint8Array(buf)).map(function (b) {
-      return b.toString(16).padStart(2, '0');
-    }).join('');
-  }
 
   // ---- Login ----
   var loginErr = document.getElementById('login-err');
@@ -380,34 +387,42 @@
     var pw = document.getElementById('pw-input').value;
     if (!pw) { loginErr.textContent = 'Bitte Passwort eingeben.'; return; }
 
-    var c = getConfig();
-    if (!c || c.url.indexOf('PASTE_') === 0) {
-      loginErr.textContent = 'Supabase nicht konfiguriert. Bitte supabase-config.js aufullen.';
-      return;
-    }
+    var btn = document.getElementById('login-btn');
+    btn.disabled = true;
+    btn.textContent = '...';
+    loginErr.textContent = '';
 
-    var hash = await sha256(pw);
-    if (hash !== c.adminPasswordHash) {
-      loginErr.textContent = 'Falsches Passwort.';
-      document.getElementById('pw-input').value = '';
-      return;
-    }
+    try {
+      var res = await fetch('/api/admin/auth', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password: pw })
+      });
+      var data = await res.json();
 
-    // Password correct — prompt for service_role key
-    var skey = prompt('Supabase Service-Role Key eingeben\n(Einstellungen → API → service_role):');
-    if (!skey || (!skey.startsWith('eyJ') && !skey.startsWith('sb_secret_'))) {
-      loginErr.textContent = 'Kein gultiger Service-Role Key.';
-      return;
+      if (!res.ok || !data.ok) {
+        loginErr.textContent = data.error || 'Falsches Passwort.';
+        document.getElementById('pw-input').value = '';
+        return;
+      }
+
+      // Auth OK — token stored in memory, never in DOM or localStorage
+      ADMIN_TOKEN = data.token || '';
+      document.getElementById('login-screen').style.display = 'none';
+      document.getElementById('app').style.display = 'block';
+      loadAll();
+      setInterval(loadAll, 60000); // auto-refresh every 60s
+    } catch (err) {
+      loginErr.textContent = 'Verbindungsfehler. Ist der Server erreichbar?';
+      console.error('Admin auth error:', err);
+    } finally {
+      btn.disabled = false;
+      btn.textContent = 'Einloggen';
     }
-    SERVICE_KEY = skey.trim();
-    document.getElementById('login-screen').style.display = 'none';
-    document.getElementById('app').style.display = 'block';
-    loadAll();
-    setInterval(loadAll, 60000); // auto-refresh every 60s
   }
 
   document.getElementById('logout-btn').addEventListener('click', function () {
-    SERVICE_KEY = '';
+    ADMIN_TOKEN = '';
     document.getElementById('app').style.display = 'none';
     document.getElementById('login-screen').style.display = 'flex';
     document.getElementById('pw-input').value = '';
@@ -426,29 +441,27 @@
     });
   });
 
-  // ---- Supabase query ----
+  // ---- Server-side proxy query (service_role key stays on server) ----
   function query(table, params) {
-    var c = getConfig();
-    var url = c.url + '/rest/v1/' + table;
+    var url = '/api/admin/data/' + table;
     if (params) url += '?' + params;
     return fetch(url, {
       headers: {
-        'apikey': SERVICE_KEY,
-        'Authorization': 'Bearer ' + SERVICE_KEY,
+        'Authorization': 'Bearer ' + ADMIN_TOKEN,
         'Content-Type': 'application/json'
       }
-    }).then(function (r) { return r.json(); });
+    }).then(function (r) {
+      if (!r.ok) return Promise.reject(r.status);
+      return r.json();
+    });
   }
 
   function updateStatus(key, val) {
-    var c = getConfig();
-    return fetch(c.url + '/rest/v1/mase_leads?id=eq.' + key, {
+    return fetch('/api/admin/data/leads/' + key, {
       method: 'PATCH',
       headers: {
-        'apikey': SERVICE_KEY,
-        'Authorization': 'Bearer ' + SERVICE_KEY,
-        'Content-Type': 'application/json',
-        'Prefer': 'return=minimal'
+        'Authorization': 'Bearer ' + ADMIN_TOKEN,
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify({ status: val })
     });
@@ -501,7 +514,7 @@
       query('mase_page_views', 'order=created_at.desc&limit=15&select=session_id,page_url,created_at,device_type'),
       query('mase_chat_messages', 'order=created_at.desc&limit=15&select=session_id,role,message,created_at'),
       query('mase_events', 'order=created_at.desc&limit=15&select=session_id,event_type,event_label,created_at'),
-      query('mase_leads', 'order=created_at.desc&limit=10&select=id,email,service_interest,created_at')
+      query('mase_leads', 'order=created_at.desc&limit=10&select=id,email,service_interest,category,created_at')
     ]).then(function (results) {
       var chatsToday = results[0].length || 0;
       var leadsNew   = results[1].length || 0;
@@ -527,17 +540,25 @@
       pvFeed.forEach(function(r){ feed.push({type:'view', ts: r.created_at, text: 'Seitenaufruf: ' + (r.page_url||'/'), meta: r.device_type||''}); });
       cmFeed.forEach(function(r){ if(r.role==='user') feed.push({type:'chat', ts: r.created_at, text: (r.message||'').slice(0,80), meta:'Chat'}); });
       evFeed.forEach(function(r){ feed.push({type:'click', ts: r.created_at, text: (r.event_label||r.event_type||'Klick').slice(0,60), meta: r.event_type||''}); });
-      ldFeed.forEach(function(r){ feed.push({type:'lead', ts: r.created_at, text: 'Neuer Lead: ' + (r.email||r.service_interest||'–'), meta:'Lead'}); });
+      ldFeed.forEach(function(r){
+        var catLbl = (typeof CAT_LABELS !== 'undefined' && CAT_LABELS[r.category]) || r.category || 'Lead';
+        feed.push({type:'lead', ts: r.created_at, text: 'Neuer Lead: ' + (r.email||r.service_interest||'–'), meta: catLbl});
+      });
 
       feed.sort(function(a,b){ return new Date(b.ts)-new Date(a.ts); });
       feed = feed.slice(0, 40);
 
       document.getElementById('feed-count').textContent = feed.length;
 
-      var icons = { view: '👁', chat: '💬', click: '🖱', lead: '⭐' };
+      var iconsSvg = {
+        view:  '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>',
+        chat:  '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>',
+        click: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 10 20 10 20 20 10 20 10 15"/><path d="M9.5 14.5 3 21"/><path d="m15 4-1 6-4-1L4 3l11 1z"/></svg>',
+        lead:  '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>'
+      };
       var feedHtml = feed.map(function(f) {
         return '<div class="feed-item">' +
-          '<div class="feed-icon ' + f.type + '">' + icons[f.type] + '</div>' +
+          '<div class="feed-icon ' + f.type + '">' + iconsSvg[f.type] + '</div>' +
           '<div class="feed-body">' +
             '<div class="feed-main">' + esc(f.text) + '</div>' +
             '<div class="feed-meta">' + esc(f.meta) + ' &middot; ' + fmtRelative(f.ts) + '</div>' +
@@ -546,7 +567,7 @@
       }).join('');
 
       document.getElementById('activity-feed').innerHTML = feedHtml ||
-        '<div class="empty"><div class="empty-icon">📭</div><div class="empty-text">Noch keine Aktivitat</div></div>';
+        '<div class="empty"><div class="empty-text">Noch keine Aktivitat</div></div>';
     }).catch(function (e) {
       console.error(e);
       document.getElementById('activity-feed').innerHTML = '<div class="empty"><div class="empty-text">Fehler beim Laden</div></div>';
@@ -627,7 +648,7 @@
       '<div class="card-count" id="chats-count">' + sessionOrder.length + ' Sessions</div>' +
     '</div>' +
     '<div class="session-msgs">' +
-      (html || '<div class="empty"><div class="empty-icon">💬</div><div class="empty-text">Keine Chats gefunden</div></div>') +
+      (html || '<div class="empty"><div class="empty-text">Keine Chats gefunden</div></div>') +
     '</div>';
   }
 
@@ -644,6 +665,25 @@
   // ================================================================
   var allLeads = [];
 
+  var CAT_LABELS = {
+    new_lead:        'Neuer Lead',
+    question:        'Frage',
+    meeting_request: 'Termin-Anfrage',
+    website_request: 'Website-Anfrage',
+    support:         'Support',
+    other:           'Sonstiges'
+  };
+
+  var STATUS_LABELS = {
+    new:         'Neu',
+    in_progress: 'In Bearbeitung',
+    contacted:   'Kontaktiert',
+    done:        'Erledigt',
+    qualified:   'Qualifiziert',
+    closed:      'Gewonnen',
+    lost:        'Verloren'
+  };
+
   function loadLeads() {
     query('mase_leads', 'order=created_at.desc&limit=500&select=*')
       .then(function (rows) {
@@ -653,38 +693,43 @@
   }
 
   function renderLeads() {
-    var search = (document.getElementById('lead-search').value || '').toLowerCase();
-    var status = document.getElementById('lead-status-filter').value;
+    var search   = (document.getElementById('lead-search').value || '').toLowerCase();
+    var status   = document.getElementById('lead-status-filter').value;
+    var category = document.getElementById('lead-category-filter').value;
 
     var filtered = allLeads.filter(function(r) {
-      var matchSearch = !search || [r.name, r.email, r.phone, r.message, r.service_interest].join(' ').toLowerCase().includes(search);
-      var matchStatus = !status || r.status === status;
-      return matchSearch && matchStatus;
+      var matchSearch   = !search   || [r.name, r.email, r.phone, r.message, r.service_interest, r.category].join(' ').toLowerCase().includes(search);
+      var matchStatus   = !status   || r.status === status;
+      var matchCategory = !category || r.category === category;
+      return matchSearch && matchStatus && matchCategory;
     });
 
     document.getElementById('leads-count').textContent = filtered.length;
 
     var html = filtered.map(function(r) {
-      var statusColor = { new:'badge-new', contacted:'badge-contacted', qualified:'badge-qualified', closed:'badge-closed', lost:'badge-lost' };
+      var cat       = r.category || 'question';
+      var catLabel  = CAT_LABELS[cat] || cat;
+      var statuses  = ['new','in_progress','contacted','done','qualified','closed','lost'];
       return '<tr>' +
         '<td style="white-space:nowrap;color:var(--muted);font-size:12px">' + fmtTime(r.created_at) + '</td>' +
-        '<td><div style="font-weight:500">' + esc(r.name||'–') + '</div><div style="color:var(--muted);font-size:12px">' + esc(r.email||'') + '</div>' +
-            (r.phone ? '<div style="color:var(--muted);font-size:12px">' + esc(r.phone) + '</div>' : '') +
+        '<td><div style="font-weight:500">' + esc(r.name||'–') + '</div>' +
+             '<div style="color:var(--muted);font-size:12px">' + esc(r.email||'') + '</div>' +
+             (r.phone ? '<div style="color:var(--muted);font-size:12px">' + esc(r.phone) + '</div>' : '') +
         '</td>' +
-        '<td><span class="badge badge-new">' + esc(r.service_interest||r.branche||'–') + '</span></td>' +
-        '<td style="max-width:200px;color:var(--muted);font-size:12px">' + esc((r.message||'').slice(0,100)) + '</td>' +
-        '<td style="color:var(--muted);font-size:12px">' + esc(r.source||'–') + '</td>' +
-        '<td><select class="status-sel" onchange="changeLeadStatus(\'' + r.id + '\', this.value)">' +
-          ['new','contacted','qualified','closed','lost'].map(function(s) {
+        '<td><span class="badge badge-cat-' + esc(cat) + '">' + esc(catLabel) + '</span></td>' +
+        '<td><span class="badge badge-new" style="font-size:10px">' + esc(r.service_interest||r.branche||'–') + '</span></td>' +
+        '<td style="max-width:180px;color:var(--muted);font-size:12px">' + esc((r.message||'').slice(0,90)) + '</td>' +
+        '<td><select class="status-sel" onchange="changeLeadStatus(\'' + esc(r.id) + '\', this.value)">' +
+          statuses.map(function(s) {
             return '<option value="' + s + '"' + (r.status===s?' selected':'') + '>' +
-              {new:'Neu',contacted:'Kontaktiert',qualified:'Qualifiziert',closed:'Gewonnen',lost:'Verloren'}[s] + '</option>';
+              (STATUS_LABELS[s] || s) + '</option>';
           }).join('') +
         '</select></td>' +
       '</tr>';
     }).join('');
 
     document.getElementById('leads-tbody').innerHTML = html ||
-      '<tr><td colspan="6" class="empty"><div class="empty-icon">📋</div><div class="empty-text">Keine Leads gefunden</div></td></tr>';
+      '<tr><td colspan="7" class="empty"><div class="empty-text">Keine Leads gefunden</div></td></tr>';
   }
 
   window.changeLeadStatus = function(id, val) {
@@ -696,6 +741,7 @@
 
   document.getElementById('lead-search').addEventListener('input', renderLeads);
   document.getElementById('lead-status-filter').addEventListener('change', renderLeads);
+  document.getElementById('lead-category-filter').addEventListener('change', renderLeads);
 
   // ================================================================
   // ANALYTICS

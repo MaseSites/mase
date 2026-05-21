@@ -1622,10 +1622,10 @@
   // DARK MODE ENGINE
   // ==========================================
   var storedTheme = localStorage.getItem('theme');
-  var isDark = storedTheme === 'dark';
+  var isDark = storedTheme !== 'light';
   if (!storedTheme) {
-    isDark = false;
-    localStorage.setItem('theme', 'light');
+    isDark = true;
+    localStorage.setItem('theme', 'dark');
   }
 
   function applyThemeInstant(dark) {
@@ -1638,13 +1638,8 @@
   }
 
   function updateToggleUI(dark) {
-    var icon = document.getElementById('dark-toggle-icon');
-    if (icon) icon.textContent = dark ? '☀️' : '🌙';
-    var btn = document.getElementById('dark-toggle');
-    if (btn) {
-      btn.setAttribute('aria-pressed', String(!!dark));
-      btn.setAttribute('aria-label', dark ? 'Zum Light Mode wechseln' : 'Zum Dark Mode wechseln');
-    }
+    // Toggle hidden — dark mode only
+    void dark;
   }
 
   function setTheme(dark, animated) {

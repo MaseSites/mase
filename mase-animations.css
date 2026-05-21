@@ -167,27 +167,81 @@
 .mase-underline.is-visible::after { transform: scaleX(1); }
 
 /* -----------------------------------------------------------
-   4. Marquee — Trust-Signal-Row (optional, siehe README)
+   4. Marquee — infinite trust-signal band, right → left, constant velocity
    ----------------------------------------------------------- */
 .mase-marquee {
-  overflow: hidden; padding: 14px 0;
-  border-block: 1px solid var(--line, #d4d4d4);
+  overflow: hidden;
+  padding: 16px 0;
+  border-block: 1px solid var(--line, rgba(255,255,255,0.08));
   background: var(--bg, #fff);
-  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  /* Soft fade edges */
+  -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 6%, #000 94%, transparent 100%);
+          mask-image: linear-gradient(90deg, transparent 0%, #000 6%, #000 94%, transparent 100%);
+  user-select: none;
 }
+
 .mase-marquee__track {
-  display: inline-flex; gap: 48px; padding-left: 48px;
-  animation: mase-marquee 32s linear infinite;
+  display: inline-flex;
+  gap: 0;
+  white-space: nowrap;
+  /* GPU layer — prevents layout jank during scroll */
+  will-change: transform;
+  transform: translateZ(0);
+  /* Constant velocity, never pauses, no direction change */
+  animation: mase-marquee-scroll 28s linear infinite;
+}
+
+/* No pause on hover — animation runs independently */
+.mase-marquee__track:hover { animation-play-state: running; }
+
+.mase-marquee__item {
+  display: inline-flex;
+  align-items: center;
+  padding: 0 40px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-muted, #475569);
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
   white-space: nowrap;
 }
-.mase-marquee__track:hover { animation-play-state: paused; }
-.mase-marquee__item {
-  font-size: 0.84rem; font-weight: 600; color: var(--text-muted, #475569);
-  text-transform: uppercase; letter-spacing: 0.12em;
-  display: inline-flex; align-items: center; gap: 14px;
+
+/* Separator dot between items */
+.mase-marquee__item::after {
+  content: "";
+  display: inline-block;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: #0f766e;
+  margin-left: 40px;
+  flex-shrink: 0;
 }
-.mase-marquee__item::after { content: "•"; color: #0f766e; margin-left: 48px; }
-@keyframes mase-marquee { to { transform: translateX(-50%); } }
+
+/* Translate exactly -50%: one full copy width, making the loop seamless */
+@keyframes mase-marquee-scroll {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* Dark mode — darker surface, brighter items */
+html.dark .mase-marquee {
+  border-block-color: rgba(255, 255, 255, 0.07);
+  background: transparent;
+}
+html.dark .mase-marquee__item {
+  color: rgba(255, 255, 255, 0.32);
+}
+html.dark .mase-marquee__item::after {
+  background: rgba(20, 184, 166, 0.6);
+}
+
+/* Reduced motion — freeze without hiding */
+@media (prefers-reduced-motion: reduce) {
+  .mase-marquee__track {
+    animation: none;
+  }
+}
 
 /* -----------------------------------------------------------
    5. Buttons — Shimmer-Sweep beim Hover (eure .button-primary)
@@ -273,4 +327,68 @@ html.mase-theme-switching .hero-benefit-card,
 html.mase-theme-switching .mase-marquee {
   transition: background-color 320ms ease, color 320ms ease,
               border-color 320ms ease, box-shadow 320ms ease;
+}
+
+/* -----------------------------------------------------------
+   Hero — Elegant Shapes Background
+   ----------------------------------------------------------- */
+
+.hero.has-flow-bg .mase-hero-mesh { display: none; }
+.hero.has-flow-bg::after { display: none !important; }
+
+.mase-flow-bg {
+  position: absolute; inset: 0; z-index: 1;
+  pointer-events: none; overflow: hidden; background: #030303;
+}
+
+.mase-shape-ambient {
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 70% 50% at 20% 45%, rgba(99,102,241,0.06), transparent),
+    radial-gradient(ellipse 60% 50% at 80% 60%, rgba(244,63,94,0.06), transparent);
+  filter: blur(60px);
+}
+
+.mase-shape-outer {
+  position: absolute;
+  animation: maseShapeEntry 2.4s cubic-bezier(0.23,0.86,0.39,0.96) both;
+}
+
+@keyframes maseShapeEntry {
+  from { opacity: 0; transform: translateY(-150px) rotate(calc(var(--rot, 0deg) - 15deg)); }
+  to   { opacity: 1; transform: translateY(0) rotate(var(--rot, 0deg)); }
+}
+
+.mase-shape-inner {
+  position: relative;
+  animation: maseShapeFloat 12s ease-in-out infinite both;
+}
+
+@keyframes maseShapeFloat {
+  0%, 100% { transform: translateY(0);    }
+  50%       { transform: translateY(15px); }
+}
+
+.mase-shape-body {
+  position: absolute; inset: 0; border-radius: 9999px;
+  backdrop-filter: blur(2px); -webkit-backdrop-filter: blur(2px);
+  border: 2px solid rgba(255,255,255,0.15);
+  box-shadow: 0 8px 32px 0 rgba(255,255,255,0.1);
+}
+
+.mase-shape-body::after {
+  content: ''; position: absolute; inset: 0; border-radius: 9999px;
+  background: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.2), transparent 70%);
+}
+
+.mase-fade-t {
+  position: absolute; top: 0; left: 0; right: 0; height: 30%;
+  background: linear-gradient(to bottom, rgba(3,3,3,0.8), transparent);
+  pointer-events: none;
+}
+
+.mase-fade-b {
+  position: absolute; bottom: 0; left: 0; right: 0; height: 30%;
+  background: linear-gradient(to top, #030303, transparent);
+  pointer-events: none;
 }

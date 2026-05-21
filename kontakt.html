@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="de-CH">
 <head>
   <meta charset="utf-8">
@@ -26,7 +26,7 @@
   }
   </script>
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-  <link rel="stylesheet" href="/styles.css?v=20260518">
+  <link rel="stylesheet" href="/styles.css?v=20260522i">
   <link rel="stylesheet" href="/ai-assistant.css?v=20260327">
   <link rel="stylesheet" href="/mase-animations.css?v=20260516">
   <link rel="stylesheet" href="/mase-scroll-animations.css?v=20260517">
@@ -49,7 +49,7 @@
   <script defer src="/script.js?v=20260327"></script>
   <script defer src="/ai-assistant.js?v=20260327"></script>
   <script defer src="/mase-animations.js?v=20260516"></script>
-  <script defer src="/mase-scroll-animations.js?v=20260517"></script>
+  <script defer src="/mase-scroll-animations.js?v=20260522"></script>
   <script defer src="/flair.js?v=20260517"></script>
 </head>
 <body>
@@ -87,8 +87,8 @@
             <span id="lang-current">DE</span>
           </button>
           <div class="lang-dropdown" id="lang-dropdown">
-            <button class="lang-option active" data-lang="de">🇩🇪 Deutsch</button>
-            <button class="lang-option" data-lang="en">🇬🇧 English</button>
+            <button class="lang-option active" data-lang="de">Deutsch</button>
+            <button class="lang-option" data-lang="en">English</button>
           </div>
         </div>
         <button class="dark-toggle" id="dark-toggle" aria-label="Dark Mode umschalten" data-i18n-aria-label="theme_toggle_aria">
@@ -104,7 +104,7 @@
     <!-- HERO -->
     <section class="ktk-hero">
       <div class="container ktk-hero-inner" data-reveal>
-        <p class="ktk-hero-eyebrow" data-i18n="ktk_hero_eyebrow">✉ Kostenlose Erstberatung</p>
+        <p class="ktk-hero-eyebrow" data-i18n="ktk_hero_eyebrow">Kostenlose Erstberatung</p>
         <h1 data-i18n-html="ktk_hero_title_html">Dein Projekt<br>startet <span class="accent-gradient">jetzt</span></h1>
         <p class="lead" data-i18n="ktk_hero_lead">Erzähl uns von deiner Idee — wir melden uns innerhalb von 24 Stunden mit einem konkreten Vorschlag.</p>
         <div class="ktk-hero-badges">
@@ -130,28 +130,28 @@
             <hr class="ktk-info-divider">
             <div class="ktk-trust-items">
               <div class="ktk-trust-item">
-                <span class="ktk-trust-check">⚡</span>
+                <span class="ktk-trust-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></span>
                 <div class="ktk-trust-text">
                   <strong data-i18n="ktk_trust_1_title">Schnelle Antwort</strong>
                   <span data-i18n="ktk_trust_1_desc">Wir melden uns innerhalb von 24 Stunden — garantiert.</span>
                 </div>
               </div>
               <div class="ktk-trust-item">
-                <span class="ktk-trust-check">🎯</span>
+                <span class="ktk-trust-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="1" fill="currentColor" stroke="none"/></svg></span>
                 <div class="ktk-trust-text">
                   <strong data-i18n="ktk_trust_2_title">Kostenlose Beratung</strong>
                   <span data-i18n="ktk_trust_2_desc">Erstes Gespräch ohne Verpflichtung und ohne versteckte Kosten.</span>
                 </div>
               </div>
               <div class="ktk-trust-item">
-                <span class="ktk-trust-check">🔒</span>
+                <span class="ktk-trust-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><rect x="5" y="11" width="14" height="11" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></span>
                 <div class="ktk-trust-text">
                   <strong data-i18n="ktk_trust_3_title">DSGVO-konform</strong>
                   <span data-i18n="ktk_trust_3_desc">Deine Daten sind sicher. Keine Weitergabe an Dritte.</span>
                 </div>
               </div>
               <div class="ktk-trust-item">
-                <span class="ktk-trust-check">🇨🇭</span>
+                <span class="ktk-trust-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></span>
                 <div class="ktk-trust-text">
                   <strong data-i18n="ktk_trust_4_title">Aus der Schweiz</strong>
                   <span data-i18n="ktk_trust_4_desc">Schweizer Qualität und Zuverlässigkeit — persönlich und direkt.</span>
@@ -305,15 +305,29 @@
   </button>
 
   <script>
-    /* ---- URL param pre-fill (from preise.html configurator) ---- */
+    /* ---- Pre-fill from preise.html configurator (sessionStorage) ---- */
     (function () {
-      var params = new URLSearchParams(window.location.search);
-      var msg = params.get('nachricht');
-      var paket = params.get('paket');
+      var msg = '';
+      var paket = '';
+      try {
+        msg   = sessionStorage.getItem('mase_pkg_nachricht') || '';
+        paket = sessionStorage.getItem('mase_pkg_paket')    || '';
+        if (msg) {
+          sessionStorage.removeItem('mase_pkg_nachricht');
+          sessionStorage.removeItem('mase_pkg_paket');
+        }
+      } catch (e) {}
+
       if (msg) {
         var ta = document.getElementById('message');
-        if (ta) ta.value = msg;
-        document.getElementById('ktk-prefill-banner').style.display = 'flex';
+        if (ta) {
+          ta.value = msg;
+          /* keep char counter in sync */
+          var cc = document.getElementById('char-count');
+          if (cc) cc.textContent = msg.length + ' / 2000';
+        }
+        var banner = document.getElementById('ktk-prefill-banner');
+        if (banner) banner.style.display = 'flex';
         var sp = document.getElementById('selected-package');
         if (sp && paket) sp.value = paket;
       }

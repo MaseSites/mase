@@ -107,9 +107,9 @@ main,
   pointer-events: none;
   z-index: 0;
   background:
-    radial-gradient(ellipse 55% 65% at 75% 20%, rgba(15, 118, 110, 0.28), transparent 60%),
-    radial-gradient(ellipse 45% 55% at 10% 85%, rgba(0, 102, 204, 0.22), transparent 60%),
-    radial-gradient(ellipse 35% 45% at 50% 50%, rgba(6, 182, 212, 0.18), transparent 65%);
+    radial-gradient(ellipse 70% 55% at 50% 35%, rgba(6, 182, 212, 0.20), transparent 60%),
+    radial-gradient(ellipse 40% 50% at 15% 70%, rgba(15, 118, 110, 0.22), transparent 60%),
+    radial-gradient(ellipse 40% 50% at 85% 70%, rgba(0, 102, 204, 0.18), transparent 60%);
   filter: blur(30px);
   mix-blend-mode: multiply;
   animation: maseAmbientPulse 14s ease-in-out infinite alternate;
@@ -171,31 +171,35 @@ main,
    ----------------------------------------------------------- */
 html.dark .mase-spray__blob {
   mix-blend-mode: screen;
-  filter: blur(130px);
-  opacity: 0.75;
+  filter: blur(100px);
+  opacity: 0.7;
 }
-html.dark .mase-spray__blob.s1 { background: radial-gradient(circle, rgba(56, 189, 248, 0.55) 0%, transparent 65%); }
-html.dark .mase-spray__blob.s2 { background: radial-gradient(circle, rgba(110, 231, 183, 0.45) 0%, transparent 65%); }
-html.dark .mase-spray__blob.s3 { background: radial-gradient(circle, rgba(103, 232, 249, 0.45) 0%, transparent 65%); }
-html.dark .mase-spray__blob.s4 { background: radial-gradient(circle, rgba(196, 181, 253, 0.45) 0%, transparent 65%); }
-html.dark .mase-spray__blob.s5 { background: radial-gradient(circle, rgba(253, 224, 71, 0.22) 0%, transparent 65%); }
-html.dark .mase-spray__blob.s6 { background: radial-gradient(circle, rgba(125, 211, 252, 0.42) 0%, transparent 65%); }
+/* Professional blue-teal palette only — no purple or yellow */
+html.dark .mase-spray__blob.s1 { background: radial-gradient(circle, rgba(13, 148, 136, 0.50) 0%, transparent 65%); }  /* teal */
+html.dark .mase-spray__blob.s2 { background: radial-gradient(circle, rgba(37, 99, 235, 0.40)  0%, transparent 65%); }  /* blue */
+html.dark .mase-spray__blob.s3 { background: radial-gradient(circle, rgba(6, 182, 212, 0.38)  0%, transparent 65%); }  /* cyan */
+html.dark .mase-spray__blob.s4 { background: radial-gradient(circle, rgba(14, 116, 144, 0.35) 0%, transparent 65%); }  /* dark-cyan */
+html.dark .mase-spray__blob.s5 { background: radial-gradient(circle, rgba(20, 184, 166, 0.32) 0%, transparent 65%); }  /* teal-light */
+html.dark .mase-spray__blob.s6 { background: radial-gradient(circle, rgba(56, 189, 248, 0.36) 0%, transparent 65%); }  /* sky */
 
 html.dark .hero::after,
 html.dark .ai::after,
 html.dark .pricing-teaser::after {
   mix-blend-mode: screen;
   background:
-    radial-gradient(ellipse 50% 60% at 75% 20%, rgba(56, 189, 248, 0.35), transparent 55%),
-    radial-gradient(ellipse 40% 50% at 10% 85%, rgba(110, 231, 183, 0.3), transparent 55%);
+    radial-gradient(ellipse 85% 65% at 50% 25%, rgba(56, 189, 248, 0.22), transparent 55%),
+    radial-gradient(ellipse 50% 50% at 12% 70%, rgba(13, 148, 136, 0.18), transparent 55%),
+    radial-gradient(ellipse 50% 50% at 88% 70%, rgba(37, 99, 235, 0.16), transparent 55%);
+  filter: blur(20px);
+  animation: maseAmbientPulse 18s ease-in-out infinite alternate;
 }
 
 html.dark .trust, html.dark .pricing-teaser, html.dark .lp-section, html.dark .contact-section,
 html.dark .process, html.dark .ai, html.dark .code-proof, html.dark .pricing-section,
 html.dark .projects-slider {
-  background: rgba(13, 17, 23, 0.88) !important;
-  -webkit-backdrop-filter: blur(8px);
-          backdrop-filter: blur(8px);
+  background: rgba(13, 17, 23, 0.72) !important;
+  -webkit-backdrop-filter: blur(12px);
+          backdrop-filter: blur(12px);
 }
 html.dark .hero { background: transparent !important; }
 
@@ -220,7 +224,7 @@ html.dark .chat-widget::after,
 html.dark .lp-card::after {
   background: linear-gradient(90deg,
     transparent 0%,
-    rgba(255, 255, 255, 0.18) 50%,
+    rgba(255, 255, 255, 0.28) 50%,
     transparent 100%);
 }
 

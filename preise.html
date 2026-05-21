@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="de-CH">
 <head>
   <meta charset="utf-8">
@@ -14,7 +14,7 @@
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <link rel="icon" type="image/png" href="favicon.png">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
-  <link rel="stylesheet" href="/styles.css?v=20260327">
+  <link rel="stylesheet" href="/styles.css?v=20260522i">
   <link rel="stylesheet" href="/ai-assistant.css?v=20260327">
   <link rel="stylesheet" href="/mase-animations.css?v=20260516">
   <link rel="stylesheet" href="/mase-scroll-animations.css?v=20260517">
@@ -37,7 +37,7 @@
   <script defer src="/script.js?v=20260327"></script>
   <script defer src="/ai-assistant.js?v=20260327"></script>
   <script defer src="/mase-animations.js?v=20260516"></script>
-  <script defer src="/mase-scroll-animations.js?v=20260517"></script>
+  <script defer src="/mase-scroll-animations.js?v=20260522"></script>
   <script defer src="/flair.js?v=20260517"></script>
   <style>
   /* ── Hero ── */
@@ -263,8 +263,8 @@
             <span id="lang-current">DE</span>
           </button>
           <div class="lang-dropdown" id="lang-dropdown">
-            <button class="lang-option active" data-lang="de">🇩🇪 Deutsch</button>
-            <button class="lang-option" data-lang="en">🇬🇧 English</button>
+            <button class="lang-option active" data-lang="de">Deutsch</button>
+            <button class="lang-option" data-lang="en">English</button>
           </div>
         </div>
         <button class="dark-toggle" id="dark-toggle" aria-label="Dark Mode umschalten">
@@ -508,7 +508,7 @@
               <span class="ki-plus">+</span>
               <span class="ki-pill">CHF 40 / Monat</span>
             </div>
-            <button class="pc-select-btn" type="button" style="max-width:200px;">
+            <button class="pc-select-btn" type="button" style="max-width:200px;" data-orig-text="Zum Paket hinzufügen">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
               <span>Zum Paket hinzufügen</span>
             </button>
@@ -717,9 +717,9 @@
 
     /* ─── Card click handler ─── */
     function initCards() {
-      document.querySelectorAll('.pc-card[data-pkg-id]').forEach(function (card) {
+      // Include both .pc-card and .hosting-card variants
+      document.querySelectorAll('.pc-card[data-pkg-id], .hosting-card[data-pkg-id]').forEach(function (card) {
         card.addEventListener('click', function (e) {
-          // Ignore clicks on links inside
           if (e.target.closest('a')) return;
           toggleCard(card);
         });
@@ -739,11 +739,11 @@
         }
         // Bundle logic: selecting domain/hosting deselects bundle; selecting bundle deselects both
         if (id === 'bundle') {
-          document.querySelectorAll('.pc-card[data-pkg-id="domain"]').forEach(deselectCard);
-          document.querySelectorAll('.pc-card[data-pkg-id="hosting"]').forEach(deselectCard);
+          document.querySelectorAll('[data-pkg-id="domain"]').forEach(deselectCard);
+          document.querySelectorAll('[data-pkg-id="hosting"]').forEach(deselectCard);
         }
         if (id === 'domain' || id === 'hosting') {
-          document.querySelectorAll('.pc-card[data-pkg-id="bundle"]').forEach(deselectCard);
+          document.querySelectorAll('[data-pkg-id="bundle"]').forEach(deselectCard);
         }
         selectCard(card);
       }
@@ -930,7 +930,15 @@
       initCounters();
       initFaq();
 
-      document.getElementById('pkg-bar-cta').addEventListener('click', openModal);
+      document.getElementById('pkg-bar-cta').addEventListener('click', function () {
+        var msg = generateMessage();
+        var paket = Object.keys(selected).join(',');
+        try {
+          sessionStorage.setItem('mase_pkg_nachricht', msg);
+          sessionStorage.setItem('mase_pkg_paket', paket);
+        } catch (e) {}
+        window.location.href = 'kontakt.html';
+      });
       document.getElementById('pkg-modal-close').addEventListener('click', closeModal);
       document.getElementById('pkg-overlay').addEventListener('click', function (e) {
         if (e.target === this) closeModal();
