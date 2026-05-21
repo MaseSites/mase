@@ -70,11 +70,9 @@
   100% { transform: translate3d(-30px, -50px, 0) scale(1.04); }
 }
 
-/* Content above spray */
-.site-header,
+/* Content above spray — NOT .site-header (has sticky+z-index:1000) or .sticky-cta (has fixed) */
 main,
 .site-footer,
-.sticky-cta,
 .tweaks-panel,
 .mase-scroll-progress {
   position: relative;
