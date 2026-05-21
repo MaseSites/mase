@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="de-CH">
 <head>
   <meta charset="utf-8">
@@ -79,16 +79,17 @@
   }
   </script>
 
-  <link rel="stylesheet" href="/styles.css?v=20260327">
+  <link rel="stylesheet" href="/styles.css?v=20260522i">
   <link rel="stylesheet" href="/ai-assistant.css?v=20260327">
   <link rel="stylesheet" href="/debug.css?v=20260327">
-  <link rel="stylesheet" href="/mase-animations.css?v=20260516">
+  <link rel="stylesheet" href="/mase-animations.css?v=20260521b">
   <link rel="stylesheet" href="/mase-scroll-animations.css?v=20260517">
-  <link rel="stylesheet" href="/flair.css?v=20260517">
+  <link rel="stylesheet" href="/flair.css?v=20260522i">
   <script>
     (function () {
-      var t = localStorage.getItem('theme');
-      if (t === 'dark') document.documentElement.classList.add('dark');
+      // Dark mode only — always apply dark class.
+      localStorage.setItem('theme', 'dark');
+      document.documentElement.classList.add('dark');
       var q = null;
       try { q = new URLSearchParams(window.location.search).get('lang'); } catch (_) {}
       var s = localStorage.getItem('lang');
@@ -102,8 +103,8 @@
 <script defer src="/theme.js?v=20260327"></script>
   <script defer src="/script.js?v=20260327"></script>
   <script defer src="/ai-assistant.js?v=20260327"></script>
-  <script defer src="/mase-animations.js?v=20260516"></script>
-  <script defer src="/mase-scroll-animations.js?v=20260517"></script>
+  <script defer src="/mase-animations.js?v=20260521b"></script>
+  <script defer src="/mase-scroll-animations.js?v=20260522"></script>
   <script defer src="/flair.js?v=20260517"></script>
 </head>
 <body>
@@ -141,12 +142,12 @@
             <span id="lang-current">DE</span>
           </button>
           <div class="lang-dropdown" id="lang-dropdown">
-            <button class="lang-option active" data-lang="de">🇩🇪 Deutsch</button>
-            <button class="lang-option" data-lang="en">🇬🇧 English</button>
+            <button class="lang-option active" data-lang="de">Deutsch</button>
+            <button class="lang-option" data-lang="en">English</button>
           </div>
         </div>
         <button class="dark-toggle" id="dark-toggle" aria-label="Dark Mode umschalten" data-i18n-aria-label="theme_toggle_aria">
-          <span class="dark-toggle-icon" id="dark-toggle-icon">🌙</span>
+          <span class="dark-toggle-icon" id="dark-toggle-icon">☀️</span>
           <span class="dark-toggle-track"><span class="dark-toggle-thumb"></span></span>
         </button>
       </div>
@@ -156,45 +157,18 @@
   <main id="main">
 
     <!-- Hero -->
-    <section class="hero" aria-labelledby="hero-title">
-      <div class="container hero-grid">
-        <div class="hero-content" data-reveal>
-          <p class="eyebrow" data-i18n="hero_eyebrow">Matteo &amp; Severin. MASESites AG.</p>
-          <h1 id="hero-title" data-i18n="hero_title">Websites, die verkaufen.</h1>
-          <p class="lead" data-i18n="hero_lead">Professionelle Weblösungen und KI-Integration für moderne Unternehmen.</p>
-          <div class="button-group">
-            <a class="button button-primary" href="kontakt.html" data-i18n="hero_cta_primary">Projekt starten</a>
-            <a class="button button-ghost" href="preise.html" data-i18n="hero_cta_secondary">Preise ansehen</a>
+    <section class="hero hero--centered" aria-labelledby="hero-title">
+      <div class="container">
+        <div class="hero-center" data-reveal>
+          <p class="eyebrow" data-i18n="hero_eyebrow">Webdesign &amp; KI-Integration &mdash; Schweiz</p>
+          <h1 id="hero-title" data-i18n="hero_title">Websites,<br>die verkaufen.</h1>
+          <p class="hero-sub" data-i18n="hero_lead">Wir bauen Websites, die Kunden gewinnen. Klar, modern und auf Anfragen optimiert.</p>
+          <a class="button button-primary hero-main-cta" href="kontakt.html" data-i18n="hero_cta_primary">Kostenloses Erstgespräch</a>
+          <div class="hero-trust" aria-label="Vertrauenssignale">
+            <span>&#10003; Kostenlos &amp; unverbindlich</span>
+            <span>&#10003; Antwort in 24h</span>
+            <span>&#10003; Schweizer Qualität</span>
           </div>
-          <div class="hero-badges" aria-label="Vorteile">
-            <span class="badge" data-i18n="badge_mobile">Mobile-first</span>
-            <span class="badge" data-i18n="badge_seo">SEO-optimiert</span>
-            <span class="badge" data-i18n="badge_ai">KI-Integration</span>
-          </div>
-        </div>
-
-        <div class="hero-visual" data-reveal>
-          <article class="hero-benefit-card" aria-label="Vorteile einer Website mit MASESites">
-            <p class="hero-benefit-badge">Für Unternehmen, die online Kunden gewinnen wollen</p>
-            <h3 class="hero-benefit-title">Deine Website arbeitet für dich</h3>
-            <p class="hero-benefit-subtitle">Klar aufgebaut. Schnell geladen. Auf mehr Anfragen optimiert.</p>
-            <ul class="hero-benefit-list" aria-label="Kundenvorteile">
-              <li class="hero-benefit-item"><span class="hero-benefit-check" aria-hidden="true">✓</span><span>Mehr Vertrauen bei neuen Kunden</span></li>
-              <li class="hero-benefit-item"><span class="hero-benefit-check" aria-hidden="true">✓</span><span>Mehr Anfragen über deine Website</span></li>
-              <li class="hero-benefit-item"><span class="hero-benefit-check" aria-hidden="true">✓</span><span>Modern auf jedem Gerät</span></li>
-            </ul>
-            <div class="hero-benefit-trust" aria-label="Qualitätsmerkmale">
-              <span class="hero-benefit-trust-item">Mobile-first</span>
-              <span class="hero-benefit-trust-item">SEO-optimiert</span>
-              <span class="hero-benefit-trust-item">Schnelle Ladezeit</span>
-            </div>
-            <div class="hero-benefit-footer">
-              <div class="hero-benefit-pricing">
-                <p class="hero-benefit-price">Ab CHF 750</p>
-              </div>
-              <a class="hero-benefit-cta" href="kontakt.html" data-i18n="hero_cta_primary">Projekt starten</a>
-            </div>
-          </article>
         </div>
       </div>
     </section>

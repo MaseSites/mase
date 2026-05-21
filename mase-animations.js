@@ -310,26 +310,101 @@
     if (!anchors.length) return;
 
     var items = [
-      'Mobile-first', 'SEO-optimiert', 'Schweiz', 'ab CHF 750',
-      'Antworten in Sekunden', 'Sauberer Code', '24/7 KI-Assistent',
-      'DSGVO-konform', 'Matteo & Severin'
+      'Webdesign Schweiz', 'SEO-optimiert', 'Mobile-first',
+      'ab CHF 750', 'KI-Assistent', 'Sauberer Code',
+      'Schnelle Ladezeit', 'DSGVO-konform', '24/7 verfügbar'
     ];
-    var row = items.map(function (it) {
+
+    // Build one copy of all items
+    var copy = items.map(function (it) {
       return '<span class="mase-marquee__item">' + it + '</span>';
     }).join('');
-    anchors.forEach(function (a) {
-      a.classList.add('mase-marquee');
-      a.setAttribute('aria-hidden', 'true');
-      a.innerHTML = '<div class="mase-marquee__track">' + row + row + '</div>';
+
+    // Exactly two identical copies — animation translates -50% for seamless loop
+    anchors.forEach(function (el) {
+      el.classList.add('mase-marquee');
+      el.setAttribute('aria-hidden', 'true');
+      el.setAttribute('role', 'presentation');
+      el.innerHTML =
+        '<div class="mase-marquee__track" aria-hidden="true">' +
+          copy + copy +
+        '</div>';
     });
   }
 
   // -----------------------------------------------------------
   // Boot
   // -----------------------------------------------------------
+  // -----------------------------------------------------------
+  // Hero — Animated Flowing Path Background
+  // -----------------------------------------------------------
+  // -----------------------------------------------------------
+  // Hero — Elegant floating pill shapes (own implementation)
+  // Visually identical to the HeroGeometric / ElegantShape pattern:
+  //   5 semi-transparent colour-gradient pills enter from above and
+  //   float gently on a near-black dark background.
+  // -----------------------------------------------------------
+  function initElegantShapes() {
+    var hero = document.querySelector('.hero');
+    if (!hero || hero.querySelector('.mase-flow-bg')) return;
+
+    var bg = document.createElement('div');
+    bg.className = 'mase-flow-bg';
+    bg.setAttribute('aria-hidden', 'true');
+
+    // Very subtle ambient colour cloud behind the shapes
+    var ambient = document.createElement('div');
+    ambient.className = 'mase-shape-ambient';
+    bg.appendChild(ambient);
+
+    // 5 shapes — sizes, positions, rotations and colours match the reference 1:1.
+    // Positions are mid-point averages of mobile/desktop breakpoints in the original.
+    var shapes = [
+      { w: 600, h: 140, rot:  12, rgb: '99,102,241',  delay: 0.3, css: 'left:-8%;top:18%'  },
+      { w: 500, h: 120, rot: -15, rgb: '244,63,94',   delay: 0.5, css: 'right:-3%;top:72%' },
+      { w: 300, h: 80,  rot:  -8, rgb: '139,92,246',  delay: 0.4, css: 'left:8%;bottom:8%' },
+      { w: 200, h: 60,  rot:  20, rgb: '245,158,11',  delay: 0.6, css: 'right:18%;top:13%' },
+      { w: 150, h: 40,  rot: -25, rgb: '6,182,212',   delay: 0.7, css: 'left:23%;top:8%'   }
+    ];
+
+    shapes.forEach(function (s) {
+      // Outer wrapper: absolute position + entrance animation
+      // --rot custom property drives rotation in the CSS keyframe
+      var outer = document.createElement('div');
+      outer.className = 'mase-shape-outer';
+      outer.style.cssText = s.css + ';--rot:' + s.rot + 'deg;animation-delay:' + s.delay + 's';
+
+      // Inner wrapper: sets physical size + perpetual float animation
+      // Float starts after the 2.4s entry finishes + its own delay
+      var inner = document.createElement('div');
+      inner.className = 'mase-shape-inner';
+      inner.style.cssText = 'width:' + s.w + 'px;height:' + s.h + 'px' +
+        ';animation-delay:' + (s.delay + 2.5) + 's';
+
+      // Shape body: gradient pill with glass border and inner highlight
+      var body = document.createElement('div');
+      body.className = 'mase-shape-body';
+      body.style.background = 'linear-gradient(to right,rgba(' + s.rgb + ',0.15),transparent)';
+
+      inner.appendChild(body);
+      outer.appendChild(inner);
+      bg.appendChild(outer);
+    });
+
+    // Top-edge and bottom-edge dark fade overlays
+    var fadeT = document.createElement('div'); fadeT.className = 'mase-fade-t';
+    var fadeB = document.createElement('div'); fadeB.className = 'mase-fade-b';
+    bg.appendChild(fadeT);
+    bg.appendChild(fadeB);
+
+    hero.insertBefore(bg, hero.firstChild);
+    hero.classList.add('has-flow-bg');
+  }
+
   function boot() {
     initScrollProgress();
     initHero();
+    initElegantShapes();
     initStagger();
     initUnderlines();
     initStickyCta();

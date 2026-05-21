@@ -316,9 +316,23 @@
   }
 
   // -----------------------------------------------------------
+  // HEADER SCROLL-SHRINK
+  // -----------------------------------------------------------
+  function initHeaderScroll() {
+    var header = document.querySelector('.site-header');
+    if (!header) return;
+    function onScroll() {
+      header.classList.toggle('site-header--scrolled', window.scrollY > 50);
+    }
+    window.addEventListener('scroll', rafThrottle(onScroll), { passive: true });
+    onScroll();
+  }
+
+  // -----------------------------------------------------------
   // BOOT
   // -----------------------------------------------------------
   ready(function () {
+    initHeaderScroll();    // always on — no reduced-motion gating needed
     if (!prefersReduced) {
       initParallax();
       initParticles();

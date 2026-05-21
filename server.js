@@ -3,6 +3,7 @@ const nodemailer = require('nodemailer');
 const cors = require('cors');
 const rateLimit = require('express-rate-limit');
 const path = require('path');
+const crypto = require('crypto');
 require('dotenv').config();
 
 const app = express();
@@ -22,8 +23,72 @@ const allowedOrigins = [
     .filter(Boolean)
 );
 
-// Middleware
+// ============================================================
+// TRUST PROXY — set false when not behind a reverse proxy.
+// Prevents X-Forwarded-For spoofing to bypass rate limits.
+// ============================================================
+app.set('trust proxy', false);
+
+// ============================================================
+// SECURITY HEADERS — replaces helmet for zero-dependency setup
+// ============================================================
 app.disable('x-powered-by');
+app.use((req, res, next) => {
+  // Prevent clickjacking
+  res.set('X-Frame-Options', 'DENY');
+  // Prevent MIME-type sniffing
+  res.set('X-Content-Type-Options', 'nosniff');
+  // HSTS — only activate on production (HTTPS)
+  if (process.env.NODE_ENV === 'production') {
+    res.set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains; preload');
+  }
+  // Referrer policy
+  res.set('Referrer-Policy', 'strict-origin-when-cross-origin');
+  // Permissions policy — deny unnecessary browser features
+  res.set('Permissions-Policy', 'camera=(), microphone=(), geolocation=(), payment=()');
+  // Content-Security-Policy
+  res.set(
+    'Content-Security-Policy',
+    [
+      "default-src 'self'",
+      "script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.googleapis.com",
+      "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+      "font-src 'self' https://fonts.gstatic.com",
+      "img-src 'self' data: https:",
+      "connect-src 'self' https://kxeorjgabvtplmdygbph.supabase.co https://api.openai.com",
+      "frame-ancestors 'none'",
+      "base-uri 'self'",
+      "form-action 'self'"
+    ].join('; ')
+  );
+  next();
+});
+
+// Block direct access to sensitive server-side files and archive directories.
+// Do NOT add supabase-config.js or tracker.js — they are public frontend assets.
+const BLOCKED_FILES = [
+  /^\/server(-old)?\.js$/i,
+  /^\/package(-lock)?\.json$/i,
+  /^\/\.env/i,
+  /^\/test-.*\.js$/i,
+  /^\/design[0-9]*-import\//i,      // archive / import directories — not web assets
+  /^\/OPENAI-SETUP-COMPLETE\.md$/i, // docs with key references
+];
+app.use((req, res, next) => {
+  const p = req.path;
+  if (BLOCKED_FILES.some(re => re.test(p))) {
+    return res.status(404).json({ error: 'Not found' });
+  }
+  next();
+});
+
+// /admin/index.html is the login page — publicly accessible.
+// Security is provided by:
+//   1. POST /api/admin/auth (server-side password check, rate-limited)
+//   2. Supabase service_role key required for all data queries
+// No token-gate needed here; blocking the HTML breaks the login form.
+
+// Middleware
 app.use(cors({
   origin: (origin, callback) => {
     // Allow same-origin/server-to-server calls without Origin header.
@@ -316,6 +381,7 @@ app.post('/api/contact', limiter, async (req, res) => {
     const mailToCompany = {
       from: `"MASESites AG" <${process.env.SMTP_USER || 'info@masesites.ch'}>`,
       to: process.env.EMAIL_TO || 'info@masesites.ch',
+      cc: process.env.EMAIL_CC || 'matteo.cocetrone@gmx.ch',
       replyTo: email,
       subject: `Neue Kontaktanfrage von ${safeSubjectName} - MASESites`,
       html: `
@@ -442,8 +508,163 @@ app.post('/api/contact', limiter, async (req, res) => {
   }
 });
 
-// Health check
+// ============================================================
+// ADMIN AUTH — server-side constant-time password check
+// POST /api/admin/auth  { password: string }
+// Returns { ok: true, token: string } on success (token = ADMIN_TOKEN env var)
+// ============================================================
+const adminAuthLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 10,
+  handler: (req, res) => res.status(429).json({ ok: false, error: 'Too many attempts.' })
+});
+
+app.post('/api/admin/auth', adminAuthLimiter, (req, res) => {
+  const password  = String((req.body && req.body.password) || '').trim();
+  const adminPass = process.env.ADMIN_PASSWORD || '';
+  const adminToken = process.env.ADMIN_TOKEN || '';
+
+  if (!adminPass) {
+    return res.status(503).json({ ok: false, error: 'Admin auth not configured.' });
+  }
+
+  // Constant-time comparison to prevent timing attacks
+  const providedBuf = Buffer.from(
+    crypto.createHash('sha256').update(password).digest('hex')
+  );
+  const expectedBuf = Buffer.from(
+    crypto.createHash('sha256').update(adminPass).digest('hex')
+  );
+
+  if (providedBuf.length !== expectedBuf.length ||
+      !crypto.timingSafeEqual(providedBuf, expectedBuf)) {
+    return res.status(401).json({ ok: false, error: 'Invalid password.' });
+  }
+
+  res.json({ ok: true, token: adminToken });
+});
+
+// ============================================================
+// ADMIN DATA PROXY — server-side Supabase proxy (service_role key never leaves server)
+// All endpoints require:  Authorization: Bearer <ADMIN_TOKEN>
+// ============================================================
+
+const ALLOWED_TABLES = new Set([
+  'mase_chat_messages',
+  'mase_leads',
+  'mase_page_views',
+  'mase_events'
+]);
+
+const SUPABASE_URL   = process.env.SUPABASE_URL || 'https://kxeorjgabvtplmdygbph.supabase.co';
+const adminDataLimiter = rateLimit({
+  windowMs: 60 * 1000,
+  max: 200,
+  handler: (req, res) => res.status(429).json({ error: 'Too many requests.' })
+});
+
+function validateAdminToken(req, res) {
+  const adminToken = process.env.ADMIN_TOKEN || '';
+  const auth = req.headers['authorization'] || '';
+  const provided = auth.startsWith('Bearer ') ? auth.slice(7).trim() : '';
+  if (!adminToken || !provided) {
+    res.status(401).json({ error: 'Unauthorized.' });
+    return false;
+  }
+  const a = Buffer.from(crypto.createHash('sha256').update(provided).digest('hex'));
+  const b = Buffer.from(crypto.createHash('sha256').update(adminToken).digest('hex'));
+  if (a.length !== b.length || !crypto.timingSafeEqual(a, b)) {
+    res.status(401).json({ error: 'Unauthorized.' });
+    return false;
+  }
+  return true;
+}
+
+// GET /api/admin/data/:table?<supabase query params>
+app.get('/api/admin/data/:table', adminDataLimiter, async (req, res) => {
+  if (!validateAdminToken(req, res)) return;
+
+  const table = req.params.table;
+  if (!ALLOWED_TABLES.has(table)) {
+    return res.status(400).json({ error: 'Table not allowed.' });
+  }
+
+  const serviceKey = process.env.SUPABASE_SERVICE_KEY || '';
+  if (!serviceKey) {
+    return res.status(503).json({ error: 'Service key not configured. Add SUPABASE_SERVICE_KEY to .env' });
+  }
+
+  // Forward query string to Supabase REST API
+  const qs = req.url.split('?')[1] || '';
+  const upstreamUrl = `${SUPABASE_URL}/rest/v1/${table}${qs ? '?' + qs : ''}`;
+
+  try {
+    const upstream = await fetch(upstreamUrl, {
+      headers: {
+        'apikey': serviceKey,
+        'Authorization': 'Bearer ' + serviceKey,
+        'Content-Type': 'application/json'
+      }
+    });
+    const data = await upstream.json();
+    if (!upstream.ok) {
+      return res.status(upstream.status).json({ error: data });
+    }
+    res.json(data);
+  } catch (err) {
+    console.error('[proxy] GET error:', err.message);
+    res.status(502).json({ error: 'Upstream error.' });
+  }
+});
+
+// PATCH /api/admin/data/leads/:id  { status: string }
+app.patch('/api/admin/data/leads/:id', adminDataLimiter, async (req, res) => {
+  if (!validateAdminToken(req, res)) return;
+
+  const id = req.params.id;
+  if (!id || !/^[0-9a-f-]{36}$|^\d+$/.test(id)) {
+    return res.status(400).json({ error: 'Invalid id.' });
+  }
+
+  const ALLOWED_STATUSES = new Set(['new','in_progress','contacted','done','qualified','closed','lost']);
+  const { status } = req.body || {};
+  if (!status || !ALLOWED_STATUSES.has(status)) {
+    return res.status(400).json({ error: 'Invalid status.' });
+  }
+
+  const serviceKey = process.env.SUPABASE_SERVICE_KEY || '';
+  if (!serviceKey) {
+    return res.status(503).json({ error: 'Service key not configured.' });
+  }
+
+  const upstreamUrl = `${SUPABASE_URL}/rest/v1/mase_leads?id=eq.${encodeURIComponent(id)}`;
+  try {
+    const upstream = await fetch(upstreamUrl, {
+      method: 'PATCH',
+      headers: {
+        'apikey': serviceKey,
+        'Authorization': 'Bearer ' + serviceKey,
+        'Content-Type': 'application/json',
+        'Prefer': 'return=minimal'
+      },
+      body: JSON.stringify({ status })
+    });
+    if (!upstream.ok) {
+      const data = await upstream.json().catch(() => ({}));
+      return res.status(upstream.status).json({ error: data });
+    }
+    res.json({ ok: true });
+  } catch (err) {
+    console.error('[proxy] PATCH error:', err.message);
+    res.status(502).json({ error: 'Upstream error.' });
+  }
+});
+
+// Health check — do not expose internal state in production
 app.get('/api/health', (req, res) => {
+  if (process.env.NODE_ENV === 'production') {
+    return res.json({ status: 'OK' });
+  }
   res.json({
     status: 'OK',
     timestamp: new Date().toISOString(),
