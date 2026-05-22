@@ -372,7 +372,7 @@
       ktk_placeholder_email: 'max@firma.ch',
       ktk_err_email: 'Bitte gib eine gültige E-Mail ein.',
       ktk_label_company_html: 'Firma <span style="font-weight:400;opacity:0.6">(optional)</span>',
-      ktk_placeholder_company: 'Firma AG',
+      ktk_placeholder_company: 'Firma',
       ktk_label_project: 'Projektart',
       ktk_label_message: 'Nachricht *',
       ktk_placeholder_message: 'Erzähl uns von deinem Projekt — Ziele, Zeitplan, Budget...',

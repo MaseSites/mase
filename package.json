@@ -1,7 +1,7 @@
 {
   "name": "masesites-website",
   "version": "1.0.0",
-  "description": "MASESites AG - Professional Websites & KI-Integration",
+  "description": "MASESites - Professional Websites & KI-Integration",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
@@ -20,7 +20,7 @@
     "seo",
     "performance"
   ],
-  "author": "Matteo & Severin - MASESites AG",
+  "author": "Matteo & Severin - MASESites",
   "license": "MIT",
   "private": true,
   "dependencies": {
