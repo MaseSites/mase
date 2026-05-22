@@ -373,9 +373,11 @@
   'use strict';
 
   // ---- API Base URL ----
-  // Lokal: leer (gleicher Server). Auf masesites.ch: Railway-URL eintragen.
-  // Beispiel: 'https://mase-production.up.railway.app'
-  var API_BASE = window.MASE_API_URL || '';
+  // Lokal (localhost): gleicher Server → leer lassen
+  // Produktion (masesites.ch): Railway-Backend
+  var API_BASE = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+    ? ''
+    : 'https://mase-production.up.railway.app';
 
   var ADMIN_TOKEN = ''; // Received from server after login — never leaves memory
   var charts = {};
