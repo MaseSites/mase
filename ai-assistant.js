@@ -383,7 +383,7 @@ Was möchtest du wissen?`;
   }
 
   _fmtAbout() {
-    return `<strong>MASESites AG</strong><br><br>
+    return `<strong>MASESites</strong><br><br>
 Gegründet von Matteo &amp; Severin<br><br>
 <strong>Mission:</strong> Moderne, klare und leistungsstarke Websites<br><br>
 <strong>Werte:</strong> Ehrlichkeit — Qualität — Klare Kommunikation<br><br>
@@ -460,7 +460,7 @@ Schreib uns auch direkt: <a href="mailto:info@masesites.ch">info@masesites.ch</a
 
   getSystemPrompt() {
     return `ROLLE
-Du bist der Website- & KI-Sales Assistant von MASESites AG (Matteo & Severin).
+Du bist der Website- & KI-Sales Assistant von MASESites (Matteo & Severin).
 Du schreibst auf Deutsch (Schweiz), kurz, klar, aktiv.
 Verwende KEINE Emojis.
 

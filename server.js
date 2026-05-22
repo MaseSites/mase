@@ -379,7 +379,7 @@ app.post('/api/contact', limiter, async (req, res) => {
       : '';
 
     const mailToCompany = {
-      from: `"MASESites AG" <${process.env.SMTP_USER || 'info@masesites.ch'}>`,
+      from: `"MASESites" <${process.env.SMTP_USER || 'info@masesites.ch'}>`,
       to: process.env.EMAIL_TO || 'info@masesites.ch',
       cc: process.env.EMAIL_CC || 'matteo.cocetrone@gmx.ch',
       replyTo: email,
@@ -440,9 +440,9 @@ app.post('/api/contact', limiter, async (req, res) => {
       : '';
 
     const mailToUser = {
-      from: `"MASESites AG" <${process.env.SMTP_USER || 'info@masesites.ch'}>`,
+      from: `"MASESites" <${process.env.SMTP_USER || 'info@masesites.ch'}>`,
       to: email,
-      subject: 'Deine Anfrage bei MASESites AG',
+      subject: 'Deine Anfrage bei MASESites',
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
           <h2 style="color: #6aa9ff;">Vielen Dank für deine Anfrage!</h2>
@@ -465,7 +465,7 @@ app.post('/api/contact', limiter, async (req, res) => {
           <p style="color: #64748b;">
             Mit freundlichen Grüßen,<br>
             <strong style="color: #334155;">Matteo &amp; Severin</strong><br>
-            MASESites AG
+            MASESites
           </p>
           <p style="font-size: 12px; color: #94a3b8; margin-top: 30px;">
             Diese Email wurde automatisch generiert. Bitte antworte nicht direkt auf diese Email.

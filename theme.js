@@ -20,7 +20,7 @@
       nav_about:       'Über uns',
       nav_contact:     'Kontakt',
       nav_cta:         'Kostenloses Erstgespräch',
-      hero_eyebrow:    'Matteo & Severin. MASESites AG.',
+      hero_eyebrow:    'Matteo & Severin. MASESites.',
       hero_title:      'Websites, die verkaufen.',
       hero_lead:       'Professionelle Weblösungen und KI-Integration für moderne Unternehmen.',
       hero_cta_primary:   'Projekt starten',
@@ -187,7 +187,7 @@
       about_page_hero_title: 'Wer steckt hinter MASESites?',
       about_page_hero_lead: 'Zwei Köpfe, ein Ziel: Moderne Websites, die wirklich funktionieren.',
       about_page_story_title: 'Unsere Geschichte',
-      about_page_story_p1_html: 'MASESites AG wurde von <strong>Matteo</strong> und <strong>Severin</strong> gegründet. Unser Ziel ist klar: Moderne, klare und leistungsstarke Websites bauen, die echte Resultate liefern.',
+      about_page_story_p1_html: 'MASESites wurde von <strong>Matteo</strong> und <strong>Severin</strong> gegründet. Unser Ziel ist klar: Moderne, klare und leistungsstarke Websites bauen, die echte Resultate liefern.',
       about_page_story_p2: 'Wir glauben an ehrliche Arbeit, sauberen Code und transparente Kommunikation. Keine falschen Versprechen, keine Fake-Referenzen - nur solide Handarbeit mit Fokus auf Qualität.',
       about_page_story_p3: 'Mit unserem Hintergrund in Webentwicklung und Design verbinden wir technisches Know-how mit einem Gespür für gutes Design. Das Ergebnis: Websites, die nicht nur gut aussehen, sondern auch verkaufen.',
       about_page_values_title: 'Unsere Werte',
@@ -292,7 +292,7 @@
       impressum_title: 'Impressum',
       impressum_lead:  'Angaben gemäss Art. 5 DSG (Schweiz)',
       impressum_content: `<h2>Betreiber der Website</h2>
-    <p><strong>MASESites AG</strong><br>Schweiz</p>
+    <p><strong>MASESites</strong><br>Schweiz</p>
     <h2>Kontakt</h2>
     <p><strong>E-Mail:</strong> <a href="mailto:info@masesites.ch">info@masesites.ch</a><br>
     <strong>Telefon:</strong> Auf Anfrage mit Termin</p>
@@ -306,13 +306,13 @@
     <h3>Urheberrecht</h3>
     <p>Die durch die Seitenbetreiber erstellten Inhalte unterliegen dem schweizerischen Urheberrecht. Die Vervielfältigung bedarf der schriftlichen Zustimmung.</p>
     <h2>Konzept &amp; Realisierung</h2>
-    <p><strong>Design &amp; Entwicklung:</strong> MASESites AG – <a href="https://www.masesites.ch">www.masesites.ch</a><br>
+    <p><strong>Design &amp; Entwicklung:</strong> MASESites – <a href="https://www.masesites.ch">www.masesites.ch</a><br>
     <strong>Technologie:</strong> HTML5, CSS3, Vanilla JavaScript</p>
     <p style="color:var(--muted);margin-top:3rem;font-size:0.9rem;">Stand: Februar 2026</p>`,
       privacy_title:   'Datenschutzerklärung',
       privacy_lead:    'Transparenz über die Verarbeitung Ihrer Daten.',
       privacy_content: `<h2>1. Verantwortliche Stelle</h2>
-    <p><strong>MASESites AG</strong><br>
+    <p><strong>MASESites</strong><br>
     E-Mail: <a href="mailto:info@masesites.ch">info@masesites.ch</a></p>
 
     <h2>2. Erfassung und Verarbeitung personenbezogener Daten</h2>
@@ -482,7 +482,7 @@
       nav_about:       'About us',
       nav_contact:     'Contact',
       nav_cta:         'Free Consultation',
-      hero_eyebrow:    'Matteo & Severin. MASESites AG.',
+      hero_eyebrow:    'Matteo & Severin. MASESites.',
       hero_title:      'Websites that sell.',
       hero_lead:       'Professional web solutions and AI integration for modern businesses.',
       hero_cta_primary:   'Start project',
@@ -635,7 +635,7 @@
       about_page_hero_title: 'Who is behind MASESites?',
       about_page_hero_lead: 'Two minds, one goal: modern websites that truly perform.',
       about_page_story_title: 'Our story',
-      about_page_story_p1_html: 'MASESites AG was founded by <strong>Matteo</strong> and <strong>Severin</strong>. Our goal is clear: build modern, clean, high-performance websites that deliver real results.',
+      about_page_story_p1_html: 'MASESites was founded by <strong>Matteo</strong> and <strong>Severin</strong>. Our goal is clear: build modern, clean, high-performance websites that deliver real results.',
       about_page_story_p2: 'We believe in honest work, clean code, and transparent communication. No false promises, no fake references - just solid craftsmanship with a focus on quality.',
       about_page_story_p3: 'With our background in web development and design, we combine technical know-how with a strong sense of aesthetics. The result: websites that not only look good, but also sell.',
       about_page_values_title: 'Our values',
@@ -738,7 +738,7 @@
       impressum_title: 'Legal Notice',
       impressum_lead:  'Information according to Swiss legal requirements.',
       impressum_content: `<h2>Website operator</h2>
-    <p><strong>MASESites AG</strong><br>Switzerland</p>
+    <p><strong>MASESites</strong><br>Switzerland</p>
     <h2>Contact</h2>
     <p><strong>Email:</strong> <a href="mailto:info@masesites.ch">info@masesites.ch</a><br>
     <strong>Phone:</strong> Available on request with appointment</p>
@@ -752,13 +752,13 @@
     <h3>Copyright</h3>
     <p>The content created by the site operators is subject to Swiss copyright law. Reproduction requires written permission.</p>
     <h2>Concept &amp; implementation</h2>
-    <p><strong>Design &amp; Development:</strong> MASESites AG – <a href="https://www.masesites.ch">www.masesites.ch</a><br>
+    <p><strong>Design &amp; Development:</strong> MASESites – <a href="https://www.masesites.ch">www.masesites.ch</a><br>
     <strong>Technology:</strong> HTML5, CSS3, Vanilla JavaScript</p>
     <p style="color:var(--muted);margin-top:3rem;font-size:0.9rem;">Last updated: February 2026</p>`,
       privacy_title:   'Privacy Policy',
       privacy_lead:    'Transparency about how we process your data.',
       privacy_content: `<h2>1. Data controller</h2>
-    <p><strong>MASESites AG</strong><br>
+    <p><strong>MASESites</strong><br>
     Email: <a href="mailto:info@masesites.ch">info@masesites.ch</a></p>
 
     <h2>2. Collection and processing of personal data</h2>
@@ -928,7 +928,7 @@
       nav_about:       'À propos',
       nav_contact:     'Contact',
       nav_cta:         'Premier entretien gratuit',
-      hero_eyebrow:    'Matteo & Severin. MASESites AG.',
+      hero_eyebrow:    'Matteo & Severin. MASESites.',
       hero_title:      'Des sites web qui vendent.',
       hero_lead:       'Solutions web professionnelles et intégration IA pour les entreprises modernes.',
       hero_cta_primary:   'Démarrer le projet',
@@ -1081,7 +1081,7 @@
       about_page_hero_title: 'Qui se cache derriere MASESites ?',
       about_page_hero_lead: 'Deux esprits, un objectif : des sites modernes qui performent vraiment.',
       about_page_story_title: 'Notre histoire',
-      about_page_story_p1_html: 'MASESites AG a ete fondee par <strong>Matteo</strong> et <strong>Severin</strong>. Notre objectif est clair : creer des sites modernes, clairs et performants qui apportent de vrais resultats.',
+      about_page_story_p1_html: 'MASESites a ete fondee par <strong>Matteo</strong> et <strong>Severin</strong>. Notre objectif est clair : creer des sites modernes, clairs et performants qui apportent de vrais resultats.',
       about_page_story_p2: 'Nous croyons au travail honnete, au code propre et a une communication transparente. Pas de promesses vides, pas de references fictives - seulement un vrai savoir-faire axe sur la qualite.',
       about_page_story_p3: 'Avec notre experience en developpement web et en design, nous combinons competence technique et sens esthetique. Resultat : des sites qui ne sont pas seulement beaux, mais qui vendent.',
       about_page_values_title: 'Nos valeurs',
@@ -1184,7 +1184,7 @@
       impressum_title: 'Mentions légales',
       impressum_lead:  'Informations conformément aux exigences légales suisses.',
       impressum_content: `<h2>Exploitant du site</h2>
-    <p><strong>MASESites AG</strong><br>Suisse</p>
+    <p><strong>MASESites</strong><br>Suisse</p>
     <h2>Contact</h2>
     <p><strong>E-mail :</strong> <a href="mailto:info@masesites.ch">info@masesites.ch</a><br>
     <strong>Téléphone :</strong> Sur demande avec rendez-vous</p>
@@ -1198,13 +1198,13 @@
     <h3>Droit d'auteur</h3>
     <p>Le contenu créé par les exploitants du site est soumis au droit d'auteur suisse. Toute reproduction nécessite une autorisation écrite.</p>
     <h2>Concept &amp; réalisation</h2>
-    <p><strong>Design &amp; développement :</strong> MASESites AG – <a href="https://www.masesites.ch">www.masesites.ch</a><br>
+    <p><strong>Design &amp; développement :</strong> MASESites – <a href="https://www.masesites.ch">www.masesites.ch</a><br>
     <strong>Technologie :</strong> HTML5, CSS3, Vanilla JavaScript</p>
     <p style="color:var(--muted);margin-top:3rem;font-size:0.9rem;">Dernière mise à jour : février 2026</p>`,
       privacy_title:   'Politique de confidentialité',
       privacy_lead:    'Transparence sur le traitement de vos données.',
       privacy_content: `<h2>1. Responsable du traitement</h2>
-    <p><strong>MASESites AG</strong><br>
+    <p><strong>MASESites</strong><br>
     E-mail : <a href="mailto:info@masesites.ch">info@masesites.ch</a></p>
 
     <h2>2. Collecte et traitement des données personnelles</h2>

@@ -20,7 +20,7 @@ const mail = {
     <p><strong>Email:</strong> test@test.ch</p>
     <p><strong>Nachricht:</strong> Das ist eine Test-Nachricht.</p>
     <hr>
-    <small>MASESites AG - ${new Date().toLocaleString('de-CH')}</small>
+    <small>MASESites - ${new Date().toLocaleString('de-CH')}</small>
   `
 };
 

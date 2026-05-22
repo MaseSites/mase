@@ -114,7 +114,7 @@ app.post('/api/contact', limiter, async (req, res) => {
     const confirmationMailOptions = {
       from: process.env.EMAIL_USER || 'noreply@masesites.ch',
       to: email,
-      subject: 'Deine Anfrage bei MASESites AG',
+      subject: 'Deine Anfrage bei MASESites',
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
           <h2 style="color: #6aa9ff;">Vielen Dank für deine Anfrage!</h2>
@@ -131,7 +131,7 @@ app.post('/api/contact', limiter, async (req, res) => {
           <p style="color: #64748b;">
             Mit freundlichen Grüssen,<br>
             <strong>Matteo & Severin</strong><br>
-            MASESites AG
+            MASESites
           </p>
           
           <p style="font-size: 12px; color: #94a3b8; margin-top: 30px;">
