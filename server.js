@@ -24,10 +24,10 @@ const allowedOrigins = [
 );
 
 // ============================================================
-// TRUST PROXY — set false when not behind a reverse proxy.
+// TRUST PROXY — true on Railway/cloud (behind reverse proxy).
 // Prevents X-Forwarded-For spoofing to bypass rate limits.
 // ============================================================
-app.set('trust proxy', false);
+app.set('trust proxy', process.env.TRUST_PROXY === 'true' || process.env.RAILWAY_ENVIRONMENT ? 1 : false);
 
 // ============================================================
 // SECURITY HEADERS — replaces helmet for zero-dependency setup
@@ -96,8 +96,8 @@ app.use(cors({
     if (allowedOrigins.indexOf(origin) !== -1) return callback(null, true);
     return callback(new Error(`CORS_NOT_ALLOWED: ${origin}`));
   },
-  methods: ['GET', 'POST', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Accept']
+  methods: ['GET', 'POST', 'PATCH', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Accept', 'Authorization']
 }));
 app.use(express.json({ limit: '20kb' }));
 app.use(express.urlencoded({ extended: true, limit: '20kb' }));
