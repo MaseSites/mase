@@ -4,7 +4,7 @@
   <!-- Homepage -->
   <url>
     <loc>https://www.masesites.ch/</loc>
-    <lastmod>2026-02-22</lastmod>
+    <lastmod>2026-05-22</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
@@ -12,7 +12,7 @@
   <!-- Leistungen Section -->
   <url>
     <loc>https://www.masesites.ch/leistungen</loc>
-    <lastmod>2026-02-22</lastmod>
+    <lastmod>2026-05-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
@@ -20,7 +20,7 @@
   <!-- Preise Section -->
   <url>
     <loc>https://www.masesites.ch/preise</loc>
-    <lastmod>2026-02-22</lastmod>
+    <lastmod>2026-05-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
@@ -28,7 +28,7 @@
   <!-- KI-Assist Section -->
   <url>
     <loc>https://www.masesites.ch/ki-assistent</loc>
-    <lastmod>2026-02-22</lastmod>
+    <lastmod>2026-05-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -36,7 +36,7 @@
   <!-- Über Uns Section -->
   <url>
     <loc>https://www.masesites.ch/ueber-uns</loc>
-    <lastmod>2026-02-22</lastmod>
+    <lastmod>2026-05-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -44,7 +44,7 @@
   <!-- Kontakt Section -->
   <url>
     <loc>https://www.masesites.ch/kontakt</loc>
-    <lastmod>2026-02-22</lastmod>
+    <lastmod>2026-05-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -52,7 +52,7 @@
   <!-- Impressum -->
   <url>
     <loc>https://www.masesites.ch/impressum</loc>
-    <lastmod>2026-02-22</lastmod>
+    <lastmod>2026-05-22</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
@@ -60,7 +60,7 @@
   <!-- Datenschutz -->
   <url>
     <loc>https://www.masesites.ch/datenschutz</loc>
-    <lastmod>2026-02-22</lastmod>
+    <lastmod>2026-05-22</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
