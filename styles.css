@@ -32,7 +32,7 @@
   --hdr-h: 68px;
 
   /* ================= SEMANTIC BACKGROUNDS ================= */
-  --header-bg: #ffffff;
+  --header-bg: rgba(255, 255, 255, 0.78);
   --card-bg: #ffffff;
   --nav-bg: #ffffff;
   --input-bg: #f9f9f9;
@@ -80,7 +80,7 @@
   --shadow: 0 18px 40px rgba(0, 0, 0, 0.6);
   
   /* ================= SEMANTIC BACKGROUNDS ================= */
-  --header-bg: #0d1117;
+  --header-bg: rgba(10, 11, 18, 0.76);
   --card-bg: #1a1f2e;
   --nav-bg: #1a1f2e;
   --input-bg: #252d3d;
@@ -102,11 +102,11 @@
 .dark body { background: var(--bg); color: var(--text); }
 .dark .site-header {
   background: var(--header-bg);
-  border-bottom-color: rgba(255, 255, 255, 0.12);
+  border-bottom-color: rgba(255, 255, 255, 0.055);
   box-shadow: none;
 }
 .dark .site-header--scrolled {
-  box-shadow: 0 1px 12px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.04), 0 8px 40px rgba(0, 0, 0, 0.45);
 }
 .dark .logo { color: #ffffff; }
 .dark .logo:hover { color: #ffffff; opacity: 0.7; }
@@ -701,12 +701,15 @@ small {
   top: 0;
   z-index: 1000;
   background: var(--header-bg);
-  border-bottom: 1px solid var(--border);
-  transition: box-shadow 0.25s ease;
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow: none;
+  transition: box-shadow 0.25s ease, border-color 0.25s ease;
 }
 
 .site-header--scrolled {
-  box-shadow: 0 1px 12px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.04), 0 8px 32px rgba(0, 0, 0, 0.07);
 }
 
 /* Horizontal padding */
@@ -737,10 +740,18 @@ small {
 
 .logo-img {
   display: block;
-  height: 40px;
-  width: 40px;
+  height: 36px;
+  width: 36px;
   object-fit: contain;
   border-radius: 8px;
+  transition: opacity 160ms ease;
+}
+
+/* Dissolve the PNG's dark background in dark mode
+   screen blend: dark pixels disappear, colored mark stays */
+.dark .logo-img {
+  mix-blend-mode: screen;
+  filter: brightness(1.12) contrast(1.05);
 }
 
 /* ─── HAMBURGER ─── */
@@ -5911,3 +5922,555 @@ label,
 @media (prefers-reduced-motion: reduce) {
   .dark .hero-center h1 { text-shadow: none; }
 }
+
+/* ================================================================
+   HEADER — clean monochromatic redesign (dark-mode first)
+   ================================================================ */
+@media (min-width: 1180px) {
+
+  /* Nav links: all consistent — subtle white, same weight */
+  .dark .site-nav a:not(.button) {
+    color: rgba(255, 255, 255, 0.52);
+    font-size: 0.875rem;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    padding: 8px 13px;
+  }
+  .dark .site-nav a:not(.button):hover {
+    color: rgba(255, 255, 255, 0.9);
+    background: rgba(255, 255, 255, 0.05);
+  }
+  .dark .site-nav a.nav-active:not(.button) {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.07);
+    font-weight: 600;
+  }
+
+  /* CTA button: clean ghost — matches the header palette exactly */
+  .site-nav .button-primary,
+  .dark .site-nav .button-primary {
+    background: rgba(255, 255, 255, 0.07) !important;
+    background-image: none !important;
+    border: 1px solid rgba(255, 255, 255, 0.20) !important;
+    color: rgba(255, 255, 255, 0.88) !important;
+    box-shadow: none !important;
+    padding: 8px 18px !important;
+    border-radius: 9px !important;
+    font-size: 0.85rem !important;
+    font-weight: 600 !important;
+    min-height: 36px !important;
+    letter-spacing: 0.005em !important;
+    transition: background 0.18s ease, border-color 0.18s ease, color 0.18s ease !important;
+    margin-left: 0.75rem;
+  }
+  .site-nav .button-primary:hover,
+  .dark .site-nav .button-primary:hover {
+    background: rgba(255, 255, 255, 0.12) !important;
+    background-image: none !important;
+    border-color: rgba(255, 255, 255, 0.35) !important;
+    color: #ffffff !important;
+    transform: none !important;
+    box-shadow: none !important;
+  }
+
+  /* Remove flair shimmer from nav CTA */
+  .site-nav .button-primary::after,
+  .dark .site-nav .button-primary::after {
+    display: none !important;
+  }
+
+  /* Lang btn: same family as nav links */
+  .dark .lang-btn {
+    border-color: rgba(255, 255, 255, 0.14);
+    color: rgba(255, 255, 255, 0.45);
+    font-size: 0.78rem;
+    font-weight: 600;
+    background: transparent;
+  }
+  .dark .lang-btn:hover {
+    border-color: rgba(255, 255, 255, 0.26);
+    background: rgba(255, 255, 255, 0.05);
+    color: rgba(255, 255, 255, 0.85);
+  }
+
+  /* Logo touch target */
+  .logo-img {
+    height: 36px;
+    width: 36px;
+  }
+}
+
+/* ================================================================
+   TRUST CARDS — Icon treatment
+   ================================================================ */
+.trust-card-icon {
+  width: 46px;
+  height: 46px;
+  border-radius: 13px;
+  background: var(--accent-soft);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.1rem;
+  color: var(--accent-strong);
+  flex-shrink: 0;
+  border: 1px solid rgba(0, 102, 204, 0.12);
+}
+.trust-card-icon svg {
+  width: 22px;
+  height: 22px;
+  stroke-width: 1.8;
+}
+.dark .trust-card-icon {
+  background: rgba(96, 165, 250, 0.12);
+  color: #60a5fa;
+  border-color: rgba(96, 165, 250, 0.18);
+}
+
+/* ================================================================
+   HERO STATS STRIP — social proof below the CTA
+   ================================================================ */
+.hero-stats {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2.4rem;
+  flex-wrap: wrap;
+  margin-top: 2.8rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--border);
+  width: 100%;
+}
+.hero-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+}
+.hero-stat-num {
+  font-size: 1.45rem;
+  font-weight: 800;
+  color: var(--text);
+  letter-spacing: -0.035em;
+  line-height: 1.1;
+}
+.hero-stat-text {
+  font-size: 0.71rem;
+  font-weight: 500;
+  color: var(--text-subtle);
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  white-space: nowrap;
+}
+.hero-stat-sep {
+  width: 1px;
+  height: 30px;
+  background: var(--border);
+  flex-shrink: 0;
+}
+.dark .hero-stats { border-top-color: rgba(255,255,255,0.1); }
+.dark .hero-stat-num { color: #e2e8f0; }
+.dark .hero-stat-sep { background: rgba(255,255,255,0.12); }
+@media (max-width: 500px) {
+  .hero-stats { gap: 1.4rem; }
+  .hero-stat-sep { display: none; }
+  .hero-stat-num { font-size: 1.2rem; }
+}
+
+/* ================================================================
+   CODE PROOF — Syntax-Highlighting Tokens
+   ================================================================ */
+.tok-kw  { color: #7dd3fc; font-weight: 600; }
+.tok-fn  { color: #6ee7b7; }
+.tok-var { color: #e2e8f0; }
+.tok-op  { color: #a78bfa; font-weight: 600; }
+.tok-str { color: #fde68a; }
+
+/* ================================================================
+   SECTION EYEBROWS — kleines Label über h2-Titeln
+   ================================================================ */
+.section-eyebrow {
+  display: inline-block;
+  font-size: 0.67rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--accent-strong);
+  margin-bottom: 0.55rem;
+}
+.dark .section-eyebrow { color: #60a5fa; }
+
+/* ================================================================
+   FOOTER LOGO
+   ================================================================ */
+.footer-logo-link {
+  display: inline-flex;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+.footer-logo-img {
+  height: 36px;
+  width: 36px;
+  object-fit: contain;
+  border-radius: 8px;
+  display: block;
+}
+
+/* ================================================================
+   EMIL DESIGN ENGINEERING — Interaction Polish
+   Every pressable element responds. Every hover is guarded.
+   ================================================================ */
+
+/* Custom easing — stronger than browser defaults */
+:root {
+  --ease-out-strong: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out-strong: cubic-bezier(0.77, 0, 0.175, 1);
+}
+
+/* 1. Button press feedback — instant, physical, confirms the click */
+.button {
+  transition:
+    transform 150ms var(--ease-out-strong),
+    box-shadow 150ms ease,
+    background-color 150ms ease,
+    border-color 150ms ease,
+    color 150ms ease;
+}
+.button:active {
+  transform: scale(0.97);
+}
+
+/* Nav CTA ghost button — also gets press feedback */
+.site-nav .button-primary:active,
+.dark .site-nav .button-primary:active {
+  transform: scale(0.97) !important;
+  background: rgba(255,255,255,0.16) !important;
+}
+
+/* Back-to-top */
+.back-to-top {
+  transition: transform 150ms var(--ease-out-strong),
+              opacity 200ms ease, background 200ms ease;
+}
+.back-to-top:active { transform: scale(0.92); }
+
+/* Dark-mode toggle */
+.dark-toggle:active { transform: scale(0.91); }
+
+/* Nav hamburger */
+.nav-toggle:active { transform: scale(0.93); }
+
+/* 2. Card micro-interactions — only on real pointer devices */
+@media (hover: hover) and (pointer: fine) {
+  .trust-card {
+    transition:
+      transform 220ms var(--ease-out-strong),
+      box-shadow 220ms ease,
+      border-color 220ms ease;
+  }
+  .trust-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(0,0,0,0.08);
+  }
+  .dark .trust-card:hover {
+    box-shadow: 0 12px 32px rgba(0,0,0,0.35);
+    border-color: rgba(255,255,255,0.14);
+  }
+
+  .process-step {
+    transition:
+      transform 220ms var(--ease-out-strong),
+      box-shadow 220ms ease,
+      border-color 220ms ease;
+  }
+  .process-step:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.07);
+  }
+
+  .pricing-option-card {
+    transition:
+      transform 220ms var(--ease-out-strong),
+      box-shadow 220ms ease,
+      border-color 220ms ease;
+  }
+  .pricing-option-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(0,0,0,0.1);
+  }
+
+  /* Nav links — subtle translate on hover, feels like they lift */
+  .site-nav a:not(.button) {
+    transition:
+      color 160ms ease,
+      background 160ms ease,
+      transform 160ms var(--ease-out-strong);
+  }
+  .site-nav a:not(.button):hover {
+    transform: translateY(-1px);
+  }
+  .site-nav a:not(.button):active {
+    transform: translateY(0);
+  }
+
+  /* Footer links */
+  .site-footer a {
+    transition: color 150ms ease, transform 150ms var(--ease-out-strong);
+    display: inline-block;
+  }
+  .site-footer a:hover {
+    transform: translateX(3px);
+  }
+}
+
+/* 3. Logo — subtle scale on hover, press feedback */
+.logo {
+  transition: opacity 160ms ease, transform 160ms var(--ease-out-strong);
+}
+@media (hover: hover) and (pointer: fine) {
+  .logo:hover { opacity: 0.85; transform: scale(1.04); }
+}
+.logo:active { transform: scale(0.96); opacity: 0.8; }
+
+/* 4. Tighten the theme-switch transition block — 450ms was too slow */
+.site-nav,
+.nav-toggle,
+.trust-card,
+.card,
+.preview-card,
+.pricing-option-card,
+.pricing-summary,
+.cookie-banner,
+.process-step,
+.chat-widget,
+.chat-input,
+.chat-message,
+.site-footer,
+.button-ghost,
+.button-secondary,
+input,
+textarea,
+select {
+  transition:
+    background-color 0.22s ease,
+    color 0.22s ease,
+    border-color 0.22s ease !important;
+}
+
+/* 5. Hero stats — stagger in on page load */
+.hero-stats .hero-stat,
+.hero-stats .hero-stat-sep {
+  opacity: 0;
+  transform: translateY(8px);
+  animation: mase-statIn 480ms var(--ease-out-strong) forwards;
+}
+.hero-stats .hero-stat:nth-child(1) { animation-delay: 800ms; }
+.hero-stats .hero-stat-sep:nth-child(2) { animation-delay: 860ms; }
+.hero-stats .hero-stat:nth-child(3) { animation-delay: 920ms; }
+.hero-stats .hero-stat-sep:nth-child(4) { animation-delay: 980ms; }
+.hero-stats .hero-stat:nth-child(5) { animation-delay: 1040ms; }
+
+@keyframes mase-statIn {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-stats .hero-stat,
+  .hero-stats .hero-stat-sep {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ================================================================
+   NAVBAR — ONE unified background system
+   Apple / Linear / Stripe: blur + transparency + border + shadow.
+   No separate solid-color boxes anywhere.
+   ================================================================ */
+
+/* Re-assert: header IS the frosted layer — nothing inside adds another */
+.site-header {
+  background: var(--header-bg) !important;
+  backdrop-filter: saturate(180%) blur(20px) !important;
+  -webkit-backdrop-filter: saturate(180%) blur(20px) !important;
+}
+
+/* Override anything from the previous monochromatic block
+   that might re-introduce solid backgrounds */
+@media (min-width: 1180px) {
+  /* Nav links: NO background of their own */
+  .site-nav {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+  .dark .site-nav {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+  }
+
+  /* Nav link hover: very subtle, same alpha family as the frosted header */
+  .dark .site-nav a:not(.button) {
+    color: rgba(255, 255, 255, 0.50);
+    font-size: 0.875rem;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    padding: 7px 12px;
+    border-radius: 7px;
+    transition: color 150ms ease, background 150ms ease;
+  }
+  .dark .site-nav a:not(.button):hover {
+    color: rgba(255, 255, 255, 0.88);
+    background: rgba(255, 255, 255, 0.06);
+  }
+  .dark .site-nav a.nav-active:not(.button) {
+    color: rgba(255, 255, 255, 0.95);
+    background: rgba(255, 255, 255, 0.08);
+    font-weight: 600;
+  }
+
+  /* Light mode nav links */
+  .site-nav a:not(.button) {
+    color: rgba(0, 0, 0, 0.50);
+    font-size: 0.875rem;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    padding: 7px 12px;
+    border-radius: 7px;
+    transition: color 150ms ease, background 150ms ease;
+  }
+  .site-nav a:not(.button):hover {
+    color: rgba(0, 0, 0, 0.85);
+    background: rgba(0, 0, 0, 0.05);
+  }
+  .site-nav a.nav-active:not(.button) {
+    color: rgba(0, 0, 0, 0.90);
+    background: rgba(0, 0, 0, 0.055);
+    font-weight: 600;
+  }
+
+  /* CTA button — still ghost/outline, but rounded to match Apple nav pill feel */
+  .site-nav .button-primary,
+  .dark .site-nav .button-primary {
+    background: rgba(255, 255, 255, 0.09) !important;
+    background-image: none !important;
+    border: 1px solid rgba(255, 255, 255, 0.18) !important;
+    color: rgba(255, 255, 255, 0.90) !important;
+    box-shadow: none !important;
+    padding: 7px 16px !important;
+    border-radius: 8px !important;
+    font-size: 0.84rem !important;
+    font-weight: 600 !important;
+    min-height: 34px !important;
+    letter-spacing: 0.005em !important;
+    transition: background 140ms ease, border-color 140ms ease, color 140ms ease !important;
+    margin-left: 0.5rem;
+  }
+  .site-nav .button-primary:hover,
+  .dark .site-nav .button-primary:hover {
+    background: rgba(255, 255, 255, 0.15) !important;
+    border-color: rgba(255, 255, 255, 0.32) !important;
+    color: #ffffff !important;
+    transform: none !important;
+    box-shadow: none !important;
+  }
+  .site-nav .button-primary:active,
+  .dark .site-nav .button-primary:active {
+    background: rgba(255, 255, 255, 0.20) !important;
+    transform: scale(0.97) !important;
+  }
+  .site-nav .button-primary::after,
+  .dark .site-nav .button-primary::after {
+    display: none !important;
+  }
+
+  /* Lang button: same alpha family */
+  .lang-btn {
+    border-color: rgba(0, 0, 0, 0.12);
+    color: rgba(0, 0, 0, 0.45);
+    font-size: 0.78rem;
+    font-weight: 600;
+    background: transparent;
+  }
+  .dark .lang-btn {
+    border-color: rgba(255, 255, 255, 0.12);
+    color: rgba(255, 255, 255, 0.40);
+    background: transparent;
+  }
+  .lang-btn:hover {
+    border-color: rgba(0, 0, 0, 0.22);
+    background: rgba(0, 0, 0, 0.04);
+    color: rgba(0, 0, 0, 0.75);
+  }
+  .dark .lang-btn:hover {
+    border-color: rgba(255, 255, 255, 0.24);
+    background: rgba(255, 255, 255, 0.05);
+    color: rgba(255, 255, 255, 0.80);
+  }
+}
+
+/* ================================================================
+   UNIFIED SUBPAGE BACKGROUNDS
+   All pages except index.html use the same background system.
+   var(--bg) = base · var(--surface) = subtle section tint
+   No hardcoded colors anywhere.
+   ================================================================ */
+
+/* 1. All hero variants → same base */
+.page-hero,
+.leistungen-hero,
+.ki-hero,
+.ktk-hero {
+  background: var(--bg) !important;
+  border-bottom: 1px solid var(--line);
+}
+
+.dark .page-hero,
+.dark .leistungen-hero,
+.dark .ki-hero,
+.dark .ktk-hero {
+  background: var(--bg) !important;
+  border-bottom-color: rgba(255, 255, 255, 0.07);
+}
+
+/* 2. Remove the light-mode light gradients (they broke dark mode feel) */
+.leistungen-hero { background: var(--bg) !important; }
+
+/* 3. Keep ki-hero & ktk-hero radial glow overlays — they add depth on any bg */
+/* (::before pseudoelements with rgba() still render correctly on var(--bg)) */
+
+/* 4. CTA sections — consistent tinted surface across all pages */
+.cta-section {
+  background: var(--surface) !important;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+.dark .cta-section {
+  background: var(--surface) !important;
+  border-color: rgba(255, 255, 255, 0.07);
+}
+
+/* CTA-dark (leistungen bottom) — keep intentionally dark but use variable */
+.cta-section-dark {
+  background: var(--bg) !important;
+  border-top: 1px solid var(--line);
+}
+.dark .cta-section-dark {
+  background: var(--bg) !important;
+  border-color: rgba(255, 255, 255, 0.07);
+}
+/* In light mode, cta-section-dark text was white — keep it readable */
+.cta-section-dark h2 { color: var(--text); }
+.cta-section-dark .lead { color: var(--text-muted); }
+.cta-section-dark .eyebrow { color: var(--accent-strong); }
+
+/* 5. Alternating content sections — explicit classes, theme-aware */
+/* (leistungen.html uses inline var(--surface) which is already correct) */
+
+/* 6. Page-hero light mode: subtle surface tint for visual separation from content */
+.page-hero { background: var(--surface) !important; }
+.dark .page-hero { background: var(--bg) !important; }

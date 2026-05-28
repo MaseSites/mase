@@ -1468,6 +1468,8 @@
         // Preserve style of relative links used across the project.
         var path = url.pathname;
         if (path.indexOf('/') === 0) path = path.slice(1);
+        // Root "/" becomes empty string — keep it as "/" so logo links work
+        if (!path) path = '/';
         a.setAttribute('href', path + url.search + url.hash);
       } catch (_) {
         // Ignore malformed href values.

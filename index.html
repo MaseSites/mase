@@ -1,4 +1,4 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="de-CH">
 <head>
   <meta charset="utf-8">
@@ -79,10 +79,10 @@
   }
   </script>
 
-  <link rel="stylesheet" href="/styles.css?v=20260522j">
+  <link rel="stylesheet" href="/styles.css?v=20260526c">
   <link rel="stylesheet" href="/ai-assistant.css?v=20260327">
   <link rel="stylesheet" href="/debug.css?v=20260327">
-  <link rel="stylesheet" href="/mase-animations.css?v=20260521b">
+  <link rel="stylesheet" href="/mase-animations.css?v=20260526a">
   <link rel="stylesheet" href="/mase-scroll-animations.css?v=20260517">
   <link rel="stylesheet" href="/flair.css?v=20260522i">
   <script>
@@ -120,14 +120,13 @@
 
   <header class="site-header">
     <div class="container header-inner">
-      <a class="logo" href="index.html"><img src="/logo.png" alt="MASE" class="logo-img"></a>
+      <a class="logo" href="/"><img src="/logo.png" alt="MASE" class="logo-img"></a>
       <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
         <span class="sr-only" data-i18n="nav_toggle">Navigation öffnen</span>
         <span class="nav-toggle-bar"></span>
         <span class="nav-toggle-bar"></span>
       </button>
       <nav class="site-nav" id="site-nav">
-        <a href="index.html" class="nav-active" data-i18n="nav_home">Home</a>
         <a href="leistungen.html" data-i18n="nav_services">Leistungen</a>
         <a href="preise.html" data-i18n="nav_prices">Preise</a>
         <a href="ki-assistent.html" data-i18n="nav_ai">KI Assistent</a>
@@ -160,7 +159,6 @@
     <section class="hero hero--centered" aria-labelledby="hero-title">
       <div class="container">
         <div class="hero-center" data-reveal>
-          <p class="eyebrow" data-i18n="hero_eyebrow">Webdesign &amp; KI-Integration &mdash; Schweiz</p>
           <h1 id="hero-title" data-i18n="hero_title">Websites,<br>die verkaufen.</h1>
           <p class="hero-sub" data-i18n="hero_lead">Wir bauen Websites, die Kunden gewinnen. Klar, modern und auf Anfragen optimiert.</p>
           <a class="button button-primary hero-main-cta" href="kontakt.html" data-i18n="hero_cta_primary">Kostenloses Erstgespräch</a>
@@ -168,6 +166,22 @@
             <span>&#10003; Kostenlos &amp; unverbindlich</span>
             <span>&#10003; Antwort in 24h</span>
             <span>&#10003; Schweizer Qualität</span>
+          </div>
+          <div class="hero-stats" aria-label="Zahlen &amp; Fakten">
+            <div class="hero-stat">
+              <span class="hero-stat-num">30+</span>
+              <span class="hero-stat-text">Websites live</span>
+            </div>
+            <span class="hero-stat-sep" aria-hidden="true"></span>
+            <div class="hero-stat">
+              <span class="hero-stat-num">24h</span>
+              <span class="hero-stat-text">Antwortzeit</span>
+            </div>
+            <span class="hero-stat-sep" aria-hidden="true"></span>
+            <div class="hero-stat">
+              <span class="hero-stat-num">ab CHF 750</span>
+              <span class="hero-stat-text">Starter Paket</span>
+            </div>
           </div>
         </div>
       </div>
@@ -178,21 +192,34 @@
     <!-- Warum MASE -->
     <section class="trust" aria-labelledby="trust-title">
       <div class="container" data-reveal>
+        <p class="section-eyebrow">Qualität &amp; Zuverlässigkeit</p>
         <h2 id="trust-title" data-i18n="trust_title">Warum MASE</h2>
         <div class="trust-grid">
           <article class="trust-card">
+            <div class="trust-card-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+            </div>
             <h3 data-i18n="trust_speed">Schnell</h3>
             <p data-i18n="trust_speed_desc">Klare Prozesse, kurze Wege, schnelle Live-Schaltung.</p>
           </article>
           <article class="trust-card">
+            <div class="trust-card-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+            </div>
             <h3 data-i18n="trust_code">Sauberer Code</h3>
             <p data-i18n="trust_code_desc">Minimal, wartbar und für Performance optimiert.</p>
           </article>
           <article class="trust-card">
+            <div class="trust-card-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+            </div>
             <h3 data-i18n="trust_mobile">Mobile-first</h3>
             <p data-i18n="trust_mobile_desc">UX die auf jedem Screen sitzt. Keine Kompromisse.</p>
           </article>
           <article class="trust-card">
+            <div class="trust-card-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M2 12h3M19 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12"/></svg>
+            </div>
             <h3 data-i18n="trust_ki">KI-Integration</h3>
             <p data-i18n="trust_ki_desc">Assistenz, die Leads qualifiziert und Fragen klärt.</p>
           </article>
@@ -204,6 +231,7 @@
     <section class="process" id="ansatz" aria-labelledby="approach-title">
       <div class="container">
         <div data-reveal style="text-align:center; margin-bottom: 3rem;">
+          <p class="section-eyebrow">Unser Prozess</p>
           <h2 id="approach-title" data-i18n="process_title">Unser Ansatz</h2>
           <p class="lead" data-i18n="process_lead">5 klare Schritte vom Erstgespräch bis zur messbaren Wirkung.</p>
         </div>
@@ -292,15 +320,15 @@
             <span></span><span></span><span></span>
             <p>mase-project/src/contact/submit-handler.js</p>
           </div>
-          <pre class="code-proof-snippet"><code>const payload = sanitizeContactForm(formData);
-const validationError = validateContactPayload(payload);
+          <pre class="code-proof-snippet"><code><span class="tok-kw">const</span> <span class="tok-var">payload</span> = <span class="tok-fn">sanitizeContactForm</span>(<span class="tok-var">formData</span>);
+<span class="tok-kw">const</span> <span class="tok-var">validationError</span> = <span class="tok-fn">validateContactPayload</span>(<span class="tok-var">payload</span>);
 
-if (validationError) {
-  return showFormError(validationError);
+<span class="tok-kw">if</span> (<span class="tok-var">validationError</span>) {
+  <span class="tok-kw">return</span> <span class="tok-fn">showFormError</span>(<span class="tok-var">validationError</span>);
 }
 
-const response = await postContactRequest(payload);
-return response.ok ? showSuccess() : showFormError(response.message);</code></pre>
+<span class="tok-kw">const</span> <span class="tok-var">response</span> = <span class="tok-kw">await</span> <span class="tok-fn">postContactRequest</span>(<span class="tok-var">payload</span>);
+<span class="tok-kw">return</span> <span class="tok-var">response</span>.<span class="tok-var">ok</span> <span class="tok-op">?</span> <span class="tok-fn">showSuccess</span>() <span class="tok-op">:</span> <span class="tok-fn">showFormError</span>(<span class="tok-var">response</span>.<span class="tok-var">message</span>);</code></pre>
         </div>
       </div>
     </section>
@@ -444,7 +472,9 @@ return response.ok ? showSuccess() : showFormError(response.message);</code></pr
   <footer class="site-footer">
     <div class="container footer-grid">
       <div>
-        <p class="footer-brand">MASE</p>
+        <a class="footer-logo-link" href="index.html">
+          <img src="/logo.png" alt="MASE" class="footer-logo-img">
+        </a>
         <p class="footer-desc" data-i18n="footer_desc">Professionelle Websites &amp; KI-Integration aus der Schweiz.</p>
       </div>
       <div>

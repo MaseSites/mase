@@ -71,8 +71,8 @@
 .mase-word-reveal { display: inline-flex; flex-wrap: wrap; gap: 0.22em; }
 .mase-word-reveal .mase-word {
   display: inline-block;
-  opacity: 0; transform: translateY(0.45em); filter: blur(8px);
-  animation: mase-wordIn 720ms cubic-bezier(0.22,1,0.36,1) forwards;
+  opacity: 0; transform: translateY(0.35em); filter: blur(5px);
+  animation: mase-wordIn 620ms cubic-bezier(0.23,1,0.32,1) forwards;
   will-change: transform, opacity, filter;
 }
 @keyframes mase-wordIn {
@@ -96,28 +96,28 @@
 
 /* Badges popen einzeln rein */
 .hero-badges.is-visible .badge {
-  animation: mase-badgePop 560ms cubic-bezier(0.22,1,0.36,1) both;
+  animation: mase-badgePop 420ms cubic-bezier(0.23,1,0.32,1) both;
 }
-.hero-badges.is-visible .badge:nth-child(1) { animation-delay: 0.55s; }
-.hero-badges.is-visible .badge:nth-child(2) { animation-delay: 0.65s; }
-.hero-badges.is-visible .badge:nth-child(3) { animation-delay: 0.75s; }
+.hero-badges.is-visible .badge:nth-child(1) { animation-delay: 0.48s; }
+.hero-badges.is-visible .badge:nth-child(2) { animation-delay: 0.56s; }
+.hero-badges.is-visible .badge:nth-child(3) { animation-delay: 0.64s; }
 @keyframes mase-badgePop {
-  from { opacity: 0; transform: translateY(8px) scale(0.9); }
-  to   { opacity: 1; transform: translateY(0)   scale(1);   }
+  from { opacity: 0; transform: translateY(6px) scale(0.95); }
+  to   { opacity: 1; transform: translateY(0)   scale(1);    }
 }
 
 /* -----------------------------------------------------------
    3. Scroll-Reveal — kompatibel zum bestehenden [data-reveal]
    ----------------------------------------------------------- */
 [data-reveal] {
-  opacity: 0; transform: translateY(28px);
-  transition: opacity 700ms cubic-bezier(0.22,1,0.36,1),
-              transform 700ms cubic-bezier(0.22,1,0.36,1);
+  opacity: 0; transform: translateY(20px);
+  transition: opacity 560ms cubic-bezier(0.23,1,0.32,1),
+              transform 560ms cubic-bezier(0.23,1,0.32,1);
   will-change: transform, opacity;
 }
 [data-reveal].is-visible { opacity: 1; transform: translateY(0); }
-[data-reveal][data-dir="left"]  { transform: translateX(-32px); }
-[data-reveal][data-dir="right"] { transform: translateX(32px); }
+[data-reveal][data-dir="left"]  { transform: translateX(-24px); }
+[data-reveal][data-dir="right"] { transform: translateX(24px); }
 [data-reveal].is-visible[data-dir] { transform: translate(0,0); }
 
 /* Stagger in den Karten-Grids */
@@ -127,19 +127,19 @@
 }
 .trust-grid.mase-stagger .trust-card,
 .process-grid.mase-stagger .process-step {
-  opacity: 0; transform: translateY(22px);
-  transition: opacity 600ms cubic-bezier(0.22,1,0.36,1),
-              transform 600ms cubic-bezier(0.22,1,0.36,1);
+  opacity: 0; transform: translateY(16px);
+  transition: opacity 480ms cubic-bezier(0.23,1,0.32,1),
+              transform 480ms cubic-bezier(0.23,1,0.32,1);
 }
-.trust-grid.mase-stagger.is-visible .trust-card:nth-child(1) { transition-delay: 60ms;  }
-.trust-grid.mase-stagger.is-visible .trust-card:nth-child(2) { transition-delay: 160ms; }
-.trust-grid.mase-stagger.is-visible .trust-card:nth-child(3) { transition-delay: 260ms; }
-.trust-grid.mase-stagger.is-visible .trust-card:nth-child(4) { transition-delay: 360ms; }
-.process-grid.mase-stagger.is-visible .process-step:nth-child(1) { transition-delay: 80ms;  }
-.process-grid.mase-stagger.is-visible .process-step:nth-child(2) { transition-delay: 200ms; }
-.process-grid.mase-stagger.is-visible .process-step:nth-child(3) { transition-delay: 320ms; }
-.process-grid.mase-stagger.is-visible .process-step:nth-child(4) { transition-delay: 440ms; }
-.process-grid.mase-stagger.is-visible .process-step:nth-child(5) { transition-delay: 560ms; }
+.trust-grid.mase-stagger.is-visible .trust-card:nth-child(1) { transition-delay: 0ms;  }
+.trust-grid.mase-stagger.is-visible .trust-card:nth-child(2) { transition-delay: 60ms; }
+.trust-grid.mase-stagger.is-visible .trust-card:nth-child(3) { transition-delay: 120ms; }
+.trust-grid.mase-stagger.is-visible .trust-card:nth-child(4) { transition-delay: 180ms; }
+.process-grid.mase-stagger.is-visible .process-step:nth-child(1) { transition-delay: 0ms;  }
+.process-grid.mase-stagger.is-visible .process-step:nth-child(2) { transition-delay: 55ms; }
+.process-grid.mase-stagger.is-visible .process-step:nth-child(3) { transition-delay: 110ms; }
+.process-grid.mase-stagger.is-visible .process-step:nth-child(4) { transition-delay: 165ms; }
+.process-grid.mase-stagger.is-visible .process-step:nth-child(5) { transition-delay: 220ms; }
 
 /* Process-Icon-Hover */
 .process-step .process-step-icon {
@@ -251,10 +251,10 @@ html.dark .mase-marquee__item::after {
   content: ""; position: absolute; top: 0; left: -120%;
   height: 100%; width: 60%;
   background: linear-gradient(100deg,
-              transparent 0%, rgba(255,255,255,0.32) 50%, transparent 100%);
+              transparent 0%, rgba(255,255,255,0.28) 50%, transparent 100%);
   transform: skewX(-22deg);
   pointer-events: none;
-  transition: left 700ms cubic-bezier(0.22,1,0.36,1);
+  transition: left 420ms cubic-bezier(0.23,1,0.32,1);
 }
 .button-primary:hover::after { left: 180%; }
 
@@ -262,8 +262,8 @@ html.dark .mase-marquee__item::after {
    6. Sticky-CTA — Entrance + ambienter Pulse-Ring
    ----------------------------------------------------------- */
 .sticky-cta {
-  opacity: 0; transform: translateY(20px) scale(0.92);
-  transition: opacity 380ms ease, transform 380ms cubic-bezier(0.22,1,0.36,1);
+  opacity: 0; transform: translateY(12px) scale(0.96);
+  transition: opacity 280ms ease, transform 280ms cubic-bezier(0.23,1,0.32,1);
 }
 .sticky-cta.is-visible {
   opacity: 1; transform: translateY(0) scale(1);
