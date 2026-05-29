@@ -97,7 +97,7 @@
       trust_ki_desc:   'Assistenz, die Leads qualifiziert und Fragen klärt.',
       // Process (Unser Ansatz - Index)
       process_title:   'Unser Ansatz',
-      process_lead:    '5 Schritte zum professionellen Ergebnis.',
+      process_lead:    'Von der ersten Idee bis zum Live-Launch — unser bewährter Weg zu deiner perfekten Website.',
       process_1_title: 'Analyse & Strategie',
       process_1_desc:  'Wir analysieren dein Business, deine Zielgruppe und den Wettbewerb. Klare Ziele, klarer Plan.',
       process_2_title: 'Struktur & UX-Planung',
@@ -108,6 +108,8 @@
       process_4_desc:  'Schneller, wartbarer Code. Mobile-first, SEO-ready und zukunftssicher gebaut.',
       process_5_title: 'Optimierung & Skalierung',
       process_5_desc:  'Nach dem Launch analysieren, optimieren und skalieren wir deinen digitalen Auftritt.',
+      process_6_title: 'Betreuung & Support',
+      process_6_desc:  'Du bist nie allein. Wir stehen für Fragen, Updates und Weiterentwicklung auch nach dem Launch zur Verfügung.',
       // Live Preview
       livepreview_title: 'Live-Vorschau – Beispielprojekte',
       livepreview_lead: 'So könnten Websites unserer Kunden aussehen.',
@@ -555,7 +557,7 @@
       trust_ki_desc:   'Assistant that qualifies leads and answers questions.',
       // Process (Unser Ansatz - Index)
       process_title:   'Our Approach',
-      process_lead:    '5 steps to professional results.',
+      process_lead:    'From the first idea to launch — our proven path to your perfect website.',
       process_1_title: 'Analysis & Strategy',
       process_1_desc:  'We analyze your business, target audience, and competition. Clear goals, clear plan.',
       process_2_title: 'Structure & UX Planning',
@@ -566,6 +568,8 @@
       process_4_desc:  'Fast, maintainable code. Mobile-first, SEO-ready, and built to scale.',
       process_5_title: 'Optimization & Scaling',
       process_5_desc:  'After launch, we analyze, optimize, and scale your digital presence.',
+      process_6_title: 'Care & Support',
+      process_6_desc:  'You\'re never alone. We\'re here for questions, updates, and improvements even after launch.',
       // Live Preview
       livepreview_title: 'Live Preview – Sample Projects',
       livepreview_lead: 'Here\'s how your website could look.',
@@ -1001,7 +1005,7 @@
       trust_ki_desc:   'Assistant qui qualifie les leads et répond aux questions.',
       // Process (Unser Ansatz - Index)
       process_title:   'Notre Approche',
-      process_lead:    '5 étapes pour des résultats professionnels.',
+      process_lead:    'De la première idée au lancement — notre voie éprouvée vers votre site parfait.',
       process_1_title: 'Analyse & Stratégie',
       process_1_desc:  'Nous analysons votre activité, votre audience et la concurrence. Objectifs clairs, plan clair.',
       process_2_title: 'Structure & Planification UX',
@@ -1012,6 +1016,8 @@
       process_4_desc:  'Code rapide et maintenable. Mobile-first, prêt SEO, construit pour scalabilité.',
       process_5_title: 'Optimisation & Scalabilité',
       process_5_desc:  'Après lancement, nous analysons, optimisons et développons votre présence digitale.',
+      process_6_title: 'Assistance & Support',
+      process_6_desc:  'Vous n\'êtes jamais seul. Nous sommes disponibles pour questions, mises à jour et évolutions après lancement.',
       // Live Preview
       livepreview_title: 'Aperçu Live – Projets Exemples',
       livepreview_lead: 'Voici à quoi pourrait ressembler votre site.',

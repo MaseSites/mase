@@ -120,7 +120,7 @@
 
   <header class="site-header">
     <div class="container header-inner">
-      <a class="logo" href="/"><img src="/logo.png" alt="MASE" class="logo-img"></a>
+      <a class="logo" href="/"><span class="logo-text">MASE</span></a>
       <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
         <span class="sr-only" data-i18n="nav_toggle">Navigation öffnen</span>
         <span class="nav-toggle-bar"></span>
@@ -192,7 +192,6 @@
     <!-- Warum MASE -->
     <section class="trust" aria-labelledby="trust-title">
       <div class="container" data-reveal>
-        <p class="section-eyebrow">Qualität &amp; Zuverlässigkeit</p>
         <h2 id="trust-title" data-i18n="trust_title">Warum MASE</h2>
         <div class="trust-grid">
           <article class="trust-card">
@@ -231,9 +230,8 @@
     <section class="process" id="ansatz" aria-labelledby="approach-title">
       <div class="container">
         <div data-reveal style="text-align:center; margin-bottom: 3rem;">
-          <p class="section-eyebrow">Unser Prozess</p>
           <h2 id="approach-title" data-i18n="process_title">Unser Ansatz</h2>
-          <p class="lead" data-i18n="process_lead">5 klare Schritte vom Erstgespräch bis zur messbaren Wirkung.</p>
+          <p class="lead" data-i18n="process_lead">Von der ersten Idee bis zum Live-Launch — unser bewährter Weg zu deiner perfekten Website.</p>
         </div>
         <div class="process-grid process-grid-5" data-reveal>
           <div class="process-step">
@@ -296,6 +294,17 @@
             <h3 data-i18n="process_5_title">Optimierung &amp; Skalierung</h3>
             <p data-i18n="process_5_desc">Nach dem Launch analysieren, optimieren und skalieren wir deinen digitalen Auftritt.</p>
           </div>
+          <div class="process-step">
+            <div class="process-step-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"></path>
+                <path d="M12 8v4l3 3"></path>
+              </svg>
+            </div>
+            <span>06</span>
+            <h3 data-i18n="process_6_title">Betreuung &amp; Support</h3>
+            <p data-i18n="process_6_desc">Du bist nie allein. Wir stehen für Fragen, Updates und Weiterentwicklung auch nach dem Launch zur Verfügung.</p>
+          </div>
         </div>
         <div class="process-cta-wrap" data-reveal>
           <a class="button button-primary" href="kontakt.html" data-i18n="hero_cta_primary">Projekt starten</a>
@@ -307,28 +316,54 @@
     <section class="code-proof" aria-labelledby="code-proof-title">
       <div class="container code-proof-grid" data-reveal>
         <div class="code-proof-copy">
-          <h2 id="code-proof-title">Technische Qualität, die man sieht</h2>
-          <p class="lead">Wir entwickeln nicht nur schöne Oberflächen, sondern auch saubere Systeme: wartbar, performant und auf Wachstum vorbereitet.</p>
+          <h2 id="code-proof-title">Sauberer Code. Messbares Ergebnis.</h2>
+          <p class="lead">Wir bauen nicht nur schöne Oberflächen — auch darunter stimmt jedes Detail.</p>
           <ul class="code-proof-points">
             <li>Semantisches HTML für Struktur und SEO</li>
-            <li>Klare Komponenten statt chaotischer Einzellösungen</li>
-            <li>Saubere Formvalidierung und verlässliche API-Anbindung</li>
+            <li>Wartbarer, zukunftssicherer Code</li>
+            <li>Optimiert für Geschwindigkeit und Mobile</li>
           </ul>
         </div>
-        <div class="code-proof-panel" aria-label="Beispiel einer strukturierten Codevorschau">
-          <div class="code-proof-header">
-            <span></span><span></span><span></span>
-            <p>mase-project/src/contact/submit-handler.js</p>
-          </div>
-          <pre class="code-proof-snippet"><code><span class="tok-kw">const</span> <span class="tok-var">payload</span> = <span class="tok-fn">sanitizeContactForm</span>(<span class="tok-var">formData</span>);
-<span class="tok-kw">const</span> <span class="tok-var">validationError</span> = <span class="tok-fn">validateContactPayload</span>(<span class="tok-var">payload</span>);
-
-<span class="tok-kw">if</span> (<span class="tok-var">validationError</span>) {
-  <span class="tok-kw">return</span> <span class="tok-fn">showFormError</span>(<span class="tok-var">validationError</span>);
-}
-
-<span class="tok-kw">const</span> <span class="tok-var">response</span> = <span class="tok-kw">await</span> <span class="tok-fn">postContactRequest</span>(<span class="tok-var">payload</span>);
-<span class="tok-kw">return</span> <span class="tok-var">response</span>.<span class="tok-var">ok</span> <span class="tok-op">?</span> <span class="tok-fn">showSuccess</span>() <span class="tok-op">:</span> <span class="tok-fn">showFormError</span>(<span class="tok-var">response</span>.<span class="tok-var">message</span>);</code></pre>
+        <div class="code-proof-graphic" aria-label="Technische Qualität Illustration">
+          <svg viewBox="0 0 340 260" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true">
+            <!-- Outer ring -->
+            <circle cx="170" cy="130" r="110" stroke="rgba(129,140,248,0.18)" stroke-width="1.5"/>
+            <circle cx="170" cy="130" r="80" stroke="rgba(129,140,248,0.12)" stroke-width="1"/>
+            <!-- Progress arc — quality at 87% -->
+            <circle cx="170" cy="130" r="100" stroke="rgba(129,140,248,0.08)" stroke-width="14" stroke-linecap="round"/>
+            <circle cx="170" cy="130" r="100" stroke="url(#arcGrad)" stroke-width="14" stroke-linecap="round"
+              stroke-dasharray="547" stroke-dashoffset="71" transform="rotate(-90 170 130)"/>
+            <!-- Center badge -->
+            <circle cx="170" cy="130" r="52" fill="rgba(99,102,241,0.14)" stroke="rgba(129,140,248,0.3)" stroke-width="1.5"/>
+            <text x="170" y="122" text-anchor="middle" fill="#a5b4fc" font-size="13" font-family="DM Sans,sans-serif" font-weight="600" letter-spacing="0.08em">QUALITY</text>
+            <text x="170" y="144" text-anchor="middle" fill="#e0e7ff" font-size="26" font-family="DM Sans,sans-serif" font-weight="700">87%</text>
+            <text x="170" y="160" text-anchor="middle" fill="rgba(165,180,252,0.7)" font-size="10" font-family="DM Sans,sans-serif">Lighthouse Score</text>
+            <!-- Metric pills -->
+            <rect x="28" y="76" width="68" height="30" rx="10" fill="rgba(99,102,241,0.18)" stroke="rgba(129,140,248,0.25)" stroke-width="1"/>
+            <text x="62" y="87" text-anchor="middle" fill="#a5b4fc" font-size="8.5" font-family="DM Sans,sans-serif" font-weight="600">PERFORMANCE</text>
+            <text x="62" y="99" text-anchor="middle" fill="#e0e7ff" font-size="12" font-family="DM Sans,sans-serif" font-weight="700">97</text>
+            <rect x="244" y="76" width="68" height="30" rx="10" fill="rgba(99,102,241,0.18)" stroke="rgba(129,140,248,0.25)" stroke-width="1"/>
+            <text x="278" y="87" text-anchor="middle" fill="#a5b4fc" font-size="8.5" font-family="DM Sans,sans-serif" font-weight="600">SEO</text>
+            <text x="278" y="99" text-anchor="middle" fill="#e0e7ff" font-size="12" font-family="DM Sans,sans-serif" font-weight="700">100</text>
+            <rect x="28" y="160" width="68" height="30" rx="10" fill="rgba(99,102,241,0.18)" stroke="rgba(129,140,248,0.25)" stroke-width="1"/>
+            <text x="62" y="171" text-anchor="middle" fill="#a5b4fc" font-size="8.5" font-family="DM Sans,sans-serif" font-weight="600">ACCESSIBILITY</text>
+            <text x="62" y="183" text-anchor="middle" fill="#e0e7ff" font-size="12" font-family="DM Sans,sans-serif" font-weight="700">98</text>
+            <rect x="244" y="160" width="68" height="30" rx="10" fill="rgba(99,102,241,0.18)" stroke="rgba(129,140,248,0.25)" stroke-width="1"/>
+            <text x="278" y="171" text-anchor="middle" fill="#a5b4fc" font-size="8.5" font-family="DM Sans,sans-serif" font-weight="600">BEST PRACT.</text>
+            <text x="278" y="183" text-anchor="middle" fill="#e0e7ff" font-size="12" font-family="DM Sans,sans-serif" font-weight="700">95</text>
+            <!-- Connector lines -->
+            <line x1="96" y1="91" x2="120" y2="105" stroke="rgba(129,140,248,0.22)" stroke-width="1" stroke-dasharray="3 3"/>
+            <line x1="244" y1="91" x2="220" y2="105" stroke="rgba(129,140,248,0.22)" stroke-width="1" stroke-dasharray="3 3"/>
+            <line x1="96" y1="175" x2="120" y2="157" stroke="rgba(129,140,248,0.22)" stroke-width="1" stroke-dasharray="3 3"/>
+            <line x1="244" y1="175" x2="220" y2="157" stroke="rgba(129,140,248,0.22)" stroke-width="1" stroke-dasharray="3 3"/>
+            <!-- Gradient defs -->
+            <defs>
+              <linearGradient id="arcGrad" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0%" stop-color="#818cf8"/>
+                <stop offset="100%" stop-color="#6366f1"/>
+              </linearGradient>
+            </defs>
+          </svg>
         </div>
       </div>
     </section>
@@ -402,6 +437,14 @@
           <button class="lp-dot-btn" role="tab" aria-selected="false" aria-label="Slide 3" data-lp-index="2"></button>
           <button class="lp-dot-btn" role="tab" aria-selected="false" aria-label="Slide 4" data-lp-index="3"></button>
         </div>
+        <div class="lp-nav">
+          <button class="lp-arrow" id="lp-prev" aria-label="Vorheriges Projekt">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+          </button>
+          <button class="lp-arrow" id="lp-next" aria-label="Nächstes Projekt">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          </button>
+        </div>
       </div>
     </section>
 
@@ -414,12 +457,10 @@
           <ul class="ai-list ai-list-product">
             <li data-i18n="ai_feature_1">Automatische Kundenberatung in Echtzeit</li>
             <li data-i18n="ai_feature_2">Lead-Qualifizierung mit Übergabe an dein Team</li>
-            <li data-i18n="ai_feature_3">Auf deine Leistungen und Tonalität trainiert</li>
           </ul>
           <div class="ai-trust-row" aria-label="KI-Nutzen auf einen Blick">
             <span>Für KMU und Dienstleister</span>
             <span>Antworten in Sekunden</span>
-            <span>Setup ab CHF 200</span>
           </div>
           <div class="button-group ai-cta-row">
             <a class="button button-primary" href="ki-assistent.html" data-i18n="ai_link">KI-Assistent entdecken</a>
@@ -444,11 +485,6 @@
             <div class="chat-input">
               <span>Nachricht schreiben...</span>
               <span class="chat-send">Senden</span>
-            </div>
-            <div class="ai-chat-benefits">
-              <p><strong>Leads:</strong> automatisch vorqualifiziert</p>
-              <p><strong>Verfügbarkeit:</strong> 24/7 ohne Wartezeit</p>
-              <p><strong>Kosten:</strong> CHF 200 Setup + CHF 40 / Monat</p>
             </div>
           </div>
         </div>

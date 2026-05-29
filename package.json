@@ -10,7 +10,8 @@
     "validate": "npx html-validate index.html",
     "lighthouse": "npx lighthouse https://localhost:8000 --view",
     "minify:css": "npx clean-css-cli -o styles.min.css styles.css",
-    "minify:js": "npx terser script.js -o script.min.js -c -m"
+    "minify:js": "npx terser script.js -o script.min.js -c -m",
+    "test": "node --test tests/*.test.js"
   },
   "keywords": [
     "webdesign",

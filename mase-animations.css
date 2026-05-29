@@ -188,7 +188,7 @@
   will-change: transform;
   transform: translateZ(0);
   /* Constant velocity, never pauses, no direction change */
-  animation: mase-marquee-scroll 28s linear infinite;
+  animation: mase-marquee-scroll 50s linear infinite;
 }
 
 /* No pause on hover — animation runs independently */

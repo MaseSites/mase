@@ -1,4 +1,4 @@
-# robots.txt - MASESites AG
+# robots.txt - MASESites
 
 User-agent: *
 Allow: /

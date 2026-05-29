@@ -14,6 +14,8 @@ const allowedOrigins = [
   'http://localhost:5500',
   'http://127.0.0.1:3000',
   'http://localhost:3000',
+  'http://127.0.0.1:8000',
+  'http://localhost:8000',
   'https://www.masesites.ch',
   'https://masesites.ch'
 ].concat(
@@ -682,7 +684,7 @@ app.post('/api/appointments', appointmentLimiter, async (req, res) => {
   const appointment_time = sanitizeText(b.appointment_time, 20);
   const message          = sanitizeText(b.message, 1000);
 
-  if (!first_name || !last_name || !email || !phone || !appointment_date || !appointment_time) {
+  if (!first_name || !last_name || !email || !appointment_date || !appointment_time) {
     return res.status(400).json({ success: false, code: 'VALIDATION_REQUIRED_FIELDS', message: 'Pflichtfelder fehlen.' });
   }
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
@@ -742,7 +744,8 @@ app.patch('/api/admin/data/appointments/:id', adminDataLimiter, async (req, res)
         'apikey':        serviceKey,
         'Authorization': 'Bearer ' + serviceKey,
         'Content-Type':  'application/json',
-        'Prefer':        'return=minimal'
+        'Prefer':        'return=representation',
+        'Accept':        'application/json'
       },
       body: JSON.stringify({ status, updated_at: new Date().toISOString() })
     });
@@ -750,6 +753,97 @@ app.patch('/api/admin/data/appointments/:id', adminDataLimiter, async (req, res)
       const d = await upstream.json().catch(() => ({}));
       return res.status(upstream.status).json({ error: d });
     }
+
+    const rows = await upstream.json().catch(() => []);
+    const apt  = Array.isArray(rows) ? rows[0] : null;
+
+    // Send confirmation email when admin confirms an appointment
+    if (status === 'confirmed' && apt && apt.email && transporter) {
+      const safeFName = escapeHtml(apt.first_name || '');
+      const safeLName = escapeHtml(apt.last_name  || '');
+      const safeDate  = escapeHtml(apt.appointment_date || '');
+      const safeTime  = escapeHtml(apt.appointment_time || '');
+
+      const confirmMail = {
+        from:    `"MASESites" <${process.env.SMTP_USER || 'info@masesites.ch'}>`,
+        to:      apt.email,
+        replyTo: process.env.EMAIL_TO || 'info@masesites.ch',
+        subject: 'Dein Termin bei MASESites ist bestätigt ✅',
+        html: `
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+            <h2 style="color: #6366f1; border-bottom: 2px solid #6366f1; padding-bottom: 10px;">
+              Terminbestätigung
+            </h2>
+            <p style="margin: 20px 0;">Hallo ${safeFName} ${safeLName},</p>
+            <p style="margin: 0 0 20px 0;">
+              dein Erstgespräch bei MASESites wurde bestätigt. Wir freuen uns auf das Gespräch!
+            </p>
+            <div style="background: #f0f4ff; border-left: 4px solid #6366f1; padding: 20px; border-radius: 4px; margin: 20px 0;">
+              <p style="margin: 0 0 8px 0;"><strong>📅 Datum:</strong> ${safeDate}</p>
+              <p style="margin: 0;"><strong>🕐 Uhrzeit:</strong> ${safeTime}</p>
+            </div>
+            <p style="margin: 20px 0;">
+              Bei Fragen erreichst du uns unter
+              <a href="mailto:info@masesites.ch" style="color: #6366f1;">info@masesites.ch</a>.
+            </p>
+            <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 30px 0;">
+            <p style="font-size: 12px; color: #94a3b8;">
+              MASESites — Webentwicklung &amp; Design<br>
+              ${new Date().toLocaleString('de-CH')}
+            </p>
+          </div>
+        `
+      };
+
+      transporter.sendMail(confirmMail)
+        .then(info => console.log('[OK] Terminbestätigung gesendet an:', apt.email, info.messageId))
+        .catch(err  => console.error('[WARN] Terminbestätigung fehlgeschlagen:', err.message));
+    }
+
+    // Send cancellation email
+    if (status === 'cancelled' && apt && apt.email && transporter) {
+      const safeFName = escapeHtml(apt.first_name || '');
+      const safeLName = escapeHtml(apt.last_name  || '');
+      const safeDate  = escapeHtml(apt.appointment_date || '');
+      const safeTime  = escapeHtml(apt.appointment_time || '');
+
+      const cancelMail = {
+        from:    `"MASESites" <${process.env.SMTP_USER || 'info@masesites.ch'}>`,
+        to:      apt.email,
+        replyTo: process.env.EMAIL_TO || 'info@masesites.ch',
+        subject: 'Dein Termin bei MASESites wurde abgesagt',
+        html: `
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+            <h2 style="color: #ef4444; border-bottom: 2px solid #ef4444; padding-bottom: 10px;">
+              Terminabsage
+            </h2>
+            <p style="margin: 20px 0;">Hallo ${safeFName} ${safeLName},</p>
+            <p style="margin: 0 0 20px 0;">
+              leider müssen wir deinen Termin absagen. Wir entschuldigen uns für die Umstände.
+            </p>
+            <div style="background: #fff5f5; border-left: 4px solid #ef4444; padding: 20px; border-radius: 4px; margin: 20px 0;">
+              <p style="margin: 0 0 8px 0;"><strong>📅 Datum:</strong> ${safeDate}</p>
+              <p style="margin: 0;"><strong>🕐 Uhrzeit:</strong> ${safeTime}</p>
+            </div>
+            <p style="margin: 20px 0;">
+              Melde dich gerne unter
+              <a href="mailto:info@masesites.ch" style="color: #6366f1;">info@masesites.ch</a>
+              um einen neuen Termin zu vereinbaren.
+            </p>
+            <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 30px 0;">
+            <p style="font-size: 12px; color: #94a3b8;">
+              MASESites — Webentwicklung &amp; Design<br>
+              ${new Date().toLocaleString('de-CH')}
+            </p>
+          </div>
+        `
+      };
+
+      transporter.sendMail(cancelMail)
+        .then(info => console.log('[OK] Terminabsage gesendet an:', apt.email, info.messageId))
+        .catch(err  => console.error('[WARN] Terminabsage fehlgeschlagen:', err.message));
+    }
+
     res.json({ ok: true });
   } catch (err) {
     console.error('[appointments PATCH]', err.message);

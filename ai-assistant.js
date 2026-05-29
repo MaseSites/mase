@@ -707,24 +707,37 @@ ANTWORTEN
         this.appointmentData.email = val.toLowerCase();
         this.appointmentStage = 'phone';
         this.saveConversationToStorage();
-        return 'Deine <strong>Telefonnummer</strong>?';
+        return 'Deine <strong>Telefonnummer</strong>?<br><small style="opacity:.65">Optional — schreib "nein" zum Überspringen</small>';
       }
 
-      case 'phone':
-        if (!val || val.replace(/\D/g, '').length < 6) {
-          return 'Bitte gib eine gültige Telefonnummer ein.';
+      case 'phone': {
+        const skipPhone = /^(nein|skip|keine|–|-|\.|\s*)$/i.test(val);
+        if (!skipPhone && val.replace(/\D/g, '').length < 6) {
+          return 'Bitte gib eine gültige Telefonnummer ein oder schreib <strong>nein</strong> zum Überspringen.';
         }
-        this.appointmentData.phone = val;
+        this.appointmentData.phone = skipPhone ? '' : val;
         this.appointmentStage = 'date';
         this.saveConversationToStorage();
         return 'Welches <strong>Datum</strong> wünschst du dir?<br><small style="opacity:.65">z.B. 15.06.2026</small>';
+      }
 
-      case 'date':
+      case 'date': {
         if (!val) return 'Bitte gib ein Datum ein.';
-        this.appointmentData.appointment_date = val;
+        const parsed = this._parseDate(val);
+        if (!parsed) {
+          return 'Das Datum existiert nicht. Bitte im Format <strong>TT.MM.JJJJ</strong> eingeben (z.B. 15.06.2026).';
+        }
+        const today = new Date(); today.setHours(0, 0, 0, 0);
+        if (parsed < today) {
+          return 'Das Datum liegt in der Vergangenheit. Bitte wähle ein zukünftiges Datum.';
+        }
+        const dd = String(parsed.getDate()).padStart(2, '0');
+        const mm = String(parsed.getMonth() + 1).padStart(2, '0');
+        this.appointmentData.appointment_date = `${dd}.${mm}.${parsed.getFullYear()}`;
         this.appointmentStage = 'time';
         this.saveConversationToStorage();
         return 'Zu welcher <strong>Uhrzeit</strong>?<br><small style="opacity:.65">z.B. 14:00 Uhr</small>';
+      }
 
       case 'time':
         if (!val) return 'Bitte gib eine Uhrzeit ein.';
@@ -746,9 +759,22 @@ ANTWORTEN
     }
   }
 
+  // Returns a Date for valid DD.MM.YYYY (or DD/MM/YYYY), null otherwise
+  _parseDate(val) {
+    const m = String(val || '').trim().match(/^(\d{1,2})[.\/\-](\d{1,2})[.\/\-](\d{4})$/);
+    if (!m) return null;
+    const day = parseInt(m[1], 10);
+    const mon = parseInt(m[2], 10);
+    const yr  = parseInt(m[3], 10);
+    const d = new Date(yr, mon - 1, day);
+    // JS rolls over invalid dates (e.g. Feb 30 → Mar 2) — detect the roll
+    if (d.getFullYear() !== yr || d.getMonth() !== mon - 1 || d.getDate() !== day) return null;
+    return d;
+  }
+
   async _saveAppointment() {
     const apiBase = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
-      ? '' : 'https://mase-production.up.railway.app';
+      ? 'http://localhost:3000' : 'https://mase-production.up.railway.app';
 
     try {
       const res  = await fetch(apiBase + '/api/appointments', {

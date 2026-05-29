@@ -205,34 +205,12 @@
     var marquees = document.querySelectorAll('.mase-marquee');
     if (!marquees.length) return;
 
-    var lastY = window.scrollY;
-    var lastT = performance.now();
-    var current = 32;
-    var target = 32;
+    // Fixed slow speed — no scroll-based acceleration
+    var speed = 50;
 
-    function tick() {
-      current += (target - current) * 0.08;
-      // global CSS-Variable
-      marquees.forEach(function (m) {
-        m.style.setProperty('--mase-marquee-speed', current.toFixed(2) + 's');
-      });
-      requestAnimationFrame(tick);
-    }
-    requestAnimationFrame(tick);
-
-    window.addEventListener('scroll', function () {
-      var now = performance.now();
-      var dy = window.scrollY - lastY;
-      var dt = now - lastT;
-      lastY = window.scrollY; lastT = now;
-      if (dt <= 0) return;
-      var v = Math.abs(dy / dt); // px/ms
-      // mappen: v=0 → 32s, v=3 → 6s
-      target = Math.max(6, 32 - v * 9);
-      // nach 600ms ohne scroll wieder auf 32 zurück
-      clearTimeout(window.__maseMarqueeReset);
-      window.__maseMarqueeReset = setTimeout(function () { target = 32; }, 600);
-    }, { passive: true });
+    marquees.forEach(function (m) {
+      m.style.setProperty('--mase-marquee-speed', speed + 's');
+    });
   }
 
   // -----------------------------------------------------------
