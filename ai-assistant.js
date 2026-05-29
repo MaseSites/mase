@@ -35,6 +35,23 @@ function maseSessionId() {
   return sid;
 }
 
+// ============================================
+// Conversation states
+//   NORMAL_CHAT   → free conversation. NO message is ever validated as a field.
+//   WAITING_FOR_* → the bot explicitly asked for this field; ONLY here do we
+//                   validate the user's input as that field.
+// This is the single source of truth for "are we collecting, and what?".
+// ============================================
+const ChatState = {
+  NORMAL_CHAT:         'NORMAL_CHAT',
+  WAITING_FOR_NAME:    'WAITING_FOR_NAME',
+  WAITING_FOR_EMAIL:   'WAITING_FOR_EMAIL',
+  WAITING_FOR_PHONE:   'WAITING_FOR_PHONE',
+  WAITING_FOR_DATE:    'WAITING_FOR_DATE',
+  WAITING_FOR_TIME:    'WAITING_FOR_TIME',
+  WAITING_FOR_MESSAGE: 'WAITING_FOR_MESSAGE'
+};
+
 class MASEAssistant {
   constructor() {
     this.conversationHistory = [];
@@ -47,9 +64,10 @@ class MASEAssistant {
       kiAssistant:null,
       kontakt:    null
     };
-    this.stage            = 'greeting';
-    this.appointmentStage = null; // active step of appointment flow, null = not in flow
-    this.appointmentData  = {};   // collected field values
+    this.stage           = 'greeting';
+    // Default = NORMAL_CHAT so random messages are NEVER validated as a field.
+    this.chatState       = ChatState.NORMAL_CHAT;
+    this.appointmentData = {};   // collected field values during lead/booking flow
     this.init();
   }
 
@@ -257,10 +275,10 @@ class MASEAssistant {
 
     try {
       let botResponse;
-      if (this.appointmentStage) {
-        // Appointment collection flow — always takes priority
+      if (this.chatState !== ChatState.NORMAL_CHAT) {
+        // We are actively collecting a field the bot explicitly asked for.
         await new Promise(r => setTimeout(r, 450));
-        botResponse = await this._handleAppointmentStep(message);
+        botResponse = await this._handleCollectionStep(message);
       } else if (USE_OPENAI && OPENAI_API_KEY && OPENAI_API_KEY.startsWith('sk-')) {
         botResponse = await this.getOpenAIResponse(message);
       } else {
@@ -280,7 +298,17 @@ class MASEAssistant {
   // ---- Rule-based responses ----
 
   getIntelligentResponse(userMessage) {
-    const m = userMessage.toLowerCase();
+    const m = userMessage.toLowerCase().trim();
+
+    // ── Smalltalk — answer like a real person, no menus, no sales ──
+    if (/^(wie ?ge?h?ts|wie geht('?s| es)( dir| ihnen| es dir)?)/.test(m))
+      return `Mir geht's gut, danke der Nachfrage! Und dir?<br><br>Wenn du etwas zu Websites oder digitalen Lösungen wissen willst, frag einfach.`;
+    if (/^(was (machst|kannst|tust) du|wer bist du|wie hei(ss|ß)t du)/.test(m))
+      return `Ich bin <strong>MaseAI</strong>, der Assistent von MASESites. Ich helfe Besuchern bei Fragen rund um Websites und digitale Lösungen. Was beschäftigt dich?`;
+    if (/^(danke|merci|vielen dank|besten dank|thx)/.test(m))
+      return `Sehr gerne! Wenn du noch etwas wissen willst, bin ich da.`;
+    if (/^(tsch(ü|u)ss|ciao|bye|auf wiedersehen|bis bald)/.test(m))
+      return `Bis bald! Melde dich jederzeit wieder.`;
 
     if (/preis|kosten|chf|budget|wie viel/.test(m))
       return this._fmtPrice();
@@ -379,13 +407,7 @@ Testing, Live-Gang und Monitoring.<br><br>
   }
 
   _fmtGreeting() {
-    return `Hallo — ich bin dein MASESites-Assistent.<br><br>
-Ich helfe dir bei Fragen zu:<br>
-— Website-Projekten<br>
-— Preisen<br>
-— KI-Integration<br>
-— Projektablauf<br><br>
-Was möchtest du wissen?`;
+    return `Hallo! Schön bist du da. &#128075;<br><br>Wie kann ich helfen?`;
   }
 
   _fmtAbout() {
@@ -686,21 +708,28 @@ Mission: Help first. Build trust second. Generate leads third.`;
     try {
       localStorage.setItem('mase_chat_history', JSON.stringify(this.conversationHistory));
       localStorage.setItem('mase_lead_data',    JSON.stringify(this.leadData));
-      localStorage.setItem('mase_apt_stage',    this.appointmentStage || '');
-      localStorage.setItem('mase_apt_data',     JSON.stringify(this.appointmentData));
+      // NOTE: the collection state (chatState) is intentionally NOT persisted.
+      // A resumed 'email' stage previously caused every message on the next
+      // visit to be validated as an email address.
     } catch (e) { /* storage full */ }
   }
 
   loadConversationFromStorage() {
+    // Always start a fresh visit in NORMAL_CHAT. Proactively clear any stale
+    // collection state left behind by older builds so users who are currently
+    // "stuck" in email-validation mode are released immediately.
+    try {
+      localStorage.removeItem('mase_apt_stage');
+      localStorage.removeItem('mase_apt_data');
+    } catch (e) { /* ignore */ }
+
+    this.chatState = ChatState.NORMAL_CHAT;
+
     try {
       const h = localStorage.getItem('mase_chat_history');
       const l = localStorage.getItem('mase_lead_data');
-      const s = localStorage.getItem('mase_apt_stage');
-      const d = localStorage.getItem('mase_apt_data');
       if (h) this.conversationHistory = JSON.parse(h);
       if (l) this.leadData            = JSON.parse(l);
-      if (s) this.appointmentStage    = s || null;
-      if (d) this.appointmentData     = JSON.parse(d);
     } catch (e) { /* corrupt data — ignore */ }
   }
 
@@ -710,53 +739,73 @@ Mission: Help first. Build trust second. Generate leads third.`;
   // ============================================================
 
   _startAppointmentFlow() {
-    this.appointmentStage = 'first_name';
-    this.appointmentData  = {};
+    this.chatState       = ChatState.WAITING_FOR_NAME;
+    this.appointmentData = {};
     return 'Gerne buche ich dir ein Erstgespräch! &#128197;<br><br>Wie ist dein <strong>Vorname</strong>?';
   }
 
-  async _handleAppointmentStep(input) {
+  // RULE #6: a real question always beats field collection.
+  // If the user is clearly NOT answering the requested field — they greet,
+  // ask something, or want to stop — we leave collection and answer normally.
+  _wantsToExitCollection(message) {
+    const m = message.trim().toLowerCase();
+    if (!m) return false;
+    // Explicit abort
+    if (/(abbrechen|abbruch|stopp|stop|zur(ü|u)ck|vergiss es|egal|nein danke|doch nicht|sp(ä|a)ter|nicht jetzt)/.test(m)) return true;
+    // Greetings / smalltalk while we were waiting for a field
+    if (/^(hallo|hi|hey|guten (tag|morgen|abend)|wie ?ge?h?ts|wie geht|was machst du|wer bist du|hilfe)\b/.test(m)) return true;
+    // A question mark almost always signals a real question, not a field value
+    if (m.includes('?')) return true;
+    return false;
+  }
+
+  // Handles input ONLY while chatState is one of the WAITING_FOR_* states.
+  async _handleCollectionStep(input) {
     const val = input.trim();
 
-    switch (this.appointmentStage) {
+    // Escape hatch — answer the question first, drop out of collection.
+    if (this._wantsToExitCollection(val)) {
+      this.chatState = ChatState.NORMAL_CHAT;
+      this.saveConversationToStorage();
+      return this.getIntelligentResponse(val);
+    }
 
-      case 'first_name':
-        if (!val) return 'Bitte gib deinen Vornamen ein.';
-        this.appointmentData.first_name = val;
-        this.appointmentStage = 'last_name';
-        this.saveConversationToStorage();
-        return 'Und dein <strong>Nachname</strong>?';
+    switch (this.chatState) {
 
-      case 'last_name':
-        if (!val) return 'Bitte gib deinen Nachnamen ein.';
+      case ChatState.WAITING_FOR_NAME:
+        if (!val) return 'Wie ist dein <strong>Vorname</strong>?';
+        if (!this.appointmentData.first_name) {
+          this.appointmentData.first_name = val;
+          this.saveConversationToStorage();
+          return 'Und dein <strong>Nachname</strong>?';
+        }
         this.appointmentData.last_name = val;
-        this.appointmentStage = 'email';
+        this.chatState = ChatState.WAITING_FOR_EMAIL;
         this.saveConversationToStorage();
-        return 'Deine <strong>E-Mail-Adresse</strong>?';
+        return 'Wie lautet deine <strong>E-Mail-Adresse</strong>?';
 
-      case 'email': {
+      case ChatState.WAITING_FOR_EMAIL:
+        // Validate ONLY here, because we explicitly asked for an email.
         if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val)) {
           return 'Bitte gib eine gültige E-Mail-Adresse ein (z.B. max@beispiel.ch).';
         }
         this.appointmentData.email = val.toLowerCase();
-        this.appointmentStage = 'phone';
+        this.chatState = ChatState.WAITING_FOR_PHONE;
         this.saveConversationToStorage();
         return 'Deine <strong>Telefonnummer</strong>?<br><small style="opacity:.65">Optional — schreib "nein" zum Überspringen</small>';
-      }
 
-      case 'phone': {
-        const skipPhone = /^(nein|skip|keine|–|-|\.|\s*)$/i.test(val);
+      case ChatState.WAITING_FOR_PHONE: {
+        const skipPhone = /^(nein|skip|keine|–|-|\.)$/i.test(val);
         if (!skipPhone && val.replace(/\D/g, '').length < 6) {
           return 'Bitte gib eine gültige Telefonnummer ein oder schreib <strong>nein</strong> zum Überspringen.';
         }
         this.appointmentData.phone = skipPhone ? '' : val;
-        this.appointmentStage = 'date';
+        this.chatState = ChatState.WAITING_FOR_DATE;
         this.saveConversationToStorage();
         return 'Welches <strong>Datum</strong> wünschst du dir?<br><small style="opacity:.65">z.B. 15.06.2026</small>';
       }
 
-      case 'date': {
-        if (!val) return 'Bitte gib ein Datum ein.';
+      case ChatState.WAITING_FOR_DATE: {
         const parsed = this._parseDate(val);
         if (!parsed) {
           return 'Das Datum existiert nicht. Bitte im Format <strong>TT.MM.JJJJ</strong> eingeben (z.B. 15.06.2026).';
@@ -768,26 +817,26 @@ Mission: Help first. Build trust second. Generate leads third.`;
         const dd = String(parsed.getDate()).padStart(2, '0');
         const mm = String(parsed.getMonth() + 1).padStart(2, '0');
         this.appointmentData.appointment_date = `${dd}.${mm}.${parsed.getFullYear()}`;
-        this.appointmentStage = 'time';
+        this.chatState = ChatState.WAITING_FOR_TIME;
         this.saveConversationToStorage();
         return 'Zu welcher <strong>Uhrzeit</strong>?<br><small style="opacity:.65">z.B. 14:00 Uhr</small>';
       }
 
-      case 'time':
+      case ChatState.WAITING_FOR_TIME:
         if (!val) return 'Bitte gib eine Uhrzeit ein.';
         this.appointmentData.appointment_time = val;
-        this.appointmentStage = 'message';
+        this.chatState = ChatState.WAITING_FOR_MESSAGE;
         this.saveConversationToStorage();
-        return 'Hast du eine kurze <strong>Nachricht</strong> oder Grund für den Termin?<br><small style="opacity:.65">Optional — schreib "nein" zum Überspringen</small>';
+        return 'Hast du eine kurze <strong>Nachricht</strong> oder einen Grund für den Termin?<br><small style="opacity:.65">Optional — schreib "nein" zum Überspringen</small>';
 
-      case 'message': {
-        const isSkip = /^(nein|skip|keine|–|-|\.|\s*)$/i.test(val);
+      case ChatState.WAITING_FOR_MESSAGE: {
+        const isSkip = /^(nein|skip|keine|–|-|\.)$/i.test(val);
         this.appointmentData.message = isSkip ? '' : val;
         return await this._saveAppointment();
       }
 
       default:
-        this.appointmentStage = null;
+        this.chatState = ChatState.NORMAL_CHAT;
         this.saveConversationToStorage();
         return this._fmtDefault();
     }
@@ -819,8 +868,8 @@ Mission: Help first. Build trust second. Generate leads third.`;
       const data = await res.json();
 
       // Reset flow regardless of outcome
-      this.appointmentStage = null;
-      this.appointmentData  = {};
+      this.chatState       = ChatState.NORMAL_CHAT;
+      this.appointmentData = {};
       this.saveConversationToStorage();
 
       if (!res.ok || !data.success) {
@@ -834,8 +883,8 @@ Mission: Help first. Build trust second. Generate leads third.`;
 
     } catch (err) {
       console.error('[Termin] Netzwerkfehler:', err);
-      this.appointmentStage = null;
-      this.appointmentData  = {};
+      this.chatState       = ChatState.NORMAL_CHAT;
+      this.appointmentData = {};
       this.saveConversationToStorage();
       return 'Verbindungsfehler. Bitte kontaktiere uns direkt:<br>' +
              '<a href="mailto:info@masesites.ch">info@masesites.ch</a>';
