@@ -151,6 +151,20 @@
   .spinner { display: inline-block; width: 24px; height: 24px; border: 2px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin .6s linear infinite; margin-bottom: 8px; }
   @keyframes spin { to { transform: rotate(360deg); } }
 
+  /* ---- Appointment status badges ---- */
+  .badge-pending   { background: rgba(234,179,8,.2);   color: #fbbf24; }
+  .badge-confirmed { background: rgba(34,197,94,.2);   color: #4ade80; }
+  .badge-cancelled { background: rgba(239,68,68,.2);   color: #f87171; }
+
+  /* ---- Appointment action buttons ---- */
+  .apt-btn { display: inline-flex; align-items: center; padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 600; cursor: pointer; text-decoration: none; border: none; transition: opacity .18s; white-space: nowrap; }
+  .apt-btn:hover { opacity: .75; }
+  .apt-btn-confirm { background: rgba(34,197,94,.18);  color: #4ade80; }
+  .apt-btn-cancel  { background: rgba(239,68,68,.18);  color: #f87171; }
+  .apt-btn-email   { background: rgba(99,102,241,.18); color: #818cf8; }
+  .apt-btn-phone   { background: rgba(59,130,246,.18); color: #60a5fa; }
+  .apt-actions     { display: flex; gap: 5px; flex-wrap: wrap; }
+
   /* ---- Responsive ---- */
   @media (max-width: 600px) {
     nav { overflow-x: auto; }
@@ -188,6 +202,7 @@
     <button class="nav-btn" data-view="chats">Chats</button>
     <button class="nav-btn" data-view="leads">Leads</button>
     <button class="nav-btn" data-view="analytics">Analytics</button>
+    <button class="nav-btn" data-view="kalender">&#128197; Kalender</button>
   </nav>
 
   <main>
@@ -365,6 +380,42 @@
       </div>
     </div>
 
+    <!-- ---- KALENDER ---- -->
+    <div class="view" id="view-kalender">
+      <div class="toolbar">
+        <input type="text" class="search-input" id="apt-search" placeholder="Name, E-Mail oder Nachricht suchen...">
+        <select class="filter-sel" id="apt-status-filter">
+          <option value="">Alle Status</option>
+          <option value="pending">Ausstehend</option>
+          <option value="confirmed">Bestätigt</option>
+          <option value="cancelled">Abgesagt</option>
+        </select>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Terminübersicht</div>
+          <div class="card-count" id="apt-count">–</div>
+        </div>
+        <div class="tbl-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Datum / Zeit</th>
+                <th>Name</th>
+                <th>Kontakt</th>
+                <th>Nachricht</th>
+                <th>Status</th>
+                <th>Aktionen</th>
+              </tr>
+            </thead>
+            <tbody id="apt-tbody">
+              <tr><td colspan="6" class="loading"><div class="spinner"></div></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
   </main>
 </div>
 
@@ -505,6 +556,7 @@
     loadChats();
     loadLeads();
     loadAnalytics();
+    loadKalender();
   }
 
   // ================================================================
@@ -875,6 +927,89 @@
       }
     });
   }
+
+  // ================================================================
+  // KALENDER — Termin-Verwaltung
+  // ================================================================
+  var allAppointments = [];
+
+  var APT_STATUS_LABELS = {
+    pending:   'Ausstehend',
+    confirmed: 'Bestätigt',
+    cancelled: 'Abgesagt'
+  };
+
+  function loadKalender() {
+    query('mase_appointments', 'order=appointment_date.asc,appointment_time.asc&limit=500&select=*')
+      .then(function (rows) {
+        allAppointments = rows || [];
+        renderAppointments();
+      }).catch(function (e) { console.error('[Kalender]', e); });
+  }
+
+  function renderAppointments() {
+    var search = (document.getElementById('apt-search').value || '').toLowerCase();
+    var status = document.getElementById('apt-status-filter').value;
+
+    var filtered = allAppointments.filter(function (r) {
+      var txt = [r.first_name, r.last_name, r.email, r.phone, r.message].join(' ').toLowerCase();
+      return (!search || txt.includes(search)) && (!status || r.status === status);
+    });
+
+    document.getElementById('apt-count').textContent = filtered.length + ' Termin' + (filtered.length === 1 ? '' : 'e');
+
+    var html = filtered.map(function (r) {
+      var statusLabel = APT_STATUS_LABELS[r.status] || r.status;
+      var statusClass = r.status === 'confirmed' ? 'badge-confirmed' : r.status === 'cancelled' ? 'badge-cancelled' : 'badge-pending';
+      var safeId      = esc(r.id);
+      var safeEmail   = esc(r.email || '');
+      var safePhone   = esc(r.phone || '');
+      var isPending   = r.status === 'pending';
+
+      return '<tr>' +
+        '<td style="white-space:nowrap">' +
+          '<div style="font-weight:600;font-size:13px">' + esc(r.appointment_date || '–') + '</div>' +
+          '<div style="color:var(--muted);font-size:12px">' + esc(r.appointment_time || '') + ' Uhr</div>' +
+          '<div style="color:var(--border);font-size:11px;margin-top:3px">' + fmtRelative(r.created_at) + ' eingegangen</div>' +
+        '</td>' +
+        '<td>' +
+          '<div style="font-weight:500">' + esc((r.first_name || '') + ' ' + (r.last_name || '')) + '</div>' +
+        '</td>' +
+        '<td>' +
+          '<div><a href="mailto:' + safeEmail + '" style="color:var(--accent);font-size:12px;text-decoration:none">' + safeEmail + '</a></div>' +
+          '<div><a href="tel:' + safePhone + '" style="color:var(--muted);font-size:12px;text-decoration:none">' + safePhone + '</a></div>' +
+        '</td>' +
+        '<td style="max-width:200px;color:var(--muted);font-size:12px">' + esc((r.message || '–').slice(0, 100)) + '</td>' +
+        '<td><span class="badge ' + statusClass + '">' + statusLabel + '</span></td>' +
+        '<td>' +
+          '<div class="apt-actions">' +
+            (isPending ? '<button class="apt-btn apt-btn-confirm" onclick="updateAptStatus(\'' + safeId + '\',\'confirmed\')">Bestätigen</button>' : '') +
+            (isPending ? '<button class="apt-btn apt-btn-cancel"  onclick="updateAptStatus(\'' + safeId + '\',\'cancelled\')">Absagen</button>'    : '') +
+            '<a class="apt-btn apt-btn-email" href="mailto:' + safeEmail + '?subject=Terminbestätigung%20MASESites">E-Mail</a>' +
+            '<a class="apt-btn apt-btn-phone" href="tel:' + safePhone + '">Anrufen</a>' +
+          '</div>' +
+        '</td>' +
+      '</tr>';
+    }).join('');
+
+    document.getElementById('apt-tbody').innerHTML = html ||
+      '<tr><td colspan="6" class="empty"><div class="empty-icon">&#128197;</div><div class="empty-text">Keine Termine gefunden</div></td></tr>';
+  }
+
+  window.updateAptStatus = function (id, val) {
+    fetch(API_BASE + '/api/admin/data/appointments/' + id, {
+      method:  'PATCH',
+      headers: { 'Authorization': 'Bearer ' + ADMIN_TOKEN, 'Content-Type': 'application/json' },
+      body:    JSON.stringify({ status: val })
+    }).then(function (r) {
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      var apt = allAppointments.find(function (a) { return a.id === id; });
+      if (apt) { apt.status = val; renderAppointments(); }
+    }).catch(function (e) { console.error('[Kalender PATCH]', e); alert('Fehler beim Speichern des Status.'); });
+  };
+
+  document.getElementById('apt-search').addEventListener('input', renderAppointments);
+  document.getElementById('apt-status-filter').addEventListener('change', renderAppointments);
 
 })();
 </script>

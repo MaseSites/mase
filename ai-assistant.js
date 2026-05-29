@@ -47,7 +47,9 @@ class MASEAssistant {
       kiAssistant:null,
       kontakt:    null
     };
-    this.stage = 'greeting';
+    this.stage            = 'greeting';
+    this.appointmentStage = null; // active step of appointment flow, null = not in flow
+    this.appointmentData  = {};   // collected field values
     this.init();
   }
 
@@ -255,7 +257,11 @@ class MASEAssistant {
 
     try {
       let botResponse;
-      if (USE_OPENAI && OPENAI_API_KEY && OPENAI_API_KEY.startsWith('sk-')) {
+      if (this.appointmentStage) {
+        // Appointment collection flow — always takes priority
+        await new Promise(r => setTimeout(r, 450));
+        botResponse = await this._handleAppointmentStep(message);
+      } else if (USE_OPENAI && OPENAI_API_KEY && OPENAI_API_KEY.startsWith('sk-')) {
         botResponse = await this.getOpenAIResponse(message);
       } else {
         // Simulate a short processing delay for realism
@@ -282,8 +288,8 @@ class MASEAssistant {
     if (/ki.assistent|chatbot|bot|automatisch|ki$/.test(m))
       return this._fmtAI();
 
-    if (/termin|call|gespräch|meeting|besprechung/.test(m))
-      return this._fmtMeeting();
+    if (/termin|call|gespräch|meeting|besprechung|buchen|anfragen/.test(m))
+      return this._startAppointmentFlow();
 
     if (/kontakt|anfrage|schreib|email|melden|erreichen/.test(m))
       return this._fmtContact();
@@ -646,6 +652,8 @@ ANTWORTEN
     try {
       localStorage.setItem('mase_chat_history', JSON.stringify(this.conversationHistory));
       localStorage.setItem('mase_lead_data',    JSON.stringify(this.leadData));
+      localStorage.setItem('mase_apt_stage',    this.appointmentStage || '');
+      localStorage.setItem('mase_apt_data',     JSON.stringify(this.appointmentData));
     } catch (e) { /* storage full */ }
   }
 
@@ -653,10 +661,127 @@ ANTWORTEN
     try {
       const h = localStorage.getItem('mase_chat_history');
       const l = localStorage.getItem('mase_lead_data');
+      const s = localStorage.getItem('mase_apt_stage');
+      const d = localStorage.getItem('mase_apt_data');
       if (h) this.conversationHistory = JSON.parse(h);
       if (l) this.leadData            = JSON.parse(l);
+      if (s) this.appointmentStage    = s || null;
+      if (d) this.appointmentData     = JSON.parse(d);
     } catch (e) { /* corrupt data — ignore */ }
   }
+
+  // ============================================================
+  // APPOINTMENT BOOKING FLOW
+  // Collects fields step-by-step, saves via POST /api/appointments
+  // ============================================================
+
+  _startAppointmentFlow() {
+    this.appointmentStage = 'first_name';
+    this.appointmentData  = {};
+    return 'Gerne buche ich dir ein Erstgespräch! &#128197;<br><br>Wie ist dein <strong>Vorname</strong>?';
+  }
+
+  async _handleAppointmentStep(input) {
+    const val = input.trim();
+
+    switch (this.appointmentStage) {
+
+      case 'first_name':
+        if (!val) return 'Bitte gib deinen Vornamen ein.';
+        this.appointmentData.first_name = val;
+        this.appointmentStage = 'last_name';
+        this.saveConversationToStorage();
+        return 'Und dein <strong>Nachname</strong>?';
+
+      case 'last_name':
+        if (!val) return 'Bitte gib deinen Nachnamen ein.';
+        this.appointmentData.last_name = val;
+        this.appointmentStage = 'email';
+        this.saveConversationToStorage();
+        return 'Deine <strong>E-Mail-Adresse</strong>?';
+
+      case 'email': {
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val)) {
+          return 'Bitte gib eine gültige E-Mail-Adresse ein (z.B. max@beispiel.ch).';
+        }
+        this.appointmentData.email = val.toLowerCase();
+        this.appointmentStage = 'phone';
+        this.saveConversationToStorage();
+        return 'Deine <strong>Telefonnummer</strong>?';
+      }
+
+      case 'phone':
+        if (!val || val.replace(/\D/g, '').length < 6) {
+          return 'Bitte gib eine gültige Telefonnummer ein.';
+        }
+        this.appointmentData.phone = val;
+        this.appointmentStage = 'date';
+        this.saveConversationToStorage();
+        return 'Welches <strong>Datum</strong> wünschst du dir?<br><small style="opacity:.65">z.B. 15.06.2026</small>';
+
+      case 'date':
+        if (!val) return 'Bitte gib ein Datum ein.';
+        this.appointmentData.appointment_date = val;
+        this.appointmentStage = 'time';
+        this.saveConversationToStorage();
+        return 'Zu welcher <strong>Uhrzeit</strong>?<br><small style="opacity:.65">z.B. 14:00 Uhr</small>';
+
+      case 'time':
+        if (!val) return 'Bitte gib eine Uhrzeit ein.';
+        this.appointmentData.appointment_time = val;
+        this.appointmentStage = 'message';
+        this.saveConversationToStorage();
+        return 'Hast du eine kurze <strong>Nachricht</strong> oder Grund für den Termin?<br><small style="opacity:.65">Optional — schreib "nein" zum Überspringen</small>';
+
+      case 'message': {
+        const isSkip = /^(nein|skip|keine|–|-|\.|\s*)$/i.test(val);
+        this.appointmentData.message = isSkip ? '' : val;
+        return await this._saveAppointment();
+      }
+
+      default:
+        this.appointmentStage = null;
+        this.saveConversationToStorage();
+        return this._fmtDefault();
+    }
+  }
+
+  async _saveAppointment() {
+    const apiBase = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+      ? '' : 'https://mase-production.up.railway.app';
+
+    try {
+      const res  = await fetch(apiBase + '/api/appointments', {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify(this.appointmentData)
+      });
+      const data = await res.json();
+
+      // Reset flow regardless of outcome
+      this.appointmentStage = null;
+      this.appointmentData  = {};
+      this.saveConversationToStorage();
+
+      if (!res.ok || !data.success) {
+        console.error('[Termin] Fehler:', data);
+        return 'Leider gab es einen Fehler. Bitte kontaktiere uns direkt:<br>' +
+               '<a href="mailto:info@masesites.ch">info@masesites.ch</a> &nbsp;·&nbsp; ' +
+               '<a href="tel:+41782158922">078 215 89 22</a>';
+      }
+
+      return 'Danke, dein Termin wurde eingetragen. Wir melden uns zur Bestätigung.';
+
+    } catch (err) {
+      console.error('[Termin] Netzwerkfehler:', err);
+      this.appointmentStage = null;
+      this.appointmentData  = {};
+      this.saveConversationToStorage();
+      return 'Verbindungsfehler. Bitte kontaktiere uns direkt:<br>' +
+             '<a href="mailto:info@masesites.ch">info@masesites.ch</a>';
+    }
+  }
+
 }
 
 // ---- Initialise ----

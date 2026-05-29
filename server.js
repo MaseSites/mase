@@ -553,7 +553,8 @@ const ALLOWED_TABLES = new Set([
   'mase_chat_messages',
   'mase_leads',
   'mase_page_views',
-  'mase_events'
+  'mase_events',
+  'mase_appointments'
 ]);
 
 const SUPABASE_URL   = process.env.SUPABASE_URL || 'https://kxeorjgabvtplmdygbph.supabase.co';
@@ -656,6 +657,102 @@ app.patch('/api/admin/data/leads/:id', adminDataLimiter, async (req, res) => {
     res.json({ ok: true });
   } catch (err) {
     console.error('[proxy] PATCH error:', err.message);
+    res.status(502).json({ error: 'Upstream error.' });
+  }
+});
+
+// ============================================================
+// APPOINTMENTS — public endpoint (called from AI chat widget)
+// POST /api/appointments  { first_name, last_name, email, phone,
+//                          appointment_date, appointment_time, message }
+// ============================================================
+const appointmentLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000, // 1 hour window
+  max: 10,
+  handler: (req, res) => res.status(429).json({ success: false, code: 'RATE_LIMITED', message: 'Zu viele Anfragen.' })
+});
+
+app.post('/api/appointments', appointmentLimiter, async (req, res) => {
+  const b = req.body || {};
+  const first_name       = sanitizeText(b.first_name, 100);
+  const last_name        = sanitizeText(b.last_name, 100);
+  const email            = sanitizeText(b.email, 254).toLowerCase();
+  const phone            = sanitizeText(b.phone, 50);
+  const appointment_date = sanitizeText(b.appointment_date, 30);
+  const appointment_time = sanitizeText(b.appointment_time, 20);
+  const message          = sanitizeText(b.message, 1000);
+
+  if (!first_name || !last_name || !email || !phone || !appointment_date || !appointment_time) {
+    return res.status(400).json({ success: false, code: 'VALIDATION_REQUIRED_FIELDS', message: 'Pflichtfelder fehlen.' });
+  }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    return res.status(400).json({ success: false, code: 'VALIDATION_EMAIL', message: 'Ungültige E-Mail-Adresse.' });
+  }
+
+  const serviceKey = process.env.SUPABASE_SERVICE_KEY || '';
+  if (!serviceKey) {
+    return res.status(503).json({ success: false, code: 'DB_NOT_CONFIGURED', message: 'Datenbankverbindung nicht konfiguriert.' });
+  }
+
+  try {
+    const upstream = await fetch(`${SUPABASE_URL}/rest/v1/mase_appointments`, {
+      method: 'POST',
+      headers: {
+        'apikey':        serviceKey,
+        'Authorization': 'Bearer ' + serviceKey,
+        'Content-Type':  'application/json',
+        'Prefer':        'return=minimal'
+      },
+      body: JSON.stringify({ first_name, last_name, email, phone, appointment_date, appointment_time, message, status: 'pending' })
+    });
+    if (!upstream.ok) {
+      const d = await upstream.json().catch(() => ({}));
+      console.error('[appointments] Supabase error:', d);
+      return res.status(502).json({ success: false, code: 'DB_ERROR', message: 'Fehler beim Speichern.' });
+    }
+    console.log(`[OK] Neuer Termin: ${first_name} ${last_name} — ${appointment_date} ${appointment_time}`);
+    res.json({ success: true, code: 'APPOINTMENT_CREATED' });
+  } catch (err) {
+    console.error('[appointments]', err.message);
+    res.status(500).json({ success: false, code: 'SERVER_ERROR', message: 'Serverfehler.' });
+  }
+});
+
+// PATCH /api/admin/data/appointments/:id — status update (admin auth required)
+app.patch('/api/admin/data/appointments/:id', adminDataLimiter, async (req, res) => {
+  if (!validateAdminToken(req, res)) return;
+
+  const id = req.params.id;
+  if (!id || !/^[0-9a-f-]{36}$|^\d+$/.test(id)) {
+    return res.status(400).json({ error: 'Invalid id.' });
+  }
+
+  const { status } = req.body || {};
+  if (!status || !['pending', 'confirmed', 'cancelled'].includes(status)) {
+    return res.status(400).json({ error: 'Invalid status. Allowed: pending, confirmed, cancelled' });
+  }
+
+  const serviceKey = process.env.SUPABASE_SERVICE_KEY || '';
+  if (!serviceKey) return res.status(503).json({ error: 'Service key not configured.' });
+
+  try {
+    const upstream = await fetch(`${SUPABASE_URL}/rest/v1/mase_appointments?id=eq.${encodeURIComponent(id)}`, {
+      method: 'PATCH',
+      headers: {
+        'apikey':        serviceKey,
+        'Authorization': 'Bearer ' + serviceKey,
+        'Content-Type':  'application/json',
+        'Prefer':        'return=minimal'
+      },
+      body: JSON.stringify({ status, updated_at: new Date().toISOString() })
+    });
+    if (!upstream.ok) {
+      const d = await upstream.json().catch(() => ({}));
+      return res.status(upstream.status).json({ error: d });
+    }
+    res.json({ ok: true });
+  } catch (err) {
+    console.error('[appointments PATCH]', err.message);
     res.status(502).json({ error: 'Upstream error.' });
   }
 });
