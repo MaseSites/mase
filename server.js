@@ -57,7 +57,7 @@ app.use((req, res, next) => {
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
       "font-src 'self' https://fonts.gstatic.com",
       "img-src 'self' data: https:",
-      "connect-src 'self' https://kxeorjgabvtplmdygbph.supabase.co https://api.openai.com https://mase-production.up.railway.app",
+      "connect-src 'self' https://kxeorjgabvtplmdygbph.supabase.co https://api.openai.com https://api.groq.com https://mase-production.up.railway.app",
       "frame-ancestors 'none'",
       "base-uri 'self'",
       "form-action 'self'"
@@ -767,9 +767,31 @@ FACTS ABOUT MASESITES (only share when relevant):
 
 When a user is ready to start, gently guide them to book a free first call (Erstgespräch) or leave their contact details.`;
 
+// Pick the AI provider based on which key is set.
+// Groq is preferred (free tier, OpenAI-compatible API); OpenAI is the fallback.
+function resolveChatProvider() {
+  if (process.env.GROQ_API_KEY) {
+    return {
+      name:    'groq',
+      url:     'https://api.groq.com/openai/v1/chat/completions',
+      apiKey:  process.env.GROQ_API_KEY,
+      model:   process.env.GROQ_MODEL || 'llama-3.3-70b-versatile'
+    };
+  }
+  if (process.env.OPENAI_API_KEY) {
+    return {
+      name:    'openai',
+      url:     'https://api.openai.com/v1/chat/completions',
+      apiKey:  process.env.OPENAI_API_KEY,
+      model:   process.env.OPENAI_MODEL || 'gpt-4o-mini'
+    };
+  }
+  return null;
+}
+
 app.post('/api/chat', chatLimiter, async (req, res) => {
-  const apiKey = process.env.OPENAI_API_KEY || '';
-  if (!apiKey) {
+  const provider = resolveChatProvider();
+  if (!provider) {
     // No key configured — tell the client to use its local fallback.
     return res.status(503).json({ success: false, code: 'AI_NOT_CONFIGURED', message: 'AI not configured.' });
   }
@@ -787,19 +809,17 @@ app.post('/api/chat', chatLimiter, async (req, res) => {
     return res.status(400).json({ success: false, code: 'VALIDATION_NO_MESSAGE', message: 'Keine Nachricht.' });
   }
 
-  const model = process.env.OPENAI_MODEL || 'gpt-4o-mini';
-
   try {
     const ctrl = new AbortController();
     const timeout = setTimeout(() => ctrl.abort(), 20000);
-    const upstream = await fetch('https://api.openai.com/v1/chat/completions', {
+    const upstream = await fetch(provider.url, {
       method: 'POST',
       headers: {
         'Content-Type':  'application/json',
-        'Authorization': 'Bearer ' + apiKey
+        'Authorization': 'Bearer ' + provider.apiKey
       },
       body: JSON.stringify({
-        model,
+        model: provider.model,
         messages: [{ role: 'system', content: MASE_SYSTEM_PROMPT }, ...history],
         temperature: 0.7,
         max_tokens: 500
@@ -810,7 +830,7 @@ app.post('/api/chat', chatLimiter, async (req, res) => {
 
     if (!upstream.ok) {
       const errText = await upstream.text().catch(() => '');
-      console.error('[chat] OpenAI error', upstream.status, errText.slice(0, 300));
+      console.error(`[chat] ${provider.name} error`, upstream.status, errText.slice(0, 300));
       return res.status(502).json({ success: false, code: 'AI_UPSTREAM_ERROR', message: 'KI nicht erreichbar.' });
     }
 
