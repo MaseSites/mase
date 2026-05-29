@@ -4,10 +4,21 @@ const cors = require('cors');
 const rateLimit = require('express-rate-limit');
 const path = require('path');
 const crypto = require('crypto');
+const { spawn } = require('child_process');
+const { createProxyMiddleware } = require('http-proxy-middleware');
 require('dotenv').config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+// ============================================================
+// SECRET INVENTORY APP (Next.js) — mounted under a hidden path.
+// The Next app runs as an internal child process; we reverse-proxy
+// every request under SECRET_PREFIX to it. Keep SECRET_PREFIX in
+// sync with basePath in inventory/next.config.mjs.
+// ============================================================
+const SECRET_PREFIX = '/testserver/customerid/c64fc823/root/3a8021/tracker';
+const INV_PORT = process.env.INV_PORT || 3100;
 
 const allowedOrigins = [
   'http://127.0.0.1:5500',
@@ -36,6 +47,11 @@ app.set('trust proxy', process.env.TRUST_PROXY === 'true' || process.env.RAILWAY
 // ============================================================
 app.disable('x-powered-by');
 app.use((req, res, next) => {
+  // The Next.js inventory app manages its own headers/CSP — don't impose the
+  // static-site CSP on it (would block Next's inline runtime).
+  if (req.path === SECRET_PREFIX || req.path.startsWith(SECRET_PREFIX + '/')) {
+    return next();
+  }
   // Prevent clickjacking
   res.set('X-Frame-Options', 'DENY');
   // Prevent MIME-type sniffing
@@ -101,6 +117,33 @@ app.use(cors({
   methods: ['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Accept', 'Authorization', 'X-Confirm-Delete-All']
 }));
+
+// ── Reverse-proxy the secret inventory app (MUST be before express.json so the
+//    request body stream stays intact for POSTs / file uploads). The full path
+//    incl. SECRET_PREFIX is forwarded unchanged — Next.js has the matching
+//    basePath, so it serves pages, _next assets and /api routes correctly. ──
+const invProxy = createProxyMiddleware({
+  target: `http://127.0.0.1:${INV_PORT}`,
+  changeOrigin: true,
+  ws: true,
+  xfwd: true,
+  on: {
+    error: (err, req, res) => {
+      console.error('[inventory proxy]', err.message);
+      if (res && !res.headersSent && res.writeHead) {
+        res.writeHead(502, { 'Content-Type': 'text/plain; charset=utf-8' });
+        res.end('Inventory app is starting or unavailable. Please retry in a moment.');
+      }
+    }
+  }
+});
+app.use((req, res, next) => {
+  if (req.path === SECRET_PREFIX || req.path.startsWith(SECRET_PREFIX + '/')) {
+    return invProxy(req, res, next);
+  }
+  next();
+});
+
 app.use(express.json({ limit: '20kb' }));
 app.use(express.urlencoded({ extended: true, limit: '20kb' }));
 
@@ -1083,4 +1126,36 @@ app.listen(PORT, () => {
   console.log(`[OK] Email-Empfaenger: ${process.env.EMAIL_TO || 'info@masesites.ch'}`);
   console.log(`[OK] Email-Absender  : ${process.env.SMTP_USER || 'info@masesites.ch'}\n`);
 });
+
+// ============================================================
+// Launch the secret inventory app (Next.js) as a child process.
+// Failure here NEVER takes down the main site — the proxy just
+// returns 502 for the secret path until it is up.
+// ============================================================
+(function startInventoryApp() {
+  const invDir = path.join(__dirname, 'inventory');
+  const fs = require('fs');
+  if (!fs.existsSync(path.join(invDir, '.next'))) {
+    console.warn('[inventory] .next build not found — skipping inventory app start.');
+    console.warn('[inventory] Run "cd inventory && npm install && npm run build" first.');
+    return;
+  }
+
+  const env = Object.assign({}, process.env, {
+    PORT: String(INV_PORT),
+    NODE_ENV: 'production',
+    DATABASE_URL: process.env.INV_DATABASE_URL || 'file:./prod.db'
+  });
+
+  // db push (idempotent) then next start, cross-platform via shell.
+  const cmd = `npx prisma db push --skip-generate --accept-data-loss && npx next start -p ${INV_PORT}`;
+  const child = spawn(cmd, {
+    cwd: invDir,
+    env,
+    shell: true,
+    stdio: 'inherit'
+  });
+  child.on('exit', (code) => console.warn(`[inventory] process exited with code ${code}`));
+  console.log(`[OK] Inventory-App startet intern auf Port ${INV_PORT} (Pfad: ${SECRET_PREFIX})`);
+})();
 
