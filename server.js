@@ -98,7 +98,7 @@ app.use(cors({
     if (allowedOrigins.indexOf(origin) !== -1) return callback(null, true);
     return callback(new Error(`CORS_NOT_ALLOWED: ${origin}`));
   },
-  methods: ['GET', 'POST', 'PATCH', 'OPTIONS'],
+  methods: ['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Accept', 'Authorization']
 }));
 app.use(express.json({ limit: '20kb' }));
@@ -616,6 +616,91 @@ app.get('/api/admin/data/:table', adminDataLimiter, async (req, res) => {
     res.json(data);
   } catch (err) {
     console.error('[proxy] GET error:', err.message);
+    res.status(502).json({ error: 'Upstream error.' });
+  }
+});
+
+// DELETE /api/admin/data/:table/:id  — delete a single row by id (admin only)
+app.delete('/api/admin/data/:table/:id', adminDataLimiter, async (req, res) => {
+  if (!validateAdminToken(req, res)) return;
+
+  const table = req.params.table;
+  if (!ALLOWED_TABLES.has(table)) {
+    return res.status(400).json({ error: 'Table not allowed.' });
+  }
+
+  const id = req.params.id;
+  if (!id || !/^[0-9a-f-]{36}$|^\d+$/.test(id)) {
+    return res.status(400).json({ error: 'Invalid id.' });
+  }
+
+  const serviceKey = process.env.SUPABASE_SERVICE_KEY || '';
+  if (!serviceKey) {
+    return res.status(503).json({ error: 'Service key not configured.' });
+  }
+
+  const upstreamUrl = `${SUPABASE_URL}/rest/v1/${table}?id=eq.${encodeURIComponent(id)}`;
+  try {
+    const upstream = await fetch(upstreamUrl, {
+      method: 'DELETE',
+      headers: {
+        'apikey': serviceKey,
+        'Authorization': 'Bearer ' + serviceKey,
+        'Content-Type': 'application/json',
+        'Prefer': 'return=minimal'
+      }
+    });
+    if (!upstream.ok) {
+      const data = await upstream.json().catch(() => ({}));
+      return res.status(upstream.status).json({ error: data });
+    }
+    console.log(`[admin] DELETE row ${id} from ${table}`);
+    res.json({ ok: true });
+  } catch (err) {
+    console.error('[proxy] DELETE error:', err.message);
+    res.status(502).json({ error: 'Upstream error.' });
+  }
+});
+
+// DELETE /api/admin/data/:table  — delete ALL rows in a table (admin only).
+// Requires header  X-Confirm-Delete-All: yes  to avoid accidental wipes.
+app.delete('/api/admin/data/:table', adminDataLimiter, async (req, res) => {
+  if (!validateAdminToken(req, res)) return;
+
+  const table = req.params.table;
+  if (!ALLOWED_TABLES.has(table)) {
+    return res.status(400).json({ error: 'Table not allowed.' });
+  }
+
+  if ((req.headers['x-confirm-delete-all'] || '').toLowerCase() !== 'yes') {
+    return res.status(400).json({ error: 'Missing confirmation header.' });
+  }
+
+  const serviceKey = process.env.SUPABASE_SERVICE_KEY || '';
+  if (!serviceKey) {
+    return res.status(503).json({ error: 'Service key not configured.' });
+  }
+
+  // PostgREST requires a WHERE clause for DELETE. "id not null" matches all rows.
+  const upstreamUrl = `${SUPABASE_URL}/rest/v1/${table}?id=not.is.null`;
+  try {
+    const upstream = await fetch(upstreamUrl, {
+      method: 'DELETE',
+      headers: {
+        'apikey': serviceKey,
+        'Authorization': 'Bearer ' + serviceKey,
+        'Content-Type': 'application/json',
+        'Prefer': 'return=minimal'
+      }
+    });
+    if (!upstream.ok) {
+      const data = await upstream.json().catch(() => ({}));
+      return res.status(upstream.status).json({ error: data });
+    }
+    console.log(`[admin] DELETE ALL rows from ${table}`);
+    res.json({ ok: true });
+  } catch (err) {
+    console.error('[proxy] DELETE-all error:', err.message);
     res.status(502).json({ error: 'Upstream error.' });
   }
 });

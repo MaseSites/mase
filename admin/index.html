@@ -163,7 +163,16 @@
   .apt-btn-cancel  { background: rgba(239,68,68,.18);  color: #f87171; }
   .apt-btn-email   { background: rgba(99,102,241,.18); color: #818cf8; }
   .apt-btn-phone   { background: rgba(59,130,246,.18); color: #60a5fa; }
+  .apt-btn-delete  { background: rgba(239,68,68,.14); color: #f87171; }
   .apt-actions     { display: flex; gap: 5px; flex-wrap: wrap; }
+
+  /* ---- Delete buttons ---- */
+  .del-btn { display:inline-flex; align-items:center; justify-content:center; padding:4px 9px; border-radius:6px; font-size:11px; font-weight:600; cursor:pointer; border:none; background:rgba(239,68,68,.16); color:#f87171; transition:opacity .18s; white-space:nowrap; }
+  .del-btn:hover { opacity:.75; }
+  .del-all-btn { margin-left:auto; padding:7px 14px; border-radius:8px; font-size:12px; font-weight:600; cursor:pointer; border:1px solid rgba(239,68,68,.4); background:rgba(239,68,68,.12); color:#f87171; transition:background .18s; white-space:nowrap; }
+  .del-all-btn:hover { background:rgba(239,68,68,.24); }
+  .msg-del { cursor:pointer; border:none; background:transparent; color:#f87171; font-size:13px; padding:0 6px; opacity:.55; transition:opacity .15s; }
+  .msg-del:hover { opacity:1; }
 
   /* ---- Responsive ---- */
   @media (max-width: 600px) {
@@ -260,6 +269,7 @@
         <select class="filter-sel" id="chat-page-filter">
           <option value="">Alle Seiten</option>
         </select>
+        <button class="del-all-btn" onclick="delAllChats()">&#128465; Alle Chats löschen</button>
       </div>
       <div class="card" id="chats-container">
         <div class="card-header">
@@ -290,6 +300,7 @@
           <option value="contacted">Kontaktiert</option>
           <option value="done">Erledigt</option>
         </select>
+        <button class="del-all-btn" onclick="delAllLeads()">&#128465; Alle Leads löschen</button>
       </div>
       <div class="card">
         <div class="card-header">
@@ -306,6 +317,7 @@
                 <th>Service</th>
                 <th>Nachricht</th>
                 <th>Status</th>
+                <th>Aktion</th>
               </tr>
             </thead>
             <tbody id="leads-tbody">
@@ -390,6 +402,7 @@
           <option value="confirmed">Bestätigt</option>
           <option value="cancelled">Abgesagt</option>
         </select>
+        <button class="del-all-btn" onclick="delAllAppointments()">&#128465; Alle Termine löschen</button>
       </div>
       <div class="card">
         <div class="card-header">
@@ -524,6 +537,68 @@
       body: JSON.stringify({ status: val })
     });
   }
+
+  // ---- Delete helpers ----
+  function deleteRow(table, id) {
+    return fetch(API_BASE + '/api/admin/data/' + table + '/' + id, {
+      method: 'DELETE',
+      headers: { 'Authorization': 'Bearer ' + ADMIN_TOKEN }
+    }).then(function (r) {
+      if (!r.ok) return Promise.reject(r.status);
+      return r.json();
+    });
+  }
+
+  function deleteAll(table) {
+    return fetch(API_BASE + '/api/admin/data/' + table, {
+      method: 'DELETE',
+      headers: {
+        'Authorization': 'Bearer ' + ADMIN_TOKEN,
+        'X-Confirm-Delete-All': 'yes'
+      }
+    }).then(function (r) {
+      if (!r.ok) return Promise.reject(r.status);
+      return r.json();
+    });
+  }
+
+  function delErr(e) { console.error('[delete]', e); alert('Fehler beim Löschen (' + e + ').'); }
+
+  // ---- Single-row delete handlers ----
+  window.delChat = function (id) {
+    if (!window.confirm('Diese Nachricht unwiderruflich löschen?')) return;
+    deleteRow('mase_chat_messages', id).then(loadChats).catch(delErr);
+  };
+  window.delLead = function (id) {
+    if (!window.confirm('Diesen Lead unwiderruflich löschen?')) return;
+    deleteRow('mase_leads', id).then(loadLeads).catch(delErr);
+  };
+  window.delAppointment = function (id) {
+    if (!window.confirm('Diesen Termin unwiderruflich löschen?')) return;
+    deleteRow('mase_appointments', id).then(loadKalender).catch(delErr);
+  };
+
+  // ---- Session delete (all messages of one chat session) ----
+  window.delChatSession = function (sid) {
+    if (!window.confirm('Komplette Chat-Session unwiderruflich löschen?')) return;
+    var ids = allChats.filter(function (m) { return m.session_id === sid; }).map(function (m) { return m.id; });
+    Promise.all(ids.map(function (id) { return deleteRow('mase_chat_messages', id); }))
+      .then(loadChats).catch(delErr);
+  };
+
+  // ---- Delete-all handlers ----
+  window.delAllChats = function () {
+    if (!window.confirm('ALLE Chat-Nachrichten unwiderruflich löschen?\nDas kann NICHT rückgängig gemacht werden.')) return;
+    deleteAll('mase_chat_messages').then(loadChats).catch(delErr);
+  };
+  window.delAllLeads = function () {
+    if (!window.confirm('ALLE Leads unwiderruflich löschen?\nDas kann NICHT rückgängig gemacht werden.')) return;
+    deleteAll('mase_leads').then(loadLeads).catch(delErr);
+  };
+  window.delAllAppointments = function () {
+    if (!window.confirm('ALLE Termine unwiderruflich löschen?\nDas kann NICHT rückgängig gemacht werden.')) return;
+    deleteAll('mase_appointments').then(loadKalender).catch(delErr);
+  };
 
   // ---- Date helpers ----
   function todayUTC() {
@@ -688,6 +763,7 @@
         return '<div class="msg-row">' +
           '<span class="msg-role badge ' + (isUser ? 'badge-user' : 'badge-bot') + '">' + (isUser ? 'User' : 'Bot') + '</span>' +
           '<div class="msg-text">' + esc(m.message||'') + '</div>' +
+          '<button class="msg-del" title="Diese Nachricht löschen" onclick="delChat(\'' + esc(m.id) + '\')">&#10005;</button>' +
         '</div>';
       }).join('');
 
@@ -696,6 +772,7 @@
           '<span>' + fmtTime(first.created_at) + '</span>' +
           '<span style="color:var(--text)">' + esc(preview) + '</span>' +
           '<span style="margin-left:auto">' + msgs.length + ' Nachr. &middot; ' + esc(first.page_url||'') + '</span>' +
+          '<button class="del-btn" style="margin-left:10px" onclick="event.stopPropagation();delChatSession(\'' + esc(sid) + '\')">Session löschen</button>' +
         '</div>' +
         '<div class="session-msgs-list" id="sess-' + i + '">' + msgsHtml + '</div>' +
       '</div>';
@@ -784,6 +861,7 @@
               (STATUS_LABELS[s] || s) + '</option>';
           }).join('') +
         '</select></td>' +
+        '<td><button class="del-btn" onclick="delLead(\'' + esc(r.id) + '\')">Löschen</button></td>' +
       '</tr>';
     }).join('');
 
@@ -987,6 +1065,7 @@
             (isPending ? '<button class="apt-btn apt-btn-cancel"  onclick="updateAptStatus(\'' + safeId + '\',\'cancelled\')">Absagen</button>'    : '') +
             '<a class="apt-btn apt-btn-email" href="mailto:' + safeEmail + '?subject=Terminbestätigung%20MASESites">E-Mail</a>' +
             '<a class="apt-btn apt-btn-phone" href="tel:' + safePhone + '">Anrufen</a>' +
+            '<button class="apt-btn apt-btn-delete" onclick="delAppointment(\'' + safeId + '\')">Löschen</button>' +
           '</div>' +
         '</td>' +
       '</tr>';
