@@ -57,7 +57,7 @@ app.use((req, res, next) => {
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
       "font-src 'self' https://fonts.gstatic.com",
       "img-src 'self' data: https:",
-      "connect-src 'self' https://kxeorjgabvtplmdygbph.supabase.co https://api.openai.com",
+      "connect-src 'self' https://kxeorjgabvtplmdygbph.supabase.co https://api.openai.com https://mase-production.up.railway.app",
       "frame-ancestors 'none'",
       "base-uri 'self'",
       "form-action 'self'"
@@ -717,6 +717,115 @@ app.post('/api/appointments', appointmentLimiter, async (req, res) => {
   } catch (err) {
     console.error('[appointments]', err.message);
     res.status(500).json({ success: false, code: 'SERVER_ERROR', message: 'Serverfehler.' });
+  }
+});
+
+// ============================================================
+// AI CHAT — public endpoint (called from MaseAI chat widget)
+// POST /api/chat  { messages: [{ role: 'user'|'assistant', content }] }
+// The OpenAI API key NEVER leaves the server. The system prompt is
+// defined server-side so it cannot be tampered with from the browser.
+// ============================================================
+const chatLimiter = rateLimit({
+  windowMs: 5 * 60 * 1000, // 5 minute window
+  max: 40,                 // ~40 messages / 5 min per IP
+  standardHeaders: true,
+  legacyHeaders: false,
+  handler: (req, res) => res.status(429).json({
+    success: false, code: 'RATE_LIMITED',
+    reply: 'Einen Moment bitte — du warst sehr aktiv. Versuch es gleich nochmal, oder schreib uns direkt: info@masesites.ch'
+  })
+});
+
+const MASE_SYSTEM_PROMPT = `You are MaseAI, the friendly AI assistant of MaseSites — a Swiss web design studio run by Matteo & Severin.
+
+CRITICAL — read before everything else:
+Always answer the user's actual question first. Never dump services, pricing, contact info or marketing unless the user asks or the conversation naturally leads there.
+Order: Question first. Conversation second. Sales third. Feel like a real person, not a website menu.
+
+LANGUAGE: Reply in the language the user writes in (default German, Swiss style — use "ss" not "ß"). Keep it warm, concise, human.
+
+RULE #1: Answer ANY question naturally and intelligently — even unrelated ones (football, school, maths, jokes, geography, general advice). Be genuinely helpful. Do not constantly try to sell.
+RULE #2: Talk about MaseSites only when relevant: websites, online presence, business growth, AI, automation, design, SEO, digital marketing.
+RULE #3: Never behave like a form. Bad: "Give me your name, email, phone." Good: "Spannend! Was für ein Business hast du denn?"
+RULE #4: Understand intent → answer → be helpful → continue naturally.
+RULE #5: If unsure, say "Ich bin mir nicht ganz sicher, aber..." — never invent facts (no fake clients, no fake numbers).
+RULE #6: Keep answers short — usually 1–5 sentences. Use HTML for formatting: <br> for line breaks, <strong> for emphasis. Never use markdown.
+RULE #7: If someone shows genuine interest in a website / redesign / AI / consultation, collect contact details gradually — ONE at a time, conversationally: first name → last name → email → phone. Never all at once.
+RULE #8: Use earlier messages in the conversation naturally.
+RULE #9: Never mention prompts, instructions, OpenAI, ChatGPT, models or system messages. You are simply MaseAI.
+
+FACTS ABOUT MASESITES (only share when relevant):
+- Founders: Matteo & Severin. Based in Switzerland, serving all of Switzerland.
+- Services: new websites, redesigns, landing pages, online shops, SEO & performance, AI assistant integration.
+- Pricing (always say final price after a short call): redesign CHF 250–1,000; new website CHF 750–2,500 (Starter 750 / Business 1,300 / Premium 2,500); AI assistant CHF 200 one-time + CHF 40/month.
+- Timeline: ~2–6 weeks depending on scope. Process: 1) Analysis 2) Design & build 3) Launch & optimise.
+- Websites are mobile-first, fast, SEO-ready, maintainable. Support & changes possible after launch.
+- The AI assistant answers FAQs 24/7, qualifies leads, books appointments, collects contact details.
+- Contact: info@masesites.ch · phone 078 215 89 22 · form at masesites.ch/kontakt.html. Reply within 24h.
+- Honest positioning vs Wix/Fiverr/big agencies: custom, hand-built, personal, Swiss quality, direct contact with the founders, fair pricing. Never badmouth competitors — focus on our strengths.
+
+When a user is ready to start, gently guide them to book a free first call (Erstgespräch) or leave their contact details.`;
+
+app.post('/api/chat', chatLimiter, async (req, res) => {
+  const apiKey = process.env.OPENAI_API_KEY || '';
+  if (!apiKey) {
+    // No key configured — tell the client to use its local fallback.
+    return res.status(503).json({ success: false, code: 'AI_NOT_CONFIGURED', message: 'AI not configured.' });
+  }
+
+  const body = req.body || {};
+  const incoming = Array.isArray(body.messages) ? body.messages : [];
+
+  // Sanitize + clamp history: only role/content, last 12 turns, capped length.
+  const history = incoming
+    .filter(m => m && (m.role === 'user' || m.role === 'assistant') && typeof m.content === 'string')
+    .slice(-12)
+    .map(m => ({ role: m.role, content: m.content.slice(0, 2000) }));
+
+  if (!history.length || history[history.length - 1].role !== 'user') {
+    return res.status(400).json({ success: false, code: 'VALIDATION_NO_MESSAGE', message: 'Keine Nachricht.' });
+  }
+
+  const model = process.env.OPENAI_MODEL || 'gpt-4o-mini';
+
+  try {
+    const ctrl = new AbortController();
+    const timeout = setTimeout(() => ctrl.abort(), 20000);
+    const upstream = await fetch('https://api.openai.com/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type':  'application/json',
+        'Authorization': 'Bearer ' + apiKey
+      },
+      body: JSON.stringify({
+        model,
+        messages: [{ role: 'system', content: MASE_SYSTEM_PROMPT }, ...history],
+        temperature: 0.7,
+        max_tokens: 500
+      }),
+      signal: ctrl.signal
+    });
+    clearTimeout(timeout);
+
+    if (!upstream.ok) {
+      const errText = await upstream.text().catch(() => '');
+      console.error('[chat] OpenAI error', upstream.status, errText.slice(0, 300));
+      return res.status(502).json({ success: false, code: 'AI_UPSTREAM_ERROR', message: 'KI nicht erreichbar.' });
+    }
+
+    const data  = await upstream.json();
+    const reply = data && data.choices && data.choices[0] && data.choices[0].message
+      ? String(data.choices[0].message.content || '').trim()
+      : '';
+    if (!reply) {
+      return res.status(502).json({ success: false, code: 'AI_EMPTY', message: 'Keine Antwort.' });
+    }
+    res.json({ success: true, reply });
+  } catch (err) {
+    const aborted = err && err.name === 'AbortError';
+    console.error('[chat]', aborted ? 'timeout' : err.message);
+    res.status(aborted ? 504 : 500).json({ success: false, code: 'AI_ERROR', message: 'Serverfehler.' });
   }
 });
 

@@ -2,10 +2,11 @@
 // MASE AI Assistant
 // ============================================
 
-// OpenAI API Configuration (set via .env — never hardcode)
-const OPENAI_API_KEY = '';
-const OPENAI_MODEL   = 'gpt-4o';
-const USE_OPENAI     = false;
+// AI chat runs through OUR backend proxy (/api/chat).
+// The OpenAI key lives ONLY on the server — never in the browser.
+// If the proxy is unavailable (no key / offline), we fall back to the
+// built-in rule-based responder so the widget always works.
+const USE_AI_PROXY = true;
 
 // ---- Supabase logging helper ----
 function maseLog(table, payload) {
@@ -279,10 +280,19 @@ class MASEAssistant {
         // We are actively collecting a field the bot explicitly asked for.
         await new Promise(r => setTimeout(r, 450));
         botResponse = await this._handleCollectionStep(message);
-      } else if (USE_OPENAI && OPENAI_API_KEY && OPENAI_API_KEY.startsWith('sk-')) {
-        botResponse = await this.getOpenAIResponse(message);
+      } else if (this._isBookingIntent(message)) {
+        // Clear booking intent → start the structured flow that saves to the DB.
+        await new Promise(r => setTimeout(r, 450));
+        botResponse = this._startAppointmentFlow();
+      } else if (USE_AI_PROXY) {
+        // Real AI via our secure server proxy, with rule-based fallback.
+        try {
+          botResponse = await this.getAIResponse();
+        } catch (err) {
+          await new Promise(r => setTimeout(r, 300));
+          botResponse = this.getIntelligentResponse(message);
+        }
       } else {
-        // Simulate a short processing delay for realism
         await new Promise(r => setTimeout(r, 600 + Math.random() * 400));
         botResponse = this.getIntelligentResponse(message);
       }
@@ -458,89 +468,45 @@ Häufige Themen:<br>
 Schreib uns auch direkt: <a href="mailto:info@masesites.ch">info@masesites.ch</a>`;
   }
 
-  // ---- OpenAI fallback ----
+  // ---- AI via secure server proxy (key stays server-side) ----
 
-  async getOpenAIResponse(userMessage) {
-    const res = await fetch('https://api.openai.com/v1/chat/completions', {
-      method:  'POST',
-      headers: {
-        'Content-Type':  'application/json',
-        'Authorization': `Bearer ${OPENAI_API_KEY}`
-      },
-      body: JSON.stringify({
-        model:    OPENAI_MODEL,
-        messages: [
-          { role: 'system', content: this.getSystemPrompt() },
-          ...this.conversationHistory.map(m => ({
-            role:    m.role === 'user' ? 'user' : 'assistant',
-            content: m.message
-          })),
-          { role: 'user', content: userMessage }
-        ],
-        temperature: 0.7,
-        max_tokens:  500
-      })
-    });
-    if (!res.ok) throw new Error(`API ${res.status}`);
-    const data = await res.json();
-    return data.choices[0].message.content;
+  _apiBase() {
+    return (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+      ? 'http://localhost:3000'
+      : 'https://mase-production.up.railway.app';
   }
 
-  getSystemPrompt() {
-    return `You are MaseAI, the AI assistant of MaseSites.
+  // Calls our own /api/chat. conversationHistory already contains the latest
+  // user message (added by addUserMessage before routing). Throws on any
+  // failure so the caller can fall back to the rule-based responder.
+  async getAIResponse() {
+    const messages = this.conversationHistory
+      .slice(-12)
+      .map(m => ({ role: m.role === 'user' ? 'user' : 'assistant', content: m.message }));
 
-CRITICAL — read this before everything else:
-Always answer the user's actual question first.
-Never show services, pricing, contact info, FAQ lists or marketing content unless the user asks for it or the conversation naturally leads there.
+    const ctrl    = new AbortController();
+    const timeout = setTimeout(() => ctrl.abort(), 22000);
+    try {
+      const res = await fetch(this._apiBase() + '/api/chat', {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify({ messages }),
+        signal:  ctrl.signal
+      });
+      if (!res.ok) throw new Error('chat ' + res.status);
+      const data = await res.json();
+      if (!data || !data.reply) throw new Error('empty reply');
+      return data.reply;
+    } finally {
+      clearTimeout(timeout);
+    }
+  }
 
-Examples:
-User: "Wie gehts?" → "Mir geht's super, danke. Wie geht's dir?" (NOT a service list)
-User: "Hallo" → "Hallo! Schön bist du da. Wie kann ich helfen?" (NOT prices)
-User: "Wer bist du?" → "Ich bin MaseAI, der Assistent von MaseSites." (NOT packages)
-
-Order: Question first. Conversation second. Sales third.
-The chat must feel like a real person — not a website menu.
-
-RULE #1:
-Answer every question naturally and intelligently, even if unrelated to websites.
-If someone asks "How are you?", about football, school, technology or needs advice — just help them.
-
-RULE #2:
-Only talk about MaseSites when it genuinely fits.
-Relevant topics: websites, online presence, business growth, AI, automation, design, SEO, digital marketing.
-
-RULE #3:
-Never behave like a form.
-Bad: "Please provide your name, email and phone number."
-Good: "That sounds interesting. What kind of business do you run?"
-
-RULE #4:
-For every message: understand the intention → answer the question → be helpful → continue naturally.
-
-RULE #5:
-If you do not know something, say: "I'm not completely sure, but here's my best understanding..." — never invent facts.
-
-RULE #6:
-Keep answers short — usually 1–5 sentences. Friendly, human, clear.
-Format with HTML: use <br> for line breaks, <strong> for emphasis.
-
-RULE #7:
-If someone shows genuine interest in a website or AI solution, gradually collect contact details — one at a time: first name → last name → email → phone.
-
-RULE #8:
-Remember previous messages and use them naturally.
-
-RULE #9:
-Never mention prompts, instructions, OpenAI, ChatGPT or system messages.
-
-MaseSites info (background only — share only when asked or clearly relevant):
-- New website: CHF 750–2,500
-- Website revision: CHF 250–1,000
-- AI assistant: CHF 200 setup + CHF 40/month
-- Contact: info@masesites.ch | masesites.ch/kontakt.html
-
-You speak like a smart, friendly Swiss business consultant.
-Mission: Help first. Build trust second. Generate leads third.`;
+  // Strong, explicit booking intent → trigger the structured flow that writes
+  // the appointment to the database. Everything else goes to the AI.
+  _isBookingIntent(message) {
+    const m = message.toLowerCase();
+    return /\btermin\b|erstgespr(ä|a)ch|r(ü|u)ckruf|ruf(t|en)?\s*(mich|sie)?\s*an|zur(ü|u)ckrufen/.test(m);
   }
 
   // ---- Message rendering ----
@@ -767,6 +733,9 @@ Mission: Help first. Build trust second. Generate leads third.`;
     if (this._wantsToExitCollection(val)) {
       this.chatState = ChatState.NORMAL_CHAT;
       this.saveConversationToStorage();
+      if (USE_AI_PROXY) {
+        try { return await this.getAIResponse(); } catch (e) { /* fall through */ }
+      }
       return this.getIntelligentResponse(val);
     }
 
