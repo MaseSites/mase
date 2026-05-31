@@ -1,0 +1,85 @@
+<%- include('../partials/head', { adminPage: true, bodyClass: 'admin' }) %>
+<%- include('../partials/admin-header') %>
+
+<main class="admin-main">
+  <div class="admin-head-row">
+    <h1>Lager</h1>
+    <span class="tag"><%= items.length %> Varianten</span>
+  </div>
+
+  <% if (warnings.length > 0) { %>
+    <div class="alert alert-error" style="margin-bottom:1.5rem">
+      <strong>⚠ Niedriger Bestand</strong> –
+      <% warnings.slice(0,3).forEach((w, i) => { %>
+        <%= w.product_name %><% if(w.size) { %> (<%= w.size %>)<% } %>: <strong><%= w.stock %></strong> Stk<% if(i < Math.min(warnings.length,3)-1) { %> · <% } %>
+      <% }) %>
+      <% if (warnings.length > 3) { %> und <%= warnings.length - 3 %> weitere<% } %>
+    </div>
+  <% } %>
+
+  <div class="admin-section">
+    <div style="display:flex;gap:.8rem;margin-bottom:1.2rem;flex-wrap:wrap;">
+      <input class="admin-search" data-product-filter placeholder="Produkt oder SKU filtern…" style="max-width:340px">
+      <a class="btn btn-primary btn-sm" href="/admin/produkte/neu">+ Neues Produkt</a>
+    </div>
+
+    <% if (items.length === 0) { %>
+      <p class="muted">Noch keine Lagereinträge. Produkte anlegen und dann hier Bestand eintragen.</p>
+    <% } else { %>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Produkt</th>
+            <th>Grösse</th>
+            <th>SKU</th>
+            <th>Bestand</th>
+            <th>Reserviert</th>
+            <th>Verfügbar</th>
+            <th>Status</th>
+            <th>Nächste Lieferung</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% items.forEach((it) => { %>
+            <tr class="<%= it.is_out ? 'row-out' : it.is_low ? 'row-low' : '' %>">
+              <td><strong><%= it.product_name %></strong><br><span class="muted small"><%= it.category %></span></td>
+              <td><%= it.size || '—' %></td>
+              <td class="muted small"><%= it.sku || '—' %></td>
+              <td><%= it.stock %></td>
+              <td class="muted"><%= it.reserved %></td>
+              <td><strong class="<%= it.is_out ? 'text-danger' : '' %>"><%= it.available %></strong></td>
+              <td>
+                <% if (it.is_out) { %><span class="tag">Ausverkauft</span>
+                <% } else if (it.is_low) { %><span class="tag tag-gold">Niedrig</span>
+                <% } else { %><span class="tag tag-ok">OK</span><% } %>
+              </td>
+              <td class="muted small"><%= it.next_delivery || '—' %></td>
+              <td><a class="btn btn-ghost btn-sm" href="/admin/lager/<%= it.product_id %>">Bearbeiten</a></td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    <% } %>
+  </div>
+
+  <section class="admin-section" style="margin-top:1.5rem">
+    <h2>Lagerbestand schnell befüllen</h2>
+    <p class="muted">Wähle ein Produkt und trage den Bestand pro Variante ein.</p>
+    <div style="display:flex;gap:1rem;flex-wrap:wrap;margin-top:1rem">
+      <% products.slice(0,12).forEach((p) => { %>
+        <a class="btn btn-ghost btn-sm" href="/admin/lager/<%= p.id %>"><%= p.name %></a>
+      <% }) %>
+    </div>
+  </section>
+</main>
+
+<style>
+.row-out td { opacity:.6; }
+.row-low td:nth-child(6) { color: var(--gold); }
+.text-danger { color: var(--danger); }
+</style>
+
+<script src="/js/admin.js" defer></script>
+</body>
+</html>

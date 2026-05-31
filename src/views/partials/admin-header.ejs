@@ -1,0 +1,21 @@
+<header class="admin-topbar">
+  <div class="admin-topbar-inner">
+    <a class="admin-brand" href="/admin"><%= shopName %> · Admin</a>
+    <nav class="admin-nav">
+      <a href="/admin" class="<%= path === '/admin' ? 'active' : '' %>">Übersicht</a>
+      <a href="/admin/produkte" class="<%= path.startsWith('/admin/produkte') ? 'active' : '' %>">Produkte</a>
+      <a href="/admin/lager" class="<%= path.startsWith('/admin/lager') ? 'active' : '' %>">Lager</a>
+      <a href="/admin/bestellungen" class="<%= path.startsWith('/admin/bestellungen') ? 'active' : '' %>">Bestellungen</a>
+      <a href="/admin/nachrichten" class="<%= path.startsWith('/admin/nachrichten') ? 'active' : '' %>">Nachrichten</a>
+      <a href="/admin/newsletter" class="<%= path.startsWith('/admin/newsletter') ? 'active' : '' %>">Newsletter</a>
+      <a href="/admin/einstellungen" class="<%= path.startsWith('/admin/einstellungen') ? 'active' : '' %>">Einstellungen</a>
+    </nav>
+    <div class="admin-actions">
+      <a href="/" target="_blank" rel="noopener">Shop ansehen</a>
+      <form method="post" action="/admin/logout">
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+        <button class="btn btn-ghost btn-sm" type="submit">Abmelden</button>
+      </form>
+    </div>
+  </div>
+</header>

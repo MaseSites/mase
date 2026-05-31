@@ -1,0 +1,56 @@
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div>
+        <div class="brand"><span class="logo-dot" aria-hidden="true"></span><%= shopName %></div>
+        <p class="muted">Kuratierte Vintage- & Markenmode. Limitierte Stückzahlen, faire Preise.</p>
+      </div>
+      <div>
+        <h4>Shop</h4>
+        <a href="/shop">Alle Produkte</a>
+        <a href="/wunschliste">Wunschliste</a>
+        <a href="/warenkorb">Warenkorb</a>
+        <a href="/kontakt">Kontakt</a>
+      </div>
+      <div>
+        <h4>Rechtliches</h4>
+        <a href="/impressum">Impressum</a>
+        <a href="/datenschutz">Datenschutz</a>
+        <a href="/agb">AGB</a>
+        <a href="/widerruf">Widerruf</a>
+      </div>
+    </div>
+    <div class="container footer-bottom muted">
+      © <%= new Date().getFullYear() %> <%= shopName %>. Alle Rechte vorbehalten.
+    </div>
+  </footer>
+
+  <!-- Warenkorb-Drawer -->
+  <aside class="drawer" data-cart-drawer aria-hidden="true">
+    <div class="drawer-overlay" data-cart-close></div>
+    <div class="drawer-panel" role="dialog" aria-label="Warenkorb">
+      <div class="drawer-head">
+        <h3>Dein Warenkorb</h3>
+        <button class="icon-btn" data-cart-close aria-label="Schließen">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6 6 18"/></svg>
+        </button>
+      </div>
+      <div class="drawer-body" data-drawer-items></div>
+      <div class="drawer-foot">
+        <div class="drawer-total"><span>Gesamt</span><strong data-drawer-total>0,00 €</strong></div>
+        <a class="btn btn-primary btn-block" href="/kasse">Zur Kasse</a>
+        <a class="btn btn-ghost btn-block" href="/warenkorb">Warenkorb ansehen</a>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Toasts -->
+  <div class="toast-wrap" data-toasts aria-live="polite"></div>
+
+  <!-- Nach oben -->
+  <button class="to-top" data-to-top aria-label="Nach oben scrollen" hidden>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+  </button>
+
+  <script src="/js/shop.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,79 @@
+<%- include('../partials/head', { adminPage: true, bodyClass: 'admin' }) %>
+<%- include('../partials/admin-header') %>
+
+<%
+  function centsToInput(c) { return c == null ? '' : (c / 100).toFixed(2); }
+  const p = product || {};
+%>
+
+<main class="admin-main narrow">
+  <div class="admin-head-row">
+    <h1><%= title %></h1>
+    <a class="btn btn-ghost" href="/admin/produkte">Zurück</a>
+  </div>
+
+  <div id="form-alert" class="alert alert-error" hidden></div>
+
+  <form id="product-form"
+        data-action="<%= formAction %>"
+        data-method="<%= method %>"
+        class="admin-form">
+    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+
+    <div class="form-grid">
+      <label class="field span-2"><span>Name *</span>
+        <input type="text" name="name" required maxlength="160" value="<%= p.name || '' %>"></label>
+
+      <label class="field"><span>Kategorie</span>
+        <input type="text" name="category" maxlength="80" value="<%= p.category || '' %>" placeholder="z.B. Hoodies"></label>
+
+      <label class="field"><span>Lagerbestand</span>
+        <input type="number" name="stock" min="0" max="1000000" value="<%= p.stock != null ? p.stock : 0 %>"></label>
+
+      <label class="field"><span>Preis (€)</span>
+        <input type="text" name="price" inputmode="decimal" value="<%= centsToInput(p.price_cents) %>" placeholder="49.90"></label>
+
+      <label class="field"><span>Sale-Preis (€) <small class="muted">optional</small></span>
+        <input type="text" name="sale_price" inputmode="decimal" value="<%= centsToInput(p.sale_price_cents) %>" placeholder="29.90"></label>
+
+      <label class="field span-2"><span>Größen <small class="muted">(mit Komma trennen)</small></span>
+        <input type="text" name="sizes" value="<%= (p.sizes || []).join(', ') %>" placeholder="S, M, L, XL"></label>
+
+      <label class="field span-2"><span>Beschreibung</span>
+        <textarea name="description" rows="5" maxlength="8000"><%= p.description || '' %></textarea></label>
+
+      <div class="field span-2 checkbox-row">
+        <label class="checkbox"><input type="checkbox" name="is_active" value="1" <%= (!product || p.is_active) ? 'checked' : '' %>> Aktiv (im Shop sichtbar)</label>
+        <label class="checkbox"><input type="checkbox" name="is_bestseller" value="1" <%= p.is_bestseller ? 'checked' : '' %>> Als Bestseller markieren</label>
+      </div>
+    </div>
+
+    <fieldset class="image-section">
+      <legend>Bilder</legend>
+
+      <div class="existing-images" id="existing-images"></div>
+
+      <p class="muted small img-hint">Das erste Bild ist das Hauptbild. Reihenfolge mit den Pfeilen ändern, ✕ entfernt ein Bild.</p>
+
+      <label class="field"><span>Bilder hochladen <small class="muted">(JPG, PNG, WEBP – max. 5 MB, bis 8 Stück)</small></span>
+        <input type="file" name="images" accept="image/*" multiple data-file-input></label>
+      <div class="upload-preview" id="upload-preview"></div>
+
+      <label class="field"><span>Oder Bild-URLs <small class="muted">(eine HTTPS-URL pro Zeile)</small></span>
+        <textarea name="image_urls" rows="3" placeholder="https://..."></textarea></label>
+    </fieldset>
+
+    <div class="form-footer">
+      <button class="btn btn-primary" type="submit">Speichern</button>
+      <a class="btn btn-ghost" href="/admin/produkte">Abbrechen</a>
+    </div>
+  </form>
+
+  <script type="application/json" id="existing-images-data">
+    <%- JSON.stringify((p.images || [])) %>
+  </script>
+</main>
+
+<script src="/js/admin.js" defer></script>
+</body>
+</html>
