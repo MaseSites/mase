@@ -23,8 +23,8 @@ const DEFAULTS = {
   accent: '#B89C67',
   accent_2: '#B89C67',
   accent_3: '#CDB27E',
-  // Hero-Hintergrundbild (lokaler Pfad /assets/... oder HTTPS-URL)
-  hero_image: '/assets/hero.svg',
+  // Hero-Hintergrundbild (lokaler Pfad /img/... oder HTTPS-URL)
+  hero_image: '/img/img.png',
 };
 
 export function get(key) {

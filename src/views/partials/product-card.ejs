@@ -1,6 +1,6 @@
 <article class="product-card" data-product-card>
   <div class="product-card-media">
-    <a href="/produkt/<%= p.slug %>" class="media-link" aria-label="<%= p.name %>">
+    <a href="<%- basePath %>/produkt/<%= p.slug %>" class="media-link" aria-label="<%= p.name %>">
       <img src="<%= (p.images && p.images[0]) ? p.images[0].src : placeholder(p.name) %>" alt="<%= p.name %>" loading="lazy">
       <span class="card-shine" aria-hidden="true"></span>
     </a>
@@ -28,7 +28,7 @@
   </div>
   <div class="product-card-body">
     <span class="product-cat"><%= p.category %></span>
-    <h3 class="product-name"><a href="/produkt/<%= p.slug %>"><%= p.name %></a></h3>
+    <h3 class="product-name"><a href="<%- basePath %>/produkt/<%= p.slug %>"><%= p.name %></a></h3>
     <div class="product-price">
       <% if (p.sale_price_cents) { %>
         <span class="price-sale"><%= price(p.sale_price_cents) %></span>

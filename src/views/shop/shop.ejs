@@ -6,18 +6,18 @@
   <% if (query) { %>
     <p class="muted result-info">
       <strong><%= total %></strong> Treffer für „<%= query %>" ·
-      <a href="/shop">Suche zurücksetzen</a>
+      <a href="<%- basePath %>/shop">Suche zurücksetzen</a>
     </p>
   <% } %>
 
   <div class="shop-toolbar">
     <div class="chip-row">
-      <a class="chip <%= !activeCategory ? 'active' : '' %>" href="/shop">Alle</a>
+      <a class="chip <%= !activeCategory ? 'active' : '' %>" href="<%- basePath %>/shop">Alle</a>
       <% categories.forEach((c) => { %>
-        <a class="chip <%= activeCategory === c ? 'active' : '' %>" href="/shop?category=<%= encodeURIComponent(c) %>"><%= c %></a>
+        <a class="chip <%= activeCategory === c ? 'active' : '' %>" href="<%- basePath %>/shop?category=<%= encodeURIComponent(c) %>"><%= c %></a>
       <% }) %>
     </div>
-    <form class="sort-form" method="get" action="/shop" data-sort-form>
+    <form class="sort-form" method="get" action="<%- basePath %>/shop" data-sort-form>
       <% if (query) { %><input type="hidden" name="q" value="<%= query %>"><% } %>
       <% if (activeCategory) { %><input type="hidden" name="category" value="<%= activeCategory %>"><% } %>
       <label class="sort-label" for="sort">Sortieren</label>
@@ -46,7 +46,7 @@
           if (sort) qs += 'sort=' + encodeURIComponent(sort) + '&';
           qs += 'page=' + i;
         %>
-          <a class="page <%= i === page ? 'active' : '' %>" href="/shop?<%= qs %>"><%= i %></a>
+          <a class="page <%= i === page ? 'active' : '' %>" href="<%- basePath %>/shop?<%= qs %>"><%= i %></a>
         <% } %>
       </nav>
     <% } %>

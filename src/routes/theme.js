@@ -11,7 +11,7 @@ function safeColor(value, fallback) {
 // Erlaubt nur sichere Bildquellen (lokale Pfade oder HTTPS-URLs).
 function safeImage(value) {
   const v = String(value || '').trim();
-  if (/^\/(assets|uploads)\/[\w\-./]+\.(jpe?g|png|webp|avif|svg)$/i.test(v)) return v;
+  if (/^\/(assets|uploads|img)\/[\w\-./]+\.(jpe?g|png|webp|avif|svg)$/i.test(v)) return v;
   if (/^https:\/\/[^\s"')]+$/i.test(v)) return v;
   return null;
 }

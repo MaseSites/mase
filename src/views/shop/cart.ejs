@@ -16,7 +16,7 @@
     <div class="cart-empty-state">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="56" height="56"><path d="M6 7h12l-1 13H7zM9 7a3 3 0 0 1 6 0"/></svg>
       <p>Dein Warenkorb ist leer.</p>
-      <a class="btn btn-primary" href="/shop">Zum Shop</a>
+      <a class="btn btn-primary" href="<%- basePath %>/shop">Zum Shop</a>
     </div>
   <% } else { %>
     <div class="cart-table">
@@ -26,7 +26,7 @@
             <img src="<%= it.image || placeholder(it.name) %>" alt="<%= it.name %>">
           </div>
           <div class="cart-info">
-            <a href="/produkt/<%= it.slug %>"><strong><%= it.name %></strong></a>
+            <a href="<%- basePath %>/produkt/<%= it.slug %>"><strong><%= it.name %></strong></a>
             <% if (it.size) { %><span class="muted">Grösse: <%= it.size %></span><% } %>
             <span class="muted"><%= price(it.unitCents) %> / Stück</span>
             <% if (it.isSoldOut) { %>
@@ -36,7 +36,7 @@
             <% } %>
           </div>
           <% if (!it.isSoldOut) { %>
-            <form class="cart-qty" method="post" action="/warenkorb/update">
+            <form class="cart-qty" method="post" action="<%- basePath %>/warenkorb/update">
               <input type="hidden" name="_csrf" value="<%= csrfToken %>">
               <input type="hidden" name="index" value="<%= i %>">
               <input type="number" name="qty" value="<%= it.qty %>" min="0" max="<%= it.maxQty %>" aria-label="Menge">
@@ -49,7 +49,7 @@
     </div>
 
     <div class="cart-summary">
-      <form method="post" action="/warenkorb/clear">
+      <form method="post" action="<%- basePath %>/warenkorb/clear">
         <input type="hidden" name="_csrf" value="<%= csrfToken %>">
         <button class="btn btn-ghost" type="submit">Leeren</button>
       </form>
@@ -57,7 +57,7 @@
         <span>Gesamt</span>
         <strong><%= price(total) %></strong>
       </div>
-      <a class="btn btn-primary" href="/kasse">Zur Kasse</a>
+      <a class="btn btn-primary" href="<%- basePath %>/kasse">Zur Kasse</a>
     </div>
   <% } %>
 </main>

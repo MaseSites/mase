@@ -14,13 +14,81 @@ import { config } from '../config/env.js';
 
 const router = express.Router();
 
-// Dashboard-Übersicht
-router.get('/', (req, res) => {
+function inventoryRowsForActiveProducts() {
+  const rows = inventory.allInventory();
+  const activeProducts = products.listAll().filter((p) => p.is_active);
+  const byProduct = new Map();
+  rows.forEach((row) => {
+    if (!row.is_active) return;
+    if (!byProduct.has(row.product_id)) byProduct.set(row.product_id, []);
+    byProduct.get(row.product_id).push(row);
+  });
+
+  const out = [];
+  activeProducts.forEach((product) => {
+    const productRows = byProduct.get(product.id);
+    if (productRows && productRows.length) {
+      out.push(...productRows);
+      return;
+    }
+    const stock = Math.max(0, Number(product.stock) || 0);
+    out.push({
+      id: null,
+      product_id: product.id,
+      product_name: product.name,
+      category: product.category,
+      slug: product.slug,
+      sku: '',
+      size: '',
+      color: '',
+      stock,
+      reserved: 0,
+      min_stock: 3,
+      next_delivery: '',
+      notes: '',
+      price_cents: product.price_cents,
+      sale_price_cents: product.sale_price_cents,
+      is_active: 1,
+      available: stock,
+      is_out: stock <= 0,
+      is_low: stock > 0 && stock <= 3,
+    });
+  });
+  return out;
+}
+
+function inventoryAnalytics(rows, allProducts = products.listAll()) {
+  const activeProducts = allProducts.filter((p) => p.is_active);
+  const totalUnits = rows.reduce((sum, row) => sum + Math.max(0, Number(row.stock) || 0), 0);
+  const availableUnits = rows.reduce((sum, row) => sum + Math.max(0, Number(row.available) || 0), 0);
+  const reservedUnits = rows.reduce((sum, row) => sum + Math.max(0, Number(row.reserved) || 0), 0);
+  const stockValueCents = rows.reduce((sum, row) => {
+    const unitPrice = row.sale_price_cents != null ? row.sale_price_cents : row.price_cents;
+    return sum + Math.max(0, Number(row.stock) || 0) * Math.max(0, Number(unitPrice) || 0);
+  }, 0);
+  const lowRows = rows.filter((row) => row.is_low);
+  const outRows = rows.filter((row) => row.is_out);
+  const categoryMap = new Map();
+  rows.forEach((row) => {
+    const key = row.category || 'Allgemein';
+    const cur = categoryMap.get(key) || { category: key, units: 0, value_cents: 0 };
+    const unitPrice = row.sale_price_cents != null ? row.sale_price_cents : row.price_cents;
+    cur.units += Math.max(0, Number(row.stock) || 0);
+    cur.value_cents += Math.max(0, Number(row.stock) || 0) * Math.max(0, Number(unitPrice) || 0);
+    categoryMap.set(key, cur);
+  });
+  const categories = [...categoryMap.values()].sort((a, b) => b.units - a.units).slice(0, 6);
+  const maxCategoryUnits = Math.max(1, ...categories.map((c) => c.units));
+  return { activeProducts: activeProducts.length, variants: rows.length, totalUnits, availableUnits, reservedUnits, stockValueCents, lowCount: lowRows.length, outCount: outRows.length, lowRows, outRows, categories, maxCategoryUnits };
+}
+
+// Dashboard-Handler (wird von /admin und /admin/dashboard genutzt)
+const renderDashboard = (req, res) => {
   const all = products.listAll();
   const allOrders = orders.list();
   const ostats = orders.stats(7);
-  const lowStockItems = inventory.lowStock();
-  const outOfStock = all.filter((p) => p.stock <= 0 && p.is_active);
+  const invRows = inventoryRowsForActiveProducts();
+  const istats = inventoryAnalytics(invRows, all);
 
   res.render('admin/dashboard', {
     title: 'Dashboard',
@@ -32,27 +100,36 @@ router.get('/', (req, res) => {
       open: ostats.openCount,
       subscribers: newsletter.count(),
       messages: messages.unreadCount(),
-      lowStock: lowStockItems.length,
-      outOfStock: outOfStock.length,
+      lowStock: istats.lowCount,
+      outOfStock: istats.outCount,
+      totalUnits: istats.totalUnits,
+      availableUnits: istats.availableUnits,
+      stockValue: formatPrice(istats.stockValueCents, settings.get('currency')),
     },
     chart: ostats,
+    inventoryStats: istats,
     recentOrders: allOrders.slice(0, 6),
-    lowStockWarnings: lowStockItems.slice(0, 5),
+    lowStockWarnings: istats.lowRows.slice(0, 5),
   });
-});
+};
+
+// Routen registrieren
+router.get('/', renderDashboard);
+router.get('/dashboard', renderDashboard);
 
 // ---------------------------------------------------------------------------
 // Lager-Tab
 // ---------------------------------------------------------------------------
 
 router.get('/lager', (req, res) => {
-  const all = inventory.allInventory();
-  const warnings = inventory.lowStock();
+  const all = inventoryRowsForActiveProducts();
+  const analytics = inventoryAnalytics(all);
   res.render('admin/inventory', {
     title: 'Lager',
     items: all,
-    warnings,
-    products: products.listAll(),
+    warnings: analytics.lowRows,
+    analytics,
+    products: products.listAll().filter((p) => p.is_active),
   });
 });
 
@@ -120,6 +197,24 @@ router.post('/lager/speichern', validateBody(inventoryBatchSchema), (req, res) =
   res.redirect('/admin/lager/' + product_id);
 });
 
+const inventoryAdjustSchema = z.object({
+  product_id: z.coerce.number().int().positive(),
+  size: z.string().max(50).optional().default(''),
+  color: z.string().max(50).optional().default(''),
+  delta: z.coerce.number().int().min(-1000000).max(1000000),
+});
+
+router.post('/lager/anpassen', validateBody(inventoryAdjustSchema), (req, res) => {
+  if (req.validationErrors) {
+    return res.status(400).json({ error: 'Validierungsfehler', issues: req.validationErrors });
+  }
+  const product = products.getById(req.valid.product_id);
+  if (!product) return res.status(404).json({ error: 'Produkt nicht gefunden.' });
+  const result = inventory.adjustStock(req.valid.product_id, req.valid.size, req.valid.color, req.valid.delta);
+  if (!result) return res.status(404).json({ error: 'Lagerzeile nicht gefunden.' });
+  res.json({ ok: true, ...result });
+});
+
 // ---------------------------------------------------------------------------
 // Kontakt-Nachrichten
 // ---------------------------------------------------------------------------
@@ -149,6 +244,7 @@ router.get('/produkte/neu', (req, res) => {
     product: null,
     formAction: '/admin/api/products',
     method: 'POST',
+    optionGroups: [],
   });
 });
 
@@ -156,9 +252,12 @@ router.get('/produkte/neu', (req, res) => {
 router.get('/produkte/:id/bearbeiten', (req, res, next) => {
   const product = products.getById(Number(req.params.id));
   if (!product) return next();
+  const rows = inventory.byProduct(product.id);
   res.render('admin/product-form', {
     title: 'Produkt bearbeiten',
     product,
+    variants: rows,
+    optionGroups: product.option_groups || [],
     formAction: `/admin/api/products/${product.id}`,
     method: 'PUT',
   });

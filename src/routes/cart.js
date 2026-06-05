@@ -35,7 +35,9 @@ function buildCartView(cart) {
       continue;
     }
 
-    const unit = p.sale_price_cents ?? p.price_cents;
+    // If a variant key is provided, prefer variant-specific data
+    const variantRow = inventory.byVariant(line.productId, line.size || '', '');
+    const unit = variantRow && variantRow.variant_price_cents != null ? variantRow.variant_price_cents : (p.sale_price_cents ?? p.price_cents);
     const avail = inventory.stockForVariant(line.productId, line.size || '', '');
     const safeQty = Math.min(line.qty, Math.max(0, avail));
 
@@ -56,12 +58,12 @@ function buildCartView(cart) {
       productId: p.id,
       slug: p.slug,
       name: p.name,
-      size: line.size,
+      size: variantRow ? (variantRow.title || line.size) : line.size,
       qty: safeQty,
       originalQty: line.qty,
       unitCents: unit,
       lineCents: lineTotal,
-      image: p.images?.[0]?.src || null,
+      image: (variantRow && (function(){ try { const imgs = JSON.parse(variantRow.images||'[]'); return imgs[0]?.src; } catch { return null; } })()) || p.images?.[0]?.src || null,
       stock: avail,
       maxQty: avail,
       isSoldOut: safeQty === 0,
@@ -125,9 +127,9 @@ router.post('/warenkorb/add', validateBody(addSchema), (req, res) => {
   const p = products.getById(productId);
   if (!p || !p.is_active) return res.redirect('/shop');
 
-  // Grösse pflichtprüfung (Server-seitig)
-  if (p.sizes && p.sizes.length > 0 && !size) {
-    return res.redirect(`/produkt/${p.slug}?error=size`);
+  // Variante Pflichtprüfung: wenn Produkt Varianten hat, muss eine Variante gewählt werden
+  if (inventory.hasInventory(productId) && !size) {
+    return res.redirect(`/produkt/${p.slug}?error=variant`);
   }
 
   const avail = inventory.stockForVariant(productId, size, '');
@@ -181,8 +183,8 @@ router.post('/warenkorb/api/add', validateBody(addSchema), (req, res) => {
   const p = products.getById(productId);
   if (!p || !p.is_active) return res.status(404).json({ error: 'Produkt nicht verfügbar.' });
 
-  if (p.sizes && p.sizes.length > 0 && !size) {
-    return res.status(400).json({ error: 'Bitte Grösse wählen.' });
+  if (inventory.hasInventory(productId) && !size) {
+    return res.status(400).json({ error: 'Bitte Variante wählen.' });
   }
 
   const avail = inventory.stockForVariant(productId, size, '');

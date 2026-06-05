@@ -36,6 +36,7 @@ db.exec(`
     price_cents     INTEGER NOT NULL DEFAULT 0,
     sale_price_cents INTEGER,
     sizes           TEXT NOT NULL DEFAULT '[]',   -- JSON-Array
+    option_groups   TEXT NOT NULL DEFAULT '[]',   -- JSON-Array von Gruppen + Werten
     images          TEXT NOT NULL DEFAULT '[]',   -- JSON-Array {type,src}
     stock           INTEGER NOT NULL DEFAULT 0,
     is_bestseller   INTEGER NOT NULL DEFAULT 0,
@@ -84,6 +85,7 @@ db.exec(`
     sku             TEXT NOT NULL DEFAULT '',
     size            TEXT NOT NULL DEFAULT '',   -- '' = kein Grössen-Variant
     color           TEXT NOT NULL DEFAULT '',
+    option_values   TEXT NOT NULL DEFAULT '[]',   -- JSON-Array von {group,value}
     stock           INTEGER NOT NULL DEFAULT 0,
     reserved        INTEGER NOT NULL DEFAULT 0, -- im Warenkorb reserviert
     min_stock       INTEGER NOT NULL DEFAULT 3, -- Warnschwelle
@@ -94,5 +96,41 @@ db.exec(`
   );
   CREATE INDEX IF NOT EXISTS idx_inventory_product ON inventory(product_id);
 `);
+
+// Falls wir das Schema nachträglich erweitern: sicherstellen, dass die
+// Spalten `title` und `images` existieren (für Varianten-Metadaten).
+try {
+  const info = db.prepare("PRAGMA table_info(inventory)").all();
+  const cols = info.map((c) => c.name);
+  if (!cols.includes('title')) {
+    db.exec("ALTER TABLE inventory ADD COLUMN title TEXT NOT NULL DEFAULT '';");
+  }
+  if (!cols.includes('images')) {
+    db.exec("ALTER TABLE inventory ADD COLUMN images TEXT NOT NULL DEFAULT '[]';");
+  }
+  if (!cols.includes('option_values')) {
+    db.exec("ALTER TABLE inventory ADD COLUMN option_values TEXT NOT NULL DEFAULT '[]';");
+  }
+  if (!cols.includes('variant_price_cents')) {
+    db.exec("ALTER TABLE inventory ADD COLUMN variant_price_cents INTEGER;");
+  }
+  if (!cols.includes('is_default')) {
+    db.exec("ALTER TABLE inventory ADD COLUMN is_default INTEGER NOT NULL DEFAULT 0;");
+  }
+} catch (e) {
+  // Falls ALTER TABLE fehlschlägt, nichts blockieren – existierende DB bleibt nutzbar.
+  // Fehler werden nicht hochgeworfen, Admin kann später migrieren.
+  console.warn('Schema-Update inventory skipped:', e?.message || e);
+}
+
+try {
+  const info = db.prepare("PRAGMA table_info(products)").all();
+  const cols = info.map((c) => c.name);
+  if (!cols.includes('option_groups')) {
+    db.exec("ALTER TABLE products ADD COLUMN option_groups TEXT NOT NULL DEFAULT '[]';");
+  }
+} catch (e) {
+  console.warn('Schema-Update products skipped:', e?.message || e);
+}
 
 export default db;

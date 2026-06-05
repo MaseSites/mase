@@ -8,11 +8,21 @@ import * as inventory from '../models/inventory.js';
 import { validateBody } from '../middleware/validate.js';
 import { discountPercent } from '../lib/format.js';
 import { legalPages } from '../lib/legal.js';
+import { parseOptionGroups } from '../lib/variant-options.js';
 
 const router = express.Router();
 
+function shuffle(list) {
+  const items = [...list];
+  for (let i = items.length - 1; i > 0; i -= 1) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [items[i], items[j]] = [items[j], items[i]];
+  }
+  return items;
+}
+
 router.get('/', (req, res) => {
-  const featured = products.bestsellers(8);
+  const featured = shuffle(products.bestsellers(12)).slice(0, 4);
   const latest = products.listPublic().slice(0, 8);
   res.render('shop/home', {
     title: settings.get('shop_name'),
@@ -21,7 +31,6 @@ router.get('/', (req, res) => {
     categories: products.categories(),
     settings_hero_title: settings.get('hero_title'),
     settings_hero_sub: settings.get('hero_subtitle'),
-    saleEndsAt: settings.get('sale_ends_at') || '',
     membersCount: settings.get('members_count') || '0',
     ratingsCount: settings.get('ratings_count') || '0',
     newsletterDone: req.query.news === '1',
@@ -75,6 +84,19 @@ router.get('/produkt/:slug', (req, res, next) => {
     inventoryMap[key] = (inventoryMap[key] || 0) + avail;
   }
 
+  // Varianten (dynamische Varianten): geben die Inventory-Zeilen zurück,
+  // title/images/variant_price_cents sind relevant.
+  const variants = invRows.map((r) => ({
+    id: r.id,
+    key: r.size || String(r.id),
+    title: r.title || (r.size || ''),
+    images: (function(){ try { return JSON.parse(r.images || '[]'); } catch { return []; } })(),
+    stock: Math.max(0, r.stock - r.reserved),
+    variant_price_cents: r.variant_price_cents ?? null,
+    is_default: !!r.is_default,
+    option_values: (function(){ try { return JSON.parse(r.option_values || '[]'); } catch { return []; } })(),
+  }));
+
   res.render('shop/product', {
     title: product.name,
     product,
@@ -82,6 +104,8 @@ router.get('/produkt/:slug', (req, res, next) => {
     discountPercent,
     inventoryMap,
     errorParam: req.query.error || null,
+    variants,
+    optionGroups: parseOptionGroups(product.option_groups || []),
   });
 });
 

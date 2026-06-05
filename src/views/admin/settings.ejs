@@ -9,7 +9,7 @@
 
   <section class="admin-section">
     <h2>Shop</h2>
-    <form method="post" action="/admin/einstellungen" class="admin-form">
+    <form method="post" action="<%- basePath %>/admin/einstellungen" class="admin-form">
       <input type="hidden" name="_csrf" value="<%= csrfToken %>">
       <div class="form-grid">
         <label class="field span-2"><span>Shop-Name</span>
@@ -50,7 +50,7 @@
   <section class="admin-section">
     <h2>Passwörter</h2>
     <div class="form-grid">
-      <form method="post" action="/admin/passwort" class="admin-form span-1">
+      <form method="post" action="<%- basePath %>/admin/passwort" class="admin-form span-1">
         <input type="hidden" name="_csrf" value="<%= csrfToken %>">
         <input type="hidden" name="which" value="admin">
         <label class="field"><span>Neues Admin-Passwort</span>
@@ -58,7 +58,7 @@
         <button class="btn btn-ghost" type="submit">Admin-Passwort ändern</button>
       </form>
 
-      <form method="post" action="/admin/passwort" class="admin-form span-1">
+      <form method="post" action="<%- basePath %>/admin/passwort" class="admin-form span-1">
         <input type="hidden" name="_csrf" value="<%= csrfToken %>">
         <input type="hidden" name="which" value="gate">
         <label class="field"><span>Neues Zugangs-Passwort (Seiten-Sperre)</span>

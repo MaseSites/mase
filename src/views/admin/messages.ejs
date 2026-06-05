@@ -22,7 +22,7 @@
               <div class="msg-meta">
                 <span class="muted small"><%= m.created_at %></span>
                 <% if (!m.is_read) { %>
-                  <form method="post" action="/admin/nachrichten/gelesen">
+                  <form method="post" action="<%- basePath %>/admin/nachrichten/gelesen">
                     <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                     <input type="hidden" name="id" value="<%= m.id %>">
                     <button class="btn btn-ghost btn-sm" type="submit">Als gelesen</button>

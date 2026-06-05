@@ -14,7 +14,7 @@
       <tbody>
         <% orders.forEach((o) => { %>
           <tr>
-            <td><a href="/admin/bestellungen/<%= o.reference %>"><strong><%= o.reference %></strong></a></td>
+            <td><a href="<%- basePath %>/admin/bestellungen/<%= o.reference %>"><strong><%= o.reference %></strong></a></td>
             <td><%= o.customer_name %></td>
             <td class="muted"><%= o.email %></td>
             <td><%= (o.items || []).reduce((n, i) => n + (i.qty || 0), 0) %></td>

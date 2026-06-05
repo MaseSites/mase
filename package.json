@@ -13,13 +13,13 @@
     "seed": "node scripts/seed.js",
     "create-admin": "node scripts/create-admin.js",
     "populate-inventory": "node scripts/populate-inventory.js",
-    "test": "node --test",
-    "test:fast": "node --test tests/unit.test.js",
-    "test:http": "node --test tests/http.test.js"
+    "test": "node --import ./tests/register-test-env.js --test",
+    "test:fast": "node --import ./tests/register-test-env.js --test tests/unit.test.js",
+    "test:http": "node --import ./tests/register-test-env.js --test tests/http.test.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
-    "better-sqlite3": "^11.3.0",
+    "better-sqlite3": "^12.10.0",
     "better-sqlite3-session-store": "^0.1.0",
     "compression": "^1.8.1",
     "dotenv": "^16.4.5",
@@ -32,7 +32,8 @@
     "multer": "^2.0.1",
     "nanoid": "^5.0.7",
     "sanitize-html": "^2.13.0",
-    "zod": "^3.23.8"
+    "zod": "^3.23.8",
+    "sharp": "^0.32.0"
   },
   "devDependencies": {
     "supertest": "^7.0.0"

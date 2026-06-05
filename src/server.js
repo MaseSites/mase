@@ -27,6 +27,7 @@ import themeRouter from './routes/theme.js';
 import publicApiRouter from './routes/publicApi.js';
 
 const app = express();
+const basePath = '/testserver/client/0192481/site/abj';
 
 // Hinter Reverse-Proxy (Hosting) korrekte Client-IPs & sichere Cookies
 app.set('trust proxy', 1);
@@ -52,10 +53,10 @@ app.use(express.json({ limit: '100kb' }));
 // Statische Dateien: CSS/JS/Assets sind immer erlaubt (vor dem Gate).
 // Uploads werden erst nach dem Gate (siehe unten) ausgeliefert.
 const staticOpts = { maxAge: config.isProd ? '7d' : 0, etag: true, lastModified: true };
-app.use('/css', express.static(path.join(PUBLIC_DIR, 'css'), staticOpts));
-app.use('/css', themeRouter); // dynamisches /css/theme.css (admin-konfigurierbare Farben)
-app.use('/js', express.static(path.join(PUBLIC_DIR, 'js'), staticOpts));
-app.use('/assets', express.static(path.join(PUBLIC_DIR, 'assets'), { maxAge: config.isProd ? '30d' : 0, etag: true }));
+app.use(basePath + '/css', express.static(path.join(PUBLIC_DIR, 'css'), staticOpts));
+app.use(basePath + '/css', themeRouter); // dynamisches /css/theme.css (admin-konfigurierbare Farben)
+app.use(basePath + '/js', express.static(path.join(PUBLIC_DIR, 'js'), staticOpts));
+app.use(basePath + '/assets', express.static(path.join(PUBLIC_DIR, 'assets'), { maxAge: config.isProd ? '30d' : 0, etag: true }));
 
 // Session
 app.use(sessionMiddleware);
@@ -63,10 +64,12 @@ app.use(sessionMiddleware);
 // View-Helfer + globale Locals (VOR dem CSRF-Check, damit Fehlerseiten sie nutzen können)
 app.use(exposeAdmin);
 app.use((req, res, next) => {
+  res.locals.basePath = basePath;
   res.locals.currency = settings.get('currency');
   res.locals.price = (cents) => formatPrice(cents, res.locals.currency);
   res.locals.shopName = settings.get('shop_name');
   res.locals.announcement = settings.get('announcement');
+  res.locals.saleEndsAt = settings.get('sale_ends_at') || '2026-06-30T23:59:59';
   res.locals.placeholder = placeholder;
   res.locals.cartCount = (req.session.cart || []).reduce((n, l) => n + l.qty, 0);
   res.locals.path = req.path;
@@ -80,22 +83,28 @@ app.use(csrfMiddleware);
 app.use(siteGate);
 
 // Uploads erst nach dem Gate ausliefern (privat bis Release)
-app.use('/uploads', express.static(config.paths.UPLOADS_DIR, { index: false }));
+app.use(basePath + '/uploads', express.static(config.paths.UPLOADS_DIR, { index: false }));
+app.use(basePath + '/img', express.static(config.paths.IMG_DIR, { index: false }));
 
-// --- Routen ---
-app.use('/gate', gateRouter);
+// --- Routen (alle unter basePath) ---
+app.use(basePath + '/gate', gateRouter);
+
+// Leitet die alte URL /dashboard auf /admin weiter
+app.get(basePath + '/dashboard', (req, res) => res.redirect(basePath + '/admin'));
 
 // Admin
-app.use('/admin', adminAuthRouter); // /admin/login, /admin/logout
-app.use('/admin/api', requireAdmin, apiLimiter, apiRouter);
-app.use('/admin', requireAdmin, adminRouter);
+app.use(basePath + '/admin', adminAuthRouter); // /admin/login, /admin/logout
+app.use(basePath + '/admin/api', requireAdmin, apiLimiter, apiRouter);
+
+// WICHTIG: Der adminRouter verarbeitet nun sowohl /admin als auch /admin/dashboard
+app.use(basePath + '/admin', requireAdmin, adminRouter); 
 
 // Öffentliche JSON-API (nach dem Gate -> privat bis Release)
-app.use('/api', apiLimiter, publicApiRouter);
+app.use(basePath + '/api', apiLimiter, publicApiRouter);
 
 // Öffentlicher Shop
-app.use('/', cartRouter);
-app.use('/', shopRouter);
+app.use(basePath + '/', cartRouter);
+app.use(basePath + '/', shopRouter);
 
 // 404
 app.use((req, res) => {
@@ -127,9 +136,18 @@ import { pathToFileURL } from 'node:url';
 // Nur lauschen, wenn die Datei direkt gestartet wird (nicht beim Import in Tests).
 const isMain = import.meta.url === pathToFileURL(process.argv[1] || '').href;
 if (isMain) {
-  app.listen(config.port, () => {
+  const server = app.listen(config.port, () => {
     // eslint-disable-next-line no-console
     console.log(`ABJ Shop läuft auf http://localhost:${config.port}  (${config.isProd ? 'production' : 'development'})`);
+  });
+
+  server.on('error', (err) => {
+    if (err.code === 'EADDRINUSE') {
+      console.error(`❌ Port ${config.port} ist bereits belegt. Bitte beende andere Instanzen oder ändere den PORT in der .env Datei.`);
+    } else {
+      console.error('❌ Serverfehler beim Starten:', err);
+    }
+    process.exit(1);
   });
 }
 

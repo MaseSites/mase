@@ -2,6 +2,7 @@ import multer from 'multer';
 import crypto from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
+import sharp from 'sharp';
 import { UPLOADS_DIR } from '../config/env.js';
 
 fs.mkdirSync(UPLOADS_DIR, { recursive: true });
@@ -62,6 +63,17 @@ export function verifyUploadedImages(req, res, next) {
       if (!okMagic && !isRiffWebp && !isAvif) {
         fs.unlinkSync(f.path);
         return res.status(400).json({ error: `Datei ${f.originalname} ist kein gültiges Bild.` });
+      }
+      // Versuche, eine verkleinerte Thumbnail-Version zu erstellen (soweit möglich)
+      try {
+        const thumbName = path.basename(f.path) + '.thumb.jpg';
+        const thumbPath = path.join(UPLOADS_DIR, thumbName);
+        // 600px lange Kante, JPEG
+        sharp(f.path).resize({ width: 900, height: 900, fit: 'inside' }).jpeg({ quality: 82 }).toFile(thumbPath);
+        // Kennzeichne das erzeugte Thumbnail für späteren Gebrauch
+        f.thumbFilename = thumbName;
+      } catch (e) {
+        // wenn Sharp fehlschlägt, lassen wir das Bild trotzdem zu; kein Blocking
       }
     } catch {
       return res.status(400).json({ error: 'Upload-Prüfung fehlgeschlagen.' });

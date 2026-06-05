@@ -5,6 +5,7 @@ function rowToProduct(row) {
   return {
     ...row,
     sizes: safeParse(row.sizes, []),
+    option_groups: safeParse(row.option_groups, []),
     images: safeParse(row.images, []),
     is_bestseller: !!row.is_bestseller,
     is_active: !!row.is_active,
@@ -88,16 +89,16 @@ export function categories() {
 
 const insertStmt = db.prepare(`
   INSERT INTO products
-    (slug, name, description, category, price_cents, sale_price_cents, sizes, images, stock, is_bestseller, is_active)
+    (slug, name, description, category, price_cents, sale_price_cents, sizes, option_groups, images, stock, is_bestseller, is_active)
   VALUES
-    (@slug, @name, @description, @category, @price_cents, @sale_price_cents, @sizes, @images, @stock, @is_bestseller, @is_active)
+    (@slug, @name, @description, @category, @price_cents, @sale_price_cents, @sizes, @option_groups, @images, @stock, @is_bestseller, @is_active)
 `);
 
 const updateStmt = db.prepare(`
   UPDATE products SET
     slug = @slug, name = @name, description = @description, category = @category,
     price_cents = @price_cents, sale_price_cents = @sale_price_cents,
-    sizes = @sizes, images = @images, stock = @stock,
+    sizes = @sizes, option_groups = @option_groups, images = @images, stock = @stock,
     is_bestseller = @is_bestseller, is_active = @is_active,
     updated_at = datetime('now')
   WHERE id = @id
@@ -114,6 +115,7 @@ function serialize(p) {
     price_cents: p.price_cents ?? 0,
     sale_price_cents: p.sale_price_cents ?? null,
     sizes: JSON.stringify(p.sizes ?? []),
+    option_groups: JSON.stringify(p.option_groups ?? []),
     images: JSON.stringify(p.images ?? []),
     stock: p.stock ?? 0,
     is_bestseller: p.is_bestseller ? 1 : 0,

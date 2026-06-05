@@ -4,7 +4,7 @@
 <main class="admin-main narrow">
   <div class="admin-head-row">
     <h1>Bestellung <%= order.reference %></h1>
-    <a class="btn btn-ghost" href="/admin/bestellungen">Zurück</a>
+    <a class="btn btn-ghost" href="<%- basePath %>/admin/bestellungen">Zurück</a>
   </div>
 
   <div class="form-grid">
@@ -34,7 +34,7 @@
 
   <section class="admin-section">
     <h2>Status verwalten</h2>
-    <form method="post" action="/admin/bestellungen/<%= order.reference %>/status" class="admin-form">
+    <form method="post" action="<%- basePath %>/admin/bestellungen/<%= order.reference %>/status" class="admin-form">
       <input type="hidden" name="_csrf" value="<%= csrfToken %>">
       <div class="form-grid">
         <label class="field"><span>Bestellstatus</span>

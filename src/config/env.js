@@ -12,8 +12,11 @@ export const ROOT_DIR = path.resolve(__dirname, '..', '..');
 export const SRC_DIR = path.join(ROOT_DIR, 'src');
 export const PUBLIC_DIR = path.join(SRC_DIR, 'public');
 export const UPLOADS_DIR = path.join(PUBLIC_DIR, 'uploads');
+export const IMG_DIR = path.join(ROOT_DIR, 'img');
 export const VIEWS_DIR = path.join(SRC_DIR, 'views');
-export const DATA_DIR = path.join(ROOT_DIR, 'data');
+export const DATA_DIR = process.env.DATA_DIR
+  ? path.resolve(process.env.DATA_DIR)
+  : path.join(ROOT_DIR, 'data');
 
 const isProd = process.env.NODE_ENV === 'production';
 
@@ -30,7 +33,7 @@ function required(name, fallback) {
 
 export const config = {
   isProd,
-  port: Number(process.env.PORT) || 3000,
+  port: Number(process.env.PORT) || 3008, // Wir erhöhen den Fallback nochmal zur Sicherheit
   sessionSecret: required('SESSION_SECRET', 'dev-only-session-secret-change-me'),
   csrfSecret: required('CSRF_SECRET', 'dev-only-csrf-secret-change-me'),
   // Bootstrap-Gate-Passwort nur falls in DB noch keines gesetzt ist
@@ -39,7 +42,7 @@ export const config = {
   // bcrypt-Kostenfaktor. Standard 12 (sicher, CI/Prod). Lokal via BCRYPT_ROUNDS=4
   // senkbar für schnellere Tests. Untergrenze 4, Obergrenze 15.
   bcryptRounds: Math.min(15, Math.max(4, Number(process.env.BCRYPT_ROUNDS) || 12)),
-  paths: { ROOT_DIR, SRC_DIR, PUBLIC_DIR, UPLOADS_DIR, VIEWS_DIR, DATA_DIR },
+  paths: { ROOT_DIR, SRC_DIR, PUBLIC_DIR, UPLOADS_DIR, IMG_DIR, VIEWS_DIR, DATA_DIR },
 };
 
 // Frühwarnung bei unsicheren Default-Secrets in Produktion

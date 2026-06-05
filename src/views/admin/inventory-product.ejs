@@ -8,8 +8,8 @@
       <p class="muted">Kategorie: <%= product.category %> · Produktbestand gesamt: <%= product.stock %></p>
     </div>
     <div style="display:flex;gap:.6rem">
-      <a class="btn btn-ghost" href="/admin/lager">Zurück</a>
-      <a class="btn btn-ghost" href="/admin/produkte/<%= product.id %>/bearbeiten">Produkt bearbeiten</a>
+      <a class="btn btn-ghost" href="<%- basePath %>/admin/lager">Zurück</a>
+      <a class="btn btn-ghost" href="<%- basePath %>/admin/produkte/<%= product.id %>/bearbeiten">Produkt bearbeiten</a>
     </div>
   </div>
 
@@ -73,7 +73,7 @@
   </div>
 </main>
 
-<script src="/js/admin.js" defer></script>
-<script src="/js/inventory.js" defer></script>
+<script src="<%- basePath %>/js/admin.js" defer></script>
+<script src="<%- basePath %>/js/inventory.js" defer></script>
 </body>
 </html>

@@ -24,14 +24,23 @@ const byVariantStmt = db.prepare(
 );
 
 const upsertStmt = db.prepare(`
-  INSERT INTO inventory (product_id, sku, size, color, stock, reserved, min_stock, next_delivery, notes)
-  VALUES (@product_id, @sku, @size, @color, @stock, @reserved, @min_stock, @next_delivery, @notes)
+  INSERT INTO inventory (
+    product_id, sku, size, color, option_values, stock, reserved, min_stock, next_delivery, notes, title, images, variant_price_cents, is_default
+  )
+  VALUES (
+    @product_id, @sku, @size, @color, @option_values, @stock, @reserved, @min_stock, @next_delivery, @notes, @title, @images, @variant_price_cents, @is_default
+  )
   ON CONFLICT(product_id, size, color) DO UPDATE SET
     sku          = excluded.sku,
     stock        = excluded.stock,
     min_stock    = excluded.min_stock,
     next_delivery= excluded.next_delivery,
     notes        = excluded.notes,
+    title        = excluded.title,
+    option_values= excluded.option_values,
+    images       = excluded.images,
+    variant_price_cents = excluded.variant_price_cents,
+    is_default   = excluded.is_default,
     updated_at   = datetime('now')
 `);
 
@@ -54,7 +63,7 @@ const allLowStockStmt = db.prepare(`
 `);
 
 const allInventoryStmt = db.prepare(`
-  SELECT i.*, p.name AS product_name, p.category, p.slug
+  SELECT i.*, p.name AS product_name, p.category, p.slug, p.price_cents, p.sale_price_cents, p.is_active
   FROM inventory i
   JOIN products p ON p.id = i.product_id
   ORDER BY p.name, i.size, i.color
@@ -70,8 +79,12 @@ const countByProductStmt = db.prepare(
 
 // Fallback-Quelle: gepoolter Gesamtbestand aus der products-Tabelle.
 const productStockStmt = db.prepare('SELECT stock FROM products WHERE id = ?');
+const productByIdStmt = db.prepare('SELECT * FROM products WHERE id = ?');
 const decProductStockStmt = db.prepare(
   `UPDATE products SET stock = MAX(0, stock - ?), updated_at = datetime('now') WHERE id = ?`
+);
+const setProductStockStmt = db.prepare(
+  `UPDATE products SET stock = ?, updated_at = datetime('now') WHERE id = ?`
 );
 
 // ---------------------------------------------------------------------------
@@ -101,6 +114,11 @@ export function hasInventory(productId) {
 /** Alle Inventory-Zeilen für ein Produkt. */
 export function byProduct(productId) {
   return byProductStmt.all(productId);
+}
+
+/** Einzelne Inventory-Zeile nach Produkt + Schlüssel (size) */
+export function byVariant(productId, size = '', color = '') {
+  return byVariantStmt.get(productId, size, color);
 }
 
 /**
@@ -137,18 +155,41 @@ export function upsert(data) {
     sku: data.sku || '',
     size: data.size || '',
     color: data.color || '',
+    option_values: JSON.stringify(Array.isArray(data.option_values) ? data.option_values : []),
     stock: Math.max(0, Number(data.stock) || 0),
     reserved: Math.max(0, Number(data.reserved) || 0),
     min_stock: Math.max(0, Number(data.min_stock) ?? 3),
     next_delivery: data.next_delivery || '',
     notes: data.notes || '',
+    title: data.title || '',
+    images: JSON.stringify(Array.isArray(data.images) ? data.images : []),
+    variant_price_cents: data.variant_price_cents ?? null,
+    is_default: data.is_default ? 1 : 0,
   });
 }
 
 /** Mehrere Varianten für ein Produkt auf einmal speichern (Batch aus Formular). */
 export function upsertMany(rows) {
   const tx = db.transaction((rows) => {
+    if (!rows || rows.length === 0) return;
     for (const r of rows) upsert(r);
+
+    const productId = rows[0].product_id;
+    // If any incoming row requests is_default, enforce single default.
+    const incomingDefaultIndex = rows.findIndex((r) => !!r.is_default);
+    if (incomingDefaultIndex !== -1) {
+      // clear existing defaults, then set the requested one
+      db.prepare('UPDATE inventory SET is_default = 0 WHERE product_id = ?').run(productId);
+      const key = rows[incomingDefaultIndex].size || '';
+      db.prepare('UPDATE inventory SET is_default = 1 WHERE product_id = ? AND size = ? AND color = ?').run(productId, key, '');
+    } else {
+      // Ensure there is at least one default: if none exists, set the first of the batch
+      const cnt = db.prepare('SELECT COUNT(*) AS n FROM inventory WHERE product_id = ? AND is_default = 1').get(productId).n;
+      if (cnt === 0) {
+        const key = rows[0].size || '';
+        db.prepare('UPDATE inventory SET is_default = 1 WHERE product_id = ? AND size = ? AND color = ?').run(productId, key, '');
+      }
+    }
   });
   tx(rows);
 }
@@ -171,6 +212,34 @@ export function allInventory() {
     is_out: r.stock - r.reserved <= 0,
     is_low: r.stock > 0 && r.stock - r.reserved <= r.min_stock,
   }));
+}
+
+export function adjustStock(productId, size = '', color = '', delta = 0) {
+  const tx = db.transaction(() => {
+    const product = productByIdStmt.get(productId);
+    if (!product) return null;
+
+    const row = byVariantStmt.get(productId, size || '', color || '');
+    if (row) {
+      const next = Math.max(0, row.stock + Number(delta || 0));
+      updateStockStmt.run(next, productId, size || '', color || '');
+    } else {
+      upsert({
+        product_id: productId,
+        size: size || '',
+        color: color || '',
+        stock: Math.max(0, (Number(product.stock) || 0) + Number(delta || 0)),
+        min_stock: 3,
+        title: product.name,
+        is_default: true,
+      });
+    }
+
+    const total = totalStock(productId);
+    setProductStockStmt.run(total, productId);
+    return { stock: stockForVariant(productId, size || '', color || ''), total };
+  });
+  return tx();
 }
 
 /**

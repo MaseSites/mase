@@ -4,7 +4,7 @@
 <main class="admin-main">
   <div class="admin-head-row">
     <h1>Produkte</h1>
-    <a class="btn btn-primary" href="/admin/produkte/neu">+ Neues Produkt</a>
+    <a class="btn btn-primary" href="<%- basePath %>/admin/produkte/neu">+ Produkt hinzufügen</a>
   </div>
 
   <% if (items.length) { %>
@@ -35,7 +35,7 @@
             <td><%= p.stock %></td>
             <td><span class="tag <%= p.is_active ? 'tag-ok' : 'tag-off' %>"><%= p.is_active ? 'aktiv' : 'inaktiv' %></span></td>
             <td class="cell-actions">
-              <a class="btn btn-ghost btn-sm" href="/admin/produkte/<%= p.id %>/bearbeiten">Bearbeiten</a>
+              <a class="btn btn-ghost btn-sm" href="<%- basePath %>/admin/produkte/<%= p.id %>/bearbeiten">Bearbeiten</a>
               <button class="btn btn-danger btn-sm" data-delete-product="<%= p.id %>" data-name="<%= p.name %>">Löschen</button>
             </td>
           </tr>
@@ -45,6 +45,6 @@
   <% } %>
 </main>
 
-<script src="/js/admin.js" defer></script>
+<script src="<%- basePath %>/js/admin.js" defer></script>
 </body>
 </html>

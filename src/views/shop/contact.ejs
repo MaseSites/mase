@@ -14,7 +14,7 @@
   <p class="muted">Schreib uns – wir melden uns so schnell wie möglich.
     Direkt: <a href="mailto:<%= contactEmail %>"><%= contactEmail %></a></p>
 
-  <form method="post" action="/kontakt" class="checkout-form">
+  <form method="post" action="<%- basePath %>/kontakt" class="checkout-form">
     <input type="hidden" name="_csrf" value="<%= csrfToken %>">
     <label class="field"><span>Name</span><input type="text" name="name" value="<%= (typeof values !== 'undefined' && values.name) || '' %>" required maxlength="120"></label>
     <label class="field"><span>E-Mail</span><input type="email" name="email" value="<%= (typeof values !== 'undefined' && values.email) || '' %>" required maxlength="200"></label>

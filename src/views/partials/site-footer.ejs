@@ -1,26 +1,22 @@
   <footer class="site-footer">
-    <div class="container footer-grid">
-      <div>
-        <div class="brand"><span class="logo-dot" aria-hidden="true"></span><%= shopName %></div>
-        <p class="muted">Kuratierte Vintage- & Markenmode. Limitierte Stückzahlen, faire Preise.</p>
-      </div>
-      <div>
-        <h4>Shop</h4>
-        <a href="/shop">Alle Produkte</a>
-        <a href="/wunschliste">Wunschliste</a>
-        <a href="/warenkorb">Warenkorb</a>
-        <a href="/kontakt">Kontakt</a>
-      </div>
-      <div>
-        <h4>Rechtliches</h4>
-        <a href="/impressum">Impressum</a>
-        <a href="/datenschutz">Datenschutz</a>
-        <a href="/agb">AGB</a>
-        <a href="/widerruf">Widerruf</a>
-      </div>
+    <div class="footer-wave" aria-hidden="true">
+      <svg viewBox="0 0 1440 90" preserveAspectRatio="none">
+        <path d="M0 40 C180 80 340 8 520 34 C720 62 860 88 1050 42 C1210 4 1320 18 1440 52 V90 H0 Z"></path>
+      </svg>
     </div>
-    <div class="container footer-bottom muted">
-      © <%= new Date().getFullYear() %> <%= shopName %>. Alle Rechte vorbehalten.
+    <div class="container footer-newsletter" id="newsletter">
+      <div class="newsletter reveal">
+        <div class="newsletter-text">
+          <h2>Sichere dir die nächsten Drops</h2>
+          <p class="muted">Trag dich ein und erfahre als Erster von neuen Boxen & exklusiven Rabatten.</p>
+        </div>
+        <form class="newsletter-form" action="<%- basePath %>/newsletter" method="post" data-newsletter>
+          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+          <input type="email" name="email" placeholder="deine@email.de" required maxlength="200" aria-label="E-Mail">
+          <button class="btn btn-primary" type="submit">Anmelden</button>
+        </form>
+        <% if (typeof newsletterDone !== 'undefined' && newsletterDone) { %><p class="newsletter-done">✓ Danke! Du bist dabei.</p><% } %>
+      </div>
     </div>
   </footer>
 
@@ -37,8 +33,8 @@
       <div class="drawer-body" data-drawer-items></div>
       <div class="drawer-foot">
         <div class="drawer-total"><span>Gesamt</span><strong data-drawer-total>0,00 €</strong></div>
-        <a class="btn btn-primary btn-block" href="/kasse">Zur Kasse</a>
-        <a class="btn btn-ghost btn-block" href="/warenkorb">Warenkorb ansehen</a>
+        <a class="btn btn-primary btn-block" href="<%- basePath %>/kasse">Zur Kasse</a>
+        <a class="btn btn-ghost btn-block" href="<%- basePath %>/warenkorb">Warenkorb ansehen</a>
       </div>
     </div>
   </aside>
@@ -51,6 +47,6 @@
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
   </button>
 
-  <script src="/js/shop.js" defer></script>
+  <script src="<%- basePath %>/js/shop.js" defer></script>
 </body>
 </html>

@@ -3,6 +3,7 @@
 (function () {
   'use strict';
 
+  const BASE_PATH = document.documentElement.getAttribute('data-base-path') || '';
   const tbody = document.getElementById('inv-rows');
   if (!tbody) return;
 
@@ -101,7 +102,7 @@
       fd.set('variants', JSON.stringify(rows));
 
       try {
-        const res = await fetch('/admin/lager/speichern', {
+        const res = await fetch(BASE_PATH + '/admin/lager/speichern', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/x-www-form-urlencoded',

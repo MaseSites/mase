@@ -2,7 +2,7 @@
 <%- include('../partials/site-header') %>
 
 <main id="main" class="container section">
-  <nav class="breadcrumb muted"><a href="/shop">Shop</a> / <a href="/shop?category=<%= encodeURIComponent(product.category) %>"><%= product.category %></a> / <span><%= product.name %></span></nav>
+  <nav class="breadcrumb muted"><a href="<%- basePath %>/shop">Shop</a> / <a href="<%- basePath %>/shop?category=<%= encodeURIComponent(product.category) %>"><%= product.category %></a> / <span><%= product.name %></span></nav>
 
   <div class="product-detail" data-track-view="<%= product.id %>">
     <div class="gallery" data-gallery>
@@ -58,40 +58,26 @@
           <p class="stock-urgency">Nur noch <strong><%= product.stock %></strong> Stück verfügbar – schnell sein!</p>
         <% } %>
 
-        <% if (typeof errorParam !== 'undefined' && errorParam === 'size') { %>
-          <p class="alert alert-error" style="margin:.5rem 0;">Bitte Grösse wählen.</p>
+        <% if (typeof errorParam !== 'undefined' && (errorParam === 'size' || errorParam === 'variant')) { %>
+          <p class="alert alert-error" style="margin:.5rem 0;">Bitte eine Kombination wählen.</p>
         <% } %>
         <% if (typeof errorParam !== 'undefined' && errorParam === 'soldout') { %>
           <p class="alert alert-error" style="margin:.5rem 0;">Diese Variante ist leider ausverkauft.</p>
         <% } %>
 
-        <form method="post" action="/warenkorb/add" class="add-form"
+        <form method="post" action="<%- basePath %>/warenkorb/add" class="add-form"
               data-ajax-add data-product-id="<%= product.id %>"
-              data-has-sizes="<%= (product.sizes && product.sizes.length) ? '1' : '0' %>">
+              data-has-sizes="0">
           <input type="hidden" name="_csrf" value="<%= csrfToken %>">
           <input type="hidden" name="productId" value="<%= product.id %>">
+          <input type="hidden" name="size" value="">
 
-          <% if (product.sizes && product.sizes.length) { %>
-            <label class="field-label">Grösse <span class="muted">(Pflicht)</span></label>
-            <div class="size-row" role="radiogroup" aria-label="Grösse wählen">
-              <% product.sizes.forEach((s) => {
-                const sizeAvail = hasInv ? (invMap[s] || 0) : (product.stock > 0 ? 1 : 0);
-                const disabled = sizeAvail <= 0;
-              %>
-                <label class="size-option <%= disabled ? 'size-disabled' : '' %>">
-                  <input type="radio" name="size" value="<%= s %>"
-                         <%= disabled ? 'disabled' : '' %>
-                         aria-label="Grösse <%= s %><%= disabled ? ' ausverkauft' : '' %>">
-                  <span title="<%= disabled ? 'Ausverkauft' : sizeAvail + ' verfügbar' %>">
-                    <%= s %>
-                    <% if (!disabled && hasInv && sizeAvail <= 3) { %>
-                      <small class="size-qty">(<%= sizeAvail %>)</small>
-                    <% } %>
-                  </span>
-                </label>
-              <% }) %>
-            </div>
+          <% if ((optionGroups && optionGroups.length) || (variants && variants.length)) { %>
+            <label class="field-label">Optionen</label>
+            <div class="variant-row" id="variant-row"></div>
           <% } %>
+
+          <!-- Varianten werden dynamisch gerendert oben -->
 
           <label class="field-label" for="qty">Menge</label>
           <input class="qty-input" id="qty" type="number" name="qty"
@@ -138,3 +124,13 @@
 </main>
 
 <%- include('../partials/site-footer') %>
+
+<script type="application/json" id="product-variants-data">
+  <%- JSON.stringify(variants || []) %>
+</script>
+<script type="application/json" id="product-option-groups-data">
+  <%- JSON.stringify(optionGroups || []) %>
+</script>
+<script type="application/json" id="product-price-data">
+  <%- JSON.stringify({ price_cents: product.price_cents, sale_price_cents: product.sale_price_cents }) %>
+</script>
