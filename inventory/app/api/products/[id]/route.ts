@@ -32,6 +32,7 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
     category: String(formData.get('category') ?? '').trim(),
     stock: Number(formData.get('stock') ?? 0),
     price: Number(formData.get('price') ?? 0),
+    cost: Number(formData.get('cost') ?? 0),
     sizes: JSON.stringify(parseSizes(formData.get('sizes'))),
   };
 

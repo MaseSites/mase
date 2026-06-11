@@ -56,6 +56,7 @@ export async function POST(request: Request) {
         imagePath,
         stock,
         price: Number(formData.get('price') ?? 0),
+        cost: Number(formData.get('cost') ?? 0),
         sizes: JSON.stringify(sizes),
       },
     });
