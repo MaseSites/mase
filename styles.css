@@ -4086,24 +4086,209 @@ pre {
   overflow-x: auto;
 }
 
-/* ─── Code-Proof: decorative graphic replaces code panel ─── */
+/* ─── Code-Proof: Lighthouse-Dashboard (interaktiv, monochrom) ─── */
 .code-proof-graphic {
-  border-radius: 20px;
-  overflow: hidden;
-  background: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #1e1b4b 100%);
-  border: 1px solid rgba(129, 140, 248, 0.25);
-  box-shadow: 0 24px 44px rgba(79, 70, 229, 0.22);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 2.5rem;
-  min-height: 280px;
+  /* Dashboard-Farben (Dark = Default) — Hintergrund bleibt transparent,
+     damit die Grafik direkt auf dem Seitenhintergrund schwebt. */
+  --lhd-text: #f4f6fa;
+  --lhd-label: #8b919c;
+  --lhd-sub: #6e7480;
+  --lhd-card-bg: linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
+  --lhd-card-border: rgba(255, 255, 255, 0.08);
+  --lhd-card-border-hover: rgba(255, 255, 255, 0.16);
+  --lhd-card-shadow: 0 10px 28px rgba(2, 4, 10, 0.45);
+  --lhd-card-shadow-hover: 0 18px 40px rgba(2, 4, 10, 0.6);
+  --lhd-line: rgba(255, 255, 255, 0.14);
+  --lhd-glow: rgba(244, 246, 250, 0.22);
+  --lhd-arc-0: #f5f7fa;
+  --lhd-arc-1: #aeb6c2;
+  --lhd-arc-2: #778090;
+  --lhd-track: rgba(255, 255, 255, 0.06);
+  --lhd-ring-faint: rgba(255, 255, 255, 0.05);
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  padding: 1.5rem 0.5rem;
 }
 
-.code-proof-graphic svg {
-  width: 100%;
-  max-width: 340px;
-  height: auto;
+/* Light Mode: Grafik schwebt auf hellem Seitenhintergrund — Graphit statt Silber */
+html:not(.dark) .code-proof-graphic {
+  --lhd-text: #0c0e14;
+  --lhd-label: #5b626e;
+  --lhd-sub: #767c88;
+  --lhd-card-bg: linear-gradient(180deg, rgba(12, 14, 20, 0.045) 0%, rgba(12, 14, 20, 0.02) 100%);
+  --lhd-card-border: rgba(12, 14, 20, 0.1);
+  --lhd-card-border-hover: rgba(12, 14, 20, 0.2);
+  --lhd-card-shadow: 0 10px 28px rgba(15, 23, 42, 0.1);
+  --lhd-card-shadow-hover: 0 18px 40px rgba(15, 23, 42, 0.16);
+  --lhd-line: rgba(12, 14, 20, 0.16);
+  --lhd-glow: rgba(40, 46, 58, 0.18);
+  --lhd-arc-0: #2b303b;
+  --lhd-arc-1: #565d6b;
+  --lhd-arc-2: #9aa1ad;
+  --lhd-track: rgba(12, 14, 20, 0.08);
+  --lhd-ring-faint: rgba(12, 14, 20, 0.07);
+}
+
+.lhd {
+  position: relative;
+  max-width: 560px;
+  margin: 0 auto;
+  aspect-ratio: 10 / 8;
+}
+
+.lhd-ring-wrap {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: min(62%, 330px);
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%)
+    translate3d(calc(var(--ppx, 0) * 3px), calc(var(--ppy, 0) * 3px), 0);
+  will-change: transform;
+}
+
+.lhd-ring { width: 100%; height: 100%; display: block; }
+
+.lhd-arc {
+  stroke-dasharray: 603.19;
+  stroke-dashoffset: 78.4; /* 87 % — statischer Fallback ohne JS */
+  filter: drop-shadow(0 0 12px var(--lhd-glow));
+}
+.lhd.lhd-prep .lhd-arc { stroke-dashoffset: 603.19; }
+.lhd.lhd-prep.lhd-on .lhd-arc {
+  stroke-dashoffset: 78.4;
+  transition: stroke-dashoffset 1.9s cubic-bezier(0.16, 1, 0.3, 1) 0.2s;
+}
+
+.lhd-center {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.2rem;
+  text-align: center;
+}
+
+.lhd-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--lhd-label);
+}
+
+.lhd-value {
+  font-size: clamp(2.1rem, 4.6vw, 2.9rem);
+  font-weight: 700;
+  color: var(--lhd-text);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+
+.lhd-sub { font-size: 0.74rem; color: var(--lhd-sub); }
+
+.lhd-card {
+  position: absolute;
+  min-width: 140px;
+  padding: 0.85rem 1.15rem;
+  border-radius: 14px;
+  background: var(--lhd-card-bg);
+  border: 1px solid var(--lhd-card-border);
+  box-shadow: var(--lhd-card-shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 0.18rem;
+  transform: perspective(700px)
+    translate3d(calc(var(--ppx, 0) * var(--depth, 6) * 1px), calc(var(--ppy, 0) * var(--depth, 6) * 1px), 0)
+    rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) translateY(var(--lift, 0px));
+  transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+              border-color 0.28s ease, box-shadow 0.28s ease;
+  will-change: transform;
+}
+
+.lhd.lhd-prep .lhd-card { opacity: 0; translate: 0 14px; }
+.lhd.lhd-prep.lhd-on .lhd-card {
+  opacity: 1;
+  translate: 0 0;
+  transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+              border-color 0.28s ease, box-shadow 0.28s ease,
+              opacity 0.7s ease var(--d, 0s),
+              translate 0.7s cubic-bezier(0.16, 1, 0.3, 1) var(--d, 0s);
+}
+
+.lhd-card:hover {
+  border-color: var(--lhd-card-border-hover);
+  box-shadow: var(--lhd-card-shadow-hover);
+}
+
+.lhd-card--tl { left: 0; top: 13%; --d: 0.35s; --depth: 8; }
+.lhd-card--tr { right: 0; top: 13%; --d: 0.5s; --depth: 6; }
+.lhd-card--bl { left: 0; bottom: 13%; --d: 0.65s; --depth: 6; }
+.lhd-card--br { right: 0; bottom: 13%; --d: 0.8s; --depth: 8; }
+
+.lhd-card-label {
+  font-size: 0.66rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--lhd-label);
+  white-space: nowrap;
+}
+
+.lhd-card-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--lhd-text);
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Gestrichelte Verbindungslinien zum Ring */
+.lhd-card::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 34px;
+  height: 0;
+  border-top: 1px dashed var(--lhd-line);
+}
+.lhd-card--tl::after { right: -36px; transform-origin: left center; transform: rotate(14deg); }
+.lhd-card--tr::after { left: -36px; transform-origin: right center; transform: rotate(-14deg); }
+.lhd-card--bl::after { right: -36px; transform-origin: left center; transform: rotate(-14deg); }
+.lhd-card--br::after { left: -36px; transform-origin: right center; transform: rotate(14deg); }
+
+@media (max-width: 680px) {
+  .code-proof-graphic { padding: 1rem 0.25rem; }
+
+  .lhd {
+    aspect-ratio: auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.8rem;
+  }
+
+  .lhd-ring-wrap {
+    position: relative;
+    left: auto;
+    top: auto;
+    transform: none;
+    width: min(78%, 280px);
+    margin: 0 auto 1rem;
+    grid-column: 1 / -1;
+  }
+
+  .lhd-card { position: static; min-width: 0; }
+  .lhd-card::after { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lhd.lhd-prep .lhd-arc { stroke-dashoffset: 78.4; }
+  .lhd.lhd-prep .lhd-card { opacity: 1; translate: 0 0; }
+  .lhd-arc, .lhd-card { transition: none !important; }
 }
 
 .lp-card-link {

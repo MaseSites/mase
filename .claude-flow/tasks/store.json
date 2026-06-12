@@ -1,0 +1,40 @@
+{
+  "tasks": {
+    "task-1779370232380-02xscl": {
+      "taskId": "task-1779370232380-02xscl",
+      "type": "feature",
+      "description": "MASE AI redesign: 1) supabase-setup.sql category+status, 2) ai-assistant.css dark-mode premium, 3) ai-assistant.js clean responses+category detection, 4) admin/index.html category badges+filters",
+      "priority": "high",
+      "status": "pending",
+      "progress": 0,
+      "assignedTo": [],
+      "tags": [
+        "mase",
+        "ai",
+        "redesign",
+        "dashboard"
+      ],
+      "createdAt": "2026-05-21T13:30:32.380Z",
+      "startedAt": null,
+      "completedAt": null
+    },
+    "task-1779370682039-ad4yml": {
+      "taskId": "task-1779370682039-ad4yml",
+      "type": "feature",
+      "description": "COMPLETED: MASE AI redesign — CSS dark-mode, JS emoji cleanup + category detection, SQL schema, admin dashboard category filter/badges",
+      "priority": "normal",
+      "status": "pending",
+      "progress": 0,
+      "assignedTo": [],
+      "tags": [
+        "mase",
+        "ai",
+        "completed"
+      ],
+      "createdAt": "2026-05-21T13:38:02.039Z",
+      "startedAt": null,
+      "completedAt": null
+    }
+  },
+  "version": "3.0.0"
+}

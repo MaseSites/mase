@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="de-CH">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Vielen Dank! | MASESites AG</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="stylesheet" href="/styles.css?v=20260327">
+  <link rel="stylesheet" href="/ai-assistant.css?v=20260327">
+  <script>
+    (function () {
+      var t = localStorage.getItem('theme');
+      if (t === 'dark') document.documentElement.classList.add('dark');
+
+      var q = null;
+      try { q = new URLSearchParams(window.location.search).get('lang'); } catch (_) {}
+      var s = localStorage.getItem('lang');
+      var lang = ['de', 'en', 'fr'].indexOf(q) !== -1 ? q : (['de', 'en', 'fr'].indexOf(s) !== -1 ? s : 'de');
+      localStorage.setItem('lang', lang);
+      document.documentElement.lang = (lang === 'de' ? 'de-CH' : 'en');
+    })();
+  </script>
+  <script defer src="/theme.js?v=20260327"></script>
+  <script defer src="/script.js?v=20260327"></script>
+  <script defer src="/ai-assistant.js?v=20260327"></script>
+  <!-- Auto-Redirect nach 5 Sekunden zurück zur Startseite -->
+  <meta http-equiv="refresh" content="5;url=index.html">
+</head>
+<body>
+  <a class="skip-link" href="#main" data-i18n="skip_to_content">Zum Inhalt springen</a>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="logo" href="index.html">MASE</a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
+        <span class="sr-only" data-i18n="nav_toggle">Navigation öffnen</span>
+        <span class="nav-toggle-bar"></span>
+        <span class="nav-toggle-bar"></span>
+      </button>
+      <nav class="site-nav" id="site-nav">
+        <a href="index.html" data-i18n="nav_home">Home</a>
+        <a href="leistungen.html" data-i18n="nav_services">Leistungen</a>
+        <a href="preise.html" data-i18n="nav_prices">Preise</a>
+        <a href="ki-assistent.html" data-i18n="nav_ai">KI Assistent</a>
+        <a href="ueber-uns.html" data-i18n="nav_about">Über uns</a>
+        <a href="kontakt.html" data-i18n="nav_contact">Kontakt</a>
+        <a class="button button-primary button-small" href="kontakt.html" data-i18n="nav_cta">Kostenloses Erstgespräch</a>
+
+      </nav>
+      <!-- Controls: Language + Dark Mode -->
+      <div class="header-controls">
+        <div class="lang-switcher" id="lang-switcher">
+          <button class="lang-btn" id="lang-btn" aria-haspopup="true" aria-expanded="false" aria-label="Sprache wählen" data-i18n-aria-label="lang_select_aria">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+            <span id="lang-current">DE</span>
+          </button>
+          <div class="lang-dropdown" id="lang-dropdown">
+            <button class="lang-option active" data-lang="de">🇩🇪 Deutsch</button>
+            <button class="lang-option" data-lang="en">🇬🇧 English</button>
+          </div>
+        </div>
+        <button class="dark-toggle" id="dark-toggle" aria-label="Dark Mode umschalten" data-i18n-aria-label="theme_toggle_aria">
+          <span class="dark-toggle-icon" id="dark-toggle-icon">🌙</span>
+          <span class="dark-toggle-track"><span class="dark-toggle-thumb"></span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+    <section style="padding: 8rem 0; text-align: center;">
+      <div class="container" style="max-width: 600px;">
+        <div style="font-size: 4rem; margin-bottom: 1.5rem;">✅</div>
+        <h1 style="margin-bottom: 1rem;" data-i18n="thanks_title">Vielen Dank!</h1>
+        <p class="lead" style="color: var(--text-muted); margin-bottom: 2rem;" data-i18n-html="thanks_message_html">
+          Deine Nachricht ist bei uns angekommen.<br>
+          Wir melden uns innerhalb von <strong>24 Stunden</strong> bei dir.
+        </p>
+        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 2rem;" data-i18n="thanks_redirect">
+          Du wirst in 5 Sekunden automatisch weitergeleitet...
+        </p>
+        <div class="button-group" style="justify-content: center;">
+          <a class="button button-primary" href="index.html" data-i18n="thanks_home">Zurück zur Startseite</a>
+          <a class="button button-ghost" href="leistungen.html" data-i18n="thanks_services">Unsere Leistungen</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div>
+        <p class="footer-brand">MASE</p>
+        <p class="footer-desc" data-i18n="footer_desc">Professionelle Websites &amp; KI-Integration aus der Schweiz.</p>
+      </div>
+      <div>
+        <p class="footer-title" data-i18n="footer_nav">Navigation</p>
+        <a href="index.html" data-i18n="nav_home">Home</a>
+        <a href="leistungen.html" data-i18n="nav_services">Leistungen</a>
+        <a href="preise.html" data-i18n="nav_prices">Preise</a>
+        <a href="ki-assistent.html" data-i18n="nav_ai">KI Assistent</a>
+      </div>
+      <div>
+        <p class="footer-title" data-i18n="footer_contact">Kontakt</p>
+        <a href="kontakt.html" data-i18n="footer_contact_form">Kontaktformular</a>
+        <a href="ueber-uns.html" data-i18n="nav_about">Über uns</a>
+      </div>
+      <div>
+        <p class="footer-title" data-i18n="footer_legal">Rechtliches</p>
+        <a href="impressum.html" data-i18n="footer_impressum">Impressum</a>
+        <a href="datenschutz.html" data-i18n="footer_privacy">Datenschutz</a>
+      </div>
+    </div>
+    <div class="container footer-bottom">
+      <p>Copyright <span id="year"></span> MASESites AG. <span data-i18n="footer_copy">Alle Rechte vorbehalten.</span></p>
+    </div>
+  </footer>
+</body>
+</html>
+
+
+
+

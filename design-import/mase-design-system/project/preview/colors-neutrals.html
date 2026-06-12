@@ -1,0 +1,34 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><link rel="stylesheet" href="_base.css"></head>
+<body>
+<style>
+  .ramp { display: grid; grid-template-columns: repeat(8, 1fr); gap: 8px; }
+  .swatch { border-radius: 10px; overflow: hidden; border: 1px solid var(--line); background: #fff; }
+  .chip { height: 56px; }
+  .meta { padding: 6px 8px; }
+  .name { font-size: 11px; font-weight: 600; color: var(--fg-1); }
+  .hex { font-family: var(--font-mono); font-size: 10px; color: var(--fg-3); margin-top: 2px; }
+  .sub { font-size: 13px; color: var(--fg-3); margin-top: 4px; }
+</style>
+<div class="card-grid">
+  <div class="ramp">
+    <div class="swatch"><div class="chip" style="background:#ffffff;border-right:1px solid var(--line)"></div><div class="meta"><div class="name">White</div><div class="hex">#ffffff</div></div></div>
+    <div class="swatch"><div class="chip" style="background:#f8fbff"></div><div class="meta"><div class="name">Surface 3</div><div class="hex">#f8fbff</div></div></div>
+    <div class="swatch"><div class="chip" style="background:#f6f9ff"></div><div class="meta"><div class="name">Surface</div><div class="hex">#f6f9ff</div></div></div>
+    <div class="swatch"><div class="chip" style="background:#f8fafc"></div><div class="meta"><div class="name">Surface 2</div><div class="hex">#f8fafc</div></div></div>
+    <div class="swatch"><div class="chip" style="background:#d4d4d4"></div><div class="meta"><div class="name">Line</div><div class="hex">#d4d4d4</div></div></div>
+    <div class="swatch"><div class="chip" style="background:#666666"></div><div class="meta"><div class="name">Ink 500</div><div class="hex">#666666</div></div></div>
+    <div class="swatch"><div class="chip" style="background:#475569"></div><div class="meta"><div class="name">Slate soft</div><div class="hex">#475569</div></div></div>
+    <div class="swatch"><div class="chip" style="background:#404040"></div><div class="meta"><div class="name">Ink 600</div><div class="hex">#404040</div></div></div>
+    <div class="swatch"><div class="chip" style="background:#1a1a1a"></div><div class="meta"><div class="name">Ink 700</div><div class="hex">#1a1a1a</div></div></div>
+    <div class="swatch"><div class="chip" style="background:#0a0e27"></div><div class="meta"><div class="name">Ink 800 · footer</div><div class="hex">#0a0e27</div></div></div>
+    <div class="swatch"><div class="chip" style="background:#000000"></div><div class="meta"><div class="name">Ink 900 · text</div><div class="hex">#000000</div></div></div>
+    <div class="swatch"><div class="chip" style="background:#0d1117"></div><div class="meta"><div class="name">Dark bg</div><div class="hex">#0d1117</div></div></div>
+    <div class="swatch"><div class="chip" style="background:#1a1f2e"></div><div class="meta"><div class="name">Dark surf</div><div class="hex">#1a1f2e</div></div></div>
+    <div class="swatch"><div class="chip" style="background:#404854"></div><div class="meta"><div class="name">Dark line</div><div class="hex">#404854</div></div></div>
+    <div class="swatch"><div class="chip" style="background:#cbd5e0"></div><div class="meta"><div class="name">Dark fg-3</div><div class="hex">#cbd5e0</div></div></div>
+    <div class="swatch"><div class="chip" style="background:#e2e8f0"></div><div class="meta"><div class="name">Dark fg-2</div><div class="hex">#e2e8f0</div></div></div>
+  </div>
+  <p class="sub">Light theme leads with white + cool off-white bands. Dark theme drops to <code style="font-family:var(--font-mono);font-size:12px">#0d1117</code> with surface <code style="font-family:var(--font-mono);font-size:12px">#1a1f2e</code>.</p>
+</div>
+</body></html>

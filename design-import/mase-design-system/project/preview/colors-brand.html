@@ -1,0 +1,38 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><link rel="stylesheet" href="_base.css"></head>
+<body>
+<style>
+  .swatch { display: grid; grid-template-rows: 70px auto; border-radius: 12px; overflow: hidden; border: 1px solid var(--line); }
+  .swatch .chip { width: 100%; height: 70px; }
+  .swatch .meta { padding: 8px 10px; background: #fff; }
+  .swatch .name { font-size: 12px; font-weight: 600; color: var(--fg-1); }
+  .swatch .hex { font-family: var(--font-mono); font-size: 11px; color: var(--fg-3); margin-top: 2px; }
+  .grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
+  .cta-row { display: flex; gap: 12px; align-items: center; }
+  .cta-pill {
+    display: inline-flex; align-items: center; padding: 12px 22px; border-radius: 999px;
+    color: white; font-weight: 700; font-size: 14px;
+    background: linear-gradient(135deg, #0f766e 0%, #0b5f58 100%);
+    box-shadow: 0 14px 26px rgba(15, 118, 110, 0.22);
+  }
+  .note { font-size: 12px; color: var(--fg-3); line-height: 1.45; max-width: 56ch; }
+</style>
+<div class="card-grid">
+  <div class="cta-row">
+    <span class="cta-pill">Projekt starten</span>
+    <p class="note">Primary CTAs use the deep-teal gradient. Links, badges and focus rings use blue.</p>
+  </div>
+  <div class="grid">
+    <div class="swatch"><div class="chip" style="background:linear-gradient(135deg,#0f766e,#0b5f58)"></div><div class="meta"><div class="name">CTA Gradient</div><div class="hex">#0f766e → #0b5f58</div></div></div>
+    <div class="swatch"><div class="chip" style="background:#0f766e"></div><div class="meta"><div class="name">Teal 600</div><div class="hex">#0f766e</div></div></div>
+    <div class="swatch"><div class="chip" style="background:#0b5f58"></div><div class="meta"><div class="name">Teal 700</div><div class="hex">#0b5f58</div></div></div>
+    <div class="swatch"><div class="chip" style="background:#ecfdf5;border-right:1px solid #a7f3d0"></div><div class="meta"><div class="name">Teal 50</div><div class="hex">#ecfdf5</div></div></div>
+    <div class="swatch"><div class="chip" style="background:#a7f3d0"></div><div class="meta"><div class="name">Teal 100</div><div class="hex">#a7f3d0</div></div></div>
+    <div class="swatch"><div class="chip" style="background:#3a9bff"></div><div class="meta"><div class="name">Blue 400</div><div class="hex">#3a9bff</div></div></div>
+    <div class="swatch"><div class="chip" style="background:#0066cc"></div><div class="meta"><div class="name">Blue 600 · accent</div><div class="hex">#0066cc</div></div></div>
+    <div class="swatch"><div class="chip" style="background:#0051ba"></div><div class="meta"><div class="name">Blue 700 · strong</div><div class="hex">#0051ba</div></div></div>
+    <div class="swatch"><div class="chip" style="background:#003d82"></div><div class="meta"><div class="name">Blue 800 · hover</div><div class="hex">#003d82</div></div></div>
+    <div class="swatch"><div class="chip" style="background:rgba(0,102,204,0.12)"></div><div class="meta"><div class="name">Blue soft</div><div class="hex">rgba(0,102,204,.12)</div></div></div>
+  </div>
+</div>
+</body></html>

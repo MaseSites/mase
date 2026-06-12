@@ -1,0 +1,45 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><link rel="stylesheet" href="_base.css"></head>
+<body>
+<style>
+  .row { display: grid; grid-template-columns: 90px 1fr 90px; align-items: baseline; gap: 16px; padding: 10px 0; border-bottom: 1px dashed var(--line); }
+  .row:last-child { border-bottom: 0; }
+  .row .label { font-size: 11px; font-weight: 600; color: var(--fg-4); text-transform: uppercase; letter-spacing: 0.08em; }
+  .row .size { font-family: var(--font-mono); font-size: 11px; color: var(--fg-3); text-align: right; }
+  .eyebrow-spec {
+    text-transform: uppercase; letter-spacing: 0.18em; font-size: 0.75rem;
+    font-weight: 600; color: #0051ba;
+  }
+  .lead-spec { font-size: 1.1rem; color: var(--fg-1); line-height: 1.6; }
+  .body-spec { font-size: 1rem; color: var(--fg-1); line-height: 1.6; }
+  .small-spec { font-size: 0.875rem; color: var(--fg-3); }
+  .mono-spec { font-family: var(--font-mono); font-size: 0.92em; color: var(--fg-2); background: #f8fafc; padding: 2px 6px; border-radius: 4px; }
+</style>
+<div class="card-grid">
+  <div class="row">
+    <div class="label">Eyebrow</div>
+    <div class="eyebrow-spec">Matteo &amp; Severin · MASESites AG</div>
+    <div class="size">0.75rem · 600<br/>tracking 0.18em</div>
+  </div>
+  <div class="row">
+    <div class="label">Lead</div>
+    <div class="lead-spec">Professionelle Weblösungen und KI-Integration für moderne Unternehmen.</div>
+    <div class="size">1.1rem · 400<br/>line-height 1.6</div>
+  </div>
+  <div class="row">
+    <div class="label">Body</div>
+    <div class="body-spec">Wir analysieren dein Business, deine Zielgruppe und den Wettbewerb. Klare Ziele, klarer Plan.</div>
+    <div class="size">1rem · 400<br/>line-height 1.6</div>
+  </div>
+  <div class="row">
+    <div class="label">Small</div>
+    <div class="small-spec">Setup ab CHF 200 · CHF 40 / Monat</div>
+    <div class="size">0.875rem · 400</div>
+  </div>
+  <div class="row">
+    <div class="label">Mono</div>
+    <div><span class="mono-spec">const payload = sanitizeContactForm(formData);</span></div>
+    <div class="size">JetBrains Mono → sys-mono fallback</div>
+  </div>
+</div>
+</body></html>

@@ -1,0 +1,353 @@
+<!doctype html>
+<html lang="de-CH">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>KI-Assistent für Websites | 24/7 Kundenberatung – MASESites AG</title>
+  <meta name="description" content="KI-Assistent für deine Website: automatische Kundenberatung, Lead-Qualifizierung und FAQ-Beantwortung – 24 Stunden, 7 Tage. Integration ab CHF 200.">
+  <meta name="robots" content="index, follow">
+  <meta name="keywords" content="KI-Assistent Website, Chatbot Website Schweiz, KI Kundenberatung, Lead Qualifizierung automatisch, KI-Chat Integration, AI Assistent Website, MASESites KI, Chatbot einbinden">
+  <meta property="og:title" content="KI-Assistent für Websites – MASESites AG">
+  <meta property="og:description" content="Automatische Kundenberatung und Lead-Qualifizierung per KI-Assistent. 24/7 verfügbar. Integration ab CHF 200.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://www.masesites.ch/ki-assistent">
+  <meta property="og:locale" content="de_CH">
+  <meta property="og:site_name" content="MASESites AG">
+  <link rel="canonical" href="https://www.masesites.ch/ki-assistent">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "KI-Assistent für Websites",
+    "applicationCategory": "BusinessApplication",
+    "description": "KI-Assistent für automatische Kundenberatung, Lead-Qualifizierung und FAQ auf Websites",
+    "offers": {
+      "@type": "Offer",
+      "price": "200",
+      "priceCurrency": "CHF"
+    },
+    "provider": {
+      "@type": "Organization",
+      "name": "MASESites AG",
+      "url": "https://www.masesites.ch"
+    }
+  }
+  </script>
+
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="stylesheet" href="/styles.css?v=20260327">
+  <link rel="stylesheet" href="/ai-assistant.css?v=20260327">
+  <script>
+    (function () {
+      var t = localStorage.getItem('theme');
+      if (t === 'dark') document.documentElement.classList.add('dark');
+
+      var q = null;
+      try { q = new URLSearchParams(window.location.search).get('lang'); } catch (_) {}
+      var s = localStorage.getItem('lang');
+      var lang = ['de', 'en', 'fr'].indexOf(q) !== -1 ? q : (['de', 'en', 'fr'].indexOf(s) !== -1 ? s : 'de');
+      localStorage.setItem('lang', lang);
+      document.documentElement.lang = (lang === 'de' ? 'de-CH' : 'en');
+    })();
+  </script>
+  <script defer src="/theme.js?v=20260327"></script>
+  <script defer src="/script.js?v=20260327"></script>
+  <script defer src="/ai-assistant.js?v=20260327"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main" data-i18n="skip_to_content">Zum Inhalt springen</a>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="logo" href="index.html">
+        MASE
+      </a>
+
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
+        <span class="sr-only" data-i18n="nav_toggle">Navigation öffnen</span>
+        <span class="nav-toggle-bar"></span>
+        <span class="nav-toggle-bar"></span>
+      </button>
+
+      <nav class="site-nav" id="site-nav">
+        <a href="index.html" data-i18n="nav_home">Home</a>
+        <a href="leistungen.html" data-i18n="nav_services">Leistungen</a>
+        <a href="preise.html" data-i18n="nav_prices">Preise</a>
+        <a href="ki-assistent.html" class="nav-active" data-i18n="nav_ai">KI Assistent</a>
+        <a href="ueber-uns.html" data-i18n="nav_about">Über uns</a>
+        <a href="kontakt.html" data-i18n="nav_contact">Kontakt</a>
+        <a class="button button-primary button-small" href="kontakt.html" data-i18n="nav_cta">Kostenloses Erstgespräch</a>
+
+      </nav>
+      <!-- Controls: Language + Dark Mode -->
+      <div class="header-controls">
+        <div class="lang-switcher" id="lang-switcher">
+          <button class="lang-btn" id="lang-btn" aria-haspopup="true" aria-expanded="false" aria-label="Sprache wählen" data-i18n-aria-label="lang_select_aria">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+            <span id="lang-current">DE</span>
+          </button>
+          <div class="lang-dropdown" id="lang-dropdown">
+            <button class="lang-option active" data-lang="de">🇩🇪 Deutsch</button>
+            <button class="lang-option" data-lang="en">🇬🇧 English</button>
+          </div>
+        </div>
+        <button class="dark-toggle" id="dark-toggle" aria-label="Dark Mode umschalten" data-i18n-aria-label="theme_toggle_aria">
+          <span class="dark-toggle-icon" id="dark-toggle-icon">🌙</span>
+          <span class="dark-toggle-track"><span class="dark-toggle-thumb"></span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="page-hero">
+      <div class="container page-hero-inner" data-reveal>
+        <h1 data-i18n="ai_page_hero_title">Dein digitaler Mitarbeiter – 24/7</h1>
+        <p class="lead" data-i18n="ai_page_hero_lead">
+          Automatische Kundenberatung, Lead-Qualifizierung und FAQ-Support –
+          rund um die Uhr verfügbar.
+        </p>
+      </div>
+    </section>
+
+    <!-- Was er kann -->
+    <section class="section-clean">
+      <div class="container">
+        <div class="ai-grid ai-grid-top">
+          <div class="ai-copy" data-reveal>
+            <h2 data-i18n="ai_page_capabilities_title">Was der KI-Assistent kann</h2>
+            <ul class="service-list service-list-spaced" data-i18n-html="ai_page_capabilities_list_html">
+              <li><strong>Kundenfragen beantworten:</strong> FAQ, Produkte, Dienstleistungen – sofort und präzise</li>
+              <li><strong>Leads sammeln:</strong> Kontaktdaten erfassen und vorqualifizieren</li>
+              <li><strong>Termine vorbereiten:</strong> Informationen sammeln für effiziente Calls</li>
+              <li><strong>Produkte erklären:</strong> Features, Preise, Vorteile – automatisch</li>
+              <li><strong>Support entlasten:</strong> Häufige Fragen automatisch beantworten</li>
+            </ul>
+            <p class="ai-note" data-i18n-html="ai_page_trainable_html">
+              <strong>Individuell trainierbar:</strong> Wir füttern den Assistenten mit deinen Inhalten –
+              PDFs, FAQs, Produktbeschreibungen, Website-Texten.
+            </p>
+          </div>
+
+          <div class="ai-demo" data-reveal>
+            <div class="chat-widget">
+              <div class="chat-header">
+                <span class="chat-dot"></span>
+                <p data-i18n="ai_page_demo_header">MASESites KI-Assistent</p>
+              </div>
+              <div class="chat-body">
+                <div class="chat-message bot" data-i18n="ai_page_demo_bot_1">
+                  Hallo! Wie kann ich dir helfen?
+                </div>
+                <div class="chat-message user" data-i18n="ai_page_demo_user_1">
+                  Was kostet eine Website?
+                </div>
+                <div class="chat-message bot" data-i18n="ai_page_demo_bot_2">
+                  Ab CHF 750 für eine Landingpage. Business-Websites ab CHF 1'300. Soll ich dir mehr erklären?
+                </div>
+                <div class="chat-message user" data-i18n="ai_page_demo_user_2">
+                  Ja, was ist im Preis enthalten?
+                </div>
+                <div class="chat-message bot" data-i18n="ai_page_demo_bot_3">
+                  Design, Entwicklung, Performance-Optimierung, SEO-Basis und Kontaktformular.
+                  Finale Offerte nach kurzem Call.
+                </div>
+              </div>
+              <div class="chat-input">
+                <span data-i18n="ai_page_demo_input">Nachricht schreiben...</span>
+                <span class="chat-send" data-i18n="ai_page_demo_send">Senden</span>
+              </div>
+            </div>
+            <p class="ai-demo-note" data-i18n-html="ai_page_demo_note_html">
+              <strong>Hinweis:</strong> Dies ist eine Demo-Vorschau für typische Gespräche.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Für wen geeignet -->
+    <section class="section-soft section-clean">
+      <div class="container" data-reveal>
+        <h2 class="section-title-centered" data-i18n="ai_page_audience_title">Für wen ist der KI-Assistent geeignet?</h2>
+        <div class="trust-grid">
+          <article class="trust-card">
+            <h3 data-i18n="ai_page_audience_kmu_title">KMU & Dienstleister</h3>
+            <p data-i18n="ai_page_audience_kmu_desc">Beantworte Anfragen automatisch, auch außerhalb der Geschäftszeiten. Mehr Leads, weniger Aufwand.</p>
+          </article>
+          <article class="trust-card">
+            <h3 data-i18n="ai_page_audience_shop_title">Online Shops</h3>
+            <p data-i18n="ai_page_audience_shop_desc">Produktberatung, Größentabellen, Versandinfos – der Assistent erklärt alles und steigert die Conversion.</p>
+          </article>
+          <article class="trust-card">
+            <h3 data-i18n="ai_page_audience_coach_title">Coaches & Berater</h3>
+            <p data-i18n="ai_page_audience_coach_desc">Qualifiziere Interessenten vor dem ersten Call. Spare Zeit und fokussiere dich auf qualifizierte Leads.</p>
+          </article>
+          <article class="trust-card">
+            <h3 data-i18n="ai_page_audience_startup_title">Startups</h3>
+            <p data-i18n="ai_page_audience_startup_desc">Professioneller Support ohne großes Team. Skalierbar und kosteneffizient.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Vorteile -->
+    <section class="section-clean">
+      <div class="container" data-reveal>
+        <h2 class="section-title-centered" data-i18n="ai_page_benefits_title">Warum ein KI-Assistent?</h2>
+        <div class="service-detail service-detail-compact">
+          <div class="service-detail-content">
+            <h3 data-i18n="ai_page_benefits_subtitle">Mehr Leads, weniger Aufwand</h3>
+            <ul class="service-list" data-i18n-html="ai_page_benefits_list_html">
+              <li><strong>24/7 verfügbar:</strong> Auch nachts und am Wochenende</li>
+              <li><strong>Sofortige Antworten:</strong> Keine Wartezeiten für Kunden</li>
+              <li><strong>Automatische Qualifizierung:</strong> Vorqualifizierte Leads für dein Team</li>
+              <li><strong>Support-Entlastung:</strong> Weniger repetitive Anfragen</li>
+              <li><strong>Höhere Conversion:</strong> Kunden bekommen schnell Antworten</li>
+            </ul>
+          </div>
+          <div class="service-detail-visual">
+            <div class="metrics-card">
+              <h3>Performance</h3>
+              <div class="metric">
+                <span class="metric-label" data-i18n="ai_page_metric_response">Antwortzeit</span>
+                <span class="metric-value">&lt; 2s</span>
+              </div>
+              <div class="metric">
+                <span class="metric-label" data-i18n="ai_page_metric_uptime">Verfügbarkeit</span>
+                <span class="metric-value">24/7</span>
+              </div>
+              <div class="metric">
+                <span class="metric-label" data-i18n="ai_page_metric_lead">Lead-Rate</span>
+                <span class="metric-value">+35%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Preise -->
+    <section class="ai-pricing-hero section-clean">
+      <div class="container ai-pricing-wrap" data-reveal>
+        <h2 data-i18n="ai_page_pricing_title">Preise & Integration</h2>
+        <div class="ai-pricing-card-wrap">
+          <div class="pricing-addon pricing-addon-flat">
+            <div class="pricing-addon-visual">
+              <div class="chat-widget-mini">
+                <div class="chat-header-mini">
+                  <span class="chat-dot-mini"></span>
+                  <p data-i18n="ai_page_pricing_widget_title">KI-Assistent</p>
+                </div>
+                <div class="chat-body-mini">
+                  <div class="chat-message-mini bot" data-i18n="ai_page_pricing_chat_bot">Hallo! Wie kann ich helfen?</div>
+                  <div class="chat-message-mini user" data-i18n="ai_page_pricing_chat_user">Wie kann ich helfen?</div>
+                  <div class="chat-message-mini bot" data-i18n="ai_page_pricing_chat_reply">Gerne! Was möchtest du wissen?</div>
+                </div>
+              </div>
+            </div>
+
+            <h3 class="pricing-addon-title ai-pricing-card-title" data-i18n="ai_page_pricing_card_title">KI-Assistent Integration</h3>
+            <p class="pricing-addon-desc" data-i18n="ai_page_pricing_card_desc">Komplett Setup, Training mit deinen Inhalten und Integration in deine Website.</p>
+            <p class="pricing-addon-price">CHF 200 <span class="pricing-addon-monthly">+ CHF 40 / Monat</span></p>
+
+            <p class="ai-pricing-note" data-i18n="ai_page_pricing_note">
+              Als Add-on zu jeder Website oder als separate Integration in bestehende Seiten.
+            </p>
+          </div>
+        </div>
+
+        <div class="ai-pricing-cta-wrap">
+          <a class="button button-primary" href="kontakt.html" data-i18n="ai_page_pricing_cta">KI-Assistent anfragen</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="section-clean">
+      <div class="container" data-reveal>
+        <h2 class="section-title-centered" data-i18n="ai_page_faq_title">Häufige Fragen</h2>
+        <div class="faq faq-centered">
+          <details>
+            <summary data-i18n="ai_page_faq_q1">Wie wird der KI-Assistent trainiert?</summary>
+            <p data-i18n="ai_page_faq_a1">Wir füttern ihn mit deinen Inhalten: FAQs, Produktbeschreibungen, PDFs, Website-Texten. Er lernt dein Business kennen.</p>
+          </details>
+          <details>
+            <summary data-i18n="ai_page_faq_q2">Kann er auch komplexe Fragen beantworten?</summary>
+            <p data-i18n="ai_page_faq_a2">Ja! Er kann auf Basis deiner Inhalte detaillierte Antworten geben. Bei sehr spezifischen Fragen leitet er an dein Team weiter.</p>
+          </details>
+          <details>
+            <summary data-i18n="ai_page_faq_q3">Funktioniert er in mehreren Sprachen?</summary>
+            <p data-i18n="ai_page_faq_a3">Ja, Deutsch, Englisch, Französisch und weitere Sprachen sind möglich.</p>
+          </details>
+          <details>
+            <summary data-i18n="ai_page_faq_q4">Kann ich später Inhalte aktualisieren?</summary>
+            <p data-i18n="ai_page_faq_a4">Ja! Du kannst uns jederzeit neue Inhalte schicken, und wir trainieren den Assistenten nach.</p>
+          </details>
+          <details>
+            <summary data-i18n="ai_page_faq_q5">Was passiert mit den Daten?</summary>
+            <p data-i18n="ai_page_faq_a5">Alle Daten werden DSGVO-konform verarbeitet. Keine Weitergabe an Dritte.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- Live-Test CTA -->
+    <section class="section-soft section-cta-clean">
+      <div class="container" data-reveal>
+        <h2 data-i18n="ai_page_live_title">Teste den KI-Assistenten jetzt live!</h2>
+        <p class="lead section-lead-centered" data-i18n="ai_page_live_lead">
+          Klicke unten rechts auf den Chat-Button und stelle dem KI-Assistenten deine Fragen.
+        </p>
+        <p class="section-subtext-centered" data-i18n="ai_page_live_desc">
+          Du siehst sofort, wie er funktioniert und wie er dein Business unterstützen kann.
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div>
+        <p class="footer-brand">MASE</p>
+        <p class="footer-desc" data-i18n="footer_desc">Professionelle Websites &amp; KI-Integration aus der Schweiz.</p>
+      </div>
+      <div>
+        <p class="footer-title" data-i18n="footer_nav">Navigation</p>
+        <a href="index.html" data-i18n="nav_home">Home</a>
+        <a href="leistungen.html" data-i18n="nav_services">Leistungen</a>
+        <a href="preise.html" data-i18n="nav_prices">Preise</a>
+        <a href="ki-assistent.html" data-i18n="nav_ai">KI Assistent</a>
+      </div>
+      <div>
+        <p class="footer-title" data-i18n="footer_contact">Kontakt</p>
+        <a href="kontakt.html" data-i18n="footer_contact_form">Kontaktformular</a>
+        <a href="ueber-uns.html" data-i18n="nav_about">Über uns</a>
+      </div>
+      <div>
+        <p class="footer-title" data-i18n="footer_legal">Rechtliches</p>
+        <a href="impressum.html" data-i18n="footer_impressum">Impressum</a>
+        <a href="datenschutz.html" data-i18n="footer_privacy">Datenschutz</a>
+      </div>
+    </div>
+    <div class="container footer-bottom">
+      <p>Copyright <span id="year"></span> MASESites AG. <span data-i18n="footer_copy">Alle Rechte vorbehalten.</span></p>
+    </div>
+  </footer>
+
+  <!-- Dark Mode Wave Overlay -->
+  <div id="dark-wave" aria-hidden="true">
+    <canvas id="dark-wave-canvas"></canvas>
+  </div>
+
+    <button class="back-to-top" id="back-to-top" aria-label="Zurück nach oben">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <polyline points="18 15 12 9 6 15"></polyline>
+    </svg>
+  </button>
+</body>
+</html>
+
+
+
+

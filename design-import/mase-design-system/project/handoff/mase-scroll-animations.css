@@ -1,0 +1,207 @@
+/* =============================================================
+   MASE — Scroll Animations (Vanilla, drop-in v2)
+   Erweiterung zum ersten Bundle. Macht die Seite fröhlicher und
+   lebendiger durch scroll-getriebene Effekte.
+   Bindet sich an eure existierenden Klassen aus styles.css.
+   ============================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .mase-parallax,
+  .mase-float-anim,
+  .mase-bob,
+  .mase-particles,
+  .mase-bg-shift,
+  .mase-process-line,
+  .mase-mask-reveal { animation: none !important; transform: none !important; transition: none !important; }
+}
+
+/* -----------------------------------------------------------
+   1. Parallax — Elemente bewegen sich mit Scroll
+   ----------------------------------------------------------- */
+.mase-parallax { will-change: transform; transition: transform 80ms linear; }
+
+/* Hero-Mesh-Blobs bekommen Parallax — Mesh muss aus mase-animations.css
+   bereits geladen sein. */
+.mase-hero-mesh .mase-blob { will-change: transform; }
+
+/* -----------------------------------------------------------
+   2. Schwebe-Dekorationen — schwebende Punkte hinter Sektionen
+   ----------------------------------------------------------- */
+.mase-particles {
+  position: absolute; inset: 0; overflow: hidden;
+  pointer-events: none; z-index: 0;
+}
+.mase-particles__dot {
+  position: absolute; bottom: -40px;
+  width: 8px; height: 8px; border-radius: 50%;
+  opacity: 0.0;
+  animation: mase-float-up var(--dur, 14s) linear infinite;
+  animation-delay: var(--delay, 0s);
+}
+.mase-particles__dot.c1 { background: radial-gradient(circle, rgba(15,118,110,0.5), transparent 70%); }
+.mase-particles__dot.c2 { background: radial-gradient(circle, rgba(102,182,255,0.45), transparent 70%); }
+.mase-particles__dot.c3 { background: radial-gradient(circle, rgba(167,243,208,0.55), transparent 70%); }
+.mase-particles__dot.big   { width: 14px; height: 14px; filter: blur(2px); }
+.mase-particles__dot.small { width: 5px;  height: 5px;  }
+
+@keyframes mase-float-up {
+  0%   { transform: translate3d(0,  20px, 0)  scale(0.6); opacity: 0; }
+  10%  {                                                  opacity: 0.85; }
+  50%  { transform: translate3d(40px, -50vh, 0) scale(1); }
+  90%  { opacity: 0.4; }
+  100% { transform: translate3d(-30px, -110vh, 0) scale(0.5); opacity: 0; }
+}
+
+/* Sektionen die Particles tragen können — vorhandene Klassen nicht ändern,
+   nur position: relative sicherstellen */
+.hero, .ai, .trust, .process, .pricing-teaser { position: relative; }
+.hero > .container,
+.ai > .container,
+.trust > .container,
+.process > .container,
+.pricing-teaser > .container { position: relative; z-index: 2; }
+
+/* -----------------------------------------------------------
+   3. Process — verbindende Linie zeichnet sich beim Scroll
+   ----------------------------------------------------------- */
+.mase-process-line-wrap {
+  position: absolute; left: 0; right: 0; top: 50%;
+  height: 4px; pointer-events: none; transform: translateY(-50%);
+  z-index: 1; padding: 0 8%;
+}
+.mase-process-line-wrap svg { width: 100%; height: 100%; overflow: visible; }
+.mase-process-line {
+  fill: none; stroke: url(#mase-line-grad);
+  stroke-width: 3; stroke-linecap: round; stroke-dasharray: 1 1;
+  /* dash-array wird per JS gesetzt auf totale Länge */
+  filter: drop-shadow(0 2px 6px rgba(15,118,110,0.3));
+}
+@media (max-width: 900px) { .mase-process-line-wrap { display: none; } }
+
+/* Process-Steps bekommen einen kleinen Bounce wenn sie reinscrollen */
+.process-grid.mase-stagger.is-visible .process-step {
+  animation: mase-stepBounce 700ms cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+.process-grid.mase-stagger.is-visible .process-step:nth-child(1) { animation-delay: 80ms;  }
+.process-grid.mase-stagger.is-visible .process-step:nth-child(2) { animation-delay: 200ms; }
+.process-grid.mase-stagger.is-visible .process-step:nth-child(3) { animation-delay: 320ms; }
+.process-grid.mase-stagger.is-visible .process-step:nth-child(4) { animation-delay: 440ms; }
+.process-grid.mase-stagger.is-visible .process-step:nth-child(5) { animation-delay: 560ms; }
+@keyframes mase-stepBounce {
+  0%   { opacity: 0; transform: translateY(28px) scale(0.92); }
+  60%  { opacity: 1; transform: translateY(-6px) scale(1.04); }
+  100% { opacity: 1; transform: translateY(0)    scale(1);    }
+}
+
+/* -----------------------------------------------------------
+   4. Counter-Pop — kurzer Pop wenn Zahl beim Scroll landet
+   ----------------------------------------------------------- */
+.mase-counter-pop { animation: mase-counterPop 380ms cubic-bezier(0.22,1,0.36,1); }
+@keyframes mase-counterPop {
+  0%   { transform: scale(1); }
+  60%  { transform: scale(1.08); }
+  100% { transform: scale(1); }
+}
+
+/* -----------------------------------------------------------
+   5. Mask-Sweep-Reveal — Alternative zum Fade für Bilder/Cards
+   ----------------------------------------------------------- */
+[data-reveal="sweep"] {
+  -webkit-clip-path: inset(0 100% 0 0);
+          clip-path: inset(0 100% 0 0);
+  transition: clip-path 900ms cubic-bezier(0.7, 0, 0.3, 1),
+              -webkit-clip-path 900ms cubic-bezier(0.7, 0, 0.3, 1);
+}
+[data-reveal="sweep"].is-visible {
+  -webkit-clip-path: inset(0 0 0 0);
+          clip-path: inset(0 0 0 0);
+}
+
+/* -----------------------------------------------------------
+   6. Sanfter Background-Color-Shift beim Scrollen
+   ----------------------------------------------------------- */
+body { transition: background-color 400ms ease; }
+.mase-bg-shift body { /* nur falls aktiviert */ }
+
+/* -----------------------------------------------------------
+   7. Idle-Bob — Badges schweben sanft (Fröhlichkeit!)
+   ----------------------------------------------------------- */
+.hero-badges .badge {
+  animation: mase-bob 4.2s ease-in-out infinite;
+}
+.hero-badges .badge:nth-child(2) { animation-delay: 0.6s; }
+.hero-badges .badge:nth-child(3) { animation-delay: 1.2s; }
+@keyframes mase-bob {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-4px); }
+}
+
+/* Trust-Pills auf Benefit-Card auch */
+.hero-benefit-trust-item {
+  animation: mase-bob 5s ease-in-out infinite;
+}
+.hero-benefit-trust-item:nth-child(2) { animation-delay: 0.5s; }
+.hero-benefit-trust-item:nth-child(3) { animation-delay: 1s; }
+
+/* Check-Häkchen wackeln einmal beim Reveal */
+.hero-benefit-card.is-visible .hero-benefit-check,
+[data-reveal].is-visible .hero-benefit-check {
+  animation: mase-check 600ms cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+.hero-benefit-card.is-visible .hero-benefit-item:nth-child(1) .hero-benefit-check { animation-delay: 0.2s; }
+.hero-benefit-card.is-visible .hero-benefit-item:nth-child(2) .hero-benefit-check { animation-delay: 0.35s; }
+.hero-benefit-card.is-visible .hero-benefit-item:nth-child(3) .hero-benefit-check { animation-delay: 0.5s; }
+@keyframes mase-check {
+  0%   { transform: scale(0) rotate(-90deg); }
+  60%  { transform: scale(1.25) rotate(0deg); }
+  100% { transform: scale(1) rotate(0deg); }
+}
+
+/* -----------------------------------------------------------
+   8. Trust-Card — leichter Kipp-Effekt beim Hover (Fröhlichkeit)
+   ----------------------------------------------------------- */
+.trust-card {
+  transition: transform 320ms cubic-bezier(0.34, 1.56, 0.64, 1),
+              box-shadow 320ms ease;
+}
+.trust-card:hover {
+  transform: translateY(-6px) rotate(-0.6deg);
+}
+.trust-card:nth-child(2n):hover { transform: translateY(-6px) rotate(0.6deg); }
+
+/* -----------------------------------------------------------
+   9. Konfetti-Burst — beim Klick auf Primary-CTA
+   ----------------------------------------------------------- */
+.mase-confetti-host {
+  position: fixed; inset: 0; pointer-events: none;
+  z-index: 9997; overflow: hidden;
+}
+.mase-confetti {
+  position: absolute; top: 0; left: 0;
+  width: 10px; height: 14px; border-radius: 2px;
+  will-change: transform, opacity;
+}
+.mase-confetti.c-teal  { background: linear-gradient(135deg, #0f766e, #0b5f58); }
+.mase-confetti.c-blue  { background: linear-gradient(135deg, #66b6ff, #0066cc); }
+.mase-confetti.c-mint  { background: linear-gradient(135deg, #a7f3d0, #6ee7b7); }
+.mase-confetti.c-white { background: #fff; border: 1px solid rgba(0,0,0,0.06); }
+
+/* -----------------------------------------------------------
+  10. Section-Wave-Divider zwischen Sektionen
+       Nutzt vorhandene Sektion-Hintergrundwechsel.
+       Greift, wenn ihr ein Wrapper-Div mit data-mase-wave
+       direkt vor der Sektion platziert (optional).
+   ----------------------------------------------------------- */
+[data-mase-wave] {
+  position: relative; display: block;
+  height: 60px; margin-bottom: -1px; line-height: 0;
+}
+[data-mase-wave] svg { width: 100%; height: 100%; display: block; }
+
+/* -----------------------------------------------------------
+  11. Velocity-Marquee — bestehende Marquee reagiert auf Scroll-Geschwindigkeit
+   ----------------------------------------------------------- */
+.mase-marquee__track {
+  /* JS setzt --mase-marquee-speed runter, wenn schnell gescrollt wird */
+  animation-duration: var(--mase-marquee-speed, 32s) !important;
+}
