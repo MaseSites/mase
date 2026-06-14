@@ -318,7 +318,14 @@ strong { font-weight: 600; }
 .site-nav > a.nav-active { color: var(--blue); border-bottom-color: var(--blue); }
 .site-nav > a.button { border-bottom: 1px solid transparent; }
 .site-nav > a.button:hover { border-bottom-color: transparent; }
-.site-nav > a.button-primary { color: #fff; }
+.site-nav > a.button-primary {
+  color: #fff;
+  padding: 0.52rem 1.3rem;
+  font-size: 0.88rem;
+  border-radius: 100px;
+  margin-left: 0.4rem;
+  letter-spacing: 0.025em;
+}
 .site-nav > a.button-primary:hover { color: #fff; }
 .site-nav > a.button-ghost,
 .site-nav > a.button-secondary { color: var(--ink); }
