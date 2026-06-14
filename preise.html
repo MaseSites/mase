@@ -7,242 +7,247 @@
   <meta name="description" content="Transparente Preise für Webdesign, Website-Erstellung und KI-Assistent in der Schweiz. Pakete ab CHF 250. Modular kombinierbar.">
   <meta name="robots" content="index, follow">
   <meta property="og:title" content="Preise | Website ab CHF 750 – MASESites">
-  <meta property="og:description" content="Stelle dein Paket selbst zusammen. Ab CHF 250. Modular und kombinierbar.">
+  <meta property="og:description" content="Stellen Sie Ihr Paket selbst zusammen. Ab CHF 250. Modular und kombinierbar.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://www.masesites.ch/preise">
   <link rel="canonical" href="https://www.masesites.ch/preise">
-  
+
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <link rel="icon" type="image/png" href="/favicon.png" sizes="32x32">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-  <link rel="stylesheet" href="/styles.css?v=20260529a">
-  <link rel="stylesheet" href="/ai-assistant.css?v=20260529a">
-  <link rel="stylesheet" href="/mase-animations.css?v=20260529a">
-  <link rel="stylesheet" href="/mase-scroll-animations.css?v=20260529a">
-  <link rel="stylesheet" href="/flair.css?v=20260517">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="/styles.css?v=20260612r">
+  <link rel="stylesheet" href="/ai-assistant.css?v=20260612r">
   <script>
     (function () {
-      var t = localStorage.getItem('theme');
-      if (t === 'dark') document.documentElement.classList.add('dark');
+      localStorage.setItem('theme', 'light');
+      document.documentElement.classList.remove('dark');
       var q = null;
       try { q = new URLSearchParams(window.location.search).get('lang'); } catch (_) {}
       var s = localStorage.getItem('lang');
-      var lang = ['de', 'en', 'fr'].indexOf(q) !== -1 ? q : (['de', 'en', 'fr'].indexOf(s) !== -1 ? s : 'de');
+      var lang = ['de', 'en'].indexOf(q) !== -1 ? q : (['de', 'en'].indexOf(s) !== -1 ? s : 'de');
       localStorage.setItem('lang', lang);
       document.documentElement.lang = (lang === 'de' ? 'de-CH' : 'en');
     })();
   </script>
-    <script src="/supabase-config.js"></script>
+  <script src="/supabase-config.js"></script>
   <script src="/tracker.js"></script>
-<script defer src="/theme.js?v=20260529a"></script>
-  <script defer src="/script.js?v=20260327"></script>
-  <script defer src="/ai-assistant.js?v=20260529e"></script>
-  <script defer src="/mase-animations.js?v=20260516"></script>
-  <script defer src="/mase-scroll-animations.js?v=20260529a"></script>
-  <script defer src="/flair.js?v=20260517"></script>
+  <script defer src="/theme.js?v=20260612r"></script>
+  <script defer src="/script.js?v=20260612r"></script>
+  <script defer src="/ai-assistant.js?v=20260612r"></script>
   <style>
-  /* ── Hero ── */
-  .preise-hero { background: linear-gradient(160deg,#f0faf8 0%,#f6f9ff 55%,#f0f4ff 100%); border-bottom:1px solid var(--line); }
-  .preise-hero-inner { text-align:center; max-width:720px; }
-  .preise-hero-inner h1 { margin-bottom:.6rem; }
-  .preise-hero-inner .lead { max-width:54ch; margin:0 auto 1.8rem; }
-  .preise-hero-stats { display:flex; justify-content:center; gap:2.5rem; flex-wrap:wrap; margin-bottom:.5rem; }
-  .phs { text-align:center; }
-  .phs strong { display:block; font-size:1.2rem; font-weight:800; color:#0f766e; }
-  .dark .phs strong { color:#34d399; }
-  .phs span { font-size:.75rem; color:var(--text-muted); letter-spacing:.04em; }
-
-  /* ── Builder intro ── */
-  .builder-intro { padding:3.5rem 0 0; }
-  .builder-intro-inner { text-align:center; max-width:600px; margin:0 auto; }
-  .builder-step-row { display:flex; justify-content:center; gap:2rem; margin-top:1.5rem; flex-wrap:wrap; }
-  .builder-step { display:flex; align-items:center; gap:.5rem; font-size:.82rem; color:var(--text-muted); }
-  .builder-step-num { width:22px; height:22px; border-radius:50%; background:linear-gradient(135deg,#0f766e,#0066cc); color:#fff; font-size:.68rem; font-weight:800; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
-
-  /* ── Section labels ── */
-  .pkg-section { padding:3rem 0; }
-  .pkg-section-header { display:flex; align-items:baseline; gap:1rem; margin-bottom:1.8rem; padding-bottom:.75rem; border-bottom:2px solid var(--line); }
-  .pkg-section-header h2 { margin:0; font-size:1.35rem; }
-  .pkg-section-header .pkg-section-note { font-size:.78rem; color:var(--text-muted); }
-  .pkg-section-tab { display:flex; gap:4px; background:rgba(0,0,0,.06); border-radius:999px; padding:3px; margin-left:auto; }
-  .dark .pkg-section-tab { background:rgba(255,255,255,.06); }
-  .pst-btn { padding:.35rem 1rem; border-radius:999px; border:none; background:transparent; font-size:.78rem; font-weight:600; cursor:pointer; color:var(--text-muted); transition:background 220ms,color 220ms; }
-  .pst-btn.active { background:white; color:var(--fg); box-shadow:0 1px 6px rgba(0,0,0,.12); }
-  .dark .pst-btn.active { background:#1a1f2e; }
-  .pkg-panel { display:none; }
-  .pkg-panel.active { display:block; }
-
-  /* ── Card grid ── */
-  .pc-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(255px,1fr)); gap:1.3rem; align-items:start; }
-  .pc-card {
-    background:white; border:1.5px solid var(--line); border-radius:var(--radius);
-    padding:1.8rem; position:relative; display:flex; flex-direction:column;
-    cursor:pointer; transition:transform 220ms ease, box-shadow 220ms ease, border-color 200ms ease;
-    animation:pcIn 400ms ease both;
+  /* ── Hero-Kennzahlen ── */
+  .preise-hero-inner { max-width: 760px; }
+  .preise-hero-stats {
+    display: flex;
+    gap: 0;
+    flex-wrap: wrap;
+    margin-top: 2.2rem;
+    border-top: 1px solid var(--line-strong);
+    border-bottom: 1px solid var(--line-strong);
   }
-  .pc-card:nth-child(1){animation-delay:0ms}
-  .pc-card:nth-child(2){animation-delay:90ms}
-  .pc-card:nth-child(3){animation-delay:180ms}
-  @keyframes pcIn{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
-  .pc-card:hover { transform:translateY(-3px); box-shadow:0 16px 40px rgba(15,23,42,.09); }
-  .pc-card--featured { border-color:transparent; background:linear-gradient(white,white) padding-box,linear-gradient(135deg,#0f766e,#0066cc) border-box; border-width:2px; box-shadow:0 16px 44px rgba(15,118,110,.14); }
-  .pc-card--featured:hover { box-shadow:0 24px 56px rgba(15,118,110,.22); }
-  .pc-card--selected { border-color:transparent !important; background:linear-gradient(white,white) padding-box,linear-gradient(135deg,#0f766e,#0066cc) border-box !important; border-width:2px !important; box-shadow:0 0 0 3px rgba(15,118,110,.12) !important; }
-  .dark .pc-card { background:#111926; border-color:rgba(255,255,255,.08); }
-  .dark .pc-card--featured,.dark .pc-card--selected { background:linear-gradient(#111926,#111926) padding-box,linear-gradient(135deg,#0f766e,#0066cc) border-box !important; }
+  .phs { padding: 1.1rem 1.8rem; border-left: 1px solid var(--line); }
+  .phs:first-child { border-left: none; padding-left: 0; }
+  .phs strong { display: block; font-size: 1.25rem; font-weight: 650; letter-spacing: -0.01em; color: var(--ink); font-variant-numeric: tabular-nums; }
+  .phs span { font-size: 0.76rem; color: var(--muted); letter-spacing: 0.12em; text-transform: uppercase; }
 
-  .pc-badge { position:absolute; top:-13px; left:50%; transform:translateX(-50%); background:linear-gradient(135deg,#0f766e,#0066cc); color:#fff; font-size:.67rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; padding:.27rem .9rem; border-radius:999px; white-space:nowrap; }
-  .pc-sel-badge { position:absolute; top:12px; right:12px; width:22px; height:22px; border-radius:50%; background:linear-gradient(135deg,#0f766e,#0066cc); color:#fff; display:flex; align-items:center; justify-content:center; font-size:.7rem; font-weight:800; opacity:0; transform:scale(0); transition:opacity 200ms,transform 250ms cubic-bezier(.34,1.56,.64,1); pointer-events:none; }
-  .pc-card--selected .pc-sel-badge { opacity:1; transform:scale(1); }
+  /* ── Einleitung ── */
+  .builder-intro { padding: 3rem 0 0; }
+  .builder-intro-inner { max-width: 640px; }
+  .builder-step-row { display: flex; gap: 2rem; margin-top: 1.4rem; flex-wrap: wrap; }
+  .builder-step { display: flex; align-items: center; gap: 0.6rem; font-size: 0.85rem; color: var(--ink-soft); }
+  .builder-step-num {
+    font-family: var(--font-serif); font-style: italic;
+    color: var(--blue); font-size: 1.05rem;
+  }
 
-  .pc-tier { font-size:.72rem; font-weight:700; text-transform:uppercase; letter-spacing:.12em; color:var(--text-muted); margin:0 0 .5rem; }
-  .pc-price-row { display:flex; align-items:baseline; gap:.3rem; margin-bottom:.3rem; }
-  .pc-currency { font-size:.95rem; font-weight:700; color:var(--text-muted); }
-  .pc-amount { font-size:2.6rem; font-weight:800; line-height:1; color:var(--fg); font-variant-numeric:tabular-nums; }
-  .pc-card--featured .pc-amount,.pc-card--selected .pc-amount { color:#0f766e; }
-  .dark .pc-card--featured .pc-amount,.dark .pc-card--selected .pc-amount { color:#34d399; }
-  .pc-period { font-size:.78rem; color:var(--text-muted); margin-bottom:.4rem; }
-  .pc-desc { font-size:.855rem; color:var(--text-muted); margin-bottom:1.1rem; line-height:1.5; }
-  .pc-features { list-style:none; padding:0; margin:0 0 1.4rem; display:grid; gap:.5rem; flex:1; }
-  .pc-features li { font-size:.855rem; padding-left:1.5rem; position:relative; }
-  .pc-features li::before { content:'✓'; position:absolute; left:0; color:#0f766e; font-weight:800; }
-  .dark .pc-features li::before { color:#34d399; }
+  /* ── Sektionsköpfe ── */
+  .pkg-section { padding: 3rem 0; }
+  .pkg-section-header {
+    display: flex; align-items: baseline; gap: 1rem; flex-wrap: wrap;
+    margin-bottom: 1.8rem; padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--line-strong);
+  }
+  .pkg-section-header h2 { margin: 0; font-size: 1.4rem; }
+  .pkg-section-header .pkg-section-note { font-size: 0.8rem; color: var(--muted); }
+  .pkg-section-tab { display: flex; gap: 1.4rem; margin-left: auto; }
+  .pst-btn {
+    padding: 0.3rem 0; border: none; background: transparent;
+    font-family: var(--font-sans); font-size: 0.88rem; font-weight: 600; cursor: pointer;
+    color: var(--muted); border-bottom: 2px solid transparent;
+    transition: color 200ms, border-color 200ms;
+  }
+  .pst-btn:hover { color: var(--ink); }
+  .pst-btn.active { color: var(--blue); border-bottom-color: var(--blue); }
+  .pkg-panel { display: none; }
+  .pkg-panel.active { display: block; }
+
+  /* ── Kartenraster ── */
+  .pc-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(255px, 1fr)); gap: 1.3rem; align-items: stretch; }
+  .pc-card {
+    background: var(--card); border: 1px solid var(--line); border-radius: var(--radius-lg);
+    padding: 1.8rem; position: relative; display: flex; flex-direction: column;
+    cursor: pointer;
+    transition: border-color 200ms ease, transform 200ms ease, box-shadow 200ms ease;
+    animation: pcIn 400ms ease both;
+  }
+  .pc-card:nth-child(1) { animation-delay: 0ms; }
+  .pc-card:nth-child(2) { animation-delay: 80ms; }
+  .pc-card:nth-child(3) { animation-delay: 160ms; }
+  @keyframes pcIn { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+  .pc-card:hover { border-color: var(--line-strong); transform: translateY(-2px); box-shadow: var(--shadow); }
+  .pc-card--featured { border-color: var(--blue); }
+  .pc-card--selected { border-color: var(--blue) !important; box-shadow: 0 0 0 3px var(--blue-soft) !important; }
+
+  .pc-badge {
+    position: absolute; top: -11px; left: 1.6rem;
+    background: var(--blue); color: #fff;
+    font-size: 0.66rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase;
+    padding: 0.25rem 0.8rem; border-radius: 4px; white-space: nowrap;
+  }
+  .pc-sel-badge {
+    position: absolute; top: 14px; right: 14px; width: 22px; height: 22px;
+    border-radius: 50%; background: var(--blue); color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.7rem; font-weight: 700;
+    opacity: 0; transform: scale(0.4);
+    transition: opacity 180ms, transform 220ms cubic-bezier(0.34, 1.4, 0.64, 1);
+    pointer-events: none;
+  }
+  .pc-card--selected .pc-sel-badge { opacity: 1; transform: scale(1); }
+
+  .pc-tier { font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.14em; color: var(--muted); margin: 0 0 0.5rem; }
+  .pc-price-row { display: flex; align-items: baseline; gap: 0.35rem; margin-bottom: 0.3rem; }
+  .pc-currency { font-size: 0.95rem; font-weight: 600; color: var(--muted); }
+  .pc-amount { font-size: 2.5rem; font-weight: 650; line-height: 1; color: var(--ink); letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+  .pc-card--selected .pc-amount { color: var(--blue); }
+  .pc-desc { font-size: 0.88rem; color: var(--ink-soft); margin: 0.4rem 0 1.1rem; line-height: 1.55; }
+  .pc-features { list-style: none; padding: 0; margin: 0 0 1.4rem; flex: 1; }
+  .pc-features li {
+    font-size: 0.88rem; color: var(--ink-soft);
+    padding: 0.42rem 0 0.42rem 1.5rem; position: relative;
+    border-top: 1px solid var(--line);
+  }
+  .pc-features li::before { content: '—'; position: absolute; left: 0; color: var(--blue); }
 
   .pc-select-btn {
-    width:100%; padding:.6rem 1rem; border-radius:999px; border:1.5px solid var(--line);
-    background:transparent; font-size:.855rem; font-weight:600; cursor:pointer;
-    color:var(--text-muted); display:flex; align-items:center; justify-content:center; gap:.4rem;
-    transition:all 220ms ease; flex-shrink:0;
+    width: 100%; padding: 0.6rem 1rem; border-radius: var(--radius);
+    border: 1px solid var(--line-strong); background: transparent;
+    font-family: var(--font-sans); font-size: 0.88rem; font-weight: 600; cursor: pointer;
+    color: var(--ink-soft); display: flex; align-items: center; justify-content: center; gap: 0.4rem;
+    transition: all 200ms ease; flex-shrink: 0;
   }
-  .pc-select-btn:hover { border-color:#0f766e; color:#0f766e; background:rgba(15,118,110,.05); }
-  .pc-card--selected .pc-select-btn { background:linear-gradient(135deg,#0f766e,#0066cc); color:#fff; border-color:transparent; }
-  .dark .pc-select-btn { border-color:rgba(255,255,255,.15); color:var(--text-muted); }
+  .pc-select-btn:hover { border-color: var(--blue); color: var(--blue); background: var(--blue-soft); }
+  .pc-card--selected .pc-select-btn { background: var(--blue); color: #fff; border-color: var(--blue); }
 
-  /* ── KI card ── */
+  /* ── KI-Karte ── */
   .ki-select-card {
-    display:grid; grid-template-columns:1fr 1fr; gap:3rem; align-items:center;
-    background:white; border:1.5px solid var(--line); border-radius:var(--radius);
-    padding:2rem; transition:border-color 200ms, box-shadow 200ms; cursor:pointer;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center;
+    padding: 2rem;
   }
-  .ki-select-card:hover { box-shadow:0 16px 40px rgba(15,23,42,.09); }
-  .ki-select-card.pc-card--selected { border-color:transparent !important; background:linear-gradient(white,white) padding-box,linear-gradient(135deg,#0f766e,#0066cc) border-box !important; border-width:2px !important; box-shadow:0 0 0 3px rgba(15,118,110,.1) !important; }
-  .dark .ki-select-card { background:#111926; border-color:rgba(255,255,255,.08); }
-  .dark .ki-select-card.pc-card--selected { background:linear-gradient(#111926,#111926) padding-box,linear-gradient(135deg,#0f766e,#0066cc) border-box !important; }
-  @media(max-width:680px){ .ki-select-card { grid-template-columns:1fr; gap:1.5rem; } }
-  .ki-copy h3 { margin:0 0 .5rem; font-size:1.3rem; }
-  .ki-copy .lead { color:var(--text-muted); margin-bottom:1.2rem; font-size:.9rem; }
-  .ki-price-pills { display:flex; gap:.75rem; align-items:center; flex-wrap:wrap; margin-bottom:1.4rem; }
-  .ki-pill { background:rgba(15,118,110,.08); color:#0f766e; border:1px solid rgba(15,118,110,.2); border-radius:999px; padding:.3rem .85rem; font-size:.82rem; font-weight:700; }
-  .dark .ki-pill { background:rgba(52,211,153,.1); color:#34d399; border-color:rgba(52,211,153,.25); }
-  .ki-plus { font-size:1rem; color:var(--text-muted); font-weight:300; }
+  @media (max-width: 680px) { .ki-select-card { grid-template-columns: 1fr; gap: 1.5rem; } }
+  .ki-copy h3 { margin: 0 0 0.5rem; font-size: 1.3rem; }
+  .ki-copy .lead { color: var(--ink-soft); margin-bottom: 1.2rem; font-size: 0.92rem; }
+  .ki-price-pills { display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap; margin-bottom: 1.4rem; }
+  .ki-pill {
+    background: var(--blue-soft); color: var(--blue);
+    border: 1px solid rgba(31, 58, 95, 0.18);
+    border-radius: 4px; padding: 0.3rem 0.85rem; font-size: 0.84rem; font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+  .ki-plus { font-size: 1rem; color: var(--muted); }
 
-  /* ── Hosting cards ── */
-  .hosting-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:1.3rem; align-items:start; }
-  .hosting-card { background:white; border:1.5px solid var(--line); border-radius:var(--radius); padding:1.7rem; position:relative; display:flex; flex-direction:column; cursor:pointer; transition:transform 220ms ease, box-shadow 220ms ease; }
-  .hosting-card:hover { transform:translateY(-3px); box-shadow:0 16px 40px rgba(15,23,42,.08); }
-  .hosting-card--featured { border-color:transparent; background:linear-gradient(white,white) padding-box,linear-gradient(135deg,#0f766e,#0066cc) border-box; border-width:2px; }
-  .hosting-card.pc-card--selected { border-color:transparent !important; background:linear-gradient(white,white) padding-box,linear-gradient(135deg,#0f766e,#0066cc) border-box !important; border-width:2px !important; box-shadow:0 0 0 3px rgba(15,118,110,.1) !important; }
-  .dark .hosting-card { background:#111926; border-color:rgba(255,255,255,.08); }
-  .dark .hosting-card--featured,.dark .hosting-card.pc-card--selected { background:linear-gradient(#111926,#111926) padding-box,linear-gradient(135deg,#0f766e,#0066cc) border-box !important; }
-  .hosting-icon { width:38px; height:38px; border-radius:9px; background:rgba(15,118,110,.1); display:flex; align-items:center; justify-content:center; color:#0f766e; margin-bottom:.85rem; }
-  .hosting-icon--accent { background:linear-gradient(135deg,#0f766e,#0066cc); color:#fff; }
-  .hosting-label { font-size:.7rem; font-weight:700; text-transform:uppercase; letter-spacing:.12em; color:var(--text-muted); margin:0 0 .3rem; }
-  .hosting-price { font-size:1.5rem; font-weight:800; color:var(--fg); margin:0 0 .2rem; }
-  .hosting-price span { font-size:.85rem; font-weight:400; color:var(--text-muted); }
-  .hosting-card--featured .hosting-price,.hosting-card.pc-card--selected .hosting-price { color:#0f766e; }
-  .dark .hosting-card--featured .hosting-price,.dark .hosting-card.pc-card--selected .hosting-price { color:#34d399; }
-  .hosting-saving { font-size:.72rem; color:#0f766e; font-weight:700; background:rgba(15,118,110,.09); padding:.2rem .6rem; border-radius:999px; display:inline-block; margin-bottom:.9rem; }
+  /* ── Hosting-Karten ── */
+  .hosting-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 1.3rem; align-items: stretch; }
+  .hosting-card {
+    background: var(--card); border: 1px solid var(--line); border-radius: var(--radius-lg);
+    padding: 1.7rem; position: relative; display: flex; flex-direction: column; cursor: pointer;
+    transition: border-color 200ms ease, transform 200ms ease, box-shadow 200ms ease;
+  }
+  .hosting-card:hover { border-color: var(--line-strong); transform: translateY(-2px); box-shadow: var(--shadow); }
+  .hosting-card--featured { border-color: var(--blue); }
+  .hosting-card.pc-card--selected { border-color: var(--blue) !important; box-shadow: 0 0 0 3px var(--blue-soft) !important; }
+  .hosting-icon {
+    width: 38px; height: 38px; border-radius: var(--radius);
+    border: 1px solid var(--line);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--blue); margin-bottom: 0.85rem;
+  }
+  .hosting-icon--accent { background: var(--blue); border-color: var(--blue); color: #fff; }
+  .hosting-label { font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.14em; color: var(--muted); margin: 0 0 0.3rem; }
+  .hosting-price { font-size: 1.5rem; font-weight: 650; color: var(--ink); margin: 0 0 0.2rem; font-variant-numeric: tabular-nums; }
+  .hosting-price span { font-size: 0.85rem; font-weight: 400; color: var(--muted); }
+  .hosting-card.pc-card--selected .hosting-price { color: var(--blue); }
+  .hosting-saving {
+    font-size: 0.74rem; color: var(--ok); font-weight: 600;
+    background: var(--ok-bg); padding: 0.2rem 0.6rem; border-radius: 4px;
+    display: inline-block; margin-bottom: 0.9rem; align-self: flex-start;
+  }
 
-  /* ── Summary bar ── */
+  /* ── Auswahl-Leiste ── */
   .pkg-bar {
-    position:fixed; bottom:-120px; left:0; right:0; z-index:300;
-    background:white; border-top:1px solid rgba(0,0,0,.08);
-    box-shadow:0 -8px 40px rgba(0,0,0,.12);
-    transition:bottom 380ms cubic-bezier(.22,1,.36,1);
-    padding:.85rem 0;
+    position: fixed; bottom: -130px; left: 0; right: 0; z-index: 300;
+    background: var(--card); border-top: 1px solid var(--line-strong);
+    box-shadow: 0 -10px 36px rgba(27, 31, 36, 0.1);
+    transition: bottom 380ms cubic-bezier(0.22, 1, 0.36, 1);
+    padding: 0.85rem 0;
   }
-  .pkg-bar.pkg-bar--visible { bottom:0; }
-  .dark .pkg-bar { background:#111926; border-top-color:rgba(255,255,255,.08); box-shadow:0 -8px 40px rgba(0,0,0,.4); }
-  .pkg-bar-inner { display:flex; align-items:center; gap:1.2rem; flex-wrap:wrap; }
-  .pkg-bar-left { flex:1; min-width:0; }
-  .pkg-bar-count { font-size:.72rem; font-weight:700; text-transform:uppercase; letter-spacing:.08em; color:var(--text-muted); margin-bottom:.15rem; }
-  .pkg-bar-items-preview { font-size:.855rem; color:var(--fg); font-weight:500; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-  .pkg-bar-right { display:flex; align-items:center; gap:1rem; flex-shrink:0; }
-  .pkg-bar-total { text-align:right; }
-  .pkg-bar-total-label { font-size:.68rem; color:var(--text-muted); }
-  .pkg-bar-total-price { font-size:1.3rem; font-weight:800; color:#0f766e; line-height:1.1; }
-  .dark .pkg-bar-total-price { color:#34d399; }
-  .pkg-bar-sub { font-size:.7rem; color:var(--text-muted); }
-  .pkg-bar-cta { white-space:nowrap; padding:.6rem 1.4rem !important; font-size:.88rem !important; }
+  .pkg-bar.pkg-bar--visible { bottom: 0; }
+  .pkg-bar-inner { display: flex; align-items: center; gap: 1.2rem; flex-wrap: wrap; }
+  .pkg-bar-left { flex: 1; min-width: 0; }
+  .pkg-bar-count { font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); margin-bottom: 0.15rem; }
+  .pkg-bar-items-preview { font-size: 0.88rem; color: var(--ink); font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .pkg-bar-right { display: flex; align-items: center; gap: 1rem; flex-shrink: 0; }
+  .pkg-bar-total { text-align: right; }
+  .pkg-bar-total-label { font-size: 0.7rem; color: var(--muted); }
+  .pkg-bar-total-price { font-size: 1.3rem; font-weight: 650; color: var(--blue); line-height: 1.1; font-variant-numeric: tabular-nums; }
+  .pkg-bar-sub { font-size: 0.72rem; color: var(--muted); }
+  .pkg-bar-cta { white-space: nowrap; }
 
   /* ── Modal ── */
   .pkg-overlay {
-    position:fixed; inset:0; z-index:500;
-    background:rgba(10,14,39,.72); backdrop-filter:blur(5px);
-    display:flex; align-items:center; justify-content:center; padding:1.5rem;
-    opacity:0; pointer-events:none; transition:opacity 280ms ease;
+    position: fixed; inset: 0; z-index: 500;
+    background: rgba(22, 38, 59, 0.55);
+    display: flex; align-items: center; justify-content: center; padding: 1.5rem;
+    opacity: 0; pointer-events: none; transition: opacity 280ms ease;
   }
-  .pkg-overlay.pkg-overlay--visible { opacity:1; pointer-events:auto; }
+  .pkg-overlay.pkg-overlay--visible { opacity: 1; pointer-events: auto; }
   .pkg-modal {
-    background:white; border-radius:20px; padding:2rem; max-width:540px; width:100%;
-    max-height:88vh; overflow-y:auto; position:relative;
-    transform:translateY(24px) scale(.97);
-    transition:transform 320ms cubic-bezier(.22,1,.36,1);
+    background: var(--card); border: 1px solid var(--line);
+    border-radius: var(--radius-lg); padding: 2rem;
+    max-width: 540px; width: 100%; max-height: 88vh; overflow-y: auto; position: relative;
+    transform: translateY(20px); transition: transform 320ms cubic-bezier(0.22, 1, 0.36, 1);
   }
-  .pkg-overlay--visible .pkg-modal { transform:translateY(0) scale(1); }
-  .dark .pkg-modal { background:#111926; }
+  .pkg-overlay--visible .pkg-modal { transform: translateY(0); }
   .pkg-modal-close {
-    position:absolute; top:1rem; right:1rem; width:30px; height:30px;
-    border-radius:50%; border:none; background:var(--line); cursor:pointer;
-    font-size:1rem; color:var(--text-muted); display:flex; align-items:center; justify-content:center;
+    position: absolute; top: 1rem; right: 1rem; width: 30px; height: 30px;
+    border-radius: var(--radius); border: 1px solid var(--line); background: transparent;
+    cursor: pointer; font-size: 0.95rem; color: var(--muted);
+    display: flex; align-items: center; justify-content: center;
   }
-  .pkg-modal-close:hover { background:rgba(0,0,0,.12); color:var(--fg); }
-  .pkg-modal h3 { margin:0 0 .3rem; font-size:1.25rem; }
-  .pkg-modal-subtitle { color:var(--text-muted); font-size:.875rem; margin-bottom:1.2rem; }
+  .pkg-modal-close:hover { border-color: var(--ink); color: var(--ink); }
+  .pkg-modal h3 { margin: 0 0 0.3rem; font-size: 1.25rem; }
+  .pkg-modal-subtitle { color: var(--muted); font-size: 0.88rem; margin-bottom: 1.2rem; }
   .pkg-msg-box {
-    background:#f6f9ff; border:1px solid var(--line); border-radius:10px;
-    padding:1.2rem 1.3rem; font-size:.855rem; line-height:1.7;
-    white-space:pre-wrap; font-family:inherit; color:var(--fg);
-    margin-bottom:1.4rem; max-height:260px; overflow-y:auto;
+    background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius);
+    padding: 1.2rem 1.3rem; font-size: 0.86rem; line-height: 1.7;
+    white-space: pre-wrap; font-family: inherit; color: var(--ink);
+    margin-bottom: 1.4rem; max-height: 260px; overflow-y: auto;
   }
-  .dark .pkg-msg-box { background:#0d1117; border-color:rgba(255,255,255,.08); }
-  .pkg-modal-actions { display:flex; gap:.75rem; flex-wrap:wrap; }
-  .pkg-copy-btn { flex:1; min-width:120px; }
-  .pkg-send-btn { flex:2; min-width:180px; text-align:center; }
-  .pkg-copied-hint { font-size:.78rem; color:#0f766e; margin-top:.6rem; display:none; }
-  .pkg-copied-hint.show { display:block; }
-
-  /* ── FAQ ── */
-  .faq-section { padding:5rem 0; }
-  .faq-inner { max-width:720px; margin:0 auto; }
-  .faq-title { text-align:center; margin-bottom:2.5rem; }
-  .faq-item { border-bottom:1px solid var(--line); }
-  .faq-item:first-child { border-top:1px solid var(--line); }
-  .dark .faq-item { border-color:rgba(255,255,255,.08); }
-  .faq-q { width:100%; display:flex; align-items:center; justify-content:space-between; padding:1.1rem 0; background:none; border:none; cursor:pointer; font-size:1rem; font-weight:600; color:var(--fg); text-align:left; gap:1rem; transition:color 200ms; }
-  .faq-q:hover { color:#0f766e; }
-  .faq-chevron { flex-shrink:0; transition:transform 300ms cubic-bezier(.4,0,.2,1); color:var(--text-muted); }
-  .faq-item.open .faq-chevron { transform:rotate(180deg); color:#0f766e; }
-  .faq-item.open .faq-q { color:#0f766e; }
-  .faq-answer { max-height:0; overflow:hidden; transition:max-height 380ms cubic-bezier(.4,0,.2,1); }
-  .faq-answer p { padding:0 0 1.1rem; color:var(--text-muted); line-height:1.7; margin:0; }
-  .faq-item.open .faq-answer { max-height:180px; }
+  .pkg-modal-actions { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+  .pkg-copy-btn { flex: 1; min-width: 120px; }
+  .pkg-send-btn { flex: 2; min-width: 180px; text-align: center; }
+  .pkg-copied-hint { font-size: 0.8rem; color: var(--ok); margin-top: 0.6rem; display: none; }
+  .pkg-copied-hint.show { display: block; }
   </style>
 </head>
 <body>
-  <div class="mase-spray" aria-hidden="true">
-    <span class="mase-spray__blob s1"></span>
-    <span class="mase-spray__blob s2"></span>
-    <span class="mase-spray__blob s3"></span>
-    <span class="mase-spray__blob s4"></span>
-    <span class="mase-spray__blob s5"></span>
-    <span class="mase-spray__blob s6"></span>
-  </div>
   <a class="skip-link" href="#main" data-i18n="skip_to_content">Zum Inhalt springen</a>
 
   <header class="site-header">
     <div class="container header-inner">
-      <a class="logo" href="/"><span class="logo-text">MASE</span></a>
+      <a class="logo" href="/"><span class="logo-text">MASE<em>Sites</em></span></a>
       <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
         <span class="sr-only" data-i18n="nav_toggle">Navigation öffnen</span>
         <span class="nav-toggle-bar"></span>
@@ -251,15 +256,14 @@
       <nav class="site-nav" id="site-nav">
         <a href="leistungen.html" data-i18n="nav_services">Leistungen</a>
         <a href="preise.html" class="nav-active" data-i18n="nav_prices">Preise</a>
-        <a href="ki-assistent.html" data-i18n="nav_ai">KI Assistent</a>
+        <a href="ki-assistent.html" data-i18n="nav_ai">KI-Assistent</a>
         <a href="ueber-uns.html" data-i18n="nav_about">Über uns</a>
         <a href="kontakt.html" data-i18n="nav_contact">Kontakt</a>
-        <a class="button button-primary button-small" href="kontakt.html" data-i18n="nav_cta">Kostenloses Erstgespräch</a>
+        <a class="button button-primary button-small" href="kontakt.html" data-i18n="nav_cta">Erstgespräch vereinbaren</a>
       </nav>
       <div class="header-controls">
         <div class="lang-switcher" id="lang-switcher">
           <button class="lang-btn" id="lang-btn" aria-haspopup="true" aria-expanded="false" aria-label="Sprache wählen" data-i18n-aria-label="lang_select_aria">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
             <span id="lang-current">DE</span>
           </button>
           <div class="lang-dropdown" id="lang-dropdown">
@@ -267,10 +271,6 @@
             <button class="lang-option" data-lang="en">English</button>
           </div>
         </div>
-        <button class="dark-toggle" id="dark-toggle" aria-label="Dark Mode umschalten">
-          <span class="dark-toggle-icon" id="dark-toggle-icon">🌙</span>
-          <span class="dark-toggle-track"><span class="dark-toggle-thumb"></span></span>
-        </button>
       </div>
     </div>
   </header>
@@ -278,40 +278,40 @@
   <main id="main">
 
     <!-- Hero -->
-    <section class="page-hero preise-hero">
+    <section class="page-hero">
       <div class="container preise-hero-inner" data-reveal>
-        <span class="eyebrow">Transparente Preise</span>
-        <h1>Stelle dein Paket<br><span class="accent-gradient">selbst zusammen.</span></h1>
-        <p class="lead">Wähle was du brauchst. Kombiniere frei. Wir schicken dir eine klare Offerte.</p>
+        <span class="eyebrow" data-i18n="pricing_eyebrow">Transparente Preise</span>
+        <h1 data-i18n-html="pricing_title_html">Stellen Sie Ihr Paket <span class="serif-accent">zusammen</span>.</h1>
+        <p class="lead" data-i18n="pricing_lead">Wählen Sie, was Sie brauchen, und kombinieren Sie frei. Sie erhalten von uns eine klare, verbindliche Offerte.</p>
         <div class="preise-hero-stats">
-          <div class="phs"><strong>ab CHF 750</strong><span>Neue Website</span></div>
-          <div class="phs"><strong>ab CHF 250</strong><span>Überarbeitung</span></div>
-          <div class="phs"><strong>CHF 200</strong><span>KI Setup</span></div>
+          <div class="phs"><strong>ab CHF 750</strong><span data-i18n="pricing_stat_1">Neue Website</span></div>
+          <div class="phs"><strong>ab CHF 250</strong><span data-i18n="pricing_stat_2">Überarbeitung</span></div>
+          <div class="phs"><strong>CHF 200</strong><span data-i18n="pricing_stat_3">KI-Setup</span></div>
         </div>
       </div>
     </section>
 
-    <!-- Builder intro -->
+    <!-- Einleitung -->
     <div class="builder-intro" data-reveal>
       <div class="container builder-intro-inner">
-        <p class="lead" style="font-size:1rem; color:var(--text-muted);">Klicke auf die Karten, um Leistungen zu deinem Paket hinzuzufügen. Unten siehst du deine Auswahl und kannst direkt anfragen.</p>
+        <p class="lead" style="font-size: 1rem;" data-i18n="pricing_intro">Wählen Sie die gewünschten Leistungen per Klick aus. Unten sehen Sie Ihre Auswahl und können die Anfrage direkt absenden.</p>
         <div class="builder-step-row">
-          <div class="builder-step"><span class="builder-step-num">1</span> Leistungen wählen</div>
-          <div class="builder-step"><span class="builder-step-num">2</span> Paket prüfen</div>
-          <div class="builder-step"><span class="builder-step-num">3</span> Anfrage senden</div>
+          <div class="builder-step"><span class="builder-step-num">1.</span> <span data-i18n="pricing_step_1">Leistungen wählen</span></div>
+          <div class="builder-step"><span class="builder-step-num">2.</span> <span data-i18n="pricing_step_2">Paket prüfen</span></div>
+          <div class="builder-step"><span class="builder-step-num">3.</span> <span data-i18n="pricing_step_3">Anfrage senden</span></div>
         </div>
       </div>
     </div>
 
-    <!-- === SECTION 1: Website === -->
+    <!-- === SEKTION 1: Website === -->
     <section class="pkg-section pricing-section">
       <div class="container">
         <div class="pkg-section-header" data-reveal>
           <h2>Website</h2>
-          <span class="pkg-section-note">Nur eine Option wählbar</span>
+          <span class="pkg-section-note" data-i18n="pricing_note_single">Nur eine Option wählbar</span>
           <div class="pkg-section-tab">
-            <button class="pst-btn active" data-target="ws-new">Neue Website</button>
-            <button class="pst-btn" data-target="ws-revision">Überarbeiten</button>
+            <button class="pst-btn active" data-target="ws-new" data-i18n="pricing_tab_new">Neue Website</button>
+            <button class="pst-btn" data-target="ws-revision" data-i18n="pricing_tab_revision">Überarbeitung</button>
           </div>
         </div>
 
@@ -327,13 +327,13 @@
                 <span class="pc-currency">CHF</span>
                 <span class="pc-amount" data-counter="750">750</span>
               </div>
-              <p class="pc-desc">Deine erste professionelle Online-Präsenz. Schnell live, sauber gebaut.</p>
+              <p class="pc-desc">Ihre erste professionelle Online-Präsenz. Schnell live, sauber gebaut.</p>
               <ul class="pc-features">
                 <li>1 Landingpage</li>
                 <li>Kontaktformular</li>
-                <li>Basis SEO</li>
-                <li>Mobile-Optimiert</li>
-                <li>DSGVO konform</li>
+                <li>SEO-Grundlagen</li>
+                <li>Für Mobilgeräte optimiert</li>
+                <li>DSGVO-konform</li>
               </ul>
               <button class="pc-select-btn" type="button">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
@@ -355,9 +355,9 @@
               <ul class="pc-features">
                 <li>Bis 5 Seiten</li>
                 <li>SEO-Optimierung</li>
-                <li>Struktur + UX Fokus</li>
+                <li>Struktur- und UX-Konzept</li>
                 <li>Analytics-Integration</li>
-                <li>Mobile-First</li>
+                <li>Mobile-first</li>
                 <li>2 Feedback-Runden</li>
               </ul>
               <button class="pc-select-btn" type="button">
@@ -382,7 +382,7 @@
                 <li>Erweiterte SEO</li>
                 <li>Conversion-Fokus</li>
                 <li>Sauberer Code</li>
-                <li>Langfristige Skalierbarkeit</li>
+                <li>Langfristig skalierbar</li>
               </ul>
               <button class="pc-select-btn" type="button">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
@@ -406,7 +406,7 @@
               </div>
               <p class="pc-desc">Kleine Anpassungen mit grosser Wirkung.</p>
               <ul class="pc-features">
-                <li>Kleine Design-Anpassungen</li>
+                <li>Gezielte Design-Anpassungen</li>
                 <li>Textkorrekturen</li>
                 <li>Performance-Check</li>
               </ul>
@@ -426,11 +426,11 @@
                 <span class="pc-currency">CHF</span>
                 <span class="pc-amount" data-counter="500">500</span>
               </div>
-              <p class="pc-desc">Spürbare Verbesserung deiner bestehenden Website.</p>
+              <p class="pc-desc">Spürbare Verbesserung Ihrer bestehenden Website.</p>
               <ul class="pc-features">
-                <li>Design-Verbesserung</li>
-                <li>Mobile-Optimierung</li>
-                <li>SEO-Basis Check</li>
+                <li>Design-Überarbeitung</li>
+                <li>Optimierung für Mobilgeräte</li>
+                <li>SEO-Grundlagencheck</li>
                 <li>2 Feedback-Runden</li>
               </ul>
               <button class="pc-select-btn" type="button">
@@ -448,11 +448,11 @@
                 <span class="pc-currency">CHF</span>
                 <span class="pc-amount" data-counter="800">800</span>
               </div>
-              <p class="pc-desc">Komplettes Redesign für maximalen Effekt.</p>
+              <p class="pc-desc">Umfassende Überarbeitung für maximale Wirkung.</p>
               <ul class="pc-features">
                 <li>Redesign einzelner Seiten</li>
                 <li>Struktur-Optimierung</li>
-                <li>Performance + SEO</li>
+                <li>Performance und SEO</li>
                 <li>Conversion-Verbesserung</li>
               </ul>
               <button class="pc-select-btn" type="button">
@@ -466,12 +466,12 @@
       </div>
     </section>
 
-    <!-- === SECTION 2: KI-Assistent === -->
+    <!-- === SEKTION 2: KI-Assistent === -->
     <section class="pkg-section">
       <div class="container">
         <div class="pkg-section-header" data-reveal>
           <h2>KI-Assistent</h2>
-          <span class="pkg-section-note">Add-on — optional</span>
+          <span class="pkg-section-note" data-i18n="pricing_note_addon">Ergänzung — optional</span>
         </div>
         <div class="ki-select-card pc-card"
              data-pkg-id="ki"
@@ -482,18 +482,18 @@
           <div class="pc-sel-badge">✓</div>
           <div class="ki-banner-visual">
             <div class="chat-widget-mini">
-              <div class="chat-header-mini chat-header-mini--colored">
+              <div class="chat-header-mini">
                 <span class="chat-status-dot"></span>
-                <p>MASE KI-Assistent</p>
+                <p>MASESites KI-Assistent</p>
                 <span class="chat-online-badge">Online</span>
               </div>
               <div class="chat-body-mini">
-                <div class="chat-message-mini bot">Hallo! Wie kann ich helfen?</div>
+                <div class="chat-message-mini bot">Guten Tag! Wie kann ich Ihnen helfen?</div>
                 <div class="chat-message-mini user">Was kostet eine Website?</div>
-                <div class="chat-message-mini bot">Ab CHF 750. Soll ich mehr erklären?</div>
+                <div class="chat-message-mini bot">Eine neue Website beginnt bei CHF 750. Soll ich Ihnen mehr dazu erklären?</div>
               </div>
               <div class="chat-input-mini">
-                <span class="chat-input-placeholder">Nachricht schreiben…</span>
+                <span class="chat-input-placeholder">Nachricht schreiben …</span>
                 <span class="chat-send-btn">
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
                 </span>
@@ -502,13 +502,13 @@
           </div>
           <div class="ki-copy">
             <h3>KI-Assistent Integration</h3>
-            <p class="lead">Dein digitaler Mitarbeiter — 24/7 verfügbar, qualifiziert Leads, beantwortet Fragen automatisch.</p>
+            <p class="lead">Ihr digitaler Mitarbeiter — rund um die Uhr erreichbar, qualifiziert Anfragen und beantwortet Kundenfragen automatisch.</p>
             <div class="ki-price-pills">
-              <span class="ki-pill">CHF 200 Setup</span>
+              <span class="ki-pill">CHF 200 Einrichtung</span>
               <span class="ki-plus">+</span>
               <span class="ki-pill">CHF 40 / Monat</span>
             </div>
-            <button class="pc-select-btn" type="button" style="max-width:200px;" data-orig-text="Zum Paket hinzufügen">
+            <button class="pc-select-btn" type="button" style="max-width:220px;" data-orig-text="Zum Paket hinzufügen">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
               <span>Zum Paket hinzufügen</span>
             </button>
@@ -517,12 +517,12 @@
       </div>
     </section>
 
-    <!-- === SECTION 3: Domain & Hosting === -->
+    <!-- === SEKTION 3: Domain & Hosting === -->
     <section class="pkg-section pricing-section">
       <div class="container">
         <div class="pkg-section-header" data-reveal>
           <h2>Domain &amp; Hosting</h2>
-          <span class="pkg-section-note">Einzeln oder als Bundle</span>
+          <span class="pkg-section-note" data-i18n="pricing_note_bundle">Einzeln oder im Paket</span>
         </div>
         <div class="hosting-grid" data-reveal>
 
@@ -559,7 +559,7 @@
               <li>Schweizer Server</li>
               <li>SSL-Zertifikat</li>
               <li>Tägliche Backups</li>
-              <li>99.9% Uptime</li>
+              <li>99.9% Verfügbarkeit</li>
             </ul>
             <button class="pc-select-btn" type="button" style="margin-top:.9rem;">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
@@ -569,20 +569,20 @@
 
           <div class="hosting-card hosting-card--featured"
                data-pkg-id="bundle" data-pkg-group="infra-bundle"
-               data-pkg-title="Domain & Hosting Bundle (spart CHF 20)" data-pkg-yearly="160">
+               data-pkg-title="Domain & Hosting Paket (spart CHF 20)" data-pkg-yearly="160">
             <div class="pc-badge">Bestes Angebot</div>
             <div class="pc-sel-badge">✓</div>
             <div class="hosting-icon hosting-icon--accent">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
             </div>
-            <p class="hosting-label">Bundle</p>
+            <p class="hosting-label">Paket</p>
             <p class="hosting-price">CHF 160 <span>/ Jahr</span></p>
             <p class="hosting-saving">Spart CHF 20 gegenüber Einzelbuchung</p>
             <ul class="pc-features" style="flex:1;">
-              <li>Domain + 12 Mt. Hosting</li>
-              <li>2 Monate gratis</li>
-              <li>SSL + Backups inklusive</li>
-              <li>Einrichtung inklusive</li>
+              <li>Domain + 12 Monate Hosting</li>
+              <li>2 Monate geschenkt</li>
+              <li>SSL und Backups inbegriffen</li>
+              <li>Einrichtung inbegriffen</li>
             </ul>
             <button class="pc-select-btn" type="button" style="margin-top:.9rem;">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
@@ -598,46 +598,50 @@
     <section class="faq-section">
       <div class="container">
         <div class="faq-inner" data-reveal>
-          <h2 class="faq-title">Häufige Fragen</h2>
+          <div class="kicker">
+            <span class="kicker-num">FAQ</span>
+            <span class="kicker-label" data-i18n="pricing_faq_kicker">Häufige Fragen</span>
+          </div>
+          <h2 class="faq-title" data-i18n="pricing_faq_title">Was Sie zu unseren Preisen wissen sollten</h2>
           <div class="faq-list">
             <div class="faq-item">
               <button class="faq-q" aria-expanded="false"><span>Was ist im Preis enthalten?</span><svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
-              <div class="faq-answer"><p>Design, Entwicklung, Performance-Optimierung, SEO-Basis, Kontaktformular, DSGVO-Setup und 2–3 Feedback-Runden. Alles inklusive.</p></div>
+              <div class="faq-answer"><p>Design, Entwicklung, Performance-Optimierung, SEO-Grundlagen, Kontaktformular, DSGVO-Einrichtung sowie zwei bis drei Feedback-Runden — alles inbegriffen.</p></div>
             </div>
             <div class="faq-item">
               <button class="faq-q" aria-expanded="false"><span>Gibt es versteckte Kosten?</span><svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
-              <div class="faq-answer"><p>Nein. Preise sind fix. Hosting und Domain sind optional (ca. CHF 10–30/Monat) — oder du nimmst unser All-in-Bundle.</p></div>
+              <div class="faq-answer"><p>Nein. Die Preise sind Festpreise. Hosting und Domain sind optional (ca. CHF 10–30 pro Monat) — oder Sie wählen unser Komplettpaket.</p></div>
             </div>
             <div class="faq-item">
               <button class="faq-q" aria-expanded="false"><span>Wie läuft die Zahlung ab?</span><svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
-              <div class="faq-answer"><p>50% Anzahlung bei Projektstart, 50% bei Fertigstellung. Rechnung per E-Mail in CHF.</p></div>
+              <div class="faq-answer"><p>50% Anzahlung bei Projektstart, 50% bei Fertigstellung. Sie erhalten eine ordentliche Rechnung per E-Mail, in Schweizer Franken.</p></div>
             </div>
             <div class="faq-item">
-              <button class="faq-q" aria-expanded="false"><span>Kann ich später upgraden?</span><svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
-              <div class="faq-answer"><p>Ja! KI-Assistent, zusätzliche Seiten oder Features können jederzeit ergänzt werden.</p></div>
+              <button class="faq-q" aria-expanded="false"><span>Kann ich später erweitern?</span><svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
+              <div class="faq-answer"><p>Ja. KI-Assistent, zusätzliche Seiten oder neue Funktionen können jederzeit ergänzt werden.</p></div>
             </div>
             <div class="faq-item">
               <button class="faq-q" aria-expanded="false"><span>Wie lange dauert ein Projekt?</span><svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
-              <div class="faq-answer"><p>Starter: 1–2 Wochen. Business: 2–4 Wochen. Premium: 4–6 Wochen. Abhängig vom Feedback-Tempo.</p></div>
+              <div class="faq-answer"><p>Starter: 1–2 Wochen. Business: 2–4 Wochen. Premium: 4–6 Wochen — abhängig vom Feedback-Tempo.</p></div>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <section class="cta-section cta-section-dark" style="padding:5rem 0;">
-      <div class="container" data-reveal style="text-align:center;">
-        <span class="eyebrow" style="color:rgba(255,255,255,.45);">Nächster Schritt</span>
-        <h2>Bereit für dein Projekt?</h2>
-        <p class="lead" style="max-width:580px; margin:0 auto 2rem;">Kostenloses Erstgespräch — 15 Minuten, kein Verkaufsdruck, klare Antworten.</p>
-        <a class="button button-primary" href="kontakt.html">Kostenloses Erstgespräch</a>
-        <p class="ls-cta-trust">Schweizer Qualität · Transparente Preise · Keine Fake-Referenzen</p>
+    <section class="cta-section-dark">
+      <div class="container" data-reveal style="text-align:center; max-width: 640px;">
+        <span class="eyebrow" data-i18n="pricing_cta_eyebrow">Nächster Schritt</span>
+        <h2 data-i18n="pricing_cta_title">Bereit für Ihr Projekt?</h2>
+        <p class="lead" style="margin:0 auto 2rem;" data-i18n="pricing_cta_lead">Kostenloses Erstgespräch — 15 Minuten, klare Antworten, kein Verkaufsdruck.</p>
+        <a class="button button-primary" href="kontakt.html" data-i18n="nav_cta">Erstgespräch vereinbaren</a>
+        <p class="ls-cta-trust" data-i18n="pricing_cta_trust">Schweizer Qualität · Transparente Festpreise · Ehrliche Beratung</p>
       </div>
     </section>
 
   </main>
 
-  <!-- ── Floating Package Bar ── -->
+  <!-- ── Auswahl-Leiste ── -->
   <div class="pkg-bar" id="pkg-bar" aria-live="polite">
     <div class="container pkg-bar-inner">
       <div class="pkg-bar-left">
@@ -650,43 +654,44 @@
           <div class="pkg-bar-total-price" id="pkg-bar-price">CHF 0</div>
           <div class="pkg-bar-sub" id="pkg-bar-sub"></div>
         </div>
-        <button class="button button-primary pkg-bar-cta" id="pkg-bar-cta">Paket anfragen →</button>
+        <button class="button button-primary pkg-bar-cta" id="pkg-bar-cta">Paket anfragen</button>
       </div>
     </div>
   </div>
 
-  <!-- ── Message Modal ── -->
+  <!-- ── Nachricht-Modal ── -->
   <div class="pkg-overlay" id="pkg-overlay" role="dialog" aria-modal="true" aria-labelledby="pkg-modal-title">
     <div class="pkg-modal">
       <button class="pkg-modal-close" id="pkg-modal-close" aria-label="Schliessen">✕</button>
-      <h3 id="pkg-modal-title">Deine Anfrage</h3>
-      <p class="pkg-modal-subtitle">Diese Nachricht wird vorausgefüllt an unser Kontaktformular weitergegeben. Du kannst sie noch anpassen.</p>
+      <h3 id="pkg-modal-title">Ihre Anfrage</h3>
+      <p class="pkg-modal-subtitle">Diese Nachricht wird vorausgefüllt an unser Kontaktformular übergeben. Sie können sie noch anpassen.</p>
       <div class="pkg-msg-box" id="pkg-msg-box"></div>
       <div class="pkg-modal-actions">
         <button class="button button-ghost pkg-copy-btn" id="pkg-copy-btn">Nachricht kopieren</button>
-        <a class="button button-primary pkg-send-btn" id="pkg-send-link" href="kontakt.html">Jetzt anfragen →</a>
+        <a class="button button-primary pkg-send-btn" id="pkg-send-link" href="kontakt.html">Jetzt anfragen</a>
       </div>
-      <p class="pkg-copied-hint" id="pkg-copied-hint">Nachricht in Zwischenablage kopiert!</p>
+      <p class="pkg-copied-hint" id="pkg-copied-hint">Nachricht in die Zwischenablage kopiert.</p>
     </div>
   </div>
 
   <footer class="site-footer">
     <div class="container footer-grid">
       <div>
-        <p class="footer-brand">MASE</p>
-        <p class="footer-desc" data-i18n="footer_desc">Professionelle Websites &amp; KI-Integration aus der Schweiz.</p>
+        <p class="footer-brand">MASE<em>Sites</em></p>
+        <p class="footer-desc" data-i18n="footer_desc">Professionelle Websites und KI-Integration aus der Schweiz.</p>
       </div>
       <div>
         <p class="footer-title" data-i18n="footer_nav">Navigation</p>
         <a href="index.html" data-i18n="nav_home">Home</a>
         <a href="leistungen.html" data-i18n="nav_services">Leistungen</a>
         <a href="preise.html" data-i18n="nav_prices">Preise</a>
-        <a href="ki-assistent.html" data-i18n="nav_ai">KI Assistent</a>
+        <a href="ki-assistent.html" data-i18n="nav_ai">KI-Assistent</a>
       </div>
       <div>
         <p class="footer-title" data-i18n="footer_contact">Kontakt</p>
         <a href="kontakt.html" data-i18n="footer_contact_form">Kontaktformular</a>
         <a href="ueber-uns.html" data-i18n="nav_about">Über uns</a>
+        <a href="mailto:info@masesites.ch">info@masesites.ch</a>
       </div>
       <div>
         <p class="footer-title" data-i18n="footer_legal">Rechtliches</p>
@@ -695,11 +700,10 @@
       </div>
     </div>
     <div class="container footer-bottom">
-      <p>Copyright <span id="year"></span> MASESites. <span data-i18n="footer_copy">Alle Rechte vorbehalten.</span></p>
+      <p>© <span id="year"></span> MASESites, Schweiz. <span data-i18n="footer_copy">Alle Rechte vorbehalten.</span></p>
     </div>
   </footer>
 
-  <div id="dark-wave" aria-hidden="true"><canvas id="dark-wave-canvas"></canvas></div>
   <button class="back-to-top" id="back-to-top" aria-label="Zurück nach oben">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="18 15 12 9 6 15"></polyline></svg>
   </button>
@@ -708,16 +712,15 @@
   (function () {
     'use strict';
 
-    /* ─── State ─── */
+    /* ─── Zustand ─── */
     var selected = {}; // id → {id, title, price, monthly, yearly}
 
     function fmt(n) {
       return n.toLocaleString('de-CH');
     }
 
-    /* ─── Card click handler ─── */
+    /* ─── Karten-Klicks ─── */
     function initCards() {
-      // Include both .pc-card and .hosting-card variants
       document.querySelectorAll('.pc-card[data-pkg-id], .hosting-card[data-pkg-id]').forEach(function (card) {
         card.addEventListener('click', function (e) {
           if (e.target.closest('a')) return;
@@ -733,11 +736,9 @@
       if (card.classList.contains('pc-card--selected')) {
         deselectCard(card);
       } else {
-        // Mutual exclusivity within group
         if (group) {
           document.querySelectorAll('.pc-card[data-pkg-group="' + group + '"]').forEach(deselectCard);
         }
-        // Bundle logic: selecting domain/hosting deselects bundle; selecting bundle deselects both
         if (id === 'bundle') {
           document.querySelectorAll('[data-pkg-id="domain"]').forEach(deselectCard);
           document.querySelectorAll('[data-pkg-id="hosting"]').forEach(deselectCard);
@@ -777,7 +778,7 @@
       delete selected[card.dataset.pkgId];
     }
 
-    /* ─── Summary bar ─── */
+    /* ─── Auswahl-Leiste ─── */
     function updateBar() {
       var ids = Object.keys(selected);
       var bar = document.getElementById('pkg-bar');
@@ -810,11 +811,11 @@
       subEl.textContent = subs.join(' ');
     }
 
-    /* ─── Generate message ─── */
+    /* ─── Anfrage-Nachricht ─── */
     function generateMessage() {
       var ids = Object.keys(selected);
-      var lines = ['Hallo MASE Team,\n',
-                   'ich habe auf eurer Website ein Paket zusammengestellt:\n'];
+      var lines = ['Guten Tag\n',
+                   'Über Ihre Website habe ich folgendes Paket zusammengestellt:\n'];
 
       var totalOnce = 0, totalMonthly = 0, totalYearly = 0;
       ids.forEach(function (id) {
@@ -834,8 +835,8 @@
       if (totalMonthly) lines.push('  Monatlich:  CHF ' + fmt(totalMonthly) + '/Monat');
       if (totalYearly)  lines.push('  Jährlich:   CHF ' + fmt(totalYearly) + '/Jahr');
 
-      lines.push('\nIch freue mich auf ein kostenloses Erstgespräch.');
-      lines.push('\nVielen Dank!');
+      lines.push('\nIch interessiere mich für ein kostenloses Erstgespräch.');
+      lines.push('\nFreundliche Grüsse');
       return lines.join('\n');
     }
 
@@ -844,7 +845,6 @@
       var msg = generateMessage();
       document.getElementById('pkg-msg-box').textContent = msg;
 
-      // Build kontakt URL with pre-filled message
       var params = new URLSearchParams();
       params.set('nachricht', msg);
       params.set('paket', Object.keys(selected).join(','));
@@ -858,7 +858,7 @@
       document.getElementById('pkg-overlay').classList.remove('pkg-overlay--visible');
     }
 
-    /* ─── Section tab switcher ─── */
+    /* ─── Tabs ─── */
     function initTabs() {
       document.querySelectorAll('.pst-btn').forEach(function (btn) {
         btn.addEventListener('click', function () {
@@ -869,7 +869,6 @@
           section.querySelectorAll('.pkg-panel').forEach(function (p) {
             p.classList.toggle('active', p.id === target);
           });
-          // Re-trigger card animations
           var panel = section.querySelector('#' + target);
           if (panel) {
             panel.querySelectorAll('.pc-card').forEach(function (c, i) {
@@ -877,14 +876,13 @@
               c.offsetHeight;
               c.style.animation = 'pcIn 380ms ' + (i * 80) + 'ms ease both';
             });
-            // Animate counters in new panel
             panel.querySelectorAll('.pc-amount[data-counter]').forEach(animateCounter);
           }
         });
       });
     }
 
-    /* ─── Price counter ─── */
+    /* ─── Preis-Zähler ─── */
     function animateCounter(el) {
       if (el._counted) return;
       el._counted = true;
@@ -908,7 +906,7 @@
       document.querySelectorAll('.pc-amount[data-counter]').forEach(function (el) { obs.observe(el); });
     }
 
-    /* ─── FAQ accordion ─── */
+    /* ─── FAQ ─── */
     function initFaq() {
       document.querySelectorAll('.faq-q').forEach(function (btn) {
         btn.addEventListener('click', function () {
@@ -923,7 +921,7 @@
       });
     }
 
-    /* ─── Boot ─── */
+    /* ─── Start ─── */
     function boot() {
       initCards();
       initTabs();

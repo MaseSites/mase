@@ -5,95 +5,148 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Kebab Palace – Authentische türkische Küche – Demo</title>
   <meta name="robots" content="noindex, nofollow">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
-      --red: #dc2626;
-      --red-dark: #b91c1c;
-      --gold: #f59e0b;
-      --bg: #0f0f0f;
-      --surface: #1a1a1a;
-      --card: #222222;
-      --text: #f5f5f5;
-      --muted: #888;
-      --border: #2a2a2a;
+      --red: #e23744;
+      --red-dark: #c41e2a;
+      --gold: #f5a524;
+      --bg: #0e0d0d;
+      --surface: #161414;
+      --card: #201d1d;
+      --text: #f7f4f2;
+      --muted: #9a9290;
+      --border: #2c2828;
     }
-    body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+    body { font-family: 'Archivo', system-ui, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; -webkit-font-smoothing: antialiased; }
     a { color: var(--red); text-decoration: none; }
-    .container { max-width: 1100px; margin: 0 auto; padding: 0 1.5rem; }
-    .btn { display: inline-block; padding: 0.75rem 1.75rem; border-radius: 6px; font-weight: 600; cursor: pointer; transition: opacity .2s; border: none; font-size: 1rem; }
-    .btn:hover { opacity: 0.85; }
-    .btn-primary { background: var(--red); color: #fff; }
-    .btn-outline { background: transparent; color: var(--red); border: 2px solid var(--red); }
-    .btn-gold { background: var(--gold); color: #111; }
+    h1, h2, h3 { letter-spacing: -0.02em; }
+    .container { max-width: 1140px; margin: 0 auto; padding: 0 1.5rem; }
+    .btn { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.8rem 1.7rem; border-radius: 8px; font-weight: 700; cursor: pointer; transition: transform .18s, background .18s; border: none; font-size: 0.95rem; font-family: inherit; }
+    .btn-primary { background: var(--red); color: #fff; box-shadow: 0 8px 22px rgba(226,55,68,.3); }
+    .btn-primary:hover { background: var(--red-dark); transform: translateY(-2px); }
+    .btn-outline { background: transparent; color: var(--text); border: 1.5px solid var(--border); }
+    .btn-outline:hover { border-color: var(--red); color: var(--red); }
+    .icon { width: 1.25em; height: 1.25em; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
 
-    .back-bar { background: var(--surface); padding: 0.5rem 1.5rem; font-size: 0.875rem; border-bottom: 1px solid var(--border); }
+    .back-bar { background: var(--surface); padding: 0.5rem 1.5rem; font-size: 0.8rem; border-bottom: 1px solid var(--border); }
+    .back-bar .container { display: flex; gap: 0.5rem; align-items: center; }
     .back-bar a { color: var(--muted); }
     .back-bar a:hover { color: var(--red); }
+    .back-bar em { color: var(--muted); }
 
-    nav.site-nav { background: var(--surface); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 100; }
-    .nav-inner { display: flex; align-items: center; justify-content: space-between; padding: 1rem 1.5rem; max-width: 1100px; margin: 0 auto; }
-    .nav-logo { font-size: 1.5rem; font-weight: 800; color: var(--red); }
-    .nav-logo small { color: var(--gold); font-size: 0.7rem; font-weight: 400; display: block; }
+    nav.site-nav { background: rgba(14,13,13,.82); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 100; }
+    .nav-inner { display: flex; align-items: center; justify-content: space-between; padding: 0.85rem 1.5rem; max-width: 1140px; margin: 0 auto; }
+    .nav-logo { display: flex; align-items: center; gap: 0.65rem; }
+    .nav-mark { width: 38px; height: 38px; border-radius: 10px; background: linear-gradient(135deg, var(--red), var(--gold)); display: flex; align-items: center; justify-content: center; }
+    .nav-mark svg { width: 21px; height: 21px; stroke: #fff; fill: none; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; }
+    .nav-logo-text strong { font-size: 1.2rem; font-weight: 900; display: block; line-height: 1.05; }
+    .nav-logo-text small { color: var(--gold); font-size: 0.68rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.12em; }
     .nav-links { display: flex; gap: 2rem; list-style: none; }
-    .nav-links a { color: var(--muted); font-size: 0.9rem; transition: color .2s; }
+    .nav-links a { color: var(--muted); font-size: 0.9rem; font-weight: 600; transition: color .2s; }
     .nav-links a:hover { color: var(--text); }
 
-    .hero { min-height: 85vh; display: flex; align-items: center; position: relative; overflow: hidden;
-      background: linear-gradient(to bottom right, #0f0f0f, #1a0505); }
-    .hero::after { content: '🌯'; font-size: 28rem; position: absolute; right: -4rem; top: 50%; transform: translateY(-50%); opacity: 0.06; pointer-events: none; }
-    .hero-content { position: relative; z-index: 1; max-width: 600px; }
-    .hero-tag { color: var(--gold); font-size: 0.875rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 1rem; }
-    .hero h1 { font-size: clamp(2.5rem, 6vw, 5rem); font-weight: 900; line-height: 1.05; margin-bottom: 1.5rem; }
+    /* Hero */
+    .hero { position: relative; overflow: hidden;
+      background:
+        radial-gradient(680px 340px at 86% 14%, rgba(245,165,36,.16) 0%, transparent 62%),
+        linear-gradient(140deg, #0e0d0d 0%, #1c0c0c 100%); }
+    .hero-grid { display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 3.5rem; align-items: center; padding: 5.5rem 0; }
+    .hero-tag { display: inline-flex; align-items: center; gap: 0.5rem; color: var(--gold); font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 1.3rem; border: 1px solid rgba(245,165,36,.3); padding: 0.35rem 0.85rem; border-radius: 999px; }
+    .hero h1 { font-size: clamp(2.6rem, 6vw, 5rem); font-weight: 900; line-height: 1.0; margin-bottom: 1.4rem; }
     .hero h1 span { color: var(--red); }
-    .hero p { font-size: 1.15rem; color: var(--muted); margin-bottom: 2rem; }
-    .hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; align-items: center; }
-    .hero-open { background: var(--card); border: 1px solid #333; border-radius: 8px; padding: 0.5rem 1rem; font-size: 0.85rem; }
-    .open-dot { display: inline-block; width: 8px; height: 8px; background: #22c55e; border-radius: 50%; margin-right: 0.4rem; animation: pulse 2s infinite; }
+    .hero-lead { font-size: 1.15rem; color: var(--muted); max-width: 28rem; margin-bottom: 2rem; }
+    .hero-btns { display: flex; gap: 0.9rem; flex-wrap: wrap; align-items: center; }
+    .hero-open { background: var(--card); border: 1px solid var(--border); border-radius: 999px; padding: 0.55rem 1rem; font-size: 0.85rem; font-weight: 600; display: inline-flex; align-items: center; }
+    .open-dot { display: inline-block; width: 8px; height: 8px; background: #22c55e; border-radius: 50%; margin-right: 0.5rem; box-shadow: 0 0 8px #22c55e; animation: pulse 2s infinite; }
     @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
+
+    /* Hero visual: order card */
+    .hero-visual { position: relative; }
+    .order-card { background: linear-gradient(180deg, #221e1e, #181515); border: 1px solid var(--border); border-radius: 18px; padding: 1.5rem; box-shadow: 0 30px 70px rgba(0,0,0,.5); }
+    .order-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; }
+    .order-head strong { font-size: 1rem; }
+    .order-head span { font-size: 0.74rem; color: var(--gold); font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; }
+    .order-item { display: flex; align-items: center; gap: 0.85rem; padding: 0.7rem 0; border-top: 1px solid var(--border); }
+    .order-thumb { width: 40px; height: 40px; border-radius: 10px; background: linear-gradient(135deg, rgba(226,55,68,.25), rgba(245,165,36,.25)); display: flex; align-items: center; justify-content: center; color: var(--gold); flex-shrink: 0; }
+    .order-thumb svg { width: 20px; height: 20px; }
+    .order-item-info { flex: 1; }
+    .order-item-info strong { display: block; font-size: 0.92rem; font-weight: 600; }
+    .order-item-info span { font-size: 0.78rem; color: var(--muted); }
+    .order-qty { font-size: 0.85rem; color: var(--muted); }
+    .order-price { font-weight: 700; font-size: 0.95rem; width: 56px; text-align: right; }
+    .order-total { display: flex; justify-content: space-between; align-items: center; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--border); }
+    .order-total span { color: var(--muted); font-size: 0.9rem; }
+    .order-total strong { font-size: 1.4rem; font-weight: 900; }
+    .order-cta { display: flex; align-items: center; justify-content: center; gap: 0.5rem; margin-top: 1.1rem; background: var(--red); color: #fff; border-radius: 10px; padding: 0.8rem; font-weight: 700; }
+    .deliver-badge { position: absolute; left: -1.4rem; bottom: -1.3rem; background: #fff; color: #111; border-radius: 12px; padding: 0.8rem 1.05rem; display: flex; align-items: center; gap: 0.7rem; box-shadow: 0 18px 40px rgba(0,0,0,.4); }
+    .deliver-badge .db-ic { width: 36px; height: 36px; border-radius: 9px; background: #fff1e8; color: var(--red); display: flex; align-items: center; justify-content: center; }
+    .deliver-badge strong { display: block; font-size: 1rem; font-weight: 800; }
+    .deliver-badge span { font-size: 0.74rem; color: #6b7280; }
+
+    .features-section { background: var(--surface); padding: 3.5rem 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; }
+    .feature-item { display: flex; gap: 0.9rem; align-items: flex-start; }
+    .feature-icon { width: 42px; height: 42px; border-radius: 10px; background: rgba(226,55,68,.12); color: var(--red); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .feature-icon svg { width: 21px; height: 21px; }
+    .feature-item h3 { font-size: 1rem; font-weight: 700; margin-bottom: 0.25rem; }
+    .feature-item p { font-size: 0.875rem; color: var(--muted); }
 
     .menu-section { padding: 5rem 0; }
     .menu-category { margin-bottom: 3rem; }
-    .category-title { font-size: 1.5rem; font-weight: 700; color: var(--red); border-bottom: 1px solid var(--border); padding-bottom: 0.75rem; margin-bottom: 1.5rem; }
-    .menu-items { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1rem; }
-    .menu-item { background: var(--card); border-radius: 10px; padding: 1.25rem; display: flex; justify-content: space-between; align-items: flex-start; border: 1px solid var(--border); }
-    .menu-item-info h4 { font-weight: 600; margin-bottom: 0.25rem; }
+    .category-title { display: flex; align-items: center; gap: 0.7rem; font-size: 1.4rem; font-weight: 800; color: var(--gold); border-bottom: 1px solid var(--border); padding-bottom: 0.75rem; margin-bottom: 1.5rem; }
+    .category-title svg { width: 22px; height: 22px; stroke: var(--gold); fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+    .menu-items { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1rem; }
+    .menu-item { background: var(--card); border-radius: 12px; padding: 1.25rem; display: flex; justify-content: space-between; align-items: flex-start; border: 1px solid var(--border); transition: border-color .2s; }
+    .menu-item:hover { border-color: var(--red); }
+    .menu-item-info h4 { font-weight: 700; margin-bottom: 0.25rem; }
     .menu-item-info p { font-size: 0.85rem; color: var(--muted); }
-    .menu-item-price { color: var(--gold); font-weight: 700; font-size: 1.1rem; white-space: nowrap; margin-left: 1rem; }
-
-    .features-section { background: var(--surface); padding: 4rem 0; }
-    .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; text-align: center; }
-    .feature-item { padding: 2rem; }
-    .feature-icon { font-size: 2.5rem; margin-bottom: 1rem; }
-    .feature-item h3 { font-size: 1rem; font-weight: 600; margin-bottom: 0.4rem; }
-    .feature-item p { font-size: 0.875rem; color: var(--muted); }
+    .menu-item-price { color: var(--gold); font-weight: 800; font-size: 1.1rem; white-space: nowrap; margin-left: 1rem; }
 
     .about-section { padding: 5rem 0; }
-    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
-    .about-img { background: var(--card); border-radius: 16px; height: 350px; display: flex; align-items: center; justify-content: center; font-size: 10rem; border: 1px solid var(--border); }
-    .about-text h2 { font-size: 2rem; font-weight: 700; margin-bottom: 1rem; }
+    .about-grid { display: grid; grid-template-columns: 0.85fr 1fr; gap: 4rem; align-items: center; }
+    .about-visual { display: grid; gap: 1rem; }
+    .about-stat { background: linear-gradient(160deg, #221414, var(--card)); border: 1px solid var(--border); border-radius: 16px; padding: 2rem; }
+    .about-stat strong { display: block; font-size: 3rem; font-weight: 900; line-height: 1; color: var(--gold); }
+    .about-stat span { color: var(--muted); font-size: 0.95rem; }
+    .about-review { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 1.5rem; }
+    .about-review .stars { color: var(--gold); letter-spacing: 2px; margin-bottom: 0.5rem; font-size: 0.95rem; }
+    .about-review p { font-size: 0.92rem; color: var(--text); font-style: italic; margin-bottom: 0.6rem; }
+    .about-review cite { font-size: 0.8rem; color: var(--muted); font-style: normal; }
+    .about-text h2 { font-size: 2rem; font-weight: 800; margin-bottom: 1rem; }
     .about-text p { color: var(--muted); margin-bottom: 1rem; }
 
     .contact-section { background: var(--surface); padding: 5rem 0; }
     .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; }
     .info-block { margin-bottom: 1.5rem; }
-    .info-block h4 { font-size: 0.875rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.5rem; }
-    .info-block p { font-size: 1.05rem; }
+    .info-block h4 { font-size: 0.78rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.4rem; }
+    .info-block p { font-size: 1.05rem; font-weight: 600; }
     .hours-table { width: 100%; border-collapse: collapse; }
-    .hours-table td { padding: 0.4rem 0; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
+    .hours-table td { padding: 0.45rem 0; border-bottom: 1px solid var(--border); font-size: 0.92rem; }
     .hours-table td:last-child { text-align: right; color: var(--muted); }
+    .contact-form-card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 2rem; }
+    .contact-form-card input { background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 0.8rem 1rem; color: var(--text); font-size: 0.95rem; font-family: inherit; width: 100%; }
+    .contact-form-card input:focus { outline: 2px solid var(--red); border-color: var(--red); }
 
-    footer { background: #0a0a0a; border-top: 1px solid var(--border); padding: 3rem 0 2rem; }
+    footer { background: #0a0909; border-top: 1px solid var(--border); padding: 3rem 0 2rem; }
     .footer-inner { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
-    .footer-brand { font-size: 1.25rem; font-weight: 800; color: var(--red); }
+    .footer-brand { font-size: 1.25rem; font-weight: 900; color: var(--red); }
     .footer-copy { color: var(--muted); font-size: 0.875rem; }
     .footer-note { width: 100%; text-align: center; margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--border); color: var(--muted); font-size: 0.8rem; }
     .footer-note a { color: var(--gold); }
 
-    @media (max-width: 768px) {
+    @media (max-width: 860px) {
       .nav-links { display: none; }
-      .about-grid, .contact-grid { grid-template-columns: 1fr; }
-      .about-img { display: none; }
+      .hero-grid { grid-template-columns: 1fr; gap: 3rem; padding: 4rem 0; }
+      .about-grid, .contact-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+    }
+    @media (max-width: 560px) {
+      .nav-logo-text small { display: none; }
+      .nav-inner { padding: 0.8rem 1.1rem; }
+      .btn { padding: 0.7rem 1.1rem; }
     }
   </style>
 </head>
@@ -101,15 +154,18 @@
   <div class="back-bar">
     <div class="container">
       <a href="../../index.html">← Zurück zu MASESites.ch</a>
-      &nbsp;|&nbsp; <em>Demo-Website – erstellt von MASESites AG</em>
+      <span>|</span> <em>Demo-Website – erstellt von MASESites</em>
     </div>
   </div>
 
   <nav class="site-nav">
     <div class="nav-inner">
       <div class="nav-logo">
-        🌯 Kebab Palace
-        <small>Authentische türkische Küche</small>
+        <span class="nav-mark"><svg viewBox="0 0 24 24"><path d="M4 11h16a8 8 0 0 0-16 0zM2 11h20M5 15h14M7 19h10"/></svg></span>
+        <span class="nav-logo-text">
+          <strong>Kebab Palace</strong>
+          <small>Authentische türkische Küche</small>
+        </span>
       </div>
       <ul class="nav-links">
         <li><a href="#speisekarte">Speisekarte</a></li>
@@ -122,16 +178,51 @@
 
   <section class="hero">
     <div class="container">
-      <div class="hero-content">
-        <p class="hero-tag">Seit 1998 in Zürich</p>
-        <h1>Echt türkisch.<br><span>Echt lecker.</span></h1>
-        <p>Frisch zubereitet, täglich gelieferte Zutaten und Rezepte aus der Türkei. Das schmeckt man.</p>
-        <div class="hero-btns">
-          <a href="#speisekarte" class="btn btn-primary">Zur Speisekarte</a>
-          <a href="tel:+41441234567" class="btn btn-outline">+41 44 123 45 67</a>
-          <span class="hero-open">
-            <span class="open-dot"></span>Jetzt geöffnet
-          </span>
+      <div class="hero-grid">
+        <div>
+          <span class="hero-tag">Seit 1998 in Zürich</span>
+          <h1>Echt türkisch.<br><span>Echt lecker.</span></h1>
+          <p class="hero-lead">Frisch zubereitet, täglich gelieferte Zutaten und Rezepte aus der Türkei. Das schmeckt man.</p>
+          <div class="hero-btns">
+            <a href="#speisekarte" class="btn btn-primary">Zur Speisekarte</a>
+            <a href="tel:+41441234567" class="btn btn-outline">+41 44 123 45 67</a>
+            <span class="hero-open"><span class="open-dot"></span> Jetzt geöffnet</span>
+          </div>
+        </div>
+        <div class="hero-visual">
+          <div class="order-card">
+            <div class="order-head">
+              <strong>Deine Bestellung</strong>
+              <span>Online</span>
+            </div>
+            <div class="order-item">
+              <span class="order-thumb"><svg class="icon" viewBox="0 0 24 24"><path d="M4 11h16a8 8 0 0 0-16 0zM3 11h18M6 15h12"/></svg></span>
+              <div class="order-item-info"><strong>Döner im Brot</strong><span>Kalbfleisch, Salat, Sosse</span></div>
+              <span class="order-qty">1×</span>
+              <span class="order-price">CHF 9</span>
+            </div>
+            <div class="order-item">
+              <span class="order-thumb"><svg class="icon" viewBox="0 0 24 24"><path d="M8 2h8l-1 6H9zM9 8h6v12H9z"/></svg></span>
+              <div class="order-item-info"><strong>Ayran</strong><span>330 ml</span></div>
+              <span class="order-qty">1×</span>
+              <span class="order-price">CHF 3</span>
+            </div>
+            <div class="order-total">
+              <span>Total inkl. MwSt.</span>
+              <strong>CHF 12</strong>
+            </div>
+            <div class="order-cta">
+              <svg class="icon" viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"/></svg>
+              Jetzt bestellen
+            </div>
+          </div>
+          <div class="deliver-badge">
+            <span class="db-ic"><svg class="icon" viewBox="0 0 24 24"><path d="M5 18H3V6h11v7M14 9h4l3 4v5h-2"/><circle cx="7.5" cy="18.5" r="1.5"/><circle cx="17.5" cy="18.5" r="1.5"/></svg></span>
+            <div>
+              <strong>30 Min</strong>
+              <span>Lieferung &amp; Abholung</span>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -141,24 +232,20 @@
     <div class="container">
       <div class="features-grid">
         <div class="feature-item">
-          <div class="feature-icon">🔥</div>
-          <h3>Frisch am Drehspiess</h3>
-          <p>Täglich frisch mariniertes Fleisch vom Drehspiess.</p>
+          <span class="feature-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M12 2c1 3-1 4-1 6a3 3 0 0 0 6 0c0-1-.5-2-1-3 2 1 4 4 4 8a8 8 0 0 1-16 0c0-4 3-7 5-9 0 2 2 2 3-2z"/></svg></span>
+          <div><h3>Frisch am Drehspiess</h3><p>Täglich frisch mariniertes Fleisch vom Drehspiess.</p></div>
         </div>
         <div class="feature-item">
-          <div class="feature-icon">🚗</div>
-          <h3>Lieferung &amp; Abholung</h3>
-          <p>Lieferung in 30 Min. oder Click &amp; Collect.</p>
+          <span class="feature-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M5 18H3V6h11v7M14 9h4l3 4v5h-2"/><circle cx="7.5" cy="18.5" r="1.5"/><circle cx="17.5" cy="18.5" r="1.5"/></svg></span>
+          <div><h3>Lieferung &amp; Abholung</h3><p>Lieferung in 30 Min. oder Click &amp; Collect.</p></div>
         </div>
         <div class="feature-item">
-          <div class="feature-icon">🌱</div>
-          <h3>Vegetarisch &amp; Vegan</h3>
-          <p>Grosse Auswahl für alle Ernährungsweisen.</p>
+          <span class="feature-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10z"/><path d="M2 21c0-3 1.85-5.36 5.08-6"/></svg></span>
+          <div><h3>Vegetarisch &amp; Vegan</h3><p>Grosse Auswahl für alle Ernährungsweisen.</p></div>
         </div>
         <div class="feature-item">
-          <div class="feature-icon">⭐</div>
-          <h3>4.8 / 5 Sterne</h3>
-          <p>Über 2'000 Bewertungen auf Google.</p>
+          <span class="feature-icon"><svg class="icon" viewBox="0 0 24 24"><path d="m12 2 3 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.9 21l1.2-6.8-5-4.9 6.9-1z"/></svg></span>
+          <div><h3>4.8 / 5 Sterne</h3><p>Über 2'000 Bewertungen auf Google.</p></div>
         </div>
       </div>
     </div>
@@ -166,84 +253,34 @@
 
   <section id="speisekarte" class="menu-section">
     <div class="container">
-      <h2 style="font-size:2rem; font-weight:700; margin-bottom:3rem;">Unsere Speisekarte</h2>
+      <p class="section-eyebrow" style="color:var(--gold);font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin-bottom:.5rem;">Speisekarte</p>
+      <h2 style="font-size:clamp(1.8rem,3vw,2.3rem); font-weight:800; margin-bottom:3rem;">Frisch &amp; hausgemacht</h2>
 
       <div class="menu-category">
-        <h3 class="category-title">🌯 Döner &amp; Wraps</h3>
+        <h3 class="category-title"><svg viewBox="0 0 24 24"><path d="M4 11h16a8 8 0 0 0-16 0zM3 11h18M6 15h12"/></svg> Döner &amp; Wraps</h3>
         <div class="menu-items">
-          <div class="menu-item">
-            <div class="menu-item-info">
-              <h4>Döner im Brot</h4>
-              <p>Kalbfleisch, Salat, Tomaten, Zwiebeln, Sosse</p>
-            </div>
-            <span class="menu-item-price">CHF 9</span>
-          </div>
-          <div class="menu-item">
-            <div class="menu-item-info">
-              <h4>Döner in der Box</h4>
-              <p>Mit Reis, Salat, Grillgemüse, zwei Sossen</p>
-            </div>
-            <span class="menu-item-price">CHF 14</span>
-          </div>
-          <div class="menu-item">
-            <div class="menu-item-info">
-              <h4>Chicken Wrap</h4>
-              <p>Hähnchenbrust, Knoblauchcreme, Rucolasalat</p>
-            </div>
-            <span class="menu-item-price">CHF 11</span>
-          </div>
-          <div class="menu-item">
-            <div class="menu-item-info">
-              <h4>Veggie Wrap</h4>
-              <p>Halloumi, gegrillte Paprika, Zucchini, Hummus</p>
-            </div>
-            <span class="menu-item-price">CHF 10</span>
-          </div>
+          <div class="menu-item"><div class="menu-item-info"><h4>Döner im Brot</h4><p>Kalbfleisch, Salat, Tomaten, Zwiebeln, Sosse</p></div><span class="menu-item-price">CHF 9</span></div>
+          <div class="menu-item"><div class="menu-item-info"><h4>Döner in der Box</h4><p>Mit Reis, Salat, Grillgemüse, zwei Sossen</p></div><span class="menu-item-price">CHF 14</span></div>
+          <div class="menu-item"><div class="menu-item-info"><h4>Chicken Wrap</h4><p>Hähnchenbrust, Knoblauchcreme, Rucolasalat</p></div><span class="menu-item-price">CHF 11</span></div>
+          <div class="menu-item"><div class="menu-item-info"><h4>Veggie Wrap</h4><p>Halloumi, gegrillte Paprika, Zucchini, Hummus</p></div><span class="menu-item-price">CHF 10</span></div>
         </div>
       </div>
 
       <div class="menu-category">
-        <h3 class="category-title">🥙 Pide &amp; Lahmacun</h3>
+        <h3 class="category-title"><svg viewBox="0 0 24 24"><path d="M3 12a9 4 0 0 0 18 0 9 4 0 0 0-18 0zM3 12v3a9 4 0 0 0 18 0v-3"/></svg> Pide &amp; Lahmacun</h3>
         <div class="menu-items">
-          <div class="menu-item">
-            <div class="menu-item-info">
-              <h4>Lahmacun</h4>
-              <p>Türkische Fladenpizza mit Hackfleisch, klassisch</p>
-            </div>
-            <span class="menu-item-price">CHF 5</span>
-          </div>
-          <div class="menu-item">
-            <div class="menu-item-info">
-              <h4>Kaşarlı Pide</h4>
-              <p>Mit Käse und Butteroberfläche, vegetarisch</p>
-            </div>
-            <span class="menu-item-price">CHF 12</span>
-          </div>
-          <div class="menu-item">
-            <div class="menu-item-info">
-              <h4>Kiymali Pide</h4>
-              <p>Mit Hackfleisch, Paprika, Tomaten</p>
-            </div>
-            <span class="menu-item-price">CHF 14</span>
-          </div>
+          <div class="menu-item"><div class="menu-item-info"><h4>Lahmacun</h4><p>Türkische Fladenpizza mit Hackfleisch, klassisch</p></div><span class="menu-item-price">CHF 5</span></div>
+          <div class="menu-item"><div class="menu-item-info"><h4>Kaşarlı Pide</h4><p>Mit Käse und Butteroberfläche, vegetarisch</p></div><span class="menu-item-price">CHF 12</span></div>
+          <div class="menu-item"><div class="menu-item-info"><h4>Kıymalı Pide</h4><p>Mit Hackfleisch, Paprika, Tomaten</p></div><span class="menu-item-price">CHF 14</span></div>
         </div>
       </div>
 
       <div class="menu-category">
-        <h3 class="category-title">🥗 Beilagen &amp; Getränke</h3>
+        <h3 class="category-title"><svg viewBox="0 0 24 24"><path d="M5 11h14M7 11a5 5 0 0 1 10 0M9 11V8M12 11V7M15 11V8M5 11v2a7 7 0 0 0 14 0v-2"/></svg> Beilagen &amp; Getränke</h3>
         <div class="menu-items">
-          <div class="menu-item">
-            <div class="menu-item-info"><h4>Pommes Frites</h4><p>Knusprig frittiert</p></div>
-            <span class="menu-item-price">CHF 5</span>
-          </div>
-          <div class="menu-item">
-            <div class="menu-item-info"><h4>Ayran</h4><p>Türkisches Joghurtgetränk, 330ml</p></div>
-            <span class="menu-item-price">CHF 3</span>
-          </div>
-          <div class="menu-item">
-            <div class="menu-item-info"><h4>Soft Drinks</h4><p>Cola, Fanta, Sprite, 330ml</p></div>
-            <span class="menu-item-price">CHF 3.50</span>
-          </div>
+          <div class="menu-item"><div class="menu-item-info"><h4>Pommes Frites</h4><p>Knusprig frittiert</p></div><span class="menu-item-price">CHF 5</span></div>
+          <div class="menu-item"><div class="menu-item-info"><h4>Ayran</h4><p>Türkisches Joghurtgetränk, 330 ml</p></div><span class="menu-item-price">CHF 3</span></div>
+          <div class="menu-item"><div class="menu-item-info"><h4>Soft Drinks</h4><p>Cola, Fanta, Sprite, 330 ml</p></div><span class="menu-item-price">CHF 3.50</span></div>
         </div>
       </div>
     </div>
@@ -252,12 +289,22 @@
   <section id="ueber" class="about-section">
     <div class="container">
       <div class="about-grid">
-        <div class="about-img">🫕</div>
+        <div class="about-visual">
+          <div class="about-stat">
+            <strong>25</strong>
+            <span>Jahre türkische Gastfreundschaft in Zürich</span>
+          </div>
+          <div class="about-review">
+            <div class="stars">★★★★★</div>
+            <p>„Der beste Döner der Stadt – frisch, grosszügig und immer freundlich.“</p>
+            <cite>— Selina M., Google-Rezension</cite>
+          </div>
+        </div>
         <div class="about-text">
           <h2>Unsere Geschichte</h2>
-          <p>Seit 1998 servieren wir in Zürich authentische türkische Küche. Was als kleiner Imbiss begann, ist heute eines der beliebtesten türkischen Restaurants in der Stadt.</p>
+          <p>Seit 1998 servieren wir in Zürich authentische türkische Küche. Was als kleiner Imbiss begann, ist heute eines der beliebtesten türkischen Restaurants der Stadt.</p>
           <p>Unsere Rezepte stammen aus der Heimat unserer Familie in der Türkei. Wir verwenden täglich frische Zutaten und marinieren unser Fleisch nach Familienrezept.</p>
-          <p>Egal ob zum Mittagessen, Abendessen oder als Snack – bei uns bist du herzlich willkommen.</p>
+          <p>Egal ob zum Mittagessen, Abendessen oder als Snack – bei uns sind Sie herzlich willkommen.</p>
           <a href="#kontakt" class="btn btn-primary" style="margin-top:1rem;">Uns besuchen</a>
         </div>
       </div>
@@ -266,17 +313,12 @@
 
   <section id="kontakt" class="contact-section">
     <div class="container">
-      <h2 style="font-size:2rem; font-weight:700; margin-bottom:2.5rem;">Standort &amp; Öffnungszeiten</h2>
+      <p class="section-eyebrow" style="color:var(--gold);font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin-bottom:.5rem;">Kontakt</p>
+      <h2 style="font-size:clamp(1.8rem,3vw,2.3rem); font-weight:800; margin-bottom:2.5rem;">Standort &amp; Öffnungszeiten</h2>
       <div class="contact-grid">
         <div>
-          <div class="info-block">
-            <h4>Adresse</h4>
-            <p>Langstrasse 45, 8004 Zürich</p>
-          </div>
-          <div class="info-block">
-            <h4>Telefon (Bestellung)</h4>
-            <p><a href="tel:+41441234567">+41 44 123 45 67</a></p>
-          </div>
+          <div class="info-block"><h4>Adresse</h4><p>Langstrasse 45, 8004 Zürich</p></div>
+          <div class="info-block"><h4>Telefon (Bestellung)</h4><p><a href="tel:+41441234567">+41 44 123 45 67</a></p></div>
           <div class="info-block">
             <h4>Öffnungszeiten</h4>
             <table class="hours-table">
@@ -286,15 +328,15 @@
             </table>
           </div>
         </div>
-        <div>
+        <div class="contact-form-card">
           <h3 style="margin-bottom:1rem;">Tisch reservieren</h3>
-          <form onsubmit="return false;" style="display:flex;flex-direction:column;gap:1rem;">
-            <input type="text" placeholder="Ihr Name *" required style="background:var(--card);border:1px solid var(--border);border-radius:6px;padding:0.75rem 1rem;color:var(--text);font-size:0.95rem;font-family:inherit;width:100%;">
-            <input type="tel" placeholder="Telefon *" required style="background:var(--card);border:1px solid var(--border);border-radius:6px;padding:0.75rem 1rem;color:var(--text);font-size:0.95rem;font-family:inherit;width:100%;">
-            <input type="text" placeholder="Datum &amp; Uhrzeit" style="background:var(--card);border:1px solid var(--border);border-radius:6px;padding:0.75rem 1rem;color:var(--text);font-size:0.95rem;font-family:inherit;width:100%;">
-            <input type="number" placeholder="Anzahl Personen" min="1" style="background:var(--card);border:1px solid var(--border);border-radius:6px;padding:0.75rem 1rem;color:var(--text);font-size:0.95rem;font-family:inherit;width:100%;">
-            <button type="submit" class="btn btn-primary">Tisch reservieren</button>
-            <p style="font-size:0.8rem;color:var(--muted);">Demo-Formular – keine echten Anfragen möglich.</p>
+          <form onsubmit="return false;" style="display:flex;flex-direction:column;gap:0.9rem;">
+            <input type="text" placeholder="Ihr Name *" required>
+            <input type="tel" placeholder="Telefon *" required>
+            <input type="text" placeholder="Datum &amp; Uhrzeit">
+            <input type="number" placeholder="Anzahl Personen" min="1">
+            <button type="submit" class="btn btn-primary" style="justify-content:center;">Tisch reservieren</button>
+            <p style="font-size:0.8rem;color:var(--muted);text-align:center;">Demo-Formular – keine echten Anfragen möglich.</p>
           </form>
         </div>
       </div>
@@ -304,11 +346,11 @@
   <footer>
     <div class="container">
       <div class="footer-inner">
-        <span class="footer-brand">🌯 Kebab Palace</span>
+        <span class="footer-brand">Kebab Palace</span>
         <p class="footer-copy">&copy; 2026 Kebab Palace, Zürich</p>
       </div>
       <p class="footer-note">
-        Diese Website ist ein Demo-Projekt von <a href="../../index.html">MASESites AG</a>.
+        Diese Website ist ein Demo-Projekt von <a href="../../index.html">MASESites</a>.
         Echte Website ab CHF 750. <a href="../../kontakt.html">Jetzt anfragen →</a>
       </p>
     </div>

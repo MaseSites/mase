@@ -5,94 +5,130 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Strike Zone Bowling Center – Demo</title>
   <meta name="robots" content="noindex, nofollow">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
-      --orange: #f97316;
-      --orange-dark: #ea580c;
-      --bg: #0a0a0a;
-      --surface: #111111;
-      --card: #1a1a1a;
+      --orange: #ff6a1a;
+      --orange-dark: #e2540a;
+      --bg: #0b0b0d;
+      --surface: #131316;
+      --card: #1a1b1f;
       --text: #f5f5f5;
-      --muted: #888;
+      --muted: #9a9aa2;
+      --border: #26272c;
     }
-    body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+    body { font-family: 'Archivo', system-ui, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; -webkit-font-smoothing: antialiased; }
     a { color: var(--orange); text-decoration: none; }
-    .container { max-width: 1100px; margin: 0 auto; padding: 0 1.5rem; }
-    .btn { display: inline-block; padding: 0.75rem 1.75rem; border-radius: 6px; font-weight: 600; cursor: pointer; transition: opacity .2s; border: none; font-size: 1rem; }
-    .btn:hover { opacity: 0.85; }
-    .btn-primary { background: var(--orange); color: #fff; }
-    .btn-outline { background: transparent; color: var(--orange); border: 2px solid var(--orange); }
+    h1, h2, h3 { letter-spacing: -0.02em; }
+    .container { max-width: 1140px; margin: 0 auto; padding: 0 1.5rem; }
+    .btn { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.8rem 1.7rem; border-radius: 8px; font-weight: 700; cursor: pointer; transition: transform .18s, background .18s; border: none; font-size: 0.95rem; font-family: inherit; }
+    .btn-primary { background: var(--orange); color: #fff; box-shadow: 0 8px 22px rgba(255,106,26,.3); }
+    .btn-primary:hover { background: var(--orange-dark); transform: translateY(-2px); }
+    .btn-outline { background: transparent; color: var(--text); border: 1.5px solid var(--border); }
+    .btn-outline:hover { border-color: var(--orange); color: var(--orange); }
+    .icon { width: 1.25em; height: 1.25em; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
 
-    /* Back link */
-    .back-bar { background: var(--surface); padding: 0.5rem 1.5rem; font-size: 0.875rem; border-bottom: 1px solid #222; }
+    .back-bar { background: var(--surface); padding: 0.5rem 1.5rem; font-size: 0.8rem; border-bottom: 1px solid var(--border); }
+    .back-bar .container { display: flex; gap: 0.5rem; align-items: center; }
     .back-bar a { color: var(--muted); }
     .back-bar a:hover { color: var(--orange); }
+    .back-bar em { color: var(--muted); }
 
-    /* Nav */
-    nav.site-nav { background: var(--surface); border-bottom: 1px solid #222; position: sticky; top: 0; z-index: 100; }
-    .nav-inner { display: flex; align-items: center; justify-content: space-between; padding: 1rem 1.5rem; max-width: 1100px; margin: 0 auto; }
-    .nav-logo { font-size: 1.5rem; font-weight: 800; color: var(--orange); letter-spacing: -0.03em; }
+    nav.site-nav { background: rgba(11,11,13,.8); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 100; }
+    .nav-inner { display: flex; align-items: center; justify-content: space-between; padding: 0.9rem 1.5rem; max-width: 1140px; margin: 0 auto; }
+    .nav-logo { display: flex; align-items: center; gap: 0.65rem; }
+    .nav-mark { width: 36px; height: 36px; border-radius: 9px; background: linear-gradient(135deg, var(--orange), #ff9248); display: flex; align-items: center; justify-content: center; }
+    .nav-mark svg { width: 20px; height: 20px; }
+    .nav-logo span { font-size: 1.35rem; font-weight: 900; letter-spacing: -0.03em; }
     .nav-links { display: flex; gap: 2rem; list-style: none; }
-    .nav-links a { color: var(--muted); font-size: 0.9rem; transition: color .2s; }
+    .nav-links a { color: var(--muted); font-size: 0.9rem; font-weight: 600; transition: color .2s; }
     .nav-links a:hover { color: var(--text); }
 
     /* Hero */
-    .hero { min-height: 80vh; display: flex; align-items: center; background: linear-gradient(135deg, #0a0a0a 0%, #1a0a00 100%); position: relative; overflow: hidden; }
-    .hero::before { content: '🎳'; font-size: 30rem; position: absolute; right: -5rem; top: 50%; transform: translateY(-50%); opacity: 0.04; pointer-events: none; }
-    .hero-content { position: relative; z-index: 1; }
-    .hero-tag { color: var(--orange); font-size: 0.875rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 1rem; }
-    .hero h1 { font-size: clamp(2.5rem, 6vw, 5rem); font-weight: 800; line-height: 1.1; margin-bottom: 1.5rem; }
+    .hero { position: relative; overflow: hidden;
+      background:
+        radial-gradient(700px 360px at 88% 12%, rgba(255,106,26,.18) 0%, transparent 65%),
+        linear-gradient(135deg, #0b0b0d 0%, #19100a 100%); }
+    .hero-grid { display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 3.5rem; align-items: center; padding: 5.5rem 0; }
+    .hero-tag { display: inline-flex; align-items: center; gap: 0.5rem; color: var(--orange); font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 1.3rem; border: 1px solid rgba(255,106,26,.3); padding: 0.35rem 0.85rem; border-radius: 999px; }
+    .hero h1 { font-size: clamp(2.6rem, 6vw, 5rem); font-weight: 900; line-height: 1.02; margin-bottom: 1.4rem; }
     .hero h1 span { color: var(--orange); }
-    .hero p { font-size: 1.2rem; color: var(--muted); max-width: 500px; margin-bottom: 2rem; }
-    .hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .hero-lead { font-size: 1.15rem; color: var(--muted); max-width: 30rem; margin-bottom: 2rem; }
+    .hero-btns { display: flex; gap: 0.9rem; flex-wrap: wrap; }
+    .hero-stats { display: flex; gap: 2.2rem; margin-top: 2.4rem; }
+    .hero-stats strong { display: block; font-size: 1.6rem; font-weight: 800; color: #fff; }
+    .hero-stats span { font-size: 0.8rem; color: var(--muted); }
 
-    /* Sections */
+    /* Hero visual: scoreboard card */
+    .hero-visual { position: relative; }
+    .score-card { background: linear-gradient(180deg, #1c1d22, #141519); border: 1px solid var(--border); border-radius: 18px; padding: 1.4rem; box-shadow: 0 30px 70px rgba(0,0,0,.5); }
+    .score-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.1rem; }
+    .score-head strong { font-size: 1rem; }
+    .score-live { display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.72rem; font-weight: 700; color: #22c55e; text-transform: uppercase; letter-spacing: 0.08em; }
+    .score-live .dot { width: 7px; height: 7px; border-radius: 50%; background: #22c55e; box-shadow: 0 0 8px #22c55e; animation: blink 1.6s infinite; }
+    @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0.35; } }
+    .score-row { display: flex; align-items: center; gap: 0.8rem; padding: 0.7rem 0; border-top: 1px solid var(--border); }
+    .score-rank { width: 26px; height: 26px; border-radius: 7px; background: var(--card); display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 800; color: var(--muted); flex-shrink: 0; }
+    .score-row.lead .score-rank { background: var(--orange); color: #fff; }
+    .score-name { flex: 1; font-weight: 600; font-size: 0.92rem; }
+    .score-frames { display: flex; gap: 3px; }
+    .score-frames i { width: 8px; height: 8px; border-radius: 2px; background: #2a2b30; }
+    .score-frames i.hit { background: var(--orange); }
+    .score-pts { font-weight: 800; font-size: 1rem; width: 38px; text-align: right; }
+    .lane-badge { position: absolute; left: -1.4rem; bottom: -1.3rem; background: #fff; color: #111; border-radius: 12px; padding: 0.85rem 1.1rem; display: flex; align-items: center; gap: 0.7rem; box-shadow: 0 18px 40px rgba(0,0,0,.4); }
+    .lane-badge .lb-ic { width: 36px; height: 36px; border-radius: 9px; background: #fff1e8; color: var(--orange); display: flex; align-items: center; justify-content: center; }
+    .lane-badge strong { display: block; font-size: 1rem; font-weight: 800; }
+    .lane-badge span { font-size: 0.74rem; color: #6b7280; }
+
     section { padding: 5rem 0; }
-    .section-title { font-size: 2rem; font-weight: 700; margin-bottom: 1rem; }
+    .section-eyebrow { color: var(--orange); font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.6rem; }
+    .section-title { font-size: clamp(1.8rem, 3vw, 2.3rem); font-weight: 800; margin-bottom: 0.75rem; }
     .section-lead { color: var(--muted); max-width: 600px; margin-bottom: 3rem; }
 
-    /* Cards */
-    .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
-    .card { background: var(--card); border-radius: 12px; padding: 2rem; border: 1px solid #222; }
-    .card-icon { font-size: 2.5rem; margin-bottom: 1rem; }
-    .card h3 { font-size: 1.2rem; margin-bottom: 0.5rem; }
+    .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 1.4rem; }
+    .card { background: var(--card); border-radius: 14px; padding: 1.9rem; border: 1px solid var(--border); transition: transform .2s, border-color .2s; }
+    .card:hover { transform: translateY(-4px); border-color: #3a3b42; }
+    .card-icon { width: 46px; height: 46px; border-radius: 11px; background: rgba(255,106,26,.12); color: var(--orange); display: flex; align-items: center; justify-content: center; margin-bottom: 1.1rem; }
+    .card-icon svg { width: 23px; height: 23px; }
+    .card h3 { font-size: 1.15rem; font-weight: 700; margin-bottom: 0.5rem; }
     .card p { color: var(--muted); font-size: 0.95rem; }
 
-    /* Pricing */
-    .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; }
-    .price-card { background: var(--card); border-radius: 12px; padding: 2rem; border: 1px solid #222; text-align: center; }
-    .price-card.featured { border-color: var(--orange); background: #1a0d00; }
-    .price-card .badge { color: var(--orange); font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 1rem; }
-    .price-card .price { font-size: 2.5rem; font-weight: 800; margin: 0.5rem 0; }
-    .price-card .period { font-size: 0.875rem; color: var(--muted); }
+    .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.4rem; }
+    .price-card { background: var(--card); border-radius: 14px; padding: 2rem; border: 1px solid var(--border); text-align: center; }
+    .price-card.featured { border-color: var(--orange); background: linear-gradient(180deg, #1f130a, #16110d); transform: scale(1.03); }
+    .price-card .badge { color: var(--orange); font-size: 0.78rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 1rem; }
+    .price-card .price { font-size: 2.6rem; font-weight: 900; margin: 0.4rem 0; }
+    .price-card .period { font-size: 0.85rem; color: var(--muted); }
     .price-card ul { list-style: none; text-align: left; margin: 1.5rem 0; }
-    .price-card ul li { padding: 0.4rem 0; color: var(--muted); font-size: 0.9rem; }
-    .price-card ul li::before { content: '✓ '; color: var(--orange); font-weight: 700; }
+    .price-card ul li { padding: 0.45rem 0; color: var(--muted); font-size: 0.9rem; display: flex; gap: 0.5rem; align-items: center; }
+    .price-card ul li svg { width: 16px; height: 16px; color: var(--orange); flex-shrink: 0; }
+    .price-card .btn { width: 100%; justify-content: center; }
 
-    /* Contact */
     .contact-section { background: var(--surface); }
     .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: start; }
     .contact-info p { color: var(--muted); margin-bottom: 0.75rem; }
     .contact-info strong { color: var(--text); }
-    .contact-form { display: flex; flex-direction: column; gap: 1rem; }
+    .contact-form { display: flex; flex-direction: column; gap: 0.9rem; background: var(--card); padding: 2rem; border-radius: 16px; border: 1px solid var(--border); }
     .contact-form input, .contact-form textarea {
-      background: var(--card); border: 1px solid #333; border-radius: 6px; padding: 0.75rem 1rem;
+      background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 0.8rem 1rem;
       color: var(--text); font-size: 0.95rem; font-family: inherit; width: 100%;
     }
-    .contact-form textarea { resize: vertical; min-height: 120px; }
+    .contact-form input:focus, .contact-form textarea:focus { outline: 2px solid var(--orange); border-color: var(--orange); }
+    .contact-form textarea { resize: vertical; min-height: 110px; }
 
-    /* Footer */
-    footer { background: var(--surface); border-top: 1px solid #222; padding: 3rem 0 2rem; }
+    footer { background: var(--surface); border-top: 1px solid var(--border); padding: 3rem 0 2rem; }
     .footer-inner { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
-    .footer-brand { font-size: 1.25rem; font-weight: 800; color: var(--orange); }
+    .footer-brand { font-size: 1.25rem; font-weight: 900; color: var(--orange); }
     .footer-copy { color: var(--muted); font-size: 0.875rem; }
-    .footer-note { width: 100%; text-align: center; margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid #222; color: var(--muted); font-size: 0.8rem; }
+    .footer-note { width: 100%; text-align: center; margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--border); color: var(--muted); font-size: 0.8rem; }
 
-    @media (max-width: 768px) {
+    @media (max-width: 860px) {
       .nav-links { display: none; }
+      .hero-grid { grid-template-columns: 1fr; gap: 3rem; padding: 4rem 0; }
       .contact-grid { grid-template-columns: 1fr; }
-      .hero h1 { font-size: 2.5rem; }
     }
   </style>
 </head>
@@ -100,13 +136,16 @@
   <div class="back-bar">
     <div class="container">
       <a href="../../index.html">← Zurück zu MASESites.ch</a>
-      &nbsp;|&nbsp; <em>Demo-Website – erstellt von MASESites AG</em>
+      <span>|</span> <em>Demo-Website – erstellt von MASESites</em>
     </div>
   </div>
 
   <nav class="site-nav">
     <div class="nav-inner">
-      <span class="nav-logo">🎳 Strike Zone</span>
+      <div class="nav-logo">
+        <span class="nav-mark"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="13" r="8" fill="#fff"/><circle cx="9.5" cy="10.5" r="1.1" fill="#ff6a1a"/><circle cx="13" cy="9.5" r="1.1" fill="#ff6a1a"/><circle cx="12.5" cy="13" r="1.1" fill="#ff6a1a"/></svg></span>
+        <span>Strike Zone</span>
+      </div>
       <ul class="nav-links">
         <li><a href="#bahnen">Bahnen</a></li>
         <li><a href="#preise">Preise</a></li>
@@ -119,13 +158,53 @@
 
   <section class="hero">
     <div class="container">
-      <div class="hero-content">
-        <p class="hero-tag">Zürichs Bestes Bowling Center</p>
-        <h1>Bowling auf<br><span>Top-Niveau.</span></h1>
-        <p>8 professionelle Bahnen, modernste Ausrüstung und die beste Atmosphäre in der Region. Für Familien, Teams und Events.</p>
-        <div class="hero-btns">
-          <a href="#kontakt" class="btn btn-primary">Bahn buchen</a>
-          <a href="#preise" class="btn btn-outline">Preise ansehen</a>
+      <div class="hero-grid">
+        <div>
+          <span class="hero-tag">Zürichs bestes Bowling Center</span>
+          <h1>Bowling auf<br><span>Top-Niveau.</span></h1>
+          <p class="hero-lead">8 professionelle Bahnen, modernste Ausrüstung und die beste Atmosphäre in der Region. Für Familien, Teams und Events.</p>
+          <div class="hero-btns">
+            <a href="#kontakt" class="btn btn-primary">Bahn buchen</a>
+            <a href="#preise" class="btn btn-outline">Preise ansehen</a>
+          </div>
+          <div class="hero-stats">
+            <div><strong>8</strong><span>Profi-Bahnen</span></div>
+            <div><strong>200+</strong><span>Schuhe im Verleih</span></div>
+            <div><strong>4.8★</strong><span>Google-Bewertung</span></div>
+          </div>
+        </div>
+        <div class="hero-visual">
+          <div class="score-card">
+            <div class="score-head">
+              <strong>Bahn 4 · Live-Score</strong>
+              <span class="score-live"><span class="dot"></span> Live</span>
+            </div>
+            <div class="score-row lead">
+              <span class="score-rank">1</span>
+              <span class="score-name">Marco</span>
+              <span class="score-frames"><i class="hit"></i><i class="hit"></i><i class="hit"></i><i></i><i></i></span>
+              <span class="score-pts">187</span>
+            </div>
+            <div class="score-row">
+              <span class="score-rank">2</span>
+              <span class="score-name">Lena</span>
+              <span class="score-frames"><i class="hit"></i><i class="hit"></i><i></i><i></i><i></i></span>
+              <span class="score-pts">164</span>
+            </div>
+            <div class="score-row">
+              <span class="score-rank">3</span>
+              <span class="score-name">Tobias</span>
+              <span class="score-frames"><i class="hit"></i><i></i><i></i><i></i><i></i></span>
+              <span class="score-pts">142</span>
+            </div>
+          </div>
+          <div class="lane-badge">
+            <span class="lb-ic"><svg class="icon" viewBox="0 0 24 24"><path d="M5 22V7a7 7 0 0 1 14 0v15"/><path d="M5 13h14"/></svg></span>
+            <div>
+              <strong>3 Bahnen frei</strong>
+              <span>Heute Abend ab 19:00</span>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -133,36 +212,37 @@
 
   <section id="bahnen">
     <div class="container">
-      <h2 class="section-title">Unsere Anlagen</h2>
-      <p class="section-lead">State-of-the-art Equipment für das perfekte Spielerlebnis.</p>
+      <p class="section-eyebrow">Anlagen</p>
+      <h2 class="section-title">Alles für das perfekte Spiel</h2>
+      <p class="section-lead">State-of-the-art Equipment für ein unvergessliches Erlebnis.</p>
       <div class="grid-3">
         <div class="card">
-          <div class="card-icon">🎳</div>
+          <div class="card-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M5 22V7a7 7 0 0 1 14 0v15"/><path d="M5 13h14"/></svg></div>
           <h3>8 Profi-Bahnen</h3>
           <p>Automatische Pinsetzer, digitale Anzeigetafeln und perfekt gepflegte Holzoberflächen.</p>
         </div>
         <div class="card">
-          <div class="card-icon">👟</div>
+          <div class="card-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M2 18h20l-1.5-5.5a3 3 0 0 0-2.9-2.2H8.5L2 13z"/><path d="M2 13l3-7 4 1M9 18v3M15 18v3"/></svg></div>
           <h3>Schuhverleih</h3>
           <p>Über 200 Paar Bowling-Schuhe in allen Grössen – inklusive im Eintrittspreis.</p>
         </div>
         <div class="card">
-          <div class="card-icon">🍔</div>
+          <div class="card-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M6 2h12l-1 7a5 5 0 0 1-10 0z"/><path d="M12 14v6M8 22h8"/></svg></div>
           <h3>Bar &amp; Snacks</h3>
           <p>Burger, Pommes, Nachos und kalte Getränke direkt an der Bahn bestellen.</p>
         </div>
         <div class="card">
-          <div class="card-icon">🎉</div>
+          <div class="card-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M20 12v9H4v-9M2 7h20v5H2zM12 22V7M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7zM12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg></div>
           <h3>Event-Bereich</h3>
-          <p>Privater Bereich für Geburtstage, Firmenevents und Teambuildinge. Bis 40 Personen.</p>
+          <p>Privater Bereich für Geburtstage, Firmenevents und Teambuilding. Bis 40 Personen.</p>
         </div>
         <div class="card">
-          <div class="card-icon">🏆</div>
+          <div class="card-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6M18 9h1.5a2.5 2.5 0 0 0 0-5H18M4 22h16M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22M18 2H6v7a6 6 0 0 0 12 0z"/></svg></div>
           <h3>Liga-Spielbetrieb</h3>
           <p>Tritt unserer wöchentlichen Liga bei oder reserviere exklusiv für dein Team.</p>
         </div>
         <div class="card">
-          <div class="card-icon">🎮</div>
+          <div class="card-icon"><svg class="icon" viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="3"/><path d="M7 12h2M8 11v2M15 12h.01M18 10h.01"/></svg></div>
           <h3>Arcade-Zone</h3>
           <p>25+ Arcade-Automaten, Airhockey und Flipperautomaten für zwischendurch.</p>
         </div>
@@ -172,17 +252,18 @@
 
   <section id="preise" style="background: var(--surface);">
     <div class="container">
-      <h2 class="section-title">Preise</h2>
-      <p class="section-lead">Transparent und fair. Keine versteckten Kosten.</p>
+      <p class="section-eyebrow">Preise</p>
+      <h2 class="section-title">Transparent &amp; fair</h2>
+      <p class="section-lead">Keine versteckten Kosten – Schuhverleih immer inklusive.</p>
       <div class="pricing-grid">
         <div class="price-card">
           <p class="badge">Standard</p>
           <p class="price">CHF 8</p>
           <p class="period">pro Person / Spiel</p>
           <ul>
-            <li>1 Spiel (10 Frames)</li>
-            <li>Schuhverleih inklusive</li>
-            <li>Mo–Fr Tarif</li>
+            <li><svg class="icon" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg> 1 Spiel (10 Frames)</li>
+            <li><svg class="icon" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg> Schuhverleih inklusive</li>
+            <li><svg class="icon" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg> Mo–Fr Tarif</li>
           </ul>
           <a href="#kontakt" class="btn btn-outline">Buchen</a>
         </div>
@@ -191,10 +272,10 @@
           <p class="price">CHF 12</p>
           <p class="period">pro Person / Spiel</p>
           <ul>
-            <li>1 Spiel (10 Frames)</li>
-            <li>Schuhverleih inklusive</li>
-            <li>Sa &amp; So + Feiertage</li>
-            <li>Prioritätsbuchung</li>
+            <li><svg class="icon" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg> 1 Spiel (10 Frames)</li>
+            <li><svg class="icon" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg> Schuhverleih inklusive</li>
+            <li><svg class="icon" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg> Sa &amp; So + Feiertage</li>
+            <li><svg class="icon" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg> Prioritätsbuchung</li>
           </ul>
           <a href="#kontakt" class="btn btn-primary">Jetzt buchen</a>
         </div>
@@ -203,10 +284,10 @@
           <p class="price">CHF 65</p>
           <p class="period">pro Bahn / Stunde</p>
           <ul>
-            <li>1 Bahn für 1 Stunde</li>
-            <li>Bis 6 Personen</li>
-            <li>Schuhverleih inklusive</li>
-            <li>Ab 5 Bahnen: -10%</li>
+            <li><svg class="icon" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg> 1 Bahn für 1 Stunde</li>
+            <li><svg class="icon" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg> Bis 6 Personen</li>
+            <li><svg class="icon" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg> Schuhverleih inklusive</li>
+            <li><svg class="icon" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg> Ab 5 Bahnen: −10%</li>
           </ul>
           <a href="#kontakt" class="btn btn-outline">Anfragen</a>
         </div>
@@ -216,21 +297,22 @@
 
   <section id="events">
     <div class="container">
+      <p class="section-eyebrow">Events</p>
       <h2 class="section-title">Events &amp; Geburtstage</h2>
       <p class="section-lead">Unvergessliche Erlebnisse für dein Team oder deine Familie.</p>
       <div class="grid-3">
         <div class="card">
-          <div class="card-icon">🎂</div>
+          <div class="card-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M4 22V11h16v11zM2 11h20l-2-4H4zM12 7V4M9 4h6"/></svg></div>
           <h3>Geburtstagspartys</h3>
           <p>Exklusive Bahn, Dekorationen, Kuchen und dein persönlicher Event-Manager. Ab CHF 250.</p>
         </div>
         <div class="card">
-          <div class="card-icon">🏢</div>
+          <div class="card-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M3 21V7l9-4 9 4v14M9 21v-6h6v6M7 10h.01M12 10h.01M17 10h.01"/></svg></div>
           <h3>Firmenevents</h3>
           <p>Teambuilding mal anders. Wir kümmern uns um Catering, Turnier und Trophäen. Ab 10 Personen.</p>
         </div>
         <div class="card">
-          <div class="card-icon">🎓</div>
+          <div class="card-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M22 10 12 5 2 10l10 5 10-5zM6 12v5c0 1 2.7 3 6 3s6-2 6-3v-5"/></svg></div>
           <h3>Schulausflüge</h3>
           <p>Spezialkonditionen für Schulklassen und Jugendgruppen. Anfrage per E-Mail.</p>
         </div>
@@ -240,28 +322,23 @@
 
   <section id="kontakt" class="contact-section">
     <div class="container">
+      <p class="section-eyebrow">Reservieren</p>
       <h2 class="section-title">Bahn reservieren</h2>
       <div class="contact-grid">
         <div class="contact-info">
-          <p><strong>Öffnungszeiten</strong><br>
-          Mo–Fr: 14:00 – 23:00<br>
-          Sa–So: 10:00 – 24:00</p>
-          <p style="margin-top:1.5rem;"><strong>Adresse</strong><br>
-          Bowlingstrasse 12<br>
-          8000 Zürich</p>
-          <p style="margin-top:1.5rem;"><strong>Telefon</strong><br>
-          <a href="tel:+41441234567">+41 44 123 45 67</a></p>
-          <p style="margin-top:1.5rem;"><strong>E-Mail</strong><br>
-          <a href="mailto:info@strikezone.ch">info@strikezone.ch</a></p>
+          <p><strong>Öffnungszeiten</strong><br>Mo–Fr: 14:00 – 23:00<br>Sa–So: 10:00 – 24:00</p>
+          <p style="margin-top:1.5rem;"><strong>Adresse</strong><br>Bowlingstrasse 12<br>8000 Zürich</p>
+          <p style="margin-top:1.5rem;"><strong>Telefon</strong><br><a href="tel:+41441234567">+41 44 123 45 67</a></p>
+          <p style="margin-top:1.5rem;"><strong>E-Mail</strong><br><a href="mailto:info@strikezone.ch">info@strikezone.ch</a></p>
         </div>
         <form class="contact-form" onsubmit="return false;">
           <input type="text" placeholder="Dein Name *" required>
           <input type="email" placeholder="E-Mail *" required>
           <input type="text" placeholder="Datum &amp; Uhrzeit">
           <input type="number" placeholder="Anzahl Personen" min="1">
-          <textarea placeholder="Nachricht oder besondere Wünsche..."></textarea>
-          <button type="submit" class="btn btn-primary">Reservierung anfragen</button>
-          <p style="font-size:0.8rem; color:var(--muted);">Demo-Formular – keine echten Anfragen möglich.</p>
+          <textarea placeholder="Nachricht oder besondere Wünsche …"></textarea>
+          <button type="submit" class="btn btn-primary" style="justify-content:center;">Reservierung anfragen</button>
+          <p style="font-size:0.8rem; color:var(--muted); text-align:center;">Demo-Formular – keine echten Anfragen möglich.</p>
         </form>
       </div>
     </div>
@@ -270,11 +347,11 @@
   <footer>
     <div class="container">
       <div class="footer-inner">
-        <span class="footer-brand">🎳 Strike Zone</span>
+        <span class="footer-brand">Strike Zone</span>
         <p class="footer-copy">&copy; 2026 Strike Zone Bowling Center, Zürich</p>
       </div>
       <p class="footer-note">
-        Diese Website ist ein Demo-Projekt von <a href="../../index.html">MASESites AG</a>.
+        Diese Website ist ein Demo-Projekt von <a href="../../index.html">MASESites</a>.
         Echte Website ab CHF 750. <a href="../../kontakt.html">Jetzt anfragen →</a>
       </p>
     </div>

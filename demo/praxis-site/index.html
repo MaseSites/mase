@@ -5,110 +5,178 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Praxis Dr. Müller – Allgemeinmedizin – Demo</title>
   <meta name="robots" content="noindex, nofollow">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
-      --blue: #0051ba;
-      --blue-light: #1a6dd4;
-      --blue-pale: #e8f0fb;
+      --blue: #1d4ed8;
+      --blue-dark: #1e3a8a;
+      --blue-light: #3b82f6;
+      --blue-pale: #eff4ff;
       --bg: #ffffff;
-      --surface: #f8fafc;
-      --text: #1a1a2e;
-      --muted: #64748b;
-      --border: #e2e8f0;
+      --surface: #f6f8fc;
+      --text: #0f172a;
+      --muted: #5b6677;
+      --border: #e3e9f2;
+      --ok: #16a34a;
     }
-    body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+    body { font-family: 'Manrope', system-ui, sans-serif; background: var(--bg); color: var(--text); line-height: 1.65; -webkit-font-smoothing: antialiased; }
     a { color: var(--blue); text-decoration: none; }
-    .container { max-width: 1100px; margin: 0 auto; padding: 0 1.5rem; }
-    .btn { display: inline-block; padding: 0.75rem 1.75rem; border-radius: 6px; font-weight: 600; cursor: pointer; transition: opacity .2s; border: none; font-size: 1rem; }
-    .btn:hover { opacity: 0.85; }
-    .btn-primary { background: var(--blue); color: #fff; }
-    .btn-outline { background: transparent; color: var(--blue); border: 2px solid var(--blue); }
+    h1, h2, h3, h4 { letter-spacing: -0.02em; }
+    .container { max-width: 1140px; margin: 0 auto; padding: 0 1.5rem; }
+    .btn { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.8rem 1.6rem; border-radius: 8px; font-weight: 700; font-size: 0.95rem; cursor: pointer; transition: transform .18s, background .18s, box-shadow .18s; border: none; font-family: inherit; }
+    .btn-primary { background: var(--blue); color: #fff; box-shadow: 0 6px 18px rgba(29,78,216,.25); }
+    .btn-primary:hover { background: var(--blue-dark); transform: translateY(-2px); }
+    .btn-outline { background: #fff; color: var(--blue); border: 1.5px solid var(--border); }
+    .btn-outline:hover { border-color: var(--blue); }
+    .icon { width: 1.25em; height: 1.25em; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
 
-    .back-bar { background: var(--surface); padding: 0.5rem 1.5rem; font-size: 0.875rem; border-bottom: 1px solid var(--border); }
+    .back-bar { background: var(--surface); padding: 0.5rem 1.5rem; font-size: 0.8rem; border-bottom: 1px solid var(--border); }
+    .back-bar .container { display: flex; gap: 0.5rem; align-items: center; }
     .back-bar a { color: var(--muted); }
     .back-bar a:hover { color: var(--blue); }
+    .back-bar em { color: var(--muted); }
 
-    nav.site-nav { background: var(--bg); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 100; box-shadow: 0 1px 4px rgba(0,0,0,.06); }
-    .nav-inner { display: flex; align-items: center; justify-content: space-between; padding: 1rem 1.5rem; max-width: 1100px; margin: 0 auto; }
-    .nav-logo { font-size: 1.2rem; font-weight: 700; color: var(--blue); }
-    .nav-logo span { font-weight: 400; color: var(--muted); font-size: 0.9rem; display: block; }
+    nav.site-nav { background: rgba(255,255,255,.85); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 100; }
+    .nav-inner { display: flex; align-items: center; justify-content: space-between; padding: 0.9rem 1.5rem; max-width: 1140px; margin: 0 auto; }
+    .nav-logo { display: flex; align-items: center; gap: 0.7rem; }
+    .nav-mark { width: 38px; height: 38px; border-radius: 10px; background: linear-gradient(135deg, var(--blue), var(--blue-light)); display: flex; align-items: center; justify-content: center; }
+    .nav-mark svg { width: 20px; height: 20px; stroke: #fff; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .nav-logo-text strong { font-size: 1.1rem; font-weight: 800; color: var(--text); display: block; line-height: 1.1; }
+    .nav-logo-text span { font-weight: 500; color: var(--muted); font-size: 0.78rem; }
     .nav-links { display: flex; gap: 2rem; list-style: none; }
-    .nav-links a { color: var(--muted); font-size: 0.9rem; transition: color .2s; }
+    .nav-links a { color: var(--muted); font-size: 0.9rem; font-weight: 600; transition: color .2s; }
     .nav-links a:hover { color: var(--blue); }
 
-    .hero { background: linear-gradient(135deg, var(--blue-pale) 0%, #dbeafe 100%); padding: 6rem 0; }
-    .hero-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; }
-    .hero-tag { color: var(--blue); font-size: 0.875rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 1rem; }
-    .hero h1 { font-size: clamp(2rem, 4vw, 3.5rem); font-weight: 700; line-height: 1.15; margin-bottom: 1.5rem; color: var(--text); }
-    .hero p { color: var(--muted); font-size: 1.1rem; margin-bottom: 2rem; }
-    .hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; }
-    .hero-image { background: var(--blue); border-radius: 16px; height: 350px; display: flex; align-items: center; justify-content: center; font-size: 8rem; opacity: 0.15; color: #fff; }
+    /* Hero */
+    .hero { background:
+        radial-gradient(900px 500px at 85% -10%, #dbe7ff 0%, transparent 60%),
+        linear-gradient(180deg, var(--blue-pale) 0%, #ffffff 100%);
+      padding: 5rem 0 5.5rem; border-bottom: 1px solid var(--border); }
+    .hero-grid { display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 3.5rem; align-items: center; }
+    .hero-pill { display: inline-flex; align-items: center; gap: 0.5rem; background: #fff; border: 1px solid var(--border); color: var(--blue); font-size: 0.8rem; font-weight: 700; padding: 0.4rem 0.9rem; border-radius: 999px; margin-bottom: 1.4rem; box-shadow: 0 2px 8px rgba(15,23,42,.04); }
+    .hero-pill .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--ok); }
+    .hero h1 { font-size: clamp(2.2rem, 4.4vw, 3.6rem); font-weight: 800; line-height: 1.08; margin-bottom: 1.3rem; }
+    .hero h1 em { font-style: normal; color: var(--blue); }
+    .hero-lead { color: var(--muted); font-size: 1.12rem; margin-bottom: 2rem; max-width: 30rem; }
+    .hero-btns { display: flex; gap: 0.9rem; flex-wrap: wrap; }
+    .hero-trust { display: flex; gap: 1.6rem; margin-top: 2.2rem; flex-wrap: wrap; }
+    .hero-trust div { }
+    .hero-trust strong { display: block; font-size: 1.4rem; font-weight: 800; }
+    .hero-trust span { font-size: 0.82rem; color: var(--muted); }
+
+    /* Hero visual — composed UI cards */
+    .hero-visual { position: relative; }
+    .hv-card { background: #fff; border: 1px solid var(--border); border-radius: 16px; box-shadow: 0 24px 60px rgba(15,23,42,.12); }
+    .hv-main { padding: 1.5rem; }
+    .hv-head { display: flex; align-items: center; gap: 0.85rem; }
+    .hv-avatar { width: 46px; height: 46px; border-radius: 12px; background: linear-gradient(135deg, var(--blue), var(--blue-light)); color: #fff; font-weight: 800; font-size: 1rem; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .hv-head-info { flex: 1; }
+    .hv-head-info strong { display: block; font-size: 0.98rem; }
+    .hv-head-info span { font-size: 0.82rem; color: var(--muted); }
+    .hv-badge { background: #e7f6ec; color: var(--ok); font-size: 0.72rem; font-weight: 700; padding: 0.3rem 0.7rem; border-radius: 999px; display: inline-flex; align-items: center; gap: 0.3rem; }
+    .hv-badge .icon { width: 13px; height: 13px; stroke-width: 2.4; }
+    .hv-sep { height: 1px; background: var(--border); margin: 1.25rem 0; }
+    .hv-appt { display: flex; align-items: center; gap: 1rem; }
+    .hv-cal { width: 52px; height: 56px; border-radius: 12px; border: 1px solid var(--border); overflow: hidden; text-align: center; flex-shrink: 0; }
+    .hv-cal-mon { display: block; background: var(--blue); color: #fff; font-size: 0.62rem; font-weight: 700; letter-spacing: 0.1em; padding: 0.2rem 0; }
+    .hv-cal-day { display: block; font-size: 1.4rem; font-weight: 800; padding-top: 0.15rem; }
+    .hv-appt-info strong { display: block; font-size: 0.95rem; }
+    .hv-appt-info span { font-size: 0.82rem; color: var(--muted); }
+    .hv-actions { display: flex; gap: 0.6rem; margin-top: 1.25rem; }
+    .hv-actions span { flex: 1; text-align: center; padding: 0.6rem; border-radius: 8px; font-size: 0.85rem; font-weight: 700; }
+    .hv-ghost { border: 1px solid var(--border); color: var(--muted); }
+    .hv-fill { background: var(--blue); color: #fff; }
+    .hv-float { position: absolute; left: -1.5rem; bottom: -1.5rem; display: flex; align-items: center; gap: 0.8rem; padding: 0.9rem 1.1rem; }
+    .hv-float .pulse-ic { width: 38px; height: 38px; border-radius: 10px; background: #fde7ef; color: #db2777; display: flex; align-items: center; justify-content: center; }
+    .hv-float strong { display: block; font-size: 1.05rem; font-weight: 800; }
+    .hv-float span { font-size: 0.76rem; color: var(--muted); }
+
+    /* Info bar */
+    .info-bar { background: var(--text); color: #fff; padding: 1.6rem 0; }
+    .info-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; }
+    .info-item { display: flex; gap: 0.8rem; align-items: flex-start; }
+    .info-item .ii-ic { width: 36px; height: 36px; border-radius: 9px; background: rgba(255,255,255,.1); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .info-item .ii-ic svg { width: 18px; height: 18px; stroke: #93b4ff; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+    .info-item h4 { font-size: 0.72rem; font-weight: 600; opacity: 0.65; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.2rem; }
+    .info-item p { font-size: 0.98rem; font-weight: 600; }
 
     section { padding: 5rem 0; }
-    .section-title { font-size: 2rem; font-weight: 700; margin-bottom: 0.75rem; color: var(--text); }
-    .section-lead { color: var(--muted); max-width: 600px; margin-bottom: 3rem; }
+    .section-head { max-width: 600px; margin-bottom: 3rem; }
+    .section-eyebrow { color: var(--blue); font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.6rem; }
+    .section-title { font-size: clamp(1.8rem, 3vw, 2.3rem); font-weight: 800; margin-bottom: 0.7rem; }
+    .section-lead { color: var(--muted); font-size: 1.05rem; }
 
-    .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
-    .card { background: var(--bg); border-radius: 12px; padding: 2rem; border: 1px solid var(--border); }
-    .card-icon { font-size: 2.5rem; margin-bottom: 1rem; }
-    .card h3 { font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem; color: var(--text); }
+    .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 1.4rem; }
+    .card { background: var(--bg); border-radius: 14px; padding: 1.9rem; border: 1px solid var(--border); transition: transform .2s, box-shadow .2s, border-color .2s; }
+    .card:hover { transform: translateY(-4px); box-shadow: 0 18px 40px rgba(15,23,42,.08); border-color: #cdd9ee; }
+    .card-icon { width: 48px; height: 48px; border-radius: 12px; background: var(--blue-pale); color: var(--blue); display: flex; align-items: center; justify-content: center; margin-bottom: 1.2rem; }
+    .card-icon svg { width: 24px; height: 24px; }
+    .card h3 { font-size: 1.12rem; font-weight: 700; margin-bottom: 0.45rem; }
     .card p { color: var(--muted); font-size: 0.95rem; }
 
-    .info-bar { background: var(--blue); color: white; padding: 2rem 0; }
-    .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem; }
-    .info-item h4 { font-size: 0.875rem; opacity: 0.8; margin-bottom: 0.5rem; }
-    .info-item p { font-size: 1.05rem; }
-
     .team-section { background: var(--surface); }
-    .team-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; }
-    .team-card { background: var(--bg); border-radius: 12px; padding: 2rem; border: 1px solid var(--border); text-align: center; }
-    .team-avatar { width: 80px; height: 80px; border-radius: 50%; background: var(--blue-pale); margin: 0 auto 1rem; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; }
-    .team-card h3 { font-weight: 600; margin-bottom: 0.25rem; }
+    .team-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.4rem; }
+    .team-card { background: var(--bg); border-radius: 14px; padding: 2.2rem; border: 1px solid var(--border); text-align: center; }
+    .team-avatar { width: 84px; height: 84px; border-radius: 50%; margin: 0 auto 1.1rem; display: flex; align-items: center; justify-content: center; font-size: 1.6rem; font-weight: 800; color: #fff; letter-spacing: -0.02em; }
+    .team-card h3 { font-weight: 700; margin-bottom: 0.3rem; }
     .team-card p { color: var(--muted); font-size: 0.9rem; }
 
     .contact-section { background: var(--blue-pale); }
     .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; }
-    .contact-info { }
     .contact-info p { color: var(--muted); margin-bottom: 0.75rem; }
-    .opening-hours { background: var(--bg); border-radius: 8px; padding: 1.5rem; margin-top: 1.5rem; border: 1px solid var(--border); }
-    .hours-row { display: flex; justify-content: space-between; padding: 0.4rem 0; font-size: 0.9rem; border-bottom: 1px solid var(--border); }
+    .contact-info strong { color: var(--text); }
+    .opening-hours { background: var(--bg); border-radius: 12px; padding: 1.5rem; margin-top: 1.5rem; border: 1px solid var(--border); }
+    .hours-row { display: flex; justify-content: space-between; padding: 0.45rem 0; font-size: 0.92rem; border-bottom: 1px solid var(--border); }
     .hours-row:last-child { border-bottom: none; }
-    .contact-form { display: flex; flex-direction: column; gap: 1rem; }
+    .hours-row span:last-child { color: var(--muted); font-weight: 600; }
+    .contact-form { display: flex; flex-direction: column; gap: 0.9rem; background: #fff; padding: 2rem; border-radius: 16px; border: 1px solid var(--border); box-shadow: 0 18px 48px rgba(15,23,42,.06); }
     .contact-form input, .contact-form select, .contact-form textarea {
-      background: var(--bg); border: 1px solid var(--border); border-radius: 6px;
-      padding: 0.75rem 1rem; color: var(--text); font-size: 0.95rem; font-family: inherit; width: 100%;
+      background: var(--bg); border: 1px solid var(--border); border-radius: 8px;
+      padding: 0.8rem 1rem; color: var(--text); font-size: 0.95rem; font-family: inherit; width: 100%;
     }
-    .contact-form textarea { resize: vertical; min-height: 120px; }
+    .contact-form input:focus, .contact-form select:focus, .contact-form textarea:focus { outline: 2px solid var(--blue-light); border-color: var(--blue-light); }
+    .contact-form textarea { resize: vertical; min-height: 110px; }
 
-    footer { background: var(--text); color: var(--bg); padding: 3rem 0 2rem; }
+    footer { background: var(--text); color: #cbd5e1; padding: 3rem 0 2rem; }
     .footer-inner { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
-    .footer-brand { font-size: 1.1rem; font-weight: 700; color: #fff; }
+    .footer-brand { font-size: 1.1rem; font-weight: 800; color: #fff; }
     .footer-copy { color: #94a3b8; font-size: 0.875rem; }
-    .footer-note { width: 100%; text-align: center; margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid #334155; color: #64748b; font-size: 0.8rem; }
+    .footer-note { width: 100%; text-align: center; margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid #334155; color: #94a3b8; font-size: 0.8rem; }
     .footer-note a { color: #93c5fd; }
 
-    @media (max-width: 768px) {
+    @media (max-width: 860px) {
       .nav-links { display: none; }
-      .hero-grid { grid-template-columns: 1fr; }
-      .hero-image { display: none; }
+      .hero-grid { grid-template-columns: 1fr; gap: 3rem; }
+      .info-grid { grid-template-columns: 1fr 1fr; }
       .contact-grid { grid-template-columns: 1fr; }
     }
+    @media (max-width: 560px) {
+      .nav-logo-text span { display: none; }
+      .nav-inner { padding: 0.8rem 1.1rem; }
+      .btn { padding: 0.7rem 1.1rem; }
+    }
+    @media (max-width: 480px) { .info-grid { grid-template-columns: 1fr; } .hv-float { left: 0; } }
   </style>
 </head>
 <body>
   <div class="back-bar">
     <div class="container">
       <a href="../../index.html">← Zurück zu MASESites.ch</a>
-      &nbsp;|&nbsp; <em>Demo-Website – erstellt von MASESites AG</em>
+      <span>|</span> <em>Demo-Website – erstellt von MASESites</em>
     </div>
   </div>
 
   <nav class="site-nav">
     <div class="nav-inner">
       <div class="nav-logo">
-        Praxis Dr. Müller
-        <span>Allgemeinmedizin &amp; Prävention</span>
+        <span class="nav-mark"><svg viewBox="0 0 24 24"><path d="M3 12h3l2 5 4-12 2 7h7"/></svg></span>
+        <span class="nav-logo-text">
+          <strong>Praxis Dr. Müller</strong>
+          <span>Allgemeinmedizin &amp; Prävention</span>
+        </span>
       </div>
       <ul class="nav-links">
         <li><a href="#leistungen">Leistungen</a></li>
@@ -124,15 +192,59 @@
     <div class="container">
       <div class="hero-grid">
         <div>
-          <p class="hero-tag">Ihre Hausarztpraxis in Bern</p>
-          <h1>Medizin mit Herz und Kompetenz.</h1>
-          <p>Persönliche Betreuung, kurze Wartezeiten und modernste Diagnostik – für Ihre Gesundheit und Ihr Wohlbefinden.</p>
+          <span class="hero-pill"><span class="dot"></span> Ihre Hausarztpraxis in Bern</span>
+          <h1>Medizin mit Herz und <em>Kompetenz.</em></h1>
+          <p class="hero-lead">Persönliche Betreuung, kurze Wartezeiten und modernste Diagnostik – für Ihre Gesundheit und Ihr Wohlbefinden.</p>
           <div class="hero-btns">
-            <a href="#kontakt" class="btn btn-primary">Termin online buchen</a>
-            <a href="tel:+41312345678" class="btn btn-outline">+41 31 234 56 78</a>
+            <a href="#kontakt" class="btn btn-primary">
+              <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+              Termin online buchen
+            </a>
+            <a href="tel:+41312345678" class="btn btn-outline">
+              <svg class="icon" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+              +41 31 234 56 78
+            </a>
+          </div>
+          <div class="hero-trust">
+            <div><strong>15+</strong><span>Jahre Erfahrung</span></div>
+            <div><strong>4'200+</strong><span>Betreute Patienten</span></div>
+            <div><strong>&lt; 10 Min</strong><span>Ø Wartezeit</span></div>
           </div>
         </div>
-        <div class="hero-image">🏥</div>
+        <div class="hero-visual">
+          <div class="hv-card hv-main">
+            <div class="hv-head">
+              <span class="hv-avatar">PM</span>
+              <div class="hv-head-info">
+                <strong>Dr. med. Peter Müller</strong>
+                <span>Allgemeinmedizin FMH</span>
+              </div>
+              <span class="hv-badge"><svg class="icon" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg> Bestätigt</span>
+            </div>
+            <div class="hv-sep"></div>
+            <div class="hv-appt">
+              <div class="hv-cal">
+                <span class="hv-cal-mon">JUN</span>
+                <span class="hv-cal-day">14</span>
+              </div>
+              <div class="hv-appt-info">
+                <strong>Ihr nächster Termin</strong>
+                <span>Freitag, 09:30 Uhr · Medizinalstrasse 8</span>
+              </div>
+            </div>
+            <div class="hv-actions">
+              <span class="hv-ghost">Verschieben</span>
+              <span class="hv-fill">Bestätigen</span>
+            </div>
+          </div>
+          <div class="hv-card hv-float">
+            <span class="pulse-ic"><svg class="icon" viewBox="0 0 24 24" style="stroke-width:2"><path d="M3 12h3l2 5 4-12 2 7h7"/></svg></span>
+            <div>
+              <strong>98 %</strong>
+              <span>Patientenzufriedenheit</span>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -141,20 +253,20 @@
     <div class="container">
       <div class="info-grid">
         <div class="info-item">
-          <h4>📍 Adresse</h4>
-          <p>Medizinalstrasse 8, 3000 Bern</p>
+          <span class="ii-ic"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 12-9 12s-9-5-9-12a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></span>
+          <div><h4>Adresse</h4><p>Medizinalstrasse 8, 3000 Bern</p></div>
         </div>
         <div class="info-item">
-          <h4>📞 Telefon</h4>
-          <p>+41 31 234 56 78</p>
+          <span class="ii-ic"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg></span>
+          <div><h4>Telefon</h4><p>+41 31 234 56 78</p></div>
         </div>
         <div class="info-item">
-          <h4>🕐 Heute geöffnet</h4>
-          <p>08:00 – 17:00 Uhr</p>
+          <span class="ii-ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span>
+          <div><h4>Heute geöffnet</h4><p>08:00 – 17:00 Uhr</p></div>
         </div>
         <div class="info-item">
-          <h4>🚨 Notfall</h4>
-          <p>+41 31 234 56 00</p>
+          <span class="ii-ic"><svg viewBox="0 0 24 24"><path d="M12 2a9 9 0 0 1 9 9c0 5-9 11-9 11M12 2a9 9 0 0 0-9 9"/><path d="M12 8v4M12 16h.01"/></svg></span>
+          <div><h4>Notfall</h4><p>+41 31 234 56 00</p></div>
         </div>
       </div>
     </div>
@@ -162,38 +274,41 @@
 
   <section id="leistungen">
     <div class="container">
-      <h2 class="section-title">Unsere Leistungen</h2>
-      <p class="section-lead">Umfassende medizinische Versorgung für die ganze Familie.</p>
+      <div class="section-head">
+        <p class="section-eyebrow">Leistungen</p>
+        <h2 class="section-title">Unsere Leistungen</h2>
+        <p class="section-lead">Umfassende medizinische Versorgung für die ganze Familie.</p>
+      </div>
       <div class="grid-3">
         <div class="card">
-          <div class="card-icon">🩺</div>
+          <div class="card-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M4.8 2.3A.3.3 0 1 0 5 2H4a2 2 0 0 0-2 2v5a6 6 0 0 0 6 6 6 6 0 0 0 6-6V4a2 2 0 0 0-2-2h-1a.2.2 0 1 0 .3.3"/><path d="M8 15v1a6 6 0 0 0 6 6 6 6 0 0 0 6-6v-4"/><circle cx="20" cy="10" r="2"/></svg></div>
           <h3>Allgemeinmedizin</h3>
           <p>Vorsorgeuntersuchungen, Diagnose und Behandlung aller gängigen Erkrankungen.</p>
         </div>
         <div class="card">
-          <div class="card-icon">💉</div>
+          <div class="card-icon"><svg class="icon" viewBox="0 0 24 24"><path d="m18 2 4 4M17 7 8 16M3 21l1.5-1.5M8.5 8.5 12 12M14 6l4 4"/><path d="m3 21 4-1 11-11-3-3L4 17z"/></svg></div>
           <h3>Impfungen</h3>
           <p>Alle empfohlenen Impfungen für Kinder und Erwachsene nach aktuellem Impfplan.</p>
         </div>
         <div class="card">
-          <div class="card-icon">🫀</div>
+          <div class="card-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/><path d="M3.5 12h4l1.5-3 2 5 1.5-2h5"/></svg></div>
           <h3>Kardiologie</h3>
           <p>EKG, Blutdruckmessung, Herz-Kreislauf-Risiko-Check und Langzeit-EKG.</p>
         </div>
         <div class="card">
-          <div class="card-icon">🧪</div>
+          <div class="card-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M9 2v6.5L4.5 17a2.5 2.5 0 0 0 2.2 3.7h10.6a2.5 2.5 0 0 0 2.2-3.7L15 8.5V2"/><path d="M8 2h8M7 15h10"/></svg></div>
           <h3>Labordiagnostik</h3>
           <p>Blutbild, Stoffwechsel, Hormone und Urinanalyse – direkt in der Praxis.</p>
         </div>
         <div class="card">
-          <div class="card-icon">🧠</div>
+          <div class="card-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M12 22a8 8 0 0 0 8-8c0-4-3-6-3-10 0 0-2 2-5 2S7 4 7 4c0 4-3 6-3 10a8 8 0 0 0 8 8z"/><path d="M12 14a2 2 0 0 0 2-2"/></svg></div>
           <h3>Prävention</h3>
           <p>Check-ups, Ernährungsberatung und individuelle Gesundheitsprogramme.</p>
         </div>
         <div class="card">
-          <div class="card-icon">📱</div>
+          <div class="card-icon"><svg class="icon" viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2.5"/><path d="M11 18h2"/><path d="M9.5 7.5 11 9l3.5-3.5"/></svg></div>
           <h3>Telemedizin</h3>
-          <p>Video-Konsultationen für Folgetermine und leichte Erkrankungen. Bequem von zu Hause.</p>
+          <p>Video-Konsultationen für Folgetermine und leichte Erkrankungen – bequem von zu Hause.</p>
         </div>
       </div>
     </div>
@@ -201,21 +316,24 @@
 
   <section id="team" class="team-section">
     <div class="container">
-      <h2 class="section-title">Unser Team</h2>
-      <p class="section-lead">Erfahrene Mediziner mit Leidenschaft für Ihre Gesundheit.</p>
+      <div class="section-head">
+        <p class="section-eyebrow">Team</p>
+        <h2 class="section-title">Unser Team</h2>
+        <p class="section-lead">Erfahrene Mediziner mit Leidenschaft für Ihre Gesundheit.</p>
+      </div>
       <div class="team-grid">
         <div class="team-card">
-          <div class="team-avatar">👨‍⚕️</div>
+          <div class="team-avatar" style="background:linear-gradient(135deg,#1d4ed8,#3b82f6);">PM</div>
           <h3>Dr. med. Peter Müller</h3>
           <p>Facharzt Allgemeinmedizin FMH<br>Praxisinhaber seit 2008</p>
         </div>
         <div class="team-card">
-          <div class="team-avatar">👩‍⚕️</div>
+          <div class="team-avatar" style="background:linear-gradient(135deg,#0891b2,#06b6d4);">SW</div>
           <h3>Dr. med. Sara Weber</h3>
           <p>Allgemeinmedizin FMH<br>Schwerpunkt Prävention</p>
         </div>
         <div class="team-card">
-          <div class="team-avatar">👩‍💼</div>
+          <div class="team-avatar" style="background:linear-gradient(135deg,#7c3aed,#a855f7);">LB</div>
           <h3>Lisa Brunner</h3>
           <p>Medizinische Praxisassistentin<br>Anmeldung &amp; Administration</p>
         </div>
@@ -225,28 +343,31 @@
 
   <section id="oeffnungszeiten" class="contact-section">
     <div class="container">
-      <h2 class="section-title">Termin &amp; Kontakt</h2>
+      <div class="section-head">
+        <p class="section-eyebrow">Kontakt</p>
+        <h2 class="section-title">Termin &amp; Kontakt</h2>
+      </div>
       <div class="contact-grid">
         <div class="contact-info">
           <p><strong>Adresse</strong><br>Medizinalstrasse 8<br>3000 Bern</p>
           <div class="opening-hours" id="kontakt">
-            <h4 style="margin-bottom:1rem; font-weight:600;">Öffnungszeiten</h4>
+            <h4 style="margin-bottom:1rem; font-weight:700;">Öffnungszeiten</h4>
             <div class="hours-row"><span>Montag – Freitag</span><span>08:00 – 17:00</span></div>
             <div class="hours-row"><span>Samstag</span><span>09:00 – 12:00</span></div>
             <div class="hours-row"><span>Sonntag</span><span>Geschlossen</span></div>
           </div>
           <p style="margin-top:1.5rem; color:var(--muted); font-size:0.9rem;">
-            Für Notfälle ausserhalb der Sprechzeiten wenden Sie sich an:<br>
+            Für Notfälle ausserhalb der Sprechzeiten:<br>
             <strong style="color:var(--text);">Notfalldienst: 0900 576 600</strong>
           </p>
         </div>
         <form class="contact-form" onsubmit="return false;">
-          <h3 style="margin-bottom:0.5rem;">Termin online buchen</h3>
+          <h3 style="margin-bottom:0.3rem;">Termin online buchen</h3>
           <input type="text" placeholder="Ihr Name *" required>
           <input type="tel" placeholder="Telefon *" required>
           <input type="email" placeholder="E-Mail">
           <select>
-            <option>Grund des Besuchs...</option>
+            <option>Grund des Besuchs …</option>
             <option>Allgemeine Konsultation</option>
             <option>Impfung</option>
             <option>Blutentnahme</option>
@@ -254,9 +375,9 @@
             <option>Vorsorgeuntersuchung</option>
           </select>
           <input type="text" placeholder="Gewünschter Termin (Datum/Zeit)">
-          <textarea placeholder="Bemerkungen (optional)..."></textarea>
-          <button type="submit" class="btn btn-primary">Terminanfrage senden</button>
-          <p style="font-size:0.8rem; color:var(--muted);">Demo-Formular – keine echten Anfragen möglich.</p>
+          <textarea placeholder="Bemerkungen (optional) …"></textarea>
+          <button type="submit" class="btn btn-primary" style="justify-content:center;">Terminanfrage senden</button>
+          <p style="font-size:0.8rem; color:var(--muted); text-align:center;">Demo-Formular – keine echten Anfragen möglich.</p>
         </form>
       </div>
     </div>
@@ -269,7 +390,7 @@
         <p class="footer-copy">&copy; 2026 Praxis Dr. Müller, Bern</p>
       </div>
       <p class="footer-note">
-        Diese Website ist ein Demo-Projekt von <a href="../../index.html">MASESites AG</a>.
+        Diese Website ist ein Demo-Projekt von <a href="../../index.html">MASESites</a>.
         Echte Website ab CHF 750. <a href="../../kontakt.html">Jetzt anfragen →</a>
       </p>
     </div>

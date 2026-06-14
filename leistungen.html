@@ -27,50 +27,38 @@
     ]
   }
   </script>
-  
+
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <link rel="icon" type="image/png" href="/favicon.png" sizes="32x32">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-  <link rel="stylesheet" href="/styles.css?v=20260529a">
-  <link rel="stylesheet" href="/ai-assistant.css?v=20260529a">
-  <link rel="stylesheet" href="/mase-animations.css?v=20260529a">
-  <link rel="stylesheet" href="/mase-scroll-animations.css?v=20260529a">
-  <link rel="stylesheet" href="/flair.css?v=20260517">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="/styles.css?v=20260612r">
+  <link rel="stylesheet" href="/ai-assistant.css?v=20260612r">
   <script>
     (function () {
-      var t = localStorage.getItem('theme');
-      if (t === 'dark') document.documentElement.classList.add('dark');
+      localStorage.setItem('theme', 'light');
+      document.documentElement.classList.remove('dark');
       var q = null;
       try { q = new URLSearchParams(window.location.search).get('lang'); } catch (_) {}
       var s = localStorage.getItem('lang');
-      var lang = ['de', 'en', 'fr'].indexOf(q) !== -1 ? q : (['de', 'en', 'fr'].indexOf(s) !== -1 ? s : 'de');
+      var lang = ['de', 'en'].indexOf(q) !== -1 ? q : (['de', 'en'].indexOf(s) !== -1 ? s : 'de');
       localStorage.setItem('lang', lang);
       document.documentElement.lang = (lang === 'de' ? 'de-CH' : 'en');
     })();
   </script>
-    <script src="/supabase-config.js"></script>
+  <script src="/supabase-config.js"></script>
   <script src="/tracker.js"></script>
-<script defer src="/theme.js?v=20260529a"></script>
-  <script defer src="/script.js?v=20260327"></script>
-  <script defer src="/ai-assistant.js?v=20260529e"></script>
-  <script defer src="/mase-animations.js?v=20260516"></script>
-  <script defer src="/mase-scroll-animations.js?v=20260529a"></script>
-  <script defer src="/flair.js?v=20260517"></script>
+  <script defer src="/theme.js?v=20260612r"></script>
+  <script defer src="/script.js?v=20260612r"></script>
+  <script defer src="/ai-assistant.js?v=20260612r"></script>
 </head>
 <body>
-  <div class="mase-spray" aria-hidden="true">
-    <span class="mase-spray__blob s1"></span>
-    <span class="mase-spray__blob s2"></span>
-    <span class="mase-spray__blob s3"></span>
-    <span class="mase-spray__blob s4"></span>
-    <span class="mase-spray__blob s5"></span>
-    <span class="mase-spray__blob s6"></span>
-  </div>
   <a class="skip-link" href="#main" data-i18n="skip_to_content">Zum Inhalt springen</a>
 
   <header class="site-header">
     <div class="container header-inner">
-      <a class="logo" href="/"><span class="logo-text">MASE</span></a>
+      <a class="logo" href="/"><span class="logo-text">MASE<em>Sites</em></span></a>
       <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
         <span class="sr-only" data-i18n="nav_toggle">Navigation öffnen</span>
         <span class="nav-toggle-bar"></span>
@@ -79,15 +67,14 @@
       <nav class="site-nav" id="site-nav">
         <a href="leistungen.html" class="nav-active" data-i18n="nav_services">Leistungen</a>
         <a href="preise.html" data-i18n="nav_prices">Preise</a>
-        <a href="ki-assistent.html" data-i18n="nav_ai">KI Assistent</a>
+        <a href="ki-assistent.html" data-i18n="nav_ai">KI-Assistent</a>
         <a href="ueber-uns.html" data-i18n="nav_about">Über uns</a>
         <a href="kontakt.html" data-i18n="nav_contact">Kontakt</a>
-        <a class="button button-primary button-small" href="kontakt.html" data-i18n="nav_cta">Kostenloses Erstgespräch</a>
+        <a class="button button-primary button-small" href="kontakt.html" data-i18n="nav_cta">Erstgespräch vereinbaren</a>
       </nav>
       <div class="header-controls">
         <div class="lang-switcher" id="lang-switcher">
           <button class="lang-btn" id="lang-btn" aria-haspopup="true" aria-expanded="false" aria-label="Sprache wählen" data-i18n-aria-label="lang_select_aria">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
             <span id="lang-current">DE</span>
           </button>
           <div class="lang-dropdown" id="lang-dropdown">
@@ -95,20 +82,16 @@
             <button class="lang-option" data-lang="en">English</button>
           </div>
         </div>
-        <button class="dark-toggle" id="dark-toggle" aria-label="Dark Mode umschalten" data-i18n-aria-label="theme_toggle_aria">
-          <span class="dark-toggle-icon" id="dark-toggle-icon">🌙</span>
-          <span class="dark-toggle-track"><span class="dark-toggle-thumb"></span></span>
-        </button>
       </div>
     </div>
   </header>
 
   <main id="main">
-    <section class="page-hero leistungen-hero">
+    <section class="page-hero">
       <div class="container leistungen-hero-inner" data-reveal>
-        <span class="eyebrow">MASESites</span>
-        <h1>Alles, was deine<br><span class="accent-gradient">Website braucht.</span></h1>
-        <p class="lead" data-i18n="services_lead">Von Design über Entwicklung bis zur KI-Integration – alles aus einer Hand.</p>
+        <span class="eyebrow" data-i18n="services_eyebrow">Leistungen</span>
+        <h1 data-i18n-html="services_title_html">Alles, was Ihre Website <span class="serif-accent">braucht</span>.</h1>
+        <p class="lead" data-i18n="services_lead">Von der Gestaltung über die Entwicklung bis zur KI-Integration — alles aus einer Hand, sauber umgesetzt.</p>
         <div class="ls-service-pills">
           <span class="ls-pill">01 Webdesign</span>
           <span class="ls-pill">02 Webentwicklung</span>
@@ -120,36 +103,36 @@
 
     <div class="services" id="leistungen">
     <!-- Webdesign -->
-    <section class="ls-section" style="padding: 4rem 0;">
+    <section class="ls-section">
       <div class="container">
         <div class="service-detail" data-reveal>
           <div class="service-detail-content">
             <span class="eyebrow">01 — Webdesign</span>
-            <h2 data-i18n="services_webdesign_h">Design, das Vertrauen schafft</h2>
-            <p data-i18n="services_webdesign_p">Dein erster Eindruck entscheidet. Wir gestalten Websites, die professionell wirken, sofort überzeugen und Besucher zu Kunden machen.</p>
+            <h2 data-i18n="services_webdesign_h">Gestaltung, die Vertrauen schafft</h2>
+            <p data-i18n="services_webdesign_p">Der erste Eindruck entscheidet. Wir gestalten Websites, die professionell wirken, sofort überzeugen und aus Besuchern Kunden machen.</p>
             <ul class="ls-checks" data-i18n-html="services_webdesign_list_html">
-              <li><strong>Modernes Design:</strong> Clean, professionell und zeitgemäß</li>
-              <li><strong>Struktur &amp; Klarheit:</strong> Intuitive Navigation und klare Hierarchie</li>
-              <li><strong>Conversion-Optimierung:</strong> Jedes Element zielt auf Handlung ab</li>
-              <li><strong>Responsiv:</strong> Perfekt auf allen Geräten</li>
-              <li><strong>Brand-Konsistenz:</strong> Deine Marke, professionell präsentiert</li>
+              <li><strong>Klares Erscheinungsbild:</strong> professionell, zeitgemäss und unverwechselbar</li>
+              <li><strong>Struktur &amp; Hierarchie:</strong> intuitive Navigation und klare Benutzerführung</li>
+              <li><strong>Conversion-orientiert:</strong> jedes Element hat einen Zweck</li>
+              <li><strong>Responsiv:</strong> einwandfrei auf allen Geräten</li>
+              <li><strong>Markenkonsistenz:</strong> Ihr Auftritt, professionell umgesetzt</li>
             </ul>
             <a class="button button-primary" href="kontakt.html?project=new-website" data-i18n="services_webdesign_cta">Design anfragen</a>
           </div>
           <div class="service-detail-visual">
             <div class="design-card-showcase">
               <div class="dcs-header">
-                <span class="dcs-dot" style="background:#ef4444;"></span>
-                <span class="dcs-dot" style="background:#f59e0b;"></span>
-                <span class="dcs-dot" style="background:#22c55e;"></span>
+                <span class="dcs-dot"></span>
+                <span class="dcs-dot"></span>
+                <span class="dcs-dot"></span>
                 <span class="dcs-url">masesites.ch</span>
               </div>
               <div class="dcs-body">
                 <div class="dcs-palette">
-                  <span class="dcs-swatch" style="background:#0f766e;" title="Teal"></span>
-                  <span class="dcs-swatch" style="background:#0066cc;" title="Blue"></span>
-                  <span class="dcs-swatch" style="background:#0a0e27;" title="Ink"></span>
-                  <span class="dcs-swatch" style="background:#f6f9ff; border: 1px solid #d4d4d4;" title="Surface"></span>
+                  <span class="dcs-swatch" style="background:#1f3a5f;" title="Tintenblau"></span>
+                  <span class="dcs-swatch" style="background:#16263b;" title="Nachtblau"></span>
+                  <span class="dcs-swatch" style="background:#f6f4ef;" title="Papier"></span>
+                  <span class="dcs-swatch" style="background:#ffffff;" title="Weiss"></span>
                 </div>
                 <p class="dcs-headline">Websites, die verkaufen.</p>
                 <p class="dcs-sub">Mobile-first · SEO-ready · Schnell</p>
@@ -159,7 +142,7 @@
                     <div class="dcs-line dcs-line--wide"></div>
                     <div class="dcs-line"></div>
                     <div class="dcs-line dcs-line--short"></div>
-                    <div class="dcs-btn-preview">Projekt starten</div>
+                    <div class="dcs-btn-preview">Anfrage senden</div>
                   </div>
                 </div>
               </div>
@@ -170,28 +153,28 @@
     </section>
 
     <!-- Webentwicklung -->
-    <section class="ls-section" style="padding: 4rem 0; background: var(--surface);">
+    <section class="ls-section section-alt">
       <div class="container">
         <div class="service-detail service-detail-reverse" data-reveal>
           <div class="service-detail-content">
             <span class="eyebrow">02 — Webentwicklung</span>
-            <h2 data-i18n="services_webdev_h">Code, der wirklich performt</h2>
-            <p data-i18n="services_webdev_p">Sauberer, wartbarer Code ist kein Nice-to-have. Er ist das Fundament für Geschwindigkeit, Sicherheit und langfristigen Erfolg.</p>
+            <h2 data-i18n="services_webdev_h">Code, der zuverlässig arbeitet</h2>
+            <p data-i18n="services_webdev_p">Sauberer, wartbarer Code ist kein Detail — er ist das Fundament für Geschwindigkeit, Sicherheit und langfristigen Erfolg Ihrer Website.</p>
             <ul class="ls-checks" data-i18n-html="services_webdev_list_html">
-              <li><strong>Sauberer Code:</strong> Modern, wartbar und zukunftssicher</li>
-              <li><strong>Performance-Optimiert:</strong> Schnelle Ladezeiten garantiert</li>
-              <li><strong>Skalierbar:</strong> Wächst mit deinem Business</li>
-              <li><strong>SEO-Ready:</strong> Technisch optimiert für Suchmaschinen</li>
-              <li><strong>Sicherheit:</strong> Moderne Standards und Best Practices</li>
+              <li><strong>Sauberer Code:</strong> modern, wartbar und zukunftssicher</li>
+              <li><strong>Performance:</strong> kurze Ladezeiten auf allen Geräten</li>
+              <li><strong>Skalierbar:</strong> wächst mit Ihrem Unternehmen</li>
+              <li><strong>SEO-ready:</strong> technisch sauber für Suchmaschinen</li>
+              <li><strong>Sicherheit:</strong> aktuelle Standards und bewährte Verfahren</li>
             </ul>
             <a class="button button-primary" href="kontakt.html?project=new-website" data-i18n="services_webdev_cta">Entwicklung anfragen</a>
           </div>
           <div class="service-detail-visual">
             <div class="code-preview">
               <div class="code-preview-header">
-                <span class="cp-dot" style="background:#ef4444;"></span>
-                <span class="cp-dot" style="background:#f59e0b;"></span>
-                <span class="cp-dot" style="background:#22c55e;"></span>
+                <span class="cp-dot"></span>
+                <span class="cp-dot"></span>
+                <span class="cp-dot"></span>
                 <span class="cp-filename">contact-handler.js</span>
               </div>
               <div class="code-preview-body">
@@ -208,19 +191,19 @@
     </section>
 
     <!-- SEO & Performance -->
-    <section class="ls-section" style="padding: 4rem 0;">
+    <section class="ls-section">
       <div class="container">
         <div class="service-detail" data-reveal>
           <div class="service-detail-content">
             <span class="eyebrow">03 — SEO &amp; Performance</span>
             <h2 data-i18n="services_seo_h">Sichtbar bei Google</h2>
-            <p data-i18n="services_seo_p">Technische Optimierung für maximale Reichweite. Wir sorgen dafür, dass deine Website gefunden wird – und schnell lädt.</p>
+            <p data-i18n="services_seo_p">Technische Optimierung für maximale Reichweite. Wir sorgen dafür, dass Ihre Website gefunden wird — und schnell lädt.</p>
             <ul class="ls-checks" data-i18n-html="services_seo_list_html">
               <li><strong>Technische Optimierung:</strong> Core Web Vitals erfüllt</li>
-              <li><strong>Strukturierte Inhalte:</strong> Schema.org und Meta-Tags</li>
-              <li><strong>Schnelle Ladezeiten:</strong> Unter 2 Sekunden garantiert</li>
-              <li><strong>Mobile-First:</strong> Google-konform optimiert</li>
-              <li><strong>Analytics-Integration:</strong> Messbare Erfolge</li>
+              <li><strong>Strukturierte Inhalte:</strong> Schema.org und Meta-Daten</li>
+              <li><strong>Kurze Ladezeiten:</strong> messbar schnell auf jedem Gerät</li>
+              <li><strong>Mobile-first:</strong> nach Google-Vorgaben optimiert</li>
+              <li><strong>Auswertbar:</strong> messbare Resultate statt Bauchgefühl</li>
             </ul>
             <a class="button button-primary" href="kontakt.html?project=seo" data-i18n="services_seo_cta">SEO anfragen</a>
           </div>
@@ -257,36 +240,36 @@
     </section>
 
     <!-- KI-Assistent -->
-    <section class="ls-section" style="padding: 4rem 0; background: var(--surface);">
+    <section class="ls-section section-alt">
       <div class="container">
         <div class="service-detail service-detail-reverse" data-reveal>
           <div class="service-detail-content">
             <span class="eyebrow">04 — KI-Assistent</span>
-            <h2 data-i18n="services_ki_h">KI arbeitet für dich</h2>
-            <p data-i18n="services_ki_p">Dein digitaler Mitarbeiter – rund um die Uhr verfügbar, immer höflich, nie krank. Der KI-Assistent beantwortet Fragen, qualifiziert Leads und schläft nie.</p>
+            <h2 data-i18n="services_ki_h">Beratung rund um die Uhr</h2>
+            <p data-i18n="services_ki_p">Ein digitaler Mitarbeiter, der nie schläft: Der KI-Assistent beantwortet Kundenfragen, qualifiziert Anfragen und entlastet Ihr Team — Tag und Nacht.</p>
             <ul class="ls-checks" data-i18n-html="services_ai_list_html">
-              <li><strong>24/7 Kundenberatung:</strong> Automatische Antworten rund um die Uhr</li>
-              <li><strong>Lead-Qualifizierung:</strong> Vorqualifizierung von Anfragen</li>
-              <li><strong>Automatische Antworten:</strong> FAQ und Produkterklärungen</li>
-              <li><strong>Individuell trainierbar:</strong> Mit deinen Inhalten gefüttert</li>
-              <li><strong>Einfache Integration:</strong> Nahtlos in deine Website</li>
+              <li><strong>24/7 Kundenberatung:</strong> automatische Antworten rund um die Uhr</li>
+              <li><strong>Lead-Qualifizierung:</strong> Anfragen werden vorsortiert</li>
+              <li><strong>FAQ &amp; Produktwissen:</strong> beantwortet Standardfragen sofort</li>
+              <li><strong>Individuell trainierbar:</strong> mit Ihren eigenen Inhalten</li>
+              <li><strong>Einfache Integration:</strong> fügt sich nahtlos in Ihre Website ein</li>
             </ul>
-            <a class="button button-primary" href="ki-assistent.html" data-i18n="services_ai_cta">Mehr über KI-Assistent</a>
+            <a class="button button-primary" href="ki-assistent.html" data-i18n="services_ai_cta">Mehr zum KI-Assistenten</a>
           </div>
           <div class="service-detail-visual">
             <div class="chat-widget-mini">
-              <div class="chat-header-mini chat-header-mini--colored">
+              <div class="chat-header-mini">
                 <span class="chat-status-dot"></span>
-                <p>MASE KI-Assistent</p>
+                <p>MASESites KI-Assistent</p>
                 <span class="chat-online-badge">Online</span>
               </div>
               <div class="chat-body-mini">
-                <div class="chat-message-mini bot" data-i18n="services_ai_chat_bot">Wie kann ich helfen?</div>
-                <div class="chat-message-mini user" data-i18n="services_ai_chat_user">Was sind die Preise?</div>
-                <div class="chat-message-mini bot" data-i18n="services_ai_chat_reply">Ab CHF 750. Soll ich Details zeigen?</div>
+                <div class="chat-message-mini bot" data-i18n="services_ai_chat_bot">Guten Tag! Wie kann ich Ihnen helfen?</div>
+                <div class="chat-message-mini user" data-i18n="services_ai_chat_user">Was kostet eine Website?</div>
+                <div class="chat-message-mini bot" data-i18n="services_ai_chat_reply">Eine neue Website beginnt bei CHF 750. Soll ich Ihnen die Details zeigen?</div>
               </div>
               <div class="chat-input-mini">
-                <span class="chat-input-placeholder">Nachricht schreiben…</span>
+                <span class="chat-input-placeholder" data-i18n="services_ai_chat_placeholder">Nachricht schreiben …</span>
                 <span class="chat-send-btn">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
                 </span>
@@ -299,18 +282,18 @@
 
     </div><!-- /.services#leistungen -->
 
-    <section class="cta-section cta-section-dark" style="padding: 5rem 0;">
-      <div class="container" data-reveal style="text-align: center;">
-        <span class="eyebrow" style="color: rgba(255,255,255,0.55);">Nächster Schritt</span>
-        <h2 data-i18n="services_cta_title">Bereit für dein Projekt?</h2>
-        <p class="lead" style="max-width: 600px; margin: 0 auto 2rem;" data-i18n="services_cta_lead">
-          Lass uns gemeinsam deine perfekte Website-Lösung finden.
+    <section class="cta-section-dark">
+      <div class="container" data-reveal style="text-align: center; max-width: 680px;">
+        <span class="eyebrow" data-i18n="services_cta_eyebrow">Nächster Schritt</span>
+        <h2 data-i18n="services_cta_title">Bereit für Ihr Projekt?</h2>
+        <p class="lead" style="margin: 0 auto 2rem;" data-i18n="services_cta_lead">
+          In einem kostenlosen Erstgespräch klären wir, welche Lösung zu Ihrem Unternehmen passt.
         </p>
-        <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
-          <a class="button button-primary" href="kontakt.html" data-i18n="services_cta_primary">Projekt starten</a>
+        <div class="button-group" style="justify-content: center;">
+          <a class="button button-primary" href="kontakt.html" data-i18n="services_cta_primary">Erstgespräch vereinbaren</a>
           <a class="button button-ghost" href="preise.html" data-i18n="services_cta_secondary">Preise ansehen</a>
         </div>
-        <p class="ls-cta-trust">Kostenloses Erstgespräch · Kein Risiko · Schweizer Qualität</p>
+        <p class="ls-cta-trust" data-i18n="services_cta_trust">Kostenlos und unverbindlich · Antwort innert 24 Stunden · Schweizer Qualität</p>
       </div>
     </section>
   </main>
@@ -318,20 +301,21 @@
   <footer class="site-footer">
     <div class="container footer-grid">
       <div>
-        <p class="footer-brand">MASE</p>
-        <p class="footer-desc" data-i18n="footer_desc">Professionelle Websites &amp; KI-Integration aus der Schweiz.</p>
+        <p class="footer-brand">MASE<em>Sites</em></p>
+        <p class="footer-desc" data-i18n="footer_desc">Professionelle Websites und KI-Integration aus der Schweiz.</p>
       </div>
       <div>
         <p class="footer-title" data-i18n="footer_nav">Navigation</p>
         <a href="index.html" data-i18n="nav_home">Home</a>
         <a href="leistungen.html" data-i18n="nav_services">Leistungen</a>
         <a href="preise.html" data-i18n="nav_prices">Preise</a>
-        <a href="ki-assistent.html" data-i18n="nav_ai">KI Assistent</a>
+        <a href="ki-assistent.html" data-i18n="nav_ai">KI-Assistent</a>
       </div>
       <div>
         <p class="footer-title" data-i18n="footer_contact">Kontakt</p>
         <a href="kontakt.html" data-i18n="footer_contact_form">Kontaktformular</a>
         <a href="ueber-uns.html" data-i18n="nav_about">Über uns</a>
+        <a href="mailto:info@masesites.ch">info@masesites.ch</a>
       </div>
       <div>
         <p class="footer-title" data-i18n="footer_legal">Rechtliches</p>
@@ -340,13 +324,9 @@
       </div>
     </div>
     <div class="container footer-bottom">
-      <p>Copyright <span id="year"></span> MASESites. <span data-i18n="footer_copy">Alle Rechte vorbehalten.</span></p>
+      <p>© <span id="year"></span> MASESites, Schweiz. <span data-i18n="footer_copy">Alle Rechte vorbehalten.</span></p>
     </div>
   </footer>
-
-  <div id="dark-wave" aria-hidden="true">
-    <canvas id="dark-wave-canvas"></canvas>
-  </div>
 
   <button class="back-to-top" id="back-to-top" aria-label="Zurück nach oben">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">

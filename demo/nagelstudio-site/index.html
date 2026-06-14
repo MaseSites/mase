@@ -47,8 +47,28 @@
 
     .hero { min-height: 90vh; display: grid; grid-template-columns: 1fr 1fr; }
     .hero-left { display: flex; flex-direction: column; justify-content: center; padding: 6rem 4rem 6rem 0; }
-    .hero-right { background: linear-gradient(160deg, #fce7f3, var(--rose-pale)); display: flex; align-items: center; justify-content: center; font-size: 15rem; position: relative; overflow: hidden; }
-    .hero-right::before { content: ''; position: absolute; inset: 0; background: radial-gradient(circle at 60% 40%, rgba(190,24,93,.08) 0%, transparent 70%); }
+    .hero-right { background: linear-gradient(160deg, #fbe3ef, var(--rose-pale)); display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; padding: 2rem; }
+    .hero-right::before { content: ''; position: absolute; inset: 0; background: radial-gradient(circle at 65% 35%, rgba(190,24,93,.1) 0%, transparent 65%); }
+    .hero-right::after { content: ''; position: absolute; width: 320px; height: 320px; border: 1px solid rgba(190,24,93,.18); border-radius: 50%; right: -90px; bottom: -90px; }
+
+    /* Hero booking card */
+    .hero-card { position: relative; z-index: 1; width: 100%; max-width: 340px; background: rgba(255,255,255,.92); backdrop-filter: blur(6px); border: 1px solid #fff; border-radius: 18px; padding: 1.6rem; box-shadow: 0 28px 60px rgba(190,24,93,.18); }
+    .hc-head { display: flex; align-items: center; gap: 0.8rem; margin-bottom: 1.1rem; }
+    .hc-mono { width: 46px; height: 46px; border-radius: 50%; background: linear-gradient(135deg, var(--rose), var(--rose-light)); color: #fff; font-family: 'Playfair Display', serif; font-weight: 700; font-size: 1.1rem; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .hc-head-info { flex: 1; }
+    .hc-head-info strong { display: block; font-family: 'Playfair Display', serif; font-size: 1rem; }
+    .hc-head-info span { font-size: 0.78rem; color: var(--muted); }
+    .hc-badge { background: #fce7f3; color: var(--rose); font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; padding: 0.3rem 0.6rem; border-radius: 999px; }
+    .hc-line { display: flex; justify-content: space-between; align-items: center; padding: 0.7rem 0; border-top: 1px solid var(--border); font-size: 0.88rem; }
+    .hc-line span:first-child { color: var(--muted); }
+    .hc-line strong { font-weight: 700; }
+    .hc-swatches { display: flex; gap: 0.5rem; margin: 1rem 0 0.3rem; }
+    .hc-swatches i { width: 26px; height: 26px; border-radius: 50%; border: 2px solid #fff; box-shadow: 0 2px 6px rgba(0,0,0,.12); }
+    .hc-cta { display: block; text-align: center; margin-top: 1.1rem; background: var(--rose); color: #fff; border-radius: 8px; padding: 0.7rem; font-weight: 700; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.08em; }
+    .hero-float { position: absolute; z-index: 2; left: 1rem; bottom: 2rem; background: #fff; border-radius: 12px; padding: 0.7rem 1rem; display: flex; align-items: center; gap: 0.6rem; box-shadow: 0 14px 34px rgba(190,24,93,.18); }
+    .hero-float .stars { color: var(--gold-light); font-size: 0.8rem; letter-spacing: 1px; }
+    .hero-float strong { display: block; font-size: 0.95rem; font-family: 'Playfair Display', serif; }
+    .hero-float span { font-size: 0.72rem; color: var(--muted); }
     .hero-eyebrow { color: var(--gold); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.2em; margin-bottom: 1.5rem; font-family: 'Lato', sans-serif; }
     .hero h1 { font-size: clamp(2.5rem, 5vw, 4.5rem); line-height: 1.1; margin-bottom: 1.5rem; color: var(--text); }
     .hero h1 em { color: var(--rose); font-style: italic; }
@@ -66,16 +86,27 @@
     .services-section { background: var(--surface); }
     .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem; }
     .service-card { background: var(--bg); border-radius: 12px; padding: 2rem; border: 1px solid var(--border); text-align: center; transition: box-shadow .25s; }
-    .service-card:hover { box-shadow: 0 8px 24px rgba(190,24,93,.1); }
-    .service-icon { font-size: 3rem; margin-bottom: 1rem; }
+    .service-card:hover { box-shadow: 0 8px 24px rgba(190,24,93,.1); transform: translateY(-3px); }
+    .service-icon { width: 56px; height: 56px; border-radius: 50%; background: var(--rose-pale); color: var(--rose); display: flex; align-items: center; justify-content: center; margin: 0 auto 1.2rem; }
+    .service-icon svg { width: 26px; height: 26px; stroke: currentColor; fill: none; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
     .service-card h3 { font-size: 1.2rem; margin-bottom: 0.75rem; }
     .service-card p { color: var(--muted); font-size: 0.9rem; margin-bottom: 1rem; }
     .service-price { color: var(--rose); font-weight: 700; font-size: 0.95rem; }
 
     .gallery-section { }
     .gallery-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
-    .gallery-item { aspect-ratio: 1; border-radius: 8px; overflow: hidden; }
-    .gallery-item div { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 4rem; }
+    .gallery-item { aspect-ratio: 1; border-radius: 12px; overflow: hidden; position: relative; box-shadow: 0 8px 22px rgba(190,24,93,.08); transition: transform .25s; }
+    .gallery-item:hover { transform: translateY(-4px) scale(1.02); }
+    .gallery-item::after { content: ''; position: absolute; inset: 0; background: radial-gradient(circle at 30% 22%, rgba(255,255,255,.55) 0%, transparent 42%); }
+    .gallery-item::before { content: ''; position: absolute; left: 0; right: 0; top: 0; height: 30%; background: rgba(255,255,255,.28); border-bottom: 2px solid rgba(255,255,255,.5); }
+    .g1 { background: linear-gradient(150deg, #be185d, #f472b6); }
+    .g2 { background: linear-gradient(150deg, #7c3aed, #c4b5fd); }
+    .g3 { background: linear-gradient(150deg, #b8860b, #f7d774); }
+    .g4 { background: linear-gradient(150deg, #0891b2, #67e8f9); }
+    .g5 { background: linear-gradient(150deg, #db2777, #fbcfe8); }
+    .g6 { background: linear-gradient(150deg, #9d174d, #f9a8d4); }
+    .g7 { background: linear-gradient(150deg, #c2410c, #fdba74); }
+    .g8 { background: linear-gradient(150deg, #4338ca, #a5b4fc); }
 
     .pricing-section { background: var(--surface); }
     .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; }
@@ -94,7 +125,8 @@
     .booking-info h2 { margin-bottom: 1rem; }
     .booking-info p { color: var(--muted); margin-bottom: 1rem; }
     .contact-detail { display: flex; align-items: center; gap: 1rem; padding: 1rem 0; border-bottom: 1px solid var(--border); }
-    .contact-detail .icon { font-size: 1.5rem; }
+    .contact-detail .icon { width: 42px; height: 42px; border-radius: 50%; background: var(--rose-pale); color: var(--rose); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .contact-detail .icon svg { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
     .contact-detail div { }
     .contact-detail strong { display: block; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); }
     .contact-detail a, .contact-detail span { color: var(--text); font-size: 1rem; }
@@ -125,6 +157,11 @@
       .gallery-grid { grid-template-columns: repeat(2, 1fr); }
       .booking-grid { grid-template-columns: 1fr; }
       .footer-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 560px) {
+      .nav-logo small { display: none; }
+      .nav-inner { padding: 1rem 1.1rem; }
+      .btn { padding: 0.7rem 1.2rem; }
     }
   </style>
 </head>
@@ -163,7 +200,34 @@
       </div>
     </div>
     <div class="hero-right">
-      💅
+      <div class="hero-card">
+        <div class="hc-head">
+          <span class="hc-mono">N</span>
+          <span class="hc-head-info">
+            <strong>Nails &amp; Co.</strong>
+            <span>Steinenvorstadt 22, Basel</span>
+          </span>
+          <span class="hc-badge">Frei</span>
+        </div>
+        <div class="hc-line"><span>Leistung</span><strong>Gel-Nägel &amp; Nail Art</strong></div>
+        <div class="hc-line"><span>Termin</span><strong>Sa, 14. Juni · 10:30</strong></div>
+        <div class="hc-line"><span>Dauer</span><strong>ca. 75 Min</strong></div>
+        <div class="hc-swatches">
+          <i style="background:#be185d"></i>
+          <i style="background:#f472b6"></i>
+          <i style="background:#d4af37"></i>
+          <i style="background:#9d174d"></i>
+          <i style="background:#fbcfe8"></i>
+        </div>
+        <span class="hc-cta">Termin bestätigen</span>
+      </div>
+      <div class="hero-float">
+        <span class="stars">★★★★★</span>
+        <div>
+          <strong>4.9 / 5</strong>
+          <span>320+ Bewertungen</span>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -178,37 +242,37 @@
       <p class="section-lead">Von der klassischen Maniküre bis zum aufwendigen Nail-Art – für jeden Anlass das passende Design.</p>
       <div class="services-grid">
         <div class="service-card">
-          <div class="service-icon">💅</div>
+          <div class="service-icon"><svg viewBox="0 0 24 24"><path d="M9 3c-1 1.2-1.5 3-1.5 6v8a3.5 3.5 0 0 0 7 0V9c0-3-.5-4.8-1.5-6"/><path d="M8 8.5c1.5.8 4.5.8 6 0M7.5 11h7"/></svg></div>
           <h3>Gel-Nägel</h3>
           <p>Langlebige Gel-Beschichtung, perfekte Oberfläche und strahlende Farben für bis zu 4 Wochen.</p>
           <p class="service-price">ab CHF 65</p>
         </div>
         <div class="service-card">
-          <div class="service-icon">✨</div>
+          <div class="service-icon"><svg viewBox="0 0 24 24"><path d="M12 3l1.8 4.5L18 9l-4.2 1.5L12 15l-1.8-4.5L6 9l4.2-1.5zM5 16l.8 2L8 19l-2.2.9L5 22l-.8-2.1L2 19l2.2-1zM18 14l.6 1.6L20 16l-1.4.6L18 18l-.6-1.4L16 16l1.4-.4z"/></svg></div>
           <h3>Nail Art Design</h3>
           <p>Von floralen Mustern bis zum geometrischen Design – unsere Künstlerinnen verwandeln deine Nägel in Kunst.</p>
           <p class="service-price">ab CHF 25 zzgl.</p>
         </div>
         <div class="service-card">
-          <div class="service-icon">🌸</div>
+          <div class="service-icon"><svg viewBox="0 0 24 24"><path d="M12 2c1.5 2.5 1.5 4.5 0 7-1.5-2.5-1.5-4.5 0-7zM12 22c-1.5-2.5-1.5-4.5 0-7 1.5 2.5 1.5 4.5 0 7zM2 12c2.5-1.5 4.5-1.5 7 0-2.5 1.5-4.5 1.5-7 0zM22 12c-2.5 1.5-4.5 1.5-7 0 2.5-1.5 4.5-1.5 7 0z"/><circle cx="12" cy="12" r="2"/></svg></div>
           <h3>Klassische Maniküre</h3>
           <p>Nagelpflege, Formgebung, Cuticle-Behandlung und Hochglanz-Lack – zeitlos schön.</p>
           <p class="service-price">ab CHF 35</p>
         </div>
         <div class="service-card">
-          <div class="service-icon">🦶</div>
+          <div class="service-icon"><svg viewBox="0 0 24 24"><path d="M7 13c-2 0-3-1.5-3-4 0-3.5 2.5-7 4-7 1 0 1.5 1 1.5 2.5C9.5 7 9 9 9 11M9 11c.5 2 2 3 4 3h2a4 4 0 0 1 0 8H9a4 4 0 0 1-4-4"/><path d="M11 5.5h.01M13.5 6.5h.01M15.5 8.5h.01"/></svg></div>
           <h3>Pediküre</h3>
           <p>Verwöhnende Fusspflege mit Peeling, Massage und Nagellack. Für zarte, gepflegte Füsse.</p>
           <p class="service-price">ab CHF 55</p>
         </div>
         <div class="service-card">
-          <div class="service-icon">💎</div>
+          <div class="service-icon"><svg viewBox="0 0 24 24"><path d="M12 2l3 5 5 1.5-3.5 4 .8 5.5L12 20l-5.3 2 .8-5.5L4 8.5 9 7z"/></svg></div>
           <h3>Acryl-Extensions</h3>
           <p>Für natürlich wirkende Verlängerungen mit Acryl. Individuell in Länge und Form.</p>
           <p class="service-price">ab CHF 80</p>
         </div>
         <div class="service-card">
-          <div class="service-icon">🎁</div>
+          <div class="service-icon"><svg viewBox="0 0 24 24"><rect x="3" y="8" width="18" height="13" rx="1"/><path d="M3 12h18M12 8v13M12 8C9 8 7 6.5 7 5a2 2 0 0 1 5-1 2 2 0 0 1 5 1c0 1.5-2 3-5 3z"/></svg></div>
           <h3>Braut-Package</h3>
           <p>Komplette Nail-Vorbereitung für deinen besonderen Tag. Inkl. Beratung und Probe-Termin.</p>
           <p class="service-price">ab CHF 150</p>
@@ -222,14 +286,14 @@
       <p class="section-eyebrow">Unsere Arbeiten</p>
       <h2 class="section-title">Galerie</h2>
       <div class="gallery-grid">
-        <div class="gallery-item"><div style="background:#fce7f3;">💅</div></div>
-        <div class="gallery-item"><div style="background:#ede9fe;">✨</div></div>
-        <div class="gallery-item"><div style="background:#fef3c7;">🌸</div></div>
-        <div class="gallery-item"><div style="background:#d1fae5;">💎</div></div>
-        <div class="gallery-item"><div style="background:#fee2e2;">🎀</div></div>
-        <div class="gallery-item"><div style="background:#e0f2fe;">🌺</div></div>
-        <div class="gallery-item"><div style="background:#fdf4ff;">⭐</div></div>
-        <div class="gallery-item"><div style="background:#f0fdf4;">🌟</div></div>
+        <div class="gallery-item g1"></div>
+        <div class="gallery-item g2"></div>
+        <div class="gallery-item g3"></div>
+        <div class="gallery-item g4"></div>
+        <div class="gallery-item g5"></div>
+        <div class="gallery-item g6"></div>
+        <div class="gallery-item g7"></div>
+        <div class="gallery-item g8"></div>
       </div>
     </div>
   </section>
@@ -285,15 +349,15 @@
           <h2>Termin buchen</h2>
           <p>Vereinbare deinen Wunschtermin online oder ruf uns an. Wir beraten dich gerne über die passenden Leistungen.</p>
           <div class="contact-detail">
-            <span class="icon">📍</span>
+            <span class="icon"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 12-9 12s-9-5-9-12a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></span>
             <div><strong>Adresse</strong><span>Steinenvorstadt 22, 4051 Basel</span></div>
           </div>
           <div class="contact-detail">
-            <span class="icon">📞</span>
+            <span class="icon"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg></span>
             <div><strong>Telefon</strong><a href="tel:+41612345678">+41 61 234 56 78</a></div>
           </div>
           <div class="contact-detail">
-            <span class="icon">🕐</span>
+            <span class="icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span>
             <div>
               <strong>Öffnungszeiten</strong>
               <span>Di–Fr 09:00–19:00, Sa 09:00–17:00</span>

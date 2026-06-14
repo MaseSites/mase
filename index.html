@@ -24,7 +24,6 @@
   <meta name="twitter:description" content="Professionelles Webdesign und KI-Assistent aus der Schweiz. Websites ab CHF 750.">
   <meta name="twitter:image" content="https://www.masesites.ch/og-image.jpg">
 
-  
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <link rel="icon" type="image/png" href="/favicon.png" sizes="32x32">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
@@ -80,48 +79,33 @@
   }
   </script>
 
-  <link rel="stylesheet" href="/styles.css?v=20260612b">
-  <link rel="stylesheet" href="/ai-assistant.css?v=20260529a">
-  <link rel="stylesheet" href="/debug.css?v=20260327">
-  <link rel="stylesheet" href="/mase-animations.css?v=20260529a">
-  <link rel="stylesheet" href="/mase-scroll-animations.css?v=20260529a">
-  <link rel="stylesheet" href="/flair.css?v=20260522i">
+  <link rel="stylesheet" href="/styles.css?v=20260613a">
+  <link rel="stylesheet" href="/ai-assistant.css?v=20260613a">
   <script>
     (function () {
-      // Dark mode only — always apply dark class.
-      localStorage.setItem('theme', 'dark');
-      document.documentElement.classList.add('dark');
+      // Helle Identität — Dark-Mode ist abgeschaltet.
+      localStorage.setItem('theme', 'light');
+      document.documentElement.classList.remove('dark');
       var q = null;
       try { q = new URLSearchParams(window.location.search).get('lang'); } catch (_) {}
       var s = localStorage.getItem('lang');
-      var lang = ['de', 'en', 'fr'].indexOf(q) !== -1 ? q : (['de', 'en', 'fr'].indexOf(s) !== -1 ? s : 'de');
+      var lang = ['de', 'en'].indexOf(q) !== -1 ? q : (['de', 'en'].indexOf(s) !== -1 ? s : 'de');
       localStorage.setItem('lang', lang);
       document.documentElement.lang = (lang === 'de' ? 'de-CH' : 'en');
     })();
   </script>
-    <script src="/supabase-config.js"></script>
+  <script src="/supabase-config.js"></script>
   <script src="/tracker.js"></script>
-<script defer src="/theme.js?v=20260529a"></script>
-  <script defer src="/script.js?v=20260612a"></script>
-  <script defer src="/ai-assistant.js?v=20260529e"></script>
-  <script defer src="/mase-animations.js?v=20260521b"></script>
-  <script defer src="/mase-scroll-animations.js?v=20260529a"></script>
-  <script defer src="/flair.js?v=20260517"></script>
+  <script defer src="/theme.js?v=20260613a"></script>
+  <script defer src="/script.js?v=20260613a"></script>
+  <script defer src="/ai-assistant.js?v=20260613a"></script>
 </head>
 <body>
-  <div class="mase-spray" aria-hidden="true">
-    <span class="mase-spray__blob s1"></span>
-    <span class="mase-spray__blob s2"></span>
-    <span class="mase-spray__blob s3"></span>
-    <span class="mase-spray__blob s4"></span>
-    <span class="mase-spray__blob s5"></span>
-    <span class="mase-spray__blob s6"></span>
-  </div>
   <a class="skip-link" href="#main" data-i18n="skip_to_content">Zum Inhalt springen</a>
 
   <header class="site-header">
     <div class="container header-inner">
-      <a class="logo" href="/"><span class="logo-text">MASE</span></a>
+      <a class="logo" href="/"><span class="logo-text">MASE<em>Sites</em></span></a>
       <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
         <span class="sr-only" data-i18n="nav_toggle">Navigation öffnen</span>
         <span class="nav-toggle-bar"></span>
@@ -130,15 +114,14 @@
       <nav class="site-nav" id="site-nav">
         <a href="leistungen.html" data-i18n="nav_services">Leistungen</a>
         <a href="preise.html" data-i18n="nav_prices">Preise</a>
-        <a href="ki-assistent.html" data-i18n="nav_ai">KI Assistent</a>
+        <a href="ki-assistent.html" data-i18n="nav_ai">KI-Assistent</a>
         <a href="ueber-uns.html" data-i18n="nav_about">Über uns</a>
         <a href="kontakt.html" data-i18n="nav_contact">Kontakt</a>
-        <a class="button button-primary button-small" href="kontakt.html" data-i18n="nav_cta">Kostenloses Erstgespräch</a>
+        <a class="button button-primary button-small" href="kontakt.html" data-i18n="nav_cta">Erstgespräch vereinbaren</a>
       </nav>
       <div class="header-controls">
         <div class="lang-switcher" id="lang-switcher">
           <button class="lang-btn" id="lang-btn" aria-haspopup="true" aria-expanded="false" aria-label="Sprache wählen" data-i18n-aria-label="lang_select_aria">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
             <span id="lang-current">DE</span>
           </button>
           <div class="lang-dropdown" id="lang-dropdown">
@@ -146,10 +129,6 @@
             <button class="lang-option" data-lang="en">English</button>
           </div>
         </div>
-        <button class="dark-toggle" id="dark-toggle" aria-label="Dark Mode umschalten" data-i18n-aria-label="theme_toggle_aria">
-          <span class="dark-toggle-icon" id="dark-toggle-icon">☀️</span>
-          <span class="dark-toggle-track"><span class="dark-toggle-thumb"></span></span>
-        </button>
       </div>
     </div>
   </header>
@@ -157,334 +136,312 @@
   <main id="main">
 
     <!-- Hero -->
-    <section class="hero hero--centered" aria-labelledby="hero-title">
+    <section class="hero" aria-labelledby="hero-title">
       <div class="container">
-        <div class="hero-center" data-reveal>
-          <h1 id="hero-title" data-i18n="hero_title">Websites,<br>die verkaufen.</h1>
-          <p class="hero-sub" data-i18n="hero_lead">Wir bauen Websites, die Kunden gewinnen. Klar, modern und auf Anfragen optimiert.</p>
-          <a class="button button-primary hero-main-cta" href="kontakt.html" data-i18n="hero_cta_primary">Kostenloses Erstgespräch</a>
-          <div class="hero-trust" aria-label="Vertrauenssignale">
-            <span>&#10003; Kostenlos &amp; unverbindlich</span>
-            <span>&#10003; Antwort in 24h</span>
-            <span>&#10003; Schweizer Qualität</span>
+        <div class="hero-top">
+          <div class="hero-copy" data-reveal>
+            <p class="hero-eyebrow" data-i18n="hero_eyebrow">Webdesign &amp; KI-Integration · Schweiz</p>
+            <h1 id="hero-title" data-i18n-html="hero_title_html">Websites, die <span class="serif-accent">verkaufen</span>.</h1>
+            <p class="lead" data-i18n="hero_lead">Wir gestalten und entwickeln Websites für Unternehmen, die online ernst genommen werden wollen — klar strukturiert, technisch sauber und auf Anfragen ausgelegt.</p>
+            <div class="hero-cta-row">
+              <a class="button button-primary" href="kontakt.html" data-i18n="hero_cta_primary">Erstgespräch vereinbaren</a>
+              <a class="arrow-link" href="leistungen.html" data-i18n="hero_cta_secondary">Leistungen ansehen</a>
+            </div>
+            <p class="hero-note" data-i18n="hero_note">Kostenlos und unverbindlich. Sie erhalten innert 24 Stunden eine Antwort.</p>
           </div>
-          <div class="hero-stats" aria-label="Zahlen &amp; Fakten">
-            <div class="hero-stat">
-              <span class="hero-stat-num">30+</span>
-              <span class="hero-stat-text">Websites live</span>
-            </div>
-            <span class="hero-stat-sep" aria-hidden="true"></span>
-            <div class="hero-stat">
-              <span class="hero-stat-num">24h</span>
-              <span class="hero-stat-text">Antwortzeit</span>
-            </div>
-            <span class="hero-stat-sep" aria-hidden="true"></span>
-            <div class="hero-stat">
-              <span class="hero-stat-num">ab CHF 750</span>
-              <span class="hero-stat-text">Starter Paket</span>
-            </div>
+
+          <div class="hero-mark" id="hero-mark" aria-hidden="true">
+            <svg class="hero-mark-svg" viewBox="0 0 460 132" xmlns="http://www.w3.org/2000/svg">
+              <text class="hm hm-outline" x="6" y="92">MASE<tspan class="hm-serif">Sites</tspan></text>
+              <text class="hm hm-fill" x="6" y="92">MASE<tspan class="hm-serif">Sites</tspan></text>
+            </svg>
+            <span class="hero-mark-rule" aria-hidden="true"></span>
+            <span class="hero-mark-caption">Webagentur · Schweiz · seit 2024</span>
+          </div>
+        </div>
+
+        <div class="fact-strip" data-reveal aria-label="Kennzahlen">
+          <div class="fact">
+            <span class="fact-value">30+</span>
+            <span class="fact-label" data-i18n="fact_1_label">Umgesetzte Websites</span>
+          </div>
+          <div class="fact">
+            <span class="fact-value">24 Std.</span>
+            <span class="fact-label" data-i18n="fact_2_label">Garantierte Antwortzeit</span>
+          </div>
+          <div class="fact">
+            <span class="fact-value">CHF 750</span>
+            <span class="fact-label" data-i18n="fact_3_label">Projektstart ab Festpreis</span>
           </div>
         </div>
       </div>
     </section>
 
-    <div data-mase-marquee></div>
-
-    <!-- Warum MASE -->
-    <section class="trust" aria-labelledby="trust-title">
+    <!-- Arbeitsweise -->
+    <section aria-labelledby="trust-title">
       <div class="container" data-reveal>
-        <h2 id="trust-title" data-i18n="trust_title">Warum MASE</h2>
-        <div class="trust-grid">
-          <article class="trust-card">
-            <div class="trust-card-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
-            </div>
-            <h3 data-i18n="trust_speed">Schnell</h3>
-            <p data-i18n="trust_speed_desc">Klare Prozesse, kurze Wege, schnelle Live-Schaltung.</p>
+        <div class="kicker">
+          <span class="kicker-num">01</span>
+          <span class="kicker-label" data-i18n="trust_kicker">Wofür wir stehen</span>
+        </div>
+        <div class="section-head">
+          <h2 id="trust-title" data-i18n="trust_title">Solide Arbeit statt grosser Worte</h2>
+        </div>
+        <div class="principles">
+          <article class="principle">
+            <span class="principle-index">a.</span>
+            <h3 data-i18n="trust_speed">Verbindlichkeit</h3>
+            <p data-i18n="trust_speed_desc">Klare Prozesse, fixe Termine, kurze Wege. Sie wissen jederzeit, wo Ihr Projekt steht.</p>
           </article>
-          <article class="trust-card">
-            <div class="trust-card-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
-            </div>
+          <article class="principle">
+            <span class="principle-index">b.</span>
             <h3 data-i18n="trust_code">Sauberer Code</h3>
-            <p data-i18n="trust_code_desc">Minimal, wartbar und für Performance optimiert.</p>
+            <p data-i18n="trust_code_desc">Wartbar, schnell und zukunftssicher gebaut — das Fundament jeder guten Website.</p>
           </article>
-          <article class="trust-card">
-            <div class="trust-card-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
-            </div>
-            <h3 data-i18n="trust_mobile">Mobile-first</h3>
-            <p data-i18n="trust_mobile_desc">UX die auf jedem Screen sitzt. Keine Kompromisse.</p>
+          <article class="principle">
+            <span class="principle-index">c.</span>
+            <h3 data-i18n="trust_mobile">Mobile zuerst</h3>
+            <p data-i18n="trust_mobile_desc">Ihre Website funktioniert auf jedem Bildschirm einwandfrei. Ohne Kompromisse.</p>
           </article>
-          <article class="trust-card">
-            <div class="trust-card-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M2 12h3M19 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12"/></svg>
-            </div>
+          <article class="principle">
+            <span class="principle-index">d.</span>
             <h3 data-i18n="trust_ki">KI-Integration</h3>
-            <p data-i18n="trust_ki_desc">Assistenz, die Leads qualifiziert und Fragen klärt.</p>
+            <p data-i18n="trust_ki_desc">Auf Wunsch beantwortet ein Assistent Kundenfragen und qualifiziert Anfragen — rund um die Uhr.</p>
           </article>
         </div>
       </div>
     </section>
 
-    <!-- Unser Ansatz -->
-    <section class="process" id="ansatz" aria-labelledby="approach-title">
+    <!-- Vorgehen -->
+    <section class="section-alt" id="ansatz" aria-labelledby="approach-title">
       <div class="container">
-        <div data-reveal style="text-align:center; margin-bottom: 3rem;">
-          <h2 id="approach-title" data-i18n="process_title">Unser Ansatz</h2>
-          <p class="lead" data-i18n="process_lead">Von der ersten Idee bis zum Live-Launch — unser bewährter Weg zu deiner perfekten Website.</p>
-        </div>
-        <div class="process-grid process-grid-5" data-reveal>
-          <div class="process-step">
-            <div class="process-step-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                <circle cx="11" cy="11" r="6"></circle>
-                <line x1="16" y1="16" x2="21" y2="21"></line>
-              </svg>
-            </div>
-            <span>01</span>
-            <h3 data-i18n="process_1_title">Analyse &amp; Strategie</h3>
-            <p data-i18n="process_1_desc">Wir analysieren dein Business, deine Zielgruppe und den Wettbewerb. Klare Ziele, klarer Plan.</p>
+        <div data-reveal>
+          <div class="kicker">
+            <span class="kicker-num">02</span>
+            <span class="kicker-label" data-i18n="process_kicker">Unser Vorgehen</span>
           </div>
-          <div class="process-step">
-            <div class="process-step-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                <path d="M8 7h8"></path>
-                <path d="M8 12h8"></path>
-                <path d="M8 17h5"></path>
-                <rect x="3" y="4" width="18" height="16" rx="3"></rect>
-              </svg>
-            </div>
-            <span>02</span>
-            <h3 data-i18n="process_2_title">Struktur &amp; UX-Planung</h3>
-            <p data-i18n="process_2_desc">Seitenstruktur, Navigation und User Experience werden vor dem ersten Pixel geplant.</p>
-          </div>
-          <div class="process-step">
-            <div class="process-step-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                <path d="M4 15l8-8 5 5-8 8H4v-5z"></path>
-                <path d="M14 7l3 3"></path>
-              </svg>
-            </div>
-            <span>03</span>
-            <h3 data-i18n="process_3_title">Modernes Design</h3>
-            <p data-i18n="process_3_desc">Clean, professionell, verkaufsstark. Design das Vertrauen weckt und zum Handeln motiviert.</p>
-          </div>
-          <div class="process-step">
-            <div class="process-step-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                <circle cx="12" cy="12" r="3.5"></circle>
-                <path d="M12 2v3"></path>
-                <path d="M12 19v3"></path>
-                <path d="M2 12h3"></path>
-                <path d="M19 12h3"></path>
-              </svg>
-            </div>
-            <span>04</span>
-            <h3 data-i18n="process_4_title">Saubere Entwicklung</h3>
-            <p data-i18n="process_4_desc">Schneller, wartbarer Code. Mobile-first, SEO-ready und zukunftssicher gebaut.</p>
-          </div>
-          <div class="process-step">
-            <div class="process-step-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                <path d="M5 19c2-4 6-8 10-10 0 0 2 4 0 8-2 4-6 6-10 7z"></path>
-                <path d="M9 15l-3 3"></path>
-              </svg>
-            </div>
-            <span>05</span>
-            <h3 data-i18n="process_5_title">Optimierung &amp; Skalierung</h3>
-            <p data-i18n="process_5_desc">Nach dem Launch analysieren, optimieren und skalieren wir deinen digitalen Auftritt.</p>
-          </div>
-          <div class="process-step">
-            <div class="process-step-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                <path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"></path>
-                <path d="M12 8v4l3 3"></path>
-              </svg>
-            </div>
-            <span>06</span>
-            <h3 data-i18n="process_6_title">Betreuung &amp; Support</h3>
-            <p data-i18n="process_6_desc">Du bist nie allein. Wir stehen für Fragen, Updates und Weiterentwicklung auch nach dem Launch zur Verfügung.</p>
+          <div class="section-head">
+            <h2 id="approach-title" data-i18n="process_title">Von der Analyse bis zur Betreuung</h2>
+            <p class="lead" data-i18n="process_lead">Ein bewährter Ablauf in sechs Schritten — nachvollziehbar, planbar und ohne Überraschungen.</p>
           </div>
         </div>
-        <div class="process-cta-wrap" data-reveal>
-          <a class="button button-primary" href="kontakt.html" data-i18n="hero_cta_primary">Projekt starten</a>
+        <div class="steps-grid" data-reveal>
+          <div class="step">
+            <span class="step-num">1</span>
+            <div>
+              <h3 data-i18n="process_1_title">Analyse &amp; Strategie</h3>
+              <p data-i18n="process_1_desc">Wir analysieren Ihr Unternehmen, Ihre Zielgruppe und den Wettbewerb. Daraus entstehen klare Ziele und ein klarer Plan.</p>
+            </div>
+          </div>
+          <div class="step">
+            <span class="step-num">2</span>
+            <div>
+              <h3 data-i18n="process_2_title">Struktur &amp; Konzept</h3>
+              <p data-i18n="process_2_desc">Seitenstruktur, Navigation und Benutzerführung werden geplant, bevor der erste Pixel gestaltet wird.</p>
+            </div>
+          </div>
+          <div class="step">
+            <span class="step-num">3</span>
+            <div>
+              <h3 data-i18n="process_3_title">Gestaltung</h3>
+              <p data-i18n="process_3_desc">Ein klares, professionelles Erscheinungsbild, das Vertrauen schafft und Ihre Marke korrekt repräsentiert.</p>
+            </div>
+          </div>
+          <div class="step">
+            <span class="step-num">4</span>
+            <div>
+              <h3 data-i18n="process_4_title">Entwicklung</h3>
+              <p data-i18n="process_4_desc">Schneller, wartbarer Code — mobile-first, suchmaschinenfreundlich und zukunftssicher gebaut.</p>
+            </div>
+          </div>
+          <div class="step">
+            <span class="step-num">5</span>
+            <div>
+              <h3 data-i18n="process_5_title">Optimierung</h3>
+              <p data-i18n="process_5_desc">Nach dem Launch messen und verbessern wir Ladezeiten, Sichtbarkeit und Anfragequalität.</p>
+            </div>
+          </div>
+          <div class="step">
+            <span class="step-num">6</span>
+            <div>
+              <h3 data-i18n="process_6_title">Betreuung &amp; Support</h3>
+              <p data-i18n="process_6_desc">Auch nach dem Launch sind wir für Fragen, Updates und Weiterentwicklung erreichbar.</p>
+            </div>
+          </div>
+        </div>
+        <div data-reveal style="margin-top: 2.4rem;">
+          <a class="button button-primary" href="kontakt.html" data-i18n="process_cta">Projekt besprechen</a>
         </div>
       </div>
     </section>
 
     <!-- Technische Qualität -->
-    <section class="code-proof" aria-labelledby="code-proof-title">
-      <div class="container code-proof-grid" data-reveal>
-        <div class="code-proof-copy">
-          <h2 id="code-proof-title">Sauberer Code. Messbares Ergebnis.</h2>
-          <p class="lead">Wir bauen nicht nur schöne Oberflächen — auch darunter stimmt jedes Detail.</p>
-          <ul class="code-proof-points">
-            <li>Semantisches HTML für Struktur und SEO</li>
-            <li>Wartbarer, zukunftssicherer Code</li>
-            <li>Optimiert für Geschwindigkeit und Mobile</li>
-          </ul>
+    <section aria-labelledby="code-proof-title">
+      <div class="container" data-reveal>
+        <div class="kicker">
+          <span class="kicker-num">03</span>
+          <span class="kicker-label" data-i18n="quality_kicker">Messbare Qualität</span>
         </div>
-        <div class="code-proof-graphic" role="img" aria-label="Lighthouse Qualität: Gesamtscore 87 Prozent — Performance 97, SEO 100, Accessibility 98, Best Practices 95">
-          <div class="lhd" id="lhd" aria-hidden="true">
-            <div class="lhd-ring-wrap">
-              <svg class="lhd-ring" viewBox="0 0 240 240" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <defs>
-                  <linearGradient id="lhdArc" gradientUnits="userSpaceOnUse" x1="120" y1="0" x2="120" y2="240">
-                    <stop offset="0%" stop-color="var(--lhd-arc-0, #f5f7fa)"/>
-                    <stop offset="55%" stop-color="var(--lhd-arc-1, #aeb6c2)"/>
-                    <stop offset="100%" stop-color="var(--lhd-arc-2, #778090)"/>
-                  </linearGradient>
-                </defs>
-                <circle cx="120" cy="120" r="114" stroke="var(--lhd-ring-faint, rgba(255,255,255,0.05))" stroke-width="1"/>
-                <circle cx="120" cy="120" r="96" stroke="var(--lhd-track, rgba(255,255,255,0.06))" stroke-width="13"/>
-                <circle class="lhd-arc" cx="120" cy="120" r="96" stroke="url(#lhdArc)" stroke-width="13" stroke-linecap="round" transform="rotate(-66.6 120 120)"/>
-                <circle cx="120" cy="120" r="80" fill="transparent" stroke="var(--lhd-ring-faint, rgba(255,255,255,0.05))" stroke-width="1"/>
-              </svg>
-              <div class="lhd-center">
-                <span class="lhd-label">Quality</span>
-                <span class="lhd-value"><span data-lhd-count="87">87</span>%</span>
-                <span class="lhd-sub">Lighthouse Score</span>
-              </div>
+        <div class="metrics-grid">
+          <div class="metrics-copy">
+            <h2 id="code-proof-title" data-i18n="quality_title">Qualität, die sich messen lässt</h2>
+            <p class="lead" data-i18n="quality_lead">Wir bauen nicht nur saubere Oberflächen — auch unter der Haube stimmt jedes Detail.</p>
+            <ul class="dash-list">
+              <li data-i18n="quality_point_1">Semantisches HTML für Struktur und Suchmaschinen</li>
+              <li data-i18n="quality_point_2">Wartbarer, zukunftssicherer Code</li>
+              <li data-i18n="quality_point_3">Optimiert für Geschwindigkeit und Mobilgeräte</li>
+            </ul>
+          </div>
+          <div class="metrics-block" role="img" aria-label="Lighthouse-Messwerte: Performance 97, SEO 100, Accessibility 98, Best Practices 95">
+            <div class="metric-row">
+              <span class="metric-name">Performance</span>
+              <span class="metric-bar"><i style="--w:97%"></i></span>
+              <span class="metric-value">97</span>
             </div>
-            <div class="lhd-card lhd-card--tl">
-              <span class="lhd-card-label">Performance</span>
-              <span class="lhd-card-value" data-lhd-count="97">97</span>
+            <div class="metric-row">
+              <span class="metric-name">SEO</span>
+              <span class="metric-bar"><i style="--w:100%"></i></span>
+              <span class="metric-value">100</span>
             </div>
-            <div class="lhd-card lhd-card--tr">
-              <span class="lhd-card-label">SEO</span>
-              <span class="lhd-card-value" data-lhd-count="100">100</span>
+            <div class="metric-row">
+              <span class="metric-name">Accessibility</span>
+              <span class="metric-bar"><i style="--w:98%"></i></span>
+              <span class="metric-value">98</span>
             </div>
-            <div class="lhd-card lhd-card--bl">
-              <span class="lhd-card-label">Accessibility</span>
-              <span class="lhd-card-value" data-lhd-count="98">98</span>
+            <div class="metric-row">
+              <span class="metric-name">Best Practices</span>
+              <span class="metric-bar"><i style="--w:95%"></i></span>
+              <span class="metric-value">95</span>
             </div>
-            <div class="lhd-card lhd-card--br">
-              <span class="lhd-card-label">Best Pract.</span>
-              <span class="lhd-card-value" data-lhd-count="95">95</span>
-            </div>
+            <p class="metrics-note" data-i18n="quality_note">Gemessen mit Google Lighthouse an dieser Website.</p>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Live-Vorschau Beispielprojekte -->
-    <section class="projects-slider" aria-labelledby="slider-title">
+    <!-- Beispielprojekte -->
+    <section class="section-alt" aria-labelledby="work-title">
       <div class="container">
-        <div data-reveal class="section-intro section-intro-centered">
-          <h2 id="slider-title" data-i18n="live_preview_title">Live Preview – Beispielprojekte</h2>
-          <p class="lead" data-i18n="live_preview_subtitle">So könnte dein nächster professioneller Webauftritt aussehen. Klicke auf ein Projekt für die Live-Vorschau.</p>
-        </div>
-
-        <div class="lp-slider" id="lp-slider" data-reveal>
-          <div class="lp-slide" role="group" aria-label="Slide 1 of 4">
-            <a class="lp-card lp-card-link" href="demo/bowling-site/index.html" target="_blank" rel="noopener" aria-label="Bowling Center live ansehen">
-              <p class="lp-card-domain">Freizeit &amp; Sport</p>
-              <h3 class="lp-card-title">Bowling Center</h3>
-              <p class="lp-card-text">Klares, modernes Layout mit Fokus auf Buchung und Events.</p>
-              <ul class="lp-card-list">
-                <li>Hero mit starker Message</li>
-                <li>Preisstruktur in wenigen Blöcken</li>
-                <li>Sichtbarer Reservieren-CTA</li>
-              </ul>
-              <span class="lp-card-open">Projekt öffnen</span>
-            </a>
+        <div data-reveal>
+          <div class="kicker">
+            <span class="kicker-num">04</span>
+            <span class="kicker-label" data-i18n="work_kicker">Beispielprojekte</span>
           </div>
-          <div class="lp-slide lp-slide--hidden" role="group" aria-label="Slide 2 of 4">
-            <a class="lp-card lp-card-link" href="demo/praxis-site/index.html" target="_blank" rel="noopener" aria-label="Praxis Website live ansehen">
-              <p class="lp-card-domain">Gesundheit &amp; Medizin</p>
-              <h3 class="lp-card-title">Praxis Website</h3>
-              <p class="lp-card-text">Seriöses Design mit ruhiger Typografie und klarer Navigation.</p>
-              <ul class="lp-card-list">
-                <li>Saubere Leistungsübersicht</li>
-                <li>Kontakt und Öffnungszeiten im Fokus</li>
-                <li>Termin-CTA klar platziert</li>
-              </ul>
-              <span class="lp-card-open">Projekt öffnen</span>
-            </a>
-          </div>
-          <div class="lp-slide lp-slide--hidden" role="group" aria-label="Slide 3 of 4">
-            <a class="lp-card lp-card-link" href="demo/doener-site/index.html" target="_blank" rel="noopener" aria-label="Dönerladen live ansehen">
-              <p class="lp-card-domain">Gastronomie</p>
-              <h3 class="lp-card-title">Dönerladen</h3>
-              <p class="lp-card-text">Konzentriert auf Speisekarte, Bestellung und Standortinfos.</p>
-              <ul class="lp-card-list">
-                <li>Kompakte Menüstruktur</li>
-                <li>Schnelle mobile Lesbarkeit</li>
-                <li>Direkter Bestell-Button</li>
-              </ul>
-              <span class="lp-card-open">Projekt öffnen</span>
-            </a>
-          </div>
-          <div class="lp-slide lp-slide--hidden" role="group" aria-label="Slide 4 of 4">
-            <a class="lp-card lp-card-link" href="demo/nagelstudio-site/index.html" target="_blank" rel="noopener" aria-label="Nagelstudio live ansehen">
-              <p class="lp-card-domain">Beauty &amp; Wellness</p>
-              <h3 class="lp-card-title">Nagelstudio</h3>
-              <p class="lp-card-text">Elegantes One-Page-Design mit Services, Galerie und Buchung.</p>
-              <ul class="lp-card-list">
-                <li>Klare Service-Kategorien</li>
-                <li>Stimmige Preisdarstellung</li>
-                <li>Termin-CTA ohne Ablenkung</li>
-              </ul>
-              <span class="lp-card-open">Projekt öffnen</span>
-            </a>
+          <div class="section-head">
+            <h2 id="work-title" data-i18n="work_title">So können Kundenwebsites aussehen</h2>
+            <p class="lead" data-i18n="work_lead">Vier Beispielumsetzungen aus unterschiedlichen Branchen — jede live abrufbar.</p>
           </div>
         </div>
-
-        <div class="lp-dots" id="lp-dots" role="tablist" aria-label="Slide navigation">
-          <button class="lp-dot-btn lp-dot-btn--active" role="tab" aria-selected="true" aria-label="Slide 1" data-lp-index="0"></button>
-          <button class="lp-dot-btn" role="tab" aria-selected="false" aria-label="Slide 2" data-lp-index="1"></button>
-          <button class="lp-dot-btn" role="tab" aria-selected="false" aria-label="Slide 3" data-lp-index="2"></button>
-          <button class="lp-dot-btn" role="tab" aria-selected="false" aria-label="Slide 4" data-lp-index="3"></button>
-        </div>
-        <div class="lp-nav">
-          <button class="lp-arrow" id="lp-prev" aria-label="Vorheriges Projekt">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
-          </button>
-          <button class="lp-arrow" id="lp-next" aria-label="Nächstes Projekt">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
-          </button>
+        <div class="work-grid" data-reveal>
+          <a class="work-card" href="demo/bowling-site/index.html" target="_blank" rel="noopener" aria-label="Bowling Center live ansehen">
+            <div class="work-thumb">
+              <span class="work-thumb-bar" aria-hidden="true"><i></i><i></i><i></i></span>
+              <img src="images/demo-bowling.jpg" alt="Vorschau der Bowling-Center Demo-Website" loading="lazy" width="1200" height="725">
+            </div>
+            <div class="work-card-body">
+              <div class="work-card-top">
+                <p class="work-card-domain" data-i18n="work_1_domain">Freizeit &amp; Sport</p>
+                <span class="work-card-arrow" aria-hidden="true">→</span>
+              </div>
+              <h3 data-i18n="work_1_title">Bowling Center</h3>
+              <p class="work-card-text" data-i18n="work_1_text">Klares Layout mit Fokus auf Buchung und Veranstaltungen.</p>
+              <span class="work-card-open" data-i18n="work_open">Live ansehen</span>
+            </div>
+          </a>
+          <a class="work-card" href="demo/praxis-site/index.html" target="_blank" rel="noopener" aria-label="Praxis-Website live ansehen">
+            <div class="work-thumb">
+              <span class="work-thumb-bar" aria-hidden="true"><i></i><i></i><i></i></span>
+              <img src="images/demo-praxis.jpg" alt="Vorschau der Praxis Demo-Website" loading="lazy" width="1200" height="725">
+            </div>
+            <div class="work-card-body">
+              <div class="work-card-top">
+                <p class="work-card-domain" data-i18n="work_2_domain">Gesundheit &amp; Medizin</p>
+                <span class="work-card-arrow" aria-hidden="true">→</span>
+              </div>
+              <h3 data-i18n="work_2_title">Praxis-Website</h3>
+              <p class="work-card-text" data-i18n="work_2_text">Seriöses Erscheinungsbild mit ruhiger Typografie und klarer Navigation.</p>
+              <span class="work-card-open" data-i18n="work_open">Live ansehen</span>
+            </div>
+          </a>
+          <a class="work-card" href="demo/doener-site/index.html" target="_blank" rel="noopener" aria-label="Restaurant-Website live ansehen">
+            <div class="work-thumb">
+              <span class="work-thumb-bar" aria-hidden="true"><i></i><i></i><i></i></span>
+              <img src="images/demo-doener.jpg" alt="Vorschau der Restaurant Demo-Website" loading="lazy" width="1200" height="725">
+            </div>
+            <div class="work-card-body">
+              <div class="work-card-top">
+                <p class="work-card-domain" data-i18n="work_3_domain">Gastronomie</p>
+                <span class="work-card-arrow" aria-hidden="true">→</span>
+              </div>
+              <h3 data-i18n="work_3_title">Imbiss &amp; Restaurant</h3>
+              <p class="work-card-text" data-i18n="work_3_text">Konzentriert auf Speisekarte, Bestellung und Standortinformationen.</p>
+              <span class="work-card-open" data-i18n="work_open">Live ansehen</span>
+            </div>
+          </a>
+          <a class="work-card" href="demo/nagelstudio-site/index.html" target="_blank" rel="noopener" aria-label="Nagelstudio-Website live ansehen">
+            <div class="work-thumb">
+              <span class="work-thumb-bar" aria-hidden="true"><i></i><i></i><i></i></span>
+              <img src="images/demo-nagelstudio.jpg" alt="Vorschau der Nagelstudio Demo-Website" loading="lazy" width="1200" height="725">
+            </div>
+            <div class="work-card-body">
+              <div class="work-card-top">
+                <p class="work-card-domain" data-i18n="work_4_domain">Beauty &amp; Wellness</p>
+                <span class="work-card-arrow" aria-hidden="true">→</span>
+              </div>
+              <h3 data-i18n="work_4_title">Nagelstudio</h3>
+              <p class="work-card-text" data-i18n="work_4_text">Elegantes Einseiten-Design mit Angebot, Galerie und Terminbuchung.</p>
+              <span class="work-card-open" data-i18n="work_open">Live ansehen</span>
+            </div>
+          </a>
         </div>
       </div>
     </section>
 
-    <!-- KI-Integration Teaser -->
-    <section class="ai" id="ki-teaser" aria-labelledby="ai-title">
-      <div class="container ai-grid">
-        <div class="ai-copy" data-reveal>
-          <h2 id="ai-title" data-i18n="ai_title">KI-Integration – dein digitaler Mitarbeiter</h2>
-          <p data-i18n="ai_desc">Unser KI-Assistent arbeitet 24/7 für dich: beantwortet Kundenfragen, sammelt Leads, qualifiziert Anfragen und erklärt deine Produkte oder Services.</p>
-          <ul class="ai-list ai-list-product">
-            <li data-i18n="ai_feature_1">Automatische Kundenberatung in Echtzeit</li>
-            <li data-i18n="ai_feature_2">Lead-Qualifizierung mit Übergabe an dein Team</li>
-          </ul>
-          <div class="ai-trust-row" aria-label="KI-Nutzen auf einen Blick">
-            <span>Für KMU und Dienstleister</span>
-            <span>Antworten in Sekunden</span>
-          </div>
-          <div class="button-group ai-cta-row">
-            <a class="button button-primary" href="ki-assistent.html" data-i18n="ai_link">KI-Assistent entdecken</a>
-            <a class="button button-ghost" href="kontakt.html" data-i18n="nav_cta">Kostenloses Erstgespräch</a>
+    <!-- KI-Integration -->
+    <section id="ki-teaser" aria-labelledby="ai-title">
+      <div class="container">
+        <div data-reveal>
+          <div class="kicker">
+            <span class="kicker-num">05</span>
+            <span class="kicker-label" data-i18n="ai_kicker">KI-Integration</span>
           </div>
         </div>
-
-        <div class="ai-demo" data-reveal>
-          <div class="chat-widget ai-chat-pro" role="img" aria-label="Beispiel für einen KI-Chat">
-            <div class="chat-header">
-              <span class="chat-dot"></span>
-              <p>MASESites KI-Assistent</p>
-              <span class="ai-chat-status">Online</span>
+        <div class="ai-grid">
+          <div class="ai-copy" data-reveal>
+            <h2 id="ai-title" data-i18n="ai_title">Ein Assistent, der für Sie arbeitet</h2>
+            <p data-i18n="ai_desc">Auf Wunsch ergänzen wir Ihre Website um einen KI-Assistenten: Er beantwortet Kundenfragen, nimmt Anfragen entgegen und qualifiziert Interessenten — rund um die Uhr.</p>
+            <ul class="ai-list">
+              <li data-i18n="ai_feature_1">Automatische Kundenberatung in Echtzeit</li>
+              <li data-i18n="ai_feature_2">Lead-Qualifizierung mit Übergabe an Ihr Team</li>
+              <li data-i18n="ai_feature_3">Trainiert mit Ihren eigenen Inhalten</li>
+            </ul>
+            <div class="ai-trust-row" aria-label="KI-Nutzen auf einen Blick">
+              <span data-i18n="ai_trust_1">Für KMU und Dienstleister</span>
+              <span data-i18n="ai_trust_2">Antworten in Sekunden</span>
             </div>
-            <div class="chat-body">
-              <div class="chat-message bot" data-i18n="ai_chat_1">Hallo! Wie kann ich dir helfen?</div>
-              <div class="chat-message user" data-i18n="ai_chat_2">Was kostet eine Website?</div>
-              <div class="chat-message bot" data-i18n="ai_chat_3">Starter ab CHF 750. Finale Offerte nach kurzem Call.</div>
-              <div class="chat-message user">Könnt ihr einen Termin einrichten?</div>
-              <div class="chat-message bot">Klar. Hinterlasse kurz deine Kontaktdaten, ich melde mich.</div>
+            <div class="button-group">
+              <a class="button button-primary" href="ki-assistent.html" data-i18n="ai_link">KI-Assistent kennenlernen</a>
+              <a class="button button-ghost" href="kontakt.html" data-i18n="nav_cta">Erstgespräch vereinbaren</a>
             </div>
-            <div class="chat-input">
-              <span>Nachricht schreiben...</span>
-              <span class="chat-send">Senden</span>
+          </div>
+          <div class="ai-demo" data-reveal>
+            <div class="chat-widget" role="img" aria-label="Beispiel für einen KI-Chat">
+              <div class="chat-header">
+                <span class="chat-dot"></span>
+                <p>MASESites KI-Assistent</p>
+                <span class="ai-chat-status">Online</span>
+              </div>
+              <div class="chat-body">
+                <div class="chat-message bot" data-i18n="ai_chat_1">Guten Tag! Wie kann ich Ihnen helfen?</div>
+                <div class="chat-message user" data-i18n="ai_chat_2">Was kostet eine Website?</div>
+                <div class="chat-message bot" data-i18n="ai_chat_3">Eine neue Website beginnt bei CHF 750. Die definitive Offerte erhalten Sie nach einem kurzen Gespräch.</div>
+                <div class="chat-message user" data-i18n="ai_chat_4">Können Sie einen Termin einrichten?</div>
+                <div class="chat-message bot" data-i18n="ai_chat_5">Gerne. Hinterlassen Sie Ihre Kontaktdaten — wir melden uns bei Ihnen.</div>
+              </div>
+              <div class="chat-input">
+                <span data-i18n="ai_chat_placeholder">Nachricht schreiben …</span>
+                <span class="chat-send" data-i18n="ai_chat_send">Senden</span>
+              </div>
             </div>
           </div>
         </div>
@@ -492,13 +449,14 @@
     </section>
 
     <!-- Preise Teaser -->
-    <section class="pricing-teaser" id="preise-teaser" aria-labelledby="pricing-teaser-title">
-      <div class="container pricing-teaser-inner" data-reveal>
-        <h2 id="pricing-teaser-title" data-i18n="pricing_teaser">Transparente Preise</h2>
-        <p class="lead pricing-teaser-lead" data-i18n="pricing_teaser_lead">Von der Überarbeitung bis zur kompletten Website – modulare Pakete ab CHF 250.</p>
+    <section class="band-dark" id="preise-teaser" aria-labelledby="pricing-teaser-title">
+      <div class="container" data-reveal style="text-align:center; max-width:680px;">
+        <span class="eyebrow" data-i18n="pricing_teaser_kicker">Transparente Preise</span>
+        <h2 id="pricing-teaser-title" data-i18n-html="pricing_teaser_html">Festpreise statt <span class="accent-gradient">Überraschungen</span></h2>
+        <p class="lead" style="margin: 0 auto 2rem;" data-i18n="pricing_teaser_lead">Von der Überarbeitung bestehender Seiten bis zur kompletten Website — modulare Pakete ab CHF 250, transparent ausgewiesen.</p>
         <div class="button-group" style="justify-content:center;">
-          <a class="button button-primary" href="preise.html" data-i18n="pricing_teaser_link">Alle Preise ansehen</a>
-          <a class="button button-ghost" href="kontakt.html" data-i18n="nav_cta">Kostenloses Erstgespräch</a>
+          <a class="button button-primary" href="preise.html" data-i18n="pricing_teaser_link">Preise ansehen</a>
+          <a class="button button-ghost" href="kontakt.html" data-i18n="nav_cta">Erstgespräch vereinbaren</a>
         </div>
       </div>
     </section>
@@ -508,22 +466,21 @@
   <footer class="site-footer">
     <div class="container footer-grid">
       <div>
-        <a class="footer-logo-link" href="index.html">
-          <img src="/logo.png" alt="MASE" class="footer-logo-img">
-        </a>
-        <p class="footer-desc" data-i18n="footer_desc">Professionelle Websites &amp; KI-Integration aus der Schweiz.</p>
+        <p class="footer-brand">MASE<em>Sites</em></p>
+        <p class="footer-desc" data-i18n="footer_desc">Professionelle Websites und KI-Integration aus der Schweiz.</p>
       </div>
       <div>
         <p class="footer-title" data-i18n="footer_nav">Navigation</p>
         <a href="index.html" data-i18n="nav_home">Home</a>
         <a href="leistungen.html" data-i18n="nav_services">Leistungen</a>
         <a href="preise.html" data-i18n="nav_prices">Preise</a>
-        <a href="ki-assistent.html" data-i18n="nav_ai">KI Assistent</a>
+        <a href="ki-assistent.html" data-i18n="nav_ai">KI-Assistent</a>
       </div>
       <div>
         <p class="footer-title" data-i18n="footer_contact">Kontakt</p>
         <a href="kontakt.html" data-i18n="footer_contact_form">Kontaktformular</a>
         <a href="ueber-uns.html" data-i18n="nav_about">Über uns</a>
+        <a href="mailto:info@masesites.ch">info@masesites.ch</a>
       </div>
       <div>
         <p class="footer-title" data-i18n="footer_legal">Rechtliches</p>
@@ -532,13 +489,9 @@
       </div>
     </div>
     <div class="container footer-bottom">
-      <p>Copyright <span id="year"></span> MASESites. <span data-i18n="footer_copy">Alle Rechte vorbehalten.</span></p>
+      <p>© <span id="year"></span> MASESites, Schweiz. <span data-i18n="footer_copy">Alle Rechte vorbehalten.</span></p>
     </div>
   </footer>
-
-  <div id="dark-wave" aria-hidden="true">
-    <canvas id="dark-wave-canvas"></canvas>
-  </div>
 
   <button class="back-to-top" id="back-to-top" aria-label="Zurück nach oben">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">

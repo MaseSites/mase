@@ -90,7 +90,7 @@ class MASEAssistant {
         </button>
 
         <div class="ai-chat-tooltip">
-          Frag mich zu Websites, Preisen oder KI
+          Fragen Sie mich zu Websites, Preisen oder KI
         </div>
 
         <div class="ai-welcome-bubble" id="ai-welcome-bubble">
@@ -99,7 +99,7 @@ class MASEAssistant {
               <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
             </svg>
           </button>
-          <p>Teste unseren KI-Assistenten live.</p>
+          <p>Testen Sie unseren KI-Assistenten live.</p>
         </div>
 
         <div class="ai-chat-container" id="ai-chat-container">
@@ -137,7 +137,7 @@ class MASEAssistant {
               type="text"
               class="ai-chat-input"
               id="ai-chat-input"
-              placeholder="Deine Nachricht..."
+              placeholder="Ihre Nachricht …"
               autocomplete="off"
             >
             <button class="ai-chat-send" id="ai-chat-send" aria-label="Senden">
@@ -229,13 +229,13 @@ class MASEAssistant {
           <li>Termine vorbereiten</li>
           <li>Produkte oder Services erklären</li>
         </ul>
-        <div class="ai-info-box-footer">Individuell mit deinen Inhalten trainierbar.</div>
+        <div class="ai-info-box-footer">Individuell mit Ihren Inhalten trainierbar.</div>
       </div>
     `);
   }
 
   showLiveDemo() {
-    this.sendBotMessage('Hallo — ich bin Mase-AI, dein digitaler Assistent.<br><br>Ich zeige dir kurz, wie ich arbeite...');
+    this.sendBotMessage('Guten Tag — ich bin Mase-AI, Ihr digitaler Assistent.<br><br>Ich zeige Ihnen kurz, wie ich arbeite …');
 
     setTimeout(() => this.addUserMessage('Was bringt mir ein KI-Assistent?'), 1400);
     setTimeout(() => this.showTypingIndicator(), 1500);
@@ -243,12 +243,12 @@ class MASEAssistant {
     setTimeout(() => {
       this.hideTypingIndicator();
       this.sendBotMessage(
-        '<strong>Ein KI-Assistent für deine Website:</strong><br><br>' +
+        '<strong>Ein KI-Assistent für Ihre Website:</strong><br><br>' +
         '&#10003; Beantwortet Kundenfragen rund um die Uhr<br>' +
         '&#10003; Sammelt Leads automatisch<br>' +
-        '&#10003; Steigert deine Abschlussrate<br>' +
-        '&#10003; Entlastet deinen Support<br><br>' +
-        'Das ist nicht nur ein Chat — das ist ein <strong>Verkaufs-Tool</strong>.'
+        '&#10003; Steigert Ihre Abschlussrate<br>' +
+        '&#10003; Entlastet Ihren Support<br><br>' +
+        'Das ist nicht nur ein Chat — das ist ein <strong>Verkaufswerkzeug</strong>.'
       );
       setTimeout(() => {
         this.showQuickReplies([
@@ -312,13 +312,13 @@ class MASEAssistant {
 
     // ── Smalltalk — answer like a real person, no menus, no sales ──
     if (/^(wie ?ge?h?ts|wie geht('?s| es)( dir| ihnen| es dir)?)/.test(m))
-      return `Mir geht's gut, danke der Nachfrage! Und dir?<br><br>Wenn du etwas zu Websites oder digitalen Lösungen wissen willst, frag einfach.`;
+      return `Danke der Nachfrage, mir geht es gut! Und Ihnen?<br><br>Wenn Sie etwas zu Websites oder digitalen Lösungen wissen möchten, fragen Sie einfach.`;
     if (/^(was (machst|kannst|tust) du|wer bist du|wie hei(ss|ß)t du)/.test(m))
-      return `Ich bin <strong>MaseAI</strong>, der Assistent von MASESites. Ich helfe Besuchern bei Fragen rund um Websites und digitale Lösungen. Was beschäftigt dich?`;
+      return `Ich bin <strong>Mase-AI</strong>, der Assistent von MASESites. Ich helfe bei Fragen rund um Websites und digitale Lösungen. Was kann ich für Sie tun?`;
     if (/^(danke|merci|vielen dank|besten dank|thx)/.test(m))
-      return `Sehr gerne! Wenn du noch etwas wissen willst, bin ich da.`;
+      return `Sehr gerne! Wenn Sie noch etwas wissen möchten, bin ich da.`;
     if (/^(tsch(ü|u)ss|ciao|bye|auf wiedersehen|bis bald)/.test(m))
-      return `Bis bald! Melde dich jederzeit wieder.`;
+      return `Auf Wiedersehen! Melden Sie sich jederzeit gerne wieder.`;
 
     if (/preis|kosten|chf|budget|wie viel/.test(m))
       return this._fmtPrice();
@@ -359,17 +359,17 @@ class MASEAssistant {
   _fmtPrice() {
     return `<strong>Preisübersicht MASESites:</strong><br><br>
 <strong>Website-Überarbeitung</strong><br>
-Starter: CHF 250 — Plus: CHF 300 — Pro: CHF 1'000<br><br>
+Quick Fix: CHF 250 — Plus: CHF 500 — Pro: CHF 800<br><br>
 <strong>Neue Website</strong><br>
 Starter: CHF 750 — Business: CHF 1'300 — Premium: CHF 2'500<br><br>
 <strong>KI-Assistent</strong><br>
-+CHF 200 einmalig + CHF 40/Mt.<br><br>
-Finale Preise nach kurzem Erstgespräch.<br>
+CHF 200 einmalig + CHF 40/Monat<br><br>
+Definitive Preise nach einem kurzen Erstgespräch.<br>
 <a href="preise.html">Preisübersicht ansehen</a> &nbsp;·&nbsp; <a href="kontakt.html">Anfragen</a>`;
   }
 
   _fmtAI() {
-    return `<strong>KI-Assistent für deine Website:</strong><br><br>
+    return `<strong>KI-Assistent für Ihre Website:</strong><br><br>
 <strong>Funktionen:</strong><br>
 — Beantwortet FAQ rund um die Uhr<br>
 — Qualifiziert Leads automatisch<br>
@@ -389,7 +389,7 @@ Wir melden uns innerhalb von 24 Stunden.`;
   }
 
   _fmtContact() {
-    return `So erreichst du uns:<br><br>
+    return `So erreichen Sie uns:<br><br>
 <strong>Email:</strong> <a href="mailto:info@masesites.ch">info@masesites.ch</a><br>
 <strong>Telefon:</strong> <a href="tel:+41782158922">078 215 89 22</a><br>
 <strong>Formular:</strong> <a href="kontakt.html">Kontaktformular</a><br><br>
@@ -399,9 +399,9 @@ Wir antworten innerhalb von 24 Stunden.`;
   _fmtProcess() {
     return `<strong>Unser Prozess:</strong><br><br>
 <strong>01 — Analyse</strong> (1–2 Tage)<br>
-Wir verstehen dein Business und definieren klare Ziele.<br><br>
+Wir verstehen Ihr Geschäft und definieren klare Ziele.<br><br>
 <strong>02 — Design &amp; Entwicklung</strong> (2–6 Wochen)<br>
-Du siehst früh das Layout und gibst Feedback.<br><br>
+Sie sehen früh das Layout und geben Feedback.<br><br>
 <strong>03 — Launch &amp; Optimierung</strong> (1 Woche)<br>
 Testing, Live-Gang und Monitoring.<br><br>
 <a href="kontakt.html">Projekt starten</a>`;
@@ -417,7 +417,7 @@ Testing, Live-Gang und Monitoring.<br><br>
   }
 
   _fmtGreeting() {
-    return `Hallo! Schön bist du da. &#128075;<br><br>Wie kann ich helfen?`;
+    return `Guten Tag! Schön, dass Sie da sind.<br><br>Wie kann ich Ihnen helfen?`;
   }
 
   _fmtAbout() {
@@ -435,7 +435,7 @@ Gegründet von Matteo &amp; Severin<br><br>
 — Beratung &amp; Coaching<br>
 — E-Commerce<br>
 — Startups<br><br>
-Jedes Projekt ist individuell. <a href="kontakt.html">Lass uns über deins sprechen</a>`;
+Jedes Projekt ist individuell. <a href="kontakt.html">Sprechen wir über Ihres</a>`;
   }
 
   _fmtWebsite() {
@@ -459,13 +459,13 @@ Inklusive bei Business &amp; Premium Paketen.<br><br>
   }
 
   _fmtDefault() {
-    return `Ich helfe dir gerne weiter.<br><br>
+    return `Ich helfe Ihnen gerne weiter.<br><br>
 Häufige Themen:<br>
 — <a href="preise.html"><strong>Preise</strong></a> für Website-Projekte<br>
 — <a href="ki-assistent.html"><strong>KI-Assistent</strong></a> Integration<br>
 — <strong>Projektablauf</strong> &amp; Zeitrahmen<br>
 — Direkte <a href="kontakt.html"><strong>Kontaktaufnahme</strong></a><br><br>
-Schreib uns auch direkt: <a href="mailto:info@masesites.ch">info@masesites.ch</a>`;
+Schreiben Sie uns auch direkt: <a href="mailto:info@masesites.ch">info@masesites.ch</a>`;
   }
 
   // ---- AI via secure server proxy (key stays server-side) ----
@@ -707,7 +707,7 @@ Schreib uns auch direkt: <a href="mailto:info@masesites.ch">info@masesites.ch</a
   _startAppointmentFlow() {
     this.chatState       = ChatState.WAITING_FOR_NAME;
     this.appointmentData = {};
-    return 'Gerne buche ich dir ein Erstgespräch! &#128197;<br><br>Wie ist dein <strong>Vorname</strong>?';
+    return 'Gerne vereinbare ich ein Erstgespräch.<br><br>Wie lautet Ihr <strong>Vorname</strong>?';
   }
 
   // RULE #6: a real question always beats field collection.
@@ -742,61 +742,61 @@ Schreib uns auch direkt: <a href="mailto:info@masesites.ch">info@masesites.ch</a
     switch (this.chatState) {
 
       case ChatState.WAITING_FOR_NAME:
-        if (!val) return 'Wie ist dein <strong>Vorname</strong>?';
+        if (!val) return 'Wie lautet Ihr <strong>Vorname</strong>?';
         if (!this.appointmentData.first_name) {
           this.appointmentData.first_name = val;
           this.saveConversationToStorage();
-          return 'Und dein <strong>Nachname</strong>?';
+          return 'Und Ihr <strong>Nachname</strong>?';
         }
         this.appointmentData.last_name = val;
         this.chatState = ChatState.WAITING_FOR_EMAIL;
         this.saveConversationToStorage();
-        return 'Wie lautet deine <strong>E-Mail-Adresse</strong>?';
+        return 'Wie lautet Ihre <strong>E-Mail-Adresse</strong>?';
 
       case ChatState.WAITING_FOR_EMAIL:
         // Validate ONLY here, because we explicitly asked for an email.
         if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val)) {
-          return 'Bitte gib eine gültige E-Mail-Adresse ein (z.B. max@beispiel.ch).';
+          return 'Bitte geben Sie eine gültige E-Mail-Adresse ein (z. B. max@beispiel.ch).';
         }
         this.appointmentData.email = val.toLowerCase();
         this.chatState = ChatState.WAITING_FOR_PHONE;
         this.saveConversationToStorage();
-        return 'Deine <strong>Telefonnummer</strong>?<br><small style="opacity:.65">Optional — schreib "nein" zum Überspringen</small>';
+        return 'Ihre <strong>Telefonnummer</strong>?<br><small style="opacity:.65">Optional — schreiben Sie "nein" zum Überspringen</small>';
 
       case ChatState.WAITING_FOR_PHONE: {
         const skipPhone = /^(nein|skip|keine|–|-|\.)$/i.test(val);
         if (!skipPhone && val.replace(/\D/g, '').length < 6) {
-          return 'Bitte gib eine gültige Telefonnummer ein oder schreib <strong>nein</strong> zum Überspringen.';
+          return 'Bitte geben Sie eine gültige Telefonnummer ein oder schreiben Sie <strong>nein</strong> zum Überspringen.';
         }
         this.appointmentData.phone = skipPhone ? '' : val;
         this.chatState = ChatState.WAITING_FOR_DATE;
         this.saveConversationToStorage();
-        return 'Welches <strong>Datum</strong> wünschst du dir?<br><small style="opacity:.65">z.B. 15.06.2026</small>';
+        return 'Welches <strong>Datum</strong> wünschen Sie?<br><small style="opacity:.65">z. B. 15.06.2026</small>';
       }
 
       case ChatState.WAITING_FOR_DATE: {
         const parsed = this._parseDate(val);
         if (!parsed) {
-          return 'Das Datum existiert nicht. Bitte im Format <strong>TT.MM.JJJJ</strong> eingeben (z.B. 15.06.2026).';
+          return 'Dieses Datum existiert nicht. Bitte im Format <strong>TT.MM.JJJJ</strong> eingeben (z. B. 15.06.2026).';
         }
         const today = new Date(); today.setHours(0, 0, 0, 0);
         if (parsed < today) {
-          return 'Das Datum liegt in der Vergangenheit. Bitte wähle ein zukünftiges Datum.';
+          return 'Dieses Datum liegt in der Vergangenheit. Bitte wählen Sie ein zukünftiges Datum.';
         }
         const dd = String(parsed.getDate()).padStart(2, '0');
         const mm = String(parsed.getMonth() + 1).padStart(2, '0');
         this.appointmentData.appointment_date = `${dd}.${mm}.${parsed.getFullYear()}`;
         this.chatState = ChatState.WAITING_FOR_TIME;
         this.saveConversationToStorage();
-        return 'Zu welcher <strong>Uhrzeit</strong>?<br><small style="opacity:.65">z.B. 14:00 Uhr</small>';
+        return 'Zu welcher <strong>Uhrzeit</strong>?<br><small style="opacity:.65">z. B. 14:00 Uhr</small>';
       }
 
       case ChatState.WAITING_FOR_TIME:
-        if (!val) return 'Bitte gib eine Uhrzeit ein.';
+        if (!val) return 'Bitte geben Sie eine Uhrzeit ein.';
         this.appointmentData.appointment_time = val;
         this.chatState = ChatState.WAITING_FOR_MESSAGE;
         this.saveConversationToStorage();
-        return 'Hast du eine kurze <strong>Nachricht</strong> oder einen Grund für den Termin?<br><small style="opacity:.65">Optional — schreib "nein" zum Überspringen</small>';
+        return 'Haben Sie eine kurze <strong>Nachricht</strong> oder einen Grund für den Termin?<br><small style="opacity:.65">Optional — schreiben Sie "nein" zum Überspringen</small>';
 
       case ChatState.WAITING_FOR_MESSAGE: {
         const isSkip = /^(nein|skip|keine|–|-|\.)$/i.test(val);
@@ -843,19 +843,19 @@ Schreib uns auch direkt: <a href="mailto:info@masesites.ch">info@masesites.ch</a
 
       if (!res.ok || !data.success) {
         console.error('[Termin] Fehler:', data);
-        return 'Leider gab es einen Fehler. Bitte kontaktiere uns direkt:<br>' +
+        return 'Leider gab es einen Fehler. Bitte kontaktieren Sie uns direkt:<br>' +
                '<a href="mailto:info@masesites.ch">info@masesites.ch</a> &nbsp;·&nbsp; ' +
                '<a href="tel:+41782158922">078 215 89 22</a>';
       }
 
-      return 'Danke, dein Termin wurde eingetragen. Wir melden uns zur Bestätigung.';
+      return 'Vielen Dank, Ihr Termin wurde eingetragen. Wir melden uns zur Bestätigung.';
 
     } catch (err) {
       console.error('[Termin] Netzwerkfehler:', err);
       this.chatState       = ChatState.NORMAL_CHAT;
       this.appointmentData = {};
       this.saveConversationToStorage();
-      return 'Verbindungsfehler. Bitte kontaktiere uns direkt:<br>' +
+      return 'Verbindungsfehler. Bitte kontaktieren Sie uns direkt:<br>' +
              '<a href="mailto:info@masesites.ch">info@masesites.ch</a>';
     }
   }

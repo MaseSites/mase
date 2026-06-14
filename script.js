@@ -57,6 +57,26 @@ document.querySelectorAll('#year').forEach(el => {
 })();
 
 // ============================================
+// HERO-SIGNATUR: selbstzeichnende MASESites-Marke
+// ============================================
+(function () {
+  const mark = document.getElementById('hero-mark');
+  if (!mark) return;
+
+  function draw() {
+    // kurze Verzögerung, damit der Auftritt nach dem Laden wirkt
+    setTimeout(() => mark.classList.add('drawn'), 280);
+  }
+
+  // Erst zeichnen, wenn die Schriften geladen sind (korrekte Glyphen-Metrik).
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(draw);
+  } else {
+    window.addEventListener('load', draw);
+  }
+})();
+
+// ============================================
 // COOKIE BANNER
 // ============================================
 (function() {

@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>KI-Assistent für Websites | 24/7 Kundenberatung – MASESites</title>
-  <meta name="description" content="KI-Assistent für deine Website: automatische Kundenberatung, Lead-Qualifizierung und FAQ-Beantwortung – 24 Stunden, 7 Tage. Integration ab CHF 200.">
+  <meta name="description" content="KI-Assistent für Ihre Website: automatische Kundenberatung, Lead-Qualifizierung und FAQ-Beantwortung – 24 Stunden, 7 Tage. Integration ab CHF 200.">
   <meta name="robots" content="index, follow">
   <meta name="keywords" content="KI-Assistent Website, Chatbot Website Schweiz, KI Kundenberatung, Lead Qualifizierung automatisch, KI-Chat Integration, AI Assistent Website, MASESites KI, Chatbot einbinden">
   <meta property="og:title" content="KI-Assistent für Websites – MASESites">
@@ -36,47 +36,35 @@
     }
   }
   </script>
-  
-  <link rel="stylesheet" href="/styles.css?v=20260529a">
-  <link rel="stylesheet" href="/ai-assistant.css?v=20260529a">
-  <link rel="stylesheet" href="/mase-animations.css?v=20260529a">
-  <link rel="stylesheet" href="/mase-scroll-animations.css?v=20260529a">
-  <link rel="stylesheet" href="/flair.css?v=20260517">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="/styles.css?v=20260612r">
+  <link rel="stylesheet" href="/ai-assistant.css?v=20260612r">
   <script>
     (function () {
-      var t = localStorage.getItem('theme');
-      if (t === 'dark') document.documentElement.classList.add('dark');
+      localStorage.setItem('theme', 'light');
+      document.documentElement.classList.remove('dark');
       var q = null;
       try { q = new URLSearchParams(window.location.search).get('lang'); } catch (_) {}
       var s = localStorage.getItem('lang');
-      var lang = ['de', 'en', 'fr'].indexOf(q) !== -1 ? q : (['de', 'en', 'fr'].indexOf(s) !== -1 ? s : 'de');
+      var lang = ['de', 'en'].indexOf(q) !== -1 ? q : (['de', 'en'].indexOf(s) !== -1 ? s : 'de');
       localStorage.setItem('lang', lang);
       document.documentElement.lang = (lang === 'de' ? 'de-CH' : 'en');
     })();
   </script>
-    <script src="/supabase-config.js"></script>
+  <script src="/supabase-config.js"></script>
   <script src="/tracker.js"></script>
-<script defer src="/theme.js?v=20260529a"></script>
-  <script defer src="/script.js?v=20260327"></script>
-  <script defer src="/ai-assistant.js?v=20260529e"></script>
-  <script defer src="/mase-animations.js?v=20260516"></script>
-  <script defer src="/mase-scroll-animations.js?v=20260529a"></script>
-  <script defer src="/flair.js?v=20260517"></script>
+  <script defer src="/theme.js?v=20260612r"></script>
+  <script defer src="/script.js?v=20260612r"></script>
+  <script defer src="/ai-assistant.js?v=20260612r"></script>
 </head>
 <body>
-  <div class="mase-spray" aria-hidden="true">
-    <span class="mase-spray__blob s1"></span>
-    <span class="mase-spray__blob s2"></span>
-    <span class="mase-spray__blob s3"></span>
-    <span class="mase-spray__blob s4"></span>
-    <span class="mase-spray__blob s5"></span>
-    <span class="mase-spray__blob s6"></span>
-  </div>
   <a class="skip-link" href="#main" data-i18n="skip_to_content">Zum Inhalt springen</a>
 
   <header class="site-header">
     <div class="container header-inner">
-      <a class="logo" href="/"><span class="logo-text">MASE</span></a>
+      <a class="logo" href="/"><span class="logo-text">MASE<em>Sites</em></span></a>
       <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
         <span class="sr-only" data-i18n="nav_toggle">Navigation öffnen</span>
         <span class="nav-toggle-bar"></span>
@@ -85,15 +73,14 @@
       <nav class="site-nav" id="site-nav">
         <a href="leistungen.html" data-i18n="nav_services">Leistungen</a>
         <a href="preise.html" data-i18n="nav_prices">Preise</a>
-        <a href="ki-assistent.html" class="nav-active" data-i18n="nav_ai">KI Assistent</a>
+        <a href="ki-assistent.html" class="nav-active" data-i18n="nav_ai">KI-Assistent</a>
         <a href="ueber-uns.html" data-i18n="nav_about">Über uns</a>
         <a href="kontakt.html" data-i18n="nav_contact">Kontakt</a>
-        <a class="button button-primary button-small" href="kontakt.html" data-i18n="nav_cta">Kostenloses Erstgespräch</a>
+        <a class="button button-primary button-small" href="kontakt.html" data-i18n="nav_cta">Erstgespräch vereinbaren</a>
       </nav>
       <div class="header-controls">
         <div class="lang-switcher" id="lang-switcher">
           <button class="lang-btn" id="lang-btn" aria-haspopup="true" aria-expanded="false" aria-label="Sprache wählen" data-i18n-aria-label="lang_select_aria">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
             <span id="lang-current">DE</span>
           </button>
           <div class="lang-dropdown" id="lang-dropdown">
@@ -101,10 +88,6 @@
             <button class="lang-option" data-lang="en">English</button>
           </div>
         </div>
-        <button class="dark-toggle" id="dark-toggle" aria-label="Dark Mode umschalten" data-i18n-aria-label="theme_toggle_aria">
-          <span class="dark-toggle-icon" id="dark-toggle-icon">🌙</span>
-          <span class="dark-toggle-track"><span class="dark-toggle-thumb"></span></span>
-        </button>
       </div>
     </div>
   </header>
@@ -117,37 +100,37 @@
         <div class="ki-hero-inner">
 
           <div class="ki-hero-copy" data-reveal>
-            <p class="ki-eyebrow" data-i18n="ki_hero_eyebrow">🤖 MASESites KI-Assistent</p>
-            <h1 style="font-size:clamp(2rem,4.5vw,3rem); line-height:1.15; margin:0 0 1rem;" data-i18n-html="ki_hero_title_html">
-              Dein digitaler<br>Mitarbeiter —<br><span class="accent-gradient">24/7 verfügbar</span>
+            <p class="ki-eyebrow" data-i18n="ki_hero_eyebrow">MASESites KI-Assistent</p>
+            <h1 style="font-size:clamp(2.2rem,4.5vw,3.2rem);" data-i18n-html="ki_hero_title_html">
+              Ihr digitaler Mitarbeiter — <span class="serif-accent">rund um die Uhr</span>
             </h1>
-            <p class="lead" style="max-width:42ch;" data-i18n="ki_hero_lead">
-              Automatische Kundenberatung, Lead-Qualifizierung und FAQ-Support. Rund um die Uhr — auch wenn du schläfst.
+            <p class="lead" data-i18n="ki_hero_lead">
+              Automatische Kundenberatung, Lead-Qualifizierung und FAQ-Beantwortung. An 365 Tagen im Jahr — auch ausserhalb Ihrer Geschäftszeiten.
             </p>
             <div class="ki-stats-pills">
-              <span class="ki-stat-pill ki-stat-pill--teal" data-i18n="ki_stat_1">&lt; 1s Antwortzeit</span>
-              <span class="ki-stat-pill" data-i18n="ki_stat_2">24/7 aktiv</span>
-              <span class="ki-stat-pill ki-stat-pill--green" data-i18n="ki_stat_3">+40% mehr Leads</span>
+              <span class="ki-stat-pill" data-i18n="ki_stat_1">Antwort in unter 1 Sekunde</span>
+              <span class="ki-stat-pill" data-i18n="ki_stat_2">24/7 im Einsatz</span>
+              <span class="ki-stat-pill" data-i18n="ki_stat_3">+40% mehr Anfragen</span>
             </div>
             <div class="ki-hero-btns">
               <a class="button button-primary" href="kontakt.html?project=ai" data-i18n="ki_hero_cta_primary">KI-Assistent anfragen</a>
-              <a class="button button-secondary" href="#ki-how" data-i18n="ki_hero_cta_secondary">Wie es funktioniert</a>
+              <a class="button button-ghost" href="#ki-how" data-i18n="ki_hero_cta_secondary">So funktioniert es</a>
             </div>
           </div>
 
-          <!-- Animated live chat -->
+          <!-- Animierte Chat-Demo -->
           <div class="ki-live-chat" data-reveal>
             <div class="ki-chat-head">
-              <div class="ki-chat-head-avatar">🤖</div>
+              <div class="ki-chat-head-avatar">KI</div>
               <div>
                 <p class="ki-chat-head-name" data-i18n="ki_chat_name">MASESites KI-Assistent</p>
-                <p class="ki-chat-head-status" data-i18n="ki_chat_status">● Online — antwortet sofort</p>
+                <p class="ki-chat-head-status" data-i18n="ki_chat_status">Online — antwortet sofort</p>
               </div>
-              <span class="ki-chat-head-badge" data-i18n="ki_chat_badge">LIVE DEMO</span>
+              <span class="ki-chat-head-badge" data-i18n="ki_chat_badge">Demo</span>
             </div>
             <div class="ki-chat-body" id="ki-chat-body"></div>
             <div class="ki-chat-footer">
-              <input class="ki-chat-input-field" type="text" placeholder="Nachricht schreiben..." disabled data-i18n-placeholder="ki_chat_placeholder">
+              <input class="ki-chat-input-field" type="text" placeholder="Nachricht schreiben …" disabled data-i18n-placeholder="ki_chat_placeholder">
               <button class="ki-chat-send-btn" disabled aria-label="Senden">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
               </button>
@@ -158,12 +141,12 @@
       </div>
     </section>
 
-    <!-- ===== IMPACT BAR ===== -->
+    <!-- ===== KENNZAHLEN ===== -->
     <section class="ki-impact-bar">
       <div class="container">
         <div class="ki-impact-grid">
           <div class="ki-impact-item">
-            <span class="ki-impact-val" data-ki-count data-target="1" data-prefix="&lt; " data-suffix="s">< 1s</span>
+            <span class="ki-impact-val">&lt; 1 s</span>
             <span class="ki-impact-lbl" data-i18n="ki_impact_lbl_1">Antwortzeit</span>
           </div>
           <div class="ki-impact-item">
@@ -171,161 +154,158 @@
             <span class="ki-impact-lbl" data-i18n="ki_impact_lbl_2">Verfügbarkeit</span>
           </div>
           <div class="ki-impact-item">
-            <span class="ki-impact-val" data-ki-count data-target="40" data-prefix="+" data-suffix="%">+40%</span>
-            <span class="ki-impact-lbl" data-i18n="ki_impact_lbl_3">Mehr Leads</span>
+            <span class="ki-impact-val">+40%</span>
+            <span class="ki-impact-lbl" data-i18n="ki_impact_lbl_3">Mehr Anfragen</span>
           </div>
           <div class="ki-impact-item">
-            <span class="ki-impact-val" data-ki-count data-target="5" data-suffix=" Tage">5 Tage</span>
-            <span class="ki-impact-lbl" data-i18n="ki_impact_lbl_4">Setup-Zeit</span>
+            <span class="ki-impact-val">5 Tage</span>
+            <span class="ki-impact-lbl" data-i18n="ki_impact_lbl_4">Einrichtungszeit</span>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- ===== HOW IT WORKS ===== -->
+    <!-- ===== ABLAUF ===== -->
     <section class="ki-steps-section" id="ki-how">
       <div class="container">
         <div class="ki-steps-header" data-reveal>
-          <p class="ki-steps-eyebrow" data-i18n="ki_steps_eyebrow">So einfach geht's</p>
-          <h2 data-i18n="ki_steps_title">In 3 Schritten zum KI-Assistenten</h2>
-          <p class="lead" style="max-width:50ch; margin:0.5rem auto 0;" data-i18n="ki_steps_lead">Von der Idee bis zum fertigen Assistenten auf deiner Website — in weniger als einer Woche.</p>
+          <p class="ki-steps-eyebrow" data-i18n="ki_steps_eyebrow">Der Ablauf</p>
+          <h2 data-i18n="ki_steps_title">In drei Schritten einsatzbereit</h2>
+          <p class="lead" data-i18n="ki_steps_lead">Vom ersten Gespräch bis zum fertigen Assistenten auf Ihrer Website — in weniger als einer Woche.</p>
         </div>
         <div class="ki-steps-grid" data-reveal>
-          <div class="ki-step" style="--i:0">
-            <span class="ki-step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></span>
-            <div class="ki-step-num">1</div>
+          <div class="ki-step">
+            <div class="ki-step-num">1.</div>
             <h3 class="ki-step-title" data-i18n="ki_step_1_title">Training</h3>
-            <p class="ki-step-desc" data-i18n="ki_step_1_desc">Du schickst uns deine Inhalte — FAQs, Produkttexte, PDFs. Wir trainieren den Assistenten auf dein Business.</p>
+            <p class="ki-step-desc" data-i18n="ki_step_1_desc">Sie senden uns Ihre Inhalte — FAQ, Produkttexte, Dokumente. Wir trainieren den Assistenten auf Ihr Unternehmen.</p>
           </div>
-          <div class="ki-step" style="--i:1">
-            <span class="ki-step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></span>
-            <div class="ki-step-num">2</div>
+          <div class="ki-step">
+            <div class="ki-step-num">2.</div>
             <h3 class="ki-step-title" data-i18n="ki_step_2_title">Integration</h3>
-            <p class="ki-step-desc" data-i18n="ki_step_2_desc">Wir integrieren den Chat-Widget nahtlos in deine Website. Kein technisches Wissen nötig.</p>
+            <p class="ki-step-desc" data-i18n="ki_step_2_desc">Wir binden den Assistenten nahtlos in Ihre Website ein. Technisches Wissen ist auf Ihrer Seite nicht nötig.</p>
           </div>
-          <div class="ki-step" style="--i:2">
-            <span class="ki-step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg></span>
-            <div class="ki-step-num">3</div>
-            <h3 class="ki-step-title" data-i18n="ki_step_3_title">Automatisierung</h3>
-            <p class="ki-step-desc" data-i18n="ki_step_3_desc">Dein Assistent antwortet automatisch auf Anfragen, qualifiziert Leads und leitet komplexe Fälle weiter.</p>
+          <div class="ki-step">
+            <div class="ki-step-num">3.</div>
+            <h3 class="ki-step-title" data-i18n="ki_step_3_title">Betrieb</h3>
+            <p class="ki-step-desc" data-i18n="ki_step_3_desc">Der Assistent beantwortet Anfragen automatisch, qualifiziert Interessenten und übergibt komplexe Fälle an Sie.</p>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- ===== CAPABILITIES ===== -->
-    <section class="ki-cap-section">
+    <!-- ===== FÄHIGKEITEN ===== -->
+    <section class="ki-cap-section section-alt">
       <div class="container" data-reveal>
-        <p class="ki-steps-eyebrow" style="text-align:center;" data-i18n="ki_cap_eyebrow">Was er kann</p>
-        <h2 style="text-align:center; margin-bottom:0;" data-i18n="ki_cap_title">Alles was dein Kunde braucht — sofort beantwortet</h2>
+        <p class="ki-steps-eyebrow" data-i18n="ki_cap_eyebrow">Leistungsumfang</p>
+        <h2 style="margin-bottom:0; max-width: 22ch;" data-i18n="ki_cap_title">Was der Assistent für Sie übernimmt</h2>
         <div class="ki-cap-grid">
           <div class="ki-cap-item">
             <div class="ki-cap-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg></div>
             <div>
-              <p class="ki-cap-title" data-i18n="ki_cap_1_title">24/7 Kundenberatung</p>
-              <p class="ki-cap-desc" data-i18n="ki_cap_1_desc">Rund um die Uhr verfügbar — auch nachts, am Wochenende und an Feiertagen.</p>
+              <p class="ki-cap-title" data-i18n="ki_cap_1_title">Kundenberatung rund um die Uhr</p>
+              <p class="ki-cap-desc" data-i18n="ki_cap_1_desc">Erreichbar zu jeder Zeit — auch nachts, am Wochenende und an Feiertagen.</p>
             </div>
           </div>
           <div class="ki-cap-item">
             <div class="ki-cap-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="1" fill="currentColor"/></svg></div>
             <div>
               <p class="ki-cap-title" data-i18n="ki_cap_2_title">Lead-Qualifizierung</p>
-              <p class="ki-cap-desc" data-i18n="ki_cap_2_desc">Interessenten vorsortieren, Budget erfragen, Bedarf klären — bevor du eingreifst.</p>
+              <p class="ki-cap-desc" data-i18n="ki_cap_2_desc">Interessenten werden vorsortiert, Bedarf und Budget geklärt — bevor Sie eingreifen.</p>
             </div>
           </div>
           <div class="ki-cap-item">
             <div class="ki-cap-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
             <div>
               <p class="ki-cap-title" data-i18n="ki_cap_3_title">Automatische FAQ-Antworten</p>
-              <p class="ki-cap-desc" data-i18n="ki_cap_3_desc">Standardfragen wie Preise, Lieferzeiten oder Öffnungszeiten beantwortet er sofort.</p>
+              <p class="ki-cap-desc" data-i18n="ki_cap_3_desc">Standardfragen zu Preisen, Lieferzeiten oder Öffnungszeiten werden sofort beantwortet.</p>
             </div>
           </div>
           <div class="ki-cap-item">
             <div class="ki-cap-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
             <div>
-              <p class="ki-cap-title" data-i18n="ki_cap_4_title">Terminbuchung vorbereiten</p>
-              <p class="ki-cap-desc" data-i18n="ki_cap_4_desc">Weniger Hin und Her — der Assistent sammelt alle Infos vorab.</p>
+              <p class="ki-cap-title" data-i18n="ki_cap_4_title">Terminvorbereitung</p>
+              <p class="ki-cap-desc" data-i18n="ki_cap_4_desc">Weniger Hin und Her — der Assistent sammelt alle relevanten Angaben vorab.</p>
             </div>
           </div>
           <div class="ki-cap-item">
             <div class="ki-cap-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 3a15.3 15.3 0 0 1 4 9 15.3 15.3 0 0 1-4 9 15.3 15.3 0 0 1-4-9 15.3 15.3 0 0 1 4-9z"/></svg></div>
             <div>
               <p class="ki-cap-title" data-i18n="ki_cap_5_title">Mehrsprachig</p>
-              <p class="ki-cap-desc" data-i18n="ki_cap_5_desc">Deutsch, Englisch, Französisch und mehr — er erkennt die Sprache automatisch.</p>
+              <p class="ki-cap-desc" data-i18n="ki_cap_5_desc">Deutsch, Englisch, Französisch und weitere Sprachen — die Sprache wird automatisch erkannt.</p>
             </div>
           </div>
           <div class="ki-cap-item">
-            <div class="ki-cap-icon">🧠</div>
+            <div class="ki-cap-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div>
             <div>
               <p class="ki-cap-title" data-i18n="ki_cap_6_title">Individuell trainierbar</p>
-              <p class="ki-cap-desc" data-i18n="ki_cap_6_desc">Mit deinen PDFs, Website-Texten und Produktinfos — er kennt dein Business in- und auswendig.</p>
+              <p class="ki-cap-desc" data-i18n="ki_cap_6_desc">Mit Ihren Dokumenten, Website-Texten und Produktinformationen — der Assistent kennt Ihr Geschäft.</p>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- ===== FOR WHOM ===== -->
+    <!-- ===== ZIELGRUPPEN ===== -->
     <section class="ki-audience-section">
       <div class="container" data-reveal>
-        <p class="ki-steps-eyebrow" style="text-align:center;" data-i18n="ki_audience_eyebrow">Für wen</p>
-        <h2 style="text-align:center; margin-bottom:0;" data-i18n="ki_audience_title">Ideal für jedes Business</h2>
+        <p class="ki-steps-eyebrow" data-i18n="ki_audience_eyebrow">Einsatzgebiete</p>
+        <h2 style="margin-bottom:0; max-width: 22ch;" data-i18n="ki_audience_title">Für wen sich der Assistent eignet</h2>
         <div class="ki-audience-grid">
           <div class="ki-audience-card">
             <span class="ki-audience-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="1"/><path d="M3 9h18"/><path d="M9 21V9"/></svg></span>
             <h3 class="ki-audience-title" data-i18n="ki_audience_1_title">KMU &amp; Dienstleister</h3>
-            <p class="ki-audience-desc" data-i18n="ki_audience_1_desc">Beantworte Anfragen automatisch — auch ausserhalb der Geschäftszeiten. Mehr Leads, weniger Aufwand.</p>
+            <p class="ki-audience-desc" data-i18n="ki_audience_1_desc">Anfragen werden automatisch beantwortet — auch ausserhalb der Geschäftszeiten. Mehr Anfragen, weniger Aufwand.</p>
           </div>
           <div class="ki-audience-card">
             <span class="ki-audience-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg></span>
-            <h3 class="ki-audience-title" data-i18n="ki_audience_2_title">Online Shops</h3>
-            <p class="ki-audience-desc" data-i18n="ki_audience_2_desc">Produktberatung, Grösstabellen, Versandinfos — der Assistent erklärt alles und steigert die Conversion.</p>
+            <h3 class="ki-audience-title" data-i18n="ki_audience_2_title">Online-Shops</h3>
+            <p class="ki-audience-desc" data-i18n="ki_audience_2_desc">Produktberatung, Grössentabellen, Versandinformationen — der Assistent erklärt alles und steigert die Conversion.</p>
           </div>
           <div class="ki-audience-card">
             <span class="ki-audience-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span>
             <h3 class="ki-audience-title" data-i18n="ki_audience_3_title">Coaches &amp; Berater</h3>
-            <p class="ki-audience-desc" data-i18n="ki_audience_3_desc">Qualifiziere Interessenten vor dem ersten Call. Spare Zeit und fokussiere dich auf qualifizierte Kunden.</p>
+            <p class="ki-audience-desc" data-i18n="ki_audience_3_desc">Interessenten werden vor dem ersten Gespräch qualifiziert. Das spart Zeit für die wirklich passenden Kunden.</p>
           </div>
           <div class="ki-audience-card">
             <span class="ki-audience-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></span>
-            <h3 class="ki-audience-title" data-i18n="ki_audience_4_title">Startups</h3>
-            <p class="ki-audience-desc" data-i18n="ki_audience_4_desc">Professioneller Support ohne grosses Team. Skalierbar, kosteneffizient und immer bereit.</p>
+            <h3 class="ki-audience-title" data-i18n="ki_audience_4_title">Start-ups</h3>
+            <p class="ki-audience-desc" data-i18n="ki_audience_4_desc">Professioneller Support ohne grosses Team — skalierbar, kosteneffizient und jederzeit bereit.</p>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- ===== PRICING ===== -->
-    <section class="ki-pricing-section">
+    <!-- ===== PREISE ===== -->
+    <section class="ki-pricing-section section-alt">
       <div class="container" data-reveal>
-        <p class="ki-steps-eyebrow" style="text-align:center;" data-i18n="ki_pricing_eyebrow">Preise &amp; Integration</p>
-        <h2 style="text-align:center; margin-bottom:0;" data-i18n="ki_pricing_title">Einfaches, transparentes Pricing</h2>
+        <p class="ki-steps-eyebrow" data-i18n="ki_pricing_eyebrow">Preise &amp; Integration</p>
+        <h2 style="margin-bottom:0; max-width: 22ch;" data-i18n="ki_pricing_title">Einfache, transparente Konditionen</h2>
         <div class="ki-pricing-wrap">
-          <!-- Features list -->
+          <!-- Leistungsliste -->
           <div class="ki-pricing-feats">
-            <h3 style="margin:0 0 1.2rem; font-size:1.05rem;" data-i18n="ki_pricing_feats_heading">Alles inklusive:</h3>
-            <div class="ki-pricing-feat"><span class="ki-pricing-feat-check">✓</span> <span data-i18n="ki_pricing_feat_1">Vollständiges Setup &amp; Konfiguration</span></div>
-            <div class="ki-pricing-feat"><span class="ki-pricing-feat-check">✓</span> <span data-i18n="ki_pricing_feat_2">Training mit deinen Inhalten</span></div>
-            <div class="ki-pricing-feat"><span class="ki-pricing-feat-check">✓</span> <span data-i18n="ki_pricing_feat_3">Integration in deine Website</span></div>
-            <div class="ki-pricing-feat"><span class="ki-pricing-feat-check">✓</span> <span data-i18n="ki_pricing_feat_4">Mehrsprachiger Support</span></div>
-            <div class="ki-pricing-feat"><span class="ki-pricing-feat-check">✓</span> <span data-i18n="ki_pricing_feat_5">Laufende Wartung &amp; Updates</span></div>
-            <div class="ki-pricing-feat"><span class="ki-pricing-feat-check">✓</span> <span data-i18n="ki_pricing_feat_6">Monatlich kündbar — kein Jahresvertrag</span></div>
-            <div class="ki-pricing-feat"><span class="ki-pricing-feat-check">✓</span> <span data-i18n="ki_pricing_feat_7">DSGVO-konform — Daten bleiben sicher</span></div>
-            <p style="margin-top:1.5rem; font-size:0.83rem; color:var(--text-muted);" data-i18n="ki_pricing_addon_note">
-              Als Add-on zu jeder MASESites Website oder als separate Integration in bestehende Seiten.
+            <h3 style="margin:0 0 1.2rem; font-size:1.05rem;" data-i18n="ki_pricing_feats_heading">Im Preis enthalten:</h3>
+            <div class="ki-pricing-feat"><span class="ki-pricing-feat-check">—</span> <span data-i18n="ki_pricing_feat_1">Vollständige Einrichtung und Konfiguration</span></div>
+            <div class="ki-pricing-feat"><span class="ki-pricing-feat-check">—</span> <span data-i18n="ki_pricing_feat_2">Training mit Ihren Inhalten</span></div>
+            <div class="ki-pricing-feat"><span class="ki-pricing-feat-check">—</span> <span data-i18n="ki_pricing_feat_3">Integration in Ihre Website</span></div>
+            <div class="ki-pricing-feat"><span class="ki-pricing-feat-check">—</span> <span data-i18n="ki_pricing_feat_4">Mehrsprachiger Betrieb</span></div>
+            <div class="ki-pricing-feat"><span class="ki-pricing-feat-check">—</span> <span data-i18n="ki_pricing_feat_5">Laufende Wartung und Aktualisierung</span></div>
+            <div class="ki-pricing-feat"><span class="ki-pricing-feat-check">—</span> <span data-i18n="ki_pricing_feat_6">Monatlich kündbar — kein Jahresvertrag</span></div>
+            <div class="ki-pricing-feat"><span class="ki-pricing-feat-check">—</span> <span data-i18n="ki_pricing_feat_7">DSGVO-konform — Ihre Daten bleiben geschützt</span></div>
+            <p style="margin-top:1.5rem; font-size:0.84rem; color:var(--muted);" data-i18n="ki_pricing_addon_note">
+              Als Ergänzung zu jeder MASESites-Website oder als eigenständige Integration in Ihre bestehende Website.
             </p>
           </div>
-          <!-- Gradient pricing card -->
+          <!-- Preiskarte -->
           <div class="ki-pricing-card-grad">
             <span class="ki-pc-badge" data-i18n="ki_pc_badge">KI-Assistent</span>
-            <p class="ki-pc-title" data-i18n="ki_pc_title">Integration &amp; Setup</p>
-            <div class="ki-pc-amount">CHF 200<sub data-i18n="ki_pc_amount_sub"> Einmalig</sub></div>
+            <p class="ki-pc-title" data-i18n="ki_pc_title">Integration &amp; Einrichtung</p>
+            <div class="ki-pc-amount">CHF 200<sub data-i18n="ki_pc_amount_sub">einmalig</sub></div>
             <p class="ki-pc-monthly" data-i18n="ki_pc_monthly">+ CHF 40 / Monat (Hosting &amp; Support)</p>
             <hr class="ki-pc-divider">
-            <p style="color:rgba(255,255,255,0.75); font-size:0.85rem; position:relative;z-index:1;margin:0 0 1.5rem;" data-i18n="ki_pc_note">
-              Kostenloses Erstgespräch — wir zeigen dir live, was der Assistent für dein Business leisten kann.
+            <p style="color:var(--on-dark-soft); font-size:0.88rem; margin:0 0 1.5rem;" data-i18n="ki_pc_note">
+              Im kostenlosen Erstgespräch zeigen wir Ihnen live, was der Assistent für Ihr Unternehmen leisten kann.
             </p>
-            <a class="ki-pc-cta" href="kontakt.html?project=ai" data-i18n="ki_pc_cta">KI-Assistent anfragen →</a>
+            <a class="ki-pc-cta" href="kontakt.html?project=ai" data-i18n="ki_pc_cta">KI-Assistent anfragen</a>
           </div>
         </div>
       </div>
@@ -334,65 +314,65 @@
     <!-- ===== FAQ ===== -->
     <section class="ki-faq-section">
       <div class="container" data-reveal>
-        <p class="ki-steps-eyebrow" style="text-align:center;" data-i18n="ki_faq_eyebrow">FAQ</p>
-        <h2 style="text-align:center; margin-bottom:0;" data-i18n="ki_faq_title">Häufige Fragen</h2>
+        <p class="ki-steps-eyebrow" data-i18n="ki_faq_eyebrow">Häufige Fragen</p>
+        <h2 style="margin-bottom:0;" data-i18n="ki_faq_title">Was Kunden uns oft fragen</h2>
         <div class="ki-faq">
           <div class="ki-faq-item">
             <button class="ki-faq-q" aria-expanded="false">
               <span data-i18n="ki_faq_q1">Wie wird der KI-Assistent trainiert?</span>
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
             </button>
-            <div class="ki-faq-a" data-i18n="ki_faq_a1">Wir füttern ihn mit deinen Inhalten: FAQs, Produktbeschreibungen, PDFs, Website-Texten. Er lernt dein Business kennen und kann gezielt auf Fragen deiner Kunden eingehen.</div>
+            <div class="ki-faq-a" data-i18n="ki_faq_a1">Wir trainieren ihn mit Ihren Inhalten: FAQ, Produktbeschreibungen, Dokumenten und Website-Texten. So kann er gezielt auf die Fragen Ihrer Kundschaft eingehen.</div>
           </div>
           <div class="ki-faq-item">
             <button class="ki-faq-q" aria-expanded="false">
               <span data-i18n="ki_faq_q2">Kann er auch komplexe Fragen beantworten?</span>
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
             </button>
-            <div class="ki-faq-a" data-i18n="ki_faq_a2">Ja! Er kann auf Basis deiner Inhalte detaillierte Antworten geben. Bei sehr spezifischen oder sensiblen Fragen leitet er nahtlos an dein Team weiter.</div>
+            <div class="ki-faq-a" data-i18n="ki_faq_a2">Ja. Auf Basis Ihrer Inhalte gibt er detaillierte Antworten. Bei sehr spezifischen oder sensiblen Fragen leitet er nahtlos an Ihr Team weiter.</div>
           </div>
           <div class="ki-faq-item">
             <button class="ki-faq-q" aria-expanded="false">
               <span data-i18n="ki_faq_q3">Funktioniert er in mehreren Sprachen?</span>
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
             </button>
-            <div class="ki-faq-a" data-i18n="ki_faq_a3">Ja, Deutsch, Englisch, Französisch und weitere Sprachen sind möglich. Der Assistent erkennt die Sprache automatisch und antwortet entsprechend.</div>
+            <div class="ki-faq-a" data-i18n="ki_faq_a3">Ja — Deutsch, Englisch, Französisch und weitere Sprachen sind möglich. Der Assistent erkennt die Sprache automatisch und antwortet entsprechend.</div>
           </div>
           <div class="ki-faq-item">
             <button class="ki-faq-q" aria-expanded="false">
-              <span data-i18n="ki_faq_q4">Kann ich später Inhalte aktualisieren?</span>
+              <span data-i18n="ki_faq_q4">Können Inhalte später aktualisiert werden?</span>
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
             </button>
-            <div class="ki-faq-a" data-i18n="ki_faq_a4">Ja! Du kannst uns jederzeit neue Inhalte schicken — Preisänderungen, neue Produkte, aktualisierte FAQs — und wir trainieren den Assistenten nach. Schnell und unkompliziert.</div>
+            <div class="ki-faq-a" data-i18n="ki_faq_a4">Ja. Sie können uns jederzeit neue Inhalte senden — Preisänderungen, neue Produkte, aktualisierte FAQ — und wir trainieren den Assistenten nach. Schnell und unkompliziert.</div>
           </div>
           <div class="ki-faq-item">
             <button class="ki-faq-q" aria-expanded="false">
-              <span data-i18n="ki_faq_q5">Was passiert mit den Daten meiner Kunden?</span>
+              <span data-i18n="ki_faq_q5">Was geschieht mit den Daten meiner Kundschaft?</span>
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
             </button>
-            <div class="ki-faq-a" data-i18n="ki_faq_a5">Alle Daten werden DSGVO-konform verarbeitet. Keine Weitergabe an Dritte. Deine Kunden können sich sicher fühlen.</div>
+            <div class="ki-faq-a" data-i18n="ki_faq_a5">Alle Daten werden DSGVO-konform verarbeitet. Es erfolgt keine Weitergabe an Dritte.</div>
           </div>
           <div class="ki-faq-item">
             <button class="ki-faq-q" aria-expanded="false">
-              <span data-i18n="ki_faq_q6">Kann ich den Assistenten auch auf einer bestehenden Website integrieren?</span>
+              <span data-i18n="ki_faq_q6">Lässt sich der Assistent in eine bestehende Website integrieren?</span>
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
             </button>
-            <div class="ki-faq-a" data-i18n="ki_faq_a6">Absolut. Wir integrieren den Assistenten in jede bestehende Website — egal ob WordPress, Shopify oder eine individuelle Lösung. Ein kleines Code-Snippet genügt.</div>
+            <div class="ki-faq-a" data-i18n="ki_faq_a6">Ja, in jede bestehende Website — ob WordPress, Shopify oder eine individuelle Lösung. Ein kleines Code-Snippet genügt.</div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- ===== DARK CTA ===== -->
-    <section class="cta-section-dark" style="padding:5rem 0;">
-      <div class="container" data-reveal style="text-align:center; max-width:680px;">
-        <p class="eyebrow" style="color:rgba(255,255,255,0.45); font-size:0.78rem; letter-spacing:0.12em; text-transform:uppercase; margin-bottom:0.8rem;" data-i18n="ki_cta_eyebrow">Nächster Schritt</p>
-        <h2 style="font-size:clamp(1.8rem,4vw,2.5rem); line-height:1.2; margin:0 0 1rem;" data-i18n="ki_cta_title">Bereit für deinen digitalen Mitarbeiter?</h2>
-        <p class="lead" style="color:rgba(255,255,255,0.65); max-width:48ch; margin:0 auto 2rem;" data-i18n="ki_cta_lead">
-          Kostenloses Erstgespräch — wir zeigen dir live, was der KI-Assistent für dein Business leisten kann.
+    <!-- ===== ABSCHLUSS-CTA ===== -->
+    <section class="cta-section-dark">
+      <div class="container" data-reveal style="text-align:center; max-width:640px;">
+        <span class="eyebrow" data-i18n="ki_cta_eyebrow">Nächster Schritt</span>
+        <h2 data-i18n="ki_cta_title">Bereit für Ihren digitalen Mitarbeiter?</h2>
+        <p class="lead" style="margin:0 auto 2rem;" data-i18n="ki_cta_lead">
+          Im kostenlosen Erstgespräch zeigen wir Ihnen live, was der KI-Assistent für Ihr Unternehmen leisten kann.
         </p>
-        <a class="button button-primary" href="kontakt.html?project=ai" data-i18n="ki_cta_btn">Kostenlos anfragen →</a>
-        <p class="ls-cta-trust" data-i18n-html="ki_cta_trust">✓ Kein Risiko &nbsp;&nbsp;✓ Kostenlose Demo &nbsp;&nbsp;✓ Antwort in 24h</p>
+        <a class="button button-primary" href="kontakt.html?project=ai" data-i18n="ki_cta_btn">Erstgespräch vereinbaren</a>
+        <p class="ls-cta-trust" data-i18n="ki_cta_trust">Unverbindlich · Kostenlose Demo · Antwort innert 24 Stunden</p>
       </div>
     </section>
 
@@ -401,20 +381,21 @@
   <footer class="site-footer">
     <div class="container footer-grid">
       <div>
-        <p class="footer-brand">MASE</p>
-        <p class="footer-desc" data-i18n="footer_desc">Professionelle Websites &amp; KI-Integration aus der Schweiz.</p>
+        <p class="footer-brand">MASE<em>Sites</em></p>
+        <p class="footer-desc" data-i18n="footer_desc">Professionelle Websites und KI-Integration aus der Schweiz.</p>
       </div>
       <div>
         <p class="footer-title" data-i18n="footer_nav">Navigation</p>
         <a href="index.html" data-i18n="nav_home">Home</a>
         <a href="leistungen.html" data-i18n="nav_services">Leistungen</a>
         <a href="preise.html" data-i18n="nav_prices">Preise</a>
-        <a href="ki-assistent.html" data-i18n="nav_ai">KI Assistent</a>
+        <a href="ki-assistent.html" data-i18n="nav_ai">KI-Assistent</a>
       </div>
       <div>
         <p class="footer-title" data-i18n="footer_contact">Kontakt</p>
         <a href="kontakt.html" data-i18n="footer_contact_form">Kontaktformular</a>
         <a href="ueber-uns.html" data-i18n="nav_about">Über uns</a>
+        <a href="mailto:info@masesites.ch">info@masesites.ch</a>
       </div>
       <div>
         <p class="footer-title" data-i18n="footer_legal">Rechtliches</p>
@@ -423,13 +404,9 @@
       </div>
     </div>
     <div class="container footer-bottom">
-      <p>Copyright <span id="year"></span> MASESites. <span data-i18n="footer_copy">Alle Rechte vorbehalten.</span></p>
+      <p>© <span id="year"></span> MASESites, Schweiz. <span data-i18n="footer_copy">Alle Rechte vorbehalten.</span></p>
     </div>
   </footer>
-
-  <div id="dark-wave" aria-hidden="true">
-    <canvas id="dark-wave-canvas"></canvas>
-  </div>
 
   <button class="back-to-top" id="back-to-top" aria-label="Zurück nach oben">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -437,34 +414,27 @@
     </svg>
   </button>
 
-  <!-- Live chat animation -->
+  <!-- Chat-Animation -->
   <script>
     (function () {
       var lang = (localStorage.getItem('lang') || 'de');
       var allConversations = {
         de: [
-          { user: 'Was kostet eine Website?', bot: 'Ab CHF 750 für eine Landingpage. Business-Websites ab CHF 1\'300. Soll ich dir mehr erklären?' },
-          { user: 'Wie lange dauert die Einrichtung?', bot: 'Typischerweise 3–5 Werktage. Wir trainieren den Assistenten mit deinen Inhalten und schalten ihn dann live.' },
-          { user: 'Kann er auf Deutsch und Englisch antworten?', bot: 'Ja! Mehrere Sprachen kein Problem. Er erkennt die Sprache automatisch.' },
-          { user: 'Wie hoch sind die laufenden Kosten?', bot: 'CHF 40 pro Monat — inklusive Hosting, Wartung und Support. Monatlich kündbar, kein Jahresvertrag. ✓' }
+          { user: 'Was kostet eine Website?', bot: 'Eine neue Website beginnt bei CHF 750, Business-Websites bei CHF 1\'300. Soll ich Ihnen mehr dazu erklären?' },
+          { user: 'Wie lange dauert die Einrichtung?', bot: 'In der Regel 3–5 Werktage. Wir trainieren den Assistenten mit Ihren Inhalten und schalten ihn dann live.' },
+          { user: 'Antwortet er auf Deutsch und Englisch?', bot: 'Ja, mehrere Sprachen sind kein Problem. Er erkennt die Sprache automatisch.' },
+          { user: 'Wie hoch sind die laufenden Kosten?', bot: 'CHF 40 pro Monat — inklusive Hosting, Wartung und Support. Monatlich kündbar, ohne Jahresvertrag.' }
         ],
         en: [
-          { user: 'How much does a website cost?', bot: 'From CHF 750 for a landing page. Business websites from CHF 1\'300. Want me to explain more?' },
+          { user: 'How much does a website cost?', bot: 'A new website starts at CHF 750, business websites at CHF 1\'300. Would you like more details?' },
           { user: 'How long does setup take?', bot: 'Typically 3–5 working days. We train the assistant with your content, then go live.' },
-          { user: 'Can it reply in English and German?', bot: 'Yes! Multiple languages, no problem. It detects the language automatically.' },
-          { user: 'What are the ongoing costs?', bot: 'CHF 40 per month — including hosting, maintenance and support. Monthly cancellable. ✓' }
-        ],
-        fr: [
-          { user: 'Quel est le prix d\'un site web ?', bot: 'À partir de CHF 750 pour une landing page. Sites business à partir de CHF 1\'300.' },
-          { user: 'Combien de temps prend la mise en place ?', bot: 'Typiquement 3–5 jours ouvrables. Nous formons l\'assistant, puis le mettons en ligne.' },
-          { user: 'Peut-il répondre en français et en allemand ?', bot: 'Oui ! Plusieurs langues, pas de problème. Il détecte la langue automatiquement.' },
-          { user: 'Quels sont les coûts récurrents ?', bot: 'CHF 40 par mois — hébergement, maintenance et support inclus. Résiliable mensuellement. ✓' }
+          { user: 'Can it reply in English and German?', bot: 'Yes, multiple languages are no problem. It detects the language automatically.' },
+          { user: 'What are the ongoing costs?', bot: 'CHF 40 per month — including hosting, maintenance and support. Monthly cancellable.' }
         ]
       };
       var greetings = {
-        de: 'Hallo! Wie kann ich dir helfen? 👋',
-        en: 'Hello! How can I help you? 👋',
-        fr: 'Bonjour ! Comment puis-je vous aider ? 👋'
+        de: 'Guten Tag! Wie kann ich Ihnen helfen?',
+        en: 'Hello! How can I help you?'
       };
       var conversations = allConversations[lang] || allConversations.de;
       var greeting = greetings[lang] || greetings.de;
@@ -481,7 +451,7 @@
         body.appendChild(wrap);
         body.scrollTop = body.scrollHeight;
 
-        // Log demo chat interaction to Supabase
+        // Demo-Chat-Interaktion an Supabase protokollieren
         var cfg = window.MASE_SUPABASE;
         if (cfg && cfg.url && cfg.url.indexOf('PASTE_') !== 0) {
           var sid = (window.MASE_TRACK && window.MASE_TRACK.sessionId) ||
@@ -546,7 +516,7 @@
     })();
   </script>
 
-  <!-- FAQ accordion -->
+  <!-- FAQ-Akkordeon -->
   <script>
     document.querySelectorAll('.ki-faq-q').forEach(function(btn) {
       btn.addEventListener('click', function() {
