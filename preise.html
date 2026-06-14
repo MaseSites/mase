@@ -240,6 +240,56 @@
   .pkg-send-btn { flex: 2; min-width: 180px; text-align: center; }
   .pkg-copied-hint { font-size: 0.8rem; color: var(--ok); margin-top: 0.6rem; display: none; }
   .pkg-copied-hint.show { display: block; }
+
+  /* ── Mobile ── */
+  @media (max-width: 640px) {
+    /* Auswahl-Leiste: KI-Chat-Toggle nach oben schieben */
+    body.pkg-bar-active .ai-chat-toggle {
+      bottom: calc(1rem + 78px) !important;
+    }
+    body.pkg-bar-active .back-to-top {
+      bottom: calc(1.6rem + 78px);
+    }
+
+    /* Auswahl-Leiste: Inhalt stapeln */
+    .pkg-bar-inner {
+      gap: 0.75rem;
+    }
+    .pkg-bar-items-preview { font-size: 0.82rem; }
+    .pkg-bar-right { gap: 0.75rem; }
+    .pkg-bar-total-price { font-size: 1.1rem; }
+    .pkg-bar-cta { font-size: 0.88rem; padding: 0.6rem 1.1rem; }
+  }
+
+  @media (max-width: 480px) {
+    /* Tab-Buttons: linksbündig statt margin-left: auto */
+    .pkg-section-tab { margin-left: 0; width: 100%; }
+
+    /* Sektion-Header kompakter */
+    .pkg-section-header { gap: 0.6rem; padding-bottom: 0.6rem; }
+    .pkg-section-header h2 { font-size: 1.25rem; }
+
+    /* Stats: gestapelt */
+    .phs { flex: 1 1 100%; border-left: none; padding: 0.8rem 0; border-top: 1px solid var(--line); }
+    .phs:first-child { border-top: none; }
+
+    /* KI-Karte */
+    .ki-select-card { padding: 1.4rem 1.2rem; }
+
+    /* Hosting-Karten: min-width kleiner */
+    .hosting-grid { grid-template-columns: 1fr; }
+
+    /* Auswahl-Leiste: vollständig gestapelt */
+    body.pkg-bar-active .ai-chat-toggle {
+      bottom: calc(1rem + 110px) !important;
+    }
+    body.pkg-bar-active .back-to-top {
+      bottom: calc(1.6rem + 110px);
+    }
+    .pkg-bar-inner { flex-direction: column; align-items: stretch; gap: 0.6rem; }
+    .pkg-bar-right { justify-content: space-between; }
+    .pkg-bar { padding: 0.7rem 0; }
+  }
   </style>
 </head>
 <body>
@@ -789,9 +839,11 @@
 
       if (ids.length === 0) {
         bar.classList.remove('pkg-bar--visible');
+        document.body.classList.remove('pkg-bar-active');
         return;
       }
       bar.classList.add('pkg-bar--visible');
+      document.body.classList.add('pkg-bar-active');
 
       var totalOnce = 0, totalMonthly = 0, totalYearly = 0;
       ids.forEach(function (id) {

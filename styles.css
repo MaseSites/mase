@@ -2137,3 +2137,116 @@ section { padding: clamp(3.5rem, 7vw, 6rem) 0; }
 
 /* Alte Dekor-Elemente neutralisieren (falls Markup-Reste existieren) */
 .mase-spray, #dark-wave, .dark-toggle, [data-mase-marquee] { display: none !important; }
+
+/* ═══════════════════════════════════════════════════════
+   Mobile-Optimierung
+   ═══════════════════════════════════════════════════════ */
+
+/* Code-Vorschau: horizontales Scrollen statt Overflow */
+.code-preview-body {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* ── 768px: Touch-Targets & iOS-Zoom ── */
+@media (max-width: 768px) {
+  /* iOS-Zoom verhindern: Inputs müssen ≥ 16px sein */
+  .ktk-input,
+  .ktk-select,
+  .ktk-textarea,
+  .ki-chat-input-field {
+    font-size: 1rem;
+  }
+
+  /* Touch-Targets: min. 44 × 44 px */
+  .button-small {
+    min-height: 44px;
+    padding: 0.65rem 1.1rem;
+  }
+  .nav-toggle {
+    width: 44px;
+    height: 44px;
+  }
+  .lang-btn {
+    min-height: 36px;
+  }
+
+  /* Button-Gruppe: stets umbrechen, wenn nötig */
+  .button-group { gap: 0.7rem; }
+}
+
+/* ── 600px: Metriken mit fixen px-Spalten → flexibel ── */
+@media (max-width: 600px) {
+  .metric-row {
+    grid-template-columns: minmax(80px, auto) 1fr 44px;
+    gap: 0.7rem;
+  }
+  .metric-name { font-size: 0.76rem; }
+
+  .perf-bar-row {
+    grid-template-columns: minmax(72px, auto) 1fr 32px;
+    gap: 0.7rem;
+  }
+  .perf-bar-label { font-size: 0.76rem; }
+  .perf-bar-val   { font-size: 0.8rem; }
+
+  /* Metrics-Block: kompakteres Padding */
+  .metrics-block { padding: 1.4rem 1.2rem; }
+}
+
+/* ── 520px: Footer Bottom ── */
+@media (max-width: 520px) {
+  .footer-bottom .container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    text-align: center;
+  }
+}
+
+/* ── 480px: Work-Cards, Sektionen, Leistungs-Pills ── */
+@media (max-width: 480px) {
+  .work-card-body { padding: 1.1rem 1.2rem 1.3rem; }
+  .section-head   { margin-bottom: 2rem; }
+
+  /* Leistungs-Pills kompakter */
+  .ls-pill { padding: 0.7rem 1rem; font-size: 0.76rem; }
+
+  /* Kicker: Dekorlinie weglassen – spart horizontalen Platz */
+  .kicker::after { display: none; }
+
+  /* Seiten-Padding leicht kompakter */
+  section { padding: clamp(2.5rem, 6vw, 3.5rem) 0; }
+}
+
+/* ── 400px: Hero CTA stapeln ── */
+@media (max-width: 400px) {
+  .hero-cta-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.8rem;
+  }
+  .hero-cta-row .button { justify-content: center; }
+
+  /* Eyebrow-Linie weglassen */
+  .hero-eyebrow::before { display: none; }
+  .ktk-hero-eyebrow::before,
+  .ki-eyebrow::before { display: none; }
+
+  /* Kicker auch auf diesen Screens */
+  .kicker::after { display: none; }
+}
+
+/* ── 360px: Sehr schmale Screens ── */
+@media (max-width: 360px) {
+  .header-inner { gap: 0.75rem; }
+  .logo-text     { font-size: 1.15rem; }
+  .lang-btn      { padding: 0.38rem 0.5rem; font-size: 0.74rem; letter-spacing: 0.04em; }
+
+  /* Container: minimal mehr Rand aufgeben */
+  .container { width: calc(100% - 1.75rem); }
+
+  /* Hero noch etwas kleiner */
+  h1 { font-size: clamp(2.2rem, 7vw, 2.6rem); }
+  .hm { font-size: 48px !important; }
+}
