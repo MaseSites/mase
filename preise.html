@@ -141,6 +141,44 @@
   .pc-select-btn:hover { border-color: var(--blue); color: var(--blue); background: var(--blue-soft); }
   .pc-card--selected .pc-select-btn { background: var(--blue); color: #fff; border-color: var(--blue); }
 
+  /* ── KI-Button: roter "Neu"-Badge + dezenter umlaufender Balken ── */
+  .ki-add-wrap { position: relative; display: inline-block; width: 100%; max-width: 220px; }
+  .ki-add-glow { position: relative; border-radius: 8px; padding: 2px; overflow: hidden; }
+  .ki-add-glow::before {
+    content: ''; position: absolute; inset: -60%; z-index: 0;
+    background: conic-gradient(from 0deg,
+      rgba(31, 58, 95, 0) 0deg,
+      rgba(31, 58, 95, 0) 250deg,
+      rgba(31, 58, 95, 0.55) 318deg,
+      var(--blue) 340deg,
+      rgba(31, 58, 95, 0) 360deg);
+    animation: kiGlowSpin 3s linear infinite;
+  }
+  .ki-add-glow::after {
+    content: ''; position: absolute; inset: 2px; z-index: 1;
+    border-radius: 6px; background: var(--card);
+  }
+  .ki-add-glow .pc-select-btn { position: relative; z-index: 2; width: 100%; }
+  @keyframes kiGlowSpin { to { transform: rotate(360deg); } }
+
+  .pc-new-badge {
+    position: absolute; top: -8px; right: -8px; z-index: 3;
+    background: #e23b3b; color: #fff;
+    font-size: 0.6rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+    padding: 0.16rem 0.46rem; border-radius: 100px;
+    box-shadow: 0 2px 8px rgba(226, 59, 59, 0.45);
+    pointer-events: none;
+    animation: kiBadgePulse 2s ease-in-out infinite;
+  }
+  @keyframes kiBadgePulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.09); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ki-add-glow::before, .pc-new-badge { animation: none; }
+  }
+
   /* ── KI-Karte ── */
   .ki-select-card {
     display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center;
@@ -332,11 +370,6 @@
       <div class="container preise-hero-inner" data-reveal>
         <span class="eyebrow" data-i18n="pricing_eyebrow">Transparente Preise</span>
         <h1 data-i18n-html="pricing_title_html">Stellen Sie Ihr Paket <span class="serif-accent">zusammen</span>.</h1>
-        <div class="preise-hero-stats">
-          <div class="phs"><strong>ab CHF 750</strong><span data-i18n="pricing_stat_1">Neue Website</span></div>
-          <div class="phs"><strong>ab CHF 250</strong><span data-i18n="pricing_stat_2">Überarbeitung</span></div>
-          <div class="phs"><strong>CHF 200</strong><span data-i18n="pricing_stat_3">KI-Setup</span></div>
-        </div>
       </div>
     </section>
 
@@ -546,10 +579,15 @@
               <span class="ki-plus">+</span>
               <span class="ki-pill">CHF 40 / Monat</span>
             </div>
-            <button class="pc-select-btn" type="button" style="max-width:220px;" data-orig-text="Zum Paket hinzufügen">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-              <span>Zum Paket hinzufügen</span>
-            </button>
+            <div class="ki-add-wrap">
+              <div class="ki-add-glow">
+                <button class="pc-select-btn" type="button" data-orig-text="Zum Paket hinzufügen">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                  <span>Zum Paket hinzufügen</span>
+                </button>
+              </div>
+              <span class="pc-new-badge">Neu</span>
+            </div>
           </div>
         </div>
       </div>
