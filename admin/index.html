@@ -439,7 +439,9 @@
   // ---- API Base URL ----
   // Lokal (localhost): gleicher Server → leer lassen
   // Produktion (masesites.ch): Railway-Backend
-  var API_BASE = '';
+  var API_BASE = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+    ? 'http://localhost:3000'
+    : 'https://mase-production.up.railway.app';
 
   var ADMIN_TOKEN = ''; // Received from server after login — never leaves memory
   var charts = {};

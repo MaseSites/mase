@@ -383,7 +383,10 @@
       submitBtn.classList.add('loading');
 
       try {
-        var res1 = await fetch('/api/contact', {
+        var apiBase = (location.hostname === 'localhost' || location.hostname === '127.0.0.1')
+          ? ''
+          : 'https://mase-production.up.railway.app';
+        var res1 = await fetch(apiBase + '/api/contact', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
           body: JSON.stringify({
