@@ -164,9 +164,6 @@
             </div>
 
             <form id="contact-form" novalidate>
-              <!-- Web3Forms required: get your free key at https://web3forms.com -->
-              <input type="hidden" name="access_key" value="93163040-1784-4bbb-a903-8b6929a5d97a">
-              <input type="checkbox" name="botcheck" style="display:none" tabindex="-1">
               <input type="hidden" name="selected_package" id="selected-package" value="">
               <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
 
@@ -386,29 +383,20 @@
       submitBtn.classList.add('loading');
 
       try {
-        var base = {
-          subject: 'Neue Anfrage über MASESites.ch',
-          from_name: 'MASESites Kontaktformular',
-          botcheck: ''
-        };
-
-        /* Zwei parallele Übermittlungen — eine pro Empfänger */
-        var [res1, res2] = await Promise.all([
-          fetch('https://api.web3forms.com/submit', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-            body: JSON.stringify(Object.assign({}, data, base, {
-              access_key: '93163040-1784-4bbb-a903-8b6929a5d97a' /* info@masesites.ch */
-            }))
-          }),
-          fetch('https://api.web3forms.com/submit', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-            body: JSON.stringify(Object.assign({}, data, base, {
-              access_key: 'f1e9b09d-27dc-4999-af61-0b3a7990071f' /* severin.buerki9@gmail.com */
-            }))
+        var res1 = await fetch('/api/contact', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify({
+            name: data.name,
+            email: data.email,
+            company: data.company,
+            projectType: data.project,
+            message: data.message,
+            pricingSelection: data.selected_package,
+            privacy: true,
+            honeypot: (document.querySelector('[name="_honey"]') || {}).value || ''
           })
-        ]);
+        });
 
         var json1 = await res1.json();
         if (json1.success) {

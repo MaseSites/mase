@@ -73,7 +73,7 @@ app.use((req, res, next) => {
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
       "font-src 'self' https://fonts.gstatic.com",
       "img-src 'self' data: https:",
-      "connect-src 'self' https://kxeorjgabvtplmdygbph.supabase.co https://api.openai.com https://api.groq.com https://mase-production.up.railway.app",
+      "connect-src 'self' https://kxeorjgabvtplmdygbph.supabase.co https://api.openai.com https://api.groq.com",
       "frame-ancestors 'none'",
       "base-uri 'self'",
       "form-action 'self'"
@@ -88,7 +88,7 @@ const BLOCKED_FILES = [
   /^\/server(-old)?\.js$/i,
   /^\/package(-lock)?\.json$/i,
   /^\/\.env/i,
-  /^\/test-.*\.js$/i,
+  /^\/test-.*\.(js|html)$/i,
   /^\/design[0-9]*-import\//i,      // archive / import directories — not web assets
   /^\/OPENAI-SETUP-COMPLETE\.md$/i, // docs with key references
 ];
@@ -139,6 +139,16 @@ const invProxy = createProxyMiddleware({
 });
 app.use((req, res, next) => {
   if (req.path === SECRET_PREFIX || req.path.startsWith(SECRET_PREFIX + '/')) {
+    // Require admin token — returns 404 to avoid path disclosure
+    const adminToken = process.env.ADMIN_TOKEN || '';
+    const auth = req.headers['authorization'] || '';
+    const provided = auth.startsWith('Bearer ') ? auth.slice(7).trim() : '';
+    if (!adminToken || !provided) return res.status(404).json({ error: 'Not found' });
+    const a = Buffer.from(crypto.createHash('sha256').update(provided).digest('hex'));
+    const b = Buffer.from(crypto.createHash('sha256').update(adminToken).digest('hex'));
+    if (a.length !== b.length || !crypto.timingSafeEqual(a, b)) {
+      return res.status(404).json({ error: 'Not found' });
+    }
     return invProxy(req, res, next);
   }
   next();
@@ -352,14 +362,6 @@ app.post('/api/contact', limiter, async (req, res) => {
       hasPricingSelection: !!rawPricingSelection
     });
 
-    if (!transporter) {
-      return res.status(503).json({
-        success: false,
-        code: 'EMAIL_NOT_CONFIGURED',
-        message: 'Email-Dienst ist aktuell nicht verfügbar. Bitte versuche es später erneut.'
-      });
-    }
-
     const name = sanitizeText(rawName, 120);
     const email = sanitizeText(rawEmail, 254).toLowerCase();
     const company = sanitizeText(rawCompany, 120);
@@ -413,6 +415,40 @@ app.post('/api/contact', limiter, async (req, res) => {
     const safeMessage = escapeHtml(message);
     const safePricingSelection = escapeHtml(pricingSelection);
     const safeSubjectName = name.replace(/[\r\n]+/g, ' ').slice(0, 80);
+
+    // If no SMTP transporter, use Web3Forms server-side (key from env, never exposed to browser)
+    if (!transporter) {
+      const w3key = process.env.WEB3FORMS_KEY;
+      if (!w3key) {
+        return res.status(503).json({
+          success: false,
+          code: 'EMAIL_NOT_CONFIGURED',
+          message: 'Email-Dienst ist aktuell nicht verfügbar. Bitte versuche es später erneut.'
+        });
+      }
+      const w3body = {
+        access_key: w3key,
+        name,
+        email,
+        message: [
+          message,
+          company     ? `\nFirma: ${company}`          : '',
+          projectType ? `\nProjektart: ${projectType}` : '',
+          pricingSelection ? `\nAuswahl: ${pricingSelection}` : ''
+        ].join(''),
+        subject: `Neue Anfrage über MASESites.ch von ${safeSubjectName}`,
+        from_name: 'MASESites Kontaktformular',
+        botcheck: ''
+      };
+      const w3res = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify(w3body)
+      });
+      const w3json = await w3res.json();
+      if (!w3json.success) throw new Error(w3json.message || 'Web3Forms error');
+      return res.json({ success: true, code: 'CONTACT_SENT', message: 'Nachricht erfolgreich gesendet! Wir melden uns in 24-48h.' });
+    }
 
     // Email to MASESites
     const pricingSelectionBlock = pricingSelection
@@ -560,7 +596,7 @@ app.post('/api/contact', limiter, async (req, res) => {
 // ============================================================
 const adminAuthLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 10,
+  max: 3,
   handler: (req, res) => res.status(429).json({ ok: false, error: 'Too many attempts.' })
 });
 
@@ -1108,16 +1144,8 @@ app.patch('/api/admin/data/appointments/:id', adminDataLimiter, async (req, res)
   }
 });
 
-// Health check — do not expose internal state in production
 app.get('/api/health', (req, res) => {
-  if (process.env.NODE_ENV === 'production') {
-    return res.json({ status: 'OK' });
-  }
-  res.json({
-    status: 'OK',
-    timestamp: new Date().toISOString(),
-    emailConfigured: !!transporter
-  });
+  res.json({ status: 'OK' });
 });
 
 // Start server

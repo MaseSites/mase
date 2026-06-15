@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MASE Admin Dashboard</title>
 <script src="../supabase-config.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js" integrity="sha384-OLBgp1GsljhM2TJ+sbHjaiH9txEUvgdDTAzHv2P24donTt6/529l+9Ua0vFImLlb" crossorigin="anonymous"></script>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -439,9 +439,7 @@
   // ---- API Base URL ----
   // Lokal (localhost): gleicher Server → leer lassen
   // Produktion (masesites.ch): Railway-Backend
-  var API_BASE = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
-    ? 'http://localhost:3000'
-    : 'https://mase-production.up.railway.app';
+  var API_BASE = '';
 
   var ADMIN_TOKEN = ''; // Received from server after login — never leaves memory
   var charts = {};
