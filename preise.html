@@ -164,17 +164,18 @@
   @keyframes kiBorderRotate { to { --ki-angle: 360deg; } }
 
   .pc-new-badge {
-    position: absolute; top: -11px; left: 50%; transform: translateX(-50%); z-index: 4;
+    position: absolute; top: -11px; right: 1.4rem; z-index: 4;
     background: #e23b3b; color: #fff;
     font-size: 0.64rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
     padding: 0.22rem 0.7rem; border-radius: 100px;
     box-shadow: 0 2px 10px rgba(226, 59, 59, 0.45);
     pointer-events: none;
+    transform-origin: center;
     animation: kiBadgePulse 2s ease-in-out infinite;
   }
   @keyframes kiBadgePulse {
-    0%, 100% { transform: translateX(-50%) scale(1); }
-    50%      { transform: translateX(-50%) scale(1.08); }
+    0%, 100% { transform: scale(1); }
+    50%      { transform: scale(1.08); }
   }
 
   @media (prefers-reduced-motion: reduce) {
