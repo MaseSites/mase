@@ -3,358 +3,579 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Strike Zone Bowling Center – Demo</title>
+  <title>Strike Zone Bowling Center · Zürich</title>
+  <meta name="description" content="Strike Zone Bowling Center Zürich – 8 Profi-Bahnen, Arcade, Bar &amp; Events. Online Bahn reservieren. Täglich geöffnet.">
   <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#0a0b0f">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=Archivo+Expanded:wght@700;800;900&display=swap" rel="stylesheet">
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    :root {
-      --orange: #ff6a1a;
-      --orange-dark: #e2540a;
-      --bg: #0b0b0d;
-      --surface: #131316;
-      --card: #1a1b1f;
-      --text: #f5f5f5;
-      --muted: #9a9aa2;
-      --border: #26272c;
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --bg:#0a0b0f; --bg2:#101119; --bg3:#15161f; --card:#171924;
+      --line:rgba(255,255,255,.09); --line2:rgba(255,255,255,.16);
+      --orange:#ff6a1a; --orange2:#ff9248; --cyan:#1ad7df; --green:#34d399;
+      --text:#f5f6f8; --muted:#9aa0ad; --dim:#6b7180;
+      --shadow:0 30px 70px rgba(0,0,0,.5);
+      --rad:16px; --rad-lg:22px;
+      --wrap:1180px;
     }
-    body { font-family: 'Archivo', system-ui, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; -webkit-font-smoothing: antialiased; }
-    a { color: var(--orange); text-decoration: none; }
-    h1, h2, h3 { letter-spacing: -0.02em; }
-    .container { max-width: 1140px; margin: 0 auto; padding: 0 1.5rem; }
-    .btn { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.8rem 1.7rem; border-radius: 8px; font-weight: 700; cursor: pointer; transition: transform .18s, background .18s; border: none; font-size: 0.95rem; font-family: inherit; }
-    .btn-primary { background: var(--orange); color: #fff; box-shadow: 0 8px 22px rgba(255,106,26,.3); }
-    .btn-primary:hover { background: var(--orange-dark); transform: translateY(-2px); }
-    .btn-outline { background: transparent; color: var(--text); border: 1.5px solid var(--border); }
-    .btn-outline:hover { border-color: var(--orange); color: var(--orange); }
-    .icon { width: 1.25em; height: 1.25em; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
+    html{scroll-behavior:smooth}
+    body{font-family:'Archivo',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+    a{color:inherit;text-decoration:none}
+    h1,h2,h3,h4{letter-spacing:-.02em;line-height:1.05}
+    .display{font-family:'Archivo Expanded','Archivo',sans-serif}
+    img{display:block;max-width:100%}
+    .wrap{width:min(100% - 2.6rem,var(--wrap));margin-inline:auto}
+    .eyebrow{display:inline-flex;align-items:center;gap:.6rem;color:var(--orange);font-size:.74rem;font-weight:800;text-transform:uppercase;letter-spacing:.18em;margin-bottom:1rem}
+    .eyebrow::before{content:"";width:26px;height:2px;background:var(--orange);display:inline-block}
+    h2.title{font-size:clamp(2rem,4.6vw,3.2rem);font-weight:900;letter-spacing:-.03em}
+    .lead{color:var(--muted);font-size:1.1rem;max-width:54ch}
+    .icon{width:1.25em;height:1.25em;stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
 
-    .back-bar { background: var(--surface); padding: 0.5rem 1.5rem; font-size: 0.8rem; border-bottom: 1px solid var(--border); }
-    .back-bar .container { display: flex; gap: 0.5rem; align-items: center; }
-    .back-bar a { color: var(--muted); }
-    .back-bar a:hover { color: var(--orange); }
-    .back-bar em { color: var(--muted); }
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:.55rem;padding:.92rem 1.7rem;border-radius:999px;font-weight:800;font-size:.94rem;font-family:inherit;cursor:pointer;border:1px solid transparent;transition:transform .2s cubic-bezier(.2,.7,.2,1),background .2s,box-shadow .2s,border-color .2s;white-space:nowrap}
+    .btn-primary{background:linear-gradient(135deg,var(--orange),var(--orange2));color:#1a0c02;box-shadow:0 12px 30px rgba(255,106,26,.34)}
+    .btn-primary:hover{transform:translateY(-3px);box-shadow:0 18px 40px rgba(255,106,26,.46)}
+    .btn-ghost{background:rgba(255,255,255,.05);color:var(--text);border-color:var(--line2)}
+    .btn-ghost:hover{border-color:var(--orange);color:var(--orange);transform:translateY(-3px)}
 
-    nav.site-nav { background: rgba(11,11,13,.8); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 100; }
-    .nav-inner { display: flex; align-items: center; justify-content: space-between; padding: 0.9rem 1.5rem; max-width: 1140px; margin: 0 auto; }
-    .nav-logo { display: flex; align-items: center; gap: 0.65rem; }
-    .nav-mark { width: 36px; height: 36px; border-radius: 9px; background: linear-gradient(135deg, var(--orange), #ff9248); display: flex; align-items: center; justify-content: center; }
-    .nav-mark svg { width: 20px; height: 20px; }
-    .nav-logo span { font-size: 1.35rem; font-weight: 900; letter-spacing: -0.03em; }
-    .nav-links { display: flex; gap: 2rem; list-style: none; }
-    .nav-links a { color: var(--muted); font-size: 0.9rem; font-weight: 600; transition: color .2s; }
-    .nav-links a:hover { color: var(--text); }
+    /* provenance bar */
+    .back-bar{background:#06070a;border-bottom:1px solid var(--line);font-size:.78rem}
+    .back-bar .wrap{display:flex;gap:.7rem;align-items:center;padding:.55rem 0;color:var(--dim)}
+    .back-bar a{color:var(--muted)} .back-bar a:hover{color:var(--orange)}
+    .back-bar .sep{opacity:.4}
 
-    /* Hero */
-    .hero { position: relative; overflow: hidden;
-      background:
-        radial-gradient(700px 360px at 88% 12%, rgba(255,106,26,.18) 0%, transparent 65%),
-        linear-gradient(135deg, #0b0b0d 0%, #19100a 100%); }
-    .hero-grid { display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 3.5rem; align-items: center; padding: 5.5rem 0; }
-    .hero-tag { display: inline-flex; align-items: center; gap: 0.5rem; color: var(--orange); font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 1.3rem; border: 1px solid rgba(255,106,26,.3); padding: 0.35rem 0.85rem; border-radius: 999px; }
-    .hero h1 { font-size: clamp(2.6rem, 6vw, 5rem); font-weight: 900; line-height: 1.02; margin-bottom: 1.4rem; }
-    .hero h1 span { color: var(--orange); }
-    .hero-lead { font-size: 1.15rem; color: var(--muted); max-width: 30rem; margin-bottom: 2rem; }
-    .hero-btns { display: flex; gap: 0.9rem; flex-wrap: wrap; }
-    .hero-stats { display: flex; gap: 2.2rem; margin-top: 2.4rem; }
-    .hero-stats strong { display: block; font-size: 1.6rem; font-weight: 800; color: #fff; }
-    .hero-stats span { font-size: 0.8rem; color: var(--muted); }
+    /* header */
+    header.nav{position:sticky;top:0;z-index:60;background:rgba(10,11,15,.6);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid transparent;transition:background .3s,border-color .3s}
+    header.nav.scrolled{background:rgba(10,11,15,.92);border-bottom-color:var(--line)}
+    .nav-in{display:flex;align-items:center;justify-content:space-between;padding:.85rem 0}
+    .brand{display:flex;align-items:center;gap:.7rem;font-weight:900}
+    .brand .mark{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,var(--orange),var(--orange2));display:grid;place-items:center;box-shadow:0 8px 20px rgba(255,106,26,.4)}
+    .brand .mark svg{width:22px;height:22px}
+    .brand b{font-size:1.3rem;letter-spacing:-.04em;line-height:1}
+    .brand small{display:block;font-size:.6rem;font-weight:700;letter-spacing:.22em;color:var(--orange);text-transform:uppercase}
+    .nav-links{display:flex;align-items:center;gap:2rem}
+    .nav-links a{color:var(--muted);font-size:.92rem;font-weight:600;transition:color .2s;position:relative}
+    .nav-links a::after{content:"";position:absolute;left:0;bottom:-6px;width:0;height:2px;background:var(--orange);transition:width .25s}
+    .nav-links a:hover{color:var(--text)} .nav-links a:hover::after{width:100%}
+    .nav-cta{display:flex;align-items:center;gap:1rem}
+    .burger{display:none;width:44px;height:44px;border:1px solid var(--line2);border-radius:11px;background:rgba(255,255,255,.04);cursor:pointer;flex-direction:column;gap:5px;align-items:center;justify-content:center}
+    .burger span{width:20px;height:2px;background:var(--text);border-radius:2px;transition:.3s}
+    .burger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+    .burger.open span:nth-child(2){opacity:0}
+    .burger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+    .mobile-menu{position:fixed;inset:0 0 0 auto;width:min(86vw,330px);background:var(--bg2);border-left:1px solid var(--line);z-index:70;transform:translateX(100%);transition:transform .35s cubic-bezier(.4,0,.1,1);padding:5.5rem 1.6rem 2rem;display:flex;flex-direction:column;gap:.4rem}
+    .mobile-menu.open{transform:none}
+    .mobile-menu a{padding:.95rem .4rem;font-size:1.1rem;font-weight:700;border-bottom:1px solid var(--line);color:var(--text)}
+    .mobile-menu .btn{margin-top:1.2rem}
+    .scrim{position:fixed;inset:0;background:rgba(0,0,0,.6);opacity:0;visibility:hidden;transition:.3s;z-index:65}
+    .scrim.open{opacity:1;visibility:visible}
 
-    /* Hero visual: scoreboard card */
-    .hero-visual { position: relative; }
-    .score-card { background: linear-gradient(180deg, #1c1d22, #141519); border: 1px solid var(--border); border-radius: 18px; padding: 1.4rem; box-shadow: 0 30px 70px rgba(0,0,0,.5); }
-    .score-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.1rem; }
-    .score-head strong { font-size: 1rem; }
-    .score-live { display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.72rem; font-weight: 700; color: #22c55e; text-transform: uppercase; letter-spacing: 0.08em; }
-    .score-live .dot { width: 7px; height: 7px; border-radius: 50%; background: #22c55e; box-shadow: 0 0 8px #22c55e; animation: blink 1.6s infinite; }
-    @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0.35; } }
-    .score-row { display: flex; align-items: center; gap: 0.8rem; padding: 0.7rem 0; border-top: 1px solid var(--border); }
-    .score-rank { width: 26px; height: 26px; border-radius: 7px; background: var(--card); display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 800; color: var(--muted); flex-shrink: 0; }
-    .score-row.lead .score-rank { background: var(--orange); color: #fff; }
-    .score-name { flex: 1; font-weight: 600; font-size: 0.92rem; }
-    .score-frames { display: flex; gap: 3px; }
-    .score-frames i { width: 8px; height: 8px; border-radius: 2px; background: #2a2b30; }
-    .score-frames i.hit { background: var(--orange); }
-    .score-pts { font-weight: 800; font-size: 1rem; width: 38px; text-align: right; }
-    .lane-badge { position: absolute; left: -1.4rem; bottom: -1.3rem; background: #fff; color: #111; border-radius: 12px; padding: 0.85rem 1.1rem; display: flex; align-items: center; gap: 0.7rem; box-shadow: 0 18px 40px rgba(0,0,0,.4); }
-    .lane-badge .lb-ic { width: 36px; height: 36px; border-radius: 9px; background: #fff1e8; color: var(--orange); display: flex; align-items: center; justify-content: center; }
-    .lane-badge strong { display: block; font-size: 1rem; font-weight: 800; }
-    .lane-badge span { font-size: 0.74rem; color: #6b7280; }
+    /* hero */
+    .hero{position:relative;min-height:92vh;display:flex;align-items:center;overflow:hidden;border-bottom:1px solid var(--line)}
+    .hero-bg{position:absolute;inset:0;z-index:0}
+    .hero-bg img{width:100%;height:100%;object-fit:cover;transform:scale(1.06);animation:slowzoom 18s ease-out forwards}
+    @keyframes slowzoom{to{transform:scale(1)}}
+    .hero-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,var(--bg) 14%,rgba(10,11,15,.86) 42%,rgba(10,11,15,.45) 75%),radial-gradient(900px 500px at 82% 18%,rgba(255,106,26,.26),transparent 60%)}
+    .hero-in{position:relative;z-index:1;padding:5rem 0}
+    .hero-badge{display:inline-flex;align-items:center;gap:.55rem;background:rgba(255,255,255,.06);border:1px solid var(--line2);border-radius:999px;padding:.42rem 1rem;font-size:.78rem;font-weight:700;color:var(--text);margin-bottom:1.6rem}
+    .hero-badge .pin{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 0 4px rgba(52,211,153,.18);animation:pulse 2s infinite}
+    @keyframes pulse{50%{opacity:.45}}
+    .hero h1{font-size:clamp(2.9rem,8vw,6.2rem);font-weight:900;letter-spacing:-.04em;margin-bottom:1.4rem}
+    .hero h1 .hl{color:transparent;-webkit-text-stroke:1.5px var(--orange);background:linear-gradient(180deg,var(--orange),var(--orange2));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+    .hero p.sub{font-size:1.18rem;color:#d6d8de;max-width:34rem;margin-bottom:2.2rem}
+    .hero-btns{display:flex;gap:.9rem;flex-wrap:wrap}
+    .hero-stats{display:flex;gap:2.6rem;margin-top:3rem;flex-wrap:wrap}
+    .hero-stats .n{font-family:'Archivo Expanded','Archivo';font-size:2.2rem;font-weight:900;line-height:1;background:linear-gradient(180deg,#fff,#cfd2da);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+    .hero-stats .l{font-size:.8rem;color:var(--muted);margin-top:.3rem}
+    .scroll-cue{position:absolute;left:50%;bottom:1.6rem;transform:translateX(-50%);z-index:2;display:flex;flex-direction:column;align-items:center;gap:.4rem;color:var(--muted);font-size:.68rem;letter-spacing:.2em;text-transform:uppercase}
+    .scroll-cue .m{width:20px;height:32px;border:1.5px solid var(--line2);border-radius:11px;position:relative}
+    .scroll-cue .m::after{content:"";position:absolute;left:50%;top:6px;width:3px;height:7px;background:var(--orange);border-radius:2px;transform:translateX(-50%);animation:cue 1.6s infinite}
+    @keyframes cue{0%{opacity:0;transform:translate(-50%,0)}40%{opacity:1}100%{opacity:0;transform:translate(-50%,11px)}}
 
-    section { padding: 5rem 0; }
-    .section-eyebrow { color: var(--orange); font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.6rem; }
-    .section-title { font-size: clamp(1.8rem, 3vw, 2.3rem); font-weight: 800; margin-bottom: 0.75rem; }
-    .section-lead { color: var(--muted); max-width: 600px; margin-bottom: 3rem; }
+    /* marquee strip */
+    .strip{background:var(--orange);color:#1a0c02;font-weight:800;overflow:hidden;border-block:1px solid #00000022}
+    .strip .track{display:flex;gap:3rem;padding:.7rem 0;white-space:nowrap;animation:marq 26s linear infinite;font-size:.92rem;letter-spacing:.02em}
+    .strip span{display:inline-flex;align-items:center;gap:.6rem}
+    @keyframes marq{to{transform:translateX(-50%)}}
 
-    .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 1.4rem; }
-    .card { background: var(--card); border-radius: 14px; padding: 1.9rem; border: 1px solid var(--border); transition: transform .2s, border-color .2s; }
-    .card:hover { transform: translateY(-4px); border-color: #3a3b42; }
-    .card-icon { width: 46px; height: 46px; border-radius: 11px; background: rgba(255,106,26,.12); color: var(--orange); display: flex; align-items: center; justify-content: center; margin-bottom: 1.1rem; }
-    .card-icon svg { width: 23px; height: 23px; }
-    .card h3 { font-size: 1.15rem; font-weight: 700; margin-bottom: 0.5rem; }
-    .card p { color: var(--muted); font-size: 0.95rem; }
+    section{padding:6rem 0}
+    .sec-head{max-width:640px;margin-bottom:3.2rem}
+    .alt{background:var(--bg2)}
 
-    .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.4rem; }
-    .price-card { background: var(--card); border-radius: 14px; padding: 2rem; border: 1px solid var(--border); text-align: center; }
-    .price-card.featured { border-color: var(--orange); background: linear-gradient(180deg, #1f130a, #16110d); transform: scale(1.03); }
-    .price-card .badge { color: var(--orange); font-size: 0.78rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 1rem; }
-    .price-card .price { font-size: 2.6rem; font-weight: 900; margin: 0.4rem 0; }
-    .price-card .period { font-size: 0.85rem; color: var(--muted); }
-    .price-card ul { list-style: none; text-align: left; margin: 1.5rem 0; }
-    .price-card ul li { padding: 0.45rem 0; color: var(--muted); font-size: 0.9rem; display: flex; gap: 0.5rem; align-items: center; }
-    .price-card ul li svg { width: 16px; height: 16px; color: var(--orange); flex-shrink: 0; }
-    .price-card .btn { width: 100%; justify-content: center; }
+    /* features */
+    .grid{display:grid;gap:1.3rem}
+    .feat-grid{grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
+    .feat{background:var(--card);border:1px solid var(--line);border-radius:var(--rad);padding:2rem;transition:transform .3s,border-color .3s,background .3s}
+    .feat:hover{transform:translateY(-6px);border-color:var(--line2);background:var(--bg3)}
+    .feat .ic{width:52px;height:52px;border-radius:14px;background:rgba(255,106,26,.12);color:var(--orange);display:grid;place-items:center;margin-bottom:1.3rem}
+    .feat .ic svg{width:25px;height:25px}
+    .feat h3{font-size:1.2rem;font-weight:800;margin-bottom:.5rem}
+    .feat p{color:var(--muted);font-size:.95rem}
 
-    .contact-section { background: var(--surface); }
-    .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: start; }
-    .contact-info p { color: var(--muted); margin-bottom: 0.75rem; }
-    .contact-info strong { color: var(--text); }
-    .contact-form { display: flex; flex-direction: column; gap: 0.9rem; background: var(--card); padding: 2rem; border-radius: 16px; border: 1px solid var(--border); }
-    .contact-form input, .contact-form textarea {
-      background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 0.8rem 1rem;
-      color: var(--text); font-size: 0.95rem; font-family: inherit; width: 100%;
+    /* gallery */
+    .gal{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:200px;gap:1rem}
+    .gal a{position:relative;overflow:hidden;border-radius:var(--rad);border:1px solid var(--line);cursor:pointer}
+    .gal a img{width:100%;height:100%;object-fit:cover;transition:transform .6s cubic-bezier(.2,.7,.2,1)}
+    .gal a:hover img{transform:scale(1.09)}
+    .gal a::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 50%,rgba(0,0,0,.55));opacity:0;transition:.3s}
+    .gal a:hover::after{opacity:1}
+    .gal .cap{position:absolute;left:1rem;bottom:.85rem;font-weight:700;font-size:.9rem;z-index:1;opacity:0;transform:translateY(8px);transition:.3s}
+    .gal a:hover .cap{opacity:1;transform:none}
+    .gal .big{grid-column:span 2;grid-row:span 2}
+    .gal .wide{grid-column:span 2}
+
+    /* pricing */
+    .price-grid{grid-template-columns:repeat(auto-fit,minmax(270px,1fr))}
+    .price{background:var(--card);border:1px solid var(--line);border-radius:var(--rad-lg);padding:2.2rem;display:flex;flex-direction:column;transition:transform .3s,border-color .3s}
+    .price:hover{transform:translateY(-6px)}
+    .price.hot{border-color:var(--orange);background:linear-gradient(180deg,rgba(255,106,26,.1),var(--card));box-shadow:0 24px 60px rgba(255,106,26,.16);position:relative}
+    .price .tag{position:absolute;top:-12px;left:2.2rem;background:linear-gradient(135deg,var(--orange),var(--orange2));color:#1a0c02;font-size:.7rem;font-weight:900;text-transform:uppercase;letter-spacing:.1em;padding:.32rem .8rem;border-radius:999px}
+    .price .pname{font-size:.78rem;font-weight:800;text-transform:uppercase;letter-spacing:.14em;color:var(--muted);margin-bottom:.8rem}
+    .price .amt{font-family:'Archivo Expanded','Archivo';font-size:3rem;font-weight:900;line-height:1}
+    .price .amt small{font-size:1rem;color:var(--muted);font-weight:600;font-family:'Archivo'}
+    .price .per{color:var(--dim);font-size:.85rem;margin-bottom:1.5rem}
+    .price ul{list-style:none;display:flex;flex-direction:column;gap:.7rem;margin-bottom:1.8rem;flex:1}
+    .price li{display:flex;gap:.6rem;align-items:flex-start;color:var(--muted);font-size:.92rem}
+    .price li svg{width:18px;height:18px;color:var(--orange);margin-top:.15rem}
+
+    /* events split */
+    .split{display:grid;grid-template-columns:1.05fr .95fr;gap:3.4rem;align-items:center}
+    .split .media{border-radius:var(--rad-lg);overflow:hidden;border:1px solid var(--line);position:relative;box-shadow:var(--shadow)}
+    .split .media img{width:100%;height:100%;object-fit:cover;aspect-ratio:4/3.4}
+    .ev-list{display:flex;flex-direction:column;gap:1rem;margin-top:1.6rem}
+    .ev{display:flex;gap:1.1rem;padding:1.2rem;border:1px solid var(--line);border-radius:var(--rad);background:var(--card);transition:border-color .3s,transform .3s}
+    .ev:hover{border-color:var(--orange);transform:translateX(5px)}
+    .ev .ic{width:46px;height:46px;border-radius:12px;background:rgba(255,106,26,.12);color:var(--orange);display:grid;place-items:center;flex-shrink:0}
+    .ev h4{font-size:1.05rem;font-weight:800;margin-bottom:.2rem}
+    .ev p{font-size:.9rem;color:var(--muted)}
+    .ev .from{margin-left:auto;text-align:right;font-weight:800;color:var(--orange);white-space:nowrap;font-size:.95rem}
+
+    /* testimonials */
+    .quotes{grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}
+    .quote{background:var(--card);border:1px solid var(--line);border-radius:var(--rad);padding:1.9rem}
+    .quote .stars{color:var(--orange);letter-spacing:2px;margin-bottom:.9rem}
+    .quote p{font-size:1rem;color:#e5e6ea;margin-bottom:1.3rem}
+    .quote .who{display:flex;align-items:center;gap:.8rem}
+    .quote .who img{width:44px;height:44px;border-radius:50%;object-fit:cover;border:2px solid var(--line2)}
+    .quote .who b{font-size:.92rem;display:block}
+    .quote .who span{font-size:.8rem;color:var(--dim)}
+
+    /* faq */
+    .faq{max-width:780px;margin-inline:auto}
+    .faq details{border:1px solid var(--line);border-radius:var(--rad);background:var(--card);margin-bottom:.85rem;overflow:hidden;transition:border-color .3s}
+    .faq details[open]{border-color:var(--line2)}
+    .faq summary{padding:1.25rem 1.5rem;font-weight:700;font-size:1.02rem;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:1rem}
+    .faq summary::-webkit-details-marker{display:none}
+    .faq summary .pm{width:24px;height:24px;flex-shrink:0;position:relative;transition:transform .3s}
+    .faq summary .pm::before,.faq summary .pm::after{content:"";position:absolute;background:var(--orange);border-radius:2px}
+    .faq summary .pm::before{left:50%;top:4px;width:2px;height:16px;transform:translateX(-50%)}
+    .faq summary .pm::after{top:50%;left:4px;height:2px;width:16px;transform:translateY(-50%)}
+    .faq details[open] summary .pm{transform:rotate(135deg)}
+    .faq .ans{padding:0 1.5rem 1.4rem;color:var(--muted);font-size:.96rem}
+
+    /* contact */
+    .contact-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:3rem;align-items:start}
+    .info-card{background:var(--card);border:1px solid var(--line);border-radius:var(--rad);padding:1.4rem 1.6rem;margin-bottom:1rem;display:flex;gap:1rem;align-items:flex-start}
+    .info-card .ic{width:44px;height:44px;border-radius:12px;background:rgba(255,106,26,.12);color:var(--orange);display:grid;place-items:center;flex-shrink:0}
+    .info-card h4{font-size:.72rem;text-transform:uppercase;letter-spacing:.12em;color:var(--dim);margin-bottom:.25rem}
+    .info-card p{font-weight:600}
+    .info-card a{color:var(--text)} .info-card a:hover{color:var(--orange)}
+    .hours{display:flex;justify-content:space-between;padding:.5rem 0;border-bottom:1px solid var(--line);font-size:.92rem}
+    .hours:last-child{border:0}
+    .hours .d{color:var(--muted)} .hours.today{color:var(--orange);font-weight:700}
+    form{background:var(--card);border:1px solid var(--line);border-radius:var(--rad-lg);padding:2rem;display:flex;flex-direction:column;gap:.95rem}
+    .frow{display:grid;grid-template-columns:1fr 1fr;gap:.95rem}
+    label{font-size:.82rem;font-weight:700;color:var(--muted);margin-bottom:.35rem;display:block}
+    input,textarea,select{width:100%;background:var(--bg);border:1px solid var(--line2);border-radius:11px;padding:.85rem 1rem;color:var(--text);font-size:.95rem;font-family:inherit;transition:border-color .2s,box-shadow .2s}
+    input:focus,textarea:focus,select:focus{outline:none;border-color:var(--orange);box-shadow:0 0 0 3px rgba(255,106,26,.18)}
+    textarea{resize:vertical;min-height:110px}
+    .form-note{font-size:.78rem;color:var(--dim);text-align:center}
+    .ok-msg{display:none;background:rgba(52,211,153,.12);border:1px solid rgba(52,211,153,.4);color:#86efac;border-radius:11px;padding:.85rem 1rem;font-size:.9rem;text-align:center}
+
+    /* footer */
+    footer{background:#06070a;border-top:1px solid var(--line);padding:4rem 0 2rem}
+    .foot-grid{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:2.5rem;margin-bottom:3rem}
+    .foot-brand b{font-size:1.4rem;font-weight:900}
+    .foot-brand p{color:var(--muted);font-size:.92rem;margin-top:.8rem;max-width:30ch}
+    .foot-col h5{font-size:.74rem;text-transform:uppercase;letter-spacing:.14em;color:var(--orange);margin-bottom:1rem}
+    .foot-col a,.foot-col p{display:block;color:var(--muted);font-size:.9rem;margin-bottom:.6rem}
+    .foot-col a:hover{color:var(--text)}
+    .foot-bottom{border-top:1px solid var(--line);padding-top:1.6rem;display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;color:var(--dim);font-size:.82rem}
+    .demo-note{text-align:center;margin-top:1.4rem;padding:1rem;border:1px dashed var(--line2);border-radius:12px;color:var(--muted);font-size:.84rem}
+    .demo-note a{color:var(--orange);font-weight:700}
+
+    /* lightbox */
+    .lb{position:fixed;inset:0;background:rgba(5,6,9,.94);z-index:90;display:none;align-items:center;justify-content:center;padding:2rem;cursor:zoom-out}
+    .lb.open{display:flex}
+    .lb img{max-width:92vw;max-height:88vh;border-radius:14px;box-shadow:var(--shadow)}
+    .lb .x{position:absolute;top:1.4rem;right:1.6rem;width:46px;height:46px;border-radius:50%;border:1px solid var(--line2);background:rgba(255,255,255,.06);color:#fff;font-size:1.4rem;cursor:pointer}
+
+    /* reveal */
+    [data-reveal]{opacity:0;transform:translateY(26px);transition:opacity .75s cubic-bezier(.2,.7,.2,1),transform .75s cubic-bezier(.2,.7,.2,1)}
+    [data-reveal].in{opacity:1;transform:none}
+    [data-reveal][data-d="1"]{transition-delay:.08s}
+    [data-reveal][data-d="2"]{transition-delay:.16s}
+    [data-reveal][data-d="3"]{transition-delay:.24s}
+
+    @media(max-width:960px){
+      .nav-links,.nav-cta .btn{display:none}
+      .burger{display:flex}
+      .gal{grid-template-columns:repeat(2,1fr);grid-auto-rows:160px}
+      .gal .big{grid-column:span 2;grid-row:span 1}
+      .split{grid-template-columns:1fr;gap:2.2rem}
+      .contact-grid{grid-template-columns:1fr;gap:2rem}
+      .foot-grid{grid-template-columns:1fr 1fr;gap:2rem}
     }
-    .contact-form input:focus, .contact-form textarea:focus { outline: 2px solid var(--orange); border-color: var(--orange); }
-    .contact-form textarea { resize: vertical; min-height: 110px; }
-
-    footer { background: var(--surface); border-top: 1px solid var(--border); padding: 3rem 0 2rem; }
-    .footer-inner { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
-    .footer-brand { font-size: 1.25rem; font-weight: 900; color: var(--orange); }
-    .footer-copy { color: var(--muted); font-size: 0.875rem; }
-    .footer-note { width: 100%; text-align: center; margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--border); color: var(--muted); font-size: 0.8rem; }
-
-    @media (max-width: 860px) {
-      .nav-links { display: none; }
-      .hero-grid { grid-template-columns: 1fr; gap: 3rem; padding: 4rem 0; }
-      .contact-grid { grid-template-columns: 1fr; }
+    @media(max-width:560px){
+      section{padding:4.2rem 0}
+      .hero-stats{gap:1.6rem}
+      .frow{grid-template-columns:1fr}
+      .foot-grid{grid-template-columns:1fr}
+      .hero h1{font-size:clamp(2.6rem,13vw,4rem)}
+    }
+    @media(prefers-reduced-motion:reduce){
+      *{animation-duration:.001s!important;transition-duration:.001s!important}
+      [data-reveal]{opacity:1;transform:none}
     }
   </style>
 </head>
 <body>
   <div class="back-bar">
-    <div class="container">
-      <a href="../../index.html">← Zurück zu MASESites.ch</a>
-      <span>|</span> <em>Demo-Website – erstellt von MASESites</em>
+    <div class="wrap">
+      <a href="../../index.html">← MASESites.ch</a>
+      <span class="sep">·</span>
+      <span>Demo-Projekt — so kann Ihre Website aussehen</span>
     </div>
   </div>
 
-  <nav class="site-nav">
-    <div class="nav-inner">
-      <div class="nav-logo">
-        <span class="nav-mark"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="13" r="8" fill="#fff"/><circle cx="9.5" cy="10.5" r="1.1" fill="#ff6a1a"/><circle cx="13" cy="9.5" r="1.1" fill="#ff6a1a"/><circle cx="12.5" cy="13" r="1.1" fill="#ff6a1a"/></svg></span>
-        <span>Strike Zone</span>
+  <header class="nav" id="nav">
+    <div class="wrap nav-in">
+      <a class="brand" href="#top" aria-label="Strike Zone Startseite">
+        <span class="mark"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="13" r="8" fill="#1a0c02"/><circle cx="9.4" cy="10.6" r="1.15" fill="#ff9248"/><circle cx="13" cy="9.6" r="1.15" fill="#ff9248"/><circle cx="12.6" cy="13.2" r="1.15" fill="#ff9248"/></svg></span>
+        <span><b>Strike Zone</b><small>Bowling · Zürich</small></span>
+      </a>
+      <nav class="nav-links" aria-label="Hauptnavigation">
+        <a href="#center">Center</a>
+        <a href="#galerie">Galerie</a>
+        <a href="#preise">Preise</a>
+        <a href="#events">Events</a>
+        <a href="#kontakt">Kontakt</a>
+      </nav>
+      <div class="nav-cta">
+        <a href="#kontakt" class="btn btn-primary">Bahn reservieren</a>
+        <button class="burger" id="burger" aria-label="Menü öffnen" aria-expanded="false"><span></span><span></span><span></span></button>
       </div>
-      <ul class="nav-links">
-        <li><a href="#bahnen">Bahnen</a></li>
-        <li><a href="#preise">Preise</a></li>
-        <li><a href="#events">Events</a></li>
-        <li><a href="#kontakt">Kontakt</a></li>
-      </ul>
-      <a href="#kontakt" class="btn btn-primary">Jetzt buchen</a>
     </div>
-  </nav>
+  </header>
 
-  <section class="hero">
-    <div class="container">
-      <div class="hero-grid">
-        <div>
-          <span class="hero-tag">Zürichs bestes Bowling Center</span>
-          <h1>Bowling auf<br><span>Top-Niveau.</span></h1>
-          <p class="hero-lead">8 professionelle Bahnen, modernste Ausrüstung und die beste Atmosphäre in der Region. Für Familien, Teams und Events.</p>
-          <div class="hero-btns">
-            <a href="#kontakt" class="btn btn-primary">Bahn buchen</a>
-            <a href="#preise" class="btn btn-outline">Preise ansehen</a>
+  <div class="scrim" id="scrim"></div>
+  <aside class="mobile-menu" id="mobileMenu" aria-label="Mobile Navigation">
+    <a href="#center">Center</a>
+    <a href="#galerie">Galerie</a>
+    <a href="#preise">Preise</a>
+    <a href="#events">Events</a>
+    <a href="#kontakt">Kontakt</a>
+    <a href="#kontakt" class="btn btn-primary">Bahn reservieren</a>
+  </aside>
+
+  <main id="top">
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-bg"><img src="img/hero.jpg" alt="Bowlingbahn im Strike Zone Center" fetchpriority="high"></div>
+      <div class="wrap hero-in">
+        <span class="hero-badge"><span class="pin"></span> Heute geöffnet bis 23:00 · 3 Bahnen frei</span>
+        <h1 class="display">Strike.<br>Spare.<br><span class="hl">Wiederholen.</span></h1>
+        <p class="sub">8 Profi-Bahnen, eine eigene Arcade und die beste Bar der Stadt. Zürichs Adresse für Feierabend, Familien &amp; Firmenanlässe.</p>
+        <div class="hero-btns">
+          <a href="#kontakt" class="btn btn-primary"><svg class="icon" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg> Bahn reservieren</a>
+          <a href="#preise" class="btn btn-ghost">Preise &amp; Tarife</a>
+        </div>
+        <div class="hero-stats">
+          <div><div class="n" data-count="8">8</div><div class="l">Profi-Bahnen</div></div>
+          <div><div class="n" data-count="200" data-suffix="+">200+</div><div class="l">Leihschuhe</div></div>
+          <div><div class="n" data-count="25" data-suffix="+">25+</div><div class="l">Arcade-Games</div></div>
+          <div><div class="n" data-count="4.8" data-dec="1" data-suffix="★">4.8★</div><div class="l">Google-Rating</div></div>
+        </div>
+      </div>
+      <div class="scroll-cue"><span class="m"></span>Scrollen</div>
+    </section>
+
+    <!-- MARQUEE -->
+    <div class="strip" aria-hidden="true">
+      <div class="track">
+        <span>🎳 8 PROFI-BAHNEN</span><span>•</span><span>👟 SCHUHE INKLUSIVE</span><span>•</span><span>🕹️ ARCADE-ZONE</span><span>•</span><span>🍔 BAR &amp; SNACKS</span><span>•</span><span>🎉 EVENTS &amp; PARTYS</span><span>•</span>
+        <span>🎳 8 PROFI-BAHNEN</span><span>•</span><span>👟 SCHUHE INKLUSIVE</span><span>•</span><span>🕹️ ARCADE-ZONE</span><span>•</span><span>🍔 BAR &amp; SNACKS</span><span>•</span><span>🎉 EVENTS &amp; PARTYS</span><span>•</span>
+      </div>
+    </div>
+
+    <!-- FEATURES -->
+    <section id="center">
+      <div class="wrap">
+        <div class="sec-head" data-reveal>
+          <p class="eyebrow">Das Center</p>
+          <h2 class="title display">Alles für den<br>perfekten Abend</h2>
+          <p class="lead" style="margin-top:1rem">State-of-the-art Equipment, ehrliche Preise und eine Atmosphäre, die zum Bleiben einlädt.</p>
+        </div>
+        <div class="grid feat-grid">
+          <div class="feat" data-reveal data-d="1">
+            <span class="ic"><svg class="icon" viewBox="0 0 24 24"><path d="M5 22V7a7 7 0 0 1 14 0v15"/><path d="M5 13h14"/></svg></span>
+            <h3>8 Profi-Bahnen</h3>
+            <p>Automatische Pinsetzer, digitale Score-Displays und perfekt gepflegte Synthetik-Bahnen mit Bumpern für die Kleinsten.</p>
           </div>
-          <div class="hero-stats">
-            <div><strong>8</strong><span>Profi-Bahnen</span></div>
-            <div><strong>200+</strong><span>Schuhe im Verleih</span></div>
-            <div><strong>4.8★</strong><span>Google-Bewertung</span></div>
+          <div class="feat" data-reveal data-d="2">
+            <span class="ic"><svg class="icon" viewBox="0 0 24 24"><path d="M2 18h20l-1.5-5.5a3 3 0 0 0-2.9-2.2H8.5L2 13z"/><path d="M2 13l3-7 4 1M9 18v3M15 18v3"/></svg></span>
+            <h3>Schuhe inklusive</h3>
+            <p>Über 200 Paar frisch desinfizierte Bowling-Schuhe in allen Grössen – immer im Bahnpreis enthalten.</p>
           </div>
-        </div>
-        <div class="hero-visual">
-          <div class="score-card">
-            <div class="score-head">
-              <strong>Bahn 4 · Live-Score</strong>
-              <span class="score-live"><span class="dot"></span> Live</span>
-            </div>
-            <div class="score-row lead">
-              <span class="score-rank">1</span>
-              <span class="score-name">Marco</span>
-              <span class="score-frames"><i class="hit"></i><i class="hit"></i><i class="hit"></i><i></i><i></i></span>
-              <span class="score-pts">187</span>
-            </div>
-            <div class="score-row">
-              <span class="score-rank">2</span>
-              <span class="score-name">Lena</span>
-              <span class="score-frames"><i class="hit"></i><i class="hit"></i><i></i><i></i><i></i></span>
-              <span class="score-pts">164</span>
-            </div>
-            <div class="score-row">
-              <span class="score-rank">3</span>
-              <span class="score-name">Tobias</span>
-              <span class="score-frames"><i class="hit"></i><i></i><i></i><i></i><i></i></span>
-              <span class="score-pts">142</span>
-            </div>
+          <div class="feat" data-reveal data-d="3">
+            <span class="ic"><svg class="icon" viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="3"/><path d="M7 12h2M8 11v2M15 12h.01M18 10h.01"/></svg></span>
+            <h3>Arcade-Zone</h3>
+            <p>25+ Arcade-Automaten, Airhockey und Flipper. Die perfekte Pause zwischen zwei Frames.</p>
           </div>
-          <div class="lane-badge">
-            <span class="lb-ic"><svg class="icon" viewBox="0 0 24 24"><path d="M5 22V7a7 7 0 0 1 14 0v15"/><path d="M5 13h14"/></svg></span>
-            <div>
-              <strong>3 Bahnen frei</strong>
-              <span>Heute Abend ab 19:00</span>
-            </div>
+          <div class="feat" data-reveal data-d="1">
+            <span class="ic"><svg class="icon" viewBox="0 0 24 24"><path d="M6 2h12l-1 7a5 5 0 0 1-10 0z"/><path d="M12 14v6M8 22h8"/></svg></span>
+            <h3>Bar &amp; Lounge</h3>
+            <p>Craft-Bier, Cocktails, Burger &amp; Nachos – direkt an die Bahn serviert. Happy Hour Mo–Do.</p>
+          </div>
+          <div class="feat" data-reveal data-d="2">
+            <span class="ic"><svg class="icon" viewBox="0 0 24 24"><path d="M18 2H6v7a6 6 0 0 0 12 0zM6 9H4.5a2.5 2.5 0 0 1 0-5H6M18 9h1.5a2.5 2.5 0 0 0 0-5H18M4 22h16M10 14.66V17M14 14.66V17"/></svg></span>
+            <h3>Liga &amp; Turniere</h3>
+            <p>Wöchentliche Hobby-Liga, Monatsturniere und exklusive Bahnreservation für dein Team.</p>
+          </div>
+          <div class="feat" data-reveal data-d="3">
+            <span class="ic"><svg class="icon" viewBox="0 0 24 24"><path d="M4 22V11h16v11zM2 11h20l-2-4H4zM12 7V4M9 4h6"/></svg></span>
+            <h3>Events &amp; Partys</h3>
+            <p>Privater Eventbereich für bis zu 40 Gäste. Geburtstage, Firmenfeiern &amp; Teamevents komplett organisiert.</p>
           </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <section id="bahnen">
-    <div class="container">
-      <p class="section-eyebrow">Anlagen</p>
-      <h2 class="section-title">Alles für das perfekte Spiel</h2>
-      <p class="section-lead">State-of-the-art Equipment für ein unvergessliches Erlebnis.</p>
-      <div class="grid-3">
-        <div class="card">
-          <div class="card-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M5 22V7a7 7 0 0 1 14 0v15"/><path d="M5 13h14"/></svg></div>
-          <h3>8 Profi-Bahnen</h3>
-          <p>Automatische Pinsetzer, digitale Anzeigetafeln und perfekt gepflegte Holzoberflächen.</p>
+    <!-- GALLERY -->
+    <section id="galerie" class="alt">
+      <div class="wrap">
+        <div class="sec-head" data-reveal>
+          <p class="eyebrow">Einblicke</p>
+          <h2 class="title display">Willkommen im Strike Zone</h2>
         </div>
-        <div class="card">
-          <div class="card-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M2 18h20l-1.5-5.5a3 3 0 0 0-2.9-2.2H8.5L2 13z"/><path d="M2 13l3-7 4 1M9 18v3M15 18v3"/></svg></div>
-          <h3>Schuhverleih</h3>
-          <p>Über 200 Paar Bowling-Schuhe in allen Grössen – inklusive im Eintrittspreis.</p>
-        </div>
-        <div class="card">
-          <div class="card-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M6 2h12l-1 7a5 5 0 0 1-10 0z"/><path d="M12 14v6M8 22h8"/></svg></div>
-          <h3>Bar &amp; Snacks</h3>
-          <p>Burger, Pommes, Nachos und kalte Getränke direkt an der Bahn bestellen.</p>
-        </div>
-        <div class="card">
-          <div class="card-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M20 12v9H4v-9M2 7h20v5H2zM12 22V7M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7zM12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg></div>
-          <h3>Event-Bereich</h3>
-          <p>Privater Bereich für Geburtstage, Firmenevents und Teambuilding. Bis 40 Personen.</p>
-        </div>
-        <div class="card">
-          <div class="card-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6M18 9h1.5a2.5 2.5 0 0 0 0-5H18M4 22h16M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22M18 2H6v7a6 6 0 0 0 12 0z"/></svg></div>
-          <h3>Liga-Spielbetrieb</h3>
-          <p>Tritt unserer wöchentlichen Liga bei oder reserviere exklusiv für dein Team.</p>
-        </div>
-        <div class="card">
-          <div class="card-icon"><svg class="icon" viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="3"/><path d="M7 12h2M8 11v2M15 12h.01M18 10h.01"/></svg></div>
-          <h3>Arcade-Zone</h3>
-          <p>25+ Arcade-Automaten, Airhockey und Flipperautomaten für zwischendurch.</p>
+        <div class="gal" data-reveal>
+          <a class="big" data-full="img/lane.jpg"><img src="img/lane.jpg" alt="Bowlingbahnen mit Scoreboard"><span class="cap">Unsere 8 Bahnen</span></a>
+          <a data-full="img/balls.jpg"><img src="img/balls.jpg" alt="Bowlingkugeln im Gestell"><span class="cap">Kugeln in allen Gewichten</span></a>
+          <a data-full="img/arcade.jpg"><img src="img/arcade.jpg" alt="Arcade-Bereich"><span class="cap">Arcade-Zone</span></a>
+          <a class="wide" data-full="img/bar.jpg"><img src="img/bar.jpg" alt="Bar &amp; Lounge"><span class="cap">Bar &amp; Lounge</span></a>
+          <a data-full="img/pins.jpg"><img src="img/pins.jpg" alt="Pins am Ende der Bahn"><span class="cap">Volle Pinne</span></a>
+          <a data-full="img/action.jpg"><img src="img/action.jpg" alt="Spieler beim Wurf"><span class="cap">Let's roll!</span></a>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <section id="preise" style="background: var(--surface);">
-    <div class="container">
-      <p class="section-eyebrow">Preise</p>
-      <h2 class="section-title">Transparent &amp; fair</h2>
-      <p class="section-lead">Keine versteckten Kosten – Schuhverleih immer inklusive.</p>
-      <div class="pricing-grid">
-        <div class="price-card">
-          <p class="badge">Standard</p>
-          <p class="price">CHF 8</p>
-          <p class="period">pro Person / Spiel</p>
-          <ul>
-            <li><svg class="icon" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg> 1 Spiel (10 Frames)</li>
-            <li><svg class="icon" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg> Schuhverleih inklusive</li>
-            <li><svg class="icon" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg> Mo–Fr Tarif</li>
-          </ul>
-          <a href="#kontakt" class="btn btn-outline">Buchen</a>
+    <!-- PRICING -->
+    <section id="preise">
+      <div class="wrap">
+        <div class="sec-head" data-reveal>
+          <p class="eyebrow">Preise</p>
+          <h2 class="title display">Transparent &amp; fair</h2>
+          <p class="lead" style="margin-top:1rem">Keine versteckten Kosten. Schuhe sind immer dabei.</p>
         </div>
-        <div class="price-card featured">
-          <p class="badge">Weekend</p>
-          <p class="price">CHF 12</p>
-          <p class="period">pro Person / Spiel</p>
-          <ul>
-            <li><svg class="icon" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg> 1 Spiel (10 Frames)</li>
-            <li><svg class="icon" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg> Schuhverleih inklusive</li>
-            <li><svg class="icon" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg> Sa &amp; So + Feiertage</li>
-            <li><svg class="icon" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg> Prioritätsbuchung</li>
-          </ul>
-          <a href="#kontakt" class="btn btn-primary">Jetzt buchen</a>
-        </div>
-        <div class="price-card">
-          <p class="badge">Gruppen</p>
-          <p class="price">CHF 65</p>
-          <p class="period">pro Bahn / Stunde</p>
-          <ul>
-            <li><svg class="icon" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg> 1 Bahn für 1 Stunde</li>
-            <li><svg class="icon" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg> Bis 6 Personen</li>
-            <li><svg class="icon" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg> Schuhverleih inklusive</li>
-            <li><svg class="icon" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg> Ab 5 Bahnen: −10%</li>
-          </ul>
-          <a href="#kontakt" class="btn btn-outline">Anfragen</a>
+        <div class="grid price-grid">
+          <div class="price" data-reveal data-d="1">
+            <p class="pname">Standard</p>
+            <div class="amt"><small>CHF</small> 8<small>.–</small></div>
+            <p class="per">pro Person &amp; Spiel · Mo–Fr</p>
+            <ul>
+              <li><svg class="icon" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg> 1 Spiel (10 Frames)</li>
+              <li><svg class="icon" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg> Leihschuhe inklusive</li>
+              <li><svg class="icon" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg> Bumper für Kinder gratis</li>
+            </ul>
+            <a href="#kontakt" class="btn btn-ghost">Buchen</a>
+          </div>
+          <div class="price hot" data-reveal data-d="2">
+            <span class="tag">Beliebt</span>
+            <p class="pname">Weekend</p>
+            <div class="amt"><small>CHF</small> 12<small>.–</small></div>
+            <p class="per">pro Person &amp; Spiel · Sa, So &amp; Feiertage</p>
+            <ul>
+              <li><svg class="icon" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg> 1 Spiel (10 Frames)</li>
+              <li><svg class="icon" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg> Leihschuhe inklusive</li>
+              <li><svg class="icon" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg> Prioritäts-Reservation</li>
+              <li><svg class="icon" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg> 1 Softdrink geschenkt</li>
+            </ul>
+            <a href="#kontakt" class="btn btn-primary">Jetzt buchen</a>
+          </div>
+          <div class="price" data-reveal data-d="3">
+            <p class="pname">Bahn-Stunde</p>
+            <div class="amt"><small>CHF</small> 65<small>.–</small></div>
+            <p class="per">pro Bahn &amp; Stunde · bis 6 Personen</p>
+            <ul>
+              <li><svg class="icon" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg> 1 Bahn, 60 Minuten</li>
+              <li><svg class="icon" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg> Bis 6 Spieler:innen</li>
+              <li><svg class="icon" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg> Leihschuhe inklusive</li>
+              <li><svg class="icon" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg> Ab 5 Bahnen −10 %</li>
+            </ul>
+            <a href="#kontakt" class="btn btn-ghost">Anfragen</a>
+          </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <section id="events">
-    <div class="container">
-      <p class="section-eyebrow">Events</p>
-      <h2 class="section-title">Events &amp; Geburtstage</h2>
-      <p class="section-lead">Unvergessliche Erlebnisse für dein Team oder deine Familie.</p>
-      <div class="grid-3">
-        <div class="card">
-          <div class="card-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M4 22V11h16v11zM2 11h20l-2-4H4zM12 7V4M9 4h6"/></svg></div>
-          <h3>Geburtstagspartys</h3>
-          <p>Exklusive Bahn, Dekorationen, Kuchen und dein persönlicher Event-Manager. Ab CHF 250.</p>
+    <!-- EVENTS -->
+    <section id="events" class="alt">
+      <div class="wrap split">
+        <div data-reveal>
+          <p class="eyebrow">Events &amp; Feiern</p>
+          <h2 class="title display">Dein Anlass,<br>unsere Bahnen</h2>
+          <p class="lead" style="margin-top:1rem">Vom Kindergeburtstag bis zum Firmenturnier – wir kümmern uns um Bahnen, Catering und Trophäen. Du musst nur abräumen.</p>
+          <div class="ev-list">
+            <div class="ev"><span class="ic"><svg class="icon" viewBox="0 0 24 24"><path d="M4 22V11h16v11zM2 11h20l-2-4H4zM12 7V4M9 4h6"/></svg></span><div><h4>Geburtstags-Paket</h4><p>Eigene Bahn, Deko, Kuchen &amp; Event-Host</p></div><span class="from">ab CHF 250</span></div>
+            <div class="ev"><span class="ic"><svg class="icon" viewBox="0 0 24 24"><path d="M3 21V7l9-4 9 4v14M9 21v-6h6v6"/></svg></span><div><h4>Firmen-Event</h4><p>Teambuilding mit Turnier &amp; Apéro</p></div><span class="from">ab 10 Pers.</span></div>
+            <div class="ev"><span class="ic"><svg class="icon" viewBox="0 0 24 24"><path d="M22 10 12 5 2 10l10 5 10-5zM6 12v5c0 1 2.7 3 6 3s6-2 6-3v-5"/></svg></span><div><h4>Schul- &amp; Jugendgruppen</h4><p>Spezialtarife für Klassen &amp; Vereine</p></div><span class="from">auf Anfrage</span></div>
+          </div>
         </div>
-        <div class="card">
-          <div class="card-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M3 21V7l9-4 9 4v14M9 21v-6h6v6M7 10h.01M12 10h.01M17 10h.01"/></svg></div>
-          <h3>Firmenevents</h3>
-          <p>Teambuilding mal anders. Wir kümmern uns um Catering, Turnier und Trophäen. Ab 10 Personen.</p>
+        <div class="media" data-reveal data-d="1"><img src="img/event.jpg" alt="Gäste feiern im Bowling Center"></div>
+      </div>
+    </section>
+
+    <!-- TESTIMONIALS -->
+    <section>
+      <div class="wrap">
+        <div class="sec-head" data-reveal>
+          <p class="eyebrow">Bewertungen</p>
+          <h2 class="title display">4.8 von 5 auf Google</h2>
         </div>
-        <div class="card">
-          <div class="card-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M22 10 12 5 2 10l10 5 10-5zM6 12v5c0 1 2.7 3 6 3s6-2 6-3v-5"/></svg></div>
-          <h3>Schulausflüge</h3>
-          <p>Spezialkonditionen für Schulklassen und Jugendgruppen. Anfrage per E-Mail.</p>
+        <div class="grid quotes">
+          <div class="quote" data-reveal data-d="1">
+            <div class="stars">★★★★★</div>
+            <p>„Mega Abend mit Freunden! Bahnen top in Schuss, das Personal super freundlich und die Burger an der Bar sind ein Geheimtipp.“</p>
+            <div class="who"><img src="img/av-m1.jpg" alt=""><div><b>Marco R.</b><span>Google Rezension</span></div></div>
+          </div>
+          <div class="quote" data-reveal data-d="2">
+            <div class="stars">★★★★★</div>
+            <p>„Wir hatten unsere Firmenfeier hier – perfekt organisiert, vom Turnier bis zum Apéro. Kommen nächstes Jahr wieder!“</p>
+            <div class="who"><img src="img/av-w2.jpg" alt=""><div><b>Sandra B.</b><span>Firmenkundin</span></div></div>
+          </div>
+          <div class="quote" data-reveal data-d="3">
+            <div class="stars">★★★★★</div>
+            <p>„Endlich ein Center, wo auch die Kinder mit Bumpern Spass haben. Familienfreundlich und faire Preise.“</p>
+            <div class="who"><img src="img/av-w1.jpg" alt=""><div><b>Familie Keller</b><span>Stammgäste</span></div></div>
+          </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <section id="kontakt" class="contact-section">
-    <div class="container">
-      <p class="section-eyebrow">Reservieren</p>
-      <h2 class="section-title">Bahn reservieren</h2>
-      <div class="contact-grid">
-        <div class="contact-info">
-          <p><strong>Öffnungszeiten</strong><br>Mo–Fr: 14:00 – 23:00<br>Sa–So: 10:00 – 24:00</p>
-          <p style="margin-top:1.5rem;"><strong>Adresse</strong><br>Bowlingstrasse 12<br>8000 Zürich</p>
-          <p style="margin-top:1.5rem;"><strong>Telefon</strong><br><a href="tel:+41441234567">+41 44 123 45 67</a></p>
-          <p style="margin-top:1.5rem;"><strong>E-Mail</strong><br><a href="mailto:info@strikezone.ch">info@strikezone.ch</a></p>
+    <!-- FAQ -->
+    <section class="alt">
+      <div class="wrap">
+        <div class="sec-head" data-reveal style="text-align:center;margin-inline:auto">
+          <p class="eyebrow" style="justify-content:center">Gut zu wissen</p>
+          <h2 class="title display">Häufige Fragen</h2>
         </div>
-        <form class="contact-form" onsubmit="return false;">
-          <input type="text" placeholder="Dein Name *" required>
-          <input type="email" placeholder="E-Mail *" required>
-          <input type="text" placeholder="Datum &amp; Uhrzeit">
-          <input type="number" placeholder="Anzahl Personen" min="1">
-          <textarea placeholder="Nachricht oder besondere Wünsche …"></textarea>
-          <button type="submit" class="btn btn-primary" style="justify-content:center;">Reservierung anfragen</button>
-          <p style="font-size:0.8rem; color:var(--muted); text-align:center;">Demo-Formular – keine echten Anfragen möglich.</p>
-        </form>
+        <div class="faq" data-reveal>
+          <details><summary>Muss ich reservieren?<span class="pm"></span></summary><div class="ans">Am Wochenende empfehlen wir eine Reservation dringend. Unter der Woche findest du meist spontan eine freie Bahn – sicher ist sicher mit einer kurzen Online-Anfrage.</div></details>
+          <details><summary>Sind Schuhe wirklich inklusive?<span class="pm"></span></summary><div class="ans">Ja. Der Leih von Bowling-Schuhen ist bei jedem Tarif inbegriffen. Wir desinfizieren jedes Paar nach Gebrauch. Eigene Schuhe sind selbstverständlich erlaubt.</div></details>
+          <details><summary>Ist das Center für Kinder geeignet?<span class="pm"></span></summary><div class="ans">Absolut. Wir haben aufstellbare Bumper-Banden, leichtere Kugeln und eine Aufstiegs-Rampe für die Kleinsten. Familien sind bis 20:00 Uhr herzlich willkommen.</div></details>
+          <details><summary>Kann ich an der Bahn essen &amp; trinken?<span class="pm"></span></summary><div class="ans">Ja, unser Service bringt dir Getränke, Burger, Nachos &amp; mehr direkt an die Bahn. Bestellen geht bequem über das Display.</div></details>
+          <details><summary>Habt ihr Parkplätze?<span class="pm"></span></summary><div class="ans">Direkt am Center stehen kostenlose Gästeparkplätze zur Verfügung. Das Tram Nr. 4 hält zudem 2 Gehminuten entfernt.</div></details>
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="kontakt">
+      <div class="wrap">
+        <div class="sec-head" data-reveal>
+          <p class="eyebrow">Reservation</p>
+          <h2 class="title display">Bahn reservieren</h2>
+          <p class="lead" style="margin-top:1rem">Sag uns wann &amp; mit wie vielen – wir bestätigen innert weniger Minuten.</p>
+        </div>
+        <div class="contact-grid">
+          <div data-reveal>
+            <div class="info-card">
+              <span class="ic"><svg class="icon" viewBox="0 0 24 24"><path d="M21 10c0 7-9 12-9 12s-9-5-9-12a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></span>
+              <div><h4>Adresse</h4><p>Bowlingstrasse 12<br>8000 Zürich</p></div>
+            </div>
+            <div class="info-card">
+              <span class="ic"><svg class="icon" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg></span>
+              <div><h4>Telefon</h4><p><a href="tel:+41441234567">+41 44 123 45 67</a></p></div>
+            </div>
+            <div class="info-card" style="flex-direction:column;gap:.4rem">
+              <div style="display:flex;gap:1rem;align-items:center;width:100%"><span class="ic"><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span><h4 style="margin:0">Öffnungszeiten</h4></div>
+              <div style="width:100%;margin-top:.4rem">
+                <div class="hours"><span class="d">Mo – Fr</span><span>14:00 – 23:00</span></div>
+                <div class="hours today"><span class="d">Sa – So</span><span>10:00 – 24:00</span></div>
+              </div>
+            </div>
+          </div>
+          <form data-reveal data-d="1" id="resForm" novalidate>
+            <div class="frow">
+              <div><label for="n">Name</label><input id="n" type="text" placeholder="Vor- &amp; Nachname" required></div>
+              <div><label for="e">E-Mail</label><input id="e" type="email" placeholder="name@mail.ch" required></div>
+            </div>
+            <div class="frow">
+              <div><label for="d">Datum &amp; Zeit</label><input id="d" type="text" placeholder="z.B. Sa 20:00"></div>
+              <div><label for="p">Personen</label><input id="p" type="number" min="1" value="4"></div>
+            </div>
+            <div><label for="m">Nachricht</label><textarea id="m" placeholder="Anzahl Bahnen, Kindergeburtstag, besondere Wünsche …"></textarea></div>
+            <button type="submit" class="btn btn-primary" style="width:100%">Reservation anfragen</button>
+            <div class="ok-msg" id="okMsg">✓ Danke! Das ist eine Demo – in der echten Version landet diese Anfrage direkt im Postfach des Centers.</div>
+            <p class="form-note">Demo-Formular · es werden keine Daten gesendet.</p>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
 
   <footer>
-    <div class="container">
-      <div class="footer-inner">
-        <span class="footer-brand">Strike Zone</span>
-        <p class="footer-copy">&copy; 2026 Strike Zone Bowling Center, Zürich</p>
+    <div class="wrap">
+      <div class="foot-grid">
+        <div class="foot-brand">
+          <a class="brand" href="#top"><span class="mark"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="13" r="8" fill="#1a0c02"/><circle cx="9.4" cy="10.6" r="1.15" fill="#ff9248"/><circle cx="13" cy="9.6" r="1.15" fill="#ff9248"/><circle cx="12.6" cy="13.2" r="1.15" fill="#ff9248"/></svg></span><span><b>Strike Zone</b><small>Bowling · Zürich</small></span></a>
+          <p>Zürichs Bowling-Center für Feierabend, Familie &amp; Firmenanlässe. Seit 2009.</p>
+        </div>
+        <div class="foot-col"><h5>Center</h5><a href="#center">Bahnen</a><a href="#galerie">Galerie</a><a href="#preise">Preise</a><a href="#events">Events</a></div>
+        <div class="foot-col"><h5>Kontakt</h5><a href="tel:+41441234567">+41 44 123 45 67</a><a href="mailto:info@strikezone.ch">info@strikezone.ch</a><p>Bowlingstrasse 12<br>8000 Zürich</p></div>
+        <div class="foot-col"><h5>Öffnungszeiten</h5><p>Mo–Fr 14–23 Uhr</p><p>Sa–So 10–24 Uhr</p></div>
       </div>
-      <p class="footer-note">
-        Diese Website ist ein Demo-Projekt von <a href="../../index.html">MASESites</a>.
-        Echte Website ab CHF 750. <a href="../../kontakt.html">Jetzt anfragen →</a>
-      </p>
+      <div class="foot-bottom">
+        <span>© 2026 Strike Zone Bowling Center, Zürich</span>
+        <span>Impressum · Datenschutz</span>
+      </div>
+      <p class="demo-note">Diese Website ist ein <strong>Demo-Projekt von MASESites</strong>. So könnte Ihre Website aussehen. <a href="../../kontakt.html">Jetzt eigene Website anfragen →</a></p>
     </div>
   </footer>
+
+  <div class="lb" id="lb"><button class="x" aria-label="Schliessen">×</button><img src="" alt=""></div>
+
+  <script>
+    // header scroll state
+    const nav=document.getElementById('nav');
+    addEventListener('scroll',()=>nav.classList.toggle('scrolled',scrollY>20),{passive:true});
+
+    // mobile menu
+    const burger=document.getElementById('burger'),mm=document.getElementById('mobileMenu'),scrim=document.getElementById('scrim');
+    function toggleMenu(open){burger.classList.toggle('open',open);mm.classList.toggle('open',open);scrim.classList.toggle('open',open);burger.setAttribute('aria-expanded',open);document.body.style.overflow=open?'hidden':''}
+    burger.addEventListener('click',()=>toggleMenu(!mm.classList.contains('open')));
+    scrim.addEventListener('click',()=>toggleMenu(false));
+    mm.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>toggleMenu(false)));
+
+    // reveal on scroll
+    const io=new IntersectionObserver((es)=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.12,rootMargin:'0px 0px -60px'});
+    document.querySelectorAll('[data-reveal]').forEach(el=>io.observe(el));
+
+    // count up stats
+    const cio=new IntersectionObserver((es)=>es.forEach(e=>{if(e.isIntersecting){const el=e.target,t=parseFloat(el.dataset.count),dec=+el.dataset.dec||0,suf=el.dataset.suffix||'';let s=0,step=t/40;const tick=()=>{s+=step;if(s>=t){el.textContent=t.toFixed(dec)+suf}else{el.textContent=s.toFixed(dec)+suf;requestAnimationFrame(tick)}};tick();cio.unobserve(el)}}),{threshold:.6});
+    document.querySelectorAll('[data-count]').forEach(el=>cio.observe(el));
+
+    // lightbox
+    const lb=document.getElementById('lb'),lbImg=lb.querySelector('img');
+    document.querySelectorAll('.gal a').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();lbImg.src=a.dataset.full;lb.classList.add('open');document.body.style.overflow='hidden'}));
+    function closeLb(){lb.classList.remove('open');document.body.style.overflow=''}
+    lb.addEventListener('click',closeLb);
+    addEventListener('keydown',e=>{if(e.key==='Escape'){closeLb();toggleMenu(false)}});
+
+    // demo form
+    document.getElementById('resForm').addEventListener('submit',e=>{e.preventDefault();document.getElementById('okMsg').style.display='block';e.target.querySelector('button').textContent='✓ Angefragt'});
+  </script>
 </body>
 </html>

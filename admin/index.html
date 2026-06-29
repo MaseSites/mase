@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MASE Admin Dashboard</title>
 <script src="../supabase-config.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js" integrity="sha384-OLBgp1GsljhM2TJ+sbHjaiH9txEUvgdDTAzHv2P24donTt6/529l+9Ua0vFImLlb" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js" crossorigin="anonymous"></script>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -115,7 +115,8 @@
   @media (max-width: 768px) { .charts-grid { grid-template-columns: 1fr; } }
   .chart-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; }
   .chart-title { font-weight: 600; margin-bottom: 16px; font-size: 14px; }
-  canvas { max-height: 240px; }
+  .chart-box { position: relative; height: 240px; }
+  .chart-box canvas { position: absolute; inset: 0; width: 100% !important; height: 100% !important; }
 
   /* ---- Feed ---- */
   .feed-list { padding: 0 4px; max-height: 400px; overflow-y: auto; }
@@ -230,9 +231,9 @@
           <div class="stat-sub">Unbearbeitet</div>
         </div>
         <div class="stat-card">
-          <div class="stat-label">Besucher heute</div>
+          <div class="stat-label">Seitenaufrufe heute</div>
           <div class="stat-value" id="stat-views-today">–</div>
-          <div class="stat-sub">Seitenaufrufe</div>
+          <div class="stat-sub" id="stat-views-today-sub">Heute gesamt</div>
         </div>
         <div class="stat-card">
           <div class="stat-label">Klicks heute</div>
@@ -330,6 +331,10 @@
 
     <!-- ---- ANALYTICS ---- -->
     <div class="view" id="view-analytics">
+      <div class="toolbar">
+        <div style="color:var(--muted);font-size:12px;flex:1">Aufrufe &amp; Klicks der echten Besucher. Zähler sind exakt (auch über 1000).</div>
+        <button class="del-all-btn" onclick="resetAnalytics()">&#128465; Analytics zurücksetzen</button>
+      </div>
       <div class="stats-grid" style="margin-bottom:20px">
         <div class="stat-card">
           <div class="stat-label">Seitenaufrufe gesamt</div>
@@ -352,19 +357,19 @@
       <div class="charts-grid">
         <div class="chart-wrap">
           <div class="chart-title">Top Seiten (Aufrufe)</div>
-          <canvas id="chart-pages"></canvas>
+          <div class="chart-box"><canvas id="chart-pages"></canvas></div>
         </div>
         <div class="chart-wrap">
           <div class="chart-title">Gerate-Typen</div>
-          <canvas id="chart-devices"></canvas>
+          <div class="chart-box"><canvas id="chart-devices"></canvas></div>
         </div>
         <div class="chart-wrap">
-          <div class="chart-title">Besucher letzte 7 Tage</div>
-          <canvas id="chart-trend"></canvas>
+          <div class="chart-title">Seitenaufrufe letzte 7 Tage</div>
+          <div class="chart-box"><canvas id="chart-trend"></canvas></div>
         </div>
         <div class="chart-wrap">
           <div class="chart-title">Top Button-Klicks</div>
-          <canvas id="chart-clicks"></canvas>
+          <div class="chart-box"><canvas id="chart-clicks"></canvas></div>
         </div>
       </div>
 
@@ -509,6 +514,15 @@
       document.querySelectorAll('.view').forEach(function (v) { v.classList.remove('active'); });
       btn.classList.add('active');
       document.getElementById('view-' + btn.dataset.view).classList.add('active');
+      // Charts are created while the Analytics view is hidden (0px). Resize them
+      // once the view becomes visible so they actually paint.
+      if (btn.dataset.view === 'analytics') {
+        setTimeout(function () {
+          Object.keys(charts).forEach(function (k) {
+            try { charts[k].resize(); } catch (e) {}
+          });
+        }, 50);
+      }
     });
   });
 
@@ -525,6 +539,41 @@
       if (!r.ok) return Promise.reject(r.status);
       return r.json();
     });
+  }
+
+  // ---- Query that also returns the EXACT total row count ----
+  // The server forwards PostgREST's Content-Range header (e.g. 0-24/6778), so the
+  // total is correct even when only a sample of rows is returned (>1000 cap).
+  // Returns { rows: [...], total: <number|null> }.
+  function queryWithCount(table, params) {
+    var url = API_BASE + '/api/admin/data/' + table;
+    if (params) url += '?' + params;
+    return fetch(url, {
+      headers: {
+        'Authorization': 'Bearer ' + ADMIN_TOKEN,
+        'Content-Type': 'application/json',
+        'X-Count': 'exact'
+      }
+    }).then(function (r) {
+      if (!r.ok) return Promise.reject(r.status);
+      var cr = r.headers.get('Content-Range') || '';
+      var total = null;
+      var slash = cr.lastIndexOf('/');
+      if (slash !== -1) {
+        var n = parseInt(cr.slice(slash + 1), 10);
+        if (!isNaN(n)) total = n;
+      }
+      return r.json().then(function (rows) {
+        rows = rows || [];
+        return { rows: rows, total: total === null ? rows.length : total };
+      });
+    });
+  }
+
+  // ---- Number formatter (de-CH thousands separator) ----
+  function fmtNum(n) {
+    if (n === null || n === undefined || isNaN(n)) return '–';
+    return Number(n).toLocaleString('de-CH');
   }
 
   function updateStatus(key, val) {
@@ -599,6 +648,12 @@
     if (!window.confirm('ALLE Termine unwiderruflich löschen?\nDas kann NICHT rückgängig gemacht werden.')) return;
     deleteAll('mase_appointments').then(loadKalender).catch(delErr);
   };
+  window.resetAnalytics = function () {
+    if (!window.confirm('Alle Analytics-Daten (Seitenaufrufe & Klicks) unwiderruflich löschen?\nLeads, Chats und Termine bleiben erhalten.')) return;
+    Promise.all([ deleteAll('mase_page_views'), deleteAll('mase_events') ])
+      .then(function () { loadOverview(); loadAnalytics(); })
+      .catch(delErr);
+  };
 
   // ---- Date helpers ----
   function todayUTC() {
@@ -639,21 +694,24 @@
   // ================================================================
   function loadOverview() {
     var today = todayUTC();
+    var since = 'created_at=gte.' + today + 'T00:00:00Z';
     Promise.all([
-      query('mase_chat_messages', 'created_at=gte.' + today + 'T00:00:00Z&select=id'),
-      query('mase_leads', 'status=eq.new&select=id'),
-      query('mase_page_views', 'created_at=gte.' + today + 'T00:00:00Z&select=id,time_on_page,scroll_depth'),
-      query('mase_events', 'created_at=gte.' + today + 'T00:00:00Z&select=id'),
-      // Activity feed — latest 30 across all tables
+      // Exact "today" counts (Content-Range total, not capped array length)
+      queryWithCount('mase_chat_messages', since + '&select=id&limit=1'),
+      queryWithCount('mase_leads', 'status=eq.new&select=id&limit=1'),
+      queryWithCount('mase_page_views', since + '&select=time_on_page,scroll_depth&order=created_at.desc&limit=1000'),
+      queryWithCount('mase_events', since + '&select=id&limit=1'),
+      // Activity feed — latest across all tables
       query('mase_page_views', 'order=created_at.desc&limit=15&select=session_id,page_url,created_at,device_type'),
       query('mase_chat_messages', 'order=created_at.desc&limit=15&select=session_id,role,message,created_at'),
       query('mase_events', 'order=created_at.desc&limit=15&select=session_id,event_type,event_label,created_at'),
       query('mase_leads', 'order=created_at.desc&limit=10&select=id,email,service_interest,category,created_at')
     ]).then(function (results) {
-      var chatsToday = results[0].length || 0;
-      var leadsNew   = results[1].length || 0;
-      var views      = results[2] || [];
-      var clicks     = results[3].length || 0;
+      var chatsToday = results[0].total || 0;
+      var leadsNew   = results[1].total || 0;
+      var viewsTotal = results[2].total || 0;
+      var views      = results[2].rows || [];   // sample for averages
+      var clicks     = results[3].total || 0;
       var pvFeed     = results[4] || [];
       var cmFeed     = results[5] || [];
       var evFeed     = results[6] || [];
@@ -662,10 +720,10 @@
       var avgTime   = views.length ? Math.round(views.reduce(function(a,v){return a+(v.time_on_page||0);},0)/views.length) : 0;
       var avgScroll = views.length ? Math.round(views.reduce(function(a,v){return a+(v.scroll_depth||0);},0)/views.length) : 0;
 
-      document.getElementById('stat-chats-today').textContent = chatsToday;
-      document.getElementById('stat-leads-new').textContent   = leadsNew;
-      document.getElementById('stat-views-today').textContent = views.length;
-      document.getElementById('stat-clicks-today').textContent = clicks;
+      document.getElementById('stat-chats-today').textContent = fmtNum(chatsToday);
+      document.getElementById('stat-leads-new').textContent   = fmtNum(leadsNew);
+      document.getElementById('stat-views-today').textContent = fmtNum(viewsTotal);
+      document.getElementById('stat-clicks-today').textContent = fmtNum(clicks);
       document.getElementById('stat-avg-time').textContent    = avgTime + 's';
       document.getElementById('stat-avg-scroll').textContent  = avgScroll + '%';
 
@@ -885,18 +943,20 @@
   // ================================================================
   function loadAnalytics() {
     Promise.all([
-      query('mase_page_views', 'select=session_id,page_url,page_title,time_on_page,scroll_depth,device_type,referrer,created_at&limit=2000&order=created_at.desc'),
-      query('mase_events', 'select=event_type,event_label,created_at&limit=2000&order=created_at.desc')
+      queryWithCount('mase_page_views', 'select=session_id,page_url,page_title,time_on_page,scroll_depth,device_type,referrer,created_at&limit=1000&order=created_at.desc'),
+      queryWithCount('mase_events', 'select=event_type,event_label,created_at&limit=1000&order=created_at.desc')
     ]).then(function (results) {
-      var views  = results[0] || [];
-      var events = results[1] || [];
+      var views      = results[0].rows || [];   // recent sample for charts/table
+      var viewsTotal = results[0].total || 0;    // exact total (beyond 1000)
+      var events     = results[1].rows || [];
+      var eventsTotal= results[1].total || 0;
 
-      // Stats
+      // Stats — totals are exact; sessions/mobile use the recent sample
       var sessions = new Set(views.map(function(v){return v.session_id;}));
       var mobile   = views.filter(function(v){return v.device_type==='mobile';}).length;
-      document.getElementById('anl-total-views').textContent = views.length;
-      document.getElementById('anl-sessions').textContent    = sessions.size;
-      document.getElementById('anl-events').textContent      = events.length;
+      document.getElementById('anl-total-views').textContent = fmtNum(viewsTotal);
+      document.getElementById('anl-sessions').textContent    = fmtNum(sessions.size);
+      document.getElementById('anl-events').textContent      = fmtNum(eventsTotal);
       document.getElementById('anl-mobile').textContent      = views.length ? Math.round(mobile/views.length*100)+'%' : '–';
 
       // Page counts
@@ -989,13 +1049,18 @@
   function renderChart(id, type, data, horizontal) {
     var ctx = document.getElementById(id);
     if (!ctx) return;
+    if (typeof Chart === 'undefined') {
+      var box = ctx.parentElement;
+      if (box) box.innerHTML = '<div style="color:var(--muted);font-size:12px;text-align:center;padding-top:96px">Diagramm-Bibliothek nicht erreichbar.</div>';
+      return;
+    }
     if (charts[id]) { charts[id].destroy(); }
     charts[id] = new Chart(ctx, {
       type: type,
       data: data,
       options: {
         responsive: true,
-        maintainAspectRatio: true,
+        maintainAspectRatio: false,
         indexAxis: horizontal ? 'y' : 'x',
         plugins: { legend: { labels: { color: '#94a3b8', font: { size: 11 } } } },
         scales: type === 'doughnut' ? {} : {

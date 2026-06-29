@@ -79,7 +79,7 @@
   }
   </script>
 
-  <link rel="stylesheet" href="/styles.css?v=20260614a">
+  <link rel="stylesheet" href="/styles.css?v=20260628a">
   <link rel="stylesheet" href="/ai-assistant.css?v=20260613a">
   <script>
     (function () {
@@ -135,50 +135,41 @@
 
   <main id="main">
 
-    <!-- Hero -->
-    <section class="hero" aria-labelledby="hero-title">
-      <div class="container">
-        <div class="hero-top">
-          <div class="hero-copy" data-reveal>
-            <p class="hero-eyebrow" data-i18n="hero_eyebrow">Webdesign &amp; KI-Integration · Schweiz</p>
-            <h1 id="hero-title" data-i18n-html="hero_title_html">Websites, die <span class="serif-accent">verkaufen</span>.</h1>
-            <p class="lead" data-i18n="hero_lead">Klar strukturiert, schnell geladen, auf Anfragen ausgelegt.</p>
-            <div class="hero-cta-row">
-              <a class="button button-primary" href="kontakt.html" data-i18n="hero_cta_primary">Erstgespräch vereinbaren</a>
-              <a class="arrow-link" href="leistungen.html" data-i18n="hero_cta_secondary">Leistungen ansehen</a>
-            </div>
-            <p class="hero-note" data-i18n="hero_note">Kostenlos · Antwort innert 24 Stunden.</p>
-          </div>
+    <!-- Hero: immersives Vorhang-Intro -->
+    <section class="hero-curtain" aria-labelledby="hero-title">
+      <div class="curtain-sticky">
+        <div class="curtain-grid" aria-hidden="true"></div>
+        <div class="curtain-glow" aria-hidden="true"></div>
 
-          <div class="hero-mark" id="hero-mark" aria-hidden="true">
-            <svg class="hero-mark-svg" viewBox="0 0 460 132" xmlns="http://www.w3.org/2000/svg">
-              <text class="hm hm-outline" x="6" y="92">MASE<tspan class="hm-serif">Sites</tspan></text>
-              <text class="hm hm-fill" x="6" y="92">MASE<tspan class="hm-serif">Sites</tspan></text>
-            </svg>
-            <span class="hero-mark-rule" aria-hidden="true"></span>
-            <span class="hero-mark-caption">Webagentur · Schweiz · seit 2024</span>
+        <p class="hero-cover-eyebrow curtain-eyebrow"><span>Webagentur · Schweiz · seit 2024</span></p>
+
+        <div class="curtain-reveal">
+          <span class="reveal-kicker" data-i18n="hero_eyebrow">Webdesign &amp; KI-Integration · Schweiz</span>
+          <h1 id="hero-title" class="hero-cover-tagline" data-i18n-html="hero_title_html">Websites, die <span class="serif-accent">verkaufen</span>.</h1>
+          <p class="reveal-sub" data-i18n="hero_cover_sub">Schweizer Webagentur — klar, schnell, auf Anfragen gebaut.</p>
+          <div class="curtain-cta">
+            <a class="button button-primary" href="kontakt.html" data-i18n="hero_cta_primary">Erstgespräch vereinbaren</a>
+            <a class="arrow-link" href="leistungen.html" data-i18n="hero_cta_secondary">Leistungen ansehen</a>
           </div>
         </div>
 
-        <div class="fact-strip" data-reveal aria-label="Kennzahlen">
-          <div class="fact">
-            <span class="fact-value">30+</span>
-            <span class="fact-label" data-i18n="fact_1_label">Umgesetzte Websites</span>
-          </div>
-          <div class="fact">
-            <span class="fact-value">24 Std.</span>
-            <span class="fact-label" data-i18n="fact_2_label">Garantierte Antwortzeit</span>
-          </div>
-          <div class="fact">
-            <span class="fact-value">CHF 750</span>
-            <span class="fact-label" data-i18n="fact_3_label">Projektstart ab Festpreis</span>
-          </div>
-        </div>
+        <div class="curtain-half curtain-top" aria-hidden="true"><span class="curtain-word">MASE<em>Sites</em></span></div>
+        <span class="curtain-seam" aria-hidden="true"></span>
+        <div class="curtain-half curtain-bottom" aria-hidden="true"><span class="curtain-word">MASE<em>Sites</em></span></div>
+
+        <a class="hero-scroll-cue" href="#main-content" aria-label="Nach unten scrollen">
+          <span class="scroll-cue-label" data-i18n="hero_scroll_cue">Scrollen</span>
+          <svg width="20" height="30" viewBox="0 0 20 30" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <rect x="1" y="1" width="18" height="28" rx="9" stroke="currentColor" stroke-width="1.2"/>
+            <rect class="scroll-dot" x="9" y="6" width="2" height="6" rx="1" fill="currentColor"/>
+          </svg>
+        </a>
       </div>
     </section>
+    <div id="main-content"></div>
 
     <!-- Arbeitsweise -->
-    <section aria-labelledby="trust-title">
+    <section class="section-world-enter" aria-labelledby="trust-title">
       <div class="container" data-reveal>
         <div class="kicker">
           <span class="kicker-num">01</span>

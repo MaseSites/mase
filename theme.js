@@ -35,6 +35,8 @@
       // Startseite — Hero
       hero_eyebrow:    'Webdesign & KI-Integration · Schweiz',
       hero_title_html: 'Websites, die <span class="serif-accent">verkaufen</span>.',
+      hero_cover_sub:  'Schweizer Webagentur — klar, schnell, auf Anfragen gebaut.',
+      hero_scroll_cue: 'Scrollen',
       hero_lead:       'Wir gestalten und entwickeln Websites für Unternehmen, die online ernst genommen werden wollen — klar strukturiert, technisch sauber und auf Anfragen ausgelegt.',
       hero_cta_primary: 'Erstgespräch vereinbaren',
       hero_cta_secondary: 'Leistungen ansehen',
@@ -441,6 +443,8 @@
       // Home — Hero
       hero_eyebrow:    'Web design & AI integration · Switzerland',
       hero_title_html: 'Websites that <span class="serif-accent">sell</span>.',
+      hero_cover_sub:  'Swiss web agency — clear, fast, built to convert.',
+      hero_scroll_cue: 'Scroll',
       hero_lead:       'We design and build websites for businesses that want to be taken seriously online — clearly structured, technically sound, and built to generate enquiries.',
       hero_cta_primary: 'Book a consultation',
       hero_cta_secondary: 'View services',

@@ -3,417 +3,425 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Nails &amp; Co. – Nagelstudio – Demo</title>
+  <title>Nails &amp; Co. · Premium Nagelstudio Basel</title>
+  <meta name="description" content="Nails &amp; Co. – Premium Nagelstudio in Basel. Gel-Nägel, Nail Art, Maniküre &amp; Pediküre. Termin online buchen. Seit 2015.">
   <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#fffafb">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    :root {
-      --rose: #be185d;
-      --rose-light: #f472b6;
-      --rose-pale: #fdf2f8;
-      --gold: #b8860b;
-      --gold-light: #d4af37;
-      --bg: #fffbfe;
-      --surface: #fdf2f8;
-      --text: #1a1a1a;
-      --muted: #6b7280;
-      --border: #f0d6e8;
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --bg:#fffafb; --soft:#fdf1f4; --soft2:#fbe7ee; --card:#ffffff;
+      --ink:#2c1b24; --body:#6c5860; --muted:#9c8891; --dim:#b9a6ae;
+      --rose:#c4456e; --rose-deep:#a32f57; --rose-soft:#fbe4ec;
+      --gold:#bd8c3c; --gold-soft:#f6ecda;
+      --line:#f2dde5; --line2:#e8cdd8;
+      --shadow:0 26px 64px rgba(196,69,110,.14); --shadow-sm:0 10px 30px rgba(196,69,110,.09);
+      --rad:14px; --rad-lg:22px; --wrap:1140px;
     }
-    body { font-family: 'Lato', sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; font-weight: 300; }
-    h1, h2, h3 { font-family: 'Playfair Display', Georgia, serif; font-weight: 600; }
-    a { color: var(--rose); text-decoration: none; }
-    .container { max-width: 1100px; margin: 0 auto; padding: 0 1.5rem; }
-    .btn { display: inline-block; padding: 0.85rem 2rem; border-radius: 4px; font-weight: 700; font-family: 'Lato', sans-serif; font-size: 0.875rem; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; transition: all .25s; border: none; }
-    .btn-primary { background: var(--rose); color: #fff; }
-    .btn-primary:hover { background: var(--rose-light); }
-    .btn-outline { background: transparent; color: var(--rose); border: 1.5px solid var(--rose); }
-    .btn-outline:hover { background: var(--rose); color: #fff; }
-    .btn-gold { background: var(--gold-light); color: #fff; }
+    html{scroll-behavior:smooth}
+    body{font-family:'Jost',system-ui,sans-serif;background:var(--bg);color:var(--body);line-height:1.75;font-weight:300;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+    a{color:inherit;text-decoration:none}
+    h1,h2,h3,h4{font-family:'Cormorant Garamond',Georgia,serif;color:var(--ink);font-weight:600;line-height:1.1;letter-spacing:.01em}
+    .serif-i{font-style:italic;color:var(--rose);font-weight:500}
+    img{display:block;max-width:100%}
+    .wrap{width:min(100% - 2.6rem,var(--wrap));margin-inline:auto}
+    .eyebrow{display:inline-block;color:var(--gold);font-family:'Jost';font-size:.72rem;font-weight:500;text-transform:uppercase;letter-spacing:.28em;margin-bottom:1rem}
+    h2.title{font-size:clamp(2.3rem,4.6vw,3.5rem);font-weight:600;letter-spacing:0}
+    .lead{color:var(--muted);font-size:1.08rem;max-width:54ch;font-weight:300}
+    .icon{width:1.25em;height:1.25em;stroke:currentColor;fill:none;stroke-width:1.4;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
 
-    .back-bar { background: var(--surface); padding: 0.5rem 1.5rem; font-size: 0.8rem; border-bottom: 1px solid var(--border); }
-    .back-bar a { color: var(--muted); }
-    .back-bar a:hover { color: var(--rose); }
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;padding:.92rem 2rem;border-radius:999px;font-family:'Jost';font-weight:500;font-size:.8rem;text-transform:uppercase;letter-spacing:.14em;cursor:pointer;border:1px solid transparent;transition:transform .25s,background .25s,box-shadow .25s,color .25s,border-color .25s;white-space:nowrap}
+    .btn-primary{background:var(--rose);color:#fff;box-shadow:0 12px 30px rgba(196,69,110,.28)}
+    .btn-primary:hover{background:var(--rose-deep);transform:translateY(-2px);box-shadow:0 18px 38px rgba(196,69,110,.38)}
+    .btn-ghost{background:transparent;color:var(--rose);border-color:var(--line2)}
+    .btn-ghost:hover{border-color:var(--rose);transform:translateY(-2px)}
+    .btn-gold{background:linear-gradient(135deg,#cf9b46,#e7c479);color:#3a2a0c}
+    .btn-gold:hover{transform:translateY(-2px);box-shadow:0 16px 34px rgba(189,140,60,.34)}
 
-    nav.site-nav { background: rgba(255,251,254,0.95); backdrop-filter: blur(8px); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 100; }
-    .nav-inner { display: flex; align-items: center; justify-content: space-between; padding: 1.25rem 1.5rem; max-width: 1100px; margin: 0 auto; }
-    .nav-logo { font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 700; color: var(--rose); letter-spacing: 0.02em; }
-    .nav-logo small { font-family: 'Lato', sans-serif; font-size: 0.7rem; font-weight: 400; color: var(--gold); display: block; text-transform: uppercase; letter-spacing: 0.15em; }
-    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
-    .nav-links a { color: var(--muted); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.08em; transition: color .2s; }
-    .nav-links a:hover { color: var(--rose); }
+    .back-bar{background:var(--soft);border-bottom:1px solid var(--line);font-size:.78rem}
+    .back-bar .wrap{display:flex;gap:.7rem;align-items:center;padding:.5rem 0;color:var(--muted)}
+    .back-bar a{color:var(--rose);font-weight:500} .back-bar .sep{opacity:.4}
 
-    .hero { min-height: 90vh; display: grid; grid-template-columns: 1fr 1fr; }
-    .hero-left { display: flex; flex-direction: column; justify-content: center; padding: 6rem 4rem 6rem 0; }
-    .hero-right { background: linear-gradient(160deg, #fbe3ef, var(--rose-pale)); display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; padding: 2rem; }
-    .hero-right::before { content: ''; position: absolute; inset: 0; background: radial-gradient(circle at 65% 35%, rgba(190,24,93,.1) 0%, transparent 65%); }
-    .hero-right::after { content: ''; position: absolute; width: 320px; height: 320px; border: 1px solid rgba(190,24,93,.18); border-radius: 50%; right: -90px; bottom: -90px; }
+    header.nav{position:sticky;top:0;z-index:60;background:rgba(255,250,251,.8);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid transparent;transition:.3s}
+    header.nav.scrolled{background:rgba(255,250,251,.96);border-bottom-color:var(--line);box-shadow:0 4px 22px rgba(196,69,110,.06)}
+    .nav-in{display:flex;align-items:center;justify-content:space-between;padding:1.05rem 0}
+    .brand{line-height:1}
+    .brand b{font-family:'Cormorant Garamond',serif;font-size:1.7rem;font-weight:600;color:var(--rose);letter-spacing:.01em;display:block}
+    .brand small{font-family:'Jost';font-size:.62rem;font-weight:400;letter-spacing:.22em;color:var(--gold);text-transform:uppercase}
+    .nav-links{display:flex;align-items:center;gap:2.4rem}
+    .nav-links a{color:var(--body);font-size:.78rem;font-weight:400;text-transform:uppercase;letter-spacing:.14em;transition:color .2s}
+    .nav-links a:hover{color:var(--rose)}
+    .nav-cta{display:flex;align-items:center;gap:1rem}
+    .burger{display:none;width:44px;height:44px;border:1px solid var(--line2);border-radius:11px;background:#fff;cursor:pointer;flex-direction:column;gap:5px;align-items:center;justify-content:center}
+    .burger span{width:20px;height:1.5px;background:var(--ink);transition:.3s}
+    .burger.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg)}.burger.open span:nth-child(2){opacity:0}.burger.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg)}
+    .mobile-menu{position:fixed;inset:0 0 0 auto;width:min(86vw,320px);background:#fff;border-left:1px solid var(--line);z-index:70;transform:translateX(100%);transition:transform .35s cubic-bezier(.4,0,.1,1);padding:5.5rem 1.8rem 2rem;display:flex;flex-direction:column;gap:.2rem}
+    .mobile-menu.open{transform:none}
+    .mobile-menu a{padding:1rem .3rem;font-size:.95rem;text-transform:uppercase;letter-spacing:.12em;color:var(--ink);border-bottom:1px solid var(--line)}
+    .mobile-menu .btn{margin-top:1.4rem}
+    .scrim{position:fixed;inset:0;background:rgba(44,27,36,.35);opacity:0;visibility:hidden;transition:.3s;z-index:65}
+    .scrim.open{opacity:1;visibility:visible}
 
-    /* Hero booking card */
-    .hero-card { position: relative; z-index: 1; width: 100%; max-width: 340px; background: rgba(255,255,255,.92); backdrop-filter: blur(6px); border: 1px solid #fff; border-radius: 18px; padding: 1.6rem; box-shadow: 0 28px 60px rgba(190,24,93,.18); }
-    .hc-head { display: flex; align-items: center; gap: 0.8rem; margin-bottom: 1.1rem; }
-    .hc-mono { width: 46px; height: 46px; border-radius: 50%; background: linear-gradient(135deg, var(--rose), var(--rose-light)); color: #fff; font-family: 'Playfair Display', serif; font-weight: 700; font-size: 1.1rem; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-    .hc-head-info { flex: 1; }
-    .hc-head-info strong { display: block; font-family: 'Playfair Display', serif; font-size: 1rem; }
-    .hc-head-info span { font-size: 0.78rem; color: var(--muted); }
-    .hc-badge { background: #fce7f3; color: var(--rose); font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; padding: 0.3rem 0.6rem; border-radius: 999px; }
-    .hc-line { display: flex; justify-content: space-between; align-items: center; padding: 0.7rem 0; border-top: 1px solid var(--border); font-size: 0.88rem; }
-    .hc-line span:first-child { color: var(--muted); }
-    .hc-line strong { font-weight: 700; }
-    .hc-swatches { display: flex; gap: 0.5rem; margin: 1rem 0 0.3rem; }
-    .hc-swatches i { width: 26px; height: 26px; border-radius: 50%; border: 2px solid #fff; box-shadow: 0 2px 6px rgba(0,0,0,.12); }
-    .hc-cta { display: block; text-align: center; margin-top: 1.1rem; background: var(--rose); color: #fff; border-radius: 8px; padding: 0.7rem; font-weight: 700; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.08em; }
-    .hero-float { position: absolute; z-index: 2; left: 1rem; bottom: 2rem; background: #fff; border-radius: 12px; padding: 0.7rem 1rem; display: flex; align-items: center; gap: 0.6rem; box-shadow: 0 14px 34px rgba(190,24,93,.18); }
-    .hero-float .stars { color: var(--gold-light); font-size: 0.8rem; letter-spacing: 1px; }
-    .hero-float strong { display: block; font-size: 0.95rem; font-family: 'Playfair Display', serif; }
-    .hero-float span { font-size: 0.72rem; color: var(--muted); }
-    .hero-eyebrow { color: var(--gold); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.2em; margin-bottom: 1.5rem; font-family: 'Lato', sans-serif; }
-    .hero h1 { font-size: clamp(2.5rem, 5vw, 4.5rem); line-height: 1.1; margin-bottom: 1.5rem; color: var(--text); }
-    .hero h1 em { color: var(--rose); font-style: italic; }
-    .hero p { color: var(--muted); font-size: 1.05rem; margin-bottom: 2.5rem; max-width: 420px; }
-    .hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; }
+    /* hero */
+    .hero{position:relative;background:radial-gradient(800px 460px at 92% 0%,var(--soft2),transparent 60%),linear-gradient(180deg,var(--soft) 0%,var(--bg) 70%);padding:4rem 0 5rem;overflow:hidden}
+    .hero-grid{display:grid;grid-template-columns:1.02fr .98fr;gap:3.6rem;align-items:center}
+    .hero-pill{display:inline-flex;align-items:center;gap:.5rem;background:#fff;border:1px solid var(--line2);border-radius:999px;padding:.4rem 1rem;font-size:.72rem;text-transform:uppercase;letter-spacing:.16em;color:var(--rose);margin-bottom:1.6rem;box-shadow:var(--shadow-sm)}
+    .hero h1{font-size:clamp(2.8rem,5.6vw,4.6rem);font-weight:600;color:var(--ink);margin-bottom:1.3rem;line-height:1.04}
+    .hero p.sub{font-size:1.16rem;color:var(--body);max-width:32rem;margin-bottom:2.2rem;font-weight:300}
+    .hero-btns{display:flex;gap:1rem;flex-wrap:wrap}
+    .hero-meta{display:flex;gap:2.4rem;margin-top:2.6rem;flex-wrap:wrap}
+    .hero-meta .n{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:600;color:var(--rose);line-height:1}
+    .hero-meta .l{font-size:.78rem;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-top:.3rem}
+    .hero-media{position:relative}
+    .hero-media .ph{border-radius:200px 200px 18px 18px;overflow:hidden;box-shadow:var(--shadow);aspect-ratio:4/4.7}
+    .hero-media .ph img{width:100%;height:100%;object-fit:cover}
+    .hero-media .ring{position:absolute;width:160px;height:160px;border:1px solid var(--line2);border-radius:50%;right:-30px;top:-30px;z-index:-1}
+    .hero-card{position:absolute;left:-1.6rem;bottom:2.4rem;background:rgba(255,255,255,.92);backdrop-filter:blur(8px);border:1px solid #fff;border-radius:18px;padding:1.1rem 1.2rem;box-shadow:var(--shadow);display:flex;align-items:center;gap:.85rem}
+    .hero-card .swatches{display:flex}
+    .hero-card .swatches i{width:24px;height:24px;border-radius:50%;border:2px solid #fff;margin-left:-8px;box-shadow:0 2px 6px rgba(0,0,0,.1)}
+    .hero-card .swatches i:first-child{margin-left:0}
+    .hero-card b{font-family:'Cormorant Garamond',serif;font-size:1.05rem;color:var(--ink);display:block;line-height:1.1}
+    .hero-card span{font-size:.74rem;color:var(--muted)}
+    .hero-rating{position:absolute;right:-.6rem;top:1.8rem;background:#fff;border-radius:14px;padding:.7rem .95rem;box-shadow:var(--shadow);text-align:center}
+    .hero-rating .stars{color:var(--gold);font-size:.8rem;letter-spacing:1px}
+    .hero-rating b{font-family:'Cormorant Garamond',serif;font-size:1.2rem;color:var(--ink);display:block;line-height:1}
+    .hero-rating span{font-size:.66rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
 
-    .divider { text-align: center; padding: 3rem 0 1rem; }
-    .divider span { color: var(--rose-light); font-size: 1.5rem; letter-spacing: 0.5rem; }
+    .divider{display:flex;align-items:center;justify-content:center;gap:1rem;padding:2.6rem 0 0}
+    .divider .ln{height:1px;width:60px;background:var(--line2)}
+    .divider span{color:var(--gold);letter-spacing:.5rem;font-size:.9rem}
 
-    section { padding: 5rem 0; }
-    .section-eyebrow { color: var(--gold); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.2em; margin-bottom: 0.75rem; font-family: 'Lato', sans-serif; }
-    .section-title { font-size: 2.5rem; margin-bottom: 1rem; }
-    .section-lead { color: var(--muted); max-width: 550px; margin-bottom: 3rem; }
+    section{padding:6rem 0}
+    .sec-head{max-width:620px;margin-bottom:3.4rem}
+    .center{text-align:center;margin-inline:auto}
+    .soft-bg{background:var(--soft)}
 
-    .services-section { background: var(--surface); }
-    .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem; }
-    .service-card { background: var(--bg); border-radius: 12px; padding: 2rem; border: 1px solid var(--border); text-align: center; transition: box-shadow .25s; }
-    .service-card:hover { box-shadow: 0 8px 24px rgba(190,24,93,.1); transform: translateY(-3px); }
-    .service-icon { width: 56px; height: 56px; border-radius: 50%; background: var(--rose-pale); color: var(--rose); display: flex; align-items: center; justify-content: center; margin: 0 auto 1.2rem; }
-    .service-icon svg { width: 26px; height: 26px; stroke: currentColor; fill: none; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
-    .service-card h3 { font-size: 1.2rem; margin-bottom: 0.75rem; }
-    .service-card p { color: var(--muted); font-size: 0.9rem; margin-bottom: 1rem; }
-    .service-price { color: var(--rose); font-weight: 700; font-size: 0.95rem; }
+    /* services */
+    .svc-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:1.5rem}
+    .svc{background:var(--card);border:1px solid var(--line);border-radius:var(--rad-lg);padding:2.2rem;text-align:center;transition:transform .3s,box-shadow .3s}
+    .svc:hover{transform:translateY(-6px);box-shadow:var(--shadow)}
+    .svc .ic{width:64px;height:64px;border-radius:50%;background:var(--rose-soft);color:var(--rose);display:grid;place-items:center;margin:0 auto 1.3rem}
+    .svc .ic svg{width:28px;height:28px;stroke-width:1.3}
+    .svc h3{font-size:1.5rem;margin-bottom:.6rem}
+    .svc p{font-size:.92rem;color:var(--muted);margin-bottom:1rem;font-weight:300}
+    .svc .price{font-family:'Cormorant Garamond',serif;font-size:1.2rem;color:var(--rose);font-weight:600;font-style:italic}
 
-    .gallery-section { }
-    .gallery-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
-    .gallery-item { aspect-ratio: 1; border-radius: 12px; overflow: hidden; position: relative; box-shadow: 0 8px 22px rgba(190,24,93,.08); transition: transform .25s; }
-    .gallery-item:hover { transform: translateY(-4px) scale(1.02); }
-    .gallery-item::after { content: ''; position: absolute; inset: 0; background: radial-gradient(circle at 30% 22%, rgba(255,255,255,.55) 0%, transparent 42%); }
-    .gallery-item::before { content: ''; position: absolute; left: 0; right: 0; top: 0; height: 30%; background: rgba(255,255,255,.28); border-bottom: 2px solid rgba(255,255,255,.5); }
-    .g1 { background: linear-gradient(150deg, #be185d, #f472b6); }
-    .g2 { background: linear-gradient(150deg, #7c3aed, #c4b5fd); }
-    .g3 { background: linear-gradient(150deg, #b8860b, #f7d774); }
-    .g4 { background: linear-gradient(150deg, #0891b2, #67e8f9); }
-    .g5 { background: linear-gradient(150deg, #db2777, #fbcfe8); }
-    .g6 { background: linear-gradient(150deg, #9d174d, #f9a8d4); }
-    .g7 { background: linear-gradient(150deg, #c2410c, #fdba74); }
-    .g8 { background: linear-gradient(150deg, #4338ca, #a5b4fc); }
+    /* gallery */
+    .gal{display:grid;grid-template-columns:repeat(3,1fr);gap:1.1rem}
+    .gal a{position:relative;overflow:hidden;border-radius:var(--rad-lg);aspect-ratio:1;cursor:pointer;box-shadow:var(--shadow-sm)}
+    .gal a img{width:100%;height:100%;object-fit:cover;transition:transform .7s cubic-bezier(.2,.7,.2,1)}
+    .gal a:hover img{transform:scale(1.08)}
+    .gal a::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 55%,rgba(44,27,36,.4));opacity:0;transition:.3s}
+    .gal a:hover::after{opacity:1}
+    .gal a .vw{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) scale(.85);width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,.9);color:var(--rose);display:grid;place-items:center;opacity:0;transition:.3s}
+    .gal a:hover .vw{opacity:1;transform:translate(-50%,-50%) scale(1)}
 
-    .pricing-section { background: var(--surface); }
-    .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; }
-    .price-card { background: var(--bg); border-radius: 12px; padding: 2rem; border: 1px solid var(--border); }
-    .price-card.featured { border-color: var(--rose); background: linear-gradient(160deg, #fff, var(--rose-pale)); }
-    .price-card .price-name { font-family: 'Playfair Display', serif; font-size: 1.3rem; margin-bottom: 0.5rem; }
-    .price-card .price { font-size: 2.25rem; font-weight: 700; color: var(--rose); margin-bottom: 0.25rem; }
-    .price-card .price-note { font-size: 0.8rem; color: var(--muted); margin-bottom: 1.5rem; }
-    .price-card ul { list-style: none; }
-    .price-card ul li { padding: 0.4rem 0; border-bottom: 1px solid var(--border); font-size: 0.9rem; color: var(--muted); }
-    .price-card ul li::before { content: '✦ '; color: var(--rose-light); font-size: 0.7rem; }
-    .price-card ul li:last-child { border-bottom: none; }
+    /* packages */
+    .pkg-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.5rem}
+    .pkg{background:var(--card);border:1px solid var(--line);border-radius:var(--rad-lg);padding:2.4rem 2rem;text-align:center;transition:transform .3s,box-shadow .3s;position:relative}
+    .pkg:hover{transform:translateY(-6px);box-shadow:var(--shadow)}
+    .pkg.feat{border-color:var(--rose);background:linear-gradient(180deg,#fff,var(--rose-soft));box-shadow:var(--shadow)}
+    .pkg .tag{position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:var(--rose);color:#fff;font-size:.64rem;text-transform:uppercase;letter-spacing:.16em;padding:.35rem .9rem;border-radius:999px}
+    .pkg .pname{font-family:'Cormorant Garamond',serif;font-size:1.7rem;color:var(--ink);margin-bottom:.4rem}
+    .pkg .price{font-family:'Cormorant Garamond',serif;font-size:2.8rem;color:var(--rose);font-weight:600;line-height:1}
+    .pkg .price small{font-size:1rem;color:var(--muted)}
+    .pkg .note{font-size:.84rem;color:var(--muted);margin-bottom:1.6rem}
+    .pkg ul{list-style:none;text-align:left;margin-bottom:1.8rem;display:flex;flex-direction:column;gap:.7rem}
+    .pkg li{display:flex;gap:.6rem;align-items:flex-start;font-size:.92rem;color:var(--body)}
+    .pkg li svg{width:17px;height:17px;color:var(--gold);margin-top:.25rem;flex-shrink:0}
 
-    .booking-section { }
-    .booking-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
-    .booking-info h2 { margin-bottom: 1rem; }
-    .booking-info p { color: var(--muted); margin-bottom: 1rem; }
-    .contact-detail { display: flex; align-items: center; gap: 1rem; padding: 1rem 0; border-bottom: 1px solid var(--border); }
-    .contact-detail .icon { width: 42px; height: 42px; border-radius: 50%; background: var(--rose-pale); color: var(--rose); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-    .contact-detail .icon svg { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
-    .contact-detail div { }
-    .contact-detail strong { display: block; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); }
-    .contact-detail a, .contact-detail span { color: var(--text); font-size: 1rem; }
-    .booking-form { display: flex; flex-direction: column; gap: 1rem; }
-    .booking-form input, .booking-form select, .booking-form textarea {
-      background: var(--bg); border: 1px solid var(--border); border-radius: 6px;
-      padding: 0.875rem 1rem; color: var(--text); font-size: 0.95rem; font-family: 'Lato', sans-serif; width: 100%;
+    /* about split */
+    .split{display:grid;grid-template-columns:1.02fr .98fr;gap:3.8rem;align-items:center}
+    .split .media{border-radius:var(--rad-lg);overflow:hidden;box-shadow:var(--shadow);position:relative}
+    .split .media img{width:100%;height:100%;object-fit:cover;aspect-ratio:4/3.6}
+    .checks{list-style:none;display:flex;flex-direction:column;gap:1rem;margin-top:1.8rem}
+    .checks li{display:flex;gap:.8rem;align-items:flex-start;color:var(--body)}
+    .checks li .c{color:var(--gold);flex-shrink:0;margin-top:.3rem}
+    .checks li b{color:var(--ink);font-weight:500}
+
+    /* testimonials */
+    .quotes{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:1.5rem}
+    .quote{background:var(--card);border:1px solid var(--line);border-radius:var(--rad-lg);padding:2rem;box-shadow:var(--shadow-sm)}
+    .quote .stars{color:var(--gold);letter-spacing:2px;margin-bottom:1rem}
+    .quote p{font-family:'Cormorant Garamond',serif;font-size:1.25rem;font-style:italic;color:var(--ink);margin-bottom:1.4rem;line-height:1.4}
+    .quote .who{display:flex;align-items:center;gap:.8rem}
+    .quote .who img{width:46px;height:46px;border-radius:50%;object-fit:cover}
+    .quote .who b{font-size:.9rem;color:var(--ink);font-weight:500;display:block}
+    .quote .who span{font-size:.78rem;color:var(--muted)}
+
+    /* booking */
+    .booking-grid{display:grid;grid-template-columns:1fr 1fr;gap:3.6rem;align-items:start}
+    .contact-row{display:flex;align-items:center;gap:1rem;padding:1.1rem 0;border-bottom:1px solid var(--line)}
+    .contact-row .ic{width:46px;height:46px;border-radius:50%;background:var(--rose-soft);color:var(--rose);display:grid;place-items:center;flex-shrink:0}
+    .contact-row .ic svg{width:20px;height:20px}
+    .contact-row strong{display:block;font-size:.72rem;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);font-weight:500}
+    .contact-row a,.contact-row span{color:var(--ink);font-size:1.02rem}
+    form{display:flex;flex-direction:column;gap:1rem;background:#fff;border:1px solid var(--line);border-radius:var(--rad-lg);padding:2.2rem;box-shadow:var(--shadow)}
+    form h3{font-size:1.7rem;margin-bottom:.3rem}
+    label{font-size:.72rem;font-weight:500;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:.4rem;display:block}
+    input,textarea,select{width:100%;background:var(--bg);border:1px solid var(--line2);border-radius:10px;padding:.85rem 1rem;color:var(--ink);font-size:.95rem;font-family:'Jost';font-weight:300;transition:border-color .2s,box-shadow .2s}
+    input:focus,textarea:focus,select:focus{outline:none;border-color:var(--rose);box-shadow:0 0 0 3px rgba(196,69,110,.14)}
+    textarea{resize:vertical;min-height:90px}
+    .ok-msg{display:none;background:var(--gold-soft);border:1px solid #e6d3a8;color:#8a6a1e;border-radius:10px;padding:.85rem 1rem;font-size:.9rem;text-align:center}
+    .form-note{font-size:.76rem;color:var(--dim);text-align:center}
+
+    footer{background:var(--ink);color:rgba(255,255,255,.66);padding:4.5rem 0 2rem}
+    .foot-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:3rem;margin-bottom:3rem}
+    .foot-brand b{font-family:'Cormorant Garamond',serif;font-size:1.8rem;color:#fff;display:block}
+    .foot-brand small{font-size:.62rem;letter-spacing:.22em;color:var(--gold);text-transform:uppercase}
+    .foot-brand p{margin-top:1rem;font-size:.92rem;max-width:30ch;font-weight:300}
+    .foot-col h5{font-family:'Jost';font-size:.72rem;text-transform:uppercase;letter-spacing:.16em;color:#e7c479;margin-bottom:1.1rem;font-weight:500}
+    .foot-col a,.foot-col p{display:block;color:rgba(255,255,255,.66);font-size:.9rem;margin-bottom:.6rem;font-weight:300}
+    .foot-col a:hover{color:#fff}
+    .foot-bottom{border-top:1px solid rgba(255,255,255,.12);padding-top:1.6rem;display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;color:rgba(255,255,255,.45);font-size:.82rem}
+    .demo-note{text-align:center;margin-top:1.4rem;padding:1rem;border:1px dashed rgba(255,255,255,.2);border-radius:12px;font-size:.84rem;color:rgba(255,255,255,.66)}
+    .demo-note a{color:#e7c479;font-weight:500}
+
+    .lb{position:fixed;inset:0;background:rgba(30,16,22,.92);z-index:90;display:none;align-items:center;justify-content:center;padding:2rem;cursor:zoom-out}
+    .lb.open{display:flex}.lb img{max-width:90vw;max-height:88vh;border-radius:16px;box-shadow:var(--shadow)}
+    .lb .x{position:absolute;top:1.4rem;right:1.6rem;width:46px;height:46px;border-radius:50%;border:1px solid rgba(255,255,255,.3);background:rgba(255,255,255,.1);color:#fff;font-size:1.4rem;cursor:pointer}
+
+    [data-reveal]{opacity:0;transform:translateY(26px);transition:opacity .8s cubic-bezier(.2,.7,.2,1),transform .8s cubic-bezier(.2,.7,.2,1)}
+    [data-reveal].in{opacity:1;transform:none}
+    [data-reveal][data-d="1"]{transition-delay:.08s}[data-reveal][data-d="2"]{transition-delay:.16s}[data-reveal][data-d="3"]{transition-delay:.24s}
+
+    @media(max-width:920px){
+      .nav-links,.nav-cta .btn{display:none}.burger{display:flex}
+      .hero-grid,.split,.booking-grid{grid-template-columns:1fr;gap:2.6rem}
+      .hero-media{max-width:420px;margin-inline:auto}
+      .gal{grid-template-columns:repeat(2,1fr)}
+      .foot-grid{grid-template-columns:1fr 1fr}
     }
-    .booking-form input:focus, .booking-form select:focus, .booking-form textarea:focus {
-      outline: 2px solid var(--rose-light); border-color: var(--rose-light);
-    }
-
-    footer { background: var(--text); color: #e5e7eb; padding: 4rem 0 2rem; }
-    .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 3rem; margin-bottom: 3rem; }
-    .footer-brand { font-family: 'Playfair Display', serif; font-size: 1.5rem; color: #fff; margin-bottom: 0.75rem; }
-    .footer-desc { font-size: 0.9rem; color: #9ca3af; max-width: 280px; }
-    .footer-col h4 { font-family: 'Lato', sans-serif; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--gold-light); margin-bottom: 1rem; }
-    .footer-col a { display: block; color: #9ca3af; font-size: 0.9rem; margin-bottom: 0.5rem; }
-    .footer-col a:hover { color: #fff; }
-    .footer-bottom { text-align: center; padding-top: 2rem; border-top: 1px solid #374151; color: #6b7280; font-size: 0.8rem; }
-    .footer-bottom a { color: var(--gold-light); }
-
-    @media (max-width: 768px) {
-      .nav-links { display: none; }
-      .hero { grid-template-columns: 1fr; min-height: auto; }
-      .hero-left { padding: 4rem 0 2rem; }
-      .hero-right { height: 250px; }
-      .gallery-grid { grid-template-columns: repeat(2, 1fr); }
-      .booking-grid { grid-template-columns: 1fr; }
-      .footer-grid { grid-template-columns: 1fr; }
-    }
-    @media (max-width: 560px) {
-      .nav-logo small { display: none; }
-      .nav-inner { padding: 1rem 1.1rem; }
-      .btn { padding: 0.7rem 1.2rem; }
-    }
+    @media(max-width:560px){section{padding:4.4rem 0}.foot-grid{grid-template-columns:1fr}.hero-meta{gap:1.6rem}}
+    @media(prefers-reduced-motion:reduce){*{animation-duration:.001s!important;transition-duration:.001s!important}[data-reveal]{opacity:1;transform:none}}
   </style>
 </head>
 <body>
-  <div class="back-bar">
-    <div class="container">
-      <a href="../../index.html">← Zurück zu MASESites.ch</a>
-      &nbsp;|&nbsp; <em>Demo-Website – erstellt von MASESites AG</em>
-    </div>
-  </div>
+  <div class="back-bar"><div class="wrap"><a href="../../index.html">← MASESites.ch</a><span class="sep">·</span><span>Demo-Projekt — so kann Ihre Website aussehen</span></div></div>
 
-  <nav class="site-nav">
-    <div class="nav-inner">
-      <div class="nav-logo">
-        Nails &amp; Co.
-        <small>Nagelstudio &middot; Basel</small>
-      </div>
-      <ul class="nav-links">
-        <li><a href="#leistungen">Leistungen</a></li>
-        <li><a href="#galerie">Galerie</a></li>
-        <li><a href="#preise">Preise</a></li>
-        <li><a href="#buchung">Buchung</a></li>
-      </ul>
-      <a href="#buchung" class="btn btn-primary">Termin buchen</a>
-    </div>
-  </nav>
-
-  <section class="hero">
-    <div class="hero-left container" style="max-width:none; padding-left: calc((100vw - 1100px) / 2 + 1.5rem);">
-      <p class="hero-eyebrow">Premium Nagelstudio in Basel</p>
-      <h1>Beauty ist<br>ein <em>Gefühl.</em></h1>
-      <p>Verwöhne dich mit erstklassiger Nagelpflege und Nageldesign. Wir kombinieren Qualität, Kreativität und Entspannung.</p>
-      <div class="hero-btns">
+  <header class="nav" id="nav">
+    <div class="wrap nav-in">
+      <a class="brand" href="#top" aria-label="Nails &amp; Co. Startseite"><b>Nails &amp; Co.</b><small>Nagelstudio · Basel</small></a>
+      <nav class="nav-links" aria-label="Hauptnavigation">
+        <a href="#leistungen">Leistungen</a><a href="#galerie">Galerie</a><a href="#preise">Preise</a><a href="#buchung">Kontakt</a>
+      </nav>
+      <div class="nav-cta">
         <a href="#buchung" class="btn btn-primary">Termin buchen</a>
-        <a href="#leistungen" class="btn btn-outline">Leistungen ansehen</a>
+        <button class="burger" id="burger" aria-label="Menü" aria-expanded="false"><span></span><span></span><span></span></button>
       </div>
     </div>
-    <div class="hero-right">
-      <div class="hero-card">
-        <div class="hc-head">
-          <span class="hc-mono">N</span>
-          <span class="hc-head-info">
-            <strong>Nails &amp; Co.</strong>
-            <span>Steinenvorstadt 22, Basel</span>
-          </span>
-          <span class="hc-badge">Frei</span>
-        </div>
-        <div class="hc-line"><span>Leistung</span><strong>Gel-Nägel &amp; Nail Art</strong></div>
-        <div class="hc-line"><span>Termin</span><strong>Sa, 14. Juni · 10:30</strong></div>
-        <div class="hc-line"><span>Dauer</span><strong>ca. 75 Min</strong></div>
-        <div class="hc-swatches">
-          <i style="background:#be185d"></i>
-          <i style="background:#f472b6"></i>
-          <i style="background:#d4af37"></i>
-          <i style="background:#9d174d"></i>
-          <i style="background:#fbcfe8"></i>
-        </div>
-        <span class="hc-cta">Termin bestätigen</span>
-      </div>
-      <div class="hero-float">
-        <span class="stars">★★★★★</span>
-        <div>
-          <strong>4.9 / 5</strong>
-          <span>320+ Bewertungen</span>
-        </div>
-      </div>
-    </div>
-  </section>
+  </header>
+  <div class="scrim" id="scrim"></div>
+  <aside class="mobile-menu" id="mobileMenu">
+    <a href="#leistungen">Leistungen</a><a href="#galerie">Galerie</a><a href="#preise">Preise</a><a href="#buchung">Kontakt</a>
+    <a href="#buchung" class="btn btn-primary">Termin buchen</a>
+  </aside>
 
-  <div class="divider">
-    <span>✦ &nbsp; ✦ &nbsp; ✦</span>
-  </div>
-
-  <section id="leistungen" class="services-section">
-    <div class="container">
-      <p class="section-eyebrow">Was wir anbieten</p>
-      <h2 class="section-title">Unsere Leistungen</h2>
-      <p class="section-lead">Von der klassischen Maniküre bis zum aufwendigen Nail-Art – für jeden Anlass das passende Design.</p>
-      <div class="services-grid">
-        <div class="service-card">
-          <div class="service-icon"><svg viewBox="0 0 24 24"><path d="M9 3c-1 1.2-1.5 3-1.5 6v8a3.5 3.5 0 0 0 7 0V9c0-3-.5-4.8-1.5-6"/><path d="M8 8.5c1.5.8 4.5.8 6 0M7.5 11h7"/></svg></div>
-          <h3>Gel-Nägel</h3>
-          <p>Langlebige Gel-Beschichtung, perfekte Oberfläche und strahlende Farben für bis zu 4 Wochen.</p>
-          <p class="service-price">ab CHF 65</p>
-        </div>
-        <div class="service-card">
-          <div class="service-icon"><svg viewBox="0 0 24 24"><path d="M12 3l1.8 4.5L18 9l-4.2 1.5L12 15l-1.8-4.5L6 9l4.2-1.5zM5 16l.8 2L8 19l-2.2.9L5 22l-.8-2.1L2 19l2.2-1zM18 14l.6 1.6L20 16l-1.4.6L18 18l-.6-1.4L16 16l1.4-.4z"/></svg></div>
-          <h3>Nail Art Design</h3>
-          <p>Von floralen Mustern bis zum geometrischen Design – unsere Künstlerinnen verwandeln deine Nägel in Kunst.</p>
-          <p class="service-price">ab CHF 25 zzgl.</p>
-        </div>
-        <div class="service-card">
-          <div class="service-icon"><svg viewBox="0 0 24 24"><path d="M12 2c1.5 2.5 1.5 4.5 0 7-1.5-2.5-1.5-4.5 0-7zM12 22c-1.5-2.5-1.5-4.5 0-7 1.5 2.5 1.5 4.5 0 7zM2 12c2.5-1.5 4.5-1.5 7 0-2.5 1.5-4.5 1.5-7 0zM22 12c-2.5 1.5-4.5 1.5-7 0 2.5-1.5 4.5-1.5 7 0z"/><circle cx="12" cy="12" r="2"/></svg></div>
-          <h3>Klassische Maniküre</h3>
-          <p>Nagelpflege, Formgebung, Cuticle-Behandlung und Hochglanz-Lack – zeitlos schön.</p>
-          <p class="service-price">ab CHF 35</p>
-        </div>
-        <div class="service-card">
-          <div class="service-icon"><svg viewBox="0 0 24 24"><path d="M7 13c-2 0-3-1.5-3-4 0-3.5 2.5-7 4-7 1 0 1.5 1 1.5 2.5C9.5 7 9 9 9 11M9 11c.5 2 2 3 4 3h2a4 4 0 0 1 0 8H9a4 4 0 0 1-4-4"/><path d="M11 5.5h.01M13.5 6.5h.01M15.5 8.5h.01"/></svg></div>
-          <h3>Pediküre</h3>
-          <p>Verwöhnende Fusspflege mit Peeling, Massage und Nagellack. Für zarte, gepflegte Füsse.</p>
-          <p class="service-price">ab CHF 55</p>
-        </div>
-        <div class="service-card">
-          <div class="service-icon"><svg viewBox="0 0 24 24"><path d="M12 2l3 5 5 1.5-3.5 4 .8 5.5L12 20l-5.3 2 .8-5.5L4 8.5 9 7z"/></svg></div>
-          <h3>Acryl-Extensions</h3>
-          <p>Für natürlich wirkende Verlängerungen mit Acryl. Individuell in Länge und Form.</p>
-          <p class="service-price">ab CHF 80</p>
-        </div>
-        <div class="service-card">
-          <div class="service-icon"><svg viewBox="0 0 24 24"><rect x="3" y="8" width="18" height="13" rx="1"/><path d="M3 12h18M12 8v13M12 8C9 8 7 6.5 7 5a2 2 0 0 1 5-1 2 2 0 0 1 5 1c0 1.5-2 3-5 3z"/></svg></div>
-          <h3>Braut-Package</h3>
-          <p>Komplette Nail-Vorbereitung für deinen besonderen Tag. Inkl. Beratung und Probe-Termin.</p>
-          <p class="service-price">ab CHF 150</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section id="galerie" class="gallery-section">
-    <div class="container">
-      <p class="section-eyebrow">Unsere Arbeiten</p>
-      <h2 class="section-title">Galerie</h2>
-      <div class="gallery-grid">
-        <div class="gallery-item g1"></div>
-        <div class="gallery-item g2"></div>
-        <div class="gallery-item g3"></div>
-        <div class="gallery-item g4"></div>
-        <div class="gallery-item g5"></div>
-        <div class="gallery-item g6"></div>
-        <div class="gallery-item g7"></div>
-        <div class="gallery-item g8"></div>
-      </div>
-    </div>
-  </section>
-
-  <section id="preise" class="pricing-section">
-    <div class="container">
-      <p class="section-eyebrow">Transparente Preise</p>
-      <h2 class="section-title">Pakete &amp; Preise</h2>
-      <div class="pricing-grid">
-        <div class="price-card">
-          <p class="price-name">Classic</p>
-          <p class="price">CHF 65</p>
-          <p class="price-note">Klassische Maniküre + Gel-Lack</p>
-          <ul>
-            <li>Nagelpflege &amp; Formgebung</li>
-            <li>Cuticle-Behandlung</li>
-            <li>Gel-Farblack</li>
-            <li>Hochglanz-Finish</li>
-          </ul>
-        </div>
-        <div class="price-card featured">
-          <p class="price-name">Premium</p>
-          <p class="price">CHF 95</p>
-          <p class="price-note">Gel-Nägel + Handmassage</p>
-          <ul>
-            <li>Vollständige Maniküre</li>
-            <li>Gel-Aufbau &amp; Formgebung</li>
-            <li>Handpflege &amp; Massage</li>
-            <li>Farbe nach Wahl</li>
-            <li>UV-Schutz Top Coat</li>
-          </ul>
-        </div>
-        <div class="price-card">
-          <p class="price-name">Luxury</p>
-          <p class="price">CHF 140</p>
-          <p class="price-note">Premium + Nail Art Design</p>
-          <ul>
-            <li>Alles aus Premium</li>
-            <li>Individuelles Nail Art</li>
-            <li>Strass oder Folien</li>
-            <li>Langzeit-Gel</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section id="buchung" class="booking-section">
-    <div class="container">
-      <div class="booking-grid">
-        <div class="booking-info">
-          <p class="section-eyebrow">Wir freuen uns auf dich</p>
-          <h2>Termin buchen</h2>
-          <p>Vereinbare deinen Wunschtermin online oder ruf uns an. Wir beraten dich gerne über die passenden Leistungen.</p>
-          <div class="contact-detail">
-            <span class="icon"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 12-9 12s-9-5-9-12a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></span>
-            <div><strong>Adresse</strong><span>Steinenvorstadt 22, 4051 Basel</span></div>
+  <main id="top">
+    <section class="hero">
+      <div class="wrap hero-grid">
+        <div data-reveal>
+          <span class="hero-pill">Premium Nagelstudio · Basel</span>
+          <h1>Schönheit liegt<br>im <span class="serif-i">Detail.</span></h1>
+          <p class="sub">Erstklassige Nagelpflege und kreatives Nageldesign in entspannter Atmosphäre. Damit du dich rundum wohlfühlst.</p>
+          <div class="hero-btns">
+            <a href="#buchung" class="btn btn-primary">Termin buchen</a>
+            <a href="#leistungen" class="btn btn-ghost">Leistungen</a>
           </div>
-          <div class="contact-detail">
-            <span class="icon"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg></span>
-            <div><strong>Telefon</strong><a href="tel:+41612345678">+41 61 234 56 78</a></div>
-          </div>
-          <div class="contact-detail">
-            <span class="icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span>
-            <div>
-              <strong>Öffnungszeiten</strong>
-              <span>Di–Fr 09:00–19:00, Sa 09:00–17:00</span>
-            </div>
+          <div class="hero-meta">
+            <div><div class="n">2015</div><div class="l">Seit</div></div>
+            <div><div class="n">6'000+</div><div class="l">Glückliche Kundinnen</div></div>
+            <div><div class="n">4.9★</div><div class="l">320+ Bewertungen</div></div>
           </div>
         </div>
-        <form class="booking-form" onsubmit="return false;">
-          <input type="text" placeholder="Dein Name *" required>
-          <input type="tel" placeholder="Telefon *" required>
-          <input type="email" placeholder="E-Mail">
-          <select>
-            <option>Leistung wählen...</option>
-            <option>Gel-Nägel</option>
-            <option>Klassische Maniküre</option>
-            <option>Nail Art Design</option>
-            <option>Pediküre</option>
-            <option>Acryl-Extensions</option>
-            <option>Braut-Package</option>
-          </select>
-          <input type="text" placeholder="Gewünschter Termin">
-          <textarea placeholder="Besondere Wünsche oder Anmerkungen..." rows="4"></textarea>
-          <button type="submit" class="btn btn-primary">Terminanfrage senden</button>
-          <p style="font-size:0.8rem; color:var(--muted);">Demo-Formular – keine echten Anfragen möglich.</p>
-        </form>
+        <div class="hero-media" data-reveal data-d="1">
+          <span class="ring"></span>
+          <div class="ph"><img src="img/hero.jpg" alt="Gepflegte Nägel mit Nageldesign" fetchpriority="high"></div>
+          <div class="hero-card">
+            <div class="swatches"><i style="background:#c4456e"></i><i style="background:#e7a3bf"></i><i style="background:#bd8c3c"></i><i style="background:#9d174d"></i></div>
+            <div><b>Farbe nach Wahl</b><span>120+ Töne &amp; Designs</span></div>
+          </div>
+          <div class="hero-rating"><span class="stars">★★★★★</span><b>4.9</b><span>Google</span></div>
+        </div>
       </div>
-    </div>
-  </section>
+      <div class="divider"><span class="ln"></span><span>✦</span><span class="ln"></span></div>
+    </section>
+
+    <section id="leistungen" class="soft-bg">
+      <div class="wrap">
+        <div class="sec-head center" data-reveal>
+          <p class="eyebrow">Was wir anbieten</p>
+          <h2 class="title">Unsere Leistungen</h2>
+          <p class="lead" style="margin-inline:auto">Von der klassischen Maniküre bis zum aufwendigen Nail-Art – für jeden Anlass das passende Design.</p>
+        </div>
+        <div class="svc-grid">
+          <div class="svc" data-reveal data-d="1"><span class="ic"><svg class="icon" viewBox="0 0 24 24"><path d="M9 3c-1 1.2-1.5 3-1.5 6v8a3.5 3.5 0 0 0 7 0V9c0-3-.5-4.8-1.5-6"/><path d="M8 8.5c1.5.8 4.5.8 6 0M7.5 11h7"/></svg></span><h3>Gel-Nägel</h3><p>Langlebige Gel-Beschichtung mit perfekter Oberfläche – strahlend schön für bis zu 4 Wochen.</p><p class="price">ab CHF 65</p></div>
+          <div class="svc" data-reveal data-d="2"><span class="ic"><svg class="icon" viewBox="0 0 24 24"><path d="M12 3l1.8 4.5L18 9l-4.2 1.5L12 15l-1.8-4.5L6 9l4.2-1.5zM5 16l.8 2L8 19l-2.2.9L5 22l-.8-2.1L2 19zM18 14l.6 1.6L20 16l-1.4.6L18 18l-.6-1.4L16 16z"/></svg></span><h3>Nail Art Design</h3><p>Florale Muster, geometrische Designs oder edler Chrome-Look – unsere Künstlerinnen machen deine Nägel einzigartig.</p><p class="price">ab CHF 25</p></div>
+          <div class="svc" data-reveal data-d="3"><span class="ic"><svg class="icon" viewBox="0 0 24 24"><path d="M12 2c1.5 2.5 1.5 4.5 0 7-1.5-2.5-1.5-4.5 0-7zM2 12c2.5-1.5 4.5-1.5 7 0-2.5 1.5-4.5 1.5-7 0zM22 12c-2.5 1.5-4.5 1.5-7 0 2.5-1.5 4.5-1.5 7 0zM12 22c-1.5-2.5-1.5-4.5 0-7 1.5 2.5 1.5 4.5 0 7z"/><circle cx="12" cy="12" r="2"/></svg></span><h3>Klassische Maniküre</h3><p>Nagelpflege, Formgebung, Cuticle-Behandlung und Hochglanz-Finish – zeitlos elegant.</p><p class="price">ab CHF 35</p></div>
+          <div class="svc" data-reveal data-d="1"><span class="ic"><svg class="icon" viewBox="0 0 24 24"><path d="M7 13c-2 0-3-1.5-3-4 0-3.5 2.5-7 4-7 1 0 1.5 1 1.5 2.5C9.5 7 9 9 9 11M9 11c.5 2 2 3 4 3h2a4 4 0 0 1 0 8H9a4 4 0 0 1-4-4"/></svg></span><h3>Pediküre</h3><p>Verwöhnende Fusspflege mit Peeling, Massage und Lack. Für zarte, gepflegte Füsse.</p><p class="price">ab CHF 55</p></div>
+          <div class="svc" data-reveal data-d="2"><span class="ic"><svg class="icon" viewBox="0 0 24 24"><path d="M12 2l3 5 5 1.5-3.5 4 .8 5.5L12 20l-5.3 2 .8-5.5L4 8.5 9 7z"/></svg></span><h3>Acryl-Extensions</h3><p>Natürlich wirkende Verlängerungen mit Acryl – individuell in Länge und Form.</p><p class="price">ab CHF 80</p></div>
+          <div class="svc" data-reveal data-d="3"><span class="ic"><svg class="icon" viewBox="0 0 24 24"><path d="M12 8C9 8 7 6.5 7 5a2 2 0 0 1 5-1 2 2 0 0 1 5 1c0 1.5-2 3-5 3z"/><rect x="3" y="8" width="18" height="13" rx="1.5"/><path d="M3 12h18M12 8v13"/></svg></span><h3>Braut-Package</h3><p>Komplette Nail-Vorbereitung für deinen grossen Tag – inkl. Beratung und Probetermin.</p><p class="price">ab CHF 150</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="galerie">
+      <div class="wrap">
+        <div class="sec-head center" data-reveal>
+          <p class="eyebrow">Unsere Arbeiten</p>
+          <h2 class="title">Galerie</h2>
+          <p class="lead" style="margin-inline:auto">Ein kleiner Einblick in die Designs, die unsere Kundinnen lieben.</p>
+        </div>
+        <div class="gal" data-reveal>
+          <a data-full="img/g1.jpg"><img src="img/g1.jpg" alt="Nageldesign 1"><span class="vw"><svg class="icon" viewBox="0 0 24 24"><path d="M15 3h6v6M14 10l7-7M9 21H3v-6M10 14l-7 7"/></svg></span></a>
+          <a data-full="img/g2.jpg"><img src="img/g2.jpg" alt="Nageldesign 2"><span class="vw"><svg class="icon" viewBox="0 0 24 24"><path d="M15 3h6v6M14 10l7-7M9 21H3v-6M10 14l-7 7"/></svg></span></a>
+          <a data-full="img/g3.jpg"><img src="img/g3.jpg" alt="Nageldesign 3"><span class="vw"><svg class="icon" viewBox="0 0 24 24"><path d="M15 3h6v6M14 10l7-7M9 21H3v-6M10 14l-7 7"/></svg></span></a>
+          <a data-full="img/g4.jpg"><img src="img/g4.jpg" alt="Nageldesign 4"><span class="vw"><svg class="icon" viewBox="0 0 24 24"><path d="M15 3h6v6M14 10l7-7M9 21H3v-6M10 14l-7 7"/></svg></span></a>
+          <a data-full="img/g5.jpg"><img src="img/g5.jpg" alt="Nageldesign 5"><span class="vw"><svg class="icon" viewBox="0 0 24 24"><path d="M15 3h6v6M14 10l7-7M9 21H3v-6M10 14l-7 7"/></svg></span></a>
+          <a data-full="img/g6.jpg"><img src="img/g6.jpg" alt="Nageldesign 6"><span class="vw"><svg class="icon" viewBox="0 0 24 24"><path d="M15 3h6v6M14 10l7-7M9 21H3v-6M10 14l-7 7"/></svg></span></a>
+        </div>
+      </div>
+    </section>
+
+    <section id="preise" class="soft-bg">
+      <div class="wrap">
+        <div class="sec-head center" data-reveal>
+          <p class="eyebrow">Transparente Preise</p>
+          <h2 class="title">Pakete &amp; Preise</h2>
+        </div>
+        <div class="pkg-grid">
+          <div class="pkg" data-reveal data-d="1">
+            <p class="pname">Classic</p>
+            <p class="price"><small>CHF</small> 65</p>
+            <p class="note">Klassische Maniküre + Gel-Lack</p>
+            <ul>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg> Nagelpflege &amp; Formgebung</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg> Cuticle-Behandlung</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg> Gel-Farblack</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg> Hochglanz-Finish</li>
+            </ul>
+            <a href="#buchung" class="btn btn-ghost" style="width:100%">Buchen</a>
+          </div>
+          <div class="pkg feat" data-reveal data-d="2">
+            <span class="tag">Beliebteste Wahl</span>
+            <p class="pname">Premium</p>
+            <p class="price"><small>CHF</small> 95</p>
+            <p class="note">Gel-Nägel + Handmassage</p>
+            <ul>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg> Vollständige Maniküre</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg> Gel-Aufbau &amp; Formgebung</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg> Handpflege &amp; Massage</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg> Farbe nach Wahl</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg> UV-Schutz Top Coat</li>
+            </ul>
+            <a href="#buchung" class="btn btn-primary" style="width:100%">Buchen</a>
+          </div>
+          <div class="pkg" data-reveal data-d="3">
+            <p class="pname">Luxury</p>
+            <p class="price"><small>CHF</small> 140</p>
+            <p class="note">Premium + Nail Art Design</p>
+            <ul>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg> Alles aus Premium</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg> Individuelles Nail Art</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg> Strass oder Chrome-Folien</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg> Langzeit-Gel</li>
+            </ul>
+            <a href="#buchung" class="btn btn-gold" style="width:100%">Buchen</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="studio">
+      <div class="wrap split">
+        <div class="media" data-reveal><img src="img/salon.jpg" alt="Unser Nagelstudio in Basel"></div>
+        <div data-reveal data-d="1">
+          <p class="eyebrow">Über uns</p>
+          <h2 class="title">Dein Wohlfühl-<br><span class="serif-i">Moment</span> in Basel</h2>
+          <p style="margin-top:1rem;color:var(--muted)">Seit 2015 verbinden wir an der Steinenvorstadt Qualität, Kreativität und Herzlichkeit. Bei uns nimmst du dir Zeit für dich – in entspannter, eleganter Atmosphäre.</p>
+          <ul class="checks">
+            <li><span class="c"><svg class="icon" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span><span><b>Hygiene &amp; Qualität</b> – sterilisierte Instrumente, hochwertige Produkte</span></li>
+            <li><span class="c"><svg class="icon" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span><span><b>Erfahrene Nageldesignerinnen</b> mit Liebe zum Detail</span></li>
+            <li><span class="c"><svg class="icon" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span><span><b>Zentral gelegen</b> – mitten in der Basler Innenstadt</span></li>
+          </ul>
+          <a href="#buchung" class="btn btn-primary" style="margin-top:1.6rem">Termin vereinbaren</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="soft-bg">
+      <div class="wrap">
+        <div class="sec-head center" data-reveal><p class="eyebrow">Kundenstimmen</p><h2 class="title">Was unsere Kundinnen sagen</h2></div>
+        <div class="quotes">
+          <div class="quote" data-reveal data-d="1"><div class="stars">★★★★★</div><p>„Meine Nägel waren noch nie so schön. Liebevolle Beratung und ein wunderschönes Resultat.“</p><div class="who"><img src="img/av-w1.jpg" alt=""><div><b>Jasmin L.</b><span>Stammkundin</span></div></div></div>
+          <div class="quote" data-reveal data-d="2"><div class="stars">★★★★★</div><p>„Das Braut-Package war perfekt. So entspannt und professionell – ich habe mich rundum wohlgefühlt.“</p><div class="who"><img src="img/av-w2.jpg" alt=""><div><b>Céline B.</b><span>Braut 2025</span></div></div></div>
+          <div class="quote" data-reveal data-d="3"><div class="stars">★★★★★</div><p>„Tolles Nail Art, schöne Atmosphäre und immer pünktlich. Mein Lieblingsstudio in Basel.“</p><div class="who"><img src="img/av-w3.jpg" alt=""><div><b>Mira K.</b><span>Google-Rezension</span></div></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="buchung">
+      <div class="wrap">
+        <div class="sec-head" data-reveal><p class="eyebrow">Wir freuen uns auf dich</p><h2 class="title">Termin buchen</h2><p class="lead" style="margin-top:1rem">Vereinbare deinen Wunschtermin online – wir bestätigen schnellstmöglich.</p></div>
+        <div class="booking-grid">
+          <div data-reveal>
+            <div class="contact-row"><span class="ic"><svg class="icon" viewBox="0 0 24 24"><path d="M21 10c0 7-9 12-9 12s-9-5-9-12a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></span><div><strong>Adresse</strong><span>Steinenvorstadt 22, 4051 Basel</span></div></div>
+            <div class="contact-row"><span class="ic"><svg class="icon" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg></span><div><strong>Telefon</strong><a href="tel:+41612345678">+41 61 234 56 78</a></div></div>
+            <div class="contact-row"><span class="ic"><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span><div><strong>Öffnungszeiten</strong><span>Di–Fr 09:00–19:00 · Sa 09:00–17:00</span></div></div>
+            <div class="contact-row" style="border:0"><span class="ic"><svg class="icon" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 6 10-6"/></svg></span><div><strong>E-Mail</strong><a href="mailto:info@nailsandco.ch">info@nailsandco.ch</a></div></div>
+          </div>
+          <form data-reveal data-d="1" id="bookForm" novalidate>
+            <h3>Terminanfrage</h3>
+            <div><label for="n">Name</label><input id="n" type="text" placeholder="Dein Name" required></div>
+            <div><label for="t">Telefon</label><input id="t" type="tel" placeholder="079 000 00 00" required></div>
+            <div><label for="s">Leistung</label><select id="s"><option>Gel-Nägel</option><option>Klassische Maniküre</option><option>Nail Art Design</option><option>Pediküre</option><option>Acryl-Extensions</option><option>Braut-Package</option></select></div>
+            <div><label for="d">Wunschtermin</label><input id="d" type="text" placeholder="z.B. Sa vormittags"></div>
+            <div><label for="m">Anmerkung</label><textarea id="m" placeholder="Wünsche, Inspiration, Fragen …"></textarea></div>
+            <button type="submit" class="btn btn-primary" style="width:100%">Terminanfrage senden</button>
+            <div class="ok-msg" id="okMsg">✓ Danke! Dies ist eine Demo – in der echten Version geht deine Anfrage direkt ans Studio.</div>
+            <p class="form-note">Demo-Formular · es werden keine Daten gesendet.</p>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
 
   <footer>
-    <div class="container">
-      <div class="footer-grid">
-        <div>
-          <p class="footer-brand">Nails &amp; Co.</p>
-          <p class="footer-desc">Ihr Premium Nagelstudio in Basel. Qualität, Kreativität und Herzlichkeit seit 2015.</p>
+    <div class="wrap">
+      <div class="foot-grid">
+        <div class="foot-brand">
+          <b>Nails &amp; Co.</b><small>Nagelstudio · Basel</small>
+          <p>Dein Premium Nagelstudio in Basel. Qualität, Kreativität und Herzlichkeit seit 2015.</p>
         </div>
-        <div class="footer-col">
-          <h4>Leistungen</h4>
-          <a href="#leistungen">Gel-Nägel</a>
-          <a href="#leistungen">Nail Art</a>
-          <a href="#leistungen">Maniküre</a>
-          <a href="#leistungen">Pediküre</a>
-        </div>
-        <div class="footer-col">
-          <h4>Kontakt</h4>
-          <a href="tel:+41612345678">+41 61 234 56 78</a>
-          <a href="mailto:info@nailsandco.ch">info@nailsandco.ch</a>
-          <a href="#buchung">Termin buchen</a>
-        </div>
+        <div class="foot-col"><h5>Leistungen</h5><a href="#leistungen">Gel-Nägel</a><a href="#leistungen">Nail Art</a><a href="#leistungen">Maniküre</a><a href="#leistungen">Pediküre</a></div>
+        <div class="foot-col"><h5>Kontakt</h5><a href="tel:+41612345678">+41 61 234 56 78</a><a href="mailto:info@nailsandco.ch">info@nailsandco.ch</a><p>Steinenvorstadt 22<br>4051 Basel</p></div>
       </div>
-      <div class="footer-bottom">
-        <p>&copy; 2026 Nails &amp; Co., Basel. |
-          Diese Website ist ein Demo-Projekt von <a href="../../index.html">MASESites AG</a>.
-          Echte Website ab CHF 750. <a href="../../kontakt.html">Jetzt anfragen →</a>
-        </p>
-      </div>
+      <div class="foot-bottom"><span>© 2026 Nails &amp; Co., Basel</span><span>Impressum · Datenschutz</span></div>
+      <p class="demo-note">Diese Website ist ein <strong>Demo-Projekt von MASESites</strong>. So könnte Ihre Studio-Website aussehen. <a href="../../kontakt.html">Jetzt eigene Website anfragen →</a></p>
     </div>
   </footer>
+
+  <div class="lb" id="lb"><button class="x" aria-label="Schliessen">×</button><img src="" alt=""></div>
+
+  <script>
+    const nav=document.getElementById('nav');
+    addEventListener('scroll',()=>nav.classList.toggle('scrolled',scrollY>20),{passive:true});
+    const burger=document.getElementById('burger'),mm=document.getElementById('mobileMenu'),scrim=document.getElementById('scrim');
+    function toggleMenu(o){burger.classList.toggle('open',o);mm.classList.toggle('open',o);scrim.classList.toggle('open',o);burger.setAttribute('aria-expanded',o);document.body.style.overflow=o?'hidden':''}
+    burger.addEventListener('click',()=>toggleMenu(!mm.classList.contains('open')));
+    scrim.addEventListener('click',()=>toggleMenu(false));
+    mm.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>toggleMenu(false)));
+    const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.12,rootMargin:'0px 0px -60px'});
+    document.querySelectorAll('[data-reveal]').forEach(el=>io.observe(el));
+    const lb=document.getElementById('lb'),lbImg=lb.querySelector('img');
+    document.querySelectorAll('.gal a').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();lbImg.src=a.dataset.full;lb.classList.add('open');document.body.style.overflow='hidden'}));
+    function closeLb(){lb.classList.remove('open');document.body.style.overflow=''}
+    lb.addEventListener('click',closeLb);
+    addEventListener('keydown',e=>{if(e.key==='Escape'){closeLb();toggleMenu(false)}});
+    document.getElementById('bookForm').addEventListener('submit',e=>{e.preventDefault();document.getElementById('okMsg').style.display='block';e.target.querySelector('button').textContent='✓ Anfrage gesendet'});
+  </script>
 </body>
 </html>

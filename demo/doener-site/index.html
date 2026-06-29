@@ -3,357 +3,429 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Kebab Palace – Authentische türkische Küche – Demo</title>
+  <title>Kebab Palace · Authentisch türkisch · Zürich</title>
+  <meta name="description" content="Kebab Palace an der Langstrasse Zürich – seit 1998 echter Döner vom Drehspiess, Pide, Lahmacun &amp; mehr. Lieferung, Abholung &amp; Tisch reservieren.">
   <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#100c0b">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=Archivo+Expanded:wght@800;900&display=swap" rel="stylesheet">
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    :root {
-      --red: #e23744;
-      --red-dark: #c41e2a;
-      --gold: #f5a524;
-      --bg: #0e0d0d;
-      --surface: #161414;
-      --card: #201d1d;
-      --text: #f7f4f2;
-      --muted: #9a9290;
-      --border: #2c2828;
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --bg:#100c0b; --bg2:#181210; --bg3:#1f1814; --card:#211915;
+      --line:rgba(255,236,220,.10); --line2:rgba(255,236,220,.2);
+      --red:#e8473f; --red2:#ff6a5c; --gold:#f6a623; --gold2:#ffc15a;
+      --cream:#f8f0e7; --text:#f8f0e7; --muted:#bcab9e; --dim:#8a7a6d;
+      --shadow:0 30px 70px rgba(0,0,0,.55); --rad:16px; --rad-lg:22px; --wrap:1180px;
     }
-    body { font-family: 'Archivo', system-ui, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; -webkit-font-smoothing: antialiased; }
-    a { color: var(--red); text-decoration: none; }
-    h1, h2, h3 { letter-spacing: -0.02em; }
-    .container { max-width: 1140px; margin: 0 auto; padding: 0 1.5rem; }
-    .btn { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.8rem 1.7rem; border-radius: 8px; font-weight: 700; cursor: pointer; transition: transform .18s, background .18s; border: none; font-size: 0.95rem; font-family: inherit; }
-    .btn-primary { background: var(--red); color: #fff; box-shadow: 0 8px 22px rgba(226,55,68,.3); }
-    .btn-primary:hover { background: var(--red-dark); transform: translateY(-2px); }
-    .btn-outline { background: transparent; color: var(--text); border: 1.5px solid var(--border); }
-    .btn-outline:hover { border-color: var(--red); color: var(--red); }
-    .icon { width: 1.25em; height: 1.25em; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
+    html{scroll-behavior:smooth}
+    body{font-family:'Archivo',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+    a{color:inherit;text-decoration:none}
+    h1,h2,h3,h4{letter-spacing:-.02em;line-height:1.06}
+    .display{font-family:'Archivo Expanded','Archivo',sans-serif}
+    img{display:block;max-width:100%}
+    .wrap{width:min(100% - 2.6rem,var(--wrap));margin-inline:auto}
+    .eyebrow{display:inline-flex;align-items:center;gap:.55rem;color:var(--gold);font-size:.76rem;font-weight:800;text-transform:uppercase;letter-spacing:.18em;margin-bottom:1rem}
+    .eyebrow::before{content:"";width:26px;height:2px;background:var(--gold)}
+    h2.title{font-size:clamp(2rem,4.4vw,3.1rem);font-weight:900;letter-spacing:-.03em}
+    .lead{color:var(--muted);font-size:1.1rem;max-width:54ch}
+    .icon{width:1.25em;height:1.25em;stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
 
-    .back-bar { background: var(--surface); padding: 0.5rem 1.5rem; font-size: 0.8rem; border-bottom: 1px solid var(--border); }
-    .back-bar .container { display: flex; gap: 0.5rem; align-items: center; }
-    .back-bar a { color: var(--muted); }
-    .back-bar a:hover { color: var(--red); }
-    .back-bar em { color: var(--muted); }
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:.55rem;padding:.92rem 1.7rem;border-radius:999px;font-weight:800;font-size:.94rem;font-family:inherit;cursor:pointer;border:1.5px solid transparent;transition:transform .2s,background .2s,box-shadow .2s,border-color .2s;white-space:nowrap}
+    .btn-primary{background:var(--red);color:#fff;box-shadow:0 12px 30px rgba(232,71,63,.34)}
+    .btn-primary:hover{background:var(--red2);transform:translateY(-3px);box-shadow:0 18px 40px rgba(232,71,63,.46)}
+    .btn-gold{background:linear-gradient(135deg,var(--gold),var(--gold2));color:#221403}
+    .btn-gold:hover{transform:translateY(-3px);box-shadow:0 16px 36px rgba(246,166,35,.4)}
+    .btn-ghost{background:rgba(255,255,255,.05);color:var(--text);border-color:var(--line2)}
+    .btn-ghost:hover{border-color:var(--gold);color:var(--gold);transform:translateY(-3px)}
 
-    nav.site-nav { background: rgba(14,13,13,.82); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 100; }
-    .nav-inner { display: flex; align-items: center; justify-content: space-between; padding: 0.85rem 1.5rem; max-width: 1140px; margin: 0 auto; }
-    .nav-logo { display: flex; align-items: center; gap: 0.65rem; }
-    .nav-mark { width: 38px; height: 38px; border-radius: 10px; background: linear-gradient(135deg, var(--red), var(--gold)); display: flex; align-items: center; justify-content: center; }
-    .nav-mark svg { width: 21px; height: 21px; stroke: #fff; fill: none; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; }
-    .nav-logo-text strong { font-size: 1.2rem; font-weight: 900; display: block; line-height: 1.05; }
-    .nav-logo-text small { color: var(--gold); font-size: 0.68rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.12em; }
-    .nav-links { display: flex; gap: 2rem; list-style: none; }
-    .nav-links a { color: var(--muted); font-size: 0.9rem; font-weight: 600; transition: color .2s; }
-    .nav-links a:hover { color: var(--text); }
+    .back-bar{background:#0a0706;border-bottom:1px solid var(--line);font-size:.78rem}
+    .back-bar .wrap{display:flex;gap:.7rem;align-items:center;padding:.55rem 0;color:var(--dim)}
+    .back-bar a{color:var(--muted)} .back-bar a:hover{color:var(--gold)} .back-bar .sep{opacity:.4}
 
-    /* Hero */
-    .hero { position: relative; overflow: hidden;
-      background:
-        radial-gradient(680px 340px at 86% 14%, rgba(245,165,36,.16) 0%, transparent 62%),
-        linear-gradient(140deg, #0e0d0d 0%, #1c0c0c 100%); }
-    .hero-grid { display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 3.5rem; align-items: center; padding: 5.5rem 0; }
-    .hero-tag { display: inline-flex; align-items: center; gap: 0.5rem; color: var(--gold); font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 1.3rem; border: 1px solid rgba(245,165,36,.3); padding: 0.35rem 0.85rem; border-radius: 999px; }
-    .hero h1 { font-size: clamp(2.6rem, 6vw, 5rem); font-weight: 900; line-height: 1.0; margin-bottom: 1.4rem; }
-    .hero h1 span { color: var(--red); }
-    .hero-lead { font-size: 1.15rem; color: var(--muted); max-width: 28rem; margin-bottom: 2rem; }
-    .hero-btns { display: flex; gap: 0.9rem; flex-wrap: wrap; align-items: center; }
-    .hero-open { background: var(--card); border: 1px solid var(--border); border-radius: 999px; padding: 0.55rem 1rem; font-size: 0.85rem; font-weight: 600; display: inline-flex; align-items: center; }
-    .open-dot { display: inline-block; width: 8px; height: 8px; background: #22c55e; border-radius: 50%; margin-right: 0.5rem; box-shadow: 0 0 8px #22c55e; animation: pulse 2s infinite; }
-    @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
+    header.nav{position:sticky;top:0;z-index:60;background:rgba(16,12,11,.6);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid transparent;transition:.3s}
+    header.nav.scrolled{background:rgba(16,12,11,.94);border-bottom-color:var(--line)}
+    .nav-in{display:flex;align-items:center;justify-content:space-between;padding:.8rem 0}
+    .brand{display:flex;align-items:center;gap:.7rem}
+    .brand .mark{width:44px;height:44px;border-radius:13px;background:linear-gradient(135deg,var(--red),var(--gold));display:grid;place-items:center;box-shadow:0 8px 20px rgba(232,71,63,.4)}
+    .brand .mark svg{width:23px;height:23px;stroke:#fff;stroke-width:1.9}
+    .brand b{font-size:1.22rem;font-weight:900;line-height:1;display:block}
+    .brand small{font-size:.62rem;font-weight:700;letter-spacing:.18em;color:var(--gold);text-transform:uppercase}
+    .nav-links{display:flex;align-items:center;gap:2rem}
+    .nav-links a{color:var(--muted);font-size:.92rem;font-weight:600;transition:color .2s}
+    .nav-links a:hover{color:var(--text)}
+    .nav-cta{display:flex;align-items:center;gap:1rem}
+    .burger{display:none;width:44px;height:44px;border:1px solid var(--line2);border-radius:11px;background:rgba(255,255,255,.04);cursor:pointer;flex-direction:column;gap:5px;align-items:center;justify-content:center}
+    .burger span{width:20px;height:2px;background:var(--text);border-radius:2px;transition:.3s}
+    .burger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}.burger.open span:nth-child(2){opacity:0}.burger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+    .mobile-menu{position:fixed;inset:0 0 0 auto;width:min(86vw,330px);background:var(--bg2);border-left:1px solid var(--line);z-index:70;transform:translateX(100%);transition:transform .35s cubic-bezier(.4,0,.1,1);padding:5.5rem 1.6rem 2rem;display:flex;flex-direction:column;gap:.3rem}
+    .mobile-menu.open{transform:none}
+    .mobile-menu a{padding:.9rem .4rem;font-size:1.08rem;font-weight:700;color:var(--text);border-bottom:1px solid var(--line)}
+    .mobile-menu .btn{margin-top:1.2rem}
+    .scrim{position:fixed;inset:0;background:rgba(0,0,0,.6);opacity:0;visibility:hidden;transition:.3s;z-index:65}
+    .scrim.open{opacity:1;visibility:visible}
 
-    /* Hero visual: order card */
-    .hero-visual { position: relative; }
-    .order-card { background: linear-gradient(180deg, #221e1e, #181515); border: 1px solid var(--border); border-radius: 18px; padding: 1.5rem; box-shadow: 0 30px 70px rgba(0,0,0,.5); }
-    .order-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; }
-    .order-head strong { font-size: 1rem; }
-    .order-head span { font-size: 0.74rem; color: var(--gold); font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; }
-    .order-item { display: flex; align-items: center; gap: 0.85rem; padding: 0.7rem 0; border-top: 1px solid var(--border); }
-    .order-thumb { width: 40px; height: 40px; border-radius: 10px; background: linear-gradient(135deg, rgba(226,55,68,.25), rgba(245,165,36,.25)); display: flex; align-items: center; justify-content: center; color: var(--gold); flex-shrink: 0; }
-    .order-thumb svg { width: 20px; height: 20px; }
-    .order-item-info { flex: 1; }
-    .order-item-info strong { display: block; font-size: 0.92rem; font-weight: 600; }
-    .order-item-info span { font-size: 0.78rem; color: var(--muted); }
-    .order-qty { font-size: 0.85rem; color: var(--muted); }
-    .order-price { font-weight: 700; font-size: 0.95rem; width: 56px; text-align: right; }
-    .order-total { display: flex; justify-content: space-between; align-items: center; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--border); }
-    .order-total span { color: var(--muted); font-size: 0.9rem; }
-    .order-total strong { font-size: 1.4rem; font-weight: 900; }
-    .order-cta { display: flex; align-items: center; justify-content: center; gap: 0.5rem; margin-top: 1.1rem; background: var(--red); color: #fff; border-radius: 10px; padding: 0.8rem; font-weight: 700; }
-    .deliver-badge { position: absolute; left: -1.4rem; bottom: -1.3rem; background: #fff; color: #111; border-radius: 12px; padding: 0.8rem 1.05rem; display: flex; align-items: center; gap: 0.7rem; box-shadow: 0 18px 40px rgba(0,0,0,.4); }
-    .deliver-badge .db-ic { width: 36px; height: 36px; border-radius: 9px; background: #fff1e8; color: var(--red); display: flex; align-items: center; justify-content: center; }
-    .deliver-badge strong { display: block; font-size: 1rem; font-weight: 800; }
-    .deliver-badge span { font-size: 0.74rem; color: #6b7280; }
+    .hero{position:relative;min-height:92vh;display:flex;align-items:center;overflow:hidden;border-bottom:1px solid var(--line)}
+    .hero-bg{position:absolute;inset:0;z-index:0}
+    .hero-bg img{width:100%;height:100%;object-fit:cover;transform:scale(1.06);animation:slowzoom 18s ease-out forwards}
+    @keyframes slowzoom{to{transform:scale(1)}}
+    .hero-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(96deg,var(--bg) 12%,rgba(16,12,11,.85) 44%,rgba(16,12,11,.4) 78%),radial-gradient(800px 460px at 84% 78%,rgba(246,166,35,.2),transparent 60%)}
+    .hero-in{position:relative;z-index:1;padding:5rem 0}
+    .hero-badge{display:inline-flex;align-items:center;gap:.55rem;background:rgba(255,255,255,.06);border:1px solid var(--line2);border-radius:999px;padding:.42rem 1rem;font-size:.78rem;font-weight:700;margin-bottom:1.6rem}
+    .hero-badge .pin{width:8px;height:8px;border-radius:50%;background:#3ddc84;box-shadow:0 0 0 4px rgba(61,220,132,.18);animation:pulse 2s infinite}
+    @keyframes pulse{50%{opacity:.45}}
+    .hero h1{font-size:clamp(2.8rem,7.4vw,5.6rem);font-weight:900;letter-spacing:-.04em;margin-bottom:1.3rem}
+    .hero h1 .hl{color:var(--gold)}
+    .hero p.sub{font-size:1.18rem;color:#e8ddd2;max-width:33rem;margin-bottom:2.1rem}
+    .hero-btns{display:flex;gap:.9rem;flex-wrap:wrap;align-items:center}
+    .hero-rate{display:inline-flex;align-items:center;gap:.55rem;font-size:.9rem;color:var(--muted);margin-left:.3rem}
+    .hero-rate .stars{color:var(--gold);letter-spacing:1px}
 
-    .features-section { background: var(--surface); padding: 3.5rem 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
-    .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; }
-    .feature-item { display: flex; gap: 0.9rem; align-items: flex-start; }
-    .feature-icon { width: 42px; height: 42px; border-radius: 10px; background: rgba(226,55,68,.12); color: var(--red); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-    .feature-icon svg { width: 21px; height: 21px; }
-    .feature-item h3 { font-size: 1rem; font-weight: 700; margin-bottom: 0.25rem; }
-    .feature-item p { font-size: 0.875rem; color: var(--muted); }
+    .strip{background:var(--gold);color:#221403;font-weight:800;overflow:hidden;border-block:1px solid #00000022}
+    .strip .track{display:flex;gap:2.6rem;padding:.7rem 0;white-space:nowrap;animation:marq 24s linear infinite;font-size:.9rem}
+    .strip span{display:inline-flex;align-items:center;gap:.55rem}
+    @keyframes marq{to{transform:translateX(-50%)}}
 
-    .menu-section { padding: 5rem 0; }
-    .menu-category { margin-bottom: 3rem; }
-    .category-title { display: flex; align-items: center; gap: 0.7rem; font-size: 1.4rem; font-weight: 800; color: var(--gold); border-bottom: 1px solid var(--border); padding-bottom: 0.75rem; margin-bottom: 1.5rem; }
-    .category-title svg { width: 22px; height: 22px; stroke: var(--gold); fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
-    .menu-items { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1rem; }
-    .menu-item { background: var(--card); border-radius: 12px; padding: 1.25rem; display: flex; justify-content: space-between; align-items: flex-start; border: 1px solid var(--border); transition: border-color .2s; }
-    .menu-item:hover { border-color: var(--red); }
-    .menu-item-info h4 { font-weight: 700; margin-bottom: 0.25rem; }
-    .menu-item-info p { font-size: 0.85rem; color: var(--muted); }
-    .menu-item-price { color: var(--gold); font-weight: 800; font-size: 1.1rem; white-space: nowrap; margin-left: 1rem; }
+    section{padding:6rem 0}
+    .sec-head{max-width:640px;margin-bottom:3rem}
+    .center{text-align:center;margin-inline:auto}.center .eyebrow{justify-content:center}
+    .alt{background:var(--bg2)}
 
-    .about-section { padding: 5rem 0; }
-    .about-grid { display: grid; grid-template-columns: 0.85fr 1fr; gap: 4rem; align-items: center; }
-    .about-visual { display: grid; gap: 1rem; }
-    .about-stat { background: linear-gradient(160deg, #221414, var(--card)); border: 1px solid var(--border); border-radius: 16px; padding: 2rem; }
-    .about-stat strong { display: block; font-size: 3rem; font-weight: 900; line-height: 1; color: var(--gold); }
-    .about-stat span { color: var(--muted); font-size: 0.95rem; }
-    .about-review { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 1.5rem; }
-    .about-review .stars { color: var(--gold); letter-spacing: 2px; margin-bottom: 0.5rem; font-size: 0.95rem; }
-    .about-review p { font-size: 0.92rem; color: var(--text); font-style: italic; margin-bottom: 0.6rem; }
-    .about-review cite { font-size: 0.8rem; color: var(--muted); font-style: normal; }
-    .about-text h2 { font-size: 2rem; font-weight: 800; margin-bottom: 1rem; }
-    .about-text p { color: var(--muted); margin-bottom: 1rem; }
+    .feat-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem}
+    .fi{display:flex;gap:.85rem;align-items:flex-start}
+    .fi .ic{width:46px;height:46px;border-radius:12px;background:rgba(232,71,63,.14);color:var(--gold);display:grid;place-items:center;flex-shrink:0}
+    .fi h3{font-size:1rem;font-weight:800;margin-bottom:.2rem}
+    .fi p{font-size:.88rem;color:var(--muted)}
 
-    .contact-section { background: var(--surface); padding: 5rem 0; }
-    .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; }
-    .info-block { margin-bottom: 1.5rem; }
-    .info-block h4 { font-size: 0.78rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.4rem; }
-    .info-block p { font-size: 1.05rem; font-weight: 600; }
-    .hours-table { width: 100%; border-collapse: collapse; }
-    .hours-table td { padding: 0.45rem 0; border-bottom: 1px solid var(--border); font-size: 0.92rem; }
-    .hours-table td:last-child { text-align: right; color: var(--muted); }
-    .contact-form-card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 2rem; }
-    .contact-form-card input { background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 0.8rem 1rem; color: var(--text); font-size: 0.95rem; font-family: inherit; width: 100%; }
-    .contact-form-card input:focus { outline: 2px solid var(--red); border-color: var(--red); }
+    /* featured dishes */
+    .dishes{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:1.5rem}
+    .dish{background:var(--card);border:1px solid var(--line);border-radius:var(--rad-lg);overflow:hidden;transition:transform .3s,border-color .3s}
+    .dish:hover{transform:translateY(-6px);border-color:var(--line2)}
+    .dish .ph{aspect-ratio:4/3;overflow:hidden;position:relative}
+    .dish .ph img{width:100%;height:100%;object-fit:cover;transition:transform .6s}
+    .dish:hover .ph img{transform:scale(1.07)}
+    .dish .ph .pr{position:absolute;top:.9rem;right:.9rem;background:var(--gold);color:#221403;font-weight:900;font-size:.92rem;padding:.32rem .7rem;border-radius:999px}
+    .dish .bd{padding:1.3rem 1.4rem}
+    .dish h3{font-size:1.18rem;font-weight:800;margin-bottom:.35rem}
+    .dish p{color:var(--muted);font-size:.9rem}
+    .tag-row{display:flex;gap:.4rem;margin-top:.8rem;flex-wrap:wrap}
+    .tag{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--gold);background:rgba(246,166,35,.12);padding:.22rem .55rem;border-radius:6px}
 
-    footer { background: #0a0909; border-top: 1px solid var(--border); padding: 3rem 0 2rem; }
-    .footer-inner { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
-    .footer-brand { font-size: 1.25rem; font-weight: 900; color: var(--red); }
-    .footer-copy { color: var(--muted); font-size: 0.875rem; }
-    .footer-note { width: 100%; text-align: center; margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--border); color: var(--muted); font-size: 0.8rem; }
-    .footer-note a { color: var(--gold); }
+    /* menu list */
+    .menu-cat{margin-bottom:2.6rem}
+    .menu-cat h3{display:flex;align-items:center;gap:.7rem;font-size:1.35rem;font-weight:900;color:var(--gold);padding-bottom:.7rem;margin-bottom:1.1rem;border-bottom:1px solid var(--line)}
+    .menu-cat h3 svg{width:22px;height:22px;stroke:var(--gold);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+    .mitems{display:grid;grid-template-columns:repeat(2,1fr);gap:.5rem 2.4rem}
+    .mi{display:flex;align-items:baseline;gap:.8rem;padding:.7rem 0;border-bottom:1px dashed var(--line)}
+    .mi .nm{font-weight:700}
+    .mi .ds{font-size:.84rem;color:var(--dim);display:block;font-weight:400}
+    .mi .dots{flex:1;border-bottom:1px dotted var(--line2);transform:translateY(-4px)}
+    .mi .pc{font-weight:800;color:var(--gold);white-space:nowrap}
+    .mi.veg .nm::after{content:"🌱";font-size:.8rem;margin-left:.35rem}
 
-    @media (max-width: 860px) {
-      .nav-links { display: none; }
-      .hero-grid { grid-template-columns: 1fr; gap: 3rem; padding: 4rem 0; }
-      .about-grid, .contact-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+    /* story split */
+    .split{display:grid;grid-template-columns:1fr 1.05fr;gap:3.4rem;align-items:center}
+    .split .media{border-radius:var(--rad-lg);overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow);position:relative}
+    .split .media img{width:100%;height:100%;object-fit:cover;aspect-ratio:4/3.6}
+    .split .media .stamp{position:absolute;left:1.2rem;bottom:1.2rem;background:var(--red);color:#fff;border-radius:14px;padding:.8rem 1.1rem;box-shadow:var(--shadow)}
+    .split .media .stamp b{display:block;font-family:'Archivo Expanded';font-size:1.8rem;line-height:1}
+    .split .media .stamp span{font-size:.74rem;opacity:.9}
+
+    /* gallery */
+    .gal{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:170px;gap:.9rem}
+    .gal a{position:relative;overflow:hidden;border-radius:var(--rad);border:1px solid var(--line);cursor:pointer}
+    .gal a img{width:100%;height:100%;object-fit:cover;transition:transform .6s}
+    .gal a:hover img{transform:scale(1.09)}
+    .gal .big{grid-column:span 2;grid-row:span 2}
+
+    /* reviews */
+    .quotes{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.4rem}
+    .quote{background:var(--card);border:1px solid var(--line);border-radius:var(--rad);padding:1.9rem}
+    .quote .stars{color:var(--gold);letter-spacing:2px;margin-bottom:.9rem}
+    .quote p{font-size:1rem;color:#efe6db;margin-bottom:1.3rem}
+    .quote .who{display:flex;align-items:center;gap:.8rem}
+    .quote .who img{width:44px;height:44px;border-radius:50%;object-fit:cover;border:2px solid var(--line2)}
+    .quote .who b{font-size:.92rem;display:block}
+    .quote .who span{font-size:.8rem;color:var(--dim)}
+
+    /* contact */
+    .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:start}
+    .info-card{background:var(--card);border:1px solid var(--line);border-radius:var(--rad);padding:1.3rem 1.5rem;margin-bottom:1rem;display:flex;gap:1rem;align-items:flex-start}
+    .info-card .ic{width:44px;height:44px;border-radius:12px;background:rgba(246,166,35,.14);color:var(--gold);display:grid;place-items:center;flex-shrink:0}
+    .info-card h4{font-size:.72rem;text-transform:uppercase;letter-spacing:.12em;color:var(--dim);margin-bottom:.25rem}
+    .info-card p{font-weight:600}.info-card a{color:var(--text)}.info-card a:hover{color:var(--gold)}
+    .hrow{display:flex;justify-content:space-between;padding:.5rem 0;border-bottom:1px solid var(--line);font-size:.92rem}
+    .hrow:last-child{border:0}.hrow .d{color:var(--muted)}.hrow.today{color:var(--gold);font-weight:700}
+    form{background:var(--card);border:1px solid var(--line);border-radius:var(--rad-lg);padding:2rem;display:flex;flex-direction:column;gap:.95rem}
+    form h3{font-size:1.2rem;font-weight:800}
+    .frow{display:grid;grid-template-columns:1fr 1fr;gap:.95rem}
+    label{font-size:.82rem;font-weight:700;color:var(--muted);margin-bottom:.35rem;display:block}
+    input,textarea,select{width:100%;background:var(--bg);border:1px solid var(--line2);border-radius:11px;padding:.82rem 1rem;color:var(--text);font-size:.95rem;font-family:inherit;transition:border-color .2s,box-shadow .2s}
+    input:focus,textarea:focus,select:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px rgba(246,166,35,.18)}
+    .ok-msg{display:none;background:rgba(61,220,132,.12);border:1px solid rgba(61,220,132,.4);color:#86efac;border-radius:11px;padding:.85rem 1rem;font-size:.9rem;text-align:center}
+    .form-note{font-size:.78rem;color:var(--dim);text-align:center}
+
+    footer{background:#0a0706;border-top:1px solid var(--line);padding:4rem 0 2rem}
+    .foot-grid{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:2.5rem;margin-bottom:3rem}
+    .foot-brand .brand b{font-size:1.35rem}
+    .foot-brand p{color:var(--muted);font-size:.92rem;margin-top:.8rem;max-width:30ch}
+    .foot-col h5{font-size:.74rem;text-transform:uppercase;letter-spacing:.14em;color:var(--gold);margin-bottom:1rem}
+    .foot-col a,.foot-col p{display:block;color:var(--muted);font-size:.9rem;margin-bottom:.55rem}
+    .foot-col a:hover{color:var(--text)}
+    .foot-bottom{border-top:1px solid var(--line);padding-top:1.6rem;display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;color:var(--dim);font-size:.82rem}
+    .demo-note{text-align:center;margin-top:1.4rem;padding:1rem;border:1px dashed var(--line2);border-radius:12px;color:var(--muted);font-size:.84rem}
+    .demo-note a{color:var(--gold);font-weight:700}
+
+    .lb{position:fixed;inset:0;background:rgba(5,4,3,.94);z-index:90;display:none;align-items:center;justify-content:center;padding:2rem;cursor:zoom-out}
+    .lb.open{display:flex}
+    .lb img{max-width:92vw;max-height:88vh;border-radius:14px;box-shadow:var(--shadow)}
+    .lb .x{position:absolute;top:1.4rem;right:1.6rem;width:46px;height:46px;border-radius:50%;border:1px solid var(--line2);background:rgba(255,255,255,.06);color:#fff;font-size:1.4rem;cursor:pointer}
+
+    [data-reveal]{opacity:0;transform:translateY(26px);transition:opacity .75s cubic-bezier(.2,.7,.2,1),transform .75s cubic-bezier(.2,.7,.2,1)}
+    [data-reveal].in{opacity:1;transform:none}
+    [data-reveal][data-d="1"]{transition-delay:.08s}[data-reveal][data-d="2"]{transition-delay:.16s}[data-reveal][data-d="3"]{transition-delay:.24s}
+
+    @media(max-width:960px){
+      .nav-links,.nav-cta .btn{display:none}.burger{display:flex}
+      .feat-strip{grid-template-columns:1fr 1fr;gap:1.6rem}
+      .split{grid-template-columns:1fr;gap:2.4rem}
+      .mitems{grid-template-columns:1fr}
+      .gal{grid-template-columns:repeat(2,1fr)}.gal .big{grid-column:span 2;grid-row:span 1}
+      .contact-grid{grid-template-columns:1fr;gap:2rem}
+      .foot-grid{grid-template-columns:1fr 1fr}
     }
-    @media (max-width: 560px) {
-      .nav-logo-text small { display: none; }
-      .nav-inner { padding: 0.8rem 1.1rem; }
-      .btn { padding: 0.7rem 1.1rem; }
-    }
+    @media(max-width:560px){section{padding:4.2rem 0}.feat-strip{grid-template-columns:1fr}.frow{grid-template-columns:1fr}.foot-grid{grid-template-columns:1fr}.hero h1{font-size:clamp(2.6rem,12vw,3.8rem)}}
+    @media(prefers-reduced-motion:reduce){*{animation-duration:.001s!important;transition-duration:.001s!important}[data-reveal]{opacity:1;transform:none}}
   </style>
 </head>
 <body>
-  <div class="back-bar">
-    <div class="container">
-      <a href="../../index.html">← Zurück zu MASESites.ch</a>
-      <span>|</span> <em>Demo-Website – erstellt von MASESites</em>
-    </div>
-  </div>
+  <div class="back-bar"><div class="wrap"><a href="../../index.html">← MASESites.ch</a><span class="sep">·</span><span>Demo-Projekt — so kann Ihre Website aussehen</span></div></div>
 
-  <nav class="site-nav">
-    <div class="nav-inner">
-      <div class="nav-logo">
-        <span class="nav-mark"><svg viewBox="0 0 24 24"><path d="M4 11h16a8 8 0 0 0-16 0zM2 11h20M5 15h14M7 19h10"/></svg></span>
-        <span class="nav-logo-text">
-          <strong>Kebab Palace</strong>
-          <small>Authentische türkische Küche</small>
-        </span>
-      </div>
-      <ul class="nav-links">
-        <li><a href="#speisekarte">Speisekarte</a></li>
-        <li><a href="#ueber">Über uns</a></li>
-        <li><a href="#kontakt">Kontakt</a></li>
-      </ul>
-      <a href="tel:+41441234567" class="btn btn-primary">Jetzt bestellen</a>
-    </div>
-  </nav>
-
-  <section class="hero">
-    <div class="container">
-      <div class="hero-grid">
-        <div>
-          <span class="hero-tag">Seit 1998 in Zürich</span>
-          <h1>Echt türkisch.<br><span>Echt lecker.</span></h1>
-          <p class="hero-lead">Frisch zubereitet, täglich gelieferte Zutaten und Rezepte aus der Türkei. Das schmeckt man.</p>
-          <div class="hero-btns">
-            <a href="#speisekarte" class="btn btn-primary">Zur Speisekarte</a>
-            <a href="tel:+41441234567" class="btn btn-outline">+41 44 123 45 67</a>
-            <span class="hero-open"><span class="open-dot"></span> Jetzt geöffnet</span>
-          </div>
-        </div>
-        <div class="hero-visual">
-          <div class="order-card">
-            <div class="order-head">
-              <strong>Deine Bestellung</strong>
-              <span>Online</span>
-            </div>
-            <div class="order-item">
-              <span class="order-thumb"><svg class="icon" viewBox="0 0 24 24"><path d="M4 11h16a8 8 0 0 0-16 0zM3 11h18M6 15h12"/></svg></span>
-              <div class="order-item-info"><strong>Döner im Brot</strong><span>Kalbfleisch, Salat, Sosse</span></div>
-              <span class="order-qty">1×</span>
-              <span class="order-price">CHF 9</span>
-            </div>
-            <div class="order-item">
-              <span class="order-thumb"><svg class="icon" viewBox="0 0 24 24"><path d="M8 2h8l-1 6H9zM9 8h6v12H9z"/></svg></span>
-              <div class="order-item-info"><strong>Ayran</strong><span>330 ml</span></div>
-              <span class="order-qty">1×</span>
-              <span class="order-price">CHF 3</span>
-            </div>
-            <div class="order-total">
-              <span>Total inkl. MwSt.</span>
-              <strong>CHF 12</strong>
-            </div>
-            <div class="order-cta">
-              <svg class="icon" viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"/></svg>
-              Jetzt bestellen
-            </div>
-          </div>
-          <div class="deliver-badge">
-            <span class="db-ic"><svg class="icon" viewBox="0 0 24 24"><path d="M5 18H3V6h11v7M14 9h4l3 4v5h-2"/><circle cx="7.5" cy="18.5" r="1.5"/><circle cx="17.5" cy="18.5" r="1.5"/></svg></span>
-            <div>
-              <strong>30 Min</strong>
-              <span>Lieferung &amp; Abholung</span>
-            </div>
-          </div>
-        </div>
+  <header class="nav" id="nav">
+    <div class="wrap nav-in">
+      <a class="brand" href="#top" aria-label="Kebab Palace Startseite">
+        <span class="mark"><svg viewBox="0 0 24 24" fill="none"><path d="M4 11h16a8 8 0 0 0-16 0zM2.5 11h19M5 15h14M7 19h10"/></svg></span>
+        <span><b>Kebab Palace</b><small>seit 1998 · Zürich</small></span>
+      </a>
+      <nav class="nav-links" aria-label="Hauptnavigation">
+        <a href="#beliebt">Beliebt</a><a href="#menu">Speisekarte</a><a href="#story">Story</a><a href="#kontakt">Standort</a>
+      </nav>
+      <div class="nav-cta">
+        <a href="tel:+41441234567" class="btn btn-primary">Jetzt bestellen</a>
+        <button class="burger" id="burger" aria-label="Menü" aria-expanded="false"><span></span><span></span><span></span></button>
       </div>
     </div>
-  </section>
+  </header>
+  <div class="scrim" id="scrim"></div>
+  <aside class="mobile-menu" id="mobileMenu">
+    <a href="#beliebt">Beliebt</a><a href="#menu">Speisekarte</a><a href="#story">Story</a><a href="#kontakt">Standort</a>
+    <a href="tel:+41441234567" class="btn btn-primary">Jetzt bestellen</a>
+  </aside>
 
-  <section class="features-section">
-    <div class="container">
-      <div class="features-grid">
-        <div class="feature-item">
-          <span class="feature-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M12 2c1 3-1 4-1 6a3 3 0 0 0 6 0c0-1-.5-2-1-3 2 1 4 4 4 8a8 8 0 0 1-16 0c0-4 3-7 5-9 0 2 2 2 3-2z"/></svg></span>
-          <div><h3>Frisch am Drehspiess</h3><p>Täglich frisch mariniertes Fleisch vom Drehspiess.</p></div>
+  <main id="top">
+    <section class="hero">
+      <div class="hero-bg"><img src="img/hero.jpg" alt="Frischer Döner vom Drehspiess" fetchpriority="high"></div>
+      <div class="wrap hero-in">
+        <span class="hero-badge"><span class="pin"></span> Jetzt geöffnet · Lieferung in ~30 Min</span>
+        <h1 class="display">Echt türkisch.<br><span class="hl">Echt lecker.</span></h1>
+        <p class="sub">Frisch vom Drehspiess, täglich hausgemacht und nach Familienrezept gewürzt. An der Langstrasse, seit 1998.</p>
+        <div class="hero-btns">
+          <a href="#menu" class="btn btn-gold">Zur Speisekarte</a>
+          <a href="tel:+41441234567" class="btn btn-ghost"><svg class="icon" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg> Bestellen</a>
+          <span class="hero-rate"><span class="stars">★★★★★</span> 4.8 · 2'000+ Bewertungen</span>
         </div>
-        <div class="feature-item">
-          <span class="feature-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M5 18H3V6h11v7M14 9h4l3 4v5h-2"/><circle cx="7.5" cy="18.5" r="1.5"/><circle cx="17.5" cy="18.5" r="1.5"/></svg></span>
-          <div><h3>Lieferung &amp; Abholung</h3><p>Lieferung in 30 Min. oder Click &amp; Collect.</p></div>
-        </div>
-        <div class="feature-item">
-          <span class="feature-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10z"/><path d="M2 21c0-3 1.85-5.36 5.08-6"/></svg></span>
-          <div><h3>Vegetarisch &amp; Vegan</h3><p>Grosse Auswahl für alle Ernährungsweisen.</p></div>
-        </div>
-        <div class="feature-item">
-          <span class="feature-icon"><svg class="icon" viewBox="0 0 24 24"><path d="m12 2 3 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.9 21l1.2-6.8-5-4.9 6.9-1z"/></svg></span>
-          <div><h3>4.8 / 5 Sterne</h3><p>Über 2'000 Bewertungen auf Google.</p></div>
-        </div>
+      </div>
+    </section>
+
+    <div class="strip" aria-hidden="true">
+      <div class="track">
+        <span>🥙 FRISCH VOM DREHSPIESS</span><span>•</span><span>🌱 VEGI &amp; VEGAN</span><span>•</span><span>🚚 LIEFERUNG IN 30 MIN</span><span>•</span><span>🔥 HAUSGEMACHTE SOSSEN</span><span>•</span><span>⭐ SEIT 1998</span><span>•</span>
+        <span>🥙 FRISCH VOM DREHSPIESS</span><span>•</span><span>🌱 VEGI &amp; VEGAN</span><span>•</span><span>🚚 LIEFERUNG IN 30 MIN</span><span>•</span><span>🔥 HAUSGEMACHTE SOSSEN</span><span>•</span><span>⭐ SEIT 1998</span><span>•</span>
       </div>
     </div>
-  </section>
 
-  <section id="speisekarte" class="menu-section">
-    <div class="container">
-      <p class="section-eyebrow" style="color:var(--gold);font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin-bottom:.5rem;">Speisekarte</p>
-      <h2 style="font-size:clamp(1.8rem,3vw,2.3rem); font-weight:800; margin-bottom:3rem;">Frisch &amp; hausgemacht</h2>
-
-      <div class="menu-category">
-        <h3 class="category-title"><svg viewBox="0 0 24 24"><path d="M4 11h16a8 8 0 0 0-16 0zM3 11h18M6 15h12"/></svg> Döner &amp; Wraps</h3>
-        <div class="menu-items">
-          <div class="menu-item"><div class="menu-item-info"><h4>Döner im Brot</h4><p>Kalbfleisch, Salat, Tomaten, Zwiebeln, Sosse</p></div><span class="menu-item-price">CHF 9</span></div>
-          <div class="menu-item"><div class="menu-item-info"><h4>Döner in der Box</h4><p>Mit Reis, Salat, Grillgemüse, zwei Sossen</p></div><span class="menu-item-price">CHF 14</span></div>
-          <div class="menu-item"><div class="menu-item-info"><h4>Chicken Wrap</h4><p>Hähnchenbrust, Knoblauchcreme, Rucolasalat</p></div><span class="menu-item-price">CHF 11</span></div>
-          <div class="menu-item"><div class="menu-item-info"><h4>Veggie Wrap</h4><p>Halloumi, gegrillte Paprika, Zucchini, Hummus</p></div><span class="menu-item-price">CHF 10</span></div>
-        </div>
+    <section class="alt" style="padding:3.4rem 0">
+      <div class="wrap feat-strip">
+        <div class="fi" data-reveal data-d="1"><span class="ic"><svg class="icon" viewBox="0 0 24 24"><path d="M12 2c1 3-1 4-1 6a3 3 0 0 0 6 0c0-1-.5-2-1-3 2 1 4 4 4 8a8 8 0 0 1-16 0c0-4 3-7 5-9 0 2 2 2 3-2z"/></svg></span><div><h3>Frisch am Spiess</h3><p>Täglich frisch mariniert &amp; gegrillt.</p></div></div>
+        <div class="fi" data-reveal data-d="2"><span class="ic"><svg class="icon" viewBox="0 0 24 24"><path d="M5 18H3V6h11v7M14 9h4l3 4v5h-2"/><circle cx="7.5" cy="18.5" r="1.5"/><circle cx="17.5" cy="18.5" r="1.5"/></svg></span><div><h3>Lieferung &amp; Abholung</h3><p>In ~30 Min oder Click &amp; Collect.</p></div></div>
+        <div class="fi" data-reveal data-d="3"><span class="ic"><svg class="icon" viewBox="0 0 24 24"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.5 19 2c1 2 2 4.2 2 8 0 5.5-4.8 10-10 10z"/><path d="M2 21c0-3 1.85-5.36 5.08-6"/></svg></span><div><h3>Vegi &amp; Vegan</h3><p>Grosse Auswahl für alle.</p></div></div>
+        <div class="fi" data-reveal data-d="1"><span class="ic"><svg class="icon" viewBox="0 0 24 24"><path d="m12 2 3 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.9 21l1.2-6.8-5-4.9 6.9-1z"/></svg></span><div><h3>4.8 / 5 Sterne</h3><p>Über 2'000 Google-Bewertungen.</p></div></div>
       </div>
+    </section>
 
-      <div class="menu-category">
-        <h3 class="category-title"><svg viewBox="0 0 24 24"><path d="M3 12a9 4 0 0 0 18 0 9 4 0 0 0-18 0zM3 12v3a9 4 0 0 0 18 0v-3"/></svg> Pide &amp; Lahmacun</h3>
-        <div class="menu-items">
-          <div class="menu-item"><div class="menu-item-info"><h4>Lahmacun</h4><p>Türkische Fladenpizza mit Hackfleisch, klassisch</p></div><span class="menu-item-price">CHF 5</span></div>
-          <div class="menu-item"><div class="menu-item-info"><h4>Kaşarlı Pide</h4><p>Mit Käse und Butteroberfläche, vegetarisch</p></div><span class="menu-item-price">CHF 12</span></div>
-          <div class="menu-item"><div class="menu-item-info"><h4>Kıymalı Pide</h4><p>Mit Hackfleisch, Paprika, Tomaten</p></div><span class="menu-item-price">CHF 14</span></div>
+    <section id="beliebt">
+      <div class="wrap">
+        <div class="sec-head" data-reveal>
+          <p class="eyebrow">Beliebt bei unseren Gästen</p>
+          <h2 class="title display">Die Lieblinge</h2>
+          <p class="lead" style="margin-top:1rem">Was bei uns am häufigsten über die Theke geht.</p>
         </div>
-      </div>
-
-      <div class="menu-category">
-        <h3 class="category-title"><svg viewBox="0 0 24 24"><path d="M5 11h14M7 11a5 5 0 0 1 10 0M9 11V8M12 11V7M15 11V8M5 11v2a7 7 0 0 0 14 0v-2"/></svg> Beilagen &amp; Getränke</h3>
-        <div class="menu-items">
-          <div class="menu-item"><div class="menu-item-info"><h4>Pommes Frites</h4><p>Knusprig frittiert</p></div><span class="menu-item-price">CHF 5</span></div>
-          <div class="menu-item"><div class="menu-item-info"><h4>Ayran</h4><p>Türkisches Joghurtgetränk, 330 ml</p></div><span class="menu-item-price">CHF 3</span></div>
-          <div class="menu-item"><div class="menu-item-info"><h4>Soft Drinks</h4><p>Cola, Fanta, Sprite, 330 ml</p></div><span class="menu-item-price">CHF 3.50</span></div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section id="ueber" class="about-section">
-    <div class="container">
-      <div class="about-grid">
-        <div class="about-visual">
-          <div class="about-stat">
-            <strong>25</strong>
-            <span>Jahre türkische Gastfreundschaft in Zürich</span>
+        <div class="dishes">
+          <div class="dish" data-reveal data-d="1">
+            <div class="ph"><img src="img/kebab.jpg" alt="Döner im Brot"><span class="pr">CHF 9.–</span></div>
+            <div class="bd"><h3>Döner im Brot</h3><p>Kalbfleisch vom Spiess, knackiger Salat, Tomaten, Zwiebeln &amp; hausgemachte Sosse.</p><div class="tag-row"><span class="tag">Bestseller</span><span class="tag">Mit Kalb</span></div></div>
           </div>
-          <div class="about-review">
-            <div class="stars">★★★★★</div>
-            <p>„Der beste Döner der Stadt – frisch, grosszügig und immer freundlich.“</p>
-            <cite>— Selina M., Google-Rezension</cite>
+          <div class="dish" data-reveal data-d="2">
+            <div class="ph"><img src="img/spread.jpg" alt="Döner in der Box"><span class="pr">CHF 14.–</span></div>
+            <div class="bd"><h3>Döner in der Box</h3><p>Mit Reis oder Pommes, Grillgemüse, frischem Salat und zwei Sossen nach Wahl.</p><div class="tag-row"><span class="tag">Sättigend</span></div></div>
+          </div>
+          <div class="dish" data-reveal data-d="3">
+            <div class="ph"><img src="img/pide.jpg" alt="Pide aus dem Steinofen"><span class="pr">CHF 14.–</span></div>
+            <div class="bd"><h3>Kıymalı Pide</h3><p>Türkische Steinofen-Pizza mit würzigem Hackfleisch, Paprika &amp; Tomaten.</p><div class="tag-row"><span class="tag">Steinofen</span></div></div>
+          </div>
+          <div class="dish" data-reveal data-d="1">
+            <div class="ph"><img src="img/fries.jpg" alt="Knusprige Pommes"><span class="pr">CHF 5.–</span></div>
+            <div class="bd"><h3>Pommes Frites</h3><p>Goldgelb &amp; knusprig frittiert. Mit Ketchup, Mayo oder unserer Knoblauchsosse.</p><div class="tag-row"><span class="tag">Vegi</span></div></div>
           </div>
         </div>
-        <div class="about-text">
-          <h2>Unsere Geschichte</h2>
-          <p>Seit 1998 servieren wir in Zürich authentische türkische Küche. Was als kleiner Imbiss begann, ist heute eines der beliebtesten türkischen Restaurants der Stadt.</p>
-          <p>Unsere Rezepte stammen aus der Heimat unserer Familie in der Türkei. Wir verwenden täglich frische Zutaten und marinieren unser Fleisch nach Familienrezept.</p>
-          <p>Egal ob zum Mittagessen, Abendessen oder als Snack – bei uns sind Sie herzlich willkommen.</p>
-          <a href="#kontakt" class="btn btn-primary" style="margin-top:1rem;">Uns besuchen</a>
-        </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <section id="kontakt" class="contact-section">
-    <div class="container">
-      <p class="section-eyebrow" style="color:var(--gold);font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin-bottom:.5rem;">Kontakt</p>
-      <h2 style="font-size:clamp(1.8rem,3vw,2.3rem); font-weight:800; margin-bottom:2.5rem;">Standort &amp; Öffnungszeiten</h2>
-      <div class="contact-grid">
-        <div>
-          <div class="info-block"><h4>Adresse</h4><p>Langstrasse 45, 8004 Zürich</p></div>
-          <div class="info-block"><h4>Telefon (Bestellung)</h4><p><a href="tel:+41441234567">+41 44 123 45 67</a></p></div>
-          <div class="info-block">
-            <h4>Öffnungszeiten</h4>
-            <table class="hours-table">
-              <tr><td>Montag – Freitag</td><td>10:00 – 23:00</td></tr>
-              <tr><td>Samstag</td><td>10:00 – 24:00</td></tr>
-              <tr><td>Sonntag</td><td>11:00 – 23:00</td></tr>
-            </table>
+    <section id="menu" class="alt">
+      <div class="wrap">
+        <div class="sec-head" data-reveal><p class="eyebrow">Speisekarte</p><h2 class="title display">Frisch &amp; hausgemacht</h2></div>
+        <div data-reveal>
+          <div class="menu-cat">
+            <h3><svg viewBox="0 0 24 24"><path d="M4 11h16a8 8 0 0 0-16 0zM3 11h18M6 15h12"/></svg> Döner &amp; Wraps</h3>
+            <div class="mitems">
+              <div class="mi"><span><span class="nm">Döner im Brot</span><span class="ds">Kalbfleisch, Salat, Tomaten, Zwiebeln, Sosse</span></span><span class="dots"></span><span class="pc">9.–</span></div>
+              <div class="mi"><span><span class="nm">Döner in der Box</span><span class="ds">Mit Reis, Salat, Grillgemüse, zwei Sossen</span></span><span class="dots"></span><span class="pc">14.–</span></div>
+              <div class="mi"><span><span class="nm">Chicken Wrap</span><span class="ds">Hähnchenbrust, Knoblauchcreme, Rucola</span></span><span class="dots"></span><span class="pc">11.–</span></div>
+              <div class="mi veg"><span><span class="nm">Veggie Wrap</span><span class="ds">Halloumi, gegrillte Paprika, Zucchini, Hummus</span></span><span class="dots"></span><span class="pc">10.–</span></div>
+              <div class="mi"><span><span class="nm">İskender Teller</span><span class="ds">Döner auf Fladenbrot, Tomatensauce, Joghurt</span></span><span class="dots"></span><span class="pc">18.–</span></div>
+              <div class="mi veg"><span><span class="nm">Falafel Teller</span><span class="ds">Hausgemachte Falafel, Hummus, Salat</span></span><span class="dots"></span><span class="pc">13.–</span></div>
+            </div>
+          </div>
+          <div class="menu-cat">
+            <h3><svg viewBox="0 0 24 24"><path d="M3 12a9 4 0 0 0 18 0 9 4 0 0 0-18 0zM3 12v3a9 4 0 0 0 18 0v-3"/></svg> Pide &amp; Lahmacun</h3>
+            <div class="mitems">
+              <div class="mi"><span><span class="nm">Lahmacun</span><span class="ds">Türkische Fladenpizza mit Hackfleisch</span></span><span class="dots"></span><span class="pc">5.–</span></div>
+              <div class="mi veg"><span><span class="nm">Kaşarlı Pide</span><span class="ds">Mit Käse &amp; Butteroberfläche</span></span><span class="dots"></span><span class="pc">12.–</span></div>
+              <div class="mi"><span><span class="nm">Kıymalı Pide</span><span class="ds">Mit Hackfleisch, Paprika, Tomaten</span></span><span class="dots"></span><span class="pc">14.–</span></div>
+              <div class="mi"><span><span class="nm">Sucuklu Pide</span><span class="ds">Mit türkischer Knoblauchwurst &amp; Käse</span></span><span class="dots"></span><span class="pc">15.–</span></div>
+            </div>
+          </div>
+          <div class="menu-cat">
+            <h3><svg viewBox="0 0 24 24"><path d="M5 11h14M7 11a5 5 0 0 1 10 0M9 11V8M12 11V7M15 11V8M5 11v2a7 7 0 0 0 14 0v-2"/></svg> Beilagen &amp; Getränke</h3>
+            <div class="mitems">
+              <div class="mi veg"><span><span class="nm">Pommes Frites</span><span class="ds">Knusprig frittiert</span></span><span class="dots"></span><span class="pc">5.–</span></div>
+              <div class="mi veg"><span><span class="nm">Ayran</span><span class="ds">Türkisches Joghurtgetränk, 330 ml</span></span><span class="dots"></span><span class="pc">3.–</span></div>
+              <div class="mi veg"><span><span class="nm">Soft Drinks</span><span class="ds">Cola, Fanta, Sprite, 330 ml</span></span><span class="dots"></span><span class="pc">3.50</span></div>
+              <div class="mi veg"><span><span class="nm">Baklava (2 Stk.)</span><span class="ds">Hausgemacht mit Pistazien &amp; Honig</span></span><span class="dots"></span><span class="pc">6.–</span></div>
+            </div>
           </div>
         </div>
-        <div class="contact-form-card">
-          <h3 style="margin-bottom:1rem;">Tisch reservieren</h3>
-          <form onsubmit="return false;" style="display:flex;flex-direction:column;gap:0.9rem;">
-            <input type="text" placeholder="Ihr Name *" required>
-            <input type="tel" placeholder="Telefon *" required>
-            <input type="text" placeholder="Datum &amp; Uhrzeit">
-            <input type="number" placeholder="Anzahl Personen" min="1">
-            <button type="submit" class="btn btn-primary" style="justify-content:center;">Tisch reservieren</button>
-            <p style="font-size:0.8rem;color:var(--muted);text-align:center;">Demo-Formular – keine echten Anfragen möglich.</p>
+      </div>
+    </section>
+
+    <section id="story">
+      <div class="wrap split">
+        <div class="media" data-reveal><img src="img/interior.jpg" alt="Unser Lokal an der Langstrasse"><div class="stamp"><b>25</b><span>Jahre an der Langstrasse</span></div></div>
+        <div data-reveal data-d="1">
+          <p class="eyebrow">Unsere Geschichte</p>
+          <h2 class="title display">Aus Liebe zur<br>türkischen Küche</h2>
+          <p style="margin-top:1rem;color:var(--muted)">Was 1998 als kleiner Imbiss begann, ist heute eine feste Grösse an der Langstrasse. Unsere Rezepte stammen aus der Heimat unserer Familie – vom marinierten Fleisch bis zur Sosse machen wir alles selbst.</p>
+          <p style="color:var(--muted)">Frische Zutaten, ehrliche Portionen und herzliche Gastfreundschaft. Mittags schnell, abends gemütlich – bei uns bist du immer willkommen.</p>
+          <a href="#kontakt" class="btn btn-gold" style="margin-top:1.4rem">Besuch uns</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="alt">
+      <div class="wrap">
+        <div class="sec-head" data-reveal><p class="eyebrow">Einblicke</p><h2 class="title display">Guten Appetit</h2></div>
+        <div class="gal" data-reveal>
+          <a class="big" data-full="img/hero.jpg"><img src="img/hero.jpg" alt="Döner vom Spiess"></a>
+          <a data-full="img/spit.jpg"><img src="img/spit.jpg" alt="Loaded Fries"></a>
+          <a data-full="img/doner.jpg"><img src="img/doner.jpg" alt="Frische Teigwaren"></a>
+          <a data-full="img/pide.jpg"><img src="img/pide.jpg" alt="Pide"></a>
+          <a data-full="img/spread.jpg"><img src="img/spread.jpg" alt="Mezze-Teller"></a>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="wrap">
+        <div class="sec-head center" data-reveal><p class="eyebrow">Gästestimmen</p><h2 class="title display">4.8 von 5 auf Google</h2></div>
+        <div class="quotes">
+          <div class="quote" data-reveal data-d="1"><div class="stars">★★★★★</div><p>„Der beste Döner der Stadt – frisch, grosszügig und immer freundlich. Komme seit Jahren her.“</p><div class="who"><img src="img/av-w2.jpg" alt=""><div><b>Selina M.</b><span>Google-Rezension</span></div></div></div>
+          <div class="quote" data-reveal data-d="2"><div class="stars">★★★★★</div><p>„Lieferung war pünktlich und alles noch heiss. Die Knoblauchsosse ist legendär. Klare Empfehlung!“</p><div class="who"><img src="img/av-m1.jpg" alt=""><div><b>Dario F.</b><span>Google-Rezension</span></div></div></div>
+          <div class="quote" data-reveal data-d="3"><div class="stars">★★★★★</div><p>„Endlich ein Lokal mit grosser Vegi-Auswahl. Der Falafel-Teller ist ein Traum. Sehr authentisch.“</p><div class="who"><img src="img/av-w3.jpg" alt=""><div><b>Nadia K.</b><span>Google-Rezension</span></div></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="kontakt" class="alt">
+      <div class="wrap">
+        <div class="sec-head" data-reveal><p class="eyebrow">Standort &amp; Reservation</p><h2 class="title display">Komm vorbei</h2></div>
+        <div class="contact-grid">
+          <div data-reveal>
+            <div class="info-card"><span class="ic"><svg class="icon" viewBox="0 0 24 24"><path d="M21 10c0 7-9 12-9 12s-9-5-9-12a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></span><div><h4>Adresse</h4><p>Langstrasse 45<br>8004 Zürich</p></div></div>
+            <div class="info-card"><span class="ic"><svg class="icon" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg></span><div><h4>Bestellung &amp; Reservation</h4><p><a href="tel:+41441234567">+41 44 123 45 67</a></p></div></div>
+            <div class="info-card" style="flex-direction:column">
+              <div style="display:flex;gap:1rem;align-items:center;width:100%"><span class="ic"><svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span><h4 style="margin:0">Öffnungszeiten</h4></div>
+              <div style="width:100%;margin-top:.4rem">
+                <div class="hrow today"><span class="d">Mo – Fr</span><span>10:00 – 23:00</span></div>
+                <div class="hrow"><span class="d">Samstag</span><span>10:00 – 24:00</span></div>
+                <div class="hrow"><span class="d">Sonntag</span><span>11:00 – 23:00</span></div>
+              </div>
+            </div>
+          </div>
+          <form data-reveal data-d="1" id="resForm" novalidate>
+            <h3>Tisch reservieren</h3>
+            <div class="frow">
+              <div><label for="n">Name</label><input id="n" type="text" placeholder="Ihr Name" required></div>
+              <div><label for="t">Telefon</label><input id="t" type="tel" placeholder="079 000 00 00" required></div>
+            </div>
+            <div class="frow">
+              <div><label for="d">Datum &amp; Zeit</label><input id="d" type="text" placeholder="z.B. Fr 19:30"></div>
+              <div><label for="p">Personen</label><input id="p" type="number" min="1" value="2"></div>
+            </div>
+            <div><label for="m">Bemerkung</label><textarea id="m" rows="3" placeholder="Allergien, Kinderstuhl, besondere Wünsche …"></textarea></div>
+            <button type="submit" class="btn btn-gold" style="width:100%">Reservation anfragen</button>
+            <div class="ok-msg" id="okMsg">✓ Teşekkürler! Dies ist eine Demo – in der echten Version landet Ihre Anfrage direkt im Lokal.</div>
+            <p class="form-note">Demo-Formular · es werden keine Daten gesendet.</p>
           </form>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
+  </main>
 
   <footer>
-    <div class="container">
-      <div class="footer-inner">
-        <span class="footer-brand">Kebab Palace</span>
-        <p class="footer-copy">&copy; 2026 Kebab Palace, Zürich</p>
+    <div class="wrap">
+      <div class="foot-grid">
+        <div class="foot-brand">
+          <a class="brand" href="#top"><span class="mark"><svg viewBox="0 0 24 24" fill="none"><path d="M4 11h16a8 8 0 0 0-16 0zM2.5 11h19M5 15h14M7 19h10"/></svg></span><span><b>Kebab Palace</b><small>seit 1998 · Zürich</small></span></a>
+          <p>Authentisch türkische Küche an der Langstrasse. Frisch, ehrlich, herzlich.</p>
+        </div>
+        <div class="foot-col"><h5>Speisekarte</h5><a href="#menu">Döner &amp; Wraps</a><a href="#menu">Pide &amp; Lahmacun</a><a href="#menu">Getränke</a></div>
+        <div class="foot-col"><h5>Bestellen</h5><a href="tel:+41441234567">Telefon</a><a href="#kontakt">Reservation</a><a href="#kontakt">Abholung</a></div>
+        <div class="foot-col"><h5>Kontakt</h5><a href="tel:+41441234567">+41 44 123 45 67</a><a href="mailto:hallo@kebabpalace.ch">hallo@kebabpalace.ch</a><p>Langstrasse 45<br>8004 Zürich</p></div>
       </div>
-      <p class="footer-note">
-        Diese Website ist ein Demo-Projekt von <a href="../../index.html">MASESites</a>.
-        Echte Website ab CHF 750. <a href="../../kontakt.html">Jetzt anfragen →</a>
-      </p>
+      <div class="foot-bottom"><span>© 2026 Kebab Palace, Zürich</span><span>Impressum · Datenschutz</span></div>
+      <p class="demo-note">Diese Website ist ein <strong>Demo-Projekt von MASESites</strong>. So könnte Ihre Restaurant-Website aussehen. <a href="../../kontakt.html">Jetzt eigene Website anfragen →</a></p>
     </div>
   </footer>
+
+  <div class="lb" id="lb"><button class="x" aria-label="Schliessen">×</button><img src="" alt=""></div>
+
+  <script>
+    const nav=document.getElementById('nav');
+    addEventListener('scroll',()=>nav.classList.toggle('scrolled',scrollY>20),{passive:true});
+    const burger=document.getElementById('burger'),mm=document.getElementById('mobileMenu'),scrim=document.getElementById('scrim');
+    function toggleMenu(o){burger.classList.toggle('open',o);mm.classList.toggle('open',o);scrim.classList.toggle('open',o);burger.setAttribute('aria-expanded',o);document.body.style.overflow=o?'hidden':''}
+    burger.addEventListener('click',()=>toggleMenu(!mm.classList.contains('open')));
+    scrim.addEventListener('click',()=>toggleMenu(false));
+    mm.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>toggleMenu(false)));
+    const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.12,rootMargin:'0px 0px -60px'});
+    document.querySelectorAll('[data-reveal]').forEach(el=>io.observe(el));
+    const lb=document.getElementById('lb'),lbImg=lb.querySelector('img');
+    document.querySelectorAll('.gal a').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();lbImg.src=a.dataset.full;lb.classList.add('open');document.body.style.overflow='hidden'}));
+    function closeLb(){lb.classList.remove('open');document.body.style.overflow=''}
+    lb.addEventListener('click',closeLb);
+    addEventListener('keydown',e=>{if(e.key==='Escape'){closeLb();toggleMenu(false)}});
+    document.getElementById('resForm').addEventListener('submit',e=>{e.preventDefault();document.getElementById('okMsg').style.display='block';e.target.querySelector('button').textContent='✓ Angefragt'});
+  </script>
 </body>
 </html>

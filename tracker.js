@@ -96,41 +96,52 @@
     }
   }, { passive: true });
 
-  // ---- Record page view on load ----
-  function recordPageView(timeOnPage) {
+  // ---- Record EXACTLY ONE page view per page load ----
+  // The view is sent once, when the page is first hidden or unloaded, so it
+  // carries the real time-on-page and scroll depth. A guard prevents the
+  // double/triple inserts that previously inflated the analytics table.
+  var viewSent = false;
+
+  function referrerPath() {
+    try {
+      var ref = document.referrer;
+      if (!ref) return null;
+      var u = new URL(ref);
+      // Only keep internal referrers; strip external hosts for privacy + signal.
+      if (u.host !== location.host) return null;
+      return u.pathname.replace(/^\//, '') || 'index.html';
+    } catch (e) { return null; }
+  }
+
+  function sendPageView() {
+    if (viewSent) return;          // one row per page load — no duplicates
+    viewSent = true;
+
+    var seconds = Math.round((Date.now() - PAGE_START) / 1000);
+    if (!isFinite(seconds) || seconds < 0) seconds = 0;
+    if (seconds > 3600) seconds = 3600;           // clamp absurd outliers (>1h)
+
+    var scroll = Math.max(0, Math.min(100, Math.round(MAX_SCROLL)));
+
     insert('mase_page_views', {
       session_id:   SESSION_ID,
       page_url:     PAGE_URL,
       page_title:   PAGE_TITLE,
-      referrer:     document.referrer ? new URL(document.referrer).pathname : null,
-      time_on_page: timeOnPage || 0,
-      scroll_depth: MAX_SCROLL,
+      referrer:     referrerPath(),
+      time_on_page: seconds,
+      scroll_depth: scroll,
       device_type:  DEVICE,
       language:     LANG
     });
   }
 
-  // ---- On page leave: send full view with time + scroll ----
-  function onLeave() {
-    var seconds = Math.round((Date.now() - PAGE_START) / 1000);
-    recordPageView(seconds);
-  }
-  window.addEventListener('beforeunload', onLeave);
-  // Also record on visibility change (tab switch / phone lock)
+  // Fire once when the visitor leaves the page. pagehide + visibilitychange
+  // together cover tab close, navigation, app-switch and phone lock across
+  // desktop and mobile. The guard makes sure only the first one counts.
+  window.addEventListener('pagehide', sendPageView);
   document.addEventListener('visibilitychange', function () {
-    if (document.visibilityState === 'hidden') onLeave();
+    if (document.visibilityState === 'hidden') sendPageView();
   });
-
-  // ---- Initial page view (with 0 time — will be updated on leave) ----
-  function init() {
-    recordPageView(0);
-  }
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
-  } else {
-    init();
-  }
 
   // ---- Expose helper so chatbot can call trackEvent() ----
   window.MASE_TRACK = {

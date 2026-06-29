@@ -564,6 +564,280 @@ strong { font-weight: 600; }
   .hm { font-size: 58px; }
 }
 
+/* ============================================
+   IMMERSIVES VORHANG-INTRO
+   Schriftzug teilt sich, man tauct in die Welt ein
+   ============================================ */
+.hero-curtain {
+  position: relative;
+  height: 260vh;                          /* Scroll-Distanz für die Reise */
+  margin-top: calc(-1 * var(--hdr-h));    /* Cover liegt unter dem Header */
+}
+.curtain-sticky {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  overflow: hidden;
+  background: var(--paper);
+}
+
+/* Tiefen-Gitter — die "Welt" hinter dem Vorhang */
+.curtain-grid {
+  position: absolute;
+  inset: -40%;
+  z-index: 0;
+  opacity: 0;
+  background-image:
+    linear-gradient(to right, var(--line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--line) 1px, transparent 1px);
+  background-size: 72px 72px;
+  /* zentriert verankert — gleiche Phase wie das Seiten-Raster (.section-world-enter),
+     damit die Spalten am Übergang nahtlos weiterlaufen statt zu springen */
+  background-position: 50% 50%;
+  -webkit-mask-image: radial-gradient(circle at 50% 50%, #000 0%, transparent 72%);
+          mask-image: radial-gradient(circle at 50% 50%, #000 0%, transparent 72%);
+  will-change: transform, opacity;
+}
+/* zarter Lichtkern in der Tiefe */
+.curtain-glow {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 60vmax;
+  height: 60vmax;
+  z-index: 0;
+  transform: translate(-50%, -50%) scale(0.4);
+  opacity: 0;
+  background: radial-gradient(circle, rgba(31, 58, 95, 0.10) 0%, transparent 60%);
+  will-change: transform, opacity;
+  pointer-events: none;
+}
+
+/* Eyebrow oben, über dem Vorhang */
+.hero-cover-eyebrow {
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  color: var(--muted);
+  margin: 0;
+}
+.curtain-eyebrow {
+  position: absolute;
+  top: clamp(5.5rem, 13vh, 8rem);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 4;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.curtain-eyebrow > span {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(110%);
+  animation: introRise 1s cubic-bezier(0.22, 1, 0.36, 1) 0.25s forwards;
+}
+
+/* Enthüllter Inhalt — wächst aus der Tiefe nach vorne */
+.curtain-reveal {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  text-align: center;
+  padding: 0 1.5rem;
+  opacity: 0;
+  will-change: opacity, transform;
+}
+.reveal-kicker {
+  font-size: clamp(0.72rem, 1vw, 0.82rem);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.24em;
+  color: var(--blue);
+}
+.hero-cover-tagline {
+  font-size: clamp(2.6rem, 7.5vw, 6.5rem);
+  font-weight: 680;
+  line-height: 1.02;
+  color: var(--ink);
+  letter-spacing: -0.03em;
+  margin: 0;
+  max-width: 16ch;
+}
+.hero-cover-tagline .serif-accent {
+  font-style: italic;
+  font-weight: 500;
+  color: var(--blue);
+}
+.reveal-sub {
+  font-size: clamp(1rem, 1.6vw, 1.25rem);
+  color: var(--ink-soft);
+  margin: 0;
+  max-width: 42ch;
+}
+.curtain-cta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.4rem;
+  flex-wrap: wrap;
+  margin-top: 0.6rem;
+}
+
+/* Die zwei Vorhang-Hälften mit dem Schriftzug */
+.curtain-half {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 50%;
+  overflow: hidden;
+  background: var(--paper);
+  z-index: 2;
+  display: flex;
+  justify-content: center;
+  will-change: transform;
+  backface-visibility: hidden;
+}
+.curtain-top    { top: 0;    align-items: flex-end;   transform-origin: center bottom; }
+.curtain-bottom { bottom: 0; align-items: flex-start; transform-origin: center top; }
+
+.curtain-word {
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: clamp(4rem, 20vw, 19rem);
+  line-height: 1;
+  letter-spacing: -0.045em;
+  color: var(--ink);
+  white-space: nowrap;
+  user-select: none;
+  opacity: 0;
+  filter: blur(16px);
+}
+.curtain-word em {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 500;
+  color: var(--blue);
+  letter-spacing: -0.02em;
+}
+.curtain-top    .curtain-word { transform: translateY(50%);  animation: wordFocus 1.1s cubic-bezier(0.22, 1, 0.36, 1) 0.15s forwards; }
+.curtain-bottom .curtain-word { transform: translateY(-50%); animation: wordFocus 1.1s cubic-bezier(0.22, 1, 0.36, 1) 0.28s forwards; }
+@keyframes wordFocus {
+  to { opacity: 1; filter: blur(0); }
+}
+
+/* Naht-Akzentlinie beim Eintritt */
+.curtain-seam {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  height: 2px;
+  width: 0;
+  z-index: 3;
+  background: var(--blue);
+  transform: translate(-50%, -50%);
+  animation: seamFlash 1.5s cubic-bezier(0.22, 1, 0.36, 1) 0.45s forwards;
+}
+@keyframes seamFlash {
+  0%   { width: 0;    opacity: 0; }
+  45%  { width: 40vw; opacity: 1; }
+  100% { width: 64vw; opacity: 0; }
+}
+
+/* Intro-Hilfsanimationen */
+@keyframes introRise {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Scroll-Cue */
+.hero-scroll-cue {
+  position: absolute;
+  bottom: 2.2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 4;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+  color: var(--muted);
+  text-decoration: none;
+  opacity: 0;
+  transition: opacity 0.6s ease, color 0.2s;
+}
+.hero-scroll-cue:hover { color: var(--blue); }
+.scroll-cue-label {
+  font-size: 0.66rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+}
+.scroll-dot { animation: scrollBob 1.6s ease-in-out infinite; }
+@keyframes scrollBob {
+  0%, 100% { transform: translateY(0); opacity: 1; }
+  50%      { transform: translateY(7px); opacity: 0.4; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-dot,
+  .curtain-eyebrow > span,
+  .curtain-top .curtain-word,
+  .curtain-bottom .curtain-word,
+  .curtain-seam,
+  .hero-scroll-cue { animation: none; }
+  .curtain-eyebrow > span { opacity: 1; transform: none; }
+  .curtain-word { opacity: 1; filter: none; }
+  .hero-scroll-cue { opacity: 1; }
+}
+
+/* Header transparent über dem Cover, solide nach Scroll */
+body:has(.hero-curtain) .site-header {
+  background: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border-bottom-color: transparent;
+  transition: background 0.35s, border-color 0.35s;
+}
+body:has(.hero-curtain) .site-header.scrolled {
+  background: rgba(246, 244, 239, 0.92);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  border-bottom-color: var(--line);
+}
+
+@media (max-width: 560px) {
+  .curtain-cta { flex-direction: column; gap: 1rem; }
+}
+
+/* Übergang: das Welt-Raster fliesst in die Seite und löst sich sanft auf
+   (das Intro-Gitter „landet" auf Scale 1 mit gleicher Zellgrösse) */
+.section-world-enter {
+  position: relative;
+  isolation: isolate;
+}
+.section-world-enter::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-image:
+    linear-gradient(to right, var(--line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--line) 1px, transparent 1px);
+  background-size: 72px 72px;
+  background-position: 50% 0;
+  opacity: 0.5;
+  /* weicher Einstieg an der Naht: startet schwach (wie die auslaufende Vorhang-Maske),
+     wird zur Sektion hin voll und löst sich dann auf — kein harter Helligkeitssprung */
+  -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,0.25) 0%, #000 20%, #000 36%, transparent 72%);
+          mask-image: linear-gradient(to bottom, rgba(0,0,0,0.25) 0%, #000 20%, #000 36%, transparent 72%);
+  pointer-events: none;
+}
+
 /* Kennzahlenleiste — Fakten wie im Geschäftsbericht */
 .fact-strip {
   border-top: 1px solid var(--line-strong);

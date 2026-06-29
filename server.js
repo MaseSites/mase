@@ -115,7 +115,8 @@ app.use(cors({
     return callback(new Error(`CORS_NOT_ALLOWED: ${origin}`));
   },
   methods: ['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Accept', 'Authorization', 'X-Confirm-Delete-All']
+  allowedHeaders: ['Content-Type', 'Accept', 'Authorization', 'X-Confirm-Delete-All', 'X-Count'],
+  exposedHeaders: ['Content-Range']
 }));
 
 // ── Reverse-proxy the secret inventory app (MUST be before express.json so the
@@ -680,18 +681,25 @@ app.get('/api/admin/data/:table', adminDataLimiter, async (req, res) => {
   const qs = req.url.split('?')[1] || '';
   const upstreamUrl = `${SUPABASE_URL}/rest/v1/${table}${qs ? '?' + qs : ''}`;
 
+  // When the admin asks for an exact total (X-Count: exact), request PostgREST's
+  // exact count. The total comes back in the Content-Range header (e.g. 0-24/6778)
+  // and is forwarded to the client — so counts are accurate even beyond 1000 rows.
+  const wantCount = String(req.headers['x-count'] || '').toLowerCase() === 'exact';
+  const upstreamHeaders = {
+    'apikey': serviceKey,
+    'Authorization': 'Bearer ' + serviceKey,
+    'Content-Type': 'application/json'
+  };
+  if (wantCount) upstreamHeaders['Prefer'] = 'count=exact';
+
   try {
-    const upstream = await fetch(upstreamUrl, {
-      headers: {
-        'apikey': serviceKey,
-        'Authorization': 'Bearer ' + serviceKey,
-        'Content-Type': 'application/json'
-      }
-    });
+    const upstream = await fetch(upstreamUrl, { headers: upstreamHeaders });
     const data = await upstream.json();
     if (!upstream.ok) {
       return res.status(upstream.status).json({ error: data });
     }
+    const contentRange = upstream.headers.get('content-range');
+    if (contentRange) res.set('Content-Range', contentRange);
     res.json(data);
   } catch (err) {
     console.error('[proxy] GET error:', err.message);

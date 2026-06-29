@@ -1,4 +1,99 @@
 ﻿// ============================================
+// HEADER: transparent über Cover-Hero, solide nach Scroll
+// ============================================
+(function () {
+  const header = document.querySelector('.site-header');
+  if (!header || !document.querySelector('.hero-curtain')) return;
+  function onScroll() {
+    header.classList.toggle('scrolled', window.scrollY > 40);
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+})();
+
+// ============================================
+// VORHANG-INTRO: immersives Eintauchen beim Scrollen
+// ============================================
+(function () {
+  const section = document.querySelector('.hero-curtain');
+  if (!section) return;
+  const top = section.querySelector('.curtain-top');
+  const bottom = section.querySelector('.curtain-bottom');
+  const reveal = section.querySelector('.curtain-reveal');
+  const grid = section.querySelector('.curtain-grid');
+  const glow = section.querySelector('.curtain-glow');
+  const eyebrow = section.querySelector('.curtain-eyebrow');
+  const cue = section.querySelector('.hero-scroll-cue');
+  if (!top || !bottom || !reveal) return;
+
+  const clamp = (v) => (v < 0 ? 0 : v > 1 ? 1 : v);
+  const easeOut = (t) => 1 - Math.pow(1 - t, 3);
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (reduce) {
+    section.style.height = '100svh';
+    top.style.transform = 'translateY(-115%) scale(2)';
+    bottom.style.transform = 'translateY(115%) scale(2)';
+    reveal.style.opacity = '1';
+    reveal.style.transform = 'none';
+    if (grid) { grid.style.opacity = '0.5'; grid.style.transform = 'scale(1)'; }
+    if (glow) glow.style.opacity = '0';
+    if (eyebrow) eyebrow.style.opacity = '0';
+    if (cue) cue.style.opacity = '0';
+    return;
+  }
+
+  let cueReady = false;
+  let ticking = false;
+
+  function update() {
+    ticking = false;
+    const dist = section.offsetHeight - window.innerHeight;
+    const rect = section.getBoundingClientRect();
+    const p = clamp(dist > 0 ? -rect.top / dist : 0);
+
+    // Vorhang teilt sich & fliegt am Betrachter vorbei (voll offen bei p≈0.7)
+    const cp = easeOut(clamp(p / 0.7));
+    const hs = (1 + 1.05 * cp).toFixed(3);
+    top.style.transform    = `translateY(${(-115 * cp).toFixed(2)}%) scale(${hs})`;
+    bottom.style.transform = `translateY(${(115 * cp).toFixed(2)}%) scale(${hs})`;
+
+    // Inhalt wächst aus der Tiefe nach vorne (Start p≈0.15, voll bei p≈0.92)
+    const re = easeOut(clamp((p - 0.15) / 0.77));
+    reveal.style.opacity = clamp(re * 1.25).toFixed(3);
+    reveal.style.transform = `translateY(${((1 - re) * 26).toFixed(1)}px) scale(${(0.4 + 0.6 * re).toFixed(3)})`;
+
+    // Welt-Gitter zoomt beim Eintauchen herein und „landet" ruhig auf Scale 1,
+    // damit es nahtlos in das Seiten-Raster übergeht (statt zu verschwinden)
+    if (grid) {
+      grid.style.opacity = (clamp((p - 0.04) / 0.5) * 0.5).toFixed(3);
+      grid.style.transform = `scale(${(1 + 0.5 * Math.sin(p * Math.PI)).toFixed(3)})`;
+    }
+    // Lichtkern blendet vor der Landung wieder aus
+    if (glow) {
+      const gi = clamp((p - 0.05) / 0.4) * clamp((1 - p) / 0.18);
+      glow.style.opacity = gi.toFixed(3);
+      glow.style.transform = `translate(-50%, -50%) scale(${(0.4 + p * 0.9).toFixed(3)})`;
+    }
+
+    // Hinweise oben/unten ausblenden
+    const fade = clamp(1 - p * 2.6).toFixed(3);
+    if (eyebrow) eyebrow.style.opacity = fade;
+    if (cue) cue.style.opacity = cueReady ? fade : '0';
+  }
+
+  function onScroll() {
+    if (!ticking) { ticking = true; requestAnimationFrame(update); }
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll, { passive: true });
+  update();
+
+  // Scroll-Cue erst nach dem Intro sanft einblenden
+  setTimeout(() => { cueReady = true; update(); }, 1100);
+})();
+
+// ============================================
 // NAVIGATION TOGGLE
 // ============================================
 (function() {
