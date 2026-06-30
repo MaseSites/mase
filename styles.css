@@ -1264,6 +1264,73 @@ section { padding: clamp(3.5rem, 7vw, 6rem) 0; }
   background: var(--ink-bg);
   color: var(--on-dark);
 }
+
+/* Animierter Marken-Hintergrund im dunklen Band — lebendig, aber dezent.
+   Standbild aus Higgsfield + sanfte Ken-Burns-Bewegung; Schrift bleibt klar lesbar. */
+.band-dark.has-media {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+.band-dark.has-media > .container {
+  position: relative;
+  z-index: 2;
+}
+.band-media {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: url(/images/brand-band.jpg) center / cover no-repeat;
+  opacity: 0.62;
+  transform: scale(1.06);
+  will-change: transform;
+  animation: bandDrift 40s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+/* gleichmässiger Lesbarkeits-Schleier (kein Verlauf, markentreu) */
+.band-media::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(22, 38, 59, 0.42);
+}
+@keyframes bandDrift {
+  from { transform: scale(1.05) translate3d(-1.2%, 0.4%, 0); }
+  to   { transform: scale(1.12) translate3d(1.4%, -1%, 0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .band-media { animation: none; transform: scale(1.04); }
+}
+
+/* Helles Marken-Visual hinter dem KI-Assistent-Teaser (heller Abschnitt) —
+   Linien liegen rechts, Text links bleibt auf ruhigem Papier gut lesbar. */
+#ki-teaser.has-media {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+#ki-teaser.has-media > .container {
+  position: relative;
+  z-index: 1;
+}
+#ki-teaser .ki-media {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: url(/images/brand-ki.jpg) right center / cover no-repeat;
+  opacity: 0.5;
+  transform: scale(1.04);
+  will-change: transform;
+  animation: bandDrift 46s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  #ki-teaser .ki-media { animation: none; transform: scale(1.02); }
+}
+@media (max-width: 760px) {
+  /* auf schmalen Screens dezenter, damit der Text frei bleibt */
+  #ki-teaser .ki-media { opacity: 0.32; }
+}
 .band-dark h2,
 .cta-section-dark h2 { color: #fff; }
 .band-dark .lead,
