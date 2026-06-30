@@ -79,7 +79,7 @@
   }
   </script>
 
-  <link rel="stylesheet" href="/styles.css?v=20260628a">
+  <link rel="stylesheet" href="/styles.css?v=20260630a">
   <link rel="stylesheet" href="/ai-assistant.css?v=20260613a">
   <script>
     (function () {
@@ -94,10 +94,26 @@
       document.documentElement.lang = (lang === 'de' ? 'de-CH' : 'en');
     })();
   </script>
+  <script>
+    /* Intro-Vorhang nur mit JS aktivieren — sonst bleibt ein statischer, nutzbarer Hero.
+       'curtain-on' schaltet das animierte Cover frei (kein Flash, da im <head> gesetzt).
+       Sicherheitsnetz: meldet sich script.js nicht als 'curtain-ready', fällt die Seite
+       automatisch auf den statischen Hero zurück — z. B. bei altem Cache, JS-Fehler oder
+       sehr alten Browsern. So bleibt der Inhalt überall erreichbar. */
+    (function () {
+      var d = document.documentElement;
+      d.classList.add('curtain-on');
+      window.addEventListener('load', function () {
+        window.setTimeout(function () {
+          if (!d.classList.contains('curtain-ready')) d.classList.remove('curtain-on');
+        }, 700);
+      });
+    })();
+  </script>
   <script src="/supabase-config.js"></script>
   <script src="/tracker.js"></script>
-  <script defer src="/theme.js?v=20260613a"></script>
-  <script defer src="/script.js?v=20260613a"></script>
+  <script defer src="/theme.js?v=20260630a"></script>
+  <script defer src="/script.js?v=20260630a"></script>
   <script defer src="/ai-assistant.js?v=20260613a"></script>
 </head>
 <body>

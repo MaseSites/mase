@@ -26,12 +26,17 @@
   const cue = section.querySelector('.hero-scroll-cue');
   if (!top || !bottom || !reveal) return;
 
+  // Intro ist startklar — das Sicherheitsnetz im <head> lässt den Vorhang nun aktiv.
+  // Bleibt diese Klasse aus (alter Cache / JS-Fehler), fällt die Seite auf den
+  // statischen Hero zurück, statt hinter einem geschlossenen Vorhang zu hängen.
+  document.documentElement.classList.add('curtain-ready');
+
   const clamp = (v) => (v < 0 ? 0 : v > 1 ? 1 : v);
   const easeOut = (t) => 1 - Math.pow(1 - t, 3);
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   if (reduce) {
-    section.style.height = '100svh';
+    section.style.height = '100vh';
     top.style.transform = 'translateY(-115%) scale(2)';
     bottom.style.transform = 'translateY(115%) scale(2)';
     reveal.style.opacity = '1';

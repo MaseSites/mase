@@ -576,6 +576,7 @@ strong { font-weight: 600; }
 .curtain-sticky {
   position: sticky;
   top: 0;
+  height: 100vh;          /* Fallback für ältere Browser */
   height: 100svh;
   overflow: hidden;
   background: var(--paper);
@@ -795,19 +796,50 @@ strong { font-weight: 600; }
   .hero-scroll-cue { opacity: 1; }
 }
 
-/* Header transparent über dem Cover, solide nach Scroll */
-body:has(.hero-curtain) .site-header {
+/* Header transparent über dem Cover, solide nach Scroll
+   (Klasse statt :has() — funktioniert in allen Browsern) */
+html.curtain-on .site-header {
   background: transparent;
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
   border-bottom-color: transparent;
   transition: background 0.35s, border-color 0.35s;
 }
-body:has(.hero-curtain) .site-header.scrolled {
+html.curtain-on .site-header.scrolled {
   background: rgba(246, 244, 239, 0.92);
   -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
   border-bottom-color: var(--line);
+}
+
+/* ---- Fallback ohne JS / wenn das Intro nicht startet ----
+   Statt eines blockierenden, geschlossenen Vorhangs ein statischer, voll nutzbarer Hero.
+   Greift, solange <html> NICHT die Klasse 'curtain-on' trägt (kein JS, JS-Fehler,
+   alter Cache, sehr alte Browser). */
+html:not(.curtain-on) .hero-curtain {
+  height: auto;
+  margin-top: 0;
+}
+html:not(.curtain-on) .curtain-sticky {
+  position: static;
+  height: auto;
+  min-height: 68vh;
+  overflow: visible;
+}
+html:not(.curtain-on) .curtain-half,
+html:not(.curtain-on) .curtain-grid,
+html:not(.curtain-on) .curtain-glow,
+html:not(.curtain-on) .curtain-seam,
+html:not(.curtain-on) .curtain-eyebrow,
+html:not(.curtain-on) .hero-scroll-cue {
+  display: none;
+}
+html:not(.curtain-on) .curtain-reveal {
+  position: static;
+  /* !important, damit evtl. zurückgebliebene Inline-Styles den Inhalt nicht verstecken */
+  opacity: 1 !important;
+  transform: none !important;
+  padding: clamp(4rem, 10vh, 7rem) 1.5rem;
 }
 
 @media (max-width: 560px) {
