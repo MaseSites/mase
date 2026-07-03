@@ -366,12 +366,17 @@
       var action = form.getAttribute('action') || '/api/contact';
       var path = action.charAt(0) === '/' ? action : '/' + action;
       var isLocal = /^(localhost|127\.0\.0\.1)$/i.test(location.hostname);
+      var isLiveStaticHost = /^(www\.)?masesites\.ch$/i.test(location.hostname);
+      var liveApiOrigin = 'https://mase-production.up.railway.app';
 
       if (location.protocol === 'file:') {
         return 'http://localhost:3000' + path;
       }
       if (isLocal && location.port && location.port !== '3000') {
         return location.protocol + '//localhost:3000' + path;
+      }
+      if (isLiveStaticHost) {
+        return liveApiOrigin + path;
       }
       return path;
     }
