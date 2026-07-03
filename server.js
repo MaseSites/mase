@@ -293,8 +293,14 @@ async function setupEmailTransporter() {
     });
     console.log('[OK] Email: Gmail konfiguriert mit', process.env.EMAIL_USER);
 
+  } else if (process.env.WEB3FORMS_KEY) {
+    // Web3Forms fallback: used by /api/contact when no SMTP transporter exists.
+    transporter = null;
+    console.log('[OK] Email: Web3Forms Fallback konfiguriert');
+    console.log(`[OK] Email-Empfänger: ${process.env.EMAIL_TO || 'info@masesites.ch'}`);
+
   } else {
-    // Test-Modus
+    transporter = null;
     console.log('');
     console.log('-------------------------------------------');
     console.log('[!] EMAIL NOCH NICHT KONFIGURIERT');
@@ -302,28 +308,10 @@ async function setupEmailTransporter() {
     console.log('So richtest du es ein:');
     console.log('   1. Öffne .env Datei');
     console.log('   2. Trage SMTP_HOST, SMTP_USER, SMTP_PASSWORD ein');
+    console.log('      oder WEB3FORMS_KEY für Web3Forms');
     console.log('   3. Starte Server neu: node server.js');
     console.log('-------------------------------------------');
     console.log('');
-    try {
-      const testAccount = await nodemailer.createTestAccount();
-      transporter = nodemailer.createTransport({
-        host: testAccount.smtp.host,
-        port: testAccount.smtp.port,
-        secure: testAccount.smtp.secure,
-        auth: {
-          user: testAccount.user,
-          pass: testAccount.pass
-        }
-      });
-      console.log('[TEST] Läuft im TEST-MODUS (Ethereal)');
-      console.log('[TEST] Test-Emails ansehen: https://ethereal.email');
-      console.log('[TEST] Login:', testAccount.user);
-      console.log('[TEST] Passwort:', testAccount.pass);
-      console.log('');
-    } catch (err) {
-      console.error('[FEHLER] Test-Account Fehler:', err.message);
-    }
   }
 
   if (transporter) {
@@ -417,7 +405,8 @@ app.post('/api/contact', limiter, async (req, res) => {
     const safePricingSelection = escapeHtml(pricingSelection);
     const safeSubjectName = name.replace(/[\r\n]+/g, ' ').slice(0, 80);
 
-    // If no SMTP transporter, use Web3Forms server-side (key from env, never exposed to browser)
+    // If no SMTP transporter, use Web3Forms server-side (key from env, never exposed to browser).
+    // Without a real provider we return 503 instead of silently "sending" to a test mailbox.
     if (!transporter) {
       const w3key = process.env.WEB3FORMS_KEY;
       if (!w3key) {
@@ -460,10 +449,11 @@ app.post('/api/contact', limiter, async (req, res) => {
             </tr>`
       : '';
 
+    const fromAddress = process.env.SMTP_FROM || process.env.SMTP_USER || process.env.EMAIL_USER || 'info@masesites.ch';
+    const recipientAddress = process.env.EMAIL_TO || 'info@masesites.ch';
     const mailToCompany = {
-      from: `"MASESites" <${process.env.SMTP_USER || 'info@masesites.ch'}>`,
-      to: process.env.EMAIL_TO || 'info@masesites.ch',
-      cc: process.env.EMAIL_CC || 'matteo.cocetrone@gmx.ch',
+      from: `"MASESites" <${fromAddress}>`,
+      to: recipientAddress,
       replyTo: email,
       subject: `Neue Kontaktanfrage von ${safeSubjectName} - MASESites`,
       html: `
@@ -504,6 +494,9 @@ app.post('/api/contact', limiter, async (req, res) => {
         </div>
       `
     };
+    if (process.env.EMAIL_CC) {
+      mailToCompany.cc = process.env.EMAIL_CC;
+    }
 
     const info = await transporter.sendMail(mailToCompany);
     console.log('[OK] Email an MASESites gesendet:', info.messageId);
@@ -522,7 +515,7 @@ app.post('/api/contact', limiter, async (req, res) => {
       : '';
 
     const mailToUser = {
-      from: `"MASESites" <${process.env.SMTP_USER || 'info@masesites.ch'}>`,
+      from: `"MASESites" <${fromAddress}>`,
       to: email,
       subject: 'Deine Anfrage bei MASESites',
       html: `
@@ -1194,4 +1187,3 @@ app.listen(PORT, () => {
   child.on('exit', (code) => console.warn(`[inventory] process exited with code ${code}`));
   console.log(`[OK] Inventory-App startet intern auf Port ${INV_PORT} (Pfad: ${SECRET_PREFIX})`);
 })();
-

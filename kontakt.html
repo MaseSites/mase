@@ -163,9 +163,9 @@
               <span id="ktk-error-text" data-i18n-html="ktk_error_html">Es ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut oder schreiben Sie uns direkt an <a href="mailto:info@masesites.ch">info@masesites.ch</a>.</span>
             </div>
 
-            <form id="contact-form" novalidate>
+            <form id="contact-form" action="/api/contact" novalidate>
               <input type="hidden" name="selected_package" id="selected-package" value="">
-              <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
+              <input type="text" name="honeypot" style="display:none" tabindex="-1" autocomplete="off">
 
               <div class="ktk-form-row">
                 <div class="ktk-form-group" id="fg-name">
@@ -187,7 +187,7 @@
                 </div>
                 <div class="ktk-form-group">
                   <label for="project" data-i18n="ktk_label_project">Projektart</label>
-                  <select class="ktk-select ktk-input" id="project" name="project">
+                  <select class="ktk-select ktk-input" id="project" name="projectType">
                     <option value="" data-i18n="contact_page_project_select">Bitte wählen …</option>
                     <option value="new-website" data-i18n="contact_page_project_new">Neue Website</option>
                     <option value="revision" data-i18n="contact_page_project_revision">Website-Überarbeitung</option>
@@ -321,12 +321,13 @@
       updateCount();
     }
 
-    /* ---- Formularversand via Web3Forms → info@masesites.ch ---- */
+    /* ---- Formularversand via Backend → info@masesites.ch ---- */
     var form = document.getElementById('contact-form');
     var submitBtn = document.getElementById('ktk-submit');
     var successEl = document.getElementById('ktk-success');
     var errorBanner = document.getElementById('ktk-error-banner');
     var errorText = document.getElementById('ktk-error-text');
+    if (form) form.dataset.apiBound = 'true';
 
     function showFieldError(groupId, show) {
       var g = document.getElementById(groupId);
@@ -349,8 +350,8 @@
       showFieldError('fg-email', !emailOk);
       if (!emailOk) ok = false;
 
-      showFieldError('fg-message', !msg.value.trim());
-      if (!msg.value.trim()) ok = false;
+      showFieldError('fg-message', msg.value.trim().length < 10);
+      if (msg.value.trim().length < 10) ok = false;
 
       if (!privacy.checked) {
         ok = false;
@@ -359,6 +360,20 @@
         privacy.style.outline = '';
       }
       return ok;
+    }
+
+    function resolveContactEndpoint() {
+      var action = form.getAttribute('action') || '/api/contact';
+      var path = action.charAt(0) === '/' ? action : '/' + action;
+      var isLocal = /^(localhost|127\.0\.0\.1)$/i.test(location.hostname);
+
+      if (location.protocol === 'file:') {
+        return 'http://localhost:3000' + path;
+      }
+      if (isLocal && location.port && location.port !== '3000') {
+        return location.protocol + '//localhost:3000' + path;
+      }
+      return path;
     }
 
     form.addEventListener('submit', async function (e) {
@@ -383,10 +398,7 @@
       submitBtn.classList.add('loading');
 
       try {
-        var apiBase = (location.hostname === 'localhost' || location.hostname === '127.0.0.1')
-          ? ''
-          : 'https://mase-production.up.railway.app';
-        var res1 = await fetch(apiBase + '/api/contact', {
+        var res1 = await fetch(resolveContactEndpoint(), {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
           body: JSON.stringify({
@@ -397,14 +409,24 @@
             message: data.message,
             pricingSelection: data.selected_package,
             privacy: true,
-            honeypot: (document.querySelector('[name="_honey"]') || {}).value || ''
+            honeypot: (document.querySelector('[name="honeypot"]') || {}).value || ''
           })
         });
 
-        var json1 = await res1.json();
-        if (json1.success) {
+        var json1 = {};
+        var contentType = res1.headers.get('content-type') || '';
+        if (contentType.indexOf('application/json') !== -1) {
+          try { json1 = await res1.json(); } catch (e) { json1 = {}; }
+        }
+
+        if (res1.ok && json1.success) {
           form.style.display = 'none';
           successEl.style.display = 'flex';
+          try {
+            localStorage.removeItem('mase_pricing_selection');
+            sessionStorage.removeItem('mase_pkg_nachricht');
+            sessionStorage.removeItem('mase_pkg_paket');
+          } catch (e) {}
         } else {
           throw new Error(json1.message || 'Unbekannter Fehler');
         }
