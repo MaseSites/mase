@@ -163,9 +163,9 @@
               <span id="ktk-error-text" data-i18n-html="ktk_error_html">Es ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut oder schreiben Sie uns direkt an <a href="mailto:info@masesites.ch">info@masesites.ch</a>.</span>
             </div>
 
-            <form id="contact-form" action="/api/contact" novalidate>
+            <form id="contact-form" action="https://formsubmit.co/ajax/info@masesites.ch" novalidate>
               <input type="hidden" name="selected_package" id="selected-package" value="">
-              <input type="text" name="honeypot" style="display:none" tabindex="-1" autocomplete="off">
+              <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
 
               <div class="ktk-form-row">
                 <div class="ktk-form-group" id="fg-name">
@@ -321,7 +321,7 @@
       updateCount();
     }
 
-    /* ---- Formularversand via Backend → info@masesites.ch ---- */
+    /* ---- Formularversand via FormSubmit → info@masesites.ch ---- */
     var form = document.getElementById('contact-form');
     var submitBtn = document.getElementById('ktk-submit');
     var successEl = document.getElementById('ktk-success');
@@ -363,22 +363,7 @@
     }
 
     function resolveContactEndpoint() {
-      var action = form.getAttribute('action') || '/api/contact';
-      var path = action.charAt(0) === '/' ? action : '/' + action;
-      var isLocal = /^(localhost|127\.0\.0\.1)$/i.test(location.hostname);
-      var isLiveStaticHost = /^(www\.)?masesites\.ch$/i.test(location.hostname);
-      var liveApiOrigin = 'https://mase-production.up.railway.app';
-
-      if (location.protocol === 'file:') {
-        return 'http://localhost:3000' + path;
-      }
-      if (isLocal && location.port && location.port !== '3000') {
-        return location.protocol + '//localhost:3000' + path;
-      }
-      if (isLiveStaticHost) {
-        return liveApiOrigin + path;
-      }
-      return path;
+      return form.getAttribute('action') || 'https://formsubmit.co/ajax/info@masesites.ch';
     }
 
     form.addEventListener('submit', async function (e) {
@@ -403,19 +388,23 @@
       submitBtn.classList.add('loading');
 
       try {
+        var formData = new FormData();
+        formData.append('name', data.name);
+        formData.append('email', data.email);
+        formData.append('_replyto', data.email);
+        formData.append('company', data.company);
+        formData.append('projectType', data.project);
+        formData.append('message', data.message);
+        formData.append('pricingSelection', data.selected_package);
+        formData.append('_subject', data._subject);
+        formData.append('_template', 'table');
+        formData.append('_captcha', 'false');
+        formData.append('_honey', (document.querySelector('[name="_honey"]') || {}).value || '');
+
         var res1 = await fetch(resolveContactEndpoint(), {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-          body: JSON.stringify({
-            name: data.name,
-            email: data.email,
-            company: data.company,
-            projectType: data.project,
-            message: data.message,
-            pricingSelection: data.selected_package,
-            privacy: true,
-            honeypot: (document.querySelector('[name="honeypot"]') || {}).value || ''
-          })
+          headers: { 'Accept': 'application/json' },
+          body: formData
         });
 
         var json1 = {};
@@ -424,7 +413,7 @@
           try { json1 = await res1.json(); } catch (e) { json1 = {}; }
         }
 
-        if (res1.ok && json1.success) {
+        if (res1.ok && (json1.success === true || json1.success === 'true' || !json1.error)) {
           form.style.display = 'none';
           successEl.style.display = 'flex';
           try {

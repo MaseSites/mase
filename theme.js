@@ -412,7 +412,7 @@
     <p>Wir setzen technische und organisatorische Sicherheitsmassnahmen ein, um Ihre Daten gegen Manipulation, Verlust und unberechtigten Zugriff zu schützen. Unsere Website nutzt SSL-Verschlüsselung (HTTPS).</p>
 
     <h2>5. Externe Dienste</h2>
-    <p>Wir nutzen <strong>Web3Forms</strong> für die Verarbeitung von Kontaktformularen. Dabei werden die von Ihnen eingegebenen Daten an Web3Forms übermittelt. Weitere Informationen: <a href="https://web3forms.com/privacy" target="_blank" rel="noopener">web3forms.com/privacy</a></p>
+    <p>Wir nutzen <strong>FormSubmit</strong> für die Verarbeitung von Kontaktformularen. Dabei werden die von Ihnen eingegebenen Daten an FormSubmit übermittelt. Weitere Informationen: <a href="https://formsubmit.co/privacy.pdf" target="_blank" rel="noopener">formsubmit.co/privacy.pdf</a></p>
 
     <p style="color:var(--muted);margin-top:3rem;font-size:0.9rem;">Stand: Juni 2026</p>`
     },
@@ -820,7 +820,7 @@
     <p>We use technical and organisational security measures to protect your data against manipulation, loss, and unauthorised access. Our website uses SSL encryption (HTTPS).</p>
 
     <h2>5. External services</h2>
-    <p>We use <strong>Web3Forms</strong> to process contact forms. Data entered by you is transmitted to Web3Forms. More information: <a href="https://web3forms.com/privacy" target="_blank" rel="noopener">web3forms.com/privacy</a></p>
+    <p>We use <strong>FormSubmit</strong> to process contact forms. Data entered by you is transmitted to FormSubmit. More information: <a href="https://formsubmit.co/privacy.pdf" target="_blank" rel="noopener">formsubmit.co/privacy.pdf</a></p>
 
     <p style="color:var(--muted);margin-top:3rem;font-size:0.9rem;">Last updated: June 2026</p>`
     }

@@ -73,10 +73,10 @@ app.use((req, res, next) => {
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
       "font-src 'self' https://fonts.gstatic.com",
       "img-src 'self' data: https:",
-      "connect-src 'self' https://kxeorjgabvtplmdygbph.supabase.co https://api.openai.com https://api.groq.com",
+      "connect-src 'self' https://kxeorjgabvtplmdygbph.supabase.co https://api.openai.com https://api.groq.com https://formsubmit.co",
       "frame-ancestors 'none'",
       "base-uri 'self'",
-      "form-action 'self'"
+      "form-action 'self' https://formsubmit.co"
     ].join('; ')
   );
   next();
