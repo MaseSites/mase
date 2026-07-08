@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Beispiele &amp; Portfolio | masesites</title>
+  <meta name="description" content="Echte Projekte, echte Ergebnisse: klickbare Live-Demos von masesites für Gastronomie, Beauty, Gesundheit und Freizeit, dazu die Eventplattform Groupify.">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a class="logo" href="index.html" aria-label="masesites, zur Startseite">
+        masesites
+      </a>
+      <nav class="main-nav" aria-label="Hauptnavigation">
+        <a href="index.html">Startseite</a>
+        <a href="beispiele.html" class="active">Beispiele</a>
+        <a href="ki-bot.html">KI-Bot</a>
+        <a href="preise.html">Preise</a>
+        <a href="ueber-uns.html">Über uns</a>
+      </nav>
+      <div class="header-cta">
+        <a class="konto-link" href="dashboard.html">Dashboard</a>
+        <button class="burger" aria-label="Menü öffnen" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="mobile-menu">
+    <a href="index.html">Startseite</a>
+    <a href="beispiele.html" class="active">Beispiele</a>
+    <a href="ki-bot.html">KI-Bot</a>
+    <a href="preise.html">Preise</a>
+    <a href="ueber-uns.html">Über uns</a>
+    <a href="dashboard.html" class="konto-link">Dashboard</a>
+    <a class="btn btn-primary" href="kontakt.html">Projekt starten →</a>
+  </div>
+
+  <main>
+
+    <!-- ===== Hero ===== -->
+    <section class="page-hero">
+      <div class="wrap">
+        <h1>Echte Projekte. Echte Ergebnisse.</h1>
+        <p class="lead">Ein Team, viele Stile. Jede Live-Demo ist eine echte Website, klick dich rein.</p>
+      </div>
+    </section>
+
+    <!-- ===== Filter + Raster ===== -->
+    <section class="tight">
+      <div class="wrap">
+        <div class="chips reveal" style="margin-bottom: 40px;" role="group" aria-label="Portfolio nach Branche filtern">
+          <button class="chip active" data-filter="alle" aria-pressed="true">Alle</button>
+          <button class="chip" data-filter="gastronomie" aria-pressed="false">Gastronomie</button>
+          <button class="chip" data-filter="beauty" aria-pressed="false">Beauty</button>
+          <button class="chip" data-filter="gesundheit" aria-pressed="false">Gesundheit</button>
+          <button class="chip" data-filter="freizeit" aria-pressed="false">Freizeit</button>
+          <button class="chip" data-filter="event" aria-pressed="false">Event</button>
+        </div>
+
+        <div class="work-grid" id="work-grid">
+
+          <article class="work-card reveal" data-cat="event">
+            <div class="work-thumb" style="background: linear-gradient(150deg, #1E2340, #2A3054);">
+              <span class="work-badge real">Kundenprojekt</span>
+              <div class="thumb-nav" style="color: #F2F1FA;">
+                <span class="t-logo"><span style="display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:5px;background:#2FB9A8;color:#10131f;font-size:0.5rem;">gr</span> groupify</span>
+                <span class="t-links"><span>Events</span><span>Tickets</span><span>Community</span></span>
+              </div>
+              <div class="thumb-hero" style="background: linear-gradient(120deg, #2FB9A8 0%, #1E2340 70%); color: #F2F1FA;">
+                <div>
+                  <div class="t-title">Finde dein nächstes Event.</div>
+                  <div class="t-sub">Konzerte · Festivals · Meetups</div>
+                </div>
+              </div>
+              <div class="thumb-row" aria-hidden="true">
+                <i style="background:#2FB9A8;"></i><i style="background:#3A4170;"></i><i style="background:#F2F1FA; opacity:0.85;"></i>
+              </div>
+            </div>
+            <div class="work-meta">
+              <h3>Groupify</h3>
+              <p><strong>Eventplattform</strong> · Website-Redesign mit eigenem Design-System in Navy, Indigo und Creme.</p>
+            </div>
+          </article>
+
+          <a class="work-card reveal" data-cat="gastronomie" data-delay="80" href="https://masesites.ch/demo/doener-site/index.html" target="_blank" rel="noopener">
+            <div class="work-thumb shot">
+              <span class="work-badge real">Live-Demo</span>
+              <img src="assets/img/demos/kebab.jpg" alt="Website Kebab Palace, echtes Live-Demo von masesites" loading="lazy" width="1000" height="683">
+            </div>
+            <div class="work-meta">
+              <h3>Kebab Palace</h3>
+              <p><strong>Gastronomie</strong> · Speisekarte, Bestellung und Standort im Fokus.</p>
+              <span class="work-link">Website ansehen →</span>
+            </div>
+          </a>
+
+          <a class="work-card reveal" data-cat="beauty" data-delay="160" href="https://masesites.ch/demo/nagelstudio-site/index.html" target="_blank" rel="noopener">
+            <div class="work-thumb shot">
+              <span class="work-badge real">Live-Demo</span>
+              <img src="assets/img/demos/nagelstudio.jpg" alt="Website Nails &amp; Co., echtes Live-Demo von masesites" loading="lazy" width="1000" height="683">
+            </div>
+            <div class="work-meta">
+              <h3>Nails &amp; Co.</h3>
+              <p><strong>Beauty</strong> · elegantes Einseiten-Design mit Galerie und Terminbuchung.</p>
+              <span class="work-link">Website ansehen →</span>
+            </div>
+          </a>
+
+          <a class="work-card reveal" data-cat="gesundheit" data-delay="240" href="https://masesites.ch/demo/praxis-site/index.html" target="_blank" rel="noopener">
+            <div class="work-thumb shot">
+              <span class="work-badge real">Live-Demo</span>
+              <img src="assets/img/demos/praxis.jpg" alt="Website Praxis Dr. Müller, echtes Live-Demo von masesites" loading="lazy" width="1000" height="683">
+            </div>
+            <div class="work-meta">
+              <h3>Praxis Dr. Müller</h3>
+              <p><strong>Gesundheit</strong> · seriöser Auftritt mit ruhiger Typografie und Terminbuchung.</p>
+              <span class="work-link">Website ansehen →</span>
+            </div>
+          </a>
+
+          <a class="work-card reveal" data-cat="freizeit" data-delay="320" href="https://masesites.ch/demo/bowling-site/index.html" target="_blank" rel="noopener">
+            <div class="work-thumb shot">
+              <span class="work-badge real">Live-Demo</span>
+              <img src="assets/img/demos/bowling.jpg" alt="Website Strike Zone Bowling, echtes Live-Demo von masesites" loading="lazy" width="1000" height="683">
+            </div>
+            <div class="work-meta">
+              <h3>Strike Zone Bowling</h3>
+              <p><strong>Freizeit</strong> · klares Layout mit Fokus auf Bahnreservierung und Events.</p>
+              <span class="work-link">Website ansehen →</span>
+            </div>
+          </a>
+
+        </div>
+
+        <p class="gallery-hint reveal" style="margin-top: 32px;">Alle Live-Demos sind vollständige, echte Websites. Neue Kundenprojekte kommen laufend dazu.</p>
+      </div>
+    </section>
+
+    <!-- ===== Abschluss-CTA ===== -->
+    <section class="tight">
+      <div class="wrap">
+        <div class="big-cta reveal">
+          <h2>Dein Projekt könnte das nächste sein.</h2>
+          <p>Erzähl uns, was du vorhast. Wir zeigen dir, wie es aussehen könnte.</p>
+          <div class="hero-ctas">
+            <a class="btn btn-primary" href="kontakt.html">Projekt starten <span class="arrow">→</span></a>
+            <a class="btn btn-ghost" href="preise.html">Preise ansehen</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a class="logo" href="index.html">
+            masesites
+          </a>
+          <p>Personalisierte, professionelle Websites aus der Schweiz.</p>
+          <a class="mail" href="mailto:info@masesites.ch">info@masesites.ch</a>
+        </div>
+        <div class="footer-col">
+          <h4>Angebot</h4>
+          <ul>
+            <li><a href="preise.html">Neue Website</a></li>
+            <li><a href="preise.html#ueberarbeitung">Website-Überarbeitung</a></li>
+            <li><a href="ki-bot.html">KI-Bot</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>masesites</h4>
+          <ul>
+            <li><a href="index.html">Startseite</a></li>
+            <li><a href="beispiele.html">Beispiele</a></li>
+            <li><a href="ueber-uns.html">Über uns</a></li>
+            <li><a href="kontakt.html">Kontakt</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Rechtliches</h4>
+          <ul>
+            <li><a href="impressum.html">Impressum</a></li>
+            <li><a href="datenschutz.html">Datenschutz</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© <span data-year>2026</span> masesites</span>
+        <span class="swiss"><span class="cross" aria-hidden="true"></span> Gebaut in der Schweiz</span>
+        <span class="legal">
+          <a href="impressum.html">Impressum</a>
+          <a href="datenschutz.html">Datenschutz</a>
+        </span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/js/protokoll.js"></script>
+  <script src="assets/js/site.js"></script>
+  <script>
+    /* Portfolio-Filter über die Branchen-Chips */
+    (function () {
+      var chips = document.querySelectorAll("[data-filter]");
+      var cards = document.querySelectorAll("#work-grid .work-card");
+      chips.forEach(function (chip) {
+        chip.addEventListener("click", function () {
+          var f = chip.getAttribute("data-filter");
+          chips.forEach(function (c) {
+            var on = c === chip;
+            c.classList.toggle("active", on);
+            c.setAttribute("aria-pressed", on ? "true" : "false");
+          });
+          cards.forEach(function (card) {
+            var show = f === "alle" || card.getAttribute("data-cat") === f;
+            card.style.display = show ? "" : "none";
+          });
+        });
+      });
+    })();
+  </script>
+</body>
+</html>

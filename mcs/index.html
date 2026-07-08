@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mitarbeiter-Portal | masesites</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="icon" href="../assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body class="app" data-no-widget>
+
+  <header class="app-top">
+    <div class="app-top-inner">
+      <a class="logo" href="../index.html" aria-label="masesites, zur Startseite">
+        masesites<span class="app-pill">Mitarbeiter</span>
+      </a>
+      <div class="app-top-rechts">
+        <a class="app-top-link" href="../index.html">Zur Website</a>
+        <span class="app-top-trenner hidden" aria-hidden="true" data-ma-sichtbar></span>
+        <span class="app-user hidden" data-ma-sichtbar>
+          <span class="side-avatar" data-ma-avatar aria-hidden="true"></span>
+          <span class="app-user-name" data-ma-name></span>
+        </span>
+        <button class="konto-abmelden hidden" type="button" data-ma-logout data-ma-sichtbar>Abmelden</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== Anmeldung ===== -->
+  <section class="tight" id="mcs-gate">
+    <div class="wrap">
+      <div class="auth-wrap" style="padding-top: 60px;">
+        <div class="auth-card">
+          <h3 style="margin-bottom: 18px;">Mitarbeiter-Anmeldung</h3>
+          <form id="mcs-login-form" class="auth-form">
+            <div class="form-field">
+              <label for="m-email">E-Mail</label>
+              <input id="m-email" name="email" type="email" required autocomplete="email" placeholder="name@masesites.ch">
+            </div>
+            <div class="form-field">
+              <label for="m-passwort">Passwort</label>
+              <input id="m-passwort" name="passwort" type="password" required autocomplete="current-password" placeholder="Dein Passwort">
+            </div>
+            <p class="form-error" id="mcs-fehler" role="alert"></p>
+            <button class="btn btn-primary" type="submit">Anmelden <span class="arrow">→</span></button>
+          </form>
+        </div>
+        <p class="auth-note">Nur für das masesites-Team. Dein Konto bekommst du von der Verwaltung.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Mitarbeiter-App ===== -->
+  <main id="mcs-app" class="app-main hidden">
+    <div class="app-wrap">
+      <div class="dash-layout">
+
+        <aside class="dash-side">
+          <div class="side-profil">
+            <span class="side-avatar" data-ma-avatar aria-hidden="true"></span>
+            <span class="side-wer">
+              <b data-ma-name></b>
+              <small data-ma-rolle></small>
+            </span>
+          </div>
+
+          <nav class="side-nav" aria-label="Portal-Bereiche">
+            <span class="side-label">Arbeitsbereich</span>
+            <button class="side-item active" type="button" data-route="uebersicht">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/></svg>
+              Übersicht
+            </button>
+            <button class="side-item" type="button" data-route="kunden">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+              Meine Kunden
+              <span class="side-badge" data-badge="kunden"></span>
+            </button>
+            <button class="side-item" type="button" data-route="projekte">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+              Projekte
+              <span class="side-badge" data-badge="projekte"></span>
+            </button>
+
+            <span class="side-label">Support</span>
+            <button class="side-item" type="button" data-route="tickets">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.83z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+              Tickets
+              <span class="side-badge" data-badge="tickets"></span>
+            </button>
+            <button class="side-item" type="button" data-route="nachrichten">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+              Nachrichten
+              <span class="side-badge" data-badge="nachrichten"></span>
+            </button>
+          </nav>
+
+          <div class="side-foot">
+            <button class="konto-abmelden" type="button" data-ma-logout>Abmelden</button>
+          </div>
+        </aside>
+
+        <div class="dash-main">
+
+          <!-- ===== Übersicht ===== -->
+          <section class="dash-panel active" id="panel-uebersicht" aria-label="Übersicht">
+            <div class="panel-kopf">
+              <div>
+                <h1>Hallo, <span data-ma-vorname></span></h1>
+                <p id="uebersicht-datum"></p>
+              </div>
+            </div>
+
+            <div class="dash-card kennzahlen">
+              <button class="kennzahl" type="button" data-route="kunden">
+                <b data-kz="kunden">0</b>
+                <small>Meine Kunden</small>
+              </button>
+              <button class="kennzahl" type="button" data-route="projekte">
+                <b data-kz="projekte">0</b>
+                <small>Laufende Projekte</small>
+              </button>
+              <button class="kennzahl" type="button" data-route="tickets">
+                <b data-kz="tickets">0</b>
+                <small>Offene Tickets</small>
+              </button>
+              <button class="kennzahl" type="button" data-route="nachrichten">
+                <b data-kz="nachrichten">0</b>
+                <small>Wartende Chats</small>
+              </button>
+            </div>
+
+            <div class="panel-grid">
+              <div class="dash-card schlank">
+                <div class="card-head">
+                  <h3>Wartet auf Antwort</h3>
+                  <button class="card-link" type="button" data-route="nachrichten">Posteingang</button>
+                </div>
+                <ul class="zeilen-liste" id="uebersicht-wartend"></ul>
+              </div>
+              <div class="dash-card schlank">
+                <div class="card-head">
+                  <h3>Offene Tickets</h3>
+                  <button class="card-link" type="button" data-route="tickets">Alle Tickets</button>
+                </div>
+                <ul class="zeilen-liste" id="uebersicht-tickets"></ul>
+              </div>
+            </div>
+          </section>
+
+          <!-- ===== Kunden: Liste ===== -->
+          <section class="dash-panel" id="panel-kunden" aria-label="Meine Kunden">
+            <div class="panel-kopf">
+              <div>
+                <h1>Meine Kunden</h1>
+                <p>Die dir zugewiesenen Kundenkonten. Zeile anklicken für die Detailseite.</p>
+              </div>
+            </div>
+            <div class="dash-card schlank">
+              <div class="tab-wrap">
+                <table class="dash-tabelle">
+                  <thead>
+                    <tr><th>Kunde</th><th>E-Mail</th><th>Telefon</th><th>Projekte</th><th>Offene Tickets</th><th></th></tr>
+                  </thead>
+                  <tbody id="kunden-tabelle"></tbody>
+                </table>
+              </div>
+            </div>
+          </section>
+
+          <!-- ===== Kunden: Detail ===== -->
+          <section class="dash-panel" id="panel-kunde-detail" aria-label="Kunde">
+            <button class="zurueck" type="button" data-route="kunden">← Meine Kunden</button>
+            <div id="kunde-detail"></div>
+          </section>
+
+          <!-- ===== Projekte: Liste ===== -->
+          <section class="dash-panel" id="panel-projekte" aria-label="Projekte">
+            <div class="panel-kopf">
+              <div>
+                <h1>Projekte</h1>
+                <p>Alle Projekte deiner Kunden. Zeile anklicken zum Bearbeiten.</p>
+              </div>
+            </div>
+            <div class="dash-card schlank">
+              <div class="tab-wrap">
+                <table class="dash-tabelle">
+                  <thead>
+                    <tr><th>Projekt</th><th>Kunde</th><th>Schritt</th><th>Fortschritt</th><th>Vorschau</th><th></th></tr>
+                  </thead>
+                  <tbody id="projekte-tabelle"></tbody>
+                </table>
+              </div>
+            </div>
+          </section>
+
+          <!-- ===== Projekte: Detail ===== -->
+          <section class="dash-panel" id="panel-projekt-detail" aria-label="Projekt">
+            <button class="zurueck" type="button" data-route="projekte">← Alle Projekte</button>
+            <div id="projekt-detail"></div>
+          </section>
+
+          <!-- ===== Tickets: Liste ===== -->
+          <section class="dash-panel" id="panel-tickets" aria-label="Tickets">
+            <div class="panel-kopf">
+              <div>
+                <h1>Tickets</h1>
+                <p>Alle Tickets deiner Kunden. Zeile anklicken für Verlauf und Antwort.</p>
+              </div>
+            </div>
+            <div class="dash-card schlank">
+              <div class="filter-zeile">
+                <label for="ticket-filter" class="klein-label">Anzeigen:</label>
+                <select class="mini-select" id="ticket-filter">
+                  <option value="offen">Nur offene und beantwortete</option>
+                  <option value="alle">Alle</option>
+                </select>
+              </div>
+              <div class="tab-wrap">
+                <table class="dash-tabelle">
+                  <thead>
+                    <tr><th>Status</th><th>Nr.</th><th>Betreff</th><th>Kunde</th><th>Letzte Nachricht</th><th>Datum</th><th></th></tr>
+                  </thead>
+                  <tbody id="tickets-tabelle"></tbody>
+                </table>
+              </div>
+            </div>
+          </section>
+
+          <!-- ===== Tickets: Detail ===== -->
+          <section class="dash-panel" id="panel-ticket-detail" aria-label="Ticket">
+            <button class="zurueck" type="button" data-route="tickets">← Alle Tickets</button>
+            <div id="ticket-detail"></div>
+          </section>
+
+          <!-- ===== Nachrichten ===== -->
+          <section class="dash-panel" id="panel-nachrichten" aria-label="Nachrichten">
+            <div class="panel-kopf">
+              <div>
+                <h1>Nachrichten</h1>
+                <p>Chat-Verläufe deiner Kunden. Antworten erscheinen sofort beim Kunden.</p>
+              </div>
+            </div>
+            <div class="dash-card inbox-karte">
+              <div class="inbox-liste">
+                <div class="inbox-suche">
+                  <input type="search" id="inbox-suche" placeholder="Kunden suchen" aria-label="Kunden suchen">
+                </div>
+                <div class="inbox-eintraege" id="inbox-eintraege"></div>
+              </div>
+              <div class="inbox-thread" id="inbox-thread">
+                <p class="inbox-leer">Wähle links einen Kunden, um den Verlauf zu sehen.</p>
+              </div>
+            </div>
+          </section>
+
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <footer class="app-fuss">
+    <div class="app-wrap">
+      <span>© <span data-year>2026</span> masesites</span>
+      <span class="legal">
+        <a href="../index.html">Startseite</a>
+        <a href="../impressum.html">Impressum</a>
+      </span>
+    </div>
+  </footer>
+
+  <script src="../assets/js/daten.js"></script>
+  <script src="../assets/js/mcs.js"></script>
+</body>
+</html>
