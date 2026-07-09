@@ -87,6 +87,7 @@ function tiefTest(string $ordner): array
         $schritt = 'db-oeffnen';
         $t = new PDO('sqlite:' . $ordner . '/masesites.db');
         $t->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $sqlite = (string)$t->query('SELECT sqlite_version()')->fetchColumn();
         $schritt = 'db-wal';
         $walOk = true;
         try { $t->exec('PRAGMA journal_mode = WAL'); } catch (Throwable $e) { $walOk = false; }
@@ -101,7 +102,7 @@ function tiefTest(string $ordner): array
         if ($pt !== 'probe') {
             throw new RuntimeException('AES-256-GCM-Roundtrip fehlgeschlagen (openssl?).');
         }
-        return ['ok' => true, 'wal' => $walOk];
+        return ['ok' => true, 'wal' => $walOk, 'sqlite' => $sqlite];
     } catch (Throwable $e) {
         return ['ok' => false, 'fehler_bei' => $schritt, 'meldung' => $e->getMessage()];
     }
@@ -312,8 +313,9 @@ function einstellung(string $schluessel): ?string
 function setzeEinstellung(string $schluessel, string $wert): void
 {
     global $db;
-    $db->prepare('INSERT INTO einstellungen (schluessel, wert) VALUES (?, ?)
-                  ON CONFLICT(schluessel) DO UPDATE SET wert = excluded.wert')
+    /* INSERT OR REPLACE statt "ON CONFLICT DO UPDATE" (UPSERT), damit es auch
+       auf älterem SQLite < 3.24 läuft (z. B. system-libsqlite auf CentOS/RHEL). */
+    $db->prepare('INSERT OR REPLACE INTO einstellungen (schluessel, wert) VALUES (?, ?)')
         ->execute([$schluessel, $wert]);
 }
 /* Laufende Nummern zentral vergeben, damit nie eine doppelt vorkommt */
@@ -676,8 +678,8 @@ function ratenbegrenzung(string $topf, string $ip, int $max, int $fensterMs): bo
     $s->execute([$schluessel]);
     $eintrag = $s->fetch();
     if (!$eintrag || (int)$eintrag['bis'] < $jetzt) {
-        $db->prepare('INSERT INTO raten (schluessel, n, bis) VALUES (?, 1, ?)
-                      ON CONFLICT(schluessel) DO UPDATE SET n = 1, bis = excluded.bis')
+        /* INSERT OR REPLACE statt UPSERT – siehe setzeEinstellung (SQLite < 3.24). */
+        $db->prepare('INSERT OR REPLACE INTO raten (schluessel, n, bis) VALUES (?, 1, ?)')
             ->execute([$schluessel, $jetzt + $fensterMs]);
         return true;
     }
