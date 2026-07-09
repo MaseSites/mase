@@ -842,7 +842,7 @@ function logLabel(?array $sitzung): string
 
 function kontoFuerClient(array $konto): array
 {
-    unset($konto['pw'], $konto['pwHash'], $konto['salt']);
+    unset($konto['pw'], $konto['pwHash'], $konto['salt'], $konto['pwLegacy']);
     return $konto;
 }
 
@@ -961,6 +961,58 @@ route('POST', '/api/registrieren', null, function ($p, $body) {
     antwortJson(200, ['ok' => true, 'konto' => kontoFuerClient($konto)]);
 });
 
+/* Einmalige Migration alter localStorage-Konten aus der Prototyp-Zeit.
+   Offen (Kunden sind noch nicht angemeldet), aber bewusst harmlos:
+   legt NUR nicht vorhandene Konten an, überschreibt nie ein bestehendes,
+   und ist ratenbegrenzt. Das alte Passwort (SHA-256+Salt) wird mitgenommen
+   und beim ersten Login auf bcrypt umgestellt. */
+route('POST', '/api/import', null, function ($p, $body) {
+    if (!ratenbegrenzung('import', clientIp(), 40, 3600 * 1000)) {
+        fehler(429, 'Zu viele Importe. Bitte später erneut.');
+    }
+    $konten = is_array($body['konten'] ?? null) ? $body['konten'] : [];
+    $angelegt = 0;
+    $uebersprungen = 0;
+    foreach (array_slice(array_values($konten), 0, 500) as $alt) {
+        if (!is_array($alt)) { $uebersprungen++; continue; }
+        $email = mb_strtolower(s($alt['email'] ?? '', 200));
+        $provider = in_array($alt['provider'] ?? '', ['email', 'google'], true) ? $alt['provider'] : 'email';
+        if (!preg_match(EMAIL_MUSTER, $email)) { $uebersprungen++; continue; }
+        if (ladeKunde($email)) { $uebersprungen++; continue; }   /* nie überschreiben */
+
+        $pwLegacy = null;
+        if ($provider === 'email') {
+            $salt = s($alt['salt'] ?? '', 64);
+            $ph = mb_strtolower(s($alt['pwHash'] ?? '', 128));
+            if ($salt !== '' && $ph !== '' && ctype_xdigit($salt) && ctype_xdigit($ph)) {
+                $pwLegacy = ['salt' => $salt, 'hash' => $ph];
+            } else {
+                /* E-Mail-Konto ohne brauchbares Passwort: nicht importierbar,
+                   die Person registriert sich einfach neu. */
+                $uebersprungen++;
+                continue;
+            }
+        }
+        $konto = normalisiereKonto([
+            'name' => s($alt['name'] ?? '', 80),
+            'firma' => s($alt['firma'] ?? '', 120),
+            'telefon' => s($alt['telefon'] ?? '', 40),
+            'email' => $email,
+            'provider' => $provider,
+            'erstellt' => s($alt['erstellt'] ?? '', 10) ?: heute(),
+            'projekte' => saeubereProjekte($alt['projekte'] ?? []),
+            'auftraege' => saeubereAuftraege($alt['auftraege'] ?? []),
+            'tickets' => saeubereTickets($alt['tickets'] ?? []),
+            'nachrichten' => saeubereNachrichten($alt['nachrichten'] ?? []),
+        ]);
+        if ($pwLegacy) { $konto['pwLegacy'] = $pwLegacy; }
+        speichereKunde($konto, null, $provider);
+        schreibeLog($email, clientIp(), 'migration', 'Konto migriert', $provider);
+        $angelegt++;
+    }
+    antwortJson(200, ['ok' => true, 'angelegt' => $angelegt, 'uebersprungen' => $uebersprungen]);
+});
+
 route('POST', '/api/anmelden', null, function ($p, $body) {
     if (!ratenbegrenzung('anmelden', clientIp(), 20, 10 * 60000)) {
         fehler(429, 'Zu viele Versuche. Warte ein paar Minuten.');
@@ -981,11 +1033,26 @@ route('POST', '/api/anmelden', null, function ($p, $body) {
     if ($zeile['provider'] === 'demo') {
         fehler(400, 'Das Demo-Konto öffnest du über den Link unten.');
     }
-    if (!pruefePasswort((string)($body['passwort'] ?? ''), $zeile['pw'])) {
+    $eingabe = (string)($body['passwort'] ?? '');
+    $konto = normalisiereKonto(entschluessele($zeile['daten']));
+    $okLogin = false;
+    if ($zeile['pw']) {
+        $okLogin = pruefePasswort($eingabe, $zeile['pw']);
+    } elseif (isset($konto['pwLegacy']['salt'], $konto['pwLegacy']['hash'])) {
+        /* Übergang aus der Prototyp-Zeit: altes Passwort war SHA-256(salt + passwort).
+           Stimmt es, sofort auf bcrypt umstellen – danach ein ganz normales Konto. */
+        $berechnet = hash('sha256', (string)$konto['pwLegacy']['salt'] . $eingabe);
+        if (hash_equals((string)$konto['pwLegacy']['hash'], $berechnet)) {
+            $okLogin = true;
+            unset($konto['pwLegacy']);
+            $db->prepare('UPDATE kunden SET pw = ?, provider = ?, daten = ? WHERE email_idx = ?')
+                ->execute([hashePasswort($eingabe), 'email', verschluessele($konto), emailIndex($email)]);
+        }
+    }
+    if (!$okLogin) {
         schreibeLog($email, clientIp(), 'login.html', 'Anmeldung fehlgeschlagen', '');
         fehler(401, FALSCHE_ANMELDUNG);
     }
-    $konto = normalisiereKonto(entschluessele($zeile['daten']));
     setzeSitzungscookie(erstelleSitzung('kunde', emailIndex($email)), 'kunde');
     schreibeLog($email, clientIp(), 'login.html', 'Angemeldet', '');
     antwortJson(200, ['ok' => true, 'konto' => kontoFuerClient($konto)]);

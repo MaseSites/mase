@@ -400,6 +400,36 @@ window.MSDaten = (function () {
   }
   function anzeigeName(k) { return k.firma || k.name || k.email; }
 
+  /* ---------- Einmalige Migration alter localStorage-Konten auf den Server ----------
+     Läuft genau einmal pro Browser: findet dieser Browser noch Konten aus der
+     Prototyp-Zeit (localStorage `ms_konten`), werden sie im Hintergrund an den
+     Server geschickt. Der Server legt nur nicht vorhandene Konten an und behält
+     das alte Passwort, bis der Kunde sich das erste Mal anmeldet. Danach setzt ein
+     Merker, damit nichts doppelt passiert. Die alten Daten bleiben als Sicherheits-
+     kopie im Browser. */
+  function migriereAlteDaten() {
+    try {
+      if (localStorage.getItem("ms_migriert") === "1") return;
+      var roh = localStorage.getItem("ms_konten");
+      if (!roh) { localStorage.setItem("ms_migriert", "1"); return; }
+      var konten;
+      try { konten = JSON.parse(roh); } catch (e) { konten = null; }
+      if (!Array.isArray(konten) || konten.length === 0) {
+        localStorage.setItem("ms_migriert", "1");
+        return;
+      }
+      fetch("/api/import", {
+        method: "POST",
+        credentials: "same-origin",
+        headers: { "Content-Type": "application/json", "X-Requested-With": "fetch" },
+        body: JSON.stringify({ konten: konten })
+      }).then(function (r) {
+        if (r.ok) localStorage.setItem("ms_migriert", "1");
+      }).catch(function () { /* offline o.ä.: beim nächsten Besuch erneut */ });
+    } catch (e) { /* localStorage gesperrt: ignorieren */ }
+  }
+  migriereAlteDaten();
+
   return {
     SCHRITTE: SCHRITTE,
     AUFTRAG_STATUS: AUFTRAG_STATUS,
