@@ -61,10 +61,48 @@ $HINTER_PROXY = cfg('MS_HINTER_PROXY') === '1';
 $GOOGLE_CLIENT_ID = cfg('MS_GOOGLE_CLIENT_ID')
     ?: '117777636536-nd77bnlv9co4l7g8cbn6de0q8uhj3njt.apps.googleusercontent.com';
 
+/* ---------- Früher Diagnose-Endpunkt ----------
+   Läuft VOR Schlüssel und Datenbank, damit /api/status auch dann antwortet,
+   wenn der eigentliche Start scheitert – und zeigt gleich, woran es liegt. */
+$FRUEH_PFAD = rawurldecode((string)(parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?? '/'));
+if ($FRUEH_PFAD === '/api/status') {
+    if (!is_dir($DATEN_ORDNER)) {
+        @mkdir($DATEN_ORDNER, 0700, true);
+    }
+    $beschreibbar = is_dir($DATEN_ORDNER) && is_writable($DATEN_ORDNER);
+    $alles = extension_loaded('openssl') && extension_loaded('pdo_sqlite')
+        && function_exists('hash_hkdf') && $beschreibbar;
+    header('Content-Type: application/json; charset=utf-8');
+    header('Cache-Control: no-store');
+    header('X-Content-Type-Options: nosniff');
+    echo json_encode([
+        'ok' => $alles,
+        'dienst' => 'masesites',
+        'backend' => 'php',
+        'php' => PHP_VERSION,
+        'pruefung' => [
+            'openssl' => extension_loaded('openssl'),
+            'pdo_sqlite' => extension_loaded('pdo_sqlite'),
+            'curl' => extension_loaded('curl'),
+            'hash_hkdf' => function_exists('hash_hkdf'),
+            'daten_ordner' => $DATEN_ORDNER,
+            'daten_existiert' => is_dir($DATEN_ORDNER),
+            'daten_beschreibbar' => $beschreibbar,
+        ],
+    ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+    exit;
+}
+
 /* ---------- Schlüssel und Verschlüsselung ---------- */
 
 if (!is_dir($DATEN_ORDNER)) {
     @mkdir($DATEN_ORDNER, 0700, true);
+}
+if (!is_dir($DATEN_ORDNER) || !is_writable($DATEN_ORDNER)) {
+    fehlerAbbruch('Der Datenordner ist nicht beschreibbar. Öffne /api/status für Details.');
+}
+if (!extension_loaded('pdo_sqlite')) {
+    fehlerAbbruch('Die PHP-Erweiterung pdo_sqlite fehlt. Öffne /api/status für Details.');
 }
 
 function ladeHauptschluessel(string $ordner): string
@@ -159,7 +197,12 @@ function pruefePasswort(string $pw, ?string $gespeichert): bool
 
 /* ---------- Datenbank ---------- */
 
-$db = new PDO('sqlite:' . $DATEN_ORDNER . '/masesites.db');
+try {
+    $db = new PDO('sqlite:' . $DATEN_ORDNER . '/masesites.db');
+} catch (Throwable $e) {
+    error_log('masesites DB-Init: ' . $e->getMessage());
+    fehlerAbbruch('Datenbank konnte nicht geöffnet werden. Öffne /api/status für Details.');
+}
 $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 $db->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
 $db->exec('PRAGMA journal_mode = WAL');
@@ -830,18 +873,8 @@ function route(string $methode, string $muster, ?string $schutz, callable $handl
     $ROUTEN[] = ['methode' => $methode, 'regex' => $regex, 'namen' => $namen, 'schutz' => $schutz, 'handler' => $handler];
 }
 
-/* --- Status: offener Diagnose-Endpunkt, verrät keine Geheimnisse --- */
-
-route('GET', '/api/status', null, function () {
-    antwortJson(200, [
-        'ok' => true,
-        'dienst' => 'masesites',
-        'backend' => 'php',
-        'zeit' => date('c'),
-        'php' => PHP_VERSION,
-        'https' => istHttps(),
-    ]);
-});
+/* (Der Diagnose-Endpunkt /api/status wird schon oben früh beantwortet,
+   damit er auch bei fehlender DB/Schlüssel funktioniert.) */
 
 /* --- Kunde: Registrierung und Anmeldung --- */
 
