@@ -228,7 +228,10 @@ section.tight { padding: 56px 0; }
   position: relative;
 }
 
-.hero h1 { margin-bottom: 20px; }
+.hero h1 { margin-bottom: 20px; font-size: clamp(1.7rem, 4.4vw, 3rem); line-height: 1.14; }
+/* Zweite Zeile bleibt zusammen, damit die Headline immer genau zwei Zeilen hat,
+   egal welches rotierende Wort gerade steht. */
+.hero-zeile2 { white-space: nowrap; }
 
 .rotor {
   display: inline-block;
@@ -474,10 +477,11 @@ section.tight { padding: 56px 0; }
 
 a.offer-row {
   display: grid;
-  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr) auto;
-  align-items: center;
-  gap: 12px 36px;
-  padding: 34px 6px;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas: "titel preis" "text text";
+  align-items: baseline;
+  gap: 10px 28px;
+  padding: 30px 8px;
   border-bottom: 1px solid var(--line-strong);
   color: var(--ink);
   transition: background 0.25s ease;
@@ -485,6 +489,7 @@ a.offer-row {
 a.offer-row:hover { background: var(--bg-soft); color: var(--ink); }
 
 .offer-row h3 {
+  grid-area: titel;
   font-size: clamp(1.5rem, 2.6vw, 2rem);
   font-weight: 700;
   letter-spacing: -0.03em;
@@ -492,11 +497,18 @@ a.offer-row:hover { background: var(--bg-soft); color: var(--ink); }
 }
 a.offer-row:hover h3 { transform: translateX(8px); }
 
-.offer-row p { color: var(--ink-soft); font-size: 0.98rem; }
+.offer-row p { grid-area: text; margin: 0; max-width: 60ch; color: var(--ink-soft); font-size: 0.98rem; }
+
+/* Schmale Screens: Titel, Text, Preis sauber untereinander */
+@media (max-width: 640px) {
+  a.offer-row { grid-template-columns: 1fr; grid-template-areas: "titel" "text" "preis"; gap: 8px; padding: 24px 4px; }
+  .offer-row .offer-price { justify-self: start; margin-top: 4px; }
+}
 
 .offer-row .offer-price {
+  grid-area: preis;
   display: inline-flex; align-items: center; gap: 14px;
-  justify-self: end;
+  justify-self: end; align-self: baseline;
   font-weight: 700;
   font-size: 1.05rem;
   white-space: nowrap;

@@ -204,6 +204,28 @@
     BRANDS.forEach(function (b) { var i = new Image(); i.src = b.img; });
   }
 
+  /* Rotor auf die Breite des längsten Wortes fixieren: so springt „passt." nicht
+     und die Headline bleibt stabil bei genau zwei Zeilen. */
+  function fixiereRotorBreite() {
+    if (!rotorWord) return;
+    var rotor = rotorWord.parentElement;
+    var cs = getComputedStyle(rotorWord);
+    var probe = document.createElement("span");
+    probe.style.cssText = "position:absolute;visibility:hidden;white-space:nowrap;left:-9999px";
+    probe.style.fontFamily = cs.fontFamily;
+    probe.style.fontSize = cs.fontSize;
+    probe.style.fontWeight = cs.fontWeight;
+    probe.style.letterSpacing = cs.letterSpacing;
+    document.body.appendChild(probe);
+    var max = 0;
+    BRANDS.forEach(function (b) { probe.textContent = b.word; max = Math.max(max, probe.getBoundingClientRect().width); });
+    probe.remove();
+    rotor.style.minWidth = Math.ceil(max + 1) + "px";
+  }
+  if (document.fonts && document.fonts.ready) { document.fonts.ready.then(fixiereRotorBreite); } else { fixiereRotorBreite(); }
+  var rb;
+  window.addEventListener("resize", function () { clearTimeout(rb); rb = setTimeout(fixiereRotorBreite, 150); });
+
   render(BRANDS[0]);
   setActiveChip(BRANDS[0].id);
   if ("requestIdleCallback" in window) requestIdleCallback(preload); else setTimeout(preload, 1200);
