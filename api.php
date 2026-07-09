@@ -65,6 +65,48 @@ $GOOGLE_CLIENT_ID = cfg('MS_GOOGLE_CLIENT_ID')
    Läuft VOR Schlüssel und Datenbank, damit /api/status auch dann antwortet,
    wenn der eigentliche Start scheitert – und zeigt gleich, woran es liegt. */
 $FRUEH_PFAD = rawurldecode((string)(parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?? '/'));
+/* Tieftest: spielt genau das durch, was ein echter Aufruf beim ersten Mal tut
+   (Schlüssel anlegen/lesen, DB öffnen, WAL, schreiben, AES-256-GCM), und meldet
+   die ECHTE Fehlermeldung samt Schritt. Wird über /api/status?deep=1 ausgelöst. */
+function tiefTest(string $ordner): array
+{
+    $schritt = 'start';
+    try {
+        $schritt = 'schluessel-datei';
+        $keyDatei = $ordner . '/geheim.key';
+        if (!is_file($keyDatei) && !getenv('MS_SCHLUESSEL')) {
+            $fp = @fopen($keyDatei, 'x');
+            if ($fp !== false) {
+                fwrite($fp, bin2hex(random_bytes(32)) . "\n");
+                fclose($fp);
+                @chmod($keyDatei, 0600);
+            } elseif (!is_file($keyDatei)) {
+                throw new RuntimeException('geheim.key kann nicht angelegt werden (Schreibrechte im Ordner daten/?).');
+            }
+        }
+        $schritt = 'db-oeffnen';
+        $t = new PDO('sqlite:' . $ordner . '/masesites.db');
+        $t->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $schritt = 'db-wal';
+        $walOk = true;
+        try { $t->exec('PRAGMA journal_mode = WAL'); } catch (Throwable $e) { $walOk = false; }
+        $schritt = 'db-schreiben';
+        $t->exec('CREATE TABLE IF NOT EXISTS selftest (id INTEGER PRIMARY KEY AUTOINCREMENT, t TEXT)');
+        $t->prepare('INSERT INTO selftest (t) VALUES (?)')->execute(['ok']);
+        $t->exec('DELETE FROM selftest');
+        $schritt = 'krypto';
+        $k = random_bytes(32); $iv = random_bytes(12); $tag = '';
+        $ct = openssl_encrypt('probe', 'aes-256-gcm', $k, OPENSSL_RAW_DATA, $iv, $tag);
+        $pt = ($ct === false) ? false : openssl_decrypt($ct, 'aes-256-gcm', $k, OPENSSL_RAW_DATA, $iv, $tag);
+        if ($pt !== 'probe') {
+            throw new RuntimeException('AES-256-GCM-Roundtrip fehlgeschlagen (openssl?).');
+        }
+        return ['ok' => true, 'wal' => $walOk];
+    } catch (Throwable $e) {
+        return ['ok' => false, 'fehler_bei' => $schritt, 'meldung' => $e->getMessage()];
+    }
+}
+
 if ($FRUEH_PFAD === '/api/status') {
     if (!is_dir($DATEN_ORDNER)) {
         @mkdir($DATEN_ORDNER, 0700, true);
@@ -72,24 +114,26 @@ if ($FRUEH_PFAD === '/api/status') {
     $beschreibbar = is_dir($DATEN_ORDNER) && is_writable($DATEN_ORDNER);
     $alles = extension_loaded('openssl') && extension_loaded('pdo_sqlite')
         && function_exists('hash_hkdf') && $beschreibbar;
+    $pruefung = [
+        'openssl' => extension_loaded('openssl'),
+        'pdo_sqlite' => extension_loaded('pdo_sqlite'),
+        'curl' => extension_loaded('curl'),
+        'hash_hkdf' => function_exists('hash_hkdf'),
+        'daten_ordner' => $DATEN_ORDNER,
+        'daten_existiert' => is_dir($DATEN_ORDNER),
+        'daten_beschreibbar' => $beschreibbar,
+    ];
+    $ausgabe = ['ok' => $alles, 'dienst' => 'masesites', 'backend' => 'php', 'php' => PHP_VERSION, 'pruefung' => $pruefung];
+    /* Tieftest nur auf Wunsch – testet echt DB-Schreibzugriff und Verschlüsselung */
+    if (isset($_GET['deep']) || isset($_GET['tief'])) {
+        $tief = tiefTest($DATEN_ORDNER);
+        $ausgabe['tieftest'] = $tief;
+        $ausgabe['ok'] = $alles && !empty($tief['ok']);
+    }
     header('Content-Type: application/json; charset=utf-8');
     header('Cache-Control: no-store');
     header('X-Content-Type-Options: nosniff');
-    echo json_encode([
-        'ok' => $alles,
-        'dienst' => 'masesites',
-        'backend' => 'php',
-        'php' => PHP_VERSION,
-        'pruefung' => [
-            'openssl' => extension_loaded('openssl'),
-            'pdo_sqlite' => extension_loaded('pdo_sqlite'),
-            'curl' => extension_loaded('curl'),
-            'hash_hkdf' => function_exists('hash_hkdf'),
-            'daten_ordner' => $DATEN_ORDNER,
-            'daten_existiert' => is_dir($DATEN_ORDNER),
-            'daten_beschreibbar' => $beschreibbar,
-        ],
-    ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+    echo json_encode($ausgabe, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
     exit;
 }
 
@@ -205,10 +249,13 @@ try {
 }
 $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 $db->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
-$db->exec('PRAGMA journal_mode = WAL');
-$db->exec('PRAGMA busy_timeout = 5000');
-$db->exec('PRAGMA foreign_keys = ON');
-$db->exec('
+/* WAL ist ein Tempo-Vorteil, aber auf manchen Hostings nicht möglich – dann
+   lieber ohne WAL weiterlaufen als mit leerem 500 abbrechen. */
+try { $db->exec('PRAGMA journal_mode = WAL'); } catch (Throwable $e) { error_log('masesites WAL aus: ' . $e->getMessage()); }
+try { $db->exec('PRAGMA busy_timeout = 5000'); } catch (Throwable $e) {}
+try { $db->exec('PRAGMA foreign_keys = ON'); } catch (Throwable $e) {}
+try {
+    $db->exec('
   CREATE TABLE IF NOT EXISTS kunden (
     email_idx TEXT PRIMARY KEY,
     pw        TEXT,
@@ -247,7 +294,12 @@ $db->exec('
     n          INTEGER NOT NULL,
     bis        INTEGER NOT NULL
   );
-');
+    ');
+} catch (Throwable $e) {
+    error_log('masesites DB-Tabellen: ' . $e->getMessage());
+    fehlerAbbruch('Datenbank-Schreibzugriff fehlgeschlagen: ' . $e->getMessage()
+        . ' (meist fehlende Schreibrechte in daten/ oder eine alte Datei dort). Test: /api/status?deep=1');
+}
 
 function einstellung(string $schluessel): ?string
 {
@@ -1313,8 +1365,15 @@ route('POST', '/api/bot-log', null, function ($p, $body, $sitzung) {
 
 /* ---------- Anfrage verteilen ---------- */
 
-stelleAdminPasswortSicher($DATEN_ORDNER);
-raeumeSitzungenAuf();
+/* Start-Routinen mit DB-Schreibzugriff: Fehler als lesbare Meldung ausgeben,
+   nicht als leeren 500. */
+try {
+    stelleAdminPasswortSicher($DATEN_ORDNER);
+    raeumeSitzungenAuf();
+} catch (Throwable $e) {
+    error_log('masesites Start: ' . $e->getMessage());
+    fehlerAbbruch('Start fehlgeschlagen: ' . $e->getMessage() . ' Test: /api/status?deep=1');
+}
 
 $methode = $_SERVER['REQUEST_METHOD'] ?? 'GET';
 $pfad = rawurldecode(parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?? '/');
