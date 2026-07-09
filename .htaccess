@@ -1,17 +1,41 @@
-# masesites läuft als Node.js-App (server/server.js) und bedient die ganze
-# Website selbst. Diese Regeln greifen nur, wenn der Webserver (z. B. Plesk/
-# Apache) statische Dateien direkt ausliefert und dabei die Schutzprüfungen
-# der App umgeht. Sie sperren sensible Dateien.
+# masesites – Apache-Konfiguration für Plesk & klassisches Webhosting.
+# Die statischen Seiten liefert Apache direkt aus; /api/... geht an api.php.
 
-# Server-Code, Datenbank und Schlüssel niemals ausliefern
+# ---------- API-Routing: /api/... an die PHP-API ----------
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  # Wird die Seite in einem Unterordner betrieben, hier den Pfad setzen, z. B.
+  # RewriteBase /
+  RewriteRule ^api/ api.php [QSA,L]
+</IfModule>
+
+# ---------- Schutz sensibler Dateien ----------
+# Node-Server-Ordner (falls vorhanden) nie ausliefern
 RedirectMatch 404 ^/server(/|$)
-
 # Git-Metadaten und versteckte Konfigdateien sperren
 RedirectMatch 404 (^|/)\.(git|env)(/|$)
-
-# Datenbank- und Schlüsseldateien in jedem Ordner blocken
+# Datenbank-, Schlüssel- und Konfig-Dateien in jedem Ordner blocken
 <IfModule mod_authz_core.c>
-  <FilesMatch "\.(key|db|db-wal|db-shm|sqlite)$">
+  <FilesMatch "\.(key|db|db-wal|db-shm|sqlite|sqlite3)$">
     Require all denied
   </FilesMatch>
 </IfModule>
+<IfModule !mod_authz_core.c>
+  <FilesMatch "\.(key|db|db-wal|db-shm|sqlite|sqlite3)$">
+    Order allow,deny
+    Deny from all
+  </FilesMatch>
+</IfModule>
+
+# ---------- Sicherheits-Header ----------
+<IfModule mod_headers.c>
+  Header set X-Content-Type-Options "nosniff"
+  Header set Referrer-Policy "strict-origin-when-cross-origin"
+  <FilesMatch "\.html$">
+    Header set X-Frame-Options "SAMEORIGIN"
+    Header set Content-Security-Policy "default-src 'self'; script-src 'self' https://accounts.google.com; style-src 'self' 'unsafe-inline' https://accounts.google.com https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; frame-src https:; connect-src 'self' https://accounts.google.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'"
+  </FilesMatch>
+</IfModule>
+
+# ---------- Startseite ----------
+DirectoryIndex index.html

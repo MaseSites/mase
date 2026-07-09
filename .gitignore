@@ -11,10 +11,17 @@ Thumbs.db
 assets/img/demos$*.png
 
 # Server-Daten: Datenbank, Schluessel, Startpasswort (niemals committen)
+# Node-Fassung:
 server/daten/
+# PHP-Fassung: Inhalt ignorieren, aber die Schutz-.htaccess behalten
+daten/*
+!daten/.htaccess
 
 # Node
 node_modules/
+
+# Lokaler PHP-Test-Router (nur fuer php -S)
+_devserver.php
 
 # Claude Code: lokale Einstellungen
 .claude/settings.local.json

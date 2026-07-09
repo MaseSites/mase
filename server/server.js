@@ -670,6 +670,21 @@ function route(methode, muster, schutz, handler) {
 const EMAIL_MUSTER = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const FALSCHE_ANMELDUNG = "Keine Übereinstimmung gefunden. Prüfe E-Mail und Passwort.";
 
+/* --- Status: offener Diagnose-Endpunkt, verrät keine Geheimnisse.
+   Im Browser https://DEINE-DOMAIN/api/status öffnen:
+   JSON mit "ok":true  -> die Node-App läuft.
+   Eine 404-Seite des Webservers -> die Node-App läuft (noch) nicht. --- */
+
+route("GET", "/api/status", null, (req, res) => {
+  antwortJson(res, 200, {
+    ok: true,
+    dienst: "masesites",
+    zeit: new Date().toISOString(),
+    node: process.version,
+    https: istHttps(req)
+  });
+});
+
 /* --- Kunde: Registrierung und Anmeldung --- */
 
 route("POST", "/api/registrieren", null, async (req, res, p, body) => {
