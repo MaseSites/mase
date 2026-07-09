@@ -1,5 +1,17 @@
 # masesites – Apache-Konfiguration für Plesk & klassisches Webhosting.
 # Die statischen Seiten liefert Apache direkt aus; /api/... geht an api.php.
+# Es wird KEIN Node.js benötigt – das Backend ist reines PHP (api.php).
+
+# ---------- Node.js/Passenger abschalten ----------
+# Läuft die Seite nicht (überall Fehler 500) und ist in Plesk unter
+# "Node.js" für diese Domain versehentlich noch eine App aktiv, dann fängt
+# Phusion Passenger alle Anfragen ab und scheitert, weil kein Node da ist.
+# Sauberste Lösung: in Plesk unter Websites & Domains → Node.js auf
+# "Node.js deaktivieren" klicken. Klappt das nicht, die folgende Zeile
+# (das # davor entfernen) erzwingt dasselbe direkt hier:
+#<IfModule mod_passenger.c>
+#  PassengerEnabled off
+#</IfModule>
 
 # ---------- API-Routing: /api/... an die PHP-API ----------
 <IfModule mod_rewrite.c>

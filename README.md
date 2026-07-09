@@ -38,11 +38,44 @@ Seiten sonst statisch aus. Läuft die Seite in einem **Unterordner**, in der
 
 ### Läuft es? Schnelltest
 
-Im Browser `https://DEINE-DOMAIN/api/status` öffnen:
+Im Browser `https://DEINE-DOMAIN/api/status` öffnen. Was dort steht, sagt
+genau, woran es liegt:
 
-- **JSON** mit `"ok":true` und `"backend":"php"` → alles läuft.
-- Eine **404-/Fehlerseite** → die `.htaccess`-Weiterleitung greift nicht
-  (mod_rewrite aktiv? richtiges Wurzelverzeichnis?).
+- **JSON mit `"ok":true`** und `"backend":"php"` → alles läuft. Fertig.
+- **JSON mit `"ok":false`** → PHP läuft, aber es fehlt etwas. Das Feld
+  `pruefung` zeigt was: fehlt `pdo_sqlite`/`openssl`, in den PHP-Einstellungen
+  die Erweiterung aktivieren; ist `daten_beschreibbar:false`, dem Ordner
+  `daten/` Schreibrechte geben.
+- **Fehler 500 / leere Seite / „Application Error"** → siehe Fehlersuche unten,
+  Punkt 1 (fast immer eine noch aktive Node.js-App).
+- **Die normale 404-Seite oder HTML statt JSON** → die `.htaccess`-Weiterleitung
+  greift nicht (mod_rewrite aktiv? richtiges Wurzelverzeichnis? bei Unterordner
+  `RewriteBase` setzen).
+
+### Fehlersuche: läuft nicht auf Plesk
+
+Der PHP-Server braucht **kein Node.js**. Wenn die Seite trotzdem nicht geht,
+liegt es fast immer an einem dieser Punkte – in dieser Reihenfolge prüfen:
+
+1. **Node.js-App abschalten (häufigste Ursache).** War die Domain früher als
+   Node-App eingerichtet, fängt Phusion Passenger weiter alle Anfragen ab und
+   antwortet mit **500**, weil kein Node läuft. In Plesk unter
+   **Websites & Domains → Node.js** die App für diese Domain **deaktivieren**
+   (bzw. entfernen). Alternativ in der `.htaccess` oben den `PassengerEnabled
+   off`-Block einkommentieren.
+2. **Richtige PHP-Version wählen.** Unter **PHP-Einstellungen** der Domain
+   **PHP 8.x** einstellen und als Verarbeitung **FPM** lassen. `/api/status`
+   zeigt danach die aktive Version.
+3. **Statische Auslieferung durch nginx.** Kommt bei `/api/status` HTML statt
+   JSON, unter **Apache & nginx** die Option „Smart static files processing"
+   testweise ausschalten, damit `/api/...` sicher an Apache/PHP geht.
+4. **Schreibrechte für `daten/`.** `ok:false` mit `daten_beschreibbar:false`
+   → im Dateimanager dem Ordner `daten/` Schreibrechte für den Abo-Benutzer
+   geben.
+5. **HTTPS.** In Plesk per Let's Encrypt aktivieren und den 301-Redirect auf
+   HTTPS einschalten; dann zusätzlich `SetEnv MS_HINTER_PROXY 1` in der
+   `.htaccess` (siehe Härtung unten), damit die Cookies als `Secure` gesetzt
+   werden.
 
 ### Erstes Admin-Passwort
 
