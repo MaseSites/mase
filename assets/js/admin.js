@@ -1,15 +1,14 @@
 /* masesites Admin-Bereich: Kunden, Projekte, Aufträge, Tickets, Nachrichten,
    KI-Chats, Mitarbeiter und Seiten-Protokoll. Baut auf daten.js auf.
-   Prototyp ohne Server: alle Daten liegen im localStorage dieses Browsers.
-   Standard-Passwort: mase2026 (unter Einstellungen änderbar; gespeichert wird
-   nur ein SHA-256-Hash, nie das Passwort selbst). */
+   Alle Daten liegen verschlüsselt in der Datenbank auf dem Server; die
+   Anmeldung läuft über eine Server-Sitzung. Das Startpasswort erzeugt der
+   Server beim ersten Start (server/daten/admin-startpasswort.txt), danach
+   unter Einstellungen änderbar. */
 
 (function () {
   "use strict";
 
   var D = window.MSDaten;
-  var STANDARD_PW_HASH = "e90079a431e4c69e86ace68873acbb46d921fa673143cf3e02ae3cc8c85722b6";
-  var HASH_PREFIX = "masesites-admin::";
 
   function zeigeFehler(id, text) {
     var el = document.getElementById(id);
@@ -27,9 +26,9 @@
   var app = document.getElementById("admin-app");
   if (!gate || !app) return;
 
-  function angemeldet() {
-    try { return sessionStorage.getItem("ms_admin") === "1"; } catch (e) { return false; }
-  }
+  var istAngemeldet = false;
+
+  function angemeldet() { return istAngemeldet; }
   function zeigeApp() {
     gate.classList.add("hidden");
     app.classList.remove("hidden");
@@ -39,10 +38,11 @@
     route();
   }
   function abmelden() {
-    try { sessionStorage.removeItem("ms_admin"); } catch (e) {}
     adminLog("Admin abgemeldet", "");
-    window.location.hash = "";
-    window.location.reload();
+    D.abmelden().then(function () {
+      window.location.hash = "";
+      window.location.reload();
+    });
   }
 
   var loginForm = document.getElementById("admin-login-form");
@@ -50,16 +50,19 @@
     e.preventDefault();
     zeigeFehler("admin-fehler", "");
     var pw = loginForm.querySelector('[name="passwort"]').value;
-    D.hashText(HASH_PREFIX + pw).then(function (h) {
-      var soll = localStorage.getItem("ms_admin_pw") || STANDARD_PW_HASH;
-      if (h !== soll) {
-        zeigeFehler("admin-fehler", "Falsches Passwort.");
+    /* Der Server prüft das Passwort und setzt das Sitzungscookie */
+    D.adminAnmelden(pw).then(function () {
+      return D.bereit("admin");
+    }).then(function (zustand) {
+      if (!zustand.angemeldet) {
+        zeigeFehler("admin-fehler", "Anmeldung fehlgeschlagen. Probiere es nochmal.");
         return;
       }
-      try { sessionStorage.setItem("ms_admin", "1"); } catch (err) {}
-      adminLog("Admin angemeldet", "");
+      istAngemeldet = true;
       loginForm.reset();
       zeigeApp();
+    }).catch(function (fehler) {
+      zeigeFehler("admin-fehler", fehler.message);
     });
   });
 
@@ -378,7 +381,6 @@
     loeschen.addEventListener("click", function () {
       if (!window.confirm("Konto " + k.email + " endgültig löschen? Projekte, Tickets und Nachrichten dieses Kontos gehen verloren.")) return;
       D.loescheKonto(k.email);
-      if (localStorage.getItem("ms_session") === k.email) localStorage.removeItem("ms_session");
       adminLog("Konto gelöscht", k.email);
       renderAlles();
       navigiere("kunden");
@@ -585,18 +587,15 @@
     var paket = form.querySelector('[name="paket"]').value.trim();
     if (!email) { zeigeFehler("projekt-neu-fehler", "Lege zuerst ein Kundenkonto an."); return; }
     if (!titel) { zeigeFehler("projekt-neu-fehler", "Gib dem Projekt einen Titel."); return; }
-    var id = D.neueProjektId();
-    D.aendereKonto(email, function (k) {
-      k.projekte.push({
-        id: id, titel: titel, paket: paket,
-        schritt: 0, vorschau: "", erstellt: D.heute(),
-        aktivitaet: [{ text: "Projekt angelegt", datum: D.heute(), zeit: Date.now() }]
-      });
+    /* Die Projekt-ID vergibt der Server, damit sie eindeutig bleibt */
+    D.neuesProjekt(email, { titel: titel, paket: paket }).then(function (projekt) {
+      adminLog("Projekt angelegt", email + ": " + titel);
+      form.reset();
+      renderAlles();
+      navigiere("projekte/" + encodeURIComponent(email) + "/" + projekt.id);
+    }).catch(function (fehler) {
+      zeigeFehler("projekt-neu-fehler", fehler.message);
     });
-    adminLog("Projekt angelegt", email + ": " + titel);
-    form.reset();
-    renderAlles();
-    navigiere("projekte/" + encodeURIComponent(email) + "/" + id);
   });
 
   function renderProjektDetail(email, id) {
@@ -1174,20 +1173,14 @@
     if (!name) { zeigeFehler("mitarbeiter-neu-fehler", "Gib einen Namen an."); return; }
     if (pw.length < 8) { zeigeFehler("mitarbeiter-neu-fehler", "Das Passwort braucht mindestens 8 Zeichen."); return; }
     if (D.findeMitarbeiter(email)) { zeigeFehler("mitarbeiter-neu-fehler", "Für diese E-Mail gibt es schon ein Mitarbeiterkonto."); return; }
-    var salt = D.zufallsSalt();
-    D.hashText(salt + pw).then(function (h) {
-      var id = D.neueMitarbeiterId();
-      var liste = D.mitarbeiter();
-      liste.push({
-        id: id, name: name, rolle: rolle, email: email,
-        salt: salt, pwHash: h, erstellt: D.heute(),
-        aktiv: true, kunden: []
-      });
-      D.speichereMitarbeiter(liste);
+    /* Das Passwort geht nur zum Server und wird dort gehasht gespeichert */
+    D.erstelleMitarbeiter({ name: name, rolle: rolle, email: email, passwort: pw }).then(function (m) {
       adminLog("Mitarbeiter angelegt", name + " (" + email + ")");
       form.reset();
       renderAlles();
-      navigiere("mitarbeiter/" + id);
+      navigiere("mitarbeiter/" + m.id);
+    }).catch(function (fehler) {
+      zeigeFehler("mitarbeiter-neu-fehler", fehler.message);
     });
   });
 
@@ -1292,15 +1285,13 @@
       e.preventDefault();
       var pw = pwInput.value;
       if (pw.length < 8) return;
-      var salt = D.zufallsSalt();
-      D.hashText(salt + pw).then(function (h) {
-        D.aendereMitarbeiter(id, function (x) {
-          x.salt = salt;
-          x.pwHash = h;
-        });
+      D.setzeMitarbeiterPasswort(id, pw).then(function () {
         adminLog("Mitarbeiter-Passwort gesetzt", m.email);
         pwForm.reset();
         pwKnopf.textContent = "Gespeichert";
+        setTimeout(function () { pwKnopf.textContent = "Passwort speichern"; }, 1800);
+      }).catch(function () {
+        pwKnopf.textContent = "Fehler beim Speichern";
         setTimeout(function () { pwKnopf.textContent = "Passwort speichern"; }, 1800);
       });
     });
@@ -1390,15 +1381,17 @@
   }
   document.getElementById("log-filter").addEventListener("input", renderProtokoll);
   document.getElementById("log-neu").addEventListener("click", function () {
-    renderProtokoll();
-    renderUebersicht();
+    /* Frische Daten vom Server holen, dann alles neu zeichnen */
+    D.aktualisiere().then(function () {
+      renderAlles();
+    });
   });
   document.getElementById("log-leeren").addEventListener("click", function () {
     if (!window.confirm("Ganzes Protokoll löschen?")) return;
-    localStorage.removeItem("ms_log");
-    adminLog("Protokoll geleert", "");
-    renderProtokoll();
-    renderUebersicht();
+    D.logLeeren().then(function () {
+      renderProtokoll();
+      renderUebersicht();
+    });
   });
 
   /* ---------- Einstellungen ---------- */
@@ -1411,7 +1404,7 @@
       ["Mitarbeiter", String(D.mitarbeiter().length)],
       ["Protokoll-Einträge", String(D.ladeLog().length)],
       ["Bot-Nachrichten", String(D.botLogs().length)],
-      ["Admin-Passwort", localStorage.getItem("ms_admin_pw") ? "Eigenes gesetzt" : "Standard (mase2026)"]
+      ["Admin-Passwort", D.adminPwGeaendert() ? "Eigenes gesetzt" : "Startpasswort (siehe Server)"]
     ].forEach(function (paar) {
       var li = document.createElement("li");
       li.appendChild(el("span", "", paar[0]));
@@ -1426,18 +1419,16 @@
     var alt = e.target.querySelector('[name="alt"]').value;
     var neu = e.target.querySelector('[name="neu"]').value;
     if (neu.length < 8) { zeigeFehler("pw-fehler", "Das neue Passwort braucht mindestens 8 Zeichen."); return; }
-    D.hashText(HASH_PREFIX + alt).then(function (h) {
-      var soll = localStorage.getItem("ms_admin_pw") || STANDARD_PW_HASH;
-      if (h !== soll) { zeigeFehler("pw-fehler", "Das aktuelle Passwort stimmt nicht."); return; }
-      D.hashText(HASH_PREFIX + neu).then(function (neuHash) {
-        localStorage.setItem("ms_admin_pw", neuHash);
-        adminLog("Admin-Passwort geändert", "");
-        e.target.reset();
-        var ok = document.getElementById("pw-ok");
-        ok.classList.add("show");
-        setTimeout(function () { ok.classList.remove("show"); }, 3000);
-        renderDatenInfo();
-      });
+    var form = e.target;
+    /* Prüfung und Wechsel macht der Server; andere Admin-Sitzungen enden */
+    D.adminPasswortAendern(alt, neu).then(function () {
+      form.reset();
+      var ok = document.getElementById("pw-ok");
+      ok.classList.add("show");
+      setTimeout(function () { ok.classList.remove("show"); }, 3000);
+      renderDatenInfo();
+    }).catch(function (fehler) {
+      zeigeFehler("pw-fehler", fehler.message);
     });
   });
 
@@ -1463,5 +1454,11 @@
     el2.textContent = new Date().getFullYear();
   });
 
-  if (angemeldet()) zeigeApp();
+  /* Laufende Sitzung fortsetzen: Zustand vom Server laden */
+  D.bereit("admin").then(function (zustand) {
+    if (zustand.angemeldet) {
+      istAngemeldet = true;
+      zeigeApp();
+    }
+  });
 })();

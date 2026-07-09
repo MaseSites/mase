@@ -1,0 +1,11 @@
+{
+  "name": "masesites",
+  "private": true,
+  "description": "masesites Website mit Kundenportal, Admin-Bereich und Mitarbeiter-Portal. Server ohne npm-Abhängigkeiten (Node 22.5+).",
+  "scripts": {
+    "start": "node server/server.js"
+  },
+  "engines": {
+    "node": ">=22.5"
+  }
+}

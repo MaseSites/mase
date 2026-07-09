@@ -1,7 +1,8 @@
 /* masesites Mitarbeiter-Portal (/mcs): Anmeldung mit Mitarbeiterkonto,
    danach Zugriff auf die zugewiesenen Kunden mit ihren Projekten, Tickets
    und Nachrichten. Konten legt die Verwaltung im Admin-Bereich an.
-   Baut auf daten.js auf; Session: sessionStorage ms_mcs = E-Mail. */
+   Baut auf daten.js auf; angemeldet wird über eine Server-Sitzung, der
+   Server liefert nur die zugewiesenen Kunden aus. */
 
 (function () {
   "use strict";
@@ -27,10 +28,6 @@
 
   /* ---------- Anmeldung ---------- */
 
-  function sessionEmail() {
-    try { return sessionStorage.getItem("ms_mcs"); } catch (e) { return null; }
-  }
-
   function zeigeApp() {
     gate.classList.add("hidden");
     app.classList.remove("hidden");
@@ -46,10 +43,11 @@
   }
 
   function abmelden() {
-    try { sessionStorage.removeItem("ms_mcs"); } catch (e) {}
     maLog("Mitarbeiter abgemeldet", "");
-    window.location.hash = "";
-    window.location.reload();
+    D.abmelden().then(function () {
+      window.location.hash = "";
+      window.location.reload();
+    });
   }
   document.querySelectorAll("[data-ma-logout]").forEach(function (btn) {
     btn.addEventListener("click", abmelden);
@@ -61,25 +59,19 @@
     zeigeFehler("mcs-fehler", "");
     var email = loginForm.querySelector('[name="email"]').value.trim().toLowerCase();
     var pw = loginForm.querySelector('[name="passwort"]').value;
-    var treffer = D.findeMitarbeiter(email);
-    if (!treffer || !treffer.pwHash) {
-      zeigeFehler("mcs-fehler", "Keine Übereinstimmung gefunden. Prüfe E-Mail und Passwort.");
-      return;
-    }
-    if (!treffer.aktiv) {
-      zeigeFehler("mcs-fehler", "Dieses Konto ist deaktiviert. Melde dich bei der Verwaltung.");
-      return;
-    }
-    D.hashText(treffer.salt + pw).then(function (h) {
-      if (h !== treffer.pwHash) {
-        zeigeFehler("mcs-fehler", "Keine Übereinstimmung gefunden. Prüfe E-Mail und Passwort.");
+    /* Passwort prüft der Server, danach den Zustand laden */
+    D.mcsAnmelden(email, pw).then(function () {
+      return D.bereit("mcs");
+    }).then(function (zustand) {
+      if (!zustand.angemeldet || !zustand.ma) {
+        zeigeFehler("mcs-fehler", "Anmeldung fehlgeschlagen. Probiere es nochmal.");
         return;
       }
-      try { sessionStorage.setItem("ms_mcs", treffer.email); } catch (err) {}
-      ma = treffer;
-      maLog("Mitarbeiter angemeldet", treffer.email);
+      ma = zustand.ma;
       loginForm.reset();
       zeigeApp();
+    }).catch(function (fehler) {
+      zeigeFehler("mcs-fehler", fehler.message);
     });
   });
 
@@ -871,15 +863,11 @@
     el2.textContent = new Date().getFullYear();
   });
 
-  /* Laufende Sitzung fortsetzen */
-  var gespeichert = sessionEmail();
-  if (gespeichert) {
-    var treffer = D.findeMitarbeiter(gespeichert);
-    if (treffer && treffer.aktiv) {
-      ma = treffer;
+  /* Laufende Sitzung fortsetzen: Zustand vom Server laden */
+  D.bereit("mcs").then(function (zustand) {
+    if (zustand.angemeldet && zustand.ma) {
+      ma = zustand.ma;
       zeigeApp();
-    } else {
-      try { sessionStorage.removeItem("ms_mcs"); } catch (e) {}
     }
-  }
+  });
 })();

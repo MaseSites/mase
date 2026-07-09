@@ -9,3 +9,12 @@ Thumbs.db
 
 # Temporäre Screenshot-Reste
 assets/img/demos$*.png
+
+# Server-Daten: Datenbank, Schluessel, Startpasswort (niemals committen)
+server/daten/
+
+# Node
+node_modules/
+
+# Claude Code: lokale Einstellungen
+.claude/settings.local.json

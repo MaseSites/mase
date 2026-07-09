@@ -1,7 +1,7 @@
 /* masesites Kundenkonto: Registrierung, Login (E-Mail + Google) und das
    Kundenportal auf dashboard.html. Baut auf der Datenschicht (daten.js) auf.
-   Prototyp ohne Server: Konten liegen im localStorage dieses Browsers.
-   ms_session = E-Mail des angemeldeten Kontos.
+   Konten liegen verschlüsselt in der Datenbank auf dem Server; angemeldet
+   wird über ein HttpOnly-Sitzungscookie, das der Server setzt.
    Google-Anmeldung: unten die Client-ID aus der Google Cloud Console eintragen,
    dann erscheint auf login.html automatisch der offizielle Google-Knopf. */
 
@@ -12,9 +12,6 @@ var MS_GOOGLE_CLIENT_ID = "117777636536-nd77bnlv9co4l7g8cbn6de0q8uhj3njt.apps.go
 
   var D = window.MSDaten;
 
-  function session() {
-    try { return localStorage.getItem("ms_session"); } catch (e) { return null; }
-  }
   function zeigeFehler(id, text) {
     var el = document.getElementById(id);
     if (!el) return;
@@ -22,89 +19,22 @@ var MS_GOOGLE_CLIENT_ID = "117777636536-nd77bnlv9co4l7g8cbn6de0q8uhj3njt.apps.go
     el.classList.toggle("show", !!text);
   }
 
-  /* ---------- Demo-Konto: zeigt das Portal mit realistischen Daten ---------- */
-
-  function demoKonto() {
-    function ts(tag, monat, stunde, minute) {
-      return new Date(2026, monat - 1, tag, stunde, minute).getTime();
-    }
-    return {
-      name: "Deniz Yilmaz",
-      firma: "Kebab Palace",
-      telefon: "+41 79 123 45 67",
-      email: "demo@masesites.ch",
-      provider: "demo",
-      salt: null, pwHash: null,
-      erstellt: "20.06.2026",
-      projekte: [
-        {
-          id: "P-1001",
-          titel: "Website Kebab Palace",
-          paket: "Neue Website: Business",
-          schritt: 2,
-          vorschau: "https://masesites.ch/demo/doener-site/index.html",
-          erstellt: "28.06.2026",
-          aktivitaet: [
-            { text: "Galerie-Bereich eingebaut, Bilder folgen", datum: "05.07.2026", zeit: ts(5, 7, 9, 40) },
-            { text: "Farben nach deinem Feedback angepasst", datum: "03.07.2026", zeit: ts(3, 7, 15, 10) },
-            { text: "Design-Entwurf in die Vorschau gestellt", datum: "01.07.2026", zeit: ts(1, 7, 14, 0) },
-            { text: "Konzept-Besprechung abgeschlossen, Projekt gestartet", datum: "28.06.2026", zeit: ts(28, 6, 11, 30) }
-          ]
-        },
-        {
-          id: "P-1002",
-          titel: "KI-Bot für die Website",
-          paket: "KI-Bot: Einrichtung und Training",
-          schritt: 1,
-          vorschau: "",
-          erstellt: "02.07.2026",
-          aktivitaet: [
-            { text: "Fragen und Antworten für das Training gesammelt", datum: "04.07.2026", zeit: ts(4, 7, 16, 20) },
-            { text: "Auftrag bestätigt, Einrichtung geplant", datum: "02.07.2026", zeit: ts(2, 7, 10, 5) }
-          ]
-        }
-      ],
-      nachrichten: [
-        { von: "masesites", text: "Hallo Deniz! Der erste Design-Entwurf ist online. Schau ihn dir unter Projekte in der Vorschau an und sag uns, was du denkst.", datum: "01.07.2026", zeit: ts(1, 7, 14, 20), gelesen: true },
-        { von: "ich", text: "Sieht stark aus! Könnt ihr das Rot etwas dunkler machen?", datum: "02.07.2026", zeit: ts(2, 7, 9, 41), gelesen: true },
-        { von: "masesites", text: "Erledigt, das Rot ist jetzt dunkler. Als Nächstes bauen wir die Galerie ein.", datum: "03.07.2026", zeit: ts(3, 7, 11, 5), gelesen: true },
-        { von: "masesites", text: "Die Galerie ist eingebaut. Sobald du die finalen Bilder hast, schick sie uns per Ticket oder Mail.", datum: "05.07.2026", zeit: ts(5, 7, 10, 12), gelesen: false }
-      ],
-      auftraege: [
-        { titel: "Neue Website: Business", betrag: "ab CHF 1'300.–", status: "In Arbeit", datum: "28.06.2026" },
-        { titel: "KI-Bot: Einrichtung", betrag: "CHF 200.–", status: "In Arbeit", datum: "02.07.2026" },
-        { titel: "Online-Terminbuchung", betrag: "ab CHF 400.–", status: "Offen", datum: "02.07.2026" },
-        { titel: "Logo-Feinschliff", betrag: "CHF 150.–", status: "Abgeschlossen", datum: "21.06.2026" }
-      ],
-      tickets: [
-        {
-          nr: "T-1025", betreff: "Neues Foto für die Galerie",
-          text: "Ich habe ein neues Bild vom Lokal, wohin darf ich es schicken?",
-          prio: "Normal", status: "Offen", datum: "04.07.2026", zeit: ts(4, 7, 18, 2), antworten: []
-        },
-        {
-          nr: "T-1024", betreff: "Öffnungszeiten ändern",
-          text: "Bitte neu Montag bis Samstag, 10 bis 22 Uhr.",
-          prio: "Normal", status: "Beantwortet", datum: "01.07.2026", zeit: ts(1, 7, 9, 15),
-          antworten: [
-            { von: "masesites", text: "Erledigt, die neuen Öffnungszeiten sind online. Schau kurz drüber, ob alles stimmt.", datum: "02.07.2026", zeit: ts(2, 7, 8, 50) }
-          ]
-        },
-        {
-          nr: "T-1019", betreff: "Logo etwas grösser",
-          text: "Könnt ihr das Logo im Kopfbereich etwas grösser machen?",
-          prio: "Normal", status: "Geschlossen", datum: "24.06.2026", zeit: ts(24, 6, 13, 40),
-          antworten: [
-            { von: "masesites", text: "Ist angepasst, das Logo ist jetzt besser sichtbar.", datum: "25.06.2026", zeit: ts(25, 6, 10, 25) }
-          ]
-        }
-      ]
-    };
-  }
-
   /* ---------- Google-Anmeldung (Google Identity Services) ---------- */
 
   var googleGerendert = false;
+
+  /* Das Google-Script erst hier laden (statt im HTML), damit die Seite
+     ohne Inline-Handler auskommt */
+  function ladeGoogleScript() {
+    if (!MS_GOOGLE_CLIENT_ID || document.getElementById("gsi-script")) return;
+    var s = document.createElement("script");
+    s.id = "gsi-script";
+    s.src = "https://accounts.google.com/gsi/client";
+    s.async = true;
+    s.defer = true;
+    s.onload = googleInit;
+    document.head.appendChild(s);
+  }
 
   function googleInit() {
     var slot = document.getElementById("google-slot");
@@ -120,27 +50,14 @@ var MS_GOOGLE_CLIENT_ID = "117777636536-nd77bnlv9co4l7g8cbn6de0q8uhj3njt.apps.go
   window.msGoogleReady = googleInit;
 
   function googleCallback(antwort) {
-    /* Das ID-Token ist ein JWT, der mittlere Teil enthält Name und E-Mail */
-    var teil = antwort.credential.split(".")[1].replace(/-/g, "+").replace(/_/g, "/");
-    while (teil.length % 4) teil += "=";
-    var profil;
-    try { profil = JSON.parse(decodeURIComponent(escape(atob(teil)))); }
-    catch (e) { return; }
-    if (!profil || !profil.email) return;
-
-    var konto = D.findeKonto(profil.email);
-    if (!konto) {
-      konto = D.normalisiereKonto({
-        name: profil.name || profil.email.split("@")[0],
-        email: profil.email.toLowerCase(),
-        provider: "google",
-        salt: null, pwHash: null,
-        erstellt: D.heute()
-      });
-      D.aktualisiereKonto(konto);
-    }
-    localStorage.setItem("ms_session", konto.email);
-    window.location.href = "dashboard.html";
+    /* Das ID-Token prüft der Server direkt bei Google und legt danach
+       die Sitzung an — hier wird nichts mehr selbst entschlüsselt */
+    zeigeFehler("google-hinweis", "");
+    D.googleAnmeldung(antwort.credential).then(function () {
+      window.location.href = "dashboard.html";
+    }).catch(function (fehler) {
+      zeigeFehler("google-hinweis", fehler.message);
+    });
   }
 
   /* ---------- Login-Seite ---------- */
@@ -151,7 +68,7 @@ var MS_GOOGLE_CLIENT_ID = "117777636536-nd77bnlv9co4l7g8cbn6de0q8uhj3njt.apps.go
     if (!loginForm && !registerForm) return;
 
     /* Schon angemeldet? Direkt weiter. */
-    if (session() && D.findeKonto(session())) {
+    if (D.angemeldet()) {
       window.location.replace("dashboard.html");
       return;
     }
@@ -180,17 +97,10 @@ var MS_GOOGLE_CLIENT_ID = "117777636536-nd77bnlv9co4l7g8cbn6de0q8uhj3njt.apps.go
         var pw = registerForm.querySelector('[name="passwort"]').value;
         if (!name) { zeigeFehler("register-fehler", "Sag uns kurz, wie du heisst."); return; }
         if (pw.length < 8) { zeigeFehler("register-fehler", "Das Passwort braucht mindestens 8 Zeichen."); return; }
-        if (D.findeKonto(email)) { zeigeFehler("register-fehler", "Diese E-Mail ist schon registriert. Wechsle oben zu Anmelden."); return; }
-        var salt = D.zufallsSalt();
-        D.hashText(salt + pw).then(function (h) {
-          D.aktualisiereKonto(D.normalisiereKonto({
-            name: name, firma: firma, telefon: telefon,
-            email: email, provider: "email",
-            salt: salt, pwHash: h, erstellt: D.heute()
-          }));
-          localStorage.setItem("ms_session", email);
-          window.location.href = "dashboard.html";
-        });
+        /* Das Passwort geht nur zum Server; dort wird es gehasht gespeichert */
+        D.registrieren({ name: name, firma: firma, telefon: telefon, email: email, passwort: pw })
+          .then(function () { window.location.href = "dashboard.html"; })
+          .catch(function (fehler) { zeigeFehler("register-fehler", fehler.message); });
       });
     }
 
@@ -201,15 +111,9 @@ var MS_GOOGLE_CLIENT_ID = "117777636536-nd77bnlv9co4l7g8cbn6de0q8uhj3njt.apps.go
         zeigeFehler("login-fehler", "");
         var email = loginForm.querySelector('[name="email"]').value.trim().toLowerCase();
         var pw = loginForm.querySelector('[name="passwort"]').value;
-        var konto = D.findeKonto(email);
-        if (!konto) { zeigeFehler("login-fehler", "Keine Übereinstimmung gefunden. Prüfe E-Mail und Passwort."); return; }
-        if (konto.provider === "google") { zeigeFehler("login-fehler", "Dieses Konto nutzt die Google-Anmeldung. Nimm den Google-Knopf unten."); return; }
-        if (konto.provider === "demo") { zeigeFehler("login-fehler", "Das Demo-Konto öffnest du über den Link unten."); return; }
-        D.hashText(konto.salt + pw).then(function (h) {
-          if (h !== konto.pwHash) { zeigeFehler("login-fehler", "Keine Übereinstimmung gefunden. Prüfe E-Mail und Passwort."); return; }
-          localStorage.setItem("ms_session", konto.email);
-          window.location.href = "dashboard.html";
-        });
+        D.anmelden(email, pw)
+          .then(function () { window.location.href = "dashboard.html"; })
+          .catch(function (fehler) { zeigeFehler("login-fehler", fehler.message); });
       });
     }
 
@@ -218,9 +122,9 @@ var MS_GOOGLE_CLIENT_ID = "117777636536-nd77bnlv9co4l7g8cbn6de0q8uhj3njt.apps.go
     if (demoLink) {
       demoLink.addEventListener("click", function (e) {
         e.preventDefault();
-        D.aktualisiereKonto(demoKonto());
-        localStorage.setItem("ms_session", "demo@masesites.ch");
-        window.location.href = "dashboard.html";
+        D.demoAnmeldung().then(function () {
+          window.location.href = "dashboard.html";
+        }).catch(function (fehler) { zeigeFehler("login-fehler", fehler.message); });
       });
     }
 
@@ -231,6 +135,7 @@ var MS_GOOGLE_CLIENT_ID = "117777636536-nd77bnlv9co4l7g8cbn6de0q8uhj3njt.apps.go
         zeigeFehler("google-hinweis", "Die Google-Anmeldung schalten wir gerade frei. Erstelle solange ein Konto mit E-Mail und Passwort.");
       });
     }
+    ladeGoogleScript();
     googleInit();
   }
 
@@ -240,14 +145,11 @@ var MS_GOOGLE_CLIENT_ID = "117777636536-nd77bnlv9co4l7g8cbn6de0q8uhj3njt.apps.go
     var wurzel = document.getElementById("dashboard");
     if (!wurzel) return;
 
-    var konto = session() ? D.findeKonto(session()) : null;
+    var konto = D.angemeldet() ? D.konten()[0] : null;
     if (!konto) {
-      localStorage.removeItem("ms_session");
       window.location.replace("login.html");
       return;
     }
-    /* Migration älterer Konten gleich persistieren */
-    D.aktualisiereKonto(konto);
 
     function speichern() { D.aktualisiereKonto(konto); }
 
@@ -266,8 +168,9 @@ var MS_GOOGLE_CLIENT_ID = "117777636536-nd77bnlv9co4l7g8cbn6de0q8uhj3njt.apps.go
 
     document.querySelectorAll("[data-logout]").forEach(function (btn) {
       btn.addEventListener("click", function () {
-        localStorage.removeItem("ms_session");
-        window.location.href = "login.html";
+        D.abmelden().then(function () {
+          window.location.href = "login.html";
+        });
       });
     });
 
@@ -758,17 +661,16 @@ var MS_GOOGLE_CLIENT_ID = "117777636536-nd77bnlv9co4l7g8cbn6de0q8uhj3njt.apps.go
       var text = ticketForm.querySelector('[name="text"]').value.trim();
       var prio = ticketForm.querySelector('[name="prio"]').value;
       if (!betreff || !text) return;
-      var nr = D.neueTicketNr();
-      konto.tickets.unshift({
-        nr: nr, betreff: betreff, text: text, prio: prio,
-        status: "Offen", datum: D.heute(), zeit: Date.now(), antworten: []
+      /* Die Ticketnummer vergibt der Server, damit sie eindeutig bleibt */
+      D.neuesTicket({ betreff: betreff, text: text, prio: prio }).then(function (ticket) {
+        ticketForm.reset();
+        renderTicketListe();
+        renderUebersicht();
+        setzeBadges();
+        navigiere("tickets/" + ticket.nr);
+      }).catch(function (fehler) {
+        zeigeFehler("ticket-fehler", fehler.message);
       });
-      speichern();
-      ticketForm.reset();
-      renderTicketListe();
-      renderUebersicht();
-      setzeBadges();
-      navigiere("tickets/" + nr);
     });
 
     /* ----- Nachrichten: Messenger ----- */
@@ -910,7 +812,13 @@ var MS_GOOGLE_CLIENT_ID = "117777636536-nd77bnlv9co4l7g8cbn6de0q8uhj3njt.apps.go
     document.querySelectorAll("[data-year]").forEach(function (el) {
       el.textContent = new Date().getFullYear();
     });
-    initLogin();
-    initDashboard();
+    var hatLogin = document.getElementById("login-form") || document.getElementById("register-form");
+    var hatDashboard = document.getElementById("dashboard");
+    if (!hatLogin && !hatDashboard) return;
+    /* Erst den Zustand vom Server laden, dann die Seite aufbauen */
+    D.bereit("kunde").then(function () {
+      initLogin();
+      initDashboard();
+    });
   });
 })();

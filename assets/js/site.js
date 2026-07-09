@@ -124,19 +124,22 @@
     return { reply: BOT_FALLBACK, link: { href: "kontakt.html", label: "Zum Kontaktformular →" } };
   }
 
-  /* Bot-Chats für den Admin-Bereich aufzeichnen (ms_bot_logs im localStorage) */
+  /* Bot-Chats für den Admin-Bereich aufzeichnen: gehen an den Server und
+     liegen dort verschlüsselt in der Datenbank. Wer angemeldet ist,
+     erkennt der Server selbst an der Sitzung. */
   function botLog(von, text) {
     try {
-      var l = JSON.parse(localStorage.getItem("ms_bot_logs") || "[]");
-      l.push({
-        zeit: Date.now(),
-        konto: localStorage.getItem("ms_session") || "Gast",
-        seite: location.pathname.split("/").pop() || "index.html",
-        von: von,
-        text: String(text).slice(0, 400)
-      });
-      if (l.length > 1500) l = l.slice(l.length - 1500);
-      localStorage.setItem("ms_bot_logs", JSON.stringify(l));
+      fetch("/api/bot-log", {
+        method: "POST",
+        credentials: "same-origin",
+        keepalive: true,
+        headers: { "Content-Type": "application/json", "X-Requested-With": "fetch" },
+        body: JSON.stringify({
+          seite: location.pathname.split("/").pop() || "index.html",
+          von: von,
+          text: String(text).slice(0, 400)
+        })
+      }).catch(function () {});
     } catch (e) {}
   }
 

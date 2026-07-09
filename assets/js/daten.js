@@ -1,9 +1,10 @@
 /* masesites Datenschicht: gemeinsame Funktionen für das Kundendashboard,
    den Admin-Bereich (/admin) und das Mitarbeiter-Portal (/mcs).
-   Prototyp ohne Server: alle Daten liegen im localStorage dieses Browsers.
-   ms_konten      = Kundenkonten mit Projekten, Aufträgen, Tickets, Nachrichten
-   ms_mitarbeiter = Mitarbeiterkonten mit zugewiesenen Kunden
-   ms_log         = Seiten-Protokoll, ms_bot_logs = KI-Chat-Verläufe */
+   Alle Daten liegen verschlüsselt in der Datenbank auf dem Server; diese
+   Schicht lädt sie beim Start über die API in den Speicher und schickt
+   Änderungen im Hintergrund zurück. Angemeldet wird über ein HttpOnly-
+   Sitzungscookie, das der Server setzt — hier liegt kein Passwort und
+   keine Sitzung mehr im localStorage. */
 
 window.MSDaten = (function () {
   "use strict";
@@ -48,108 +49,199 @@ window.MSDaten = (function () {
     return tage[d.getDay()] + ", " + d.getDate() + ". " + monate[d.getMonth()] + " " + d.getFullYear();
   }
 
-  /* ---------- Passwort-Hash (SHA-256 mit Salt, nie Klartext speichern) ---------- */
+  /* ---------- API-Aufrufe ---------- */
 
-  function hashText(text) {
-    var daten = new TextEncoder().encode(text);
-    return crypto.subtle.digest("SHA-256", daten).then(function (buf) {
-      var hex = "";
-      new Uint8Array(buf).forEach(function (b) { hex += ("0" + b.toString(16)).slice(-2); });
-      return hex;
-    });
-  }
-  function zufallsSalt() {
-    var a = new Uint8Array(16);
-    crypto.getRandomValues(a);
-    var hex = "";
-    a.forEach(function (b) { hex += ("0" + b.toString(16)).slice(-2); });
-    return hex;
-  }
-
-  /* ---------- Laufende Nummern (Tickets, Projekte, Mitarbeiter) ---------- */
-
-  function naechsteNummer(schluessel, start, sammler) {
-    var n = Math.max(parseInt(localStorage.getItem(schluessel) || "0", 10) || 0, start);
-    /* Bestehende Nummern immer mitzählen, damit nie eine doppelt vergeben wird */
-    try { sammler(function (wert) { if (wert > n) n = wert; }); } catch (e) {}
-    n += 1;
-    localStorage.setItem(schluessel, String(n));
-    return n;
-  }
-  function neueTicketNr() {
-    return "T-" + naechsteNummer("ms_ticket_zaehler", 1000, function (melde) {
-      konten().forEach(function (k) {
-        (k.tickets || []).forEach(function (t) {
-          var m = /^T-(\d+)$/.exec(t.nr || "");
-          if (m) melde(+m[1]);
-        });
+  function api(pfad, methode, daten) {
+    var optionen = {
+      method: methode || "GET",
+      credentials: "same-origin",
+      headers: { "X-Requested-With": "fetch" }
+    };
+    if (daten !== undefined) {
+      optionen.headers["Content-Type"] = "application/json";
+      optionen.body = JSON.stringify(daten);
+    }
+    return fetch(pfad, optionen).then(function (antwort) {
+      return antwort.json().catch(function () { return {}; }).then(function (json) {
+        if (!antwort.ok) {
+          var fehler = new Error(json.fehler || "Der Server hat mit Fehler " + antwort.status + " geantwortet.");
+          fehler.status = antwort.status;
+          throw fehler;
+        }
+        return json;
       });
     });
   }
-  function neueProjektId() {
-    return "P-" + naechsteNummer("ms_projekt_zaehler", 1000, function (melde) {
-      konten().forEach(function (k) {
-        (k.projekte || []).forEach(function (p) {
-          var m = /^P-(\d+)$/.exec(p.id || "");
-          if (m) melde(+m[1]);
-        });
-      });
+
+  /* Schreibzugriffe der Reihe nach abschicken, damit nichts überholt wird.
+     Schlägt einer fehl, erscheint einmalig ein Hinweis-Banner. */
+  var sendekette = Promise.resolve();
+  var bannerSichtbar = false;
+
+  function zeigeSyncFehler(fehler) {
+    if (fehler && fehler.status === 401) {
+      /* Sitzung abgelaufen: neu laden, die Seite leitet dann zum Login */
+      window.location.reload();
+      return;
+    }
+    console.error("masesites: Speichern fehlgeschlagen:", fehler);
+    if (bannerSichtbar || !document.body) return;
+    bannerSichtbar = true;
+    var banner = document.createElement("div");
+    banner.setAttribute("role", "alert");
+    banner.style.cssText = "position:fixed;left:50%;bottom:18px;transform:translateX(-50%);" +
+      "background:#b3261e;color:#fff;padding:10px 18px;border-radius:10px;z-index:9999;" +
+      "font:500 14px/1.4 inherit;box-shadow:0 8px 24px rgba(0,0,0,.25);max-width:90vw;";
+    banner.textContent = "Änderung konnte nicht gespeichert werden. Prüfe die Verbindung und lade die Seite neu.";
+    document.body.appendChild(banner);
+    setTimeout(function () {
+      banner.remove();
+      bannerSichtbar = false;
+    }, 8000);
+  }
+
+  function sende(pfad, methode, daten) {
+    sendekette = sendekette
+      .then(function () { return api(pfad, methode, daten); })
+      .catch(zeigeSyncFehler);
+    return sendekette;
+  }
+
+  /* ---------- Zustand: beim Start vom Server geladen ---------- */
+
+  var zustand = {
+    rolle: null,          /* kunde | admin | mcs */
+    angemeldet: false,
+    kunden: [],
+    mitarbeiter: [],
+    ma: null,             /* eigenes Mitarbeiterkonto im /mcs-Portal */
+    log: [],
+    botlogs: [],
+    adminPwGeaendert: false
+  };
+
+  /* Lädt den Zustand passend zur Rolle. Nicht angemeldet ist kein Fehler:
+     dann kommt { angemeldet: false } zurück und die Seite zeigt den Login. */
+  function bereit(rolle) {
+    zustand.rolle = rolle;
+    var pfad = rolle === "admin" ? "/api/admin/daten"
+      : rolle === "mcs" ? "/api/mcs/daten"
+      : "/api/ich";
+    return api(pfad).then(function (json) {
+      zustand.angemeldet = true;
+      if (rolle === "admin") {
+        zustand.kunden = (json.kunden || []).map(normalisiereKonto);
+        zustand.mitarbeiter = (json.mitarbeiter || []).map(normalisiereMitarbeiter);
+        zustand.log = json.log || [];
+        zustand.botlogs = json.botlogs || [];
+        zustand.adminPwGeaendert = !!json.adminPwGeaendert;
+      } else if (rolle === "mcs") {
+        zustand.ma = normalisiereMitarbeiter(json.ma || {});
+        zustand.mitarbeiter = [zustand.ma];
+        zustand.kunden = (json.kunden || []).map(normalisiereKonto);
+      } else {
+        zustand.kunden = json.konto ? [normalisiereKonto(json.konto)] : [];
+      }
+      return zustand;
+    }).catch(function (fehler) {
+      zustand.angemeldet = false;
+      zustand.kunden = [];
+      zustand.mitarbeiter = [];
+      zustand.ma = null;
+      if (fehler.status !== 401) console.error("masesites: Laden fehlgeschlagen:", fehler);
+      return zustand;
     });
   }
-  function neueMitarbeiterId() {
-    return "M-" + naechsteNummer("ms_mitarbeiter_zaehler", 100, function (melde) {
-      mitarbeiter().forEach(function (m) {
-        var t = /^M-(\d+)$/.exec(m.id || "");
-        if (t) melde(+t[1]);
-      });
+  function aktualisiere() { return bereit(zustand.rolle); }
+  function angemeldet() { return zustand.angemeldet; }
+
+  /* ---------- An- und Abmelden ---------- */
+
+  function registrieren(daten) {
+    return api("/api/registrieren", "POST", daten);
+  }
+  function anmelden(email, passwort) {
+    return api("/api/anmelden", "POST", { email: email, passwort: passwort });
+  }
+  function googleAnmeldung(credential) {
+    return api("/api/google", "POST", { credential: credential });
+  }
+  function demoAnmeldung() {
+    return api("/api/demo", "POST", {});
+  }
+  function abmelden() {
+    /* Nur die eigene Rolle abmelden — Admin-, Mitarbeiter- und Kunden-
+       Sitzung haben eigene Cookies und stören sich nicht gegenseitig */
+    var typ = zustand.rolle === "admin" ? "admin"
+      : zustand.rolle === "mcs" ? "mitarbeiter"
+      : "kunde";
+    return api("/api/abmelden", "POST", { typ: typ }).catch(function () {});
+  }
+  function adminAnmelden(passwort) {
+    return api("/api/admin/anmelden", "POST", { passwort: passwort });
+  }
+  function adminPasswortAendern(alt, neu) {
+    return api("/api/admin/passwort", "POST", { alt: alt, neu: neu }).then(function () {
+      zustand.adminPwGeaendert = true;
     });
+  }
+  function mcsAnmelden(email, passwort) {
+    return api("/api/mcs/anmelden", "POST", { email: email, passwort: passwort });
   }
 
   /* ---------- Kundenkonten ---------- */
 
-  function konten() {
-    try { return JSON.parse(localStorage.getItem("ms_konten") || "[]"); }
-    catch (e) { return []; }
-  }
-  function speichereKonten(liste) {
-    localStorage.setItem("ms_konten", JSON.stringify(liste));
-  }
+  function konten() { return zustand.kunden; }
+
   function findeKonto(email) {
     email = (email || "").trim().toLowerCase();
     var treffer = null;
-    konten().forEach(function (k) { if (k.email === email) treffer = k; });
+    zustand.kunden.forEach(function (k) { if (k.email === email) treffer = k; });
     return treffer ? normalisiereKonto(treffer) : null;
   }
-  function aktualisiereKonto(konto) {
-    var liste = konten();
-    var ersetzt = false;
-    for (var i = 0; i < liste.length; i++) {
-      if (liste[i].email === konto.email) { liste[i] = konto; ersetzt = true; break; }
+
+  /* Änderungen an einem Konto zum Server schicken — der Pfad hängt davon ab,
+     wer angemeldet ist. Der Server prüft die Berechtigung nochmal. */
+  function syncKonto(email) {
+    var konto = findeKonto(email);
+    if (!konto) return;
+    if (zustand.rolle === "admin") {
+      sende("/api/admin/kunden/" + encodeURIComponent(konto.email), "PUT", { konto: konto });
+    } else if (zustand.rolle === "mcs") {
+      sende("/api/mcs/kunden/" + encodeURIComponent(konto.email), "PUT", { konto: konto });
+    } else {
+      sende("/api/ich", "PUT", { konto: konto });
     }
-    if (!ersetzt) liste.push(konto);
-    speichereKonten(liste);
   }
-  /* Ein Konto gezielt ändern: lädt frisch, wendet fn an, speichert. */
+
+  function aktualisiereKonto(konto) {
+    var ersetzt = false;
+    for (var i = 0; i < zustand.kunden.length; i++) {
+      if (zustand.kunden[i].email === konto.email) { zustand.kunden[i] = konto; ersetzt = true; break; }
+    }
+    if (!ersetzt) zustand.kunden.push(konto);
+    syncKonto(konto.email);
+  }
+
+  /* Ein Konto gezielt ändern: fn anwenden, dann zum Server schicken. */
   function aendereKonto(email, fn) {
-    var liste = konten();
-    liste.forEach(function (k) {
+    zustand.kunden.forEach(function (k) {
       if (k.email === email) fn(normalisiereKonto(k));
     });
-    speichereKonten(liste);
+    syncKonto(email);
   }
+
   function loescheKonto(email) {
-    speichereKonten(konten().filter(function (k) { return k.email !== email; }));
-    /* Zuweisungen bei Mitarbeitern aufräumen */
-    var ma = mitarbeiter();
-    ma.forEach(function (m) {
+    zustand.kunden = zustand.kunden.filter(function (k) { return k.email !== email; });
+    /* Zuweisungen bei Mitarbeitern aufräumen (macht der Server auch selbst) */
+    zustand.mitarbeiter.forEach(function (m) {
       normalisiereMitarbeiter(m);
       m.kunden = m.kunden.filter(function (e) { return e !== email; });
     });
-    speichereMitarbeiter(ma);
+    sende("/api/admin/kunden/" + encodeURIComponent(email), "DELETE");
   }
 
-  /* Ältere Konten auf das aktuelle Modell heben, damit nichts bricht.
-     Wichtigste Migration: das einzelne k.projekt wird zur Liste k.projekte. */
+  /* Fehlende Felder ergänzen, damit die Oberfläche nie auf undefined läuft */
   function normalisiereKonto(k) {
     k.firma = k.firma || "";
     k.telefon = k.telefon || "";
@@ -166,22 +258,7 @@ window.MSDaten = (function () {
       if (!n.zeit) n.zeit = zeitAusDatum(n.datum);
       if (typeof n.gelesen !== "boolean") n.gelesen = true;
     });
-    if (!k.projekte) {
-      k.projekte = [];
-      if (k.projekt) {
-        k.projekte.push({
-          id: neueProjektId(),
-          titel: k.projekt.paket || "Website-Projekt",
-          paket: k.projekt.paket || "",
-          schritt: k.projekt.schritt || 0,
-          vorschau: k.projekt.vorschau || "",
-          erstellt: k.erstellt || heute(),
-          aktivitaet: k.aktivitaet || []
-        });
-      }
-      delete k.projekt;
-      delete k.aktivitaet;
-    }
+    k.projekte = k.projekte || [];
     k.projekte.forEach(function (p) {
       p.aktivitaet = p.aktivitaet || [];
       p.paket = p.paket || "";
@@ -190,6 +267,28 @@ window.MSDaten = (function () {
       p.aktivitaet.forEach(function (a) { if (!a.zeit) a.zeit = zeitAusDatum(a.datum); });
     });
     return k;
+  }
+
+  /* Neues Ticket: die Nummer vergibt der Server, damit sie eindeutig ist */
+  function neuesTicket(daten) {
+    return api("/api/ich/tickets", "POST", daten).then(function (json) {
+      var konto = zustand.kunden[0];
+      if (konto) {
+        konto.tickets = konto.tickets || [];
+        konto.tickets.unshift(json.ticket);
+      }
+      return json.ticket;
+    });
+  }
+
+  /* Neues Projekt (nur Admin): ID kommt vom Server */
+  function neuesProjekt(email, daten) {
+    return api("/api/admin/kunden/" + encodeURIComponent(email) + "/projekte", "POST", daten)
+      .then(function (json) {
+        var konto = findeKonto(email);
+        if (konto) konto.projekte.push(json.projekt);
+        return json.projekt;
+      });
   }
 
   /* Alle Änderungen eines Kontos über alle Projekte, neuste zuerst */
@@ -210,13 +309,8 @@ window.MSDaten = (function () {
 
   /* ---------- Mitarbeiter ---------- */
 
-  function mitarbeiter() {
-    try { return JSON.parse(localStorage.getItem("ms_mitarbeiter") || "[]"); }
-    catch (e) { return []; }
-  }
-  function speichereMitarbeiter(liste) {
-    localStorage.setItem("ms_mitarbeiter", JSON.stringify(liste));
-  }
+  function mitarbeiter() { return zustand.mitarbeiter; }
+
   function normalisiereMitarbeiter(m) {
     m.kunden = m.kunden || [];
     m.rolle = m.rolle || "";
@@ -226,55 +320,75 @@ window.MSDaten = (function () {
   function findeMitarbeiter(email) {
     email = (email || "").trim().toLowerCase();
     var treffer = null;
-    mitarbeiter().forEach(function (m) { if (m.email === email) treffer = m; });
+    zustand.mitarbeiter.forEach(function (m) { if (m.email === email) treffer = m; });
     return treffer ? normalisiereMitarbeiter(treffer) : null;
   }
   function findeMitarbeiterNachId(id) {
     var treffer = null;
-    mitarbeiter().forEach(function (m) { if (m.id === id) treffer = m; });
+    zustand.mitarbeiter.forEach(function (m) { if (m.id === id) treffer = m; });
     return treffer ? normalisiereMitarbeiter(treffer) : null;
   }
+  function erstelleMitarbeiter(daten) {
+    return api("/api/admin/mitarbeiter", "POST", daten).then(function (json) {
+      zustand.mitarbeiter.push(normalisiereMitarbeiter(json.mitarbeiter));
+      return json.mitarbeiter;
+    });
+  }
   function aendereMitarbeiter(id, fn) {
-    var liste = mitarbeiter();
-    liste.forEach(function (m) { if (m.id === id) fn(normalisiereMitarbeiter(m)); });
-    speichereMitarbeiter(liste);
+    var m = findeMitarbeiterNachId(id);
+    if (!m) return;
+    fn(m);
+    sende("/api/admin/mitarbeiter/" + encodeURIComponent(id), "PUT", {
+      name: m.name, rolle: m.rolle, aktiv: m.aktiv, kunden: m.kunden
+    });
+  }
+  function setzeMitarbeiterPasswort(id, passwort) {
+    return api("/api/admin/mitarbeiter/" + encodeURIComponent(id) + "/passwort", "POST", { passwort: passwort });
   }
   function loescheMitarbeiter(id) {
-    speichereMitarbeiter(mitarbeiter().filter(function (m) { return m.id !== id; }));
+    zustand.mitarbeiter = zustand.mitarbeiter.filter(function (m) { return m.id !== id; });
+    sende("/api/admin/mitarbeiter/" + encodeURIComponent(id), "DELETE");
   }
   /* Mitarbeiter, denen dieser Kunde zugewiesen ist */
   function mitarbeiterFuerKunde(email) {
-    return mitarbeiter().filter(function (m) {
+    return zustand.mitarbeiter.filter(function (m) {
       return normalisiereMitarbeiter(m).kunden.indexOf(email) !== -1;
     });
   }
 
   /* ---------- Protokoll und KI-Chats ---------- */
 
-  function ladeLog() {
-    try { return JSON.parse(localStorage.getItem("ms_log") || "[]"); }
-    catch (e) { return []; }
-  }
-  function speichereLog(l) { localStorage.setItem("ms_log", JSON.stringify(l)); }
+  function ladeLog() { return zustand.log; }
+  function botLogs() { return zustand.botlogs; }
+
   function protokolliere(kontoLabel, seite, aktion, detail) {
-    var ip = "unbekannt";
-    try { ip = sessionStorage.getItem("ms_ip") || "unbekannt"; } catch (e) {}
-    var l = ladeLog();
-    l.push({
+    var eintrag = {
       zeit: Date.now(),
-      konto: kontoLabel,
-      ip: ip,
+      konto: kontoLabel || "Gast",
+      ip: "–",
       seite: seite,
       aktion: String(aktion || "").slice(0, 60),
       detail: String(detail || "").slice(0, 180)
+    };
+    /* Sofort in der Ansicht zeigen; der Server speichert mit echter IP */
+    zustand.log.push(eintrag);
+    try {
+      fetch("/api/log", {
+        method: "POST",
+        credentials: "same-origin",
+        keepalive: true,
+        headers: { "Content-Type": "application/json", "X-Requested-With": "fetch" },
+        body: JSON.stringify({ seite: eintrag.seite, aktion: eintrag.aktion, detail: eintrag.detail })
+      }).catch(function () {});
+    } catch (e) {}
+  }
+
+  function logLeeren() {
+    return api("/api/admin/log", "DELETE").then(function () {
+      zustand.log = [];
     });
-    if (l.length > 3000) l = l.slice(l.length - 3000);
-    speichereLog(l);
   }
-  function botLogs() {
-    try { return JSON.parse(localStorage.getItem("ms_bot_logs") || "[]"); }
-    catch (e) { return []; }
-  }
+  function adminPwGeaendert() { return zustand.adminPwGeaendert; }
 
   /* ---------- Anzeige-Hilfen ---------- */
 
@@ -299,31 +413,40 @@ window.MSDaten = (function () {
     kurzeZeit: kurzeZeit,
     zeitAusDatum: zeitAusDatum,
     langesDatum: langesDatum,
-    hashText: hashText,
-    zufallsSalt: zufallsSalt,
-    neueTicketNr: neueTicketNr,
-    neueProjektId: neueProjektId,
-    neueMitarbeiterId: neueMitarbeiterId,
+    bereit: bereit,
+    aktualisiere: aktualisiere,
+    angemeldet: angemeldet,
+    registrieren: registrieren,
+    anmelden: anmelden,
+    googleAnmeldung: googleAnmeldung,
+    demoAnmeldung: demoAnmeldung,
+    abmelden: abmelden,
+    adminAnmelden: adminAnmelden,
+    adminPasswortAendern: adminPasswortAendern,
+    adminPwGeaendert: adminPwGeaendert,
+    mcsAnmelden: mcsAnmelden,
     konten: konten,
-    speichereKonten: speichereKonten,
     findeKonto: findeKonto,
     aktualisiereKonto: aktualisiereKonto,
     aendereKonto: aendereKonto,
     loescheKonto: loescheKonto,
     normalisiereKonto: normalisiereKonto,
+    neuesTicket: neuesTicket,
+    neuesProjekt: neuesProjekt,
     alleAktivitaeten: alleAktivitaeten,
     fortschritt: fortschritt,
     mitarbeiter: mitarbeiter,
-    speichereMitarbeiter: speichereMitarbeiter,
     normalisiereMitarbeiter: normalisiereMitarbeiter,
     findeMitarbeiter: findeMitarbeiter,
     findeMitarbeiterNachId: findeMitarbeiterNachId,
+    erstelleMitarbeiter: erstelleMitarbeiter,
     aendereMitarbeiter: aendereMitarbeiter,
+    setzeMitarbeiterPasswort: setzeMitarbeiterPasswort,
     loescheMitarbeiter: loescheMitarbeiter,
     mitarbeiterFuerKunde: mitarbeiterFuerKunde,
     ladeLog: ladeLog,
-    speichereLog: speichereLog,
     protokolliere: protokolliere,
+    logLeeren: logLeeren,
     botLogs: botLogs,
     pillKlasse: pillKlasse,
     anzeigeName: anzeigeName
