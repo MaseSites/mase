@@ -1334,9 +1334,17 @@ body.hero-in .preview-shell { opacity: 1; transform: none; }
 
 /* Dashboard: Panels */
 .dash-panel { display: none; }
-.dash-panel.active { display: block; animation: panel-in 0.3s ease; }
-@keyframes panel-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+.dash-panel.active { display: block; }
 .dash-panel > * + * { margin-top: 20px; }
+/* Inhalt gestaffelt einblenden, statt alles auf einmal erscheinen zu lassen */
+.dash-panel.active > * { animation: dash-in 0.55s var(--ease-out) backwards; }
+.dash-panel.active > *:nth-child(1) { animation-delay: 0.03s; }
+.dash-panel.active > *:nth-child(2) { animation-delay: 0.09s; }
+.dash-panel.active > *:nth-child(3) { animation-delay: 0.15s; }
+.dash-panel.active > *:nth-child(4) { animation-delay: 0.21s; }
+.dash-panel.active > *:nth-child(n+5) { animation-delay: 0.27s; }
+@keyframes dash-in { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .dash-panel.active > * { animation: none; } }
 
 .panel-head h2 { font-size: 1.5rem; margin-bottom: 4px; }
 .panel-head p { color: var(--ink-soft); font-size: 0.95rem; }
@@ -1599,12 +1607,37 @@ body.hero-in .preview-shell { opacity: 1; transform: none; }
 .konto-abmelden:hover { color: var(--ink); }
 
 @media (max-width: 1020px) {
-  .dash-layout { grid-template-columns: 1fr; }
-  .dash-side { position: static; }
-  .side-nav { display: flex; overflow-x: auto; padding-bottom: 4px; }
-  .side-item { flex: none; width: auto; }
-  .side-foot { display: flex; align-items: center; gap: 18px; }
-  .side-foot .btn { width: auto; }
+  .dash-layout { grid-template-columns: 1fr; gap: 14px; }
+
+  /* Seitenleiste wird zur schlanken, klebrigen Tab-Leiste direkt unter dem Kopf.
+     Profil, Abschnitts-Labels und Fusszeile blenden aus (Profil/Abmelden stehen
+     schon im Kopf) – so beginnt der Inhalt sofort und die Navigation ist klar. */
+  .dash-side {
+    position: sticky; top: var(--header-h); z-index: 40;
+    background: rgba(253, 250, 244, 0.95);
+    backdrop-filter: blur(10px);
+    border: none; border-bottom: 1px solid var(--line); border-radius: 0;
+    padding: 8px 0; margin: 0 -24px;
+    display: block;
+  }
+  .side-profil, .side-label, .side-foot { display: none; }
+  .side-nav {
+    display: flex; gap: 8px;
+    overflow-x: auto; scrollbar-width: none;
+    padding: 2px 24px 4px;
+    -webkit-overflow-scrolling: touch;
+  }
+  .side-nav::-webkit-scrollbar { display: none; }
+  .side-item {
+    flex: none; width: auto; gap: 8px;
+    padding: 9px 15px;
+    border: 1.5px solid var(--line); border-radius: 999px;
+    background: var(--card); font-size: 0.9rem; white-space: nowrap;
+  }
+  .side-item:hover { background: var(--card); }
+  .side-item.active { background: var(--ink); color: #fff; border-color: var(--ink); }
+  .side-badge { margin-left: 3px; }
+
   .panel-grid { grid-template-columns: 1fr; }
   .projekt-zeile { flex-direction: column; align-items: stretch; gap: 12px; }
   .pz-rechts { width: auto; }
