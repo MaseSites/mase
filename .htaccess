@@ -1,0 +1,17 @@
+# masesites läuft als Node.js-App (server/server.js) und bedient die ganze
+# Website selbst. Diese Regeln greifen nur, wenn der Webserver (z. B. Plesk/
+# Apache) statische Dateien direkt ausliefert und dabei die Schutzprüfungen
+# der App umgeht. Sie sperren sensible Dateien.
+
+# Server-Code, Datenbank und Schlüssel niemals ausliefern
+RedirectMatch 404 ^/server(/|$)
+
+# Git-Metadaten und versteckte Konfigdateien sperren
+RedirectMatch 404 (^|/)\.(git|env)(/|$)
+
+# Datenbank- und Schlüsseldateien in jedem Ordner blocken
+<IfModule mod_authz_core.c>
+  <FilesMatch "\.(key|db|db-wal|db-shm|sqlite)$">
+    Require all denied
+  </FilesMatch>
+</IfModule>

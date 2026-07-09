@@ -31,9 +31,16 @@ const scrypt = promisify(crypto.scrypt);
 
 /* ---------- Konfiguration ---------- */
 
-const PORT = parseInt(process.env.MS_PORT || "8080", 10);
+/* Port: eigene Variable MS_PORT, sonst PORT (setzt z. B. Plesk/Passenger —
+   kann auch ein Socket-Pfad statt einer Zahl sein), sonst 8080 */
+const PORT_ROH = process.env.MS_PORT || process.env.PORT || "8080";
+const PORT = /^\d+$/.test(String(PORT_ROH)) ? parseInt(PORT_ROH, 10) : PORT_ROH;
 const WURZEL = path.join(__dirname, "..");            /* Website-Dateien */
-const DATEN_ORDNER = path.join(__dirname, "daten");   /* DB + Schlüssel (gitignored) */
+/* DB + Schlüssel. Auf Plesk & Co. am besten per MS_DATEN auf einen Ordner
+   AUSSERHALB des Web-Roots legen, damit die Dateien nie abrufbar sind. */
+const DATEN_ORDNER = process.env.MS_DATEN
+  ? path.resolve(process.env.MS_DATEN)
+  : path.join(__dirname, "daten");
 const HINTER_PROXY = process.env.MS_HINTER_PROXY === "1"; /* X-Forwarded-* vertrauen */
 
 /* Muss zur Client-ID in assets/js/konto.js passen (Google-Anmeldung) */
@@ -1175,7 +1182,9 @@ stelleAdminPasswortSicher().then(() => {
     });
   });
   server.listen(PORT, () => {
-    console.log("masesites läuft auf http://localhost:" + PORT);
+    console.log(typeof PORT === "number"
+      ? "masesites läuft auf http://localhost:" + PORT
+      : "masesites läuft (Socket " + PORT + ", z. B. hinter Passenger/Plesk)");
     console.log("Website-Wurzel: " + WURZEL);
     console.log("Daten und Schlüssel: " + DATEN_ORDNER);
   });
