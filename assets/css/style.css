@@ -165,23 +165,20 @@ section.tight { padding: 56px 0; }
   display: flex; align-items: center; justify-content: space-between; gap: 24px;
   max-width: 1120px;
   margin: 0 auto;
-  padding: 9px 10px 9px 24px;
-  background: rgba(253, 250, 244, 0.66);
-  backdrop-filter: blur(18px) saturate(1.5);
-  -webkit-backdrop-filter: blur(18px) saturate(1.5);
-  border: 1px solid rgba(255, 255, 255, 0.65);
+  padding: 9px 20px 9px 24px;
+  background: rgba(253, 250, 244, 0.38);
+  backdrop-filter: blur(26px) saturate(1.7);
+  -webkit-backdrop-filter: blur(26px) saturate(1.7);
+  border: 1px solid rgba(255, 255, 255, 0.5);
   border-radius: 999px;
-  box-shadow: 0 12px 34px rgba(44, 33, 24, 0.10), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  box-shadow: 0 12px 34px rgba(44, 33, 24, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.5);
   transition: background 0.35s ease, box-shadow 0.35s ease;
 }
 
 .site-header.scrolled .header-inner {
-  background: rgba(253, 250, 244, 0.9);
-  box-shadow: 0 14px 40px rgba(44, 33, 24, 0.16), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  background: rgba(253, 250, 244, 0.62);
+  box-shadow: 0 14px 40px rgba(44, 33, 24, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.5);
 }
-
-/* Projekt-starten-Knopf in der Pille: kompakter als der normale Button */
-.header-cta .header-start { padding: 10px 20px; font-size: 0.9rem; box-shadow: none; }
 
 .logo { display: inline-flex; align-items: center; gap: 10px; font-weight: 700; font-size: 1.28rem; color: var(--ink); letter-spacing: -0.02em; }
 .logo:hover { color: var(--ink); }
@@ -253,7 +250,11 @@ section.tight { padding: 56px 0; }
   margin: 0 auto;
   transition: opacity 0.7s var(--ease-out), transform 0.7s var(--ease-out);
 }
-.hero-mitte h1 { margin-bottom: 22px; font-size: clamp(2.1rem, 6vw, 4.6rem); line-height: 1.06; letter-spacing: -0.035em; }
+.hero-mitte h1 { margin-bottom: 26px; font-size: clamp(2.3rem, 7.5vw, 6rem); line-height: 1.04; letter-spacing: -0.04em; }
+/* Unterstreichung des Rotor-Worts wächst mit der grossen Schrift mit */
+.hero-mitte .rotor .rotor-word { border-bottom-width: 6px; padding-bottom: 4px; }
+/* Knöpfe proportional zur monumentalen Headline */
+.hero-mitte .hero-ctas .btn { padding: 15px 30px; font-size: 1.02rem; }
 .hero-mitte .lead { margin: 0 auto 34px; max-width: 560px; }
 .hero-mitte .hero-ctas { justify-content: center; margin-bottom: 30px; }
 .trust-zeile {
@@ -277,24 +278,24 @@ section.tight { padding: 56px 0; }
 .hero-aurora.a1 {
   width: clamp(600px, 58vw, 920px); height: clamp(600px, 58vw, 920px);
   left: -14%; top: -30%;
-  background: radial-gradient(circle at 38% 38%, rgba(214, 168, 108, 0.60), rgba(214, 168, 108, 0) 64%);
-  animation: aurora-a 21s ease-in-out infinite alternate;
+  background: radial-gradient(circle at 38% 38%, rgba(214, 168, 108, 0.68), rgba(214, 168, 108, 0) 64%);
+  animation: aurora-a 15s ease-in-out infinite alternate;
 }
 .hero-aurora.a2 {
   width: clamp(520px, 50vw, 840px); height: clamp(520px, 50vw, 840px);
   right: -16%; top: -8%;
-  background: radial-gradient(circle at 60% 40%, rgba(64, 46, 30, 0.36), rgba(64, 46, 30, 0) 66%);
-  animation: aurora-b 29s ease-in-out infinite alternate;
+  background: radial-gradient(circle at 60% 40%, rgba(64, 46, 30, 0.42), rgba(64, 46, 30, 0) 66%);
+  animation: aurora-b 21s ease-in-out infinite alternate;
 }
 .hero-aurora.a3 {
   width: clamp(560px, 54vw, 880px); height: clamp(560px, 54vw, 880px);
   left: 18%; bottom: -34%;
-  background: radial-gradient(circle at 50% 55%, rgba(232, 196, 144, 0.55), rgba(232, 196, 144, 0) 62%);
-  animation: aurora-c 25s ease-in-out infinite alternate;
+  background: radial-gradient(circle at 50% 55%, rgba(232, 196, 144, 0.62), rgba(232, 196, 144, 0) 62%);
+  animation: aurora-c 18s ease-in-out infinite alternate;
 }
-@keyframes aurora-a { to { transform: translate(11vw, 9vh) scale(1.22) rotate(18deg); } }
-@keyframes aurora-b { to { transform: translate(-9vw, 12vh) scale(0.9) rotate(-14deg); } }
-@keyframes aurora-c { to { transform: translate(9vw, -10vh) scale(1.16) rotate(10deg); } }
+@keyframes aurora-a { to { transform: translate(14vw, 12vh) scale(1.26) rotate(22deg); } }
+@keyframes aurora-b { to { transform: translate(-13vw, 15vh) scale(0.88) rotate(-16deg); } }
+@keyframes aurora-c { to { transform: translate(12vw, -13vh) scale(1.2) rotate(12deg); } }
 
 /* Kreisender Lichtstrahl: gibt der Fläche Richtung und Tiefe */
 .hero-strahl {
@@ -304,15 +305,15 @@ section.tight { padding: 56px 0; }
   transform: translate(-50%, -50%);
   background: conic-gradient(from 20deg,
     transparent 0deg,
-    rgba(214, 168, 108, 0.16) 55deg,
+    rgba(214, 168, 108, 0.20) 55deg,
     transparent 115deg,
-    rgba(64, 46, 30, 0.10) 180deg,
+    rgba(64, 46, 30, 0.13) 180deg,
     transparent 245deg,
-    rgba(232, 196, 144, 0.14) 300deg,
+    rgba(232, 196, 144, 0.18) 300deg,
     transparent 360deg);
   border-radius: 50%;
   filter: blur(44px);
-  animation: strahl-dreh 38s linear infinite;
+  animation: strahl-dreh 30s linear infinite;
   will-change: transform;
 }
 @keyframes strahl-dreh {
@@ -342,6 +343,71 @@ section.tight { padding: 56px 0; }
     rgba(253, 250, 244, 0.92) 0%,
     rgba(253, 250, 244, 0.5) 48%,
     transparent 76%);
+}
+
+/* Schwirrende Elemente: Ringe, Punkte, kleine Karten und ein Quadrat treiben
+   auf eigenen Bahnen durch den Startbereich, damit die Fläche lebt */
+.flieger {
+  position: absolute;
+  will-change: transform;
+  transform: translateZ(0);
+}
+.flieger.ring { border-radius: 50%; border: 2.5px solid rgba(178, 132, 80, 0.55); }
+.flieger.ring.r1 { width: 54px; height: 54px; left: 9%; top: 22%; animation: flug-1 13s ease-in-out infinite; }
+.flieger.ring.r2 { width: 30px; height: 30px; right: 12%; top: 30%; border-color: rgba(64, 46, 30, 0.4); animation: flug-2 16s ease-in-out infinite; }
+.flieger.ring.r3 { width: 78px; height: 78px; right: 7%; bottom: 20%; border-width: 3px; border-color: rgba(214, 168, 108, 0.5); animation: flug-3 19s ease-in-out infinite; }
+.flieger.punkt { border-radius: 50%; background: rgba(64, 46, 30, 0.42); }
+.flieger.punkt.p1 { width: 10px; height: 10px; left: 17%; top: 55%; animation: flug-2 11s ease-in-out infinite; }
+.flieger.punkt.p2 { width: 14px; height: 14px; left: 30%; top: 16%; background: rgba(178, 132, 80, 0.55); animation: flug-3 14s ease-in-out infinite; }
+.flieger.punkt.p3 { width: 8px; height: 8px; right: 26%; top: 18%; animation: flug-1 12s ease-in-out infinite; }
+.flieger.punkt.p4 { width: 12px; height: 12px; right: 18%; bottom: 32%; background: rgba(214, 168, 108, 0.6); animation: flug-2 17s ease-in-out infinite; }
+/* Mini-Browserfenster: kleine Karte mit Kopfzeile, unser Handwerk als Motiv */
+.flieger.karte {
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.55);
+  border: 1.5px solid rgba(178, 132, 80, 0.4);
+  box-shadow: 0 10px 26px rgba(44, 33, 24, 0.10);
+}
+.flieger.karte::before {
+  content: "";
+  position: absolute; left: 0; right: 0; top: 0; height: 26%;
+  border-bottom: 1.5px solid rgba(178, 132, 80, 0.35);
+  background:
+    radial-gradient(circle 2.5px at 12% 50%, rgba(64, 46, 30, 0.45) 97%, transparent) no-repeat,
+    radial-gradient(circle 2.5px at 26% 50%, rgba(64, 46, 30, 0.35) 97%, transparent) no-repeat,
+    radial-gradient(circle 2.5px at 40% 50%, rgba(64, 46, 30, 0.25) 97%, transparent) no-repeat;
+}
+.flieger.karte.k1 { width: 92px; height: 66px; left: 7%; bottom: 26%; animation: flug-3 15s ease-in-out infinite; }
+.flieger.karte.k2 { width: 70px; height: 52px; right: 9%; top: 56%; animation: flug-1 18s ease-in-out infinite; }
+.flieger.quadrat {
+  width: 26px; height: 26px;
+  border-radius: 8px;
+  background: rgba(214, 168, 108, 0.45);
+  left: 24%; bottom: 14%;
+  animation: flug-2 14s ease-in-out infinite;
+}
+/* Drei Schwirr-Bahnen mit Zwischenstationen, sanft und endlos */
+@keyframes flug-1 {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  30% { transform: translate(26px, -34px) rotate(9deg); }
+  62% { transform: translate(-18px, -12px) rotate(-7deg); }
+  84% { transform: translate(12px, 20px) rotate(4deg); }
+}
+@keyframes flug-2 {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  28% { transform: translate(-30px, 22px) rotate(-10deg); }
+  55% { transform: translate(16px, 38px) rotate(6deg); }
+  80% { transform: translate(30px, -14px) rotate(-4deg); }
+}
+@keyframes flug-3 {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  26% { transform: translate(22px, 30px) rotate(8deg); }
+  58% { transform: translate(-26px, 14px) rotate(-9deg); }
+  82% { transform: translate(-8px, -26px) rotate(5deg); }
+}
+@media (max-width: 720px) {
+  /* Auf kleinen Screens nur eine Handvoll Elemente, sonst wird es unruhig */
+  .flieger.ring.r3, .flieger.karte.k1, .flieger.punkt.p2, .flieger.quadrat { display: none; }
 }
 
 /* Unten weich in den Seitenhintergrund auslaufen: Bewegung bleibt "nur oben" */
