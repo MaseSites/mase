@@ -149,23 +149,39 @@ section.tight { padding: 56px 0; }
 
 /* ---------- Header ---------- */
 
+/* Schwebende Glas-Pille: der Header liegt frei über der Seite */
 .site-header {
   position: fixed;
-  top: 0; left: 0; right: 0;
+  top: 14px; left: 0; right: 0;
   z-index: 60;
-  transition: background 0.35s ease, box-shadow 0.35s ease, padding 0.35s ease, opacity 0.5s ease;
-  padding: 14px 0;
-  background: transparent;
+  padding: 0 16px;
+  background: none;
+  pointer-events: none;
+  transition: opacity 0.5s ease;
 }
 
-.site-header.scrolled {
-  background: rgba(253, 250, 244, 0.92);
-  backdrop-filter: blur(12px);
-  box-shadow: var(--shadow-s);
-  padding: 8px 0;
+.header-inner {
+  pointer-events: auto;
+  display: flex; align-items: center; justify-content: space-between; gap: 24px;
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 9px 10px 9px 24px;
+  background: rgba(253, 250, 244, 0.66);
+  backdrop-filter: blur(18px) saturate(1.5);
+  -webkit-backdrop-filter: blur(18px) saturate(1.5);
+  border: 1px solid rgba(255, 255, 255, 0.65);
+  border-radius: 999px;
+  box-shadow: 0 12px 34px rgba(44, 33, 24, 0.10), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  transition: background 0.35s ease, box-shadow 0.35s ease;
 }
 
-.header-inner { display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+.site-header.scrolled .header-inner {
+  background: rgba(253, 250, 244, 0.9);
+  box-shadow: 0 14px 40px rgba(44, 33, 24, 0.16), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+/* Projekt-starten-Knopf in der Pille: kompakter als der normale Button */
+.header-cta .header-start { padding: 10px 20px; font-size: 0.9rem; box-shadow: none; }
 
 .logo { display: inline-flex; align-items: center; gap: 10px; font-weight: 700; font-size: 1.28rem; color: var(--ink); letter-spacing: -0.02em; }
 .logo:hover { color: var(--ink); }
@@ -237,7 +253,7 @@ section.tight { padding: 56px 0; }
   margin: 0 auto;
   transition: opacity 0.7s var(--ease-out), transform 0.7s var(--ease-out);
 }
-.hero-mitte h1 { margin-bottom: 22px; font-size: clamp(2rem, 5.5vw, 4rem); line-height: 1.08; }
+.hero-mitte h1 { margin-bottom: 22px; font-size: clamp(2.1rem, 6vw, 4.6rem); line-height: 1.06; letter-spacing: -0.035em; }
 .hero-mitte .lead { margin: 0 auto 34px; max-width: 560px; }
 .hero-mitte .hero-ctas { justify-content: center; margin-bottom: 30px; }
 .trust-zeile {
@@ -248,63 +264,94 @@ section.tight { padding: 56px 0; }
 }
 .trust-zeile .punkt { width: 3px; height: 3px; border-radius: 50%; background: var(--line-strong); }
 
-/* Lebendiger, warmer Hintergrund: weiche Lichtflächen, die langsam wandern.
-   Bewusst nur warme Töne (kein Blau/Lila), Bewegung rein über transform. */
-.hero-blob {
+/* Lebendiger Auftakt, nur im Startbereich: kräftige warme Aurora-Flächen,
+   ein langsam kreisender Lichtstrahl und ein feines Punktraster. Bewusst
+   nur warme Töne (kein Blau/Lila), Bewegung rein über transform. */
+.hero-aurora {
   position: absolute;
   border-radius: 50%;
-  filter: blur(70px);
+  filter: blur(clamp(60px, 7vw, 110px));
   will-change: transform;
   transform: translateZ(0);
 }
-.hero-blob.b1 {
-  width: 560px; height: 560px; left: -160px; top: -140px;
-  background: radial-gradient(circle, rgba(196, 154, 102, 0.34), transparent 66%);
-  animation: blob-a 26s ease-in-out infinite alternate;
+.hero-aurora.a1 {
+  width: clamp(600px, 58vw, 920px); height: clamp(600px, 58vw, 920px);
+  left: -14%; top: -30%;
+  background: radial-gradient(circle at 38% 38%, rgba(214, 168, 108, 0.60), rgba(214, 168, 108, 0) 64%);
+  animation: aurora-a 21s ease-in-out infinite alternate;
 }
-.hero-blob.b2 {
-  width: 640px; height: 640px; right: -220px; top: 24%;
-  background: radial-gradient(circle, rgba(44, 33, 24, 0.16), transparent 66%);
-  animation: blob-b 34s ease-in-out infinite alternate;
+.hero-aurora.a2 {
+  width: clamp(520px, 50vw, 840px); height: clamp(520px, 50vw, 840px);
+  right: -16%; top: -8%;
+  background: radial-gradient(circle at 60% 40%, rgba(64, 46, 30, 0.36), rgba(64, 46, 30, 0) 66%);
+  animation: aurora-b 29s ease-in-out infinite alternate;
 }
-.hero-blob.b3 {
-  width: 480px; height: 480px; left: 16%; bottom: -220px;
-  background: radial-gradient(circle, rgba(214, 178, 128, 0.30), transparent 66%);
-  animation: blob-c 30s ease-in-out infinite alternate;
+.hero-aurora.a3 {
+  width: clamp(560px, 54vw, 880px); height: clamp(560px, 54vw, 880px);
+  left: 18%; bottom: -34%;
+  background: radial-gradient(circle at 50% 55%, rgba(232, 196, 144, 0.55), rgba(232, 196, 144, 0) 62%);
+  animation: aurora-c 25s ease-in-out infinite alternate;
 }
-@keyframes blob-a {
-  from { transform: translate(0, 0) scale(1); }
-  to { transform: translate(140px, 90px) scale(1.18); }
-}
-@keyframes blob-b {
-  from { transform: translate(0, 0) scale(1.1); }
-  to { transform: translate(-160px, -70px) scale(0.94); }
-}
-@keyframes blob-c {
-  from { transform: translate(0, 0) scale(0.95); }
-  to { transform: translate(120px, -80px) scale(1.15); }
-}
-/* Dazu ein sehr weicher, langsam kreisender Lichtschein hinter der Headline */
-.hero-schimmer {
+@keyframes aurora-a { to { transform: translate(11vw, 9vh) scale(1.22) rotate(18deg); } }
+@keyframes aurora-b { to { transform: translate(-9vw, 12vh) scale(0.9) rotate(-14deg); } }
+@keyframes aurora-c { to { transform: translate(9vw, -10vh) scale(1.16) rotate(10deg); } }
+
+/* Kreisender Lichtstrahl: gibt der Fläche Richtung und Tiefe */
+.hero-strahl {
   position: absolute;
-  left: 50%; top: 42%;
-  width: min(1100px, 130vw); aspect-ratio: 1;
-  margin: 0;
+  left: 50%; top: 40%;
+  width: min(1400px, 170vw); aspect-ratio: 1;
   transform: translate(-50%, -50%);
-  background: conic-gradient(from 0deg,
+  background: conic-gradient(from 20deg,
     transparent 0deg,
-    rgba(196, 154, 102, 0.10) 70deg,
-    transparent 140deg,
-    rgba(44, 33, 24, 0.06) 220deg,
-    transparent 300deg);
+    rgba(214, 168, 108, 0.16) 55deg,
+    transparent 115deg,
+    rgba(64, 46, 30, 0.10) 180deg,
+    transparent 245deg,
+    rgba(232, 196, 144, 0.14) 300deg,
+    transparent 360deg);
   border-radius: 50%;
-  filter: blur(60px);
-  animation: schimmer-dreh 42s linear infinite;
+  filter: blur(44px);
+  animation: strahl-dreh 38s linear infinite;
   will-change: transform;
 }
-@keyframes schimmer-dreh {
+@keyframes strahl-dreh {
   from { transform: translate(-50%, -50%) rotate(0deg); }
   to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+/* Feines Punktraster, das zur Mitte sichtbar ist und langsam wandert
+   (Versatz = genau eine Rasterzelle, dadurch nahtlose Schleife) */
+.hero-gitter {
+  position: absolute; inset: -32px;
+  background-image: radial-gradient(rgba(44, 33, 24, 0.13) 1.2px, transparent 1.3px);
+  background-size: 32px 32px;
+  -webkit-mask-image: radial-gradient(ellipse 72% 62% at 50% 40%, #000 16%, transparent 74%);
+  mask-image: radial-gradient(ellipse 72% 62% at 50% 40%, #000 16%, transparent 74%);
+  animation: gitter-drift 16s linear infinite;
+}
+@keyframes gitter-drift { to { transform: translate(32px, 32px); } }
+
+/* Heller Halo hinter dem Text: die Headline bleibt immer gut lesbar */
+.hero-halo {
+  position: absolute;
+  left: 50%; top: 45%;
+  width: min(920px, 98vw); height: min(580px, 72vh);
+  transform: translate(-50%, -50%);
+  background: radial-gradient(ellipse at center,
+    rgba(253, 250, 244, 0.92) 0%,
+    rgba(253, 250, 244, 0.5) 48%,
+    transparent 76%);
+}
+
+/* Unten weich in den Seitenhintergrund auslaufen: Bewegung bleibt "nur oben" */
+.hero-start::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  height: 150px;
+  background: linear-gradient(180deg, transparent, var(--bg));
+  pointer-events: none;
 }
 
 /* ---------- Live-Demos im Beispiel-Fenster (Sektion 2) ---------- */
@@ -1371,6 +1418,8 @@ body.gescrollt .scroll-cue { opacity: 0; pointer-events: none; }
   .main-nav, .header-cta .btn-ghost { display: none; }
   .header-cta .btn-primary { display: none; }
   .burger { display: flex; }
+  .site-header { top: 10px; padding: 0 10px; }
+  .header-inner { padding: 7px 8px 7px 18px; }
   .steps, .steps.cols-3, .why-grid, .values-grid, .work-grid, .card-grid.cols-3, .card-grid.cols-2, .usecase-grid, .price-grid, .form-grid { grid-template-columns: 1fr; }
   a.offer-row { grid-template-columns: 1fr; padding: 26px 2px; }
   .offer-row .offer-price { justify-self: start; }
