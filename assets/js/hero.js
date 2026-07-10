@@ -11,7 +11,7 @@
     {
       id: "restaurant",
       chip: "Restaurant",
-      word: "deinem Restaurant",
+      word: "dein Restaurant",
       url: "zur-goldenen-rebe.ch",
       logo: "Zur Goldenen Rebe",
       links: ["Menü", "Reservieren", "Über uns"],
@@ -30,7 +30,7 @@
     {
       id: "event",
       chip: "Eventplattform",
-      word: "deinem Event",
+      word: "dein Event",
       url: "groupify.app",
       logo: "groupify",
       links: ["Events", "Tickets", "Community"],
@@ -49,7 +49,7 @@
     {
       id: "friseur",
       chip: "Friseur",
-      word: "deinem Salon",
+      word: "deinen Salon",
       url: "studio-schnittwerk.ch",
       logo: "Schnittwerk",
       links: ["Team", "Preise", "Galerie"],
@@ -68,7 +68,7 @@
     {
       id: "shop",
       chip: "Onlineshop",
-      word: "deinem Shop",
+      word: "deinen Shop",
       url: "nordlicht-store.ch",
       logo: "NORDLICHT",
       links: ["Neu", "Kollektion", "Sale"],
@@ -87,7 +87,7 @@
     {
       id: "app",
       chip: "Apps",
-      word: "deiner App",
+      word: "deine App",
       url: "tapo.app",
       logo: "tapo",
       links: ["Features", "Pricing", "Blog"],
@@ -229,6 +229,24 @@
   render(BRANDS[0]);
   setActiveChip(BRANDS[0].id);
   if ("requestIdleCallback" in window) requestIdleCallback(preload); else setTimeout(preload, 1200);
+
+  /* ---------- Intro: Kamerafahrt in den Bildschirm ----------
+     intro.js hat den Monitor-Zustand (html.intro-zoom) vor dem ersten
+     Zeichnen gesetzt; hier läuft die Regie: kurz stehen lassen, dann
+     hineinzoomen, am Ende erscheinen Headline und Style-Knöpfe. */
+  var wurzel = document.documentElement;
+  if (wurzel.classList.contains("intro-zoom") && !reducedMotion) {
+    setTimeout(function () {
+      wurzel.classList.add("intro-fahrt");
+      setTimeout(function () {
+        wurzel.classList.remove("intro-zoom");
+        wurzel.classList.remove("intro-fahrt");
+      }, 1550);
+    }, 650);
+  } else {
+    wurzel.classList.remove("intro-zoom");
+    wurzel.classList.remove("intro-fahrt");
+  }
 
   window.addEventListener("beforeunload", stopAuto);
   startAuto();

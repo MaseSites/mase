@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Beispiele &amp; Portfolio | masesites</title>
-  <meta name="description" content="Echte Projekte, echte Ergebnisse: klickbare Live-Demos von masesites für Gastronomie, Beauty, Gesundheit und Freizeit, dazu die Eventplattform Groupify.">
+  <title>Beispiele | masesites</title>
+  <meta name="description" content="So kann deine Website aussehen: fünf Branchen, fünf komplett verschiedene Stile – vom dunklen Restaurant-Look bis zum cleanen Onlineshop. Live ausprobierbar auf der Startseite.">
   <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -21,6 +21,7 @@
       <nav class="main-nav" aria-label="Hauptnavigation">
         <a href="/">Startseite</a>
         <a href="/beispiele" class="active">Beispiele</a>
+        <a href="/projekte">Projekte</a>
         <a href="/ki-bot">KI-Bot</a>
         <a href="/preise">Preise</a>
         <a href="/ueber-uns">Über uns</a>
@@ -37,6 +38,7 @@
   <div class="mobile-menu">
     <a href="/">Startseite</a>
     <a href="/beispiele" class="active">Beispiele</a>
+    <a href="/projekte">Projekte</a>
     <a href="/ki-bot">KI-Bot</a>
     <a href="/preise">Preise</a>
     <a href="/ueber-uns">Über uns</a>
@@ -49,28 +51,43 @@
     <!-- ===== Hero ===== -->
     <section class="page-hero">
       <div class="wrap">
-        <h1>Echte Projekte. Echte Ergebnisse.</h1>
-        <p class="lead">Ein Team, viele Stile. Jede Live-Demo ist eine echte Website, klick dich rein.</p>
+        <h1>So kann deine Website aussehen.</h1>
+        <p class="lead">Fünf Branchen, fünf komplett verschiedene Stile – gebaut vom selben Team. Klick eine Karte an und probiere den Stil live auf der Startseite aus.</p>
       </div>
     </section>
 
-    <!-- ===== Filter + Raster ===== -->
+    <!-- ===== Stil-Raster ===== -->
     <section class="tight">
       <div class="wrap">
-        <div class="chips reveal" style="margin-bottom: 40px;" role="group" aria-label="Portfolio nach Branche filtern">
-          <button class="chip active" data-filter="alle" aria-pressed="true">Alle</button>
-          <button class="chip" data-filter="gastronomie" aria-pressed="false">Gastronomie</button>
-          <button class="chip" data-filter="beauty" aria-pressed="false">Beauty</button>
-          <button class="chip" data-filter="gesundheit" aria-pressed="false">Gesundheit</button>
-          <button class="chip" data-filter="freizeit" aria-pressed="false">Freizeit</button>
-          <button class="chip" data-filter="event" aria-pressed="false">Event</button>
-        </div>
+        <div class="work-grid">
 
-        <div class="work-grid" id="work-grid">
+          <a class="work-card reveal" href="/">
+            <div class="work-thumb" style="background: linear-gradient(150deg, #221A13, #2E2419);">
+              <span class="work-badge">Beispiel-Stil</span>
+              <div class="thumb-nav" style="color: #F4EADA;">
+                <span class="t-logo"><span style="display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:5px;background:#C89B5A;color:#221A13;font-size:0.5rem;">R</span> Zur Goldenen Rebe</span>
+                <span class="t-links"><span>Menü</span><span>Reservieren</span><span>Über uns</span></span>
+              </div>
+              <div class="thumb-hero" style="background: linear-gradient(120deg, #C89B5A 0%, #221A13 70%); color: #F4EADA; font-family: Georgia, 'Times New Roman', serif;">
+                <div>
+                  <div class="t-title">Ein Abend, der bleibt.</div>
+                  <div class="t-sub">Saisonale Küche · regionale Weine</div>
+                </div>
+              </div>
+              <div class="thumb-row" aria-hidden="true">
+                <i style="background:#C89B5A;"></i><i style="background:#2E2419;"></i><i style="background:#F4EADA; opacity:0.85;"></i>
+              </div>
+            </div>
+            <div class="work-meta">
+              <h3>Restaurant</h3>
+              <p><strong>Gastronomie</strong> · warm und dunkel, mit Serifenschrift und goldenem Akzent.</p>
+              <span class="work-link">Live ausprobieren →</span>
+            </div>
+          </a>
 
-          <article class="work-card reveal" data-cat="event">
+          <a class="work-card reveal" data-delay="80" href="/">
             <div class="work-thumb" style="background: linear-gradient(150deg, #1E2340, #2A3054);">
-              <span class="work-badge real">Kundenprojekt</span>
+              <span class="work-badge">Beispiel-Stil</span>
               <div class="thumb-nav" style="color: #F2F1FA;">
                 <span class="t-logo"><span style="display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:5px;background:#2FB9A8;color:#10131f;font-size:0.5rem;">gr</span> groupify</span>
                 <span class="t-links"><span>Events</span><span>Tickets</span><span>Community</span></span>
@@ -86,62 +103,87 @@
               </div>
             </div>
             <div class="work-meta">
-              <h3>Groupify</h3>
-              <p><strong>Eventplattform</strong> · Website-Redesign mit eigenem Design-System in Navy, Indigo und Creme.</p>
-            </div>
-          </article>
-
-          <a class="work-card reveal" data-cat="gastronomie" data-delay="80" href="https://masesites.ch/demo/doener-site/index.html" target="_blank" rel="noopener">
-            <div class="work-thumb shot">
-              <span class="work-badge real">Live-Demo</span>
-              <img src="assets/img/demos/kebab.jpg" alt="Website Kebab Palace, echtes Live-Demo von masesites" loading="lazy" width="1000" height="683">
-            </div>
-            <div class="work-meta">
-              <h3>Kebab Palace</h3>
-              <p><strong>Gastronomie</strong> · Speisekarte, Bestellung und Standort im Fokus.</p>
-              <span class="work-link">Website ansehen →</span>
+              <h3>Eventplattform</h3>
+              <p><strong>Events</strong> · kräftiges Navy mit Türkis, gebaut für Tickets und Community.</p>
+              <span class="work-link">Live ausprobieren →</span>
             </div>
           </a>
 
-          <a class="work-card reveal" data-cat="beauty" data-delay="160" href="https://masesites.ch/demo/nagelstudio-site/index.html" target="_blank" rel="noopener">
-            <div class="work-thumb shot">
-              <span class="work-badge real">Live-Demo</span>
-              <img src="assets/img/demos/nagelstudio.jpg" alt="Website Nails &amp; Co., echtes Live-Demo von masesites" loading="lazy" width="1000" height="683">
+          <a class="work-card reveal" data-delay="160" href="/">
+            <div class="work-thumb" style="background: linear-gradient(150deg, #FAF5F2, #F0E4DF);">
+              <span class="work-badge">Beispiel-Stil</span>
+              <div class="thumb-nav" style="color: #4A3F3C;">
+                <span class="t-logo"><span style="display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:5px;background:#D98E8E;color:#fff;font-size:0.5rem;">S</span> Schnittwerk</span>
+                <span class="t-links"><span>Team</span><span>Preise</span><span>Galerie</span></span>
+              </div>
+              <div class="thumb-hero" style="background: linear-gradient(120deg, #D98E8E 0%, #C97C7C 70%); color: #fff;">
+                <div>
+                  <div class="t-title">Dein Look. Dein Tag.</div>
+                  <div class="t-sub">Schnitt · Farbe · Styling</div>
+                </div>
+              </div>
+              <div class="thumb-row" aria-hidden="true">
+                <i style="background:#D98E8E;"></i><i style="background:#F0E4DF;"></i><i style="background:#4A3F3C; opacity:0.85;"></i>
+              </div>
             </div>
             <div class="work-meta">
-              <h3>Nails &amp; Co.</h3>
-              <p><strong>Beauty</strong> · elegantes Einseiten-Design mit Galerie und Terminbuchung.</p>
-              <span class="work-link">Website ansehen →</span>
+              <h3>Friseur</h3>
+              <p><strong>Beauty</strong> · hell und weich, mit Rosé-Tönen und viel Ruhe.</p>
+              <span class="work-link">Live ausprobieren →</span>
             </div>
           </a>
 
-          <a class="work-card reveal" data-cat="gesundheit" data-delay="240" href="https://masesites.ch/demo/praxis-site/index.html" target="_blank" rel="noopener">
-            <div class="work-thumb shot">
-              <span class="work-badge real">Live-Demo</span>
-              <img src="assets/img/demos/praxis.jpg" alt="Website Praxis Dr. Müller, echtes Live-Demo von masesites" loading="lazy" width="1000" height="683">
+          <a class="work-card reveal" data-delay="240" href="/">
+            <div class="work-thumb" style="background: linear-gradient(150deg, #F4F1EC, #E8E2D6);">
+              <span class="work-badge">Beispiel-Stil</span>
+              <div class="thumb-nav" style="color: #26221C;">
+                <span class="t-logo"><span style="display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:5px;background:#3E6B4F;color:#fff;font-size:0.5rem;">N</span> NORDLICHT</span>
+                <span class="t-links"><span>Neu</span><span>Kollektion</span><span>Sale</span></span>
+              </div>
+              <div class="thumb-hero" style="background: linear-gradient(120deg, #3E6B4F 0%, #26221C 70%); color: #fff;">
+                <div>
+                  <div class="t-title">Bewusst produziert. Fair verschickt.</div>
+                  <div class="t-sub">Neue Kollektion, jetzt online</div>
+                </div>
+              </div>
+              <div class="thumb-row" aria-hidden="true">
+                <i style="background:#3E6B4F;"></i><i style="background:#E8E2D6;"></i><i style="background:#26221C; opacity:0.85;"></i>
+              </div>
             </div>
             <div class="work-meta">
-              <h3>Praxis Dr. Müller</h3>
-              <p><strong>Gesundheit</strong> · seriöser Auftritt mit ruhiger Typografie und Terminbuchung.</p>
-              <span class="work-link">Website ansehen →</span>
+              <h3>Onlineshop</h3>
+              <p><strong>E-Commerce</strong> · clean und hell, mit Grün als Vertrauensfarbe.</p>
+              <span class="work-link">Live ausprobieren →</span>
             </div>
           </a>
 
-          <a class="work-card reveal" data-cat="freizeit" data-delay="320" href="https://masesites.ch/demo/bowling-site/index.html" target="_blank" rel="noopener">
-            <div class="work-thumb shot">
-              <span class="work-badge real">Live-Demo</span>
-              <img src="assets/img/demos/bowling.jpg" alt="Website Strike Zone Bowling, echtes Live-Demo von masesites" loading="lazy" width="1000" height="683">
+          <a class="work-card reveal" data-delay="320" href="/">
+            <div class="work-thumb" style="background: linear-gradient(150deg, #16130E, #211C15);">
+              <span class="work-badge">Beispiel-Stil</span>
+              <div class="thumb-nav" style="color: #F1ECE2;">
+                <span class="t-logo"><span style="display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:5px;background:#8A7C68;color:#16130E;font-size:0.5rem;">t</span> tapo</span>
+                <span class="t-links"><span>Features</span><span>Pricing</span><span>Blog</span></span>
+              </div>
+              <div class="thumb-hero" style="background: linear-gradient(120deg, #8A7C68 0%, #16130E 70%); color: #F1ECE2;">
+                <div>
+                  <div class="t-title">Deine Finanzen. Ein Tap.</div>
+                  <div class="t-sub">Budget, Sparziele &amp; Insights</div>
+                </div>
+              </div>
+              <div class="thumb-row" aria-hidden="true">
+                <i style="background:#8A7C68;"></i><i style="background:#211C15;"></i><i style="background:#F1ECE2; opacity:0.85;"></i>
+              </div>
             </div>
             <div class="work-meta">
-              <h3>Strike Zone Bowling</h3>
-              <p><strong>Freizeit</strong> · klares Layout mit Fokus auf Bahnreservierung und Events.</p>
-              <span class="work-link">Website ansehen →</span>
+              <h3>Apps</h3>
+              <p><strong>Digital</strong> · dunkel und fokussiert, gebaut für Produkte und Downloads.</p>
+              <span class="work-link">Live ausprobieren →</span>
             </div>
           </a>
 
         </div>
 
-        <p class="gallery-hint reveal" style="margin-top: 32px;">Alle Live-Demos sind vollständige, echte Websites. Neue Kundenprojekte kommen laufend dazu.</p>
+        <p class="gallery-hint reveal" style="margin-top: 32px;">Jede Karte ist ein Stil, kein fertiges Produkt: Farben, Schriften und Aufbau stimmen wir komplett auf dich ab. Auf der Startseite verwandelst du die grosse Vorschau live.</p>
       </div>
     </section>
 
@@ -149,11 +191,11 @@
     <section class="tight">
       <div class="wrap">
         <div class="big-cta reveal">
-          <h2>Dein Projekt könnte das nächste sein.</h2>
-          <p>Erzähl uns, was du vorhast. Wir zeigen dir, wie es aussehen könnte.</p>
+          <h2>Lieber echte Arbeit sehen?</h2>
+          <p>Unsere Kundenprojekte und Live-Demos sind vollständige, klickbare Websites.</p>
           <div class="hero-ctas">
-            <a class="btn btn-primary" href="/kontakt">Projekt starten <span class="arrow">→</span></a>
-            <a class="btn btn-ghost" href="/preise">Preise ansehen</a>
+            <a class="btn btn-primary" href="/projekte">Echte Projekte ansehen <span class="arrow">→</span></a>
+            <a class="btn btn-ghost" href="/kontakt">Projekt starten</a>
           </div>
         </div>
       </div>
@@ -184,6 +226,7 @@
           <ul>
             <li><a href="/">Startseite</a></li>
             <li><a href="/beispiele">Beispiele</a></li>
+            <li><a href="/projekte">Projekte</a></li>
             <li><a href="/ueber-uns">Über uns</a></li>
             <li><a href="/kontakt">Kontakt</a></li>
           </ul>
@@ -209,6 +252,5 @@
 
   <script src="assets/js/protokoll.js"></script>
   <script src="assets/js/site.js"></script>
-  <script src="assets/js/beispiele.js"></script>
 </body>
 </html>

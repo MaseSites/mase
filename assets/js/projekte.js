@@ -1,4 +1,4 @@
-/* Portfolio-Filter über die Branchen-Chips (Seite beispiele.html).
+/* Projekt-Filter über die Branchen-Chips (Seite projekte.html).
    Eigene Datei statt Inline-Script wegen der Content-Security-Policy. */
 (function () {
   var chips = document.querySelectorAll("[data-filter]");
