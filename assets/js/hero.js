@@ -1,211 +1,29 @@
-/* masesites Startseite: Intro-Sequenz + Live-Morph-Preview + rotierende Headline */
+/* masesites Startseite: rotierende Headline, Intro-Kamerafahrt und das
+   Beispiel-Fenster mit echten Live-Demos (aus dem Admin, /api/inhalte). */
 
 (function () {
   "use strict";
 
   var reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  /* ---------- Branchen-Daten für das Morph-Preview ---------- */
+  /* ---------- Rotierende Headline ---------- */
 
-  var BRANDS = [
-    {
-      id: "restaurant",
-      chip: "Restaurant",
-      word: "dein Restaurant",
-      url: "zur-goldenen-rebe.ch",
-      logo: "Zur Goldenen Rebe",
-      links: ["Menü", "Reservieren", "Über uns"],
-      navBtn: "Tisch buchen",
-      img: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=900&q=70",
-      heroTitle: "Ein Abend, der bleibt.",
-      heroSub: "Saisonale Küche · regionale Weine",
-      heroCta: "Tisch reservieren",
-      cards: [
-        { t: "Menü", s: "Saisonal & regional, wöchentlich neu", tag: "Ansehen" },
-        { t: "Weinkarte", s: "Ausgewählte Winzer aus der Region", tag: "Entdecken" },
-        { t: "Events", s: "Private Feiern bis 40 Gäste", tag: "Anfragen" }
-      ],
-      bubble: "Hallo! Möchtest du einen Tisch reservieren?"
-    },
-    {
-      id: "event",
-      chip: "Eventplattform",
-      word: "dein Event",
-      url: "groupify.app",
-      logo: "groupify",
-      links: ["Events", "Tickets", "Community"],
-      navBtn: "Ticket sichern",
-      img: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=900&q=70",
-      heroTitle: "Finde dein nächstes Event.",
-      heroSub: "Konzerte · Festivals · Meetups",
-      heroCta: "Events entdecken",
-      cards: [
-        { t: "Sa, 12.09.", s: "Open-Air im Stadtpark", tag: "Tickets" },
-        { t: "Fr, 25.09.", s: "Indie-Nacht im Kulturhaus", tag: "Tickets" },
-        { t: "So, 04.10.", s: "Foodmarket am Fluss", tag: "Gratis" }
-      ],
-      bubble: "Fragen zu Tickets oder zum Ablauf? Ich helfe dir!"
-    },
-    {
-      id: "friseur",
-      chip: "Friseur",
-      word: "deinen Salon",
-      url: "studio-schnittwerk.ch",
-      logo: "Schnittwerk",
-      links: ["Team", "Preise", "Galerie"],
-      navBtn: "Termin buchen",
-      img: "https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&w=900&q=70",
-      heroTitle: "Dein Look. Dein Tag.",
-      heroSub: "Schnitt · Farbe · Styling",
-      heroCta: "Termin buchen",
-      cards: [
-        { t: "Schnitt", s: "Beratung inklusive, ab 30 Min.", tag: "ab CHF 45" },
-        { t: "Farbe", s: "Balayage, Strähnen, Glossing", tag: "ab CHF 90" },
-        { t: "Styling", s: "Für Feste & besondere Tage", tag: "ab CHF 60" }
-      ],
-      bubble: "Hallo! Möchtest du einen Termin buchen?"
-    },
-    {
-      id: "shop",
-      chip: "Onlineshop",
-      word: "deinen Shop",
-      url: "nordlicht-store.ch",
-      logo: "NORDLICHT",
-      links: ["Neu", "Kollektion", "Sale"],
-      navBtn: "Warenkorb",
-      img: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=900&q=70",
-      heroTitle: "Bewusst produziert. Fair verschickt.",
-      heroSub: "Neue Kollektion, jetzt online",
-      heroCta: "Jetzt shoppen",
-      cards: [
-        { t: "Rucksack Fjell", s: "Recyceltes Canvas, 22 l", tag: "CHF 129" },
-        { t: "Beanie Nord", s: "Merinowolle, 4 Farben", tag: "CHF 39" },
-        { t: "Flasche Vika", s: "Isoliert, 0,75 l", tag: "CHF 34" }
-      ],
-      bubble: "Ich berate dich gern. Suchst du etwas Bestimmtes?"
-    },
-    {
-      id: "app",
-      chip: "Apps",
-      word: "deine App",
-      url: "tapo.app",
-      logo: "tapo",
-      links: ["Features", "Pricing", "Blog"],
-      navBtn: "App laden",
-      img: "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?auto=format&fit=crop&w=900&q=70",
-      heroTitle: "Deine Finanzen. Ein Tap.",
-      heroSub: "Budget, Sparziele & Insights",
-      heroCta: "Kostenlos starten",
-      cards: [
-        { t: "Budgets", s: "Automatisch kategorisiert", tag: "Smart" },
-        { t: "Sparziele", s: "Gemeinsam oder allein", tag: "Neu" },
-        { t: "Insights", s: "Wohin dein Geld fließt", tag: "Live" }
-      ],
-      bubble: "Brauchst du Hilfe beim Einstieg? Ich bin da!"
-    }
-  ];
-
-  var site = document.getElementById("morph-site");
-  if (!site) return;
-
+  var WORTE = ["dein Restaurant", "dein Event", "deinen Salon", "deinen Shop", "deine App"];
   var rotorWord = document.getElementById("rotor-word");
-  var frameUrl = document.getElementById("frame-url");
-  var chips = document.querySelectorAll(".chips .chip[data-brand]");
-  var current = 0;
-  var timer = null;
-  var ROTATE_MS = 4200;
+  var wortIndex = 0;
 
-  function render(brand) {
-    site.setAttribute("data-brand", brand.id);
-    if (frameUrl) frameUrl.textContent = "https://" + brand.url;
-
-    site.querySelector(".ps-logo b").textContent = brand.logo;
-    var links = site.querySelectorAll(".ps-links span");
-    brand.links.forEach(function (l, i) { if (links[i]) links[i].textContent = l; });
-    site.querySelector(".ps-btn").textContent = brand.navBtn;
-
-    var img = site.querySelector(".ps-hero img");
-    img.src = brand.img;
-    img.alt = "Beispielbild " + brand.chip;
-
-    site.querySelector(".ps-hero-text strong").textContent = brand.heroTitle;
-    site.querySelector(".ps-hero-text span").textContent = brand.heroSub;
-    site.querySelector(".ps-hero-cta").textContent = brand.heroCta;
-
-    var cards = site.querySelectorAll(".ps-card");
-    brand.cards.forEach(function (c, i) {
-      if (!cards[i]) return;
-      cards[i].querySelector("b").textContent = c.t;
-      cards[i].querySelector("span").textContent = c.s;
-      cards[i].querySelector(".ps-tag").textContent = c.tag;
-    });
-
-    site.querySelector(".ps-bubble").textContent = brand.bubble;
-  }
-
-  function setActiveChip(id) {
-    chips.forEach(function (c) {
-      var on = c.getAttribute("data-brand") === id;
-      c.classList.toggle("active", on);
-      c.setAttribute("aria-pressed", on ? "true" : "false");
-    });
-  }
-
-  function swapWord(word) {
+  function swapWord(wort) {
     if (!rotorWord) return;
-    if (reducedMotion) { rotorWord.textContent = word; return; }
+    if (reducedMotion) { rotorWord.textContent = wort; return; }
     rotorWord.classList.add("out");
     setTimeout(function () {
-      rotorWord.textContent = word;
+      rotorWord.textContent = wort;
       rotorWord.classList.remove("out");
     }, 320);
   }
 
-  function goTo(index, viaClick) {
-    current = (index + BRANDS.length) % BRANDS.length;
-    var brand = BRANDS[current];
-    setActiveChip(brand.id);
-    swapWord(brand.word);
-
-    var bubble = site.querySelector(".ps-bubble");
-    if (reducedMotion) {
-      render(brand);
-    } else {
-      site.classList.add("morphing");
-      bubble.classList.add("out");
-      setTimeout(function () {
-        render(brand);
-        site.classList.remove("morphing");
-        setTimeout(function () { bubble.classList.remove("out"); }, 200);
-      }, 320);
-    }
-
-    if (viaClick) stopAuto();
-  }
-
-  function startAuto() {
-    if (reducedMotion) return;
-    timer = setInterval(function () { goTo(current + 1); }, ROTATE_MS);
-  }
-  function stopAuto() {
-    if (timer) { clearInterval(timer); timer = null; }
-  }
-
-  chips.forEach(function (chip) {
-    chip.addEventListener("click", function () {
-      var id = chip.getAttribute("data-brand");
-      var idx = BRANDS.findIndex(function (b) { return b.id === id; });
-      if (idx >= 0) goTo(idx, true);
-    });
-  });
-
-  /* Bilder der nächsten Branchen vorladen, damit der Morph nicht ruckelt */
-  function preload() {
-    BRANDS.forEach(function (b) { var i = new Image(); i.src = b.img; });
-  }
-
-  /* Rotor auf die Breite des längsten Wortes fixieren: so springt „passt." nicht
-     und die Headline bleibt stabil bei genau zwei Zeilen. */
+  /* Rotor auf die Breite des längsten Wortes fixieren: so bleibt die
+     Headline stabil bei genau zwei Zeilen, egal welches Wort gerade steht. */
   function fixiereRotorBreite() {
     if (!rotorWord) return;
     var rotor = rotorWord.parentElement;
@@ -218,23 +36,28 @@
     probe.style.letterSpacing = cs.letterSpacing;
     document.body.appendChild(probe);
     var max = 0;
-    BRANDS.forEach(function (b) { probe.textContent = b.word; max = Math.max(max, probe.getBoundingClientRect().width); });
+    WORTE.forEach(function (w) { probe.textContent = w; max = Math.max(max, probe.getBoundingClientRect().width); });
     probe.remove();
     rotor.style.minWidth = Math.ceil(max + 1) + "px";
   }
-  if (document.fonts && document.fonts.ready) { document.fonts.ready.then(fixiereRotorBreite); } else { fixiereRotorBreite(); }
-  var rb;
-  window.addEventListener("resize", function () { clearTimeout(rb); rb = setTimeout(fixiereRotorBreite, 150); });
 
-  render(BRANDS[0]);
-  setActiveChip(BRANDS[0].id);
-  if ("requestIdleCallback" in window) requestIdleCallback(preload); else setTimeout(preload, 1200);
+  if (rotorWord) {
+    if (document.fonts && document.fonts.ready) { document.fonts.ready.then(fixiereRotorBreite); } else { fixiereRotorBreite(); }
+    var rb;
+    window.addEventListener("resize", function () { clearTimeout(rb); rb = setTimeout(fixiereRotorBreite, 150); });
+    if (!reducedMotion) {
+      setInterval(function () {
+        wortIndex = (wortIndex + 1) % WORTE.length;
+        swapWord(WORTE[wortIndex]);
+      }, 4200);
+    }
+  }
 
   /* ---------- Intro: Kamerafahrt durch den Bildschirm ----------
      intro.js hat den Monitor-Zustand (html.intro-zoom) vor dem ersten
      Zeichnen gesetzt; hier läuft die Regie: kurz stehen lassen, dann
-     wächst der Monitor übers Bild hinaus und löst sich erst ganz am
-     Ende auf - darunter steht schon der Text-Hero. */
+     wächst der Monitor nahtlos zur echten Startseite. */
+
   var wurzel = document.documentElement;
   if (wurzel.classList.contains("intro-zoom") && !reducedMotion) {
     setTimeout(function () {
@@ -249,6 +72,56 @@
     wurzel.classList.remove("intro-fahrt");
   }
 
-  window.addEventListener("beforeunload", stopAuto);
-  startAuto();
+  /* ---------- Beispiel-Fenster: echte Live-Demos mit Taskbar ----------
+     Zeigt die Startansicht der echten Demo-Websites (aus dem Admin) in
+     einem Browser-Fenster. Die Taskbar unten schaltet um; fürs Erkunden
+     in voller Grösse geht es auf die Beispiele-Seite. */
+
+  var fenster = document.getElementById("demo-fenster");
+  var frame = document.getElementById("demo-frame");
+  var taskbar = document.getElementById("demo-taskbar");
+  var frameUrl = document.getElementById("frame-url");
+  var sektion = document.getElementById("beispiel");
+  if (!fenster || !frame || !taskbar) return;
+
+  function zeigeDemo(demo, knopf) {
+    frame.src = demo.url;
+    if (frameUrl) {
+      frameUrl.textContent = /^https?:\/\//i.test(demo.url)
+        ? demo.url.replace(/^https?:\/\//i, "")
+        : location.host + demo.url;
+    }
+    taskbar.querySelectorAll(".chip").forEach(function (c) {
+      var an = c === knopf;
+      c.classList.toggle("active", an);
+      c.setAttribute("aria-pressed", an ? "true" : "false");
+    });
+  }
+
+  fetch("/api/inhalte", { credentials: "same-origin" })
+    .then(function (r) { return r.ok ? r.json() : null; })
+    .then(function (daten) {
+      var demos = (daten && Array.isArray(daten.beispiele)) ? daten.beispiele : [];
+      if (!demos.length) {
+        if (sektion) sektion.hidden = true;
+        return;
+      }
+      demos.forEach(function (demo, i) {
+        var knopf = document.createElement("button");
+        knopf.className = "chip";
+        knopf.type = "button";
+        knopf.textContent = demo.name;
+        knopf.setAttribute("aria-pressed", "false");
+        knopf.addEventListener("click", function () { zeigeDemo(demo, knopf); });
+        taskbar.appendChild(knopf);
+        if (i === 0) zeigeDemo(demo, knopf);
+      });
+      var alle = document.createElement("a");
+      alle.className = "taskbar-link";
+      alle.href = "/beispiele";
+      alle.textContent = "Alle Demos →";
+      taskbar.appendChild(alle);
+      fenster.hidden = false;
+    })
+    .catch(function () { if (sektion) sektion.hidden = true; });
 })();

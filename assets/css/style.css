@@ -165,15 +165,6 @@ section.tight { padding: 56px 0; }
   padding: 8px 0;
 }
 
-/* Startseite: der Header liegt über der Vollbild-Beispielseite,
-   deshalb immer eine Glasfläche dahinter (sonst unlesbar auf dunklen Stilen) */
-body.mit-buehne .site-header {
-  background: rgba(253, 250, 244, 0.92);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  box-shadow: var(--shadow-s);
-}
-
 .header-inner { display: flex; align-items: center; justify-content: space-between; gap: 24px; }
 
 .logo { display: inline-flex; align-items: center; gap: 10px; font-weight: 700; font-size: 1.28rem; color: var(--ink); letter-spacing: -0.02em; }
@@ -257,86 +248,125 @@ body.mit-buehne .site-header {
 }
 .trust-zeile .punkt { width: 3px; height: 3px; border-radius: 50%; background: var(--line-strong); }
 
-/* ---------- Vollbild-Beispielseite (Sektion 2) ---------- */
-
-.hero-vollbild {
-  position: relative;
-  height: 100vh;
-  height: 100svh;
-  min-height: 600px;
-  padding: 0;
-  overflow: hidden;
-}
-
-/* Bühne: die Beispielseite füllt den ganzen Bildschirm */
-.hero-buehne {
+/* Lebendiger, warmer Hintergrund: weiche Lichtflächen, die langsam wandern.
+   Bewusst nur warme Töne (kein Blau/Lila), Bewegung rein über transform. */
+.hero-blob {
   position: absolute;
-  inset: 0;
-  overflow: hidden;
-  transform-origin: 50% 44%;
+  border-radius: 50%;
+  filter: blur(70px);
+  will-change: transform;
+  transform: translateZ(0);
 }
-.hero-buehne .preview-site { position: absolute; inset: 0; min-height: 0; }
-
-/* Overlay: Headline und Style-Knöpfe als EIN Panel unten in der Mitte */
-.hero-overlay {
+.hero-blob.b1 {
+  width: 560px; height: 560px; left: -160px; top: -140px;
+  background: radial-gradient(circle, rgba(196, 154, 102, 0.34), transparent 66%);
+  animation: blob-a 26s ease-in-out infinite alternate;
+}
+.hero-blob.b2 {
+  width: 640px; height: 640px; right: -220px; top: 24%;
+  background: radial-gradient(circle, rgba(44, 33, 24, 0.16), transparent 66%);
+  animation: blob-b 34s ease-in-out infinite alternate;
+}
+.hero-blob.b3 {
+  width: 480px; height: 480px; left: 16%; bottom: -220px;
+  background: radial-gradient(circle, rgba(214, 178, 128, 0.30), transparent 66%);
+  animation: blob-c 30s ease-in-out infinite alternate;
+}
+@keyframes blob-a {
+  from { transform: translate(0, 0) scale(1); }
+  to { transform: translate(140px, 90px) scale(1.18); }
+}
+@keyframes blob-b {
+  from { transform: translate(0, 0) scale(1.1); }
+  to { transform: translate(-160px, -70px) scale(0.94); }
+}
+@keyframes blob-c {
+  from { transform: translate(0, 0) scale(0.95); }
+  to { transform: translate(120px, -80px) scale(1.15); }
+}
+/* Dazu ein sehr weicher, langsam kreisender Lichtschein hinter der Headline */
+.hero-schimmer {
   position: absolute;
-  inset: 0;
-  z-index: 6;
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  padding: 0 16px 88px;
-  pointer-events: none;
-  transition: opacity 0.7s var(--ease-out) 0.15s, transform 0.7s var(--ease-out) 0.15s;
-}
-.hero-panel {
-  pointer-events: auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 14px;
-  max-width: min(780px, 100%);
-  background: rgba(253, 250, 244, 0.94);
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
-  border: 1px solid rgba(255, 255, 255, 0.6);
-  border-radius: 26px;
-  padding: 22px 28px 20px;
-  box-shadow: var(--shadow-l);
-}
-.hero-titel {
+  left: 50%; top: 42%;
+  width: min(1100px, 130vw); aspect-ratio: 1;
   margin: 0;
-  text-align: center;
-  font-size: clamp(1.3rem, 2.5vw, 1.85rem);
-  line-height: 1.2;
+  transform: translate(-50%, -50%);
+  background: conic-gradient(from 0deg,
+    transparent 0deg,
+    rgba(196, 154, 102, 0.10) 70deg,
+    transparent 140deg,
+    rgba(44, 33, 24, 0.06) 220deg,
+    transparent 300deg);
+  border-radius: 50%;
+  filter: blur(60px);
+  animation: schimmer-dreh 42s linear infinite;
+  will-change: transform;
+}
+@keyframes schimmer-dreh {
+  from { transform: translate(-50%, -50%) rotate(0deg); }
+  to { transform: translate(-50%, -50%) rotate(360deg); }
 }
 
-/* Die Beispielseite in Vollbild-Grösse: grössere Typo, echte Website-Anmutung */
-.hero-vollbild .preview-site {
-  padding: calc(var(--header-h) + 16px) clamp(20px, 4vw, 48px) 248px;
-  gap: clamp(12px, 2.2vh, 24px);
+/* ---------- Live-Demos im Beispiel-Fenster (Sektion 2) ---------- */
+
+.showcase { padding: 92px 0 96px; }
+.showcase .section-head { margin-bottom: 30px; }
+
+.demo-fenster {
+  max-width: 1080px;
+  margin: 0 auto;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-l);
+  box-shadow: var(--shadow-l);
+  overflow: hidden;
 }
-.hero-vollbild .ps-inner { flex: 1 1 auto; min-height: 0; gap: clamp(12px, 2.2vh, 24px); }
-.hero-vollbild .ps-logo { font-size: 1.08rem; }
-.hero-vollbild .ps-logo i { width: 11px; height: 11px; border-radius: 4px; }
-.hero-vollbild .ps-links { font-size: 0.88rem; gap: 20px; }
-.hero-vollbild .ps-btn { font-size: 0.84rem; padding: 8px 19px; }
-.hero-vollbild .ps-hero { height: auto; flex: 1 1 auto; min-height: 150px; border-radius: 22px; }
-.hero-vollbild .ps-hero-text { left: clamp(18px, 2.6vw, 34px); right: clamp(18px, 2.6vw, 34px); bottom: clamp(16px, 2.6vh, 28px); }
-.hero-vollbild .ps-hero-text strong { font-size: clamp(1.5rem, 3.6vw, 2.6rem); }
-.hero-vollbild .ps-hero-text span { font-size: clamp(0.85rem, 1.4vw, 1.05rem); margin-top: 6px; }
-.hero-vollbild .ps-hero-cta { font-size: 0.86rem; padding: 9px 20px; margin-top: 12px; }
-.hero-vollbild .ps-cards { gap: clamp(10px, 1.6vw, 18px); }
-.hero-vollbild .ps-card { padding: clamp(12px, 1.8vw, 20px); border-radius: 14px; }
-.hero-vollbild .ps-card b { font-size: 0.98rem; margin-bottom: 5px; }
-.hero-vollbild .ps-card span { font-size: 0.84rem; }
-.hero-vollbild .ps-card .ps-tag { font-size: 0.76rem; margin-top: 8px; }
-.hero-vollbild .ps-bot { right: clamp(18px, 3vw, 36px); bottom: 100px; }
-.hero-vollbild .ps-bubble { font-size: 0.86rem; max-width: 250px; padding: 11px 15px; }
-.hero-vollbild .ps-avatar { width: 46px; height: 46px; }
-.hero-vollbild .ps-avatar svg { width: 22px; height: 22px; }
-@media (max-width: 1080px) {
-  .hero-vollbild .ps-bot { display: none; }
+.demo-fenster[hidden] { display: none; }
+
+.demo-schirm { position: relative; height: clamp(420px, 62vh, 640px); background: var(--bg-soft); }
+.demo-schirm iframe { display: block; width: 100%; height: 100%; border: 0; background: #fff; }
+
+/* Abdeckung: die Vorschau bleibt Vorschau, Klick führt zu den Beispielen */
+.demo-abdeckung {
+  position: absolute; inset: 0;
+  display: grid; place-items: end center;
+  padding-bottom: 22px;
+}
+.demo-abdeckung span {
+  opacity: 0; transform: translateY(6px);
+  background: rgba(22, 16, 11, 0.84); color: #fff;
+  font-size: 0.88rem; font-weight: 600;
+  border-radius: 999px;
+  padding: 10px 20px;
+  box-shadow: var(--shadow-m);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+.demo-abdeckung:hover span,
+.demo-abdeckung:focus-visible span { opacity: 1; transform: none; }
+
+/* Taskbar: unten im Fenster integriert, schaltet zwischen den Demos um */
+.demo-taskbar {
+  display: flex; align-items: center; gap: 8px;
+  padding: 10px 14px;
+  background: var(--bg-soft);
+  border-top: 1px solid var(--line);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.demo-taskbar::-webkit-scrollbar { display: none; }
+.demo-taskbar .chip { flex: none; padding: 9px 17px; font-size: 0.9rem; }
+.taskbar-link {
+  margin-left: auto; flex: none;
+  font-size: 0.88rem; font-weight: 600;
+  color: var(--ink-soft);
+  padding: 9px 6px 9px 16px;
+  white-space: nowrap;
+}
+.taskbar-link:hover { color: var(--ink); }
+
+@media (max-width: 720px) {
+  .demo-schirm { height: min(60vh, 480px); }
+  .showcase { padding: 68px 0 72px; }
 }
 
 /* ---------- Intro: Kamerafahrt durch den Bildschirm ----------

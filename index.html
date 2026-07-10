@@ -9,10 +9,10 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/style.css?v=6">
+  <link rel="stylesheet" href="assets/css/style.css?v=7">
 </head>
-<body class="mit-buehne">
-  <script src="assets/js/intro.js?v=6"></script>
+<body>
+  <script src="assets/js/intro.js?v=7"></script>
 
   <header class="site-header">
     <div class="wrap header-inner">
@@ -49,9 +49,14 @@
 
   <main>
 
-    <!-- ===== Startbildschirm: ruhiger Text-Hero, füllt den ganzen Bildschirm ===== -->
+    <!-- ===== Startbildschirm: Text-Hero mit lebendigem, warmem Hintergrund ===== -->
     <section class="hero-start">
-      <div class="hero-bg" aria-hidden="true"></div>
+      <div class="hero-bg" aria-hidden="true">
+        <span class="hero-blob b1"></span>
+        <span class="hero-blob b2"></span>
+        <span class="hero-blob b3"></span>
+        <span class="hero-schimmer"></span>
+      </div>
       <div class="wrap hero-mitte">
         <h1>Deine Website für<br><span class="rotor"><span class="rotor-word" id="rotor-word">dein Restaurant</span></span></h1>
         <p class="lead">Persönlich gebaut, professionell gestaltet, auf Wunsch mit KI-Bot.</p>
@@ -65,62 +70,39 @@
           <span>Feste Offerte vor Projektstart</span>
         </p>
       </div>
-      <a class="scroll-cue" href="#beispiel" aria-label="Weiter zur Beispielseite">
+      <a class="scroll-cue" href="#beispiel" aria-label="Weiter zu den Live-Demos">
         <span>Mehr entdecken</span>
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
       </a>
     </section>
 
-    <!-- ===== Beispielseite im Vollbild, das Intro zoomt in den Bildschirm ===== -->
-    <section class="hero-vollbild" id="beispiel">
-      <div class="hero-buehne">
-        <div class="preview-site" id="morph-site" data-brand="restaurant" aria-label="Live-Vorschau: so unterschiedlich können masesites-Websites aussehen">
-          <div class="ps-inner">
-            <div class="ps-nav">
-              <span class="ps-logo"><i></i><b>Zur Goldenen Rebe</b></span>
-              <span class="ps-links" aria-hidden="true"><span>Menü</span><span>Reservieren</span><span>Über uns</span></span>
-              <span class="ps-btn">Tisch buchen</span>
-            </div>
-            <div class="ps-hero">
-              <img src="" alt="" loading="eager" onerror="this.style.display='none'">
-              <div class="ps-hero-text">
-                <strong>Ein Abend, der bleibt.</strong>
-                <span>Saisonale Küche · regionale Weine</span>
-                <b class="ps-hero-cta">Tisch reservieren</b>
-              </div>
-            </div>
-            <div class="ps-cards">
-              <div class="ps-card"><b></b><span></span><i class="ps-tag"></i></div>
-              <div class="ps-card"><b></b><span></span><i class="ps-tag"></i></div>
-              <div class="ps-card"><b></b><span></span><i class="ps-tag"></i></div>
-            </div>
-          </div>
-          <div class="ps-bot" aria-hidden="true">
-            <div class="ps-bubble">Hallo! Möchtest du einen Tisch reservieren?</div>
-            <div class="ps-avatar">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
-              <span class="online"></span>
-            </div>
-          </div>
+    <!-- Monitor-Deko fürs Intro: bewusst AUSSERHALB des skalierten Heros,
+         damit position:fixed sich am Fenster ausrichtet (Transform-Falle) -->
+    <div class="hero-deko" aria-hidden="true">
+      <div class="deko-stand"></div>
+      <div class="deko-base"></div>
+      <div class="deko-wort">mase<i>sites</i></div>
+    </div>
+
+    <!-- ===== Live-Demos im Beispiel-Fenster: echte Websites, unten die Taskbar ===== -->
+    <section class="showcase" id="beispiel">
+      <div class="wrap">
+        <div class="section-head center">
+          <h2 class="reveal">Echte Websites, live im Fenster.</h2>
+          <p class="lead reveal" data-delay="80">Keine Entwürfe: Jede dieser Seiten läuft wirklich. Wechsle unten durch. Zum Erkunden in voller Grösse gehst du auf Beispiele.</p>
         </div>
-      </div>
-
-      <div class="hero-deko" aria-hidden="true">
-        <div class="deko-stand"></div>
-        <div class="deko-base"></div>
-        <div class="deko-wort">mase<i>sites</i></div>
-      </div>
-
-      <div class="hero-overlay">
-        <div class="hero-panel">
-          <h2 class="hero-titel">Ein Team. Jeder Stil.</h2>
-          <div class="chips hero-chips" role="group" aria-label="Beispielbranchen, verwandeln die Vorschau">
-            <button class="chip active" data-brand="restaurant" aria-pressed="true">Restaurant</button>
-            <button class="chip" data-brand="event" aria-pressed="false">Eventplattform</button>
-            <button class="chip" data-brand="friseur" aria-pressed="false">Friseur</button>
-            <button class="chip" data-brand="shop" aria-pressed="false">Onlineshop</button>
-            <button class="chip" data-brand="app" aria-pressed="false">Apps</button>
+        <div class="demo-fenster reveal" data-delay="140" id="demo-fenster" hidden>
+          <div class="frame-bar" aria-hidden="true">
+            <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+            <span class="frame-url" id="frame-url"></span>
           </div>
+          <div class="demo-schirm">
+            <iframe id="demo-frame" title="Live-Demo Vorschau" loading="lazy"></iframe>
+            <a class="demo-abdeckung" href="/beispiele" aria-label="Alle Live-Demos in voller Grösse ansehen">
+              <span>In voller Grösse ansehen →</span>
+            </a>
+          </div>
+          <div class="demo-taskbar" id="demo-taskbar" role="group" aria-label="Live-Demos umschalten"></div>
         </div>
       </div>
     </section>
@@ -328,8 +310,8 @@
     </div>
   </footer>
 
-  <script src="assets/js/protokoll.js?v=6"></script>
-  <script src="assets/js/site.js?v=6"></script>
-  <script src="assets/js/hero.js?v=6"></script>
+  <script src="assets/js/protokoll.js?v=7"></script>
+  <script src="assets/js/site.js?v=7"></script>
+  <script src="assets/js/hero.js?v=7"></script>
 </body>
 </html>
