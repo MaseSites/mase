@@ -9,10 +9,10 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/style.css?v=4">
 </head>
 <body class="mit-buehne">
-  <script src="assets/js/intro.js"></script>
+  <script src="assets/js/intro.js?v=4"></script>
 
   <header class="site-header">
     <div class="wrap header-inner">
@@ -50,7 +50,7 @@
   <main>
 
     <!-- ===== Hero: Beispielseite im Vollbild, das Intro zoomt in den Bildschirm ===== -->
-    <section class="hero">
+    <section class="hero-vollbild">
       <div class="hero-buehne">
         <div class="preview-site" id="morph-site" data-brand="restaurant" aria-label="Live-Vorschau: so unterschiedlich können masesites-Websites aussehen">
           <div class="ps-inner">
@@ -83,9 +83,15 @@
         </div>
       </div>
 
+      <div class="hero-deko" aria-hidden="true">
+        <div class="deko-stand"></div>
+        <div class="deko-base"></div>
+        <div class="deko-wort">mase<i>sites</i></div>
+      </div>
+
       <div class="hero-overlay">
-        <h1 class="hero-titel">Deine Website für <span class="rotor"><span class="rotor-word" id="rotor-word">dein Restaurant</span></span></h1>
-        <div class="hero-chipbar">
+        <div class="hero-panel">
+          <h1 class="hero-titel">Deine Website für <span class="rotor"><span class="rotor-word" id="rotor-word">dein Restaurant</span></span></h1>
           <div class="chips hero-chips" role="group" aria-label="Beispielbranchen, verwandeln die Vorschau">
             <button class="chip active" data-brand="restaurant" aria-pressed="true">Restaurant</button>
             <button class="chip" data-brand="event" aria-pressed="false">Eventplattform</button>
@@ -177,35 +183,12 @@
     <section>
       <div class="wrap">
         <div class="section-head center">
-          <h2 class="reveal">Echte Projekte. Echte Ergebnisse.</h2>
-          <p class="lead reveal" data-delay="80">Ein Auszug aus unserer Arbeit. Jede Live-Demo ist eine echte Website, klick dich rein.</p>
+          <h2 class="reveal">Klick dich durch unsere Live-Demos.</h2>
+          <p class="lead reveal" data-delay="80">Jede Demo ist eine vollständige, echte Website aus unserer Werkstatt.</p>
         </div>
         <div class="work-grid">
 
-          <article class="work-card reveal">
-            <div class="work-thumb" style="background: linear-gradient(150deg, #1E2340, #2A3054);">
-              <span class="work-badge real">Kundenprojekt</span>
-              <div class="thumb-nav" style="color: #F2F1FA;">
-                <span class="t-logo"><span style="display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:5px;background:#2FB9A8;color:#10131f;font-size:0.5rem;">gr</span> groupify</span>
-                <span class="t-links"><span>Events</span><span>Tickets</span><span>Community</span></span>
-              </div>
-              <div class="thumb-hero" style="background: linear-gradient(120deg, #2FB9A8 0%, #1E2340 70%); color: #F2F1FA;">
-                <div>
-                  <div class="t-title">Finde dein nächstes Event.</div>
-                  <div class="t-sub">Konzerte · Festivals · Meetups</div>
-                </div>
-              </div>
-              <div class="thumb-row" aria-hidden="true">
-                <i style="background:#2FB9A8;"></i><i style="background:#3A4170;"></i><i style="background:#F2F1FA; opacity:0.85;"></i>
-              </div>
-            </div>
-            <div class="work-meta">
-              <h3>Groupify</h3>
-              <p>Eventplattform · Website-Redesign mit eigenem Design-System</p>
-            </div>
-          </article>
-
-          <a class="work-card reveal" data-delay="120" href="https://masesites.ch/demo/doener-site/index.html" target="_blank" rel="noopener">
+          <a class="work-card reveal" href="https://masesites.ch/demo/doener-site/index.html" target="_blank" rel="noopener">
             <div class="work-thumb shot">
               <span class="work-badge real">Live-Demo</span>
               <img src="assets/img/demos/kebab.jpg" alt="Website Kebab Palace, echtes Live-Demo von masesites" loading="lazy" width="1000" height="683">
@@ -217,7 +200,7 @@
             </div>
           </a>
 
-          <a class="work-card reveal" data-delay="240" href="https://masesites.ch/demo/nagelstudio-site/index.html" target="_blank" rel="noopener">
+          <a class="work-card reveal" data-delay="120" href="https://masesites.ch/demo/nagelstudio-site/index.html" target="_blank" rel="noopener">
             <div class="work-thumb shot">
               <span class="work-badge real">Live-Demo</span>
               <img src="assets/img/demos/nagelstudio.jpg" alt="Website Nails &amp; Co., echtes Live-Demo von masesites" loading="lazy" width="1000" height="683">
@@ -229,9 +212,21 @@
             </div>
           </a>
 
+          <a class="work-card reveal" data-delay="240" href="https://masesites.ch/demo/praxis-site/index.html" target="_blank" rel="noopener">
+            <div class="work-thumb shot">
+              <span class="work-badge real">Live-Demo</span>
+              <img src="assets/img/demos/praxis.jpg" alt="Website Praxis Dr. Müller, echtes Live-Demo von masesites" loading="lazy" width="1000" height="683">
+            </div>
+            <div class="work-meta">
+              <h3>Praxis Dr. Müller</h3>
+              <p>Gesundheit · seriöser Auftritt mit ruhiger Typografie und Terminbuchung</p>
+              <span class="work-link">Website ansehen →</span>
+            </div>
+          </a>
+
         </div>
         <div class="center" style="margin-top: 40px;">
-          <a class="btn btn-ghost reveal" href="/projekte">Alle Projekte ansehen <span class="arrow">→</span></a>
+          <a class="btn btn-ghost reveal" href="/beispiele">Alle Beispiele ansehen <span class="arrow">→</span></a>
         </div>
       </div>
     </section>
@@ -316,8 +311,8 @@
     </div>
   </footer>
 
-  <script src="assets/js/protokoll.js"></script>
-  <script src="assets/js/site.js"></script>
-  <script src="assets/js/hero.js"></script>
+  <script src="assets/js/protokoll.js?v=4"></script>
+  <script src="assets/js/site.js?v=4"></script>
+  <script src="assets/js/hero.js?v=4"></script>
 </body>
 </html>
