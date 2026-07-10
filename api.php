@@ -790,6 +790,20 @@ function saeubereAuftraege($liste): array
    Öffentliche Inhalte, die der Admin im Dashboard pflegt. Liegen als JSON in
    den Einstellungen (kein Personenbezug, darum unverschlüsselt). */
 
+/* Ordner für hochgeladene HTML-Demos: öffentlich erreichbar (für den iframe),
+   aber per eigener .htaccess gegen Skript-Ausführung geschützt. */
+const DEMO_ORDNER = 'beispiel-demos';
+
+/* Erlaubt sind externe Links (http/https) oder ein interner Pfad zu einer
+   hochgeladenen Demo (/beispiel-demos/...). */
+function gueltigeDemoUrl(string $url): bool
+{
+    if (preg_match('#^https?://#i', $url)) {
+        return true;
+    }
+    return (bool)preg_match('#^/' . DEMO_ORDNER . '/[A-Za-z0-9][A-Za-z0-9._-]*$#', $url);
+}
+
 function saeubereBeispiele($liste): array
 {
     if (!is_array($liste)) {
@@ -802,7 +816,7 @@ function saeubereBeispiele($liste): array
         }
         $name = s($b['name'] ?? '', 120);
         $url = s($b['url'] ?? '', 400);
-        if ($name === '' || !preg_match('#^https?://#i', $url)) {
+        if ($name === '' || !gueltigeDemoUrl($url)) {
             continue;
         }
         $ergebnis[] = [
@@ -1542,6 +1556,47 @@ route('PUT', '/api/admin/inhalte', 'admin', function ($p, $body) {
     schreibeLog('Admin', clientIp(), 'admin', 'Website-Inhalte gespeichert',
         count($inhalte['beispiele']) . ' Beispiele, ' . count($inhalte['projekte']) . ' Projekte');
     antwortJson(200, $inhalte);
+});
+
+/* HTML-Datei als Live-Demo hochladen (nur Admin). Landet öffentlich unter
+   /beispiel-demos/<name>, wird aber dort nie serverseitig ausgeführt. */
+route('POST', '/api/admin/beispiel-upload', 'admin', function () {
+    $datei = $_FILES['datei'] ?? null;
+    if (!is_array($datei) || ($datei['error'] ?? UPLOAD_ERR_NO_FILE) !== UPLOAD_ERR_OK || !is_uploaded_file($datei['tmp_name'] ?? '')) {
+        fehler(400, 'Keine gültige Datei empfangen.');
+    }
+    if (($datei['size'] ?? 0) > 3 * 1024 * 1024) {
+        fehler(400, 'Die Datei ist zu gross (maximal 3 MB).');
+    }
+    $endung = strtolower(pathinfo((string)($datei['name'] ?? ''), PATHINFO_EXTENSION));
+    if ($endung !== 'html' && $endung !== 'htm') {
+        fehler(400, 'Bitte eine HTML-Datei hochladen (.html).');
+    }
+
+    $ordner = __DIR__ . '/' . DEMO_ORDNER;
+    if (!is_dir($ordner)) {
+        @mkdir($ordner, 0755, true);
+    }
+    if (!is_dir($ordner) || !is_writable($ordner)) {
+        fehlerAbbruch('Der Ordner ' . DEMO_ORDNER . ' ist nicht beschreibbar.');
+    }
+
+    /* Dateiname säubern: nur Kleinbuchstaben, Ziffern und Bindestrich, dazu ein
+       zufälliger Teil, damit nichts überschrieben wird. */
+    $basis = pathinfo((string)$datei['name'], PATHINFO_FILENAME);
+    $basis = strtolower(preg_replace('/[^a-z0-9]+/i', '-', $basis));
+    $basis = trim($basis, '-');
+    $basis = $basis !== '' ? substr($basis, 0, 40) : 'demo';
+    $name = $basis . '-' . bin2hex(random_bytes(4));
+    $ziel = $ordner . '/' . $name . '.html';
+
+    if (!move_uploaded_file($datei['tmp_name'], $ziel)) {
+        fehlerAbbruch('Die Datei konnte nicht gespeichert werden.');
+    }
+    @chmod($ziel, 0644);
+    schreibeLog('Admin', clientIp(), 'admin', 'Demo-Datei hochgeladen', $name . '.html');
+    /* URL ohne .html, damit die saubere-Adressen-Regel keine Umleitung macht */
+    antwortJson(200, ['ok' => true, 'url' => '/' . DEMO_ORDNER . '/' . $name]);
 });
 
 route('POST', '/api/log', null, function ($p, $body, $sitzung) {

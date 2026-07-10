@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../assets/css/style.css?v=5">
+  <link rel="stylesheet" href="../assets/css/style.css?v=6">
 </head>
 <body class="app" data-no-widget>
 
@@ -466,8 +466,15 @@
                     <input id="bf-beschreibung" name="beschreibung" type="text" maxlength="300" placeholder="Ein Satz zur Demo">
                   </div>
                   <div class="form-field">
-                    <label for="bf-url">Adresse der Demo</label>
-                    <input id="bf-url" name="url" type="url" required maxlength="400" placeholder="https://masesites.ch/demo/...">
+                    <label for="bf-url">Adresse der Demo (Link)</label>
+                    <input id="bf-url" name="url" type="text" maxlength="400" placeholder="https://masesites.ch/demo/...">
+                  </div>
+                  <div class="form-trenner"><span>oder</span></div>
+                  <div class="form-field">
+                    <label for="bf-datei">HTML-Datei hochladen</label>
+                    <input id="bf-datei" type="file" accept=".html,.htm,text/html">
+                    <small class="feld-hinweis">Eine einzelne HTML-Datei (max. 3 MB). Sie wird als Demo gespeichert und öffnet sich im Vollbild.</small>
+                    <p class="feld-status" id="bf-datei-status"></p>
                   </div>
                   <div class="form-field">
                     <label for="bf-bild">Vorschaubild (Adresse oder Pfad, optional)</label>
@@ -571,7 +578,7 @@
     </div>
   </footer>
 
-  <script src="../assets/js/daten.js?v=5"></script>
-  <script src="../assets/js/admin.js?v=5"></script>
+  <script src="../assets/js/daten.js?v=6"></script>
+  <script src="../assets/js/admin.js?v=6"></script>
 </body>
 </html>

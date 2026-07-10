@@ -1,0 +1,31 @@
+# Hochgeladene Demo-HTML-Dateien: statisch ausliefern, NIEMALS als Skript
+# ausführen. Enthält absichtlich keine RewriteEngine, damit die saubere-
+# Adressen-Regel aus dem Haupt-.htaccess weiter greift (/beispiel-demos/x -> x.html).
+
+Options -ExecCGI -Indexes
+
+# Zugriff auf ausführbare Dateitypen komplett verweigern (falls je eine
+# reinkommt: sie wird weder ausgeliefert noch ausgeführt).
+<IfModule mod_authz_core.c>
+  <FilesMatch "\.(php|phtml|phar|php[0-9]|phps|cgi|pl|py|asp|aspx|jsp|sh|fcgi|htaccess|htm?access)$">
+    Require all denied
+  </FilesMatch>
+</IfModule>
+<IfModule !mod_authz_core.c>
+  <FilesMatch "\.(php|phtml|phar|php[0-9]|phps|cgi|pl|py|asp|aspx|jsp|sh|fcgi)$">
+    Order allow,deny
+    Deny from all
+  </FilesMatch>
+</IfModule>
+
+# Falls klassisches mod_php aktiv ist: PHP-Engine hier hart abschalten.
+# (Unter PHP-FPM sind diese Module nicht geladen, der Block wird ignoriert.)
+<IfModule mod_php.c>
+  php_admin_flag engine off
+</IfModule>
+<IfModule mod_php7.c>
+  php_admin_flag engine off
+</IfModule>
+<IfModule mod_php8.c>
+  php_admin_flag engine off
+</IfModule>

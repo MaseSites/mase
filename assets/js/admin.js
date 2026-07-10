@@ -1476,9 +1476,34 @@
         if (feldEl.name !== "id" && eintrag[feldEl.name] !== undefined) feldEl.value = eintrag[feldEl.name];
       });
     }
+    /* Beispiel-Formular: Datei-Feld leeren, Status zur bestehenden Demo zeigen */
+    var status = document.getElementById("bf-datei-status");
+    if (status) {
+      var url = eintrag && eintrag.url ? eintrag.url : "";
+      status.textContent = (url.indexOf("/beispiel-demos/") === 0)
+        ? "Aktuell: hochgeladene HTML-Datei. Neue Datei wählen, um sie zu ersetzen."
+        : "";
+    }
     form.classList.remove("hidden");
     var erstes = form.querySelector("input:not([type=hidden])");
     if (erstes) erstes.focus();
+  }
+
+  /* HTML-Datei zum Server schicken; gibt die öffentliche Demo-URL zurück. */
+  function ladeDemoDateiHoch(datei) {
+    var fd = new FormData();
+    fd.append("datei", datei);
+    return fetch("/api/admin/beispiel-upload", {
+      method: "POST",
+      credentials: "same-origin",
+      headers: { "X-Requested-With": "fetch" }, /* KEIN Content-Type: Browser setzt multipart */
+      body: fd
+    }).then(function (r) {
+      return r.json().catch(function () { return {}; }).then(function (j) {
+        if (!r.ok || !j.url) throw new Error(j.fehler || "Upload fehlgeschlagen (" + r.status + ").");
+        return j.url;
+      });
+    });
   }
 
   Object.keys(INHALT_ARTEN).forEach(function (art) {
@@ -1492,19 +1517,37 @@
     form.addEventListener("submit", function (e) {
       e.preventDefault();
       zeigeFehler(def.fehler, "");
+      var absenden = form.querySelector('[type="submit"]');
+      if (absenden && absenden.disabled) return;
+
       var eintrag = {};
       form.querySelectorAll("[name]").forEach(function (feldEl) { eintrag[feldEl.name] = feldEl.value.trim(); });
-      var listeArr = INHALTE[def.key];
-      var index = -1;
-      listeArr.forEach(function (v, i) { if (eintrag.id && v.id === eintrag.id) index = i; });
-      if (index >= 0) listeArr[index] = eintrag;
-      else listeArr.push(eintrag);
-      speichereWebsiteInhalte().then(function () {
+
+      /* Beispiel: optional eine HTML-Datei hochladen und als url verwenden */
+      var dateiInput = (art === "beispiel") ? form.querySelector('input[type="file"]') : null;
+      var datei = dateiInput && dateiInput.files && dateiInput.files[0];
+
+      if (absenden) absenden.disabled = true;
+      var vorher = datei ? ladeDemoDateiHoch(datei).then(function (url) { eintrag.url = url; }) : Promise.resolve();
+
+      vorher.then(function () {
+        if (art === "beispiel" && !eintrag.url) {
+          throw new Error("Gib einen Link an oder lade eine HTML-Datei hoch.");
+        }
+        var listeArr = INHALTE[def.key];
+        var index = -1;
+        listeArr.forEach(function (v, i) { if (eintrag.id && v.id === eintrag.id) index = i; });
+        if (index >= 0) listeArr[index] = eintrag;
+        else listeArr.push(eintrag);
+        return speichereWebsiteInhalte();
+      }).then(function () {
         form.classList.add("hidden");
         adminLog("Website-Inhalt gespeichert", def.wort + ": " + (eintrag[def.titelFeld] || ""));
       }).catch(function (f) {
         zeigeFehler(def.fehler, f.message);
         ladeWebsiteInhalte();
+      }).then(function () {
+        if (absenden) absenden.disabled = false;
       });
     });
   });

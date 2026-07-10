@@ -17,6 +17,10 @@ server/daten/
 daten/*
 !daten/.htaccess
 
+# Hochgeladene Demo-HTML-Dateien: nicht committen, Schutz-.htaccess behalten
+beispiel-demos/*
+!beispiel-demos/.htaccess
+
 # Node
 node_modules/
 
