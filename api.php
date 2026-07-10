@@ -786,6 +786,89 @@ function saeubereAuftraege($liste): array
     ], array_slice(array_values($liste), 0, 200));
 }
 
+/* ---------- Website-Inhalte: Beispiele (Live-Demos) und Referenz-Projekte ----------
+   Öffentliche Inhalte, die der Admin im Dashboard pflegt. Liegen als JSON in
+   den Einstellungen (kein Personenbezug, darum unverschlüsselt). */
+
+function saeubereBeispiele($liste): array
+{
+    if (!is_array($liste)) {
+        return [];
+    }
+    $ergebnis = [];
+    foreach (array_slice(array_values($liste), 0, 60) as $b) {
+        if (!is_array($b)) {
+            continue;
+        }
+        $name = s($b['name'] ?? '', 120);
+        $url = s($b['url'] ?? '', 400);
+        if ($name === '' || !preg_match('#^https?://#i', $url)) {
+            continue;
+        }
+        $ergebnis[] = [
+            'id' => s($b['id'] ?? '', 24) ?: ('B-' . bin2hex(random_bytes(4))),
+            'name' => $name,
+            'branche' => s($b['branche'] ?? '', 60),
+            'beschreibung' => s($b['beschreibung'] ?? '', 300),
+            'url' => $url,
+            'bild' => s($b['bild'] ?? '', 400),
+        ];
+    }
+    return $ergebnis;
+}
+function saeubereReferenzProjekte($liste): array
+{
+    if (!is_array($liste)) {
+        return [];
+    }
+    $ergebnis = [];
+    foreach (array_slice(array_values($liste), 0, 60) as $p) {
+        if (!is_array($p)) {
+            continue;
+        }
+        $firma = s($p['firma'] ?? '', 120);
+        if ($firma === '') {
+            continue;
+        }
+        $url = s($p['url'] ?? '', 400);
+        $ergebnis[] = [
+            'id' => s($p['id'] ?? '', 24) ?: ('R-' . bin2hex(random_bytes(4))),
+            'firma' => $firma,
+            'branche' => s($p['branche'] ?? '', 60),
+            'beschreibung' => s($p['beschreibung'] ?? '', 1200),
+            'url' => preg_match('#^https?://#i', $url) ? $url : '',
+            'bild' => s($p['bild'] ?? '', 400),
+        ];
+    }
+    return $ergebnis;
+}
+function ladeInhalte(): array
+{
+    $b = json_decode((string)(einstellung('inhalte_beispiele') ?? 'null'), true);
+    $p = json_decode((string)(einstellung('inhalte_projekte') ?? 'null'), true);
+    return [
+        'beispiele' => saeubereBeispiele($b),
+        'projekte' => saeubereReferenzProjekte($p),
+    ];
+}
+/* Beim ersten Lauf mit den vier bestehenden Live-Demos befüllen,
+   damit die Beispiele-Seite ohne Pflege genauso aussieht wie bisher. */
+function stelleInhalteSicher(): void
+{
+    if (einstellung('inhalte_beispiele') !== null) {
+        return;
+    }
+    setzeEinstellung('inhalte_beispiele', json_encode([
+        ['id' => 'B-kebab', 'name' => 'Kebab Palace', 'branche' => 'Gastronomie', 'beschreibung' => 'Speisekarte, Bestellung und Standort im Fokus.', 'url' => 'https://masesites.ch/demo/doener-site/index.html', 'bild' => 'assets/img/demos/kebab.jpg'],
+        ['id' => 'B-nails', 'name' => 'Nails & Co.', 'branche' => 'Beauty', 'beschreibung' => 'Elegantes Einseiten-Design mit Galerie und Terminbuchung.', 'url' => 'https://masesites.ch/demo/nagelstudio-site/index.html', 'bild' => 'assets/img/demos/nagelstudio.jpg'],
+        ['id' => 'B-praxis', 'name' => 'Praxis Dr. Müller', 'branche' => 'Gesundheit', 'beschreibung' => 'Seriöser Auftritt mit ruhiger Typografie und Terminbuchung.', 'url' => 'https://masesites.ch/demo/praxis-site/index.html', 'bild' => 'assets/img/demos/praxis.jpg'],
+        ['id' => 'B-bowling', 'name' => 'Strike Zone Bowling', 'branche' => 'Freizeit', 'beschreibung' => 'Klares Layout mit Fokus auf Bahnreservierung und Events.', 'url' => 'https://masesites.ch/demo/bowling-site/index.html', 'bild' => 'assets/img/demos/bowling.jpg'],
+    ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+    if (einstellung('inhalte_projekte') === null) {
+        setzeEinstellung('inhalte_projekte', '[]');
+    }
+}
+
 /* Nachrichten/Antworten zusammenführen statt überschreiben, damit sich
    Kunde und Team nicht gegenseitig Einträge wegspeichern. */
 function vereineNachrichten($alt, $neu): array
@@ -1438,6 +1521,29 @@ route('PUT', '/api/mcs/kunden/:email', 'mitarbeiter', function ($p, $body, $sitz
 
 /* --- Protokoll und KI-Chats --- */
 
+/* --- Website-Inhalte: öffentlich lesen, als Admin pflegen --- */
+
+route('GET', '/api/inhalte', null, function () {
+    antwortJson(200, ladeInhalte());
+});
+
+route('PUT', '/api/admin/inhalte', 'admin', function ($p, $body) {
+    /* Schutz vor kaputten Anfragen: fehlt der Rumpf (z. B. ungültiges JSON),
+       niemals stillschweigend leere Listen speichern. */
+    if (!is_array($body['beispiele'] ?? null) || !is_array($body['projekte'] ?? null)) {
+        fehler(400, 'Ungültige Daten: beispiele und projekte müssen Listen sein.');
+    }
+    $inhalte = [
+        'beispiele' => saeubereBeispiele($body['beispiele']),
+        'projekte' => saeubereReferenzProjekte($body['projekte']),
+    ];
+    setzeEinstellung('inhalte_beispiele', json_encode($inhalte['beispiele'], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+    setzeEinstellung('inhalte_projekte', json_encode($inhalte['projekte'], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+    schreibeLog('Admin', clientIp(), 'admin', 'Website-Inhalte gespeichert',
+        count($inhalte['beispiele']) . ' Beispiele, ' . count($inhalte['projekte']) . ' Projekte');
+    antwortJson(200, $inhalte);
+});
+
 route('POST', '/api/log', null, function ($p, $body, $sitzung) {
     if (!ratenbegrenzung('log', clientIp(), 120, 60000)) {
         antwortJson(200, ['ok' => true]);
@@ -1465,6 +1571,7 @@ route('POST', '/api/bot-log', null, function ($p, $body, $sitzung) {
    nicht als leeren 500. */
 try {
     stelleAdminPasswortSicher($DATEN_ORDNER);
+    stelleInhalteSicher();
     raeumeSitzungenAuf();
 } catch (Throwable $e) {
     error_log('masesites Start: ' . $e->getMessage());

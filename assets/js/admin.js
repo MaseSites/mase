@@ -35,6 +35,7 @@
     var kopfKnopf = document.getElementById("admin-abmelden");
     if (kopfKnopf) kopfKnopf.classList.remove("hidden");
     renderAlles();
+    ladeWebsiteInhalte();
     route();
   }
   function abmelden() {
@@ -72,7 +73,7 @@
 
   /* ---------- Routing über den Hash ---------- */
 
-  var HAUPTROUTEN = ["uebersicht", "kunden", "projekte", "tickets", "nachrichten", "ki", "mitarbeiter", "protokoll", "einstellungen"];
+  var HAUPTROUTEN = ["uebersicht", "kunden", "projekte", "tickets", "nachrichten", "ki", "inhalte", "mitarbeiter", "protokoll", "einstellungen"];
   var neuProjektVorwahl = "";
 
   function navigiere(pfad) {
@@ -1394,6 +1395,120 @@
     });
   });
 
+  /* ---------- Website-Inhalte: Live-Demos (Beispiele) und Referenz-Projekte ----------
+     Öffentliche Inhalte der Website; liegen auf dem Server (/api/inhalte)
+     und werden hier gepflegt. Speichern schickt immer beide Listen. */
+
+  var INHALTE = { beispiele: [], projekte: [] };
+  var INHALT_ARTEN = {
+    beispiel: { key: "beispiele", titelFeld: "name", liste: "inhalt-beispiele", form: "beispiel-form", fehler: "beispiel-fehler", neu: "beispiel-neu", abbrechen: "beispiel-abbrechen", leer: "Noch keine Live-Demos eingetragen.", wort: "Beispiel" },
+    referenz: { key: "projekte", titelFeld: "firma", liste: "inhalt-projekte", form: "referenz-form", fehler: "referenz-fehler", neu: "referenz-neu", abbrechen: "referenz-abbrechen", leer: "Noch keine Projekte eingetragen.", wort: "Projekt" }
+  };
+
+  function ladeWebsiteInhalte() {
+    fetch("/api/inhalte", { credentials: "same-origin" })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (daten) {
+        if (!daten) return;
+        INHALTE.beispiele = Array.isArray(daten.beispiele) ? daten.beispiele : [];
+        INHALTE.projekte = Array.isArray(daten.projekte) ? daten.projekte : [];
+        renderWebsiteInhalte();
+      })
+      .catch(function () {});
+  }
+
+  function speichereWebsiteInhalte() {
+    return fetch("/api/admin/inhalte", {
+      method: "PUT",
+      credentials: "same-origin",
+      headers: { "Content-Type": "application/json", "X-Requested-With": "fetch" },
+      body: JSON.stringify(INHALTE)
+    }).then(function (r) {
+      if (!r.ok) throw new Error("Speichern fehlgeschlagen (" + r.status + "). Lade die Seite neu und probiere es nochmal.");
+      return r.json();
+    }).then(function (daten) {
+      INHALTE.beispiele = daten.beispiele || [];
+      INHALTE.projekte = daten.projekte || [];
+      renderWebsiteInhalte();
+    });
+  }
+
+  function renderWebsiteInhalte() {
+    Object.keys(INHALT_ARTEN).forEach(function (art) {
+      var def = INHALT_ARTEN[art];
+      var liste = document.getElementById(def.liste);
+      if (!liste) return;
+      liste.innerHTML = "";
+      var eintraege = INHALTE[def.key];
+      if (!eintraege.length) {
+        liste.appendChild(leerZeile(def.leer));
+        return;
+      }
+      eintraege.forEach(function (eintrag) {
+        var bearbeiten = el("button", "btn btn-ghost klein", "Bearbeiten");
+        bearbeiten.type = "button";
+        bearbeiten.addEventListener("click", function () { oeffneInhaltForm(art, eintrag); });
+        var loeschen = el("button", "btn btn-ghost klein", "Löschen");
+        loeschen.type = "button";
+        loeschen.addEventListener("click", function () {
+          if (!confirm('"' + eintrag[def.titelFeld] + '" wirklich von der Website löschen?')) return;
+          INHALTE[def.key] = INHALTE[def.key].filter(function (e) { return e.id !== eintrag.id; });
+          speichereWebsiteInhalte().catch(function (f) { alert(f.message); ladeWebsiteInhalte(); });
+        });
+        liste.appendChild(zeile(
+          eintrag[def.titelFeld],
+          (eintrag.branche ? eintrag.branche + " · " : "") + kurz(eintrag.beschreibung || eintrag.url || "", 60),
+          [bearbeiten, loeschen]
+        ));
+      });
+    });
+  }
+
+  function oeffneInhaltForm(art, eintrag) {
+    var def = INHALT_ARTEN[art];
+    var form = document.getElementById(def.form);
+    if (!form) return;
+    form.reset();
+    zeigeFehler(def.fehler, "");
+    form.querySelector('[name="id"]').value = eintrag ? eintrag.id : "";
+    if (eintrag) {
+      form.querySelectorAll("[name]").forEach(function (feldEl) {
+        if (feldEl.name !== "id" && eintrag[feldEl.name] !== undefined) feldEl.value = eintrag[feldEl.name];
+      });
+    }
+    form.classList.remove("hidden");
+    var erstes = form.querySelector("input:not([type=hidden])");
+    if (erstes) erstes.focus();
+  }
+
+  Object.keys(INHALT_ARTEN).forEach(function (art) {
+    var def = INHALT_ARTEN[art];
+    var form = document.getElementById(def.form);
+    var neuKnopf = document.getElementById(def.neu);
+    var abbrechen = document.getElementById(def.abbrechen);
+    if (!form || !neuKnopf) return;
+    neuKnopf.addEventListener("click", function () { oeffneInhaltForm(art, null); });
+    abbrechen.addEventListener("click", function () { form.classList.add("hidden"); });
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      zeigeFehler(def.fehler, "");
+      var eintrag = {};
+      form.querySelectorAll("[name]").forEach(function (feldEl) { eintrag[feldEl.name] = feldEl.value.trim(); });
+      var listeArr = INHALTE[def.key];
+      var index = -1;
+      listeArr.forEach(function (v, i) { if (eintrag.id && v.id === eintrag.id) index = i; });
+      if (index >= 0) listeArr[index] = eintrag;
+      else listeArr.push(eintrag);
+      speichereWebsiteInhalte().then(function () {
+        form.classList.add("hidden");
+        adminLog("Website-Inhalt gespeichert", def.wort + ": " + (eintrag[def.titelFeld] || ""));
+      }).catch(function (f) {
+        zeigeFehler(def.fehler, f.message);
+        ladeWebsiteInhalte();
+      });
+    });
+  });
+
   /* ---------- Alles zeichnen ---------- */
 
   function renderAlles() {
@@ -1408,6 +1523,7 @@
     renderMitarbeiterTabelle();
     renderProtokoll();
     renderDatenInfo();
+    renderWebsiteInhalte();
   }
 
   /* Jahr im Fussbereich */

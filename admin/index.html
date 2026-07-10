@@ -95,6 +95,12 @@
               <span class="side-badge" data-badge="ki"></span>
             </button>
 
+            <span class="side-label">Website</span>
+            <button class="side-item" type="button" data-route="inhalte">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+              Inhalte
+            </button>
+
             <span class="side-label">Verwaltung</span>
             <button class="side-item" type="button" data-route="mitarbeiter">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
@@ -430,6 +436,91 @@
           </section>
 
           <!-- ===== Einstellungen ===== -->
+          <section class="dash-panel" id="panel-inhalte" aria-label="Website-Inhalte">
+            <div class="panel-kopf">
+              <div>
+                <h1>Website-Inhalte</h1>
+                <p>Live-Demos für die Beispiele-Seite und Kundenprojekte für die Projekte-Seite. Änderungen sind sofort öffentlich.</p>
+              </div>
+            </div>
+            <div class="panel-grid">
+
+              <div class="dash-card">
+                <div class="card-head">
+                  <h3>Beispiele (Live-Demos)</h3>
+                  <button class="btn btn-ghost klein" type="button" id="beispiel-neu">Hinzufügen</button>
+                </div>
+                <ul class="zeilen-liste" id="inhalt-beispiele"></ul>
+                <form id="beispiel-form" class="auth-form hidden" style="margin-top: 16px;">
+                  <input type="hidden" name="id">
+                  <div class="form-field">
+                    <label for="bf-name">Name</label>
+                    <input id="bf-name" name="name" type="text" required maxlength="120" placeholder="z. B. Kebab Palace">
+                  </div>
+                  <div class="form-field">
+                    <label for="bf-branche">Branche</label>
+                    <input id="bf-branche" name="branche" type="text" maxlength="60" placeholder="z. B. Gastronomie">
+                  </div>
+                  <div class="form-field">
+                    <label for="bf-beschreibung">Kurzbeschreibung</label>
+                    <input id="bf-beschreibung" name="beschreibung" type="text" maxlength="300" placeholder="Ein Satz zur Demo">
+                  </div>
+                  <div class="form-field">
+                    <label for="bf-url">Adresse der Demo</label>
+                    <input id="bf-url" name="url" type="url" required maxlength="400" placeholder="https://masesites.ch/demo/...">
+                  </div>
+                  <div class="form-field">
+                    <label for="bf-bild">Vorschaubild (Adresse oder Pfad, optional)</label>
+                    <input id="bf-bild" name="bild" type="text" maxlength="400" placeholder="assets/img/demos/....jpg">
+                  </div>
+                  <p class="form-error" id="beispiel-fehler" role="alert"></p>
+                  <div class="panel-aktionen">
+                    <button class="btn btn-primary klein" type="submit">Speichern</button>
+                    <button class="btn btn-ghost klein" type="button" id="beispiel-abbrechen">Abbrechen</button>
+                  </div>
+                </form>
+              </div>
+
+              <div class="dash-card">
+                <div class="card-head">
+                  <h3>Projekte (Referenzen)</h3>
+                  <button class="btn btn-ghost klein" type="button" id="referenz-neu">Hinzufügen</button>
+                </div>
+                <ul class="zeilen-liste" id="inhalt-projekte"></ul>
+                <form id="referenz-form" class="auth-form hidden" style="margin-top: 16px;">
+                  <input type="hidden" name="id">
+                  <div class="form-field">
+                    <label for="rf-firma">Firma</label>
+                    <input id="rf-firma" name="firma" type="text" required maxlength="120" placeholder="z. B. Kebab Palace GmbH">
+                  </div>
+                  <div class="form-field">
+                    <label for="rf-branche">Branche</label>
+                    <input id="rf-branche" name="branche" type="text" maxlength="60" placeholder="z. B. Gastronomie">
+                  </div>
+                  <div class="form-field">
+                    <label for="rf-beschreibung">Beschreibung</label>
+                    <textarea id="rf-beschreibung" name="beschreibung" rows="4" maxlength="1200" placeholder="Worum ging es im Projekt, was wurde gebaut?"></textarea>
+                  </div>
+                  <div class="form-field">
+                    <label for="rf-url">Website des Kunden (optional)</label>
+                    <input id="rf-url" name="url" type="url" maxlength="400" placeholder="https://...">
+                  </div>
+                  <div class="form-field">
+                    <label for="rf-bild">Vorschaubild (Adresse oder Pfad, optional)</label>
+                    <input id="rf-bild" name="bild" type="text" maxlength="400" placeholder="https://... oder assets/img/...">
+                  </div>
+                  <p class="form-error" id="referenz-fehler" role="alert"></p>
+                  <div class="panel-aktionen">
+                    <button class="btn btn-primary klein" type="submit">Speichern</button>
+                    <button class="btn btn-ghost klein" type="button" id="referenz-abbrechen">Abbrechen</button>
+                  </div>
+                </form>
+              </div>
+
+            </div>
+            <p class="dash-hinweis">Beispiele öffnen sich auf der Website im Vollbild. Ein Projekt bekommt eine eigene Detailseite mit Firma, Beschreibung und Website-Vorschau.</p>
+          </section>
+
           <section class="dash-panel" id="panel-einstellungen" aria-label="Einstellungen">
             <div class="panel-kopf">
               <div>

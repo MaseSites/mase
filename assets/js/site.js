@@ -172,9 +172,13 @@
     var form = root.querySelector(".chat-input");
     var input = form.querySelector("input");
     var busy = false;
+    /* Erst aufzeichnen, wenn der Besucher wirklich etwas schreibt. Die
+       Standard-Begrüssung beim Laden landet sonst als Leerlauf im Admin. */
+    var echterDialog = false;
 
     function addMsg(text, who, link) {
-      botLog(who, text);
+      if (who === "user") echterDialog = true;
+      if (echterDialog) botLog(who, text);
       var div = document.createElement("div");
       div.className = "msg " + who;
       div.textContent = text;

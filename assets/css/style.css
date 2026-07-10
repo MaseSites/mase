@@ -153,7 +153,7 @@ section.tight { padding: 56px 0; }
   position: fixed;
   top: 0; left: 0; right: 0;
   z-index: 60;
-  transition: background 0.35s ease, box-shadow 0.35s ease, padding 0.35s ease;
+  transition: background 0.35s ease, box-shadow 0.35s ease, padding 0.35s ease, opacity 0.5s ease;
   padding: 14px 0;
   background: transparent;
 }
@@ -340,26 +340,23 @@ body.mit-buehne .site-header {
 }
 
 /* ---------- Intro: Kamerafahrt durch den Bildschirm ----------
-   Start: die Beispielseite steckt klein im bekannten Monitor
-   (Bildschirm, Standfuss, Sockel, darunter der Schriftzug). Die Bühne
-   liegt dafür fixiert über dem ganzen Fenster (sie wohnt sonst in
-   Sektion 2 unterhalb des Startbildschirms).
-   Fahrt: der Monitor wächst übers Bild hinaus, statt zu verschwinden;
-   erst ganz am Ende löst er sich auf und gibt den Text-Hero frei. */
+   Start: die STARTSEITE selbst steckt klein im bekannten Monitor
+   (Bildschirm, Standfuss, Sockel, darunter der Schriftzug).
+   Fahrt: der Monitor wächst, bis der Rahmen aus dem Bild schiebt und
+   die echte Startseite nahtlos übrig bleibt - kein Ausblenden. */
 html.intro-zoom { overflow: hidden; }
-html.intro-zoom .hero-buehne {
-  position: fixed; inset: 0; z-index: 96;
+html.intro-zoom .hero-start {
   transform: scale(0.36);
+  transform-origin: 50% 44%;
   border-radius: 44px;
   box-shadow:
     0 0 0 26px #1F1A14,
     0 0 0 28px rgba(0, 0, 0, 0.18),
     0 60px 140px rgba(44, 33, 24, 0.4);
 }
-html.intro-zoom.intro-fahrt .hero-buehne {
-  transform: scale(1.14);
+html.intro-zoom.intro-fahrt .hero-start {
+  transform: scale(1);
   border-radius: 0;
-  opacity: 0;
   box-shadow:
     0 0 0 0 #1F1A14,
     0 0 0 0 rgba(0, 0, 0, 0.18),
@@ -367,14 +364,11 @@ html.intro-zoom.intro-fahrt .hero-buehne {
   transition:
     transform 1.6s cubic-bezier(0.4, 0.05, 0.2, 1),
     border-radius 1.6s cubic-bezier(0.4, 0.05, 0.2, 1),
-    box-shadow 1.6s cubic-bezier(0.4, 0.05, 0.2, 1),
-    opacity 0.45s ease 1.2s;
+    box-shadow 1.6s cubic-bezier(0.4, 0.05, 0.2, 1);
 }
-html.intro-zoom .hero-overlay { opacity: 0; transform: translateY(18px); }
-html.intro-zoom .scroll-cue { opacity: 0; }
-/* Text-Hero wartet hinter dem Monitor und steigt auf, während er sich auflöst */
-html.intro-zoom .hero-mitte { opacity: 0; transform: translateY(18px); }
-html.intro-zoom.intro-fahrt .hero-mitte { opacity: 1; transform: none; transition-delay: 1.2s, 1.2s; }
+/* Header und Chat-Knopf halten sich raus, bis die Fahrt vorbei ist */
+html.intro-zoom .site-header,
+html.intro-zoom .widget-launcher { opacity: 0; pointer-events: none; }
 
 /* Monitor-Deko: Standfuss, Sockel und Schriftzug unter dem Bildschirm */
 .hero-deko {
@@ -412,10 +406,8 @@ html.intro-zoom.intro-fahrt .hero-deko { opacity: 0; transition: opacity 0.35s e
 .hero-deko .deko-wort i { color: var(--accent); font-style: normal; }
 
 @media (prefers-reduced-motion: reduce) {
-  html.intro-zoom .hero-buehne { position: absolute; transform: none; border-radius: 0; box-shadow: none; opacity: 1; }
-  html.intro-zoom .hero-overlay { opacity: 1; transform: none; }
-  html.intro-zoom .scroll-cue { opacity: 1; }
-  html.intro-zoom .hero-mitte { opacity: 1; transform: none; }
+  html.intro-zoom .hero-start { transform: none; border-radius: 0; box-shadow: none; }
+  html.intro-zoom .site-header, html.intro-zoom .widget-launcher { opacity: 1; pointer-events: auto; }
   html.intro-zoom .hero-deko { display: none; }
 }
 
@@ -1027,7 +1019,7 @@ a.work-card:hover { color: inherit; }
   cursor: pointer;
   box-shadow: 0 14px 34px rgba(28, 20, 12, 0.34);
   display: flex; align-items: center; justify-content: center;
-  transition: transform 0.3s var(--ease-out), box-shadow 0.3s var(--ease-out);
+  transition: transform 0.3s var(--ease-out), box-shadow 0.3s var(--ease-out), opacity 0.5s ease;
 }
 .widget-launcher:hover { transform: scale(1.08) translateY(-2px); box-shadow: 0 20px 42px rgba(28, 20, 12, 0.42); }
 .widget-launcher svg { width: 26px; height: 26px; }
@@ -2013,4 +2005,47 @@ body.app { --header-h: 61px; }
   .app-user-name { display: none; }
   .panel-kopf h1 { font-size: 1.3rem; }
   .app-top-trenner { display: none; }
+}
+
+/* ============================================================
+   Live-Demos im Vollbild und Projekt-Detailseite
+   ============================================================ */
+
+/* Beispiele: Karte öffnet die Demo im Vollbild */
+.demo-vollbild {
+  position: fixed; inset: 0; z-index: 200;
+  background: var(--bg);
+  display: flex; flex-direction: column;
+}
+.demo-vollbild-kopf {
+  display: flex; align-items: center; gap: 14px;
+  padding: 10px 16px;
+  background: var(--card);
+  border-bottom: 1px solid var(--line);
+  flex: none;
+}
+.demo-vollbild-kopf b { font-size: 0.98rem; }
+.demo-vollbild-kopf .neu-tab { margin-left: auto; font-size: 0.86rem; font-weight: 600; color: var(--ink-soft); white-space: nowrap; }
+.demo-vollbild-kopf .neu-tab:hover { color: var(--ink); }
+.demo-vollbild-kopf .schliessen {
+  width: 38px; height: 38px; flex: none;
+  border: 1.5px solid var(--line); border-radius: 50%;
+  background: var(--bg-soft); color: var(--ink-soft);
+  cursor: pointer;
+  display: grid; place-items: center;
+}
+.demo-vollbild-kopf .schliessen:hover { color: var(--ink); border-color: var(--ink); }
+.demo-vollbild-kopf .schliessen svg { width: 17px; height: 17px; }
+.demo-vollbild iframe { flex: 1; width: 100%; border: 0; background: #fff; }
+body.demo-offen { overflow: hidden; }
+.work-card[role="button"] { cursor: pointer; }
+
+/* Projekte: grosse Vorschau in der Detailansicht */
+.pd-medien { background: var(--bg-soft); }
+.pd-medien img { display: block; width: 100%; height: auto; }
+.pd-medien iframe { display: block; width: 100%; height: min(64vh, 640px); border: 0; background: #fff; }
+
+@media (max-width: 720px) {
+  .demo-vollbild-kopf { gap: 10px; padding: 9px 12px; }
+  .demo-vollbild-kopf .neu-tab { display: none; }
 }

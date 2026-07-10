@@ -49,23 +49,46 @@
   <main>
 
     <!-- ===== Hero ===== -->
-    <section class="page-hero">
+    <section class="page-hero" id="projekte-hero">
       <div class="wrap">
         <h1>Projekte</h1>
-        <p class="lead">Hier zeigen wir unsere offiziellen Kundenprojekte – ehrlich und ohne Füllmaterial.</p>
+        <p class="lead">Hier zeigen wir unsere offiziellen Kundenprojekte, ehrlich und ohne Füllmaterial.</p>
       </div>
     </section>
 
-    <!-- ===== Noch leer, ehrlich gesagt ===== -->
-    <section class="tight">
+    <!-- ===== Projektliste (Inhalt kommt aus dem Admin-Bereich) ===== -->
+    <section class="tight" id="projekte-uebersicht">
       <div class="wrap">
-        <div class="big-cta reveal">
+        <div class="work-grid hidden" id="projekte-grid"></div>
+
+        <!-- Leer-Zustand, solange noch kein Projekt eingetragen ist -->
+        <div class="big-cta" id="projekte-leer">
           <h2>Der Platz hier ist noch frei.</h2>
           <p>Wir starten gerade durch: die ersten Kundenprojekte sind in Arbeit. Dein Projekt könnte das erste sein, das hier steht.</p>
           <div class="hero-ctas">
             <a class="btn btn-primary" href="/kontakt">Projekt starten <span class="arrow">→</span></a>
             <a class="btn btn-ghost" href="/beispiele">Beispiele &amp; Live-Demos ansehen</a>
           </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Projekt-Detail (per Klick auf ein Projekt) ===== -->
+    <section class="tight hidden" id="projekt-detail">
+      <div class="wrap">
+        <button class="zurueck" type="button" id="projekt-zurueck">← Alle Projekte</button>
+        <div class="section-head">
+          <h2 id="pd-firma"></h2>
+          <p class="detail-meta" id="pd-meta"></p>
+        </div>
+        <p class="lead" id="pd-beschreibung" style="max-width: 720px; margin-bottom: 26px;"></p>
+        <div class="hero-ctas" id="pd-aktionen" style="margin-bottom: 34px;"></div>
+        <div class="preview-frame hidden" id="pd-vorschau">
+          <div class="frame-bar" aria-hidden="true">
+            <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+            <span class="frame-url" id="pd-url"></span>
+          </div>
+          <div class="pd-medien" id="pd-medien"></div>
         </div>
       </div>
     </section>
@@ -121,5 +144,6 @@
 
   <script src="assets/js/protokoll.js?v=4"></script>
   <script src="assets/js/site.js?v=4"></script>
+  <script src="assets/js/projekte.js?v=4"></script>
 </body>
 </html>
