@@ -229,7 +229,35 @@ body.mit-buehne .site-header {
     radial-gradient(500px 380px at 8% 88%, rgba(44, 33, 24, 0.04), transparent 65%);
 }
 
-/* ---------- Vollbild-Hero der Startseite ---------- */
+/* ---------- Startbildschirm: ruhiger Text-Hero (Sektion 1) ---------- */
+
+.hero-start {
+  position: relative;
+  min-height: 100vh;
+  min-height: 100svh;
+  display: flex; align-items: center;
+  padding: calc(var(--header-h) + 40px) 0 120px;
+  overflow: hidden;
+}
+.hero-mitte {
+  position: relative;
+  text-align: center;
+  max-width: 920px;
+  margin: 0 auto;
+  transition: opacity 0.7s var(--ease-out), transform 0.7s var(--ease-out);
+}
+.hero-mitte h1 { margin-bottom: 22px; font-size: clamp(2rem, 5.5vw, 4rem); line-height: 1.08; }
+.hero-mitte .lead { margin: 0 auto 34px; max-width: 560px; }
+.hero-mitte .hero-ctas { justify-content: center; margin-bottom: 30px; }
+.trust-zeile {
+  display: flex; flex-wrap: wrap; justify-content: center; align-items: center;
+  gap: 6px 12px;
+  font-size: 0.88rem;
+  color: var(--ink-faint);
+}
+.trust-zeile .punkt { width: 3px; height: 3px; border-radius: 50%; background: var(--line-strong); }
+
+/* ---------- Vollbild-Beispielseite (Sektion 2) ---------- */
 
 .hero-vollbild {
   position: relative;
@@ -311,12 +339,16 @@ body.mit-buehne .site-header {
   .hero-vollbild .ps-bot { display: none; }
 }
 
-/* ---------- Intro: Kamerafahrt in den Bildschirm ----------
+/* ---------- Intro: Kamerafahrt durch den Bildschirm ----------
    Start: die Beispielseite steckt klein im bekannten Monitor
-   (Bildschirm, Standfuss, Sockel, darunter der Schriftzug).
-   Fahrt: hineinzoomen, bis die Seite den ganzen Bildschirm bedeckt;
-   erst danach erscheint das Panel mit Headline und Style-Knöpfen. */
+   (Bildschirm, Standfuss, Sockel, darunter der Schriftzug). Die Bühne
+   liegt dafür fixiert über dem ganzen Fenster (sie wohnt sonst in
+   Sektion 2 unterhalb des Startbildschirms).
+   Fahrt: der Monitor wächst übers Bild hinaus, statt zu verschwinden;
+   erst ganz am Ende löst er sich auf und gibt den Text-Hero frei. */
+html.intro-zoom { overflow: hidden; }
 html.intro-zoom .hero-buehne {
+  position: fixed; inset: 0; z-index: 96;
   transform: scale(0.36);
   border-radius: 44px;
   box-shadow:
@@ -325,19 +357,24 @@ html.intro-zoom .hero-buehne {
     0 60px 140px rgba(44, 33, 24, 0.4);
 }
 html.intro-zoom.intro-fahrt .hero-buehne {
-  transform: scale(1);
+  transform: scale(1.14);
   border-radius: 0;
+  opacity: 0;
   box-shadow:
     0 0 0 0 #1F1A14,
     0 0 0 0 rgba(0, 0, 0, 0.18),
     0 0 0 rgba(44, 33, 24, 0);
   transition:
-    transform 1.5s cubic-bezier(0.4, 0.05, 0.2, 1),
-    border-radius 1.5s cubic-bezier(0.4, 0.05, 0.2, 1),
-    box-shadow 1.5s cubic-bezier(0.4, 0.05, 0.2, 1);
+    transform 1.6s cubic-bezier(0.4, 0.05, 0.2, 1),
+    border-radius 1.6s cubic-bezier(0.4, 0.05, 0.2, 1),
+    box-shadow 1.6s cubic-bezier(0.4, 0.05, 0.2, 1),
+    opacity 0.45s ease 1.2s;
 }
 html.intro-zoom .hero-overlay { opacity: 0; transform: translateY(18px); }
 html.intro-zoom .scroll-cue { opacity: 0; }
+/* Text-Hero wartet hinter dem Monitor und steigt auf, während er sich auflöst */
+html.intro-zoom .hero-mitte { opacity: 0; transform: translateY(18px); }
+html.intro-zoom.intro-fahrt .hero-mitte { opacity: 1; transform: none; transition-delay: 1.2s, 1.2s; }
 
 /* Monitor-Deko: Standfuss, Sockel und Schriftzug unter dem Bildschirm */
 .hero-deko {
@@ -350,7 +387,8 @@ html.intro-zoom .scroll-cue { opacity: 0; }
   z-index: 5;
   pointer-events: none;
 }
-html.intro-zoom .hero-deko { display: block; }
+/* Während des Intros hängt die Deko fixiert unter dem fixierten Monitor */
+html.intro-zoom .hero-deko { display: block; position: fixed; z-index: 97; }
 html.intro-zoom.intro-fahrt .hero-deko { opacity: 0; transition: opacity 0.35s ease; }
 .hero-deko .deko-stand {
   width: 78px; height: 26px;
@@ -374,9 +412,10 @@ html.intro-zoom.intro-fahrt .hero-deko { opacity: 0; transition: opacity 0.35s e
 .hero-deko .deko-wort i { color: var(--accent); font-style: normal; }
 
 @media (prefers-reduced-motion: reduce) {
-  html.intro-zoom .hero-buehne { transform: none; border-radius: 0; box-shadow: none; }
+  html.intro-zoom .hero-buehne { position: absolute; transform: none; border-radius: 0; box-shadow: none; opacity: 1; }
   html.intro-zoom .hero-overlay { opacity: 1; transform: none; }
   html.intro-zoom .scroll-cue { opacity: 1; }
+  html.intro-zoom .hero-mitte { opacity: 1; transform: none; }
   html.intro-zoom .hero-deko { display: none; }
 }
 

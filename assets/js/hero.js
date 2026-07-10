@@ -230,10 +230,11 @@
   setActiveChip(BRANDS[0].id);
   if ("requestIdleCallback" in window) requestIdleCallback(preload); else setTimeout(preload, 1200);
 
-  /* ---------- Intro: Kamerafahrt in den Bildschirm ----------
+  /* ---------- Intro: Kamerafahrt durch den Bildschirm ----------
      intro.js hat den Monitor-Zustand (html.intro-zoom) vor dem ersten
      Zeichnen gesetzt; hier läuft die Regie: kurz stehen lassen, dann
-     hineinzoomen, am Ende erscheinen Headline und Style-Knöpfe. */
+     wächst der Monitor übers Bild hinaus und löst sich erst ganz am
+     Ende auf - darunter steht schon der Text-Hero. */
   var wurzel = document.documentElement;
   if (wurzel.classList.contains("intro-zoom") && !reducedMotion) {
     setTimeout(function () {
@@ -241,7 +242,7 @@
       setTimeout(function () {
         wurzel.classList.remove("intro-zoom");
         wurzel.classList.remove("intro-fahrt");
-      }, 1550);
+      }, 1750);
     }, 650);
   } else {
     wurzel.classList.remove("intro-zoom");

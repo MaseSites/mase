@@ -49,8 +49,30 @@
 
   <main>
 
-    <!-- ===== Hero: Beispielseite im Vollbild, das Intro zoomt in den Bildschirm ===== -->
-    <section class="hero-vollbild">
+    <!-- ===== Startbildschirm: ruhiger Text-Hero, füllt den ganzen Bildschirm ===== -->
+    <section class="hero-start">
+      <div class="hero-bg" aria-hidden="true"></div>
+      <div class="wrap hero-mitte">
+        <h1>Deine Website für<br><span class="rotor"><span class="rotor-word" id="rotor-word">dein Restaurant</span></span></h1>
+        <p class="lead">Persönlich gebaut, professionell gestaltet, auf Wunsch mit KI-Bot.</p>
+        <div class="hero-ctas">
+          <a class="btn btn-primary" href="/kontakt">Projekt starten <span class="arrow">→</span></a>
+          <a class="btn btn-ghost" href="#beispiel">Beispiele ansehen</a>
+        </div>
+        <p class="trust-zeile">
+          <span>Aus der Schweiz</span><span class="punkt" aria-hidden="true"></span>
+          <span>Für Firmen &amp; Privatpersonen</span><span class="punkt" aria-hidden="true"></span>
+          <span>Feste Offerte vor Projektstart</span>
+        </p>
+      </div>
+      <a class="scroll-cue" href="#beispiel" aria-label="Weiter zur Beispielseite">
+        <span>Mehr entdecken</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+      </a>
+    </section>
+
+    <!-- ===== Beispielseite im Vollbild, das Intro zoomt in den Bildschirm ===== -->
+    <section class="hero-vollbild" id="beispiel">
       <div class="hero-buehne">
         <div class="preview-site" id="morph-site" data-brand="restaurant" aria-label="Live-Vorschau: so unterschiedlich können masesites-Websites aussehen">
           <div class="ps-inner">
@@ -91,7 +113,7 @@
 
       <div class="hero-overlay">
         <div class="hero-panel">
-          <h1 class="hero-titel">Deine Website für <span class="rotor"><span class="rotor-word" id="rotor-word">dein Restaurant</span></span></h1>
+          <h2 class="hero-titel">Ein Team. Jeder Stil.</h2>
           <div class="chips hero-chips" role="group" aria-label="Beispielbranchen, verwandeln die Vorschau">
             <button class="chip active" data-brand="restaurant" aria-pressed="true">Restaurant</button>
             <button class="chip" data-brand="event" aria-pressed="false">Eventplattform</button>
@@ -101,11 +123,6 @@
           </div>
         </div>
       </div>
-
-      <a class="scroll-cue" href="#angebot" aria-label="Weiter zur Website">
-        <span>Mehr entdecken</span>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
-      </a>
     </section>
 
     <!-- ===== Unsere drei Produkte ===== -->
