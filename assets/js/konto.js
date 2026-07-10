@@ -54,7 +54,7 @@ var MS_GOOGLE_CLIENT_ID = "117777636536-nd77bnlv9co4l7g8cbn6de0q8uhj3njt.apps.go
        die Sitzung an — hier wird nichts mehr selbst entschlüsselt */
     zeigeFehler("google-hinweis", "");
     D.googleAnmeldung(antwort.credential).then(function () {
-      window.location.href = "dashboard.html";
+      window.location.href = "/dashboard";
     }).catch(function (fehler) {
       zeigeFehler("google-hinweis", fehler.message);
     });
@@ -69,7 +69,7 @@ var MS_GOOGLE_CLIENT_ID = "117777636536-nd77bnlv9co4l7g8cbn6de0q8uhj3njt.apps.go
 
     /* Schon angemeldet? Direkt weiter. */
     if (D.angemeldet()) {
-      window.location.replace("dashboard.html");
+      window.location.replace("/dashboard");
       return;
     }
 
@@ -99,7 +99,7 @@ var MS_GOOGLE_CLIENT_ID = "117777636536-nd77bnlv9co4l7g8cbn6de0q8uhj3njt.apps.go
         if (pw.length < 8) { zeigeFehler("register-fehler", "Das Passwort braucht mindestens 8 Zeichen."); return; }
         /* Das Passwort geht nur zum Server; dort wird es gehasht gespeichert */
         D.registrieren({ name: name, firma: firma, telefon: telefon, email: email, passwort: pw })
-          .then(function () { window.location.href = "dashboard.html"; })
+          .then(function () { window.location.href = "/dashboard"; })
           .catch(function (fehler) { zeigeFehler("register-fehler", fehler.message); });
       });
     }
@@ -112,7 +112,7 @@ var MS_GOOGLE_CLIENT_ID = "117777636536-nd77bnlv9co4l7g8cbn6de0q8uhj3njt.apps.go
         var email = loginForm.querySelector('[name="email"]').value.trim().toLowerCase();
         var pw = loginForm.querySelector('[name="passwort"]').value;
         D.anmelden(email, pw)
-          .then(function () { window.location.href = "dashboard.html"; })
+          .then(function () { window.location.href = "/dashboard"; })
           .catch(function (fehler) { zeigeFehler("login-fehler", fehler.message); });
       });
     }
@@ -123,7 +123,7 @@ var MS_GOOGLE_CLIENT_ID = "117777636536-nd77bnlv9co4l7g8cbn6de0q8uhj3njt.apps.go
       demoLink.addEventListener("click", function (e) {
         e.preventDefault();
         D.demoAnmeldung().then(function () {
-          window.location.href = "dashboard.html";
+          window.location.href = "/dashboard";
         }).catch(function (fehler) { zeigeFehler("login-fehler", fehler.message); });
       });
     }
@@ -147,7 +147,7 @@ var MS_GOOGLE_CLIENT_ID = "117777636536-nd77bnlv9co4l7g8cbn6de0q8uhj3njt.apps.go
 
     var konto = D.angemeldet() ? D.konten()[0] : null;
     if (!konto) {
-      window.location.replace("login.html");
+      window.location.replace("/login");
       return;
     }
 
@@ -169,7 +169,7 @@ var MS_GOOGLE_CLIENT_ID = "117777636536-nd77bnlv9co4l7g8cbn6de0q8uhj3njt.apps.go
     document.querySelectorAll("[data-logout]").forEach(function (btn) {
       btn.addEventListener("click", function () {
         D.abmelden().then(function () {
-          window.location.href = "login.html";
+          window.location.href = "/login";
         });
       });
     });
@@ -182,9 +182,6 @@ var MS_GOOGLE_CLIENT_ID = "117777636536-nd77bnlv9co4l7g8cbn6de0q8uhj3njt.apps.go
     function offeneTickets() {
       return konto.tickets.filter(function (t) { return t.status !== "Geschlossen"; }).length;
     }
-    function offeneAuftraege() {
-      return konto.auftraege.filter(function (a) { return a.status === "Offen" || a.status === "In Arbeit"; }).length;
-    }
     function ungeleseneNachrichten() {
       return konto.nachrichten.filter(function (n) { return n.von !== "ich" && !n.gelesen; }).length;
     }
@@ -192,7 +189,6 @@ var MS_GOOGLE_CLIENT_ID = "117777636536-nd77bnlv9co4l7g8cbn6de0q8uhj3njt.apps.go
       var werte = {
         projekte: laufendeProjekte(),
         tickets: offeneTickets(),
-        auftraege: offeneAuftraege(),
         nachrichten: ungeleseneNachrichten()
       };
       Object.keys(werte).forEach(function (name) {
@@ -207,7 +203,7 @@ var MS_GOOGLE_CLIENT_ID = "117777636536-nd77bnlv9co4l7g8cbn6de0q8uhj3njt.apps.go
 
     /* ----- Routing über den Hash, damit Zurück im Browser funktioniert ----- */
 
-    var HAUPTROUTEN = ["uebersicht", "projekte", "auftraege", "tickets", "nachrichten", "konto"];
+    var HAUPTROUTEN = ["uebersicht", "projekte", "tickets", "nachrichten", "konto"];
 
     function navigiere(pfad) {
       if (location.hash === "#" + pfad) route();
@@ -528,22 +524,6 @@ var MS_GOOGLE_CLIENT_ID = "117777636536-nd77bnlv9co4l7g8cbn6de0q8uhj3njt.apps.go
       halter.appendChild(hinweis);
     }
 
-    /* ----- Aufträge ----- */
-
-    function renderAuftraege() {
-      var liste = document.getElementById("auftraege-liste");
-      liste.innerHTML = "";
-      if (!konto.auftraege.length) {
-        liste.appendChild(leerZeile("Noch keine Aufträge. Stell dir auf der Preisseite dein Paket zusammen."));
-        return;
-      }
-      konto.auftraege.forEach(function (a) {
-        var betrag = document.createElement("span");
-        betrag.textContent = a.betrag || "";
-        liste.appendChild(zeile(a.titel, "Bestellt am " + (a.datum || "–"), [betrag, pill(a.status)], null));
-      });
-    }
-
     /* ----- Tickets ----- */
 
     function renderTicketListe() {
@@ -800,7 +780,6 @@ var MS_GOOGLE_CLIENT_ID = "117777636536-nd77bnlv9co4l7g8cbn6de0q8uhj3njt.apps.go
 
     renderUebersicht();
     renderProjekteListe();
-    renderAuftraege();
     renderTicketListe();
     renderChat();
     setzeBadges();

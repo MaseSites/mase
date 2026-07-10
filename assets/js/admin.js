@@ -1,4 +1,4 @@
-/* masesites Admin-Bereich: Kunden, Projekte, Aufträge, Tickets, Nachrichten,
+/* masesites Admin-Bereich: Kunden, Projekte, Tickets, Nachrichten,
    KI-Chats, Mitarbeiter und Seiten-Protokoll. Baut auf daten.js auf.
    Alle Daten liegen verschlüsselt in der Datenbank auf dem Server; die
    Anmeldung läuft über eine Server-Sitzung. Das Startpasswort erzeugt der
@@ -72,7 +72,7 @@
 
   /* ---------- Routing über den Hash ---------- */
 
-  var HAUPTROUTEN = ["uebersicht", "kunden", "projekte", "auftraege", "tickets", "nachrichten", "ki", "mitarbeiter", "protokoll", "einstellungen"];
+  var HAUPTROUTEN = ["uebersicht", "kunden", "projekte", "tickets", "nachrichten", "ki", "mitarbeiter", "protokoll", "einstellungen"];
   var neuProjektVorwahl = "";
 
   function navigiere(pfad) {
@@ -180,13 +180,6 @@
   function alleKonten() {
     return D.konten().map(D.normalisiereKonto);
   }
-  function alleAuftraege() {
-    var liste = [];
-    alleKonten().forEach(function (k) {
-      k.auftraege.forEach(function (a, i) { liste.push({ konto: k, index: i, auftrag: a }); });
-    });
-    return liste;
-  }
   function alleTickets() {
     var liste = [];
     alleKonten().forEach(function (k) {
@@ -235,7 +228,6 @@
     var werte = {
       kunden: alleKonten().length,
       projekte: alleProjekte().filter(function (e) { return e.projekt.schritt < D.SCHRITTE.length - 1; }).length,
-      auftraege: alleAuftraege().filter(function (e) { return e.auftrag.status === "Offen" || e.auftrag.status === "In Arbeit"; }).length,
       tickets: alleTickets().filter(function (e) { return e.ticket.status === "Offen"; }).length,
       nachrichten: alleKonten().filter(function (k) { return ungeleseneVonKunde(k) > 0; }).length,
       ki: kiGruppen().length,
@@ -481,22 +473,6 @@
     }
     tkarte.appendChild(tliste);
     halter.appendChild(tkarte);
-
-    /* Aufträge */
-    var akarte = el("div", "dash-card schlank");
-    var akopf = el("div", "card-head");
-    akopf.appendChild(el("h3", "", "Aufträge"));
-    akarte.appendChild(akopf);
-    var aliste = el("ul", "zeilen-liste");
-    if (!k.auftraege.length) {
-      aliste.appendChild(leerZeile("Keine Aufträge."));
-    } else {
-      k.auftraege.forEach(function (a) {
-        aliste.appendChild(zeile(a.titel, "Bestellt am " + (a.datum || "–"), [el("span", "", a.betrag || ""), pill(a.status)], null));
-      });
-    }
-    akarte.appendChild(aliste);
-    halter.appendChild(akarte);
   }
 
   /* ---------- Projekte ---------- */
@@ -739,55 +715,6 @@
     }
     halter.appendChild(ukarte);
   }
-
-  /* ---------- Aufträge ---------- */
-
-  function renderAuftraege() {
-    var tbody = document.getElementById("auftraege-tabelle");
-    var filter = document.getElementById("auftrag-filter").value;
-    tbody.innerHTML = "";
-    var liste = alleAuftraege();
-    if (filter === "offen") {
-      liste = liste.filter(function (e) { return e.auftrag.status === "Offen" || e.auftrag.status === "In Arbeit"; });
-    }
-    if (!liste.length) {
-      leerTabelle(tbody, 5, filter === "offen" ? "Keine offenen Aufträge." : "Noch keine Aufträge.");
-      return;
-    }
-    liste.forEach(function (e) {
-      var tr = document.createElement("tr");
-      var kundeTd = document.createElement("td");
-      kundeTd.appendChild(el("b", "", D.anzeigeName(e.konto)));
-      tr.appendChild(kundeTd);
-      tr.appendChild(el("td", "", e.auftrag.titel));
-      tr.appendChild(el("td", "klein", e.auftrag.betrag || "–"));
-      tr.appendChild(el("td", "klein", e.auftrag.datum || "–"));
-
-      var statusTd = document.createElement("td");
-      var select = document.createElement("select");
-      select.className = "mini-select";
-      D.AUFTRAG_STATUS.forEach(function (s) {
-        var opt = document.createElement("option");
-        opt.value = s;
-        opt.textContent = s;
-        if (s === e.auftrag.status) opt.selected = true;
-        select.appendChild(opt);
-      });
-      select.addEventListener("change", function () {
-        D.aendereKonto(e.konto.email, function (k) {
-          if (k.auftraege[e.index]) k.auftraege[e.index].status = select.value;
-        });
-        adminLog("Auftrag-Status geändert", e.konto.email + ": " + e.auftrag.titel + " zu " + select.value);
-        renderBadges();
-        renderUebersicht();
-        renderAuftraege();
-      });
-      statusTd.appendChild(select);
-      tr.appendChild(statusTd);
-      tbody.appendChild(tr);
-    });
-  }
-  document.getElementById("auftrag-filter").addEventListener("change", renderAuftraege);
 
   /* ---------- Tickets ---------- */
 
@@ -1439,7 +1366,6 @@
     renderUebersicht();
     renderKunden();
     renderProjekteTabelle();
-    renderAuftraege();
     renderTickets();
     renderInbox();
     renderThread();

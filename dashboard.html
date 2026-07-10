@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dashboard | masesites</title>
-  <meta name="description" content="Dein masesites-Kundenportal: Projekte, Aufträge, Tickets und Nachrichten an einem Ort.">
+  <meta name="description" content="Dein masesites-Kundenportal: Projekte, Tickets und Nachrichten an einem Ort.">
   <meta name="robots" content="noindex">
   <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -16,11 +16,11 @@
 
   <header class="app-top">
     <div class="app-top-inner">
-      <a class="logo" href="index.html" aria-label="masesites, zur Startseite">
+      <a class="logo" href="/" aria-label="masesites, zur Startseite">
         masesites<span class="app-pill">Kundenportal</span>
       </a>
       <div class="app-top-rechts">
-        <a class="app-top-link" href="index.html">Zur Website</a>
+        <a class="app-top-link" href="/">Zur Website</a>
         <span class="app-top-trenner" aria-hidden="true"></span>
         <span class="app-user">
           <span class="side-avatar" data-konto-avatar aria-hidden="true"></span>
@@ -55,11 +55,6 @@
               Projekte
               <span class="side-badge" data-badge="projekte"></span>
             </button>
-            <button class="side-item" type="button" data-route="auftraege">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
-              Aufträge
-              <span class="side-badge" data-badge="auftraege"></span>
-            </button>
 
             <span class="side-label">Support</span>
             <button class="side-item" type="button" data-route="tickets">
@@ -81,7 +76,7 @@
           </nav>
 
           <div class="side-foot">
-            <a class="btn btn-ghost" href="preise.html">Neues Projekt <span class="arrow">→</span></a>
+            <a class="btn btn-ghost" href="/preise">Neues Projekt <span class="arrow">→</span></a>
             <button class="konto-abmelden" type="button" data-logout>Abmelden</button>
           </div>
         </aside>
@@ -105,10 +100,6 @@
               <button class="kennzahl" type="button" data-route="tickets">
                 <b data-kz="tickets">0</b>
                 <small>Offene Tickets</small>
-              </button>
-              <button class="kennzahl" type="button" data-route="auftraege">
-                <b data-kz="auftraege">0</b>
-                <small>Offene Aufträge</small>
               </button>
               <button class="kennzahl" type="button" data-route="nachrichten">
                 <b data-kz="nachrichten">0</b>
@@ -157,7 +148,7 @@
                 <p>Alle Projekte mit Stand, Fortschritt und Vorschau.</p>
               </div>
               <div class="panel-aktionen">
-                <a class="btn btn-ghost klein" href="preise.html">Neues Projekt anfragen <span class="arrow">→</span></a>
+                <a class="btn btn-ghost klein" href="/preise">Neues Projekt anfragen <span class="arrow">→</span></a>
               </div>
             </div>
             <div class="dash-card schlank">
@@ -169,22 +160,6 @@
           <section class="dash-panel" id="panel-projekt-detail" aria-label="Projekt">
             <button class="zurueck" type="button" data-route="projekte">← Alle Projekte</button>
             <div id="projekt-detail"></div>
-          </section>
-
-          <!-- ===== Aufträge ===== -->
-          <section class="dash-panel" id="panel-auftraege" aria-label="Aufträge">
-            <div class="panel-kopf">
-              <div>
-                <h1>Aufträge</h1>
-                <p>Alle Pakete und Zusatzleistungen mit ihrem aktuellen Status.</p>
-              </div>
-              <div class="panel-aktionen">
-                <a class="btn btn-ghost klein" href="preise.html">Paket zusammenstellen <span class="arrow">→</span></a>
-              </div>
-            </div>
-            <div class="dash-card schlank">
-              <ul class="zeilen-liste" id="auftraege-liste"></ul>
-            </div>
           </section>
 
           <!-- ===== Tickets: Liste ===== -->
@@ -322,9 +297,9 @@
     <div class="app-wrap">
       <span>© <span data-year>2026</span> masesites</span>
       <span class="legal">
-        <a href="kontakt.html">Kontakt</a>
-        <a href="impressum.html">Impressum</a>
-        <a href="datenschutz.html">Datenschutz</a>
+        <a href="/kontakt">Kontakt</a>
+        <a href="/impressum">Impressum</a>
+        <a href="/datenschutz">Datenschutz</a>
       </span>
     </div>
   </footer>

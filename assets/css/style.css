@@ -208,10 +208,16 @@ section.tight { padding: 56px 0; }
 /* ---------- Hero ---------- */
 
 .hero {
-  padding: calc(var(--header-h) + 56px) 0 40px;
+  min-height: 100vh;
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  align-items: safe center;
+  padding: calc(var(--header-h) + 40px) 0 92px;
   position: relative;
   overflow: hidden;
 }
+.hero > .wrap { width: 100%; }
 
 .hero-bg {
   position: absolute; inset: 0; pointer-events: none;
@@ -253,6 +259,33 @@ section.tight { padding: 56px 0; }
 
 .trust-note { font-size: 0.9rem; color: var(--ink-faint); display: flex; align-items: center; gap: 8px; }
 .trust-note svg { width: 15px; height: 15px; flex: none; }
+
+/* ---------- Scroll-Hinweis: lädt zum Weiterscrollen ein ---------- */
+
+.scroll-cue {
+  position: absolute;
+  left: 50%;
+  bottom: 24px;
+  transform: translateX(-50%);
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  color: var(--ink-faint);
+  font-size: 0.74rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  z-index: 4;
+  transition: opacity 0.45s ease, color 0.25s ease;
+}
+.scroll-cue:hover { color: var(--ink); }
+.scroll-cue svg { width: 22px; height: 22px; animation: cue-bounce 1.9s var(--ease-out) infinite; }
+
+@keyframes cue-bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(7px); }
+}
 
 /* ---------- Browser-Mockup / Live-Preview ---------- */
 
@@ -1193,12 +1226,18 @@ html.js .hero .lead { transition-delay: 0.05s; }
 html.js .hero .hero-ctas { transition-delay: 0.1s; }
 html.js .hero .trust-note { transition-delay: 0.15s; }
 html.js .preview-shell { transition-delay: 0.08s; }
+html.js .scroll-cue { opacity: 0; }
 
 body.hero-in .hero h1,
 body.hero-in .hero .lead,
 body.hero-in .hero .hero-ctas,
 body.hero-in .hero .trust-note,
 body.hero-in .preview-shell { opacity: 1; transform: none; }
+/* Der Scroll-Hinweis blendet nach dem Hero-Auftritt ein und beim ersten
+   Scrollen wieder aus. Getrennt gehalten, damit die Zentrier-Transformation
+   (translateX) erhalten bleibt. */
+body.hero-in .scroll-cue { opacity: 1; }
+body.gescrollt .scroll-cue { opacity: 0; pointer-events: none; }
 
 @media (prefers-reduced-motion: reduce) {
   html.js .hero h1,
@@ -1206,6 +1245,7 @@ body.hero-in .preview-shell { opacity: 1; transform: none; }
   html.js .hero .hero-ctas,
   html.js .hero .trust-note,
   html.js .preview-shell { opacity: 1; transform: none; transition: none; }
+  html.js .scroll-cue { opacity: 1; }
 }
 
 /* ---------- Responsive ---------- */
@@ -1234,7 +1274,8 @@ body.hero-in .preview-shell { opacity: 1; transform: none; }
   .form-field.full { grid-column: auto; }
   .about-teaser { padding: 28px; }
   .big-cta { padding: 52px 24px; }
-  .hero { padding-top: calc(var(--header-h) + 32px); }
+  .hero { align-items: stretch; align-items: flex-start; padding-top: calc(var(--header-h) + 28px); padding-bottom: 72px; }
+  .scroll-cue { display: none; }
   .preview-site { min-height: 330px; }
   .ps-hero { height: 140px; }
   .ps-cards { grid-template-columns: repeat(3, 1fr); }

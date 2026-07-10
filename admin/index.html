@@ -15,11 +15,11 @@
 
   <header class="app-top">
     <div class="app-top-inner">
-      <a class="logo" href="../index.html" aria-label="masesites, zur Startseite">
+      <a class="logo" href="/" aria-label="masesites, zur Startseite">
         masesites<span class="app-pill">Admin</span>
       </a>
       <div class="app-top-rechts">
-        <a class="app-top-link" href="../index.html">Zur Website</a>
+        <a class="app-top-link" href="/">Zur Website</a>
         <button class="konto-abmelden hidden" type="button" id="admin-abmelden">Abmelden</button>
       </div>
     </div>
@@ -40,7 +40,7 @@
             <button class="btn btn-primary" type="submit">Anmelden <span class="arrow">→</span></button>
           </form>
         </div>
-        <p class="auth-note">Nur für masesites. Zurück zur <a href="../index.html">Website</a>.</p>
+        <p class="auth-note">Nur für masesites. Zurück zur <a href="/">Website</a>.</p>
       </div>
     </div>
   </section>
@@ -77,11 +77,6 @@
               Projekte
               <span class="side-badge" data-badge="projekte"></span>
             </button>
-            <button class="side-item" type="button" data-route="auftraege">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
-              Aufträge
-              <span class="side-badge" data-badge="auftraege"></span>
-            </button>
 
             <span class="side-label">Kommunikation</span>
             <button class="side-item" type="button" data-route="tickets">
@@ -117,7 +112,7 @@
           </nav>
 
           <div class="side-foot">
-            <a class="btn btn-ghost" href="../mcs/index.html">Mitarbeiter-Portal <span class="arrow">→</span></a>
+            <a class="btn btn-ghost" href="/mcs">Mitarbeiter-Portal <span class="arrow">→</span></a>
             <button class="konto-abmelden" type="button" data-admin-logout>Abmelden</button>
           </div>
         </aside>
@@ -278,33 +273,6 @@
             </div>
           </section>
 
-          <!-- ===== Aufträge ===== -->
-          <section class="dash-panel" id="panel-auftraege" aria-label="Aufträge">
-            <div class="panel-kopf">
-              <div>
-                <h1>Aufträge</h1>
-                <p>Alle Aufträge über alle Kunden. Der Status lässt sich direkt umstellen, der Kunde sieht die Änderung sofort.</p>
-              </div>
-            </div>
-            <div class="dash-card schlank">
-              <div class="filter-zeile">
-                <label for="auftrag-filter" class="klein-label">Anzeigen:</label>
-                <select class="mini-select" id="auftrag-filter">
-                  <option value="offen">Nur offene und laufende</option>
-                  <option value="alle">Alle</option>
-                </select>
-              </div>
-              <div class="tab-wrap">
-                <table class="dash-tabelle">
-                  <thead>
-                    <tr><th>Kunde</th><th>Auftrag</th><th>Betrag</th><th>Datum</th><th>Status</th></tr>
-                  </thead>
-                  <tbody id="auftraege-tabelle"></tbody>
-                </table>
-              </div>
-            </div>
-          </section>
-
           <!-- ===== Tickets: Liste ===== -->
           <section class="dash-panel" id="panel-tickets" aria-label="Tickets">
             <div class="panel-kopf">
@@ -390,7 +358,7 @@
                   <tbody id="mitarbeiter-tabelle"></tbody>
                 </table>
               </div>
-              <p class="dash-hinweis">Mitarbeiter melden sich im <a href="../mcs/index.html">Mitarbeiter-Portal unter /mcs</a> an und sehen dort nur ihre zugewiesenen Kunden.</p>
+              <p class="dash-hinweis">Mitarbeiter melden sich im <a href="/mcs">Mitarbeiter-Portal unter /mcs</a> an und sehen dort nur ihre zugewiesenen Kunden.</p>
             </div>
           </section>
 
@@ -506,8 +474,8 @@
     <div class="app-wrap">
       <span>© <span data-year>2026</span> masesites</span>
       <span class="legal">
-        <a href="../index.html">Startseite</a>
-        <a href="../impressum.html">Impressum</a>
+        <a href="/">Startseite</a>
+        <a href="/impressum">Impressum</a>
       </span>
     </div>
   </footer>

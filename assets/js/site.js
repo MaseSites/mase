@@ -9,7 +9,9 @@
 
   var header = document.querySelector(".site-header");
   function onScroll() {
-    if (header) header.classList.toggle("scrolled", window.scrollY > 24);
+    var abGescrollt = window.scrollY > 24;
+    if (header) header.classList.toggle("scrolled", abGescrollt);
+    document.body.classList.toggle("gescrollt", abGescrollt);
   }
   window.addEventListener("scroll", onScroll, { passive: true });
   onScroll();
@@ -78,7 +80,7 @@
     {
       match: /(preis|kost|chf|teuer|budget|offert)/i,
       reply: "Gute Frage! Eine neue Website gibt es ab CHF 750.–, die Überarbeitung einer bestehenden Seite ab CHF 250.–. Der KI-Bot kostet CHF 200.– Einrichtung plus CHF 40.– pro Monat. Auf der Preisseite kannst du dir dein Paket selbst zusammenklicken, und vor Projektstart bekommst du eine Offerte mit festem Preis.",
-      link: { href: "preise.html", label: "Zu den Preisen →" }
+      link: { href: "/preise", label: "Zu den Preisen →" }
     },
     {
       match: /(einbau|integr|bestehend|nachträglich|wordpress|wix|shopify)/i,
@@ -103,7 +105,7 @@
     {
       match: /(website|webseite|homepage|projekt|starten|angebot)/i,
       reply: "Wir bauen dir eine persönliche, professionelle Website, massgeschneidert für deine Branche, mobil optimiert und auf Wunsch mit KI-Bot. Erzähl uns kurz von deinem Projekt!",
-      link: { href: "kontakt.html", label: "Projekt starten →" }
+      link: { href: "/kontakt", label: "Projekt starten →" }
     },
     {
       match: /(hallo|hi|hoi|hey|grüezi|guten tag|servus|moin)/i,
@@ -121,7 +123,7 @@
     for (var i = 0; i < BOT_RULES.length; i++) {
       if (BOT_RULES[i].match.test(text)) return BOT_RULES[i];
     }
-    return { reply: BOT_FALLBACK, link: { href: "kontakt.html", label: "Zum Kontaktformular →" } };
+    return { reply: BOT_FALLBACK, link: { href: "/kontakt", label: "Zum Kontaktformular →" } };
   }
 
   /* Bot-Chats für den Admin-Bereich aufzeichnen: gehen an den Server und
