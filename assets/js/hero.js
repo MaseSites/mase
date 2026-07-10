@@ -230,51 +230,6 @@
   setActiveChip(BRANDS[0].id);
   if ("requestIdleCallback" in window) requestIdleCallback(preload); else setTimeout(preload, 1200);
 
-  /* ---------- Hero-Auftritt: bewusst gestaffelt, nur beim Laden (nicht mausgesteuert) ---------- */
-
-  function revealHero() { document.body.classList.add("hero-in"); }
-
-  /* ---------- Intro-Sequenz (< 2 s, nur 1× pro Session) ---------- */
-
-  var INTRO_KEY = "ms_intro_seen";
-  var canIntro = !reducedMotion && !sessionStorage.getItem(INTRO_KEY);
-
-  if (canIntro) {
-    sessionStorage.setItem(INTRO_KEY, "1");
-    var overlay = document.createElement("div");
-    overlay.className = "intro-overlay";
-    overlay.setAttribute("aria-hidden", "true");
-    overlay.innerHTML =
-      '<div class="intro-stage">' +
-        '<div class="intro-word">mase<i>sites</i></div>' +
-        '<div class="intro-monitor">' +
-          '<div class="intro-screen">' +
-            '<div class="intro-frame">' +
-              '<div class="intro-block b1"></div>' +
-              '<div class="intro-block b2"></div>' +
-              '<div class="intro-block b3"></div>' +
-              '<div class="intro-block b4"></div>' +
-            '</div>' +
-          '</div>' +
-          '<div class="intro-stand"></div>' +
-          '<div class="intro-base"></div>' +
-        '</div>' +
-      '</div>';
-    document.body.appendChild(overlay);
-    document.body.style.overflow = "hidden";
-
-    /* Monitor + Bausteine montiert, dann löst sich das Overlay schnell in den Hero auf,
-       und der Hero-Inhalt steigt bewusst gestaffelt nach */
-    setTimeout(function () {
-      overlay.classList.add("done");
-      document.body.style.overflow = "";
-      revealHero();
-      setTimeout(function () { overlay.remove(); }, 420);
-    }, 1100);
-  } else {
-    revealHero();
-  }
-
   window.addEventListener("beforeunload", stopAuto);
   startAuto();
 })();

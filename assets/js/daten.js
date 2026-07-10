@@ -261,6 +261,7 @@ window.MSDaten = (function () {
     k.projekte = k.projekte || [];
     k.projekte.forEach(function (p) {
       p.aktivitaet = p.aktivitaet || [];
+      p.todos = p.todos || [];
       p.paket = p.paket || "";
       p.vorschau = p.vorschau || "";
       p.schritt = p.schritt || 0;

@@ -489,6 +489,90 @@ var MS_GOOGLE_CLIENT_ID = "117777636536-nd77bnlv9co4l7g8cbn6de0q8uhj3njt.apps.go
       }
       halter.appendChild(vkarte);
 
+      /* Wunschliste: hier trägt der Kunde ohne Bedenken alle Wünsche zum Projekt ein */
+      p.todos = p.todos || [];
+      var wkarte = document.createElement("div");
+      wkarte.className = "dash-card wunsch-karte";
+      var wkopf = document.createElement("div");
+      wkopf.className = "card-head";
+      var wh3 = document.createElement("h3");
+      wh3.textContent = "Meine Wünsche";
+      wkopf.appendChild(wh3);
+      wkarte.appendChild(wkopf);
+      var whint = document.createElement("p");
+      whint.className = "dash-hinweis";
+      whint.textContent = "Schreib alles rein, was dir zu diesem Projekt wichtig ist – ganz ohne Bedenken. Dein Team sieht deine Wünsche sofort.";
+      wkarte.appendChild(whint);
+      var wliste = document.createElement("ul");
+      wliste.className = "wunsch-liste";
+      wkarte.appendChild(wliste);
+
+      function zeichneWuensche() {
+        wliste.innerHTML = "";
+        if (!p.todos.length) {
+          wliste.appendChild(leerZeile("Noch keine Wünsche. Trag unten deinen ersten ein."));
+          return;
+        }
+        p.todos.forEach(function (t, i) {
+          var li = document.createElement("li");
+          li.className = "wunsch-item" + (t.erledigt ? " erledigt" : "");
+          var check = document.createElement("button");
+          check.type = "button";
+          check.className = "wunsch-check";
+          check.setAttribute("aria-label", t.erledigt ? "Als offen markieren" : "Als erledigt markieren");
+          if (t.erledigt) check.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>';
+          check.addEventListener("click", function () {
+            t.erledigt = !t.erledigt;
+            speichern();
+            zeichneWuensche();
+          });
+          var text = document.createElement("span");
+          text.className = "wunsch-text";
+          text.textContent = t.text;
+          var del = document.createElement("button");
+          del.type = "button";
+          del.className = "wunsch-del";
+          del.setAttribute("aria-label", "Wunsch entfernen");
+          del.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
+          del.addEventListener("click", function () {
+            p.todos.splice(i, 1);
+            speichern();
+            zeichneWuensche();
+          });
+          li.appendChild(check);
+          li.appendChild(text);
+          li.appendChild(del);
+          wliste.appendChild(li);
+        });
+      }
+      zeichneWuensche();
+
+      var wform = document.createElement("form");
+      wform.className = "wunsch-form";
+      var winput = document.createElement("input");
+      winput.type = "text";
+      winput.maxLength = 400;
+      winput.placeholder = "Neuer Wunsch, z. B. „Bitte mehr Bilder auf der Startseite“";
+      winput.setAttribute("aria-label", "Neuer Wunsch");
+      var wknopf = document.createElement("button");
+      wknopf.type = "submit";
+      wknopf.className = "btn btn-primary klein";
+      wknopf.textContent = "Hinzufügen";
+      wform.appendChild(winput);
+      wform.appendChild(wknopf);
+      wform.addEventListener("submit", function (e) {
+        e.preventDefault();
+        var text = winput.value.trim();
+        if (!text) return;
+        p.todos.push({ text: text, erledigt: false, zeit: Date.now() });
+        winput.value = "";
+        speichern();
+        zeichneWuensche();
+        winput.focus();
+      });
+      wkarte.appendChild(wform);
+      halter.appendChild(wkarte);
+
       /* Änderungen dieses Projekts */
       var akarte = document.createElement("div");
       akarte.className = "dash-card schlank";

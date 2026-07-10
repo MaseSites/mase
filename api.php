@@ -757,8 +757,21 @@ function saeubereProjekte($liste): array
                 'datum' => s($a['datum'] ?? '', 10),
                 'zeit' => nr($a['zeit'] ?? 0),
             ], array_slice(array_values($akt), 0, 500)),
+            'todos' => saeubereTodos($p['todos'] ?? []),
         ];
     }, array_slice(array_values($liste), 0, 100));
+}
+/* Wunschliste (ToDos) eines Projekts – die pflegt der Kunde selbst. */
+function saeubereTodos($liste): array
+{
+    if (!is_array($liste)) {
+        return [];
+    }
+    return array_map(fn($t) => [
+        'text' => s($t['text'] ?? '', 400),
+        'erledigt' => !empty($t['erledigt']),
+        'zeit' => nr($t['zeit'] ?? 0),
+    ], array_slice(array_values($liste), 0, 200));
 }
 function saeubereAuftraege($liste): array
 {
@@ -1153,6 +1166,20 @@ route('PUT', '/api/ich', 'kunde', function ($p, $body, $sitzung) {
     $konto['telefon'] = s($neu['telefon'] ?? '', 40);
     $konto['tickets'] = vereineTickets($konto['tickets'], saeubereTickets($neu['tickets'] ?? []));
     $konto['nachrichten'] = vereineNachrichten($konto['nachrichten'], saeubereNachrichten($neu['nachrichten'] ?? []));
+    /* Wünsche/ToDos darf der Kunde selbst pflegen – aber nur diese, keine anderen
+       Projektfelder (Titel, Schritt, Vorschau bleiben Sache des Teams). */
+    $eingehend = [];
+    foreach (is_array($neu['projekte'] ?? null) ? $neu['projekte'] : [] as $pr) {
+        if (is_array($pr) && !empty($pr['id'])) {
+            $eingehend[s($pr['id'], 16)] = saeubereTodos($pr['todos'] ?? []);
+        }
+    }
+    $konto['projekte'] = array_map(function ($pr) use ($eingehend) {
+        if (is_array($pr) && isset($pr['id']) && array_key_exists($pr['id'], $eingehend)) {
+            $pr['todos'] = $eingehend[$pr['id']];
+        }
+        return $pr;
+    }, is_array($konto['projekte'] ?? null) ? $konto['projekte'] : []);
     speichereKunde($konto);
     antwortJson(200, ['ok' => true]);
 });

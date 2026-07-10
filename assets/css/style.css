@@ -211,13 +211,29 @@ section.tight { padding: 56px 0; }
   min-height: 100vh;
   min-height: 100svh;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  align-items: safe center;
-  padding: calc(var(--header-h) + 40px) 0 92px;
+  justify-content: center;
+  justify-content: safe center;
+  padding: calc(var(--header-h) + 22px) 0 74px;
   position: relative;
   overflow: hidden;
 }
-.hero > .wrap { width: 100%; }
+.hero-inner {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(14px, 2.6vh, 26px);
+  text-align: center;
+}
+.hero-kopf { max-width: 640px; }
+.hero .preview-shell { width: min(720px, 92vw); }
+/* Die Beispielseite füllt im Vollbild-Hero möglichst viel Höhe */
+.hero .preview-site { min-height: clamp(300px, 42vh, 460px); }
+.hero .preview-site .ps-inner { flex: 1 1 auto; }
+.hero .preview-site .ps-hero { flex: 1 1 auto; min-height: 148px; }
+.hero-chips { width: 100%; }
 
 .hero-bg {
   position: absolute; inset: 0; pointer-events: none;
@@ -234,7 +250,7 @@ section.tight { padding: 56px 0; }
   position: relative;
 }
 
-.hero h1 { margin-bottom: 20px; font-size: clamp(1.7rem, 4.4vw, 3rem); line-height: 1.14; }
+.hero-kopf h1 { margin-bottom: 8px; font-size: clamp(1.4rem, 3.2vw, 2.35rem); line-height: 1.16; }
 /* Zweite Zeile bleibt zusammen, damit die Headline immer genau zwei Zeilen hat,
    egal welches rotierende Wort gerade steht. */
 .hero-zeile2 { white-space: nowrap; }
@@ -253,7 +269,7 @@ section.tight { padding: 56px 0; }
 }
 .rotor .rotor-word.out { opacity: 0; transform: translateY(14px); }
 
-.hero .lead { margin-bottom: 30px; }
+.hero-kopf .lead { margin: 0; color: var(--ink-soft); }
 
 .hero-ctas { display: flex; flex-wrap: wrap; gap: 14px; margin-bottom: 20px; }
 
@@ -1116,83 +1132,6 @@ body.builder-active .widget-panel { bottom: 186px; }
   margin: 20px 0;
 }
 
-/* ---------- Intro-Overlay ---------- */
-
-.intro-overlay {
-  position: fixed; inset: 0; z-index: 100;
-  background: var(--bg);
-  display: flex; align-items: center; justify-content: center;
-  transition: opacity 0.45s ease;
-}
-.intro-overlay.done { opacity: 0; pointer-events: none; }
-
-.intro-stage { position: relative; width: min(420px, 80vw); }
-
-.intro-word {
-  text-align: center;
-  font-family: var(--font-sans);
-  font-weight: 700;
-  font-size: 1.6rem;
-  letter-spacing: -0.02em;
-  margin-bottom: 26px;
-  opacity: 0;
-  animation: intro-word 0.6s ease 0.15s forwards;
-}
-.intro-word i { color: var(--accent); font-style: normal; }
-
-@keyframes intro-word { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
-
-/* Monitor-Rahmen: Bildschirm + Standfuss + Sockel */
-.intro-monitor { opacity: 0; animation: intro-frame 0.55s ease 0.05s forwards; }
-.intro-screen {
-  background: #201A14;
-  border-radius: 22px;
-  padding: 16px;
-  box-shadow: var(--shadow-l);
-}
-.intro-stand {
-  width: 78px; height: 24px;
-  margin: -1px auto 0;
-  background: linear-gradient(#2A211A, #1B1511);
-  clip-path: polygon(15% 0, 85% 0, 100% 100%, 0 100%);
-  opacity: 0;
-  animation: intro-fadein 0.35s ease 0.2s forwards;
-}
-.intro-base {
-  width: 160px; height: 9px;
-  margin: 0 auto;
-  border-radius: 999px;
-  background: #241D16;
-  opacity: 0;
-  animation: intro-fadein 0.35s ease 0.3s forwards;
-}
-@keyframes intro-fadein { to { opacity: 1; } }
-
-.intro-frame {
-  background: var(--card);
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  padding: 12px;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-  opacity: 0;
-  animation: intro-screen-on 0.45s ease 0.32s forwards;
-}
-@keyframes intro-frame { from { opacity: 0; transform: scale(0.92); } to { opacity: 1; transform: none; } }
-@keyframes intro-screen-on { from { opacity: 0; filter: brightness(2.4); } to { opacity: 1; filter: none; } }
-
-.intro-block { border-radius: 10px; opacity: 0; }
-.intro-block.b1 { grid-column: 1 / -1; height: 84px; background: linear-gradient(120deg, var(--accent-soft), var(--bg-warm)); animation: block-in 0.42s cubic-bezier(0.22, 0.9, 0.3, 1.2) 0.3s forwards; --fx: -60px; --fy: -40px; }
-.intro-block.b2 { height: 46px; background: var(--bg-warm); animation: block-in 0.42s cubic-bezier(0.22, 0.9, 0.3, 1.2) 0.42s forwards; --fx: -70px; --fy: 30px; }
-.intro-block.b3 { height: 46px; background: var(--accent); animation: block-in 0.42s cubic-bezier(0.22, 0.9, 0.3, 1.2) 0.52s forwards; --fx: 70px; --fy: 30px; }
-.intro-block.b4 { grid-column: 1 / -1; height: 30px; background: var(--ink); border-radius: 999px; width: 55%; justify-self: center; animation: block-in 0.42s cubic-bezier(0.22, 0.9, 0.3, 1.2) 0.62s forwards; --fx: 0px; --fy: 60px; }
-
-@keyframes block-in {
-  from { opacity: 0; transform: translate(var(--fx), var(--fy)) scale(0.7); }
-  to { opacity: 1; transform: none; }
-}
-
 /* ---------- Scroll-Reveals ---------- */
 
 .reveal { opacity: 0; transform: translateY(28px) scale(0.985); transition: opacity 0.8s var(--ease-out), transform 0.8s var(--ease-out); }
@@ -1212,27 +1151,20 @@ body.builder-active .widget-panel { bottom: 186px; }
 /* ---------- Hero-Auftritt: bewusst gestaffelt, nur beim ersten Laden (nicht mausgesteuert) ----------
    Per Transition gelöst (nicht Animation): der Zielzustand opacity:1 gilt auch dann,
    wenn die Transition mal nicht läuft — der Hero kann nie unsichtbar hängen bleiben. */
-html.js .hero h1,
-html.js .hero .lead,
-html.js .hero .hero-ctas,
-html.js .hero .trust-note,
-html.js .preview-shell {
+html.js .hero-kopf,
+html.js .preview-shell,
+html.js .hero-chips {
   opacity: 0;
   transform: translateY(18px);
-  transition: opacity 0.5s var(--ease-out), transform 0.5s var(--ease-out);
+  transition: opacity 0.55s var(--ease-out), transform 0.55s var(--ease-out);
 }
-html.js .preview-shell { transform: translateY(20px) scale(0.99); transition-duration: 0.55s; }
-html.js .hero .lead { transition-delay: 0.05s; }
-html.js .hero .hero-ctas { transition-delay: 0.1s; }
-html.js .hero .trust-note { transition-delay: 0.15s; }
-html.js .preview-shell { transition-delay: 0.08s; }
+html.js .preview-shell { transform: translateY(22px) scale(0.99); transition-delay: 0.08s; }
+html.js .hero-chips { transition-delay: 0.18s; }
 html.js .scroll-cue { opacity: 0; }
 
-body.hero-in .hero h1,
-body.hero-in .hero .lead,
-body.hero-in .hero .hero-ctas,
-body.hero-in .hero .trust-note,
-body.hero-in .preview-shell { opacity: 1; transform: none; }
+body.hero-in .hero-kopf,
+body.hero-in .preview-shell,
+body.hero-in .hero-chips { opacity: 1; transform: none; }
 /* Der Scroll-Hinweis blendet nach dem Hero-Auftritt ein und beim ersten
    Scrollen wieder aus. Getrennt gehalten, damit die Zentrier-Transformation
    (translateX) erhalten bleibt. */
@@ -1240,11 +1172,9 @@ body.hero-in .scroll-cue { opacity: 1; }
 body.gescrollt .scroll-cue { opacity: 0; pointer-events: none; }
 
 @media (prefers-reduced-motion: reduce) {
-  html.js .hero h1,
-  html.js .hero .lead,
-  html.js .hero .hero-ctas,
-  html.js .hero .trust-note,
-  html.js .preview-shell { opacity: 1; transform: none; transition: none; }
+  html.js .hero-kopf,
+  html.js .preview-shell,
+  html.js .hero-chips { opacity: 1; transform: none; transition: none; }
   html.js .scroll-cue { opacity: 1; }
 }
 
@@ -1274,9 +1204,9 @@ body.gescrollt .scroll-cue { opacity: 0; pointer-events: none; }
   .form-field.full { grid-column: auto; }
   .about-teaser { padding: 28px; }
   .big-cta { padding: 52px 24px; }
-  .hero { align-items: stretch; align-items: flex-start; padding-top: calc(var(--header-h) + 28px); padding-bottom: 72px; }
+  .hero { padding-top: calc(var(--header-h) + 18px); padding-bottom: 56px; }
   .scroll-cue { display: none; }
-  .preview-site { min-height: 330px; }
+  .hero .preview-site { min-height: clamp(280px, 44vh, 380px); }
   .ps-hero { height: 140px; }
   .ps-cards { grid-template-columns: repeat(3, 1fr); }
   .footer-grid { grid-template-columns: 1fr; gap: 28px; }
@@ -1547,6 +1477,47 @@ body.gescrollt .scroll-cue { opacity: 0; pointer-events: none; }
 .dash-hinweis { margin-top: 14px; font-size: 0.84rem; color: var(--ink-faint); }
 .dash-hinweis .card-link { font-size: inherit; font-weight: 500; color: inherit; }
 .dash-hinweis .card-link:hover { color: var(--ink); }
+
+/* Dashboard: Wunschliste (ToDos) im Projekt */
+.wunsch-liste { list-style: none; display: flex; flex-direction: column; gap: 8px; margin: 12px 0 16px; }
+.wunsch-item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 11px 14px;
+  background: var(--bg-soft);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-m);
+}
+.wunsch-check {
+  flex: none; width: 22px; height: 22px;
+  border: 2px solid var(--line-strong); border-radius: 7px;
+  background: transparent; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  color: #fff; transition: background 0.2s ease, border-color 0.2s ease;
+}
+.wunsch-check svg { width: 13px; height: 13px; }
+.wunsch-item.erledigt .wunsch-check { background: var(--green); border-color: var(--green); }
+.wunsch-text { flex: 1; font-size: 0.95rem; color: var(--ink); word-break: break-word; }
+.wunsch-item.erledigt .wunsch-text { text-decoration: line-through; color: var(--ink-faint); }
+.wunsch-del {
+  flex: none; width: 30px; height: 30px; border: none; background: transparent;
+  color: var(--ink-faint); cursor: pointer; border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  transition: color 0.2s ease, background 0.2s ease;
+}
+.wunsch-del svg { width: 16px; height: 16px; }
+.wunsch-del:hover { color: #B4483F; background: var(--bg-warm); }
+.wunsch-form { display: flex; gap: 10px; }
+.wunsch-form input {
+  flex: 1; font-family: var(--font-sans); font-size: 0.95rem;
+  padding: 12px 14px; border: 1px solid var(--line-strong); border-radius: var(--radius-m);
+  background: var(--card); color: var(--ink);
+}
+.wunsch-form input:focus { outline: none; border-color: var(--ink-faint); }
+.wunsch-form .btn { flex: none; }
+@media (max-width: 560px) {
+  .wunsch-form { flex-direction: column; }
+  .wunsch-form .btn { width: 100%; justify-content: center; }
+}
 
 /* Dashboard: Konto */
 .konto-meta { list-style: none; display: grid; gap: 10px; }

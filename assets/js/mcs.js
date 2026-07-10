@@ -539,6 +539,41 @@
       ukarte.appendChild(ul);
     }
     halter.appendChild(ukarte);
+
+    /* Wünsche des Kunden (Wunschliste aus dem Kundenportal) */
+    p.todos = p.todos || [];
+    var wkarte = el("div", "dash-card wunsch-karte");
+    wkarte.appendChild(el("h3", "", "Wünsche des Kunden"));
+    var wliste = el("ul", "wunsch-liste");
+    function zeichneWuensche() {
+      wliste.innerHTML = "";
+      if (!p.todos.length) {
+        wliste.appendChild(leerZeile("Der Kunde hat noch keine Wünsche eingetragen."));
+        return;
+      }
+      p.todos.forEach(function (t, i) {
+        var li = el("li", "wunsch-item" + (t.erledigt ? " erledigt" : ""));
+        var check = el("button", "wunsch-check");
+        check.type = "button";
+        check.setAttribute("aria-label", t.erledigt ? "Als offen markieren" : "Als erledigt markieren");
+        if (t.erledigt) check.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>';
+        check.addEventListener("click", function () {
+          D.aendereKonto(email, function (x) {
+            x.projekte.forEach(function (pr) {
+              if (pr.id === id) { pr.todos = pr.todos || []; if (pr.todos[i]) pr.todos[i].erledigt = !pr.todos[i].erledigt; }
+            });
+          });
+          maLog("Kundenwunsch abgehakt", email + ": " + kurz(t.text, 60));
+          zeichneWuensche();
+        });
+        li.appendChild(check);
+        li.appendChild(el("span", "wunsch-text", t.text));
+        wliste.appendChild(li);
+      });
+    }
+    zeichneWuensche();
+    wkarte.appendChild(wliste);
+    halter.appendChild(wkarte);
   }
 
   /* ---------- Tickets ---------- */

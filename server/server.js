@@ -520,7 +520,16 @@ function saeubereProjekte(liste) {
     erstellt: s(p && p.erstellt, 10),
     aktivitaet: (Array.isArray(p && p.aktivitaet) ? p.aktivitaet : []).slice(0, 500).map((a) => ({
       text: s(a && a.text, 500), datum: s(a && a.datum, 10), zeit: nr(a && a.zeit)
-    }))
+    })),
+    todos: saeubereTodos(p && p.todos)
+  }));
+}
+/* Wunschliste (ToDos) eines Projekts – die pflegt der Kunde selbst. */
+function saeubereTodos(liste) {
+  return (Array.isArray(liste) ? liste : []).slice(0, 200).map((t) => ({
+    text: s(t && t.text, 400),
+    erledigt: !!(t && t.erledigt),
+    zeit: nr(t && t.zeit)
   }));
 }
 function saeubereAuftraege(liste) {
@@ -811,6 +820,17 @@ route("PUT", "/api/ich", "kunde", (req, res, p, body, sitzung) => {
   konto.telefon = s(neu.telefon, 40);
   konto.tickets = vereineTickets(konto.tickets, saeubereTickets(neu.tickets));
   konto.nachrichten = vereineNachrichten(konto.nachrichten, saeubereNachrichten(neu.nachrichten));
+  /* Wünsche/ToDos darf der Kunde selbst pflegen – aber nur diese, keine anderen
+     Projektfelder (Titel, Schritt, Vorschau bleiben Sache des Teams). */
+  if (Array.isArray(neu.projekte)) {
+    const eingehend = {};
+    neu.projekte.forEach((pr) => {
+      if (pr && pr.id) eingehend[s(pr.id, 16)] = saeubereTodos(pr.todos);
+    });
+    (konto.projekte || []).forEach((pr) => {
+      if (Object.prototype.hasOwnProperty.call(eingehend, pr.id)) pr.todos = eingehend[pr.id];
+    });
+  }
   speichereKunde(konto);
   antwortJson(res, 200, { ok: true });
 });

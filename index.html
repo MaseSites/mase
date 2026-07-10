@@ -47,21 +47,13 @@
 
   <main>
 
-    <!-- ===== Hero mit Live-Morph-Preview ===== -->
+    <!-- ===== Hero: Vollbild-Vorschau + Branchenauswahl ===== -->
     <section class="hero">
       <div class="hero-bg" aria-hidden="true"></div>
-      <div class="wrap hero-grid">
-        <div>
-          <h1>Eine Website, die zu<br><span class="hero-zeile2"><span class="rotor"><span class="rotor-word" id="rotor-word">deinem Restaurant</span></span> passt.</span></h1>
-          <p class="lead">Persönlich gebaut, professionell gestaltet, auf Wunsch mit KI-Bot.</p>
-          <div class="hero-ctas">
-            <a class="btn btn-primary" href="/kontakt">Projekt starten <span class="arrow">→</span></a>
-            <a class="btn btn-ghost" href="#galerie">Beispiele ansehen</a>
-          </div>
-          <p class="trust-note">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>
-            Aus der Schweiz · für Firmen &amp; Privatpersonen
-          </p>
+      <div class="wrap hero-inner">
+        <div class="hero-kopf">
+          <h1>Eine Website, die zu <span class="rotor"><span class="rotor-word" id="rotor-word">deinem Restaurant</span></span> passt.</h1>
+          <p class="lead">Wähle eine Branche – die Beispielseite verwandelt sich sofort.</p>
         </div>
 
         <div class="preview-shell">
@@ -101,27 +93,20 @@
             </div>
           </div>
         </div>
-      </div>
 
-      <a class="scroll-cue" href="#galerie" aria-label="Zu den Beispielen scrollen">
-        <span>Beispiele</span>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
-      </a>
-    </section>
-
-    <!-- ===== Style-Galerie: Chips steuern das Preview ===== -->
-    <section class="style-gallery" id="galerie">
-      <div class="wrap">
-        <p class="chips-intro reveal">Ein Team. Jeder Stil. <strong>Klick dich durch.</strong></p>
-        <div class="chips reveal" data-delay="80" role="group" aria-label="Beispielbranchen, verwandeln die Vorschau oben">
+        <div class="chips hero-chips" role="group" aria-label="Beispielbranchen, verwandeln die Vorschau">
           <button class="chip active" data-brand="restaurant" aria-pressed="true">Restaurant</button>
           <button class="chip" data-brand="event" aria-pressed="false">Eventplattform</button>
           <button class="chip" data-brand="friseur" aria-pressed="false">Friseur</button>
           <button class="chip" data-brand="shop" aria-pressed="false">Onlineshop</button>
           <button class="chip" data-brand="app" aria-pressed="false">Apps</button>
         </div>
-        <p class="gallery-hint reveal" data-delay="160">Jeder Klick verwandelt die Vorschau oben: Farben, Schriften, Layout und den KI-Bot gleich mit.</p>
       </div>
+
+      <a class="scroll-cue" href="#angebot" aria-label="Weiter zur Website">
+        <span>Mehr entdecken</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+      </a>
     </section>
 
     <!-- ===== Unsere drei Produkte ===== -->
