@@ -793,6 +793,10 @@ function saeubereAuftraege($liste): array
 /* Ordner für hochgeladene HTML-Demos: öffentlich erreichbar (für den iframe),
    aber per eigener .htaccess gegen Skript-Ausführung geschützt. */
 const DEMO_ORDNER = 'beispiel-demos';
+/* Maximale Grösse einer hochgeladenen Demo-HTML in MB. Damit das greift,
+   müssen PHP upload_max_filesize/post_max_size mindestens so hoch sein
+   (siehe .user.ini im Projekt). */
+const DEMO_MAX_MB = 60;
 
 /* Erlaubt sind externe Links (http/https) oder ein interner Pfad zu einer
    hochgeladenen Demo (/beispiel-demos/...). */
@@ -1562,11 +1566,22 @@ route('PUT', '/api/admin/inhalte', 'admin', function ($p, $body) {
    /beispiel-demos/<name>, wird aber dort nie serverseitig ausgeführt. */
 route('POST', '/api/admin/beispiel-upload', 'admin', function () {
     $datei = $_FILES['datei'] ?? null;
-    if (!is_array($datei) || ($datei['error'] ?? UPLOAD_ERR_NO_FILE) !== UPLOAD_ERR_OK || !is_uploaded_file($datei['tmp_name'] ?? '')) {
+    /* Grösser als post_max_size? Dann kommt $_FILES komplett leer an. */
+    if ($datei === null) {
+        if ((int)($_SERVER['CONTENT_LENGTH'] ?? 0) > 0) {
+            fehler(413, 'Die Datei ist zu gross für die Server-Einstellung (post_max_size). Erhöhe die Werte in der .user.ini oder in den Plesk-PHP-Einstellungen.');
+        }
+        fehler(400, 'Keine Datei empfangen.');
+    }
+    $err = is_array($datei) ? ($datei['error'] ?? UPLOAD_ERR_NO_FILE) : UPLOAD_ERR_NO_FILE;
+    if ($err === UPLOAD_ERR_INI_SIZE || $err === UPLOAD_ERR_FORM_SIZE) {
+        fehler(413, 'Die Datei überschreitet das Upload-Limit des Servers (upload_max_filesize). Erhöhe es in der .user.ini oder in den Plesk-PHP-Einstellungen.');
+    }
+    if ($err !== UPLOAD_ERR_OK || !is_uploaded_file($datei['tmp_name'] ?? '')) {
         fehler(400, 'Keine gültige Datei empfangen.');
     }
-    if (($datei['size'] ?? 0) > 3 * 1024 * 1024) {
-        fehler(400, 'Die Datei ist zu gross (maximal 3 MB).');
+    if (($datei['size'] ?? 0) > DEMO_MAX_MB * 1024 * 1024) {
+        fehler(400, 'Die Datei ist zu gross (maximal ' . DEMO_MAX_MB . ' MB).');
     }
     $endung = strtolower(pathinfo((string)($datei['name'] ?? ''), PATHINFO_EXTENSION));
     if ($endung !== 'html' && $endung !== 'htm') {
