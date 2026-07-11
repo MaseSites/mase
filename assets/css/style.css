@@ -2533,16 +2533,21 @@ html.uu-bau .uu-szene { display: flex; }
 .uu-szene.uu-steht .uu-arm2,
 .uu-szene.uu-zieht .uu-arm,
 .uu-szene.uu-zieht .uu-arm2 { animation: none; transition: transform 0.5s var(--ease-out); }
-.uu-szene.uu-steht .uu-figur { transform: translateY(-14px); }
-.uu-szene.uu-zieht .uu-figur { transform: translateY(2px) scaleY(0.86); }
-.uu-szene.uu-zieht .uu-arm { transform: rotate(-62deg); }
-.uu-szene.uu-zieht .uu-arm2 { transform: rotate(-54deg); }
+.uu-szene.uu-steht .uu-figur { transform: translateY(-16px); }
+/* richtig ducken: tief in die Hocke, Kopf runter, waehrend die Arme das Tuch
+   nach oben ueber sich ziehen */
+.uu-szene.uu-zieht .uu-figur { transform: translateY(12px) scale(1.06, 0.55); }
+.uu-szene.uu-zieht .uu-arm { transform: rotate(-72deg); }
+.uu-szene.uu-zieht .uu-arm2 { transform: rotate(-64deg); }
 
+/* Der Vorhang liegt UNTER dem Header (z-index 60), aber ueber dem Inhalt:
+   so bleibt der Header immer im Vordergrund und nur der Inhalt (Text, Bilder)
+   wird wie ein Tuch hochgezogen. */
 .uu-vorhang {
-  position: fixed; inset: 0; z-index: 9990;
+  position: fixed; inset: 0; z-index: 50;
   background: var(--bg);
   transform: translateY(100%);
-  transition: transform 0.94s cubic-bezier(0.5, 0, 0.16, 1), opacity 0.55s ease;
+  transition: transform 1.0s cubic-bezier(0.5, 0, 0.16, 1), opacity 0.55s ease;
   will-change: transform;
   box-shadow: 0 -24px 55px rgba(72, 52, 30, 0.22);
 }

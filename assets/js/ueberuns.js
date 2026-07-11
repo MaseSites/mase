@@ -96,7 +96,7 @@
         if (szene) szene.classList.add("uu-steht");
       });
 
-      nach(bauEnde + 620, function () {           /* 2) ducken + Seite hochziehen */
+      nach(bauEnde + 780, function () {           /* 2) ducken + Inhalt hochziehen */
         if (fertig) return;
         if (szene) szene.classList.add("uu-zieht");
         vorhang = d.createElement("div");
@@ -107,7 +107,7 @@
         vorhang.classList.add("hoch");
       });
 
-      nach(bauEnde + 620 + 940, function () {      /* 3) verdeckt: aufraeumen + aufdecken */
+      nach(bauEnde + 780 + 1020, function () {     /* 3) verdeckt: aufraeumen + aufdecken */
         if (fertig) return;
         window.scrollTo(0, 0);
         wurzel.classList.remove("uu-bau");         /* Coder verschwindet, Seite final */
