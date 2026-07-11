@@ -64,5 +64,19 @@ RedirectMatch 404 (^|/)\.(git|env)(/|$)
   </FilesMatch>
 </IfModule>
 
+# ---------- Caching: HTML immer frisch, Assets lange ----------
+# HTML wird nie gecacht (jeder Deploy ist sofort in allen Browsern sichtbar,
+# inklusive aktueller Sicherheits-Header). CSS/JS/Bilder duerfen lange in den
+# Cache, weil ihre Version an der Adresse haengt (?v=N bzw. neue Ordnernamen
+# bei Demo-Uploads).
+<IfModule mod_headers.c>
+  <FilesMatch "\.html?$">
+    Header set Cache-Control "no-cache"
+  </FilesMatch>
+  <FilesMatch "\.(css|js|mjs|svg|png|jpe?g|gif|webp|avif|ico|woff2?|ttf|otf|mp4|webm)$">
+    Header set Cache-Control "public, max-age=2592000"
+  </FilesMatch>
+</IfModule>
+
 # ---------- Startseite ----------
 DirectoryIndex index.html

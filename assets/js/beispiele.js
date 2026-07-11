@@ -70,11 +70,15 @@
     kopf.appendChild(zu);
 
     var frame = document.createElement("iframe");
-    frame.src = demo.url;
+    /* Interne Demos immer frisch laden (alte Browser-Kopien umgehen) */
+    frame.src = demo.url.indexOf("/beispiel-demos/") === 0
+      ? demo.url + (demo.url.indexOf("?") > -1 ? "&" : "?") + "nc=" + Date.now()
+      : demo.url;
     frame.title = demo.name + " (Live-Demo)";
     frame.setAttribute("loading", "eager");
-    /* Sandbox: Demo-Skripte laufen isoliert, ohne Zugriff auf masesites */
-    frame.setAttribute("sandbox", "allow-scripts allow-forms allow-popups");
+    /* Sandbox: Demo kann die Hauptseite nicht umleiten; Speicher und fetch
+       funktionieren, damit Demos in allen Browsern vollstaendig laufen */
+    frame.setAttribute("sandbox", "allow-scripts allow-same-origin allow-forms allow-popups");
 
     rahmen.appendChild(kopf);
     rahmen.appendChild(frame);

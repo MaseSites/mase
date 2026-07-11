@@ -94,12 +94,19 @@
      sichtbar, sobald die neue Seite geladen ist */
   frame.addEventListener("load", function () { frame.style.opacity = "1"; });
 
+  /* Interne Demos immer frisch laden: umgeht alte Browser-Kopien mit
+     veralteten Sicherheits-Headern (Chrome cachte die mitsamt Headern) */
+  function frischeUrl(url) {
+    if (url.indexOf("/beispiel-demos/") !== 0) return url;
+    return url + (url.indexOf("?") > -1 ? "&" : "?") + "nc=" + Date.now();
+  }
+
   function zeigeDemo(index) {
     var eintrag = demoListe[index];
     if (!eintrag) return;
     demoIndex = index;
     frame.style.opacity = "0";
-    frame.src = eintrag.demo.url;
+    frame.src = frischeUrl(eintrag.demo.url);
     if (frameUrl) {
       frameUrl.textContent = /^https?:\/\//i.test(eintrag.demo.url)
         ? eintrag.demo.url.replace(/^https?:\/\//i, "")
