@@ -9,10 +9,10 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/style.css?v=21">
+  <link rel="stylesheet" href="assets/css/style.css?v=22">
 </head>
 <body>
-  <script src="assets/js/ueberuns.js?v=21"></script>
+  <script src="assets/js/ueberuns.js?v=22"></script>
 
   <header class="site-header">
     <div class="wrap header-inner">
@@ -67,17 +67,19 @@
             <path d="M112 210 H152"/>
             <circle cx="116" cy="217" r="4.5"/>
             <circle cx="148" cy="217" r="4.5"/>
-            <!-- Person -->
-            <circle cx="134" cy="86" r="15"/>
-            <path d="M136 101 C 124 110, 118 132, 121 158"/>
-            <path d="M121 158 C 132 166, 146 168, 160 168"/>
-            <path d="M160 168 L166 208"/>
-            <path d="M166 208 H182"/>
-            <!-- hinterer Arm (tippt) -->
-            <path class="uu-arm2" d="M144 116 C 160 132, 180 150, 206 170"/>
-            <!-- vorderer Arm: Oberarm fest, Unterarm tippt -->
-            <path d="M138 112 C 152 124, 162 132, 172 138"/>
-            <path class="uu-arm" d="M172 138 L204 170 L214 175"/>
+            <!-- Person (als Gruppe, damit sie am Ende aufstehen und sich ducken kann) -->
+            <g class="uu-figur">
+              <circle cx="134" cy="86" r="15"/>
+              <path d="M136 101 C 124 110, 118 132, 121 158"/>
+              <path d="M121 158 C 132 166, 146 168, 160 168"/>
+              <path d="M160 168 L166 208"/>
+              <path d="M166 208 H182"/>
+              <!-- hinterer Arm (tippt) -->
+              <path class="uu-arm2" d="M144 116 C 160 132, 180 150, 206 170"/>
+              <!-- vorderer Arm: Oberarm fest, Unterarm tippt -->
+              <path d="M138 112 C 152 124, 162 132, 172 138"/>
+              <path class="uu-arm" d="M172 138 L204 170 L214 175"/>
+            </g>
             <!-- Tastatur -->
             <rect x="188" y="178" width="64" height="7" rx="3.5"/>
             <!-- Monitor -->

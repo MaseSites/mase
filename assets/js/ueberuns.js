@@ -14,7 +14,7 @@
 
   wurzel.classList.add("uu-bau");
 
-  var timer = [], fertig = false;
+  var timer = [], fertig = false, vorhang = null, szene = null;
   function nach(ms, fn) { timer.push(setTimeout(fn, ms)); }
 
   var SKIP_EVENTS = ["pointerdown", "keydown", "wheel", "touchstart"];
@@ -24,7 +24,7 @@
     });
   }
 
-  /* Sofort zum Endzustand: alles sichtbar, keine offenen Timer */
+  /* Sofort zum Endzustand: alles sichtbar, Coder weg, keine offenen Timer */
   function abschliessen() {
     if (fertig) return;
     fertig = true;
@@ -39,13 +39,16 @@
     var lead = d.querySelector(".uu-hero .lead");
     if (lead) lead.classList.add("uu-an");
     d.querySelectorAll(".uu-teil").forEach(function (t) { t.classList.add("uu-fertig"); });
-    wurzel.classList.remove("uu-bau");
+    if (vorhang && vorhang.parentNode) vorhang.parentNode.removeChild(vorhang);
+    vorhang = null;
+    wurzel.classList.remove("uu-bau"); /* Coder-Szene verschwindet ueber CSS */
   }
 
   addEventListener("DOMContentLoaded", function () {
     if (fertig) return;
     var h1 = d.getElementById("uu-titel");
     if (!h1) { abschliessen(); return; }
+    szene = d.querySelector(".uu-szene");
     skipHoerer(true);
 
     var text = h1.textContent;
@@ -83,14 +86,42 @@
         });
       });
 
-      nach(520 + teile.length * 380 + 750, function () {
-        fertig = true;
-        skipHoerer(false);
-        wurzel.classList.remove("uu-bau");
+      /* ---------- Finale ----------
+         1) der Coder steht auf, 2) er duckt sich und zieht die fertige Seite
+         wie ein Tuch von unten ueber sich hoch, 3) darunter ist er verschwunden
+         und die Website steht sauber wieder ganz oben. */
+      var bauEnde = 520 + teile.length * 380 + 480;
+
+      nach(bauEnde, function () {                 /* 1) aufstehen */
+        if (szene) szene.classList.add("uu-steht");
+      });
+
+      nach(bauEnde + 620, function () {           /* 2) ducken + Seite hochziehen */
+        if (fertig) return;
+        if (szene) szene.classList.add("uu-zieht");
+        vorhang = d.createElement("div");
+        vorhang.className = "uu-vorhang";
+        vorhang.setAttribute("aria-hidden", "true");
+        d.body.appendChild(vorhang);
+        void vorhang.offsetHeight;                /* Reflow, damit die Fahrt animiert */
+        vorhang.classList.add("hoch");
+      });
+
+      nach(bauEnde + 620 + 940, function () {      /* 3) verdeckt: aufraeumen + aufdecken */
+        if (fertig) return;
+        window.scrollTo(0, 0);
+        wurzel.classList.remove("uu-bau");         /* Coder verschwindet, Seite final */
+        if (vorhang) { void vorhang.offsetHeight; vorhang.classList.add("weg"); }
+        nach(560, function () {
+          if (vorhang && vorhang.parentNode) vorhang.parentNode.removeChild(vorhang);
+          vorhang = null;
+          fertig = true;
+          skipHoerer(false);
+        });
       });
     });
   });
 
-  /* Sicherheitsnetz: die Seite darf nie leer hängen bleiben */
-  setTimeout(abschliessen, 9000);
+  /* Sicherheitsnetz: die Seite darf nie leer oder verdeckt hängen bleiben */
+  setTimeout(abschliessen, 12000);
 })();
