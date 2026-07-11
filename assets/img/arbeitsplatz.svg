@@ -1,0 +1,139 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 640" role="img" aria-label="Unser Arbeitsplatz als Illustration">
+  <defs>
+    <linearGradient id="wand" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FBF5EA"/>
+      <stop offset="1" stop-color="#F2E8D6"/>
+    </linearGradient>
+    <radialGradient id="sonne" cx="0.78" cy="0.16" r="0.75">
+      <stop offset="0" stop-color="#E9C89A" stop-opacity="0.55"/>
+      <stop offset="1" stop-color="#E9C89A" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="tisch" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#3A2C1E"/>
+      <stop offset="1" stop-color="#2C2118"/>
+    </linearGradient>
+    <linearGradient id="fenster" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#F6E3C4"/>
+      <stop offset="0.6" stop-color="#EDD3AC"/>
+      <stop offset="1" stop-color="#E2BF92"/>
+    </linearGradient>
+    <linearGradient id="code" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#241C13"/>
+      <stop offset="1" stop-color="#1B140D"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Wand und Licht -->
+  <rect width="1200" height="640" fill="url(#wand)"/>
+  <rect width="1200" height="640" fill="url(#sonne)"/>
+
+  <!-- Fenster links mit warmem Abendlicht -->
+  <g>
+    <rect x="70" y="60" width="250" height="330" rx="18" fill="#E8DCC8"/>
+    <rect x="84" y="74" width="222" height="302" rx="10" fill="url(#fenster)"/>
+    <path d="M84 300 Q160 250 230 285 T306 268 V376 H84 Z" fill="#D9B383" opacity="0.85"/>
+    <path d="M84 322 Q170 285 250 315 T306 305 V376 H84 Z" fill="#C89B5A" opacity="0.75"/>
+    <circle cx="255" cy="140" r="26" fill="#F9EBCE"/>
+    <rect x="190" y="74" width="8" height="302" fill="#E8DCC8"/>
+    <rect x="84" y="216" width="222" height="8" fill="#E8DCC8"/>
+  </g>
+
+  <!-- Haengeregal mit Buechern rechts -->
+  <g>
+    <rect x="905" y="120" width="220" height="12" rx="6" fill="#3A2C1E"/>
+    <rect x="922" y="70" width="16" height="50" rx="3" fill="#C89B5A"/>
+    <rect x="942" y="62" width="16" height="58" rx="3" fill="#2C2118"/>
+    <rect x="962" y="76" width="14" height="44" rx="3" fill="#A9805C"/>
+    <rect x="982" y="68" width="16" height="52" rx="3" fill="#E3D2B4"/>
+    <g transform="translate(1010 84) rotate(8)">
+      <rect width="16" height="48" rx="3" fill="#8F6D4B"/>
+    </g>
+    <circle cx="1085" cy="96" r="24" fill="#DCE5D2"/>
+    <path d="M1085 96 q-6 -26 10 -34 q4 20 -10 34 Z" fill="#7E9469"/>
+    <rect x="1074" y="112" width="22" height="10" rx="4" fill="#C89B5A"/>
+  </g>
+
+  <!-- Tisch -->
+  <rect x="0" y="470" width="1200" height="34" fill="url(#tisch)"/>
+  <rect x="0" y="504" width="1200" height="136" fill="#EDE2CC"/>
+  <rect x="120" y="504" width="26" height="120" fill="#3A2C1E"/>
+  <rect x="1054" y="504" width="26" height="120" fill="#3A2C1E"/>
+
+  <!-- Monitor links: masesites-Startseite -->
+  <g>
+    <rect x="300" y="180" width="330" height="230" rx="16" fill="#241C13"/>
+    <rect x="312" y="192" width="306" height="206" rx="8" fill="#FDFAF4"/>
+    <!-- Mini-Header-Pille -->
+    <rect x="330" y="206" width="270" height="22" rx="11" fill="#FFFFFF" stroke="#E8DCC8"/>
+    <circle cx="344" cy="217" r="5" fill="#2C2118"/>
+    <rect x="356" y="213" width="40" height="8" rx="4" fill="#D9CBB2"/>
+    <rect x="402" y="213" width="30" height="8" rx="4" fill="#E3D6BD"/>
+    <rect x="438" y="213" width="34" height="8" rx="4" fill="#E3D6BD"/>
+    <rect x="548" y="210" width="44" height="14" rx="7" fill="#2C2118"/>
+    <!-- Grosse Headline -->
+    <rect x="360" y="256" width="210" height="20" rx="8" fill="#2C2118"/>
+    <rect x="384" y="284" width="120" height="20" rx="8" fill="#C89B5A"/>
+    <rect x="510" y="284" width="60" height="20" rx="8" fill="#2C2118"/>
+    <rect x="396" y="318" width="140" height="9" rx="4.5" fill="#D9CBB2"/>
+    <!-- Knoepfe -->
+    <rect x="386" y="342" width="76" height="22" rx="11" fill="#2C2118"/>
+    <rect x="470" y="342" width="76" height="22" rx="11" fill="#FFFFFF" stroke="#C8B695"/>
+    <!-- Standfuss -->
+    <path d="M448 410 h34 l8 34 h-50 Z" fill="#2C2118"/>
+    <rect x="414" y="444" width="104" height="10" rx="5" fill="#241C13"/>
+  </g>
+
+  <!-- Monitor rechts: Code-Editor -->
+  <g>
+    <rect x="660" y="200" width="290" height="210" rx="16" fill="#241C13"/>
+    <rect x="672" y="212" width="266" height="186" rx="8" fill="url(#code)"/>
+    <circle cx="688" cy="228" r="4" fill="#D98E7A"/>
+    <circle cx="702" cy="228" r="4" fill="#E4C387"/>
+    <circle cx="716" cy="228" r="4" fill="#9DB98A"/>
+    <rect x="688" y="248" width="90" height="8" rx="4" fill="#C89B5A"/>
+    <rect x="700" y="264" width="150" height="8" rx="4" fill="#8A7A64"/>
+    <rect x="700" y="280" width="120" height="8" rx="4" fill="#B9A88C"/>
+    <rect x="712" y="296" width="170" height="8" rx="4" fill="#9DB98A"/>
+    <rect x="712" y="312" width="130" height="8" rx="4" fill="#8A7A64"/>
+    <rect x="700" y="328" width="105" height="8" rx="4" fill="#D9B383"/>
+    <rect x="688" y="344" width="70" height="8" rx="4" fill="#C89B5A"/>
+    <rect x="688" y="364" width="34" height="8" rx="4" fill="#6E604E"/>
+    <path d="M790 410 h30 l8 34 h-46 Z" fill="#2C2118"/>
+    <rect x="758" y="444" width="96" height="10" rx="5" fill="#241C13"/>
+  </g>
+
+  <!-- Tastatur und Maus -->
+  <rect x="420" y="478" width="230" height="16" rx="8" fill="#3A2C1E"/>
+  <rect x="432" y="481" width="206" height="4" rx="2" fill="#5A4732" opacity="0.7"/>
+  <ellipse cx="700" cy="486" rx="20" ry="12" fill="#3A2C1E"/>
+
+  <!-- Kaffee mit Dampf -->
+  <g>
+    <path d="M880 448 q0 34 30 34 q30 0 30 -34 Z" fill="#FFFFFF" stroke="#E0D2B8"/>
+    <path d="M940 452 q18 4 0 20" fill="none" stroke="#E0D2B8" stroke-width="6" stroke-linecap="round"/>
+    <ellipse cx="910" cy="448" rx="30" ry="7" fill="#8F6D4B"/>
+    <path d="M898 420 q6 -10 0 -20 M916 424 q6 -10 0 -20" fill="none" stroke="#C9B392" stroke-width="4" stroke-linecap="round" opacity="0.8"/>
+    <ellipse cx="910" cy="486" rx="40" ry="6" fill="#D9C8A8" opacity="0.6"/>
+  </g>
+
+  <!-- Pflanze links auf dem Tisch -->
+  <g>
+    <path d="M212 470 q-4 -46 -30 -62 q30 2 38 40 q4 -44 26 -58 q8 34 -18 62 q26 -18 40 -12 q-14 26 -46 30 Z" fill="#7E9469"/>
+    <path d="M196 470 h64 l-8 34 h-48 Z" fill="#C89B5A"/>
+    <ellipse cx="228" cy="510" rx="46" ry="6" fill="#D9C8A8" opacity="0.6"/>
+  </g>
+
+  <!-- Notizbuch und Stift -->
+  <g transform="translate(1000 470) rotate(-4)">
+    <rect width="110" height="26" rx="5" fill="#FFFFFF" stroke="#E0D2B8"/>
+    <rect x="10" y="6" width="70" height="4" rx="2" fill="#D9CBB2"/>
+    <rect x="10" y="14" width="52" height="4" rx="2" fill="#E3D6BD"/>
+    <rect x="118" y="4" width="46" height="6" rx="3" fill="#2C2118"/>
+  </g>
+
+  <!-- masesites-Schriftzug als Poster an der Wand -->
+  <g>
+    <rect x="475" y="80" width="250" height="64" rx="14" fill="#FFFFFF" stroke="#E8DCC8"/>
+    <text x="600" y="122" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="30" font-weight="700" fill="#2C2118" letter-spacing="-1">mase<tspan fill="#C89B5A">sites</tspan></text>
+  </g>
+</svg>

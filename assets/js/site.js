@@ -8,6 +8,17 @@
   /* ---------- Header: schrumpft & bekommt Hintergrund beim Scrollen ---------- */
 
   var header = document.querySelector(".site-header");
+
+  /* Header-Pille slidet nur beim ERSTEN Laden der Sitzung rein;
+     bei jedem weiteren Seitenwechsel steht sie sofort da. */
+  try {
+    if (header && !sessionStorage.getItem("ms_header_gesehen")) {
+      sessionStorage.setItem("ms_header_gesehen", "1");
+      var kopfPille = header.querySelector(".header-inner");
+      if (kopfPille) kopfPille.classList.add("slide-rein");
+    }
+  } catch (e) {}
+
   function onScroll() {
     var abGescrollt = window.scrollY > 24;
     if (header) header.classList.toggle("scrolled", abGescrollt);
