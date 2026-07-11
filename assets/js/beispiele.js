@@ -73,6 +73,8 @@
     frame.src = demo.url;
     frame.title = demo.name + " (Live-Demo)";
     frame.setAttribute("loading", "eager");
+    /* Sandbox: Demo-Skripte laufen isoliert, ohne Zugriff auf masesites */
+    frame.setAttribute("sandbox", "allow-scripts allow-forms allow-popups");
 
     rahmen.appendChild(kopf);
     rahmen.appendChild(frame);
@@ -137,10 +139,19 @@
     return card;
   }
 
+  function zeigeLadefehler() {
+    grid.innerHTML = "";
+    var p = document.createElement("p");
+    p.className = "inbox-leer";
+    p.style.cssText = "grid-column:1/-1;text-align:center;padding:40px 0;";
+    p.textContent = "Die Demos konnten gerade nicht geladen werden. Lade die Seite neu.";
+    grid.appendChild(p);
+  }
+
   fetch("/api/inhalte", { credentials: "same-origin" })
     .then(function (r) { return r.ok ? r.json() : null; })
     .then(function (daten) {
-      if (!daten || !Array.isArray(daten.beispiele)) return; /* Server nicht erreichbar: eingebaute Karten behalten */
+      if (!daten || !Array.isArray(daten.beispiele)) { zeigeLadefehler(); return; }
       grid.innerHTML = "";
       if (!daten.beispiele.length) {
         var sektion = document.getElementById("demo-sektion");
@@ -149,5 +160,5 @@
       }
       daten.beispiele.forEach(function (demo) { grid.appendChild(karte(demo)); });
     })
-    .catch(function () {});
+    .catch(zeigeLadefehler);
 })();

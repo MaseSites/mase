@@ -29,3 +29,14 @@ Options -ExecCGI -Indexes
 <IfModule mod_php8.c>
   php_admin_flag engine off
 </IfModule>
+
+# Demos brauchen eine LOCKERE Content-Security-Policy: viele hochgeladene
+# Seiten nutzen Inline-Skripte (z. B. fuer eingeblendete Texte) und beliebige
+# CDNs. Die strenge Haupt-CSP wuerde das blocken - dann fehlen Texte.
+# Absicherung passiert stattdessen ueber die iframe-Sandbox im Viewer und
+# das Skript-Ausfuehrungsverbot oben.
+<IfModule mod_headers.c>
+  <FilesMatch "\.html?$">
+    Header set Content-Security-Policy "default-src 'self' https: data: blob:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https:; style-src 'self' 'unsafe-inline' https:; img-src 'self' https: data: blob:; font-src 'self' https: data:; connect-src 'self' https:; media-src 'self' https: data: blob:; object-src 'none'; frame-ancestors 'self'"
+  </FilesMatch>
+</IfModule>

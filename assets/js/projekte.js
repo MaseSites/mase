@@ -128,6 +128,7 @@
         frame.src = p.url;
         frame.title = "Website von " + p.firma;
         frame.setAttribute("loading", "lazy");
+        frame.setAttribute("sandbox", "allow-scripts allow-forms allow-popups");
         medien.appendChild(frame);
       }
     } else {
