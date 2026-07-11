@@ -1124,6 +1124,13 @@ function liefereDatei(req, res, pfadname) {
     voll = path.join(voll, "index.html");
     try { stat = fs.statSync(voll); } catch (e) { stat = null; }
   }
+  /* Saubere Adressen wie auf dem Live-Server (.htaccess): /preise → preise.html */
+  if (!stat && !path.extname(voll)) {
+    try {
+      const mitHtml = fs.statSync(voll + ".html");
+      if (mitHtml.isFile()) { voll = voll + ".html"; stat = mitHtml; }
+    } catch (e) {}
+  }
   if (!stat || !stat.isFile()) {
     sicherheitsKoepfe(res, req, true);
     res.writeHead(404, { "Content-Type": "text/html; charset=utf-8" });

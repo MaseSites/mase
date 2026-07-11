@@ -2421,3 +2421,107 @@ input[type="file"]::file-selector-button:hover { border-color: var(--ink); backg
 @media (max-width: 720px) {
   .team-grid { grid-template-columns: 1fr; }
 }
+
+/* ============================================================
+   Einzug-Animationen (2026-07): Listen-Kaskade, KI-Netz,
+   Über-uns-Intro ("die Seite codet sich selbst")
+   ============================================================ */
+
+/* ---------- Listen-Kaskade: Einträge listen sich schnell nacheinander auf ----------
+   site.js markiert bekannte Listen (.stagger-warten) und startet die Kaskade
+   beim Hereinscrollen (.stagger-los). Ohne JS bleibt alles normal sichtbar. */
+
+.stagger-warten > * { opacity: 0; }
+.stagger-los > * {
+  animation: liste-rein 0.5s cubic-bezier(0.2, 0.85, 0.3, 1.06) backwards;
+  animation-delay: calc(var(--sx, 0) * 55ms);
+}
+@keyframes liste-rein {
+  from { opacity: 0; transform: translateY(16px) scale(0.99); filter: blur(4px); }
+  60% { filter: blur(0); }
+  to { opacity: 1; transform: none; filter: none; }
+}
+
+/* ---------- KI-Seite: lebendes neuronales Netz im Hero (ki.js) ---------- */
+
+.ki-netz { position: absolute; inset: 0; width: 100%; height: 100%; }
+
+/* ---------- Über uns: der Coder baut die Seite auf (ueberuns.js) ----------
+   ueberuns.js setzt html.uu-bau vor dem ersten Zeichnen: Inhalt startet leer,
+   die Überschrift tippt sich, die Sektionen bauen sich nach unten auf.
+   Ohne JS oder mit reduzierter Bewegung bleibt die Seite ganz normal. */
+
+html.uu-bau .uu-teil,
+html.uu-bau .uu-hero h1,
+html.uu-bau .uu-hero .lead { opacity: 0; }
+html.uu-bau .widget-launcher { opacity: 0; pointer-events: none; }
+
+.uu-hero h1.uu-tippt { opacity: 1 !important; }
+.uu-hero .lead { transition: opacity 0.6s var(--ease-out); }
+.uu-hero .lead.uu-an { opacity: 1 !important; }
+
+.uu-caret {
+  display: inline-block; width: 3px; height: 0.92em;
+  background: var(--ink); margin-left: 3px; vertical-align: -0.1em;
+  animation: uu-blink 0.55s steps(1) infinite;
+}
+@keyframes uu-blink { 50% { opacity: 0; } }
+
+.uu-teil.uu-baut {
+  opacity: 1 !important;
+  animation: uu-bauen 0.6s var(--ease-out) both;
+}
+@keyframes uu-bauen {
+  from { opacity: 0; transform: translateY(24px); clip-path: inset(-4% -6% 102% -6%); }
+  to { opacity: 1; transform: none; clip-path: inset(-4% -6% -14% -6%); }
+}
+.uu-teil.uu-fertig { opacity: 1 !important; animation: none; clip-path: none; }
+
+/* Die Szene: Figur am Schreibtisch, tippt durchgehend */
+.uu-szene { display: flex; justify-content: center; margin-bottom: 14px; }
+.uu-szene svg { width: min(420px, 76vw); height: auto; color: var(--ink); overflow: visible; }
+
+.uu-szene .uu-arm {
+  transform-box: view-box; transform-origin: 172px 138px;
+  animation: uu-tippen 0.16s ease-in-out infinite alternate;
+}
+.uu-szene .uu-arm2 {
+  transform-box: view-box; transform-origin: 146px 118px;
+  animation: uu-tippen2 0.19s ease-in-out infinite alternate;
+}
+@keyframes uu-tippen { from { transform: rotate(-3.5deg); } to { transform: rotate(2.5deg); } }
+@keyframes uu-tippen2 { from { transform: rotate(2.2deg); } to { transform: rotate(-3deg); } }
+
+.uu-szene .uu-zeile {
+  transform-box: fill-box; transform-origin: left center;
+  animation: uu-zeile 3.6s var(--ease-out) infinite;
+}
+@keyframes uu-zeile {
+  0% { transform: scaleX(0); }
+  9% { transform: scaleX(1); }
+  78% { transform: scaleX(1); }
+  85% { transform: scaleX(0); }
+  100% { transform: scaleX(0); }
+}
+.uu-szene .uu-z2 { animation-delay: 0.28s; }
+.uu-szene .uu-z3 { animation-delay: 0.56s; }
+.uu-szene .uu-z4 { animation-delay: 0.84s; }
+.uu-szene .uu-z5 { animation-delay: 1.12s; }
+
+.uu-szene .uu-caret2 { animation: uu-blink 0.5s steps(1) infinite; }
+
+.uu-szene .uu-dampf { opacity: 0; animation: uu-dampf 2.6s ease-in-out infinite; }
+.uu-szene .uu-dampf.d2 { animation-delay: 1.2s; }
+@keyframes uu-dampf {
+  0% { opacity: 0; transform: translateY(2px); }
+  30% { opacity: 0.45; }
+  70% { opacity: 0; transform: translateY(-6px); }
+  100% { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stagger-warten > *, .stagger-los > * { opacity: 1; animation: none; }
+  .uu-szene svg * { animation: none !important; }
+  .uu-szene .uu-caret2 { opacity: 0; }
+  .uu-caret { display: none; }
+}

@@ -9,9 +9,10 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/style.css?v=20">
+  <link rel="stylesheet" href="assets/css/style.css?v=21">
 </head>
 <body>
+  <script src="assets/js/ueberuns.js?v=21"></script>
 
   <header class="site-header">
     <div class="wrap header-inner">
@@ -48,16 +49,62 @@
 
   <main>
 
-    <!-- ===== Hero ===== -->
-    <section class="page-hero">
+    <!-- ===== Hero: der Coder tippt, die Seite baut sich auf (ueberuns.js) ===== -->
+    <section class="page-hero uu-hero">
       <div class="wrap">
-        <h1>Die Menschen hinter deiner Website.</h1>
+        <div class="uu-szene" aria-hidden="true">
+          <svg viewBox="0 0 440 250" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <!-- Boden -->
+            <path d="M64 226 H420" opacity="0.35"/>
+            <!-- Schreibtisch -->
+            <path d="M176 186 H416"/>
+            <path d="M196 186 V226"/>
+            <path d="M400 186 V226"/>
+            <!-- Stuhl -->
+            <path d="M106 170 C 102 146, 104 124, 112 112"/>
+            <path d="M104 170 H160"/>
+            <path d="M132 170 V210"/>
+            <path d="M112 210 H152"/>
+            <circle cx="116" cy="217" r="4.5"/>
+            <circle cx="148" cy="217" r="4.5"/>
+            <!-- Person -->
+            <circle cx="134" cy="86" r="15"/>
+            <path d="M136 101 C 124 110, 118 132, 121 158"/>
+            <path d="M121 158 C 132 166, 146 168, 160 168"/>
+            <path d="M160 168 L166 208"/>
+            <path d="M166 208 H182"/>
+            <!-- hinterer Arm (tippt) -->
+            <path class="uu-arm2" d="M144 116 C 160 132, 180 150, 206 170"/>
+            <!-- vorderer Arm: Oberarm fest, Unterarm tippt -->
+            <path d="M138 112 C 152 124, 162 132, 172 138"/>
+            <path class="uu-arm" d="M172 138 L204 170 L214 175"/>
+            <!-- Tastatur -->
+            <rect x="188" y="178" width="64" height="7" rx="3.5"/>
+            <!-- Monitor -->
+            <rect x="248" y="74" width="140" height="88" rx="10" fill="var(--card)"/>
+            <path d="M318 162 V182"/>
+            <path d="M296 184 H340"/>
+            <!-- Code-Zeilen auf dem Bildschirm -->
+            <rect class="uu-zeile uu-z1" x="260" y="88" width="74" height="5.5" rx="2.75" fill="currentColor" stroke="none" opacity="0.55"/>
+            <rect class="uu-zeile uu-z2" x="260" y="101" width="52" height="5.5" rx="2.75" fill="currentColor" stroke="none" opacity="0.4"/>
+            <rect class="uu-zeile uu-z3" x="260" y="114" width="96" height="5.5" rx="2.75" fill="currentColor" stroke="none" opacity="0.5"/>
+            <rect class="uu-zeile uu-z4" x="260" y="127" width="40" height="5.5" rx="2.75" fill="currentColor" stroke="none" opacity="0.35"/>
+            <rect class="uu-zeile uu-z5" x="260" y="140" width="66" height="5.5" rx="2.75" fill="currentColor" stroke="none" opacity="0.45"/>
+            <rect class="uu-caret2" x="332" y="140" width="7" height="5.5" fill="currentColor" stroke="none" opacity="0.6"/>
+            <!-- Tasse mit Dampf -->
+            <rect x="356" y="168" width="15" height="17" rx="3" fill="var(--card)"/>
+            <path d="M371 172 a5 5 0 0 1 0 9"/>
+            <path class="uu-dampf" d="M361 160 c2 -3 -2 -5 0 -8"/>
+            <path class="uu-dampf d2" d="M366 158 c2 -3 -2 -5 0 -8"/>
+          </svg>
+        </div>
+        <h1 id="uu-titel">Die Menschen hinter deiner Website.</h1>
         <p class="lead">Wir sind ein kleines Schweizer Team, das Websites für Firmen und Privatpersonen baut und designt.</p>
       </div>
     </section>
 
     <!-- ===== Was masesites ist + Arbeitsplatz ===== -->
-    <section class="tight">
+    <section class="tight uu-teil">
       <div class="wrap">
         <div class="section-head center">
           <h2 class="reveal">Warum es masesites gibt</h2>
@@ -70,7 +117,7 @@
     </section>
 
     <!-- ===== Die Betreiber ===== -->
-    <section class="tight">
+    <section class="tight uu-teil">
       <div class="wrap">
         <div class="section-head center">
           <h2 class="reveal">Wer dahintersteckt</h2>
@@ -98,7 +145,7 @@
     </section>
 
     <!-- ===== Abschluss-CTA ===== -->
-    <section class="tight">
+    <section class="tight uu-teil">
       <div class="wrap">
         <div class="big-cta reveal">
           <h2>Lust, zusammenzuarbeiten?</h2>
@@ -113,7 +160,7 @@
 
   </main>
 
-  <footer class="site-footer">
+  <footer class="site-footer uu-teil">
     <div class="wrap">
       <div class="footer-grid">
         <div class="footer-brand">
@@ -161,6 +208,6 @@
   </footer>
 
   <script src="assets/js/protokoll.js?v=20"></script>
-  <script src="assets/js/site.js?v=20"></script>
+  <script src="assets/js/site.js?v=21"></script>
 </body>
 </html>

@@ -338,4 +338,42 @@
   document.querySelectorAll(".site-footer [data-year]").forEach(function (el) {
     el.textContent = new Date().getFullYear();
   });
+
+  /* ---------- Listen-Kaskade: Einträge listen sich schnell nacheinander auf ----------
+     Bekannte Listen-Container bekommen automatisch die schnelle Kaskade:
+     jedes Kind erscheint 55 ms nach dem vorherigen (CSS: .stagger-los).
+     Einzel-Reveals auf den Kindern werden entfernt, sonst blendet es doppelt. */
+
+  var LISTEN_SELEKTOR = [
+    "[data-stagger]",
+    ".offer-list",
+    ".bot-benefits",
+    ".price-features",
+    ".faq",
+    ".footer-grid",
+    ".chat-chips",
+    "#demo-grid",
+    "#projekte-grid"
+  ].join(", ");
+
+  var listen = document.querySelectorAll(LISTEN_SELEKTOR);
+  if (listen.length && "IntersectionObserver" in window && !reducedMotion) {
+    var listenIO = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        e.target.classList.add("stagger-los");
+        e.target.classList.remove("stagger-warten");
+        listenIO.unobserve(e.target);
+      });
+    }, { threshold: 0.06, rootMargin: "0px 0px -30px 0px" });
+
+    listen.forEach(function (liste) {
+      Array.prototype.forEach.call(liste.children, function (kind, i) {
+        kind.classList.remove("reveal", "in");
+        kind.style.setProperty("--sx", i);
+      });
+      liste.classList.add("stagger-warten");
+      listenIO.observe(liste);
+    });
+  }
 })();

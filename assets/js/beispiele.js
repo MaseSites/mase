@@ -162,7 +162,11 @@
         if (sektion) sektion.classList.add("hidden");
         return;
       }
-      daten.beispiele.forEach(function (demo) { grid.appendChild(karte(demo)); });
+      daten.beispiele.forEach(function (demo, i) {
+        var c = karte(demo);
+        c.style.setProperty("--sx", i); /* Listen-Kaskade auch für nachgeladene Karten */
+        grid.appendChild(c);
+      });
     })
     .catch(zeigeLadefehler);
 })();

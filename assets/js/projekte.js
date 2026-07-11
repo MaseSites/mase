@@ -156,7 +156,11 @@
     .then(function (daten) {
       PROJEKTE = (daten && Array.isArray(daten.projekte)) ? daten.projekte : [];
       grid.innerHTML = "";
-      PROJEKTE.forEach(function (p) { grid.appendChild(karte(p)); });
+      PROJEKTE.forEach(function (p, i) {
+        var c = karte(p);
+        c.style.setProperty("--sx", i); /* Listen-Kaskade auch für nachgeladene Karten */
+        grid.appendChild(c);
+      });
       route();
     })
     .catch(function () { route(); });
