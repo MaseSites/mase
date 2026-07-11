@@ -150,6 +150,8 @@ var MS_GOOGLE_CLIENT_ID = "117777636536-nd77bnlv9co4l7g8cbn6de0q8uhj3njt.apps.go
       window.location.replace("/login");
       return;
     }
+    /* Sitzung bestätigt: Portal jetzt zeigen (Body startet mit .wartet versteckt) */
+    document.body.classList.remove("wartet");
 
     function speichern() { D.aktualisiereKonto(konto); }
 

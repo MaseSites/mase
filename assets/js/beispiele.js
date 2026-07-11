@@ -24,24 +24,35 @@
 
   function oeffneVollbild(demo) {
     schliesseVollbild();
+    /* Abgedunkelter Hintergrund mit Rand: man sieht, dass die Demo IN
+       masesites geöffnet ist und jederzeit zurück kann */
     viewer = document.createElement("div");
     viewer.className = "demo-vollbild";
     viewer.setAttribute("role", "dialog");
-    viewer.setAttribute("aria-label", demo.name + " im Vollbild");
+    viewer.setAttribute("aria-label", demo.name + " als Live-Demo");
+    viewer.addEventListener("click", function (e) {
+      if (e.target === viewer) schliesseVollbild();
+    });
+
+    var rahmen = document.createElement("div");
+    rahmen.className = "demo-vollbild-rahmen";
 
     var kopf = document.createElement("div");
     kopf.className = "demo-vollbild-kopf";
 
+    var marke = document.createElement("span");
+    marke.className = "dv-marke";
+    marke.textContent = "masesites";
+    kopf.appendChild(marke);
+
+    var pill = document.createElement("span");
+    pill.className = "pill arbeit";
+    pill.textContent = "Live-Demo";
+    kopf.appendChild(pill);
+
     var name = document.createElement("b");
     name.textContent = demo.name;
     kopf.appendChild(name);
-
-    if (demo.branche) {
-      var tag = document.createElement("span");
-      tag.className = "pill arbeit";
-      tag.textContent = demo.branche;
-      kopf.appendChild(tag);
-    }
 
     var neuTab = document.createElement("a");
     neuTab.className = "neu-tab";
@@ -54,8 +65,7 @@
     var zu = document.createElement("button");
     zu.className = "schliessen";
     zu.type = "button";
-    zu.setAttribute("aria-label", "Vollbild schließen");
-    zu.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
+    zu.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg><span>Schliessen</span>';
     zu.addEventListener("click", schliesseVollbild);
     kopf.appendChild(zu);
 
@@ -64,8 +74,9 @@
     frame.title = demo.name + " (Live-Demo)";
     frame.setAttribute("loading", "eager");
 
-    viewer.appendChild(kopf);
-    viewer.appendChild(frame);
+    rahmen.appendChild(kopf);
+    rahmen.appendChild(frame);
+    viewer.appendChild(rahmen);
     document.body.appendChild(viewer);
     document.body.classList.add("demo-offen");
     document.addEventListener("keydown", aufEscape);

@@ -38,7 +38,9 @@
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
-html { scroll-behavior: smooth; scroll-padding-top: calc(var(--header-h) + 12px); }
+/* scrollbar-gutter: der Platz für den Scrollbalken ist IMMER reserviert,
+   damit sich Header und Inhalt nie verschieben, wenn er auftaucht */
+html { scroll-behavior: smooth; scroll-padding-top: calc(var(--header-h) + 12px); scrollbar-gutter: stable; }
 
 body {
   font-family: var(--font-sans);
@@ -66,6 +68,28 @@ body::before {
     radial-gradient(820px 700px at 114% 70%, rgba(231, 221, 202, 0.5), transparent 58%),
     linear-gradient(180deg, rgba(253, 250, 244, 0.55), transparent 24%, transparent 70%, rgba(223, 212, 190, 0.42));
   background-repeat: repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat;
+}
+
+/* Warme Aurora auf der GANZEN Website: dieselbe Stimmung wie der Startbereich,
+   ruhig treibend - die schwirrenden Elemente bleiben bewusst nur im Hero. */
+body::after {
+  content: "";
+  position: fixed;
+  inset: -22%;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(42% 38% at 16% 18%, rgba(214, 168, 108, 0.32), transparent 68%),
+    radial-gradient(38% 36% at 86% 30%, rgba(64, 46, 30, 0.16), transparent 70%),
+    radial-gradient(44% 40% at 60% 88%, rgba(232, 196, 144, 0.28), transparent 66%);
+  filter: blur(clamp(40px, 6vw, 90px));
+  animation: seiten-aurora 44s ease-in-out infinite alternate;
+  will-change: transform;
+  transform: translateZ(0);
+}
+@keyframes seiten-aurora {
+  from { transform: translate(0, 0) rotate(0deg) scale(1); }
+  to { transform: translate(3%, 4%) rotate(4deg) scale(1.08); }
 }
 
 img { max-width: 100%; display: block; }
@@ -426,18 +450,27 @@ section.tight { padding: 56px 0; }
 .showcase .section-head { margin-bottom: 30px; }
 
 .demo-fenster {
-  max-width: 1080px;
+  max-width: 1200px;
   margin: 0 auto;
   background: var(--card);
   border: 1px solid var(--line);
   border-radius: var(--radius-l);
-  box-shadow: var(--shadow-l);
+  box-shadow: 0 30px 80px rgba(44, 33, 24, 0.18), 0 4px 16px rgba(44, 33, 24, 0.08);
   overflow: hidden;
 }
 .demo-fenster[hidden] { display: none; }
 
-.demo-schirm { position: relative; height: clamp(420px, 62vh, 640px); background: var(--bg-soft); }
-.demo-schirm iframe { display: block; width: 100%; height: 100%; border: 0; background: #fff; }
+.demo-schirm { position: relative; height: clamp(460px, 70vh, 720px); background: var(--bg-soft); overflow: hidden; }
+/* Die Demo rendert intern in Desktop-Breite und wird herunterskaliert:
+   so wirkt die Vorschau wie eine echte Website am grossen Bildschirm */
+.demo-schirm iframe {
+  display: block;
+  width: 125%; height: 125%;
+  border: 0;
+  background: #fff;
+  transform: scale(0.8);
+  transform-origin: 0 0;
+}
 
 /* Abdeckung: die Vorschau bleibt Vorschau, Klick führt zu den Beispielen */
 .demo-abdeckung {
@@ -642,6 +675,7 @@ html.intro-zoom.intro-fahrt .hero-deko { opacity: 0; transition: opacity 0.35s e
   border-bottom: 1px solid var(--line);
 }
 .frame-bar .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--line); }
+.frame-schloss { width: 12px; height: 12px; color: var(--ink-faint); flex: none; margin-left: 8px; }
 .frame-bar .dot:nth-child(1) { background: #E8A0A0; }
 .frame-bar .dot:nth-child(2) { background: #E8CFA0; }
 .frame-bar .dot:nth-child(3) { background: #A9C9A9; }
@@ -1362,6 +1396,11 @@ a.work-card:hover { color: inherit; }
   text-decoration: underline; text-underline-offset: 3px;
 }
 .builder-reset:hover { color: #fff; }
+
+/* Kundenportal: UI bleibt unsichtbar, bis die Sitzung vom Server bestätigt ist.
+   Sonst blitzt beim Klick auf Dashboard kurz ein angemeldetes Portal auf. */
+body.wartet .app-top,
+body.wartet .app-main { visibility: hidden; }
 
 body.builder-active { padding-bottom: 130px; }
 body.builder-active .widget-launcher { bottom: 112px; }
@@ -2156,33 +2195,54 @@ body.app { --header-h: 61px; }
    Live-Demos im Vollbild und Projekt-Detailseite
    ============================================================ */
 
-/* Beispiele: Karte öffnet die Demo im Vollbild */
+/* Beispiele: Demo öffnet gross, aber sichtbar INNERHALB von masesites -
+   abgedunkelter Rand ringsum, oben die masesites-Kopfzeile mit Schliessen */
 .demo-vollbild {
   position: fixed; inset: 0; z-index: 200;
-  background: var(--bg);
+  background: rgba(30, 22, 14, 0.52);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  padding: clamp(12px, 2.6vw, 32px);
+  display: flex;
+}
+.demo-vollbild-rahmen {
+  flex: 1; min-width: 0;
   display: flex; flex-direction: column;
+  background: var(--bg);
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 40px 120px rgba(0, 0, 0, 0.4);
 }
 .demo-vollbild-kopf {
-  display: flex; align-items: center; gap: 14px;
-  padding: 10px 16px;
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px 12px 10px 18px;
   background: var(--card);
   border-bottom: 1px solid var(--line);
   flex: none;
 }
-.demo-vollbild-kopf b { font-size: 0.98rem; }
+.dv-marke { font-weight: 700; font-size: 1.05rem; letter-spacing: -0.02em; flex: none; }
+.demo-vollbild-kopf b { font-size: 0.95rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .demo-vollbild-kopf .neu-tab { margin-left: auto; font-size: 0.86rem; font-weight: 600; color: var(--ink-soft); white-space: nowrap; }
 .demo-vollbild-kopf .neu-tab:hover { color: var(--ink); }
 .demo-vollbild-kopf .schliessen {
-  width: 38px; height: 38px; flex: none;
-  border: 1.5px solid var(--line); border-radius: 50%;
-  background: var(--bg-soft); color: var(--ink-soft);
+  flex: none;
+  display: inline-flex; align-items: center; gap: 8px;
+  border: 1.5px solid var(--line); border-radius: 999px;
+  background: var(--bg-soft); color: var(--ink);
+  font-family: var(--font-sans); font-size: 0.88rem; font-weight: 600;
+  padding: 9px 16px;
   cursor: pointer;
-  display: grid; place-items: center;
 }
-.demo-vollbild-kopf .schliessen:hover { color: var(--ink); border-color: var(--ink); }
-.demo-vollbild-kopf .schliessen svg { width: 17px; height: 17px; }
+.demo-vollbild-kopf .schliessen:hover { border-color: var(--ink); background: #fff; }
+.demo-vollbild-kopf .schliessen svg { width: 15px; height: 15px; }
 .demo-vollbild iframe { flex: 1; width: 100%; border: 0; background: #fff; }
 body.demo-offen { overflow: hidden; }
+@media (max-width: 720px) {
+  .demo-vollbild { padding: 8px; }
+  .demo-vollbild-kopf b { display: none; }
+  .demo-vollbild-kopf .schliessen span { display: none; }
+}
 .work-card[role="button"] { cursor: pointer; }
 
 /* Projekte: grosse Vorschau in der Detailansicht */
