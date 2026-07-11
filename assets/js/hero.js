@@ -84,18 +84,44 @@
   var sektion = document.getElementById("beispiel");
   if (!fenster || !frame || !taskbar) return;
 
-  function zeigeDemo(demo, knopf) {
-    frame.src = demo.url;
+  var demoListe = [];        /* { demo, knopf } in Reihenfolge */
+  var demoIndex = 0;
+  var demoTimer = null;
+  var demoManuell = false;   /* hat jemand geklickt, bleibt die Automatik aus */
+  var DEMO_WECHSEL_MS = 8000;
+
+  /* Beim Wechsel weich einblenden: iframe startet unsichtbar und wird
+     sichtbar, sobald die neue Seite geladen ist */
+  frame.addEventListener("load", function () { frame.style.opacity = "1"; });
+
+  function zeigeDemo(index) {
+    var eintrag = demoListe[index];
+    if (!eintrag) return;
+    demoIndex = index;
+    frame.style.opacity = "0";
+    frame.src = eintrag.demo.url;
     if (frameUrl) {
-      frameUrl.textContent = /^https?:\/\//i.test(demo.url)
-        ? demo.url.replace(/^https?:\/\//i, "")
-        : location.host + demo.url;
+      frameUrl.textContent = /^https?:\/\//i.test(eintrag.demo.url)
+        ? eintrag.demo.url.replace(/^https?:\/\//i, "")
+        : location.host + eintrag.demo.url;
     }
     taskbar.querySelectorAll(".chip").forEach(function (c) {
-      var an = c === knopf;
+      var an = c === eintrag.knopf;
       c.classList.toggle("active", an);
       c.setAttribute("aria-pressed", an ? "true" : "false");
     });
+  }
+
+  /* Automatik: alle paar Sekunden zur nächsten Demo, aber nur solange das
+     Fenster sichtbar ist und niemand von Hand gewählt hat */
+  function starteDemoAuto() {
+    if (demoTimer || demoManuell || reducedMotion || demoListe.length < 2) return;
+    demoTimer = setInterval(function () {
+      zeigeDemo((demoIndex + 1) % demoListe.length);
+    }, DEMO_WECHSEL_MS);
+  }
+  function stoppeDemoAuto() {
+    if (demoTimer) { clearInterval(demoTimer); demoTimer = null; }
   }
 
   fetch("/api/inhalte", { credentials: "same-origin" })
@@ -112,16 +138,34 @@
         knopf.type = "button";
         knopf.textContent = demo.name;
         knopf.setAttribute("aria-pressed", "false");
-        knopf.addEventListener("click", function () { zeigeDemo(demo, knopf); });
+        knopf.addEventListener("click", function () {
+          demoManuell = true;
+          stoppeDemoAuto();
+          zeigeDemo(i);
+        });
         taskbar.appendChild(knopf);
-        if (i === 0) zeigeDemo(demo, knopf);
+        demoListe.push({ demo: demo, knopf: knopf });
       });
+      zeigeDemo(0);
       var alle = document.createElement("a");
       alle.className = "taskbar-link";
       alle.href = "/beispiele";
       alle.textContent = "Alle Demos →";
       taskbar.appendChild(alle);
       fenster.hidden = false;
+
+      /* Nur rotieren, wenn das Fenster wirklich im Bild ist */
+      if ("IntersectionObserver" in window) {
+        new IntersectionObserver(function (eintraege) {
+          eintraege.forEach(function (e) {
+            if (e.isIntersecting) starteDemoAuto();
+            else stoppeDemoAuto();
+          });
+        }, { threshold: 0.35 }).observe(fenster);
+      } else {
+        starteDemoAuto();
+      }
+      window.addEventListener("beforeunload", stoppeDemoAuto);
     })
     .catch(function () { if (sektion) sektion.hidden = true; });
 })();

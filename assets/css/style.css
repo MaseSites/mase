@@ -486,6 +486,19 @@ section.tight { padding: 56px 0; }
   background: #fff;
   transform: scale(0.8);
   transform-origin: 0 0;
+  transition: opacity 0.4s ease;
+}
+
+/* Auftritt des Fensters: fliegt mit leichtem 3D-Schwung von rechts ins Bild,
+   statt nur einzublenden (ersetzt das Standard-Reveal für dieses Element) */
+.demo-fenster.reveal {
+  opacity: 0;
+  transform: perspective(1400px) translateX(150px) rotateY(-14deg) scale(0.94);
+  transition: opacity 0.9s var(--ease-out), transform 0.9s var(--ease-out);
+}
+.demo-fenster.reveal.in {
+  opacity: 1;
+  transform: none;
 }
 
 /* Abdeckung: die Vorschau bleibt Vorschau, Klick führt zu den Beispielen */
@@ -1611,6 +1624,7 @@ body.gescrollt .scroll-cue { opacity: 0; pointer-events: none; }
     transition-duration: 0.01ms !important;
   }
   .reveal { opacity: 1; transform: none; }
+  .demo-fenster.reveal { opacity: 1; transform: none; transition: none; }
   .preview-frame { animation: none; }
   .intro-overlay { display: none; }
 }
