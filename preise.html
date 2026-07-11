@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/style.css?v=12">
+  <link rel="stylesheet" href="assets/css/style.css?v=13">
 </head>
 <body>
 
@@ -52,12 +52,17 @@
     <section class="page-hero">
       <div class="wrap">
         <h1>Bau dir dein Paket.</h1>
-        <p class="lead">Klick alles an, was du brauchst. Die Leiste unten zählt live zusammen, so siehst du sofort, was dein Projekt kostet. Jeder Ab-Preis gilt für den beschriebenen Umfang, vor Projektstart bekommst du eine Offerte mit festem Preis.</p>
+        <p class="lead">Klick an, was du brauchst. Die Leiste unten rechnet live mit, die feste Offerte kommt vor Projektstart.</p>
+        <div class="preis-tabs" role="group" aria-label="Angebot wählen">
+          <button class="preis-tab active" type="button" data-tab="website">Neue Website</button>
+          <button class="preis-tab" type="button" data-tab="ueberarbeitung">Überarbeitung</button>
+          <button class="preis-tab" type="button" data-tab="webapp">Webapp</button>
+        </div>
       </div>
     </section>
 
     <!-- ===== Neue Website ===== -->
-    <section class="tight">
+    <section class="tight preis-panel" data-panel="website">
       <div class="wrap">
         <div class="section-head center">
           <h2 class="reveal">Neue Website</h2>
@@ -122,7 +127,7 @@
     </section>
 
     <!-- ===== Website-Überarbeitung ===== -->
-    <section id="ueberarbeitung">
+    <section class="tight preis-panel" data-panel="ueberarbeitung" id="ueberarbeitung" hidden>
       <div class="wrap">
         <div class="section-head center">
           <h2 class="reveal">Website-Überarbeitung</h2>
@@ -172,49 +177,41 @@
       </div>
     </section>
 
-    <!-- ===== Extras ===== -->
-    <section class="tight" id="extras">
+    <!-- ===== Webapps für Firmen ===== -->
+    <section class="tight preis-panel" data-panel="webapp" id="webapp" hidden>
       <div class="wrap">
         <div class="section-head center">
-          <h2 class="reveal">Extras zum Dazubauen</h2>
-          <p class="lead reveal" data-delay="80">Bausteine für Starter und Business. Im Premium-Paket ist das meiste davon schon enthalten.</p>
+          <h2 class="reveal">Webapps für Firmen</h2>
+          <p class="lead reveal" data-delay="80">Mehr als eine Website: dein Betrieb als eigenes System, massgeschneidert auf deine Abläufe.</p>
         </div>
-        <div class="price-grid" style="padding-top: 16px;">
+        <div class="price-grid cols-2" style="padding-top: 16px;">
 
-          <div class="price-card compact reveal">
-            <h3>Online-Terminbuchung</h3>
-            <p class="desc">Deine Kunden buchen Termine direkt auf der Website und bekommen automatisch eine Bestätigung.</p>
-            <div class="price-value">ab CHF 400.–<small>einmalig</small></div>
+          <div class="price-card reveal" data-select data-group="webapp" data-name="Webapp: Buchung &amp; System" data-once="3500" data-ab>
+            <h3>Buchung &amp; System</h3>
+            <p class="desc">Online-Buchungen und Kundenverwaltung, direkt in deine Website eingebaut.</p>
+            <div class="price-value">ab CHF 3'500.–<small>einmalig · Umfang nach Offerte</small></div>
+            <ul class="price-features">
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg> Online-Buchung rund um die Uhr, ohne Anrufe</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg> Automatische Bestätigungen und Erinnerungen</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg> Kundenkonten mit Verlauf und Terminen</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg> Verwaltung im Browser, von überall</li>
+            </ul>
+            <button class="btn btn-ghost select-btn" type="button">Auswählen</button>
           </div>
 
-          <div class="price-card compact reveal" data-delay="80">
-            <h3>Onlineshop</h3>
-            <p class="desc">Produkte online verkaufen. Bezahlt wird mit Twint, Kreditkarte oder auf Rechnung.</p>
-            <div class="price-value">ab CHF 900.–<small>einmalig</small></div>
-          </div>
-
-          <div class="price-card compact reveal" data-delay="160">
-            <h3>Selber ändern</h3>
-            <p class="desc">Du passt Texte, Bilder und Preise selbst an, ohne uns fragen zu müssen.</p>
-            <div class="price-value">ab CHF 500.–<small>einmalig</small></div>
-          </div>
-
-          <div class="price-card compact reveal">
-            <h3>Zusätzliche Unterseite</h3>
-            <p class="desc">Noch eine Seite dazu, zum Beispiel für ein zweites Angebot oder eine Aktion.</p>
-            <div class="price-value">CHF 120.–<small>pro Seite</small></div>
-          </div>
-
-          <div class="price-card compact reveal" data-delay="80">
-            <h3>Weitere Sprache</h3>
-            <p class="desc">Deine Website zusätzlich auf Französisch, Italienisch oder Englisch.</p>
-            <div class="price-value">ab CHF 300.–<small>pro Sprache</small></div>
-          </div>
-
-          <div class="price-card compact reveal" data-delay="160">
-            <h3>Express</h3>
-            <p class="desc">Dein Projekt bekommt Vorrang und ist in einer Woche online.</p>
-            <div class="price-value">ab CHF 300.–<small>einmalig</small></div>
+          <div class="price-card featured reveal" data-delay="100" data-select data-group="webapp" data-name="Webapp: Firmen-System" data-once="7500" data-ab>
+            <span class="price-flag">Massgeschneidert</span>
+            <h3>Firmen-Webapp</h3>
+            <p class="desc">Bestellungen, Daten und Abläufe an einem Ort, als eigene App für dein Team.</p>
+            <div class="price-value">ab CHF 7'500.–<small>einmalig · Umfang nach Offerte</small></div>
+            <ul class="price-features">
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg> Bestellungen und Aufträge live im Blick</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg> Alle Daten zentral und sicher gespeichert</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg> Benutzer und Rollen für dein Team</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg> Als eigene App auf Handy und PC installierbar</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg> Wächst mit deinem Betrieb mit</li>
+            </ul>
+            <button class="btn btn-ghost select-btn" type="button">Auswählen</button>
           </div>
 
         </div>
@@ -224,12 +221,13 @@
     <!-- ===== KI-Assistent ===== -->
     <section class="tight">
       <div class="wrap">
-        <div class="addon-card reveal">
+        <div class="addon-card reveal" data-select data-name="KI-Assistent" data-once="200" data-month="40">
           <div>
             <h3><span class="ki-glow">KI-Assistent</span> dazu?</h3>
             <p>Einrichtung CHF 200.– einmalig, Betrieb CHF 40.– pro Monat. Monatlich kündbar und auch auf bestehenden Websites einsetzbar.</p>
           </div>
           <div class="addon-actions">
+            <button class="btn btn-ghost select-btn" type="button">Auswählen</button>
             <a class="btn btn-primary" href="/ki-bot">Mehr zum KI-Bot <span class="arrow">→</span></a>
           </div>
         </div>
@@ -417,8 +415,8 @@
     </div>
   </footer>
 
-  <script src="assets/js/protokoll.js?v=12"></script>
-  <script src="assets/js/site.js?v=12"></script>
-  <script src="assets/js/preise.js?v=12"></script>
+  <script src="assets/js/protokoll.js?v=13"></script>
+  <script src="assets/js/site.js?v=13"></script>
+  <script src="assets/js/preise.js?v=13"></script>
 </body>
 </html>

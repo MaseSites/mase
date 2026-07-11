@@ -100,6 +100,31 @@
     });
   }
 
+  /* ---------- Tabs: Neue Website / Überarbeitung / Webapp ---------- */
+
+  var tabKnoepfe = Array.prototype.slice.call(document.querySelectorAll(".preis-tab"));
+  var tabPanels = Array.prototype.slice.call(document.querySelectorAll(".preis-panel"));
+
+  function zeigeTab(name) {
+    tabKnoepfe.forEach(function (t) { t.classList.toggle("active", t.getAttribute("data-tab") === name); });
+    tabPanels.forEach(function (p) { p.hidden = p.getAttribute("data-panel") !== name; });
+  }
+
+  if (tabKnoepfe.length) {
+    tabKnoepfe.forEach(function (t) {
+      t.addEventListener("click", function () {
+        var name = t.getAttribute("data-tab");
+        zeigeTab(name);
+        if (history.replaceState) {
+          history.replaceState(null, "", name === "website" ? location.pathname : "#" + name);
+        }
+      });
+    });
+    /* Tiefe Links wie /preise#ueberarbeitung öffnen direkt den richtigen Tab */
+    var startTab = location.hash.replace("#", "");
+    if (startTab === "ueberarbeitung" || startTab === "webapp") zeigeTab(startTab);
+  }
+
   /* Auswahl mitnehmen: landet als vorformulierte Nachricht im Kontaktformular */
   if (cta) {
     cta.addEventListener("click", function () {

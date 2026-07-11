@@ -187,18 +187,41 @@ var MS_GOOGLE_CLIENT_ID = "117777636536-nd77bnlv9co4l7g8cbn6de0q8uhj3njt.apps.go
     function ungeleseneNachrichten() {
       return konto.nachrichten.filter(function (n) { return n.von !== "ich" && !n.gelesen; }).length;
     }
+    /* Das Projekte-Badge zählt nur Projekte mit NEUEN Änderungen seit dem
+       letzten Blick in den Projekte-Bereich, nicht die blosse Anzahl. */
+    function projekteGesehenKey() { return "ms_proj_gesehen_" + konto.email; }
+    function neueProjektAenderungen() {
+      var gesehen = 0;
+      try { gesehen = parseInt(localStorage.getItem(projekteGesehenKey()) || "0", 10) || 0; } catch (e) {}
+      var n = 0;
+      konto.projekte.forEach(function (p) {
+        var neueste = 0;
+        (p.aktivitaet || []).forEach(function (a) { if ((a.zeit || 0) > neueste) neueste = a.zeit; });
+        if (neueste > gesehen) n++;
+      });
+      return n;
+    }
+    function markiereProjekteGesehen() {
+      try { localStorage.setItem(projekteGesehenKey(), String(Date.now())); } catch (e) {}
+      setzeBadges();
+    }
     function setzeBadges() {
-      var werte = {
+      var badges = {
+        projekte: neueProjektAenderungen(),
+        tickets: offeneTickets(),
+        nachrichten: ungeleseneNachrichten()
+      };
+      var kennzahlen = {
         projekte: laufendeProjekte(),
         tickets: offeneTickets(),
         nachrichten: ungeleseneNachrichten()
       };
-      Object.keys(werte).forEach(function (name) {
+      Object.keys(badges).forEach(function (name) {
         document.querySelectorAll('[data-badge="' + name + '"]').forEach(function (el) {
-          el.textContent = werte[name] > 0 ? String(werte[name]) : "";
+          el.textContent = badges[name] > 0 ? String(badges[name]) : "";
         });
         document.querySelectorAll('[data-kz="' + name + '"]').forEach(function (el) {
-          el.textContent = String(werte[name]);
+          el.textContent = String(kennzahlen[name]);
         });
       });
     }
@@ -230,6 +253,8 @@ var MS_GOOGLE_CLIENT_ID = "117777636536-nd77bnlv9co4l7g8cbn6de0q8uhj3njt.apps.go
       document.querySelectorAll(".side-item[data-route]").forEach(function (b) {
         b.classList.toggle("active", b.getAttribute("data-route") === name);
       });
+      /* Projekte angeschaut: Neuigkeiten-Badge zurücksetzen */
+      if (name === "projekte") markiereProjekteGesehen();
       if (name === "nachrichten") {
         renderChat();
         markiereGelesen();

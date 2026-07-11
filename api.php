@@ -799,13 +799,16 @@ const DEMO_ORDNER = 'beispiel-demos';
 const DEMO_MAX_MB = 60;
 
 /* Erlaubt sind externe Links (http/https) oder ein interner Pfad zu einer
-   hochgeladenen Demo (/beispiel-demos/...). */
+   hochgeladenen Demo (/beispiel-demos/..., auch Ordner aus ZIP-Uploads). */
 function gueltigeDemoUrl(string $url): bool
 {
     if (preg_match('#^https?://#i', $url)) {
         return true;
     }
-    return (bool)preg_match('#^/' . DEMO_ORDNER . '/[A-Za-z0-9][A-Za-z0-9._-]*$#', $url);
+    if (strpos($url, '..') !== false) {
+        return false;
+    }
+    return (bool)preg_match('#^/' . DEMO_ORDNER . '/[A-Za-z0-9][A-Za-z0-9._-]*(?:/[A-Za-z0-9._-]+)*/?$#', $url);
 }
 
 function saeubereBeispiele($liste): array
@@ -1470,6 +1473,31 @@ route('POST', '/api/admin/passwort', 'admin', function ($p, $body) {
     antwortJson(200, ['ok' => true]);
 });
 
+/* KI-Chats löschen: ohne konto alles, mit konto nur die Gespräche
+   dieses Besuchers (Inhalte sind verschlüsselt, darum wird gescannt) */
+route('DELETE', '/api/admin/botlog', 'admin', function ($p, $body) {
+    global $db;
+    $konto = s($body['konto'] ?? '', 120);
+    if ($konto === '') {
+        $db->exec('DELETE FROM botlog');
+        schreibeLog('Admin', clientIp(), 'admin', 'KI-Chats geleert', 'alle');
+    } else {
+        $weg = [];
+        foreach ($db->query('SELECT id, daten FROM botlog') as $zeile) {
+            $e = entschluessele($zeile['daten']);
+            if (($e['konto'] ?? '') === $konto) {
+                $weg[] = (int)$zeile['id'];
+            }
+        }
+        $loesch = $db->prepare('DELETE FROM botlog WHERE id = ?');
+        foreach ($weg as $id) {
+            $loesch->execute([$id]);
+        }
+        schreibeLog('Admin', clientIp(), 'admin', 'KI-Chat gelöscht', $konto . ' (' . count($weg) . ' Nachrichten)');
+    }
+    antwortJson(200, ['ok' => true]);
+});
+
 route('DELETE', '/api/admin/log', 'admin', function () {
     global $db;
     $db->exec('DELETE FROM log');
@@ -1584,8 +1612,8 @@ route('POST', '/api/admin/beispiel-upload', 'admin', function () {
         fehler(400, 'Die Datei ist zu gross (maximal ' . DEMO_MAX_MB . ' MB).');
     }
     $endung = strtolower(pathinfo((string)($datei['name'] ?? ''), PATHINFO_EXTENSION));
-    if ($endung !== 'html' && $endung !== 'htm') {
-        fehler(400, 'Bitte eine HTML-Datei hochladen (.html).');
+    if ($endung !== 'html' && $endung !== 'htm' && $endung !== 'zip') {
+        fehler(400, 'Bitte eine HTML-Datei oder ein ZIP mit der ganzen Website hochladen.');
     }
 
     $ordner = __DIR__ . '/' . DEMO_ORDNER;
@@ -1603,15 +1631,132 @@ route('POST', '/api/admin/beispiel-upload', 'admin', function () {
     $basis = trim($basis, '-');
     $basis = $basis !== '' ? substr($basis, 0, 40) : 'demo';
     $name = $basis . '-' . bin2hex(random_bytes(4));
-    $ziel = $ordner . '/' . $name . '.html';
 
-    if (!move_uploaded_file($datei['tmp_name'], $ziel)) {
-        fehlerAbbruch('Die Datei konnte nicht gespeichert werden.');
+    /* --- Einzelne HTML-Datei --- */
+    if ($endung !== 'zip') {
+        $ziel = $ordner . '/' . $name . '.html';
+        if (!move_uploaded_file($datei['tmp_name'], $ziel)) {
+            fehlerAbbruch('Die Datei konnte nicht gespeichert werden.');
+        }
+        @chmod($ziel, 0644);
+        schreibeLog('Admin', clientIp(), 'admin', 'Demo-Datei hochgeladen', $name . '.html');
+        /* URL ohne .html, damit die saubere-Adressen-Regel keine Umleitung macht */
+        antwortJson(200, ['ok' => true, 'url' => '/' . DEMO_ORDNER . '/' . $name]);
     }
-    @chmod($ziel, 0644);
-    schreibeLog('Admin', clientIp(), 'admin', 'Demo-Datei hochgeladen', $name . '.html');
-    /* URL ohne .html, damit die saubere-Adressen-Regel keine Umleitung macht */
-    antwortJson(200, ['ok' => true, 'url' => '/' . DEMO_ORDNER . '/' . $name]);
+
+    /* --- Ganze Website als ZIP: sicher entpacken ---
+       Nur harmlose Web-Dateitypen, keine Pfade nach oben (Zip-Slip),
+       Limits gegen Zip-Bomben. Ein gemeinsamer Wurzelordner im ZIP
+       wird automatisch entfernt. */
+    if (!class_exists('ZipArchive')) {
+        fehlerAbbruch('Die PHP-Erweiterung zip fehlt auf dem Server (in Plesk unter PHP-Einstellungen aktivieren).');
+    }
+    $erlaubt = ['html', 'htm', 'css', 'js', 'mjs', 'json', 'txt', 'xml', 'svg', 'png', 'jpg', 'jpeg', 'gif', 'webp', 'avif', 'ico', 'woff', 'woff2', 'ttf', 'otf', 'eot', 'mp4', 'webm', 'mp3', 'ogg', 'map', 'webmanifest', 'pdf'];
+    $zip = new ZipArchive();
+    if ($zip->open($datei['tmp_name']) !== true) {
+        fehler(400, 'Das ZIP liess sich nicht öffnen.');
+    }
+    $eintraege = [];
+    $gesamt = 0;
+    for ($i = 0; $i < $zip->numFiles; $i++) {
+        $st = $zip->statIndex($i);
+        $pfadImZip = str_replace('\\', '/', (string)$st['name']);
+        if ($pfadImZip === '' || substr($pfadImZip, -1) === '/') {
+            continue;   /* Ordnereintrag */
+        }
+        if (strpos($pfadImZip, '..') !== false || $pfadImZip[0] === '/' || strpos($pfadImZip, "\0") !== false) {
+            continue;   /* Zip-Slip und Unfug ignorieren */
+        }
+        if (strpos($pfadImZip, '__MACOSX/') === 0 || basename($pfadImZip) === '.DS_Store') {
+            continue;
+        }
+        $e = strtolower(pathinfo($pfadImZip, PATHINFO_EXTENSION));
+        if (!in_array($e, $erlaubt, true)) {
+            continue;   /* alles Ausführbare bleibt draussen */
+        }
+        $gesamt += (int)$st['size'];
+        $eintraege[] = $pfadImZip;
+    }
+    if (!$eintraege) {
+        fehler(400, 'Im ZIP wurden keine brauchbaren Website-Dateien gefunden (es braucht mindestens eine HTML-Datei).');
+    }
+    if (count($eintraege) > 800) {
+        fehler(400, 'Das ZIP enthält zu viele Dateien (maximal 800).');
+    }
+    if ($gesamt > 250 * 1024 * 1024) {
+        fehler(400, 'Das ZIP ist entpackt zu gross (maximal 250 MB).');
+    }
+
+    /* Gemeinsamen Wurzelordner erkennen (z. B. "meine-site/...") */
+    $praefix = '';
+    $erster = explode('/', $eintraege[0])[0];
+    if (strpos($eintraege[0], '/') !== false) {
+        $alleImOrdner = true;
+        foreach ($eintraege as $pf) {
+            if (explode('/', $pf)[0] !== $erster) {
+                $alleImOrdner = false;
+                break;
+            }
+        }
+        if ($alleImOrdner) {
+            $praefix = $erster . '/';
+        }
+    }
+
+    /* Startdatei bestimmen: index.html, sonst die erste HTML-Datei */
+    $start = '';
+    foreach ($eintraege as $pf) {
+        $rel = $praefix !== '' ? substr($pf, strlen($praefix)) : $pf;
+        if (strtolower($rel) === 'index.html') {
+            $start = $rel;
+            break;
+        }
+        if ($start === '' && preg_match('/\.html?$/i', $rel)) {
+            $start = $rel;
+        }
+    }
+    if ($start === '') {
+        fehler(400, 'Im ZIP fehlt eine HTML-Datei als Startseite.');
+    }
+
+    $zielOrdner = $ordner . '/' . $name;
+    if (!@mkdir($zielOrdner, 0755, true)) {
+        fehlerAbbruch('Der Demo-Ordner konnte nicht angelegt werden.');
+    }
+    $geschrieben = 0;
+    foreach ($eintraege as $pf) {
+        $rel = $praefix !== '' ? substr($pf, strlen($praefix)) : $pf;
+        if ($rel === '' || $rel === false) {
+            continue;
+        }
+        $ziel = $zielOrdner . '/' . $rel;
+        $unterordner = dirname($ziel);
+        if (!is_dir($unterordner)) {
+            @mkdir($unterordner, 0755, true);
+        }
+        $inhalt = $zip->getFromName($pf);
+        if ($inhalt === false) {
+            continue;
+        }
+        if (@file_put_contents($ziel, $inhalt) !== false) {
+            @chmod($ziel, 0644);
+            $geschrieben++;
+        }
+    }
+    $zip->close();
+    if (!$geschrieben) {
+        fehlerAbbruch('Das ZIP konnte nicht entpackt werden.');
+    }
+
+    schreibeLog('Admin', clientIp(), 'admin', 'Demo-ZIP hochgeladen', $name . ' (' . $geschrieben . ' Dateien)');
+    /* index.html im Wurzelordner: Ordner-URL reicht. Sonst auf die Startdatei
+       zeigen, ohne .html (saubere Adressen). */
+    if (strtolower($start) === 'index.html') {
+        $url = '/' . DEMO_ORDNER . '/' . $name . '/';
+    } else {
+        $url = '/' . DEMO_ORDNER . '/' . $name . '/' . preg_replace('/\.html?$/i', '', $start);
+    }
+    antwortJson(200, ['ok' => true, 'url' => $url, 'dateien' => $geschrieben]);
 });
 
 route('POST', '/api/log', null, function ($p, $body, $sitzung) {

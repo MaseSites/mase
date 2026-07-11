@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../assets/css/style.css?v=12">
+  <link rel="stylesheet" href="../assets/css/style.css?v=13">
 </head>
 <body class="app" data-no-widget>
 
@@ -340,6 +340,9 @@
                 <h1>KI-Chats</h1>
                 <p>Alle Gespräche mit dem Website-Bot, gruppiert nach Besucher.</p>
               </div>
+              <div class="panel-aktionen">
+                <button class="btn btn-ghost klein" type="button" id="ki-alle-loeschen">Alle löschen</button>
+              </div>
             </div>
             <div id="ki-liste"></div>
           </section>
@@ -471,9 +474,9 @@
                   </div>
                   <div class="form-trenner"><span>oder</span></div>
                   <div class="form-field">
-                    <label for="bf-datei">HTML-Datei hochladen</label>
-                    <input id="bf-datei" type="file" accept=".html,.htm,text/html">
-                    <small class="feld-hinweis">Eine einzelne HTML-Datei (max. 60 MB). Sie wird als Demo gespeichert und öffnet sich im Vollbild.</small>
+                    <label for="bf-datei">Website hochladen (HTML oder ZIP)</label>
+                    <input id="bf-datei" type="file" accept=".html,.htm,.zip,text/html,application/zip">
+                    <small class="feld-hinweis">Eine einzelne HTML-Datei ODER ein ZIP mit der ganzen Website (index.html samt CSS, JS und Bildern, max. 60 MB). Beim ZIP bleibt alles zusammen, nichts fehlt mehr.</small>
                     <p class="feld-status" id="bf-datei-status"></p>
                   </div>
                   <div class="form-field">
@@ -578,7 +581,7 @@
     </div>
   </footer>
 
-  <script src="../assets/js/daten.js?v=12"></script>
-  <script src="../assets/js/admin.js?v=12"></script>
+  <script src="../assets/js/daten.js?v=13"></script>
+  <script src="../assets/js/admin.js?v=13"></script>
 </body>
 </html>

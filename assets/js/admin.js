@@ -1065,6 +1065,21 @@
 
   /* ---------- KI-Chats ---------- */
 
+  /* Zugeklappte Chat-Gruppen (bleibt bis zum Neuladen der Seite erhalten) */
+  var kiEingeklappt = {};
+
+  function loescheKiChats(konto) {
+    return fetch("/api/admin/botlog", {
+      method: "DELETE",
+      credentials: "same-origin",
+      headers: { "Content-Type": "application/json", "X-Requested-With": "fetch" },
+      body: JSON.stringify(konto ? { konto: konto } : {})
+    }).then(function (r) {
+      if (!r.ok) throw new Error("Löschen fehlgeschlagen (" + r.status + ").");
+      return D.aktualisiere();
+    }).then(function () { renderAlles(); });
+  }
+
   function renderKi() {
     var halter = document.getElementById("ki-liste");
     halter.innerHTML = "";
@@ -1076,23 +1091,58 @@
       return;
     }
     gruppen.forEach(function (g) {
-      var card = el("div", "dash-card");
-      card.appendChild(el("h3", "", g.name === "Gast" ? "Gast (nicht angemeldet)" : g.name));
-      card.appendChild(el("p", "dash-sub", g.eintraege.length + " Nachrichten · zuletzt " + D.zeitText(g.eintraege[g.eintraege.length - 1].zeit)));
+      var zu = !!kiEingeklappt[g.name];
+      var card = el("div", "dash-card" + (zu ? " schlank" : ""));
 
-      var thread = el("div", "chat-verlauf klein");
-      g.eintraege.forEach(function (n) {
-        var vomBot = n.von === "bot";
-        var zeileEl = el("div", "chat-zeile " + (vomBot ? "von-ich" : "von-masesites"));
-        var bubble = el("div", "chat-bubble");
-        bubble.appendChild(document.createTextNode(n.text));
-        bubble.appendChild(el("span", "msg-zeit", (vomBot ? "Bot" : "Besucher") + " · " + D.uhrzeit(n.zeit)));
-        zeileEl.appendChild(bubble);
-        thread.appendChild(zeileEl);
+      var kopf = el("div", "card-head");
+      var links = el("div");
+      links.appendChild(el("h3", "", g.name === "Gast" ? "Gast (nicht angemeldet)" : g.name));
+      links.appendChild(el("p", "dash-sub", g.eintraege.length + " Nachrichten · zuletzt " + D.zeitText(g.eintraege[g.eintraege.length - 1].zeit)));
+      kopf.appendChild(links);
+
+      var aktionen = el("div", "panel-aktionen");
+      var klapp = el("button", "btn btn-ghost klein", zu ? "Aufklappen" : "Einklappen");
+      klapp.type = "button";
+      klapp.addEventListener("click", function () {
+        kiEingeklappt[g.name] = !zu;
+        renderKi();
       });
-      card.appendChild(thread);
-      halter.appendChild(card);
-      thread.scrollTop = thread.scrollHeight;
+      aktionen.appendChild(klapp);
+      var loeschen = el("button", "btn btn-ghost klein", "Löschen");
+      loeschen.type = "button";
+      loeschen.addEventListener("click", function () {
+        if (!confirm('Alle Gespräche von "' + g.name + '" wirklich löschen?')) return;
+        loescheKiChats(g.name).catch(function (f) { alert(f.message); });
+      });
+      aktionen.appendChild(loeschen);
+      kopf.appendChild(aktionen);
+      card.appendChild(kopf);
+
+      if (!zu) {
+        var thread = el("div", "chat-verlauf klein");
+        g.eintraege.forEach(function (n) {
+          var vomBot = n.von === "bot";
+          var zeileEl = el("div", "chat-zeile " + (vomBot ? "von-ich" : "von-masesites"));
+          var bubble = el("div", "chat-bubble");
+          bubble.appendChild(document.createTextNode(n.text));
+          bubble.appendChild(el("span", "msg-zeit", (vomBot ? "Bot" : "Besucher") + " · " + D.uhrzeit(n.zeit)));
+          zeileEl.appendChild(bubble);
+          thread.appendChild(zeileEl);
+        });
+        card.appendChild(thread);
+        halter.appendChild(card);
+        thread.scrollTop = thread.scrollHeight;
+      } else {
+        halter.appendChild(card);
+      }
+    });
+  }
+
+  var kiAlleKnopf = document.getElementById("ki-alle-loeschen");
+  if (kiAlleKnopf) {
+    kiAlleKnopf.addEventListener("click", function () {
+      if (!confirm("Wirklich ALLE KI-Chats unwiderruflich löschen?")) return;
+      loescheKiChats(null).catch(function (f) { alert(f.message); });
     });
   }
 
