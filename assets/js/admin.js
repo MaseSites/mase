@@ -1065,8 +1065,9 @@
 
   /* ---------- KI-Chats ---------- */
 
-  /* Zugeklappte Chat-Gruppen (bleibt bis zum Neuladen der Seite erhalten) */
-  var kiEingeklappt = {};
+  /* ---------- KI-Chats als Posteingang: links die Besucher, rechts das Gespräch ---------- */
+
+  var kiAktiv = null;
 
   function loescheKiChats(konto) {
     return fetch("/api/admin/botlog", {
@@ -1080,68 +1081,117 @@
     }).then(function () { renderAlles(); });
   }
 
+  function kiAnzeigeName(name) {
+    return name === "Gast" ? "Gast (nicht angemeldet)" : name;
+  }
+
   function renderKi() {
-    var halter = document.getElementById("ki-liste");
+    renderKiListe();
+    renderKiThread();
+  }
+
+  function renderKiListe() {
+    var halter = document.getElementById("ki-eintraege");
+    if (!halter) return;
+    var suchfeld = document.getElementById("ki-suche");
+    var filter = suchfeld ? suchfeld.value.trim().toLowerCase() : "";
     halter.innerHTML = "";
     var gruppen = kiGruppen();
+    if (filter) {
+      gruppen = gruppen.filter(function (g) { return g.name.toLowerCase().indexOf(filter) !== -1; });
+    }
     if (!gruppen.length) {
-      var card = el("div", "dash-card");
-      card.appendChild(el("p", "leer", "Noch keine Bot-Gespräche aufgezeichnet. Sobald jemand mit dem KI-Bot auf der Website chattet, erscheint der Verlauf hier."));
-      halter.appendChild(card);
+      halter.appendChild(el("p", "inbox-leer", filter ? "Nichts gefunden." : "Noch keine Bot-Gespräche. Sobald jemand mit dem KI-Bot chattet, erscheint er hier."));
       return;
     }
     gruppen.forEach(function (g) {
-      var zu = !!kiEingeklappt[g.name];
-      var card = el("div", "dash-card" + (zu ? " schlank" : ""));
+      var item = document.createElement("button");
+      item.type = "button";
+      item.className = "inbox-item" + (g.name === kiAktiv ? " aktiv" : "");
 
-      var kopf = el("div", "card-head");
-      var links = el("div");
-      links.appendChild(el("h3", "", g.name === "Gast" ? "Gast (nicht angemeldet)" : g.name));
-      links.appendChild(el("p", "dash-sub", g.eintraege.length + " Nachrichten · zuletzt " + D.zeitText(g.eintraege[g.eintraege.length - 1].zeit)));
-      kopf.appendChild(links);
+      var avatar = el("span", "side-avatar", g.name === "Gast" ? "G" : g.name.trim().charAt(0).toUpperCase());
+      avatar.setAttribute("aria-hidden", "true");
+      item.appendChild(avatar);
 
-      var aktionen = el("div", "panel-aktionen");
-      var klapp = el("button", "btn btn-ghost klein", zu ? "Aufklappen" : "Einklappen");
-      klapp.type = "button";
-      klapp.addEventListener("click", function () {
-        kiEingeklappt[g.name] = !zu;
+      var mitte = el("span", "ib-mitte");
+      mitte.appendChild(el("b", "", kiAnzeigeName(g.name)));
+      var letzte = g.eintraege[g.eintraege.length - 1];
+      mitte.appendChild(el("small", "", (letzte.von === "bot" ? "Bot: " : "") + letzte.text));
+      item.appendChild(mitte);
+
+      var rechts = el("span", "ib-rechts");
+      rechts.appendChild(el("span", "ib-zeit", D.kurzeZeit(letzte.zeit)));
+      rechts.appendChild(el("span", "ib-anzahl", String(g.eintraege.length)));
+      item.appendChild(rechts);
+
+      item.addEventListener("click", function () {
+        kiAktiv = g.name;
         renderKi();
       });
-      aktionen.appendChild(klapp);
-      var loeschen = el("button", "btn btn-ghost klein", "Löschen");
-      loeschen.type = "button";
-      loeschen.addEventListener("click", function () {
-        if (!confirm('Alle Gespräche von "' + g.name + '" wirklich löschen?')) return;
-        loescheKiChats(g.name).catch(function (f) { alert(f.message); });
-      });
-      aktionen.appendChild(loeschen);
-      kopf.appendChild(aktionen);
-      card.appendChild(kopf);
-
-      if (!zu) {
-        var thread = el("div", "chat-verlauf klein");
-        g.eintraege.forEach(function (n) {
-          var vomBot = n.von === "bot";
-          var zeileEl = el("div", "chat-zeile " + (vomBot ? "von-ich" : "von-masesites"));
-          var bubble = el("div", "chat-bubble");
-          bubble.appendChild(document.createTextNode(n.text));
-          bubble.appendChild(el("span", "msg-zeit", (vomBot ? "Bot" : "Besucher") + " · " + D.uhrzeit(n.zeit)));
-          zeileEl.appendChild(bubble);
-          thread.appendChild(zeileEl);
-        });
-        card.appendChild(thread);
-        halter.appendChild(card);
-        thread.scrollTop = thread.scrollHeight;
-      } else {
-        halter.appendChild(card);
-      }
+      halter.appendChild(item);
     });
   }
+
+  function renderKiThread() {
+    var halter = document.getElementById("ki-thread");
+    if (!halter) return;
+    halter.innerHTML = "";
+    var gruppe = null;
+    kiGruppen().forEach(function (g) { if (g.name === kiAktiv) gruppe = g; });
+    if (!gruppe) {
+      kiAktiv = null;
+      halter.appendChild(el("p", "inbox-leer", "Wähle links einen Besucher, um das Gespräch zu sehen."));
+      return;
+    }
+
+    var kopf = el("div", "chat-kopf");
+    var avatar = el("span", "chat-avatar", gruppe.name === "Gast" ? "G" : gruppe.name.trim().charAt(0).toUpperCase());
+    avatar.setAttribute("aria-hidden", "true");
+    kopf.appendChild(avatar);
+    var wer = el("span", "chat-wer");
+    wer.appendChild(el("b", "", kiAnzeigeName(gruppe.name)));
+    wer.appendChild(el("small", "", gruppe.eintraege.length + " Nachrichten · zuletzt " + D.zeitText(gruppe.eintraege[gruppe.eintraege.length - 1].zeit)));
+    kopf.appendChild(wer);
+    var loeschKnopf = el("button", "mini-knopf", "Löschen");
+    loeschKnopf.type = "button";
+    loeschKnopf.style.marginLeft = "auto";
+    loeschKnopf.addEventListener("click", function () {
+      if (!confirm('Alle Gespräche von "' + kiAnzeigeName(gruppe.name) + '" wirklich löschen?')) return;
+      kiAktiv = null;
+      loescheKiChats(gruppe.name).catch(function (f) { alert(f.message); });
+    });
+    kopf.appendChild(loeschKnopf);
+    halter.appendChild(kopf);
+
+    var verlauf = el("div", "chat-verlauf");
+    verlauf.setAttribute("aria-live", "polite");
+    var letzterTag = null;
+    gruppe.eintraege.forEach(function (n) {
+      var tag = D.datumText(new Date(n.zeit));
+      if (tag !== letzterTag) {
+        verlauf.appendChild(el("div", "chat-tag", D.tagLabel(tag)));
+        letzterTag = tag;
+      }
+      var vomBot = n.von === "bot";
+      var zeileEl = el("div", "chat-zeile " + (vomBot ? "von-ich" : "von-masesites"));
+      var bubble = el("div", "chat-bubble");
+      bubble.appendChild(document.createTextNode(n.text));
+      bubble.appendChild(el("span", "msg-zeit", (vomBot ? "Bot" : "Besucher") + " · " + D.uhrzeit(n.zeit)));
+      zeileEl.appendChild(bubble);
+      verlauf.appendChild(zeileEl);
+    });
+    halter.appendChild(verlauf);
+    verlauf.scrollTop = verlauf.scrollHeight;
+  }
+
+  var kiSuchfeld = document.getElementById("ki-suche");
+  if (kiSuchfeld) kiSuchfeld.addEventListener("input", renderKiListe);
 
   var kiAlleKnopf = document.getElementById("ki-alle-loeschen");
   if (kiAlleKnopf) {
     kiAlleKnopf.addEventListener("click", function () {
       if (!confirm("Wirklich ALLE KI-Chats unwiderruflich löschen?")) return;
+      kiAktiv = null;
       loescheKiChats(null).catch(function (f) { alert(f.message); });
     });
   }

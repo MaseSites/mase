@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../assets/css/style.css?v=15">
+  <link rel="stylesheet" href="../assets/css/style.css?v=16">
 </head>
 <body class="app" data-no-widget>
 
@@ -338,13 +338,23 @@
             <div class="panel-kopf">
               <div>
                 <h1>KI-Chats</h1>
-                <p>Alle Gespräche mit dem Website-Bot, gruppiert nach Besucher.</p>
+                <p>Alle Gespräche mit dem Website-Bot. Links den Besucher wählen, rechts läuft das Gespräch.</p>
               </div>
               <div class="panel-aktionen">
                 <button class="btn btn-ghost klein" type="button" id="ki-alle-loeschen">Alle löschen</button>
               </div>
             </div>
-            <div id="ki-liste"></div>
+            <div class="dash-card inbox-karte">
+              <div class="inbox-liste">
+                <div class="inbox-suche">
+                  <input type="search" id="ki-suche" placeholder="Besucher suchen" aria-label="Besucher suchen">
+                </div>
+                <div class="inbox-eintraege" id="ki-eintraege"></div>
+              </div>
+              <div class="inbox-thread" id="ki-thread">
+                <p class="inbox-leer">Wähle links einen Besucher, um das Gespräch zu sehen.</p>
+              </div>
+            </div>
           </section>
 
           <!-- ===== Mitarbeiter: Liste ===== -->
@@ -581,7 +591,7 @@
     </div>
   </footer>
 
-  <script src="../assets/js/daten.js?v=15"></script>
-  <script src="../assets/js/admin.js?v=15"></script>
+  <script src="../assets/js/daten.js?v=16"></script>
+  <script src="../assets/js/admin.js?v=16"></script>
 </body>
 </html>
