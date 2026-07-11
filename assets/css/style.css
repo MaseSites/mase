@@ -573,9 +573,23 @@ html.intro-zoom .widget-launcher { opacity: 0; pointer-events: none; }
   z-index: 5;
   pointer-events: none;
 }
-/* Während des Intros hängt die Deko fixiert unter dem fixierten Monitor */
-html.intro-zoom .hero-deko { display: block; position: fixed; z-index: 97; }
-html.intro-zoom.intro-fahrt .hero-deko { opacity: 0; transition: opacity 0.35s ease; }
+/* Während des Intros hängt die Deko fixiert unter dem fixierten Monitor.
+   Bei der Fahrt zoomt sie synchron mit dem Monitor mit (gleiche Kurve,
+   gleicher Wachstumsfaktor 1/0.36) und fährt unten aus dem Bild, statt
+   einfach auszublenden. */
+html.intro-zoom .hero-deko {
+  display: block;
+  position: fixed;
+  z-index: 97;
+  transform-origin: 50% 0;
+  transition:
+    top 1.6s cubic-bezier(0.4, 0.05, 0.2, 1),
+    transform 1.6s cubic-bezier(0.4, 0.05, 0.2, 1);
+}
+html.intro-zoom.intro-fahrt .hero-deko {
+  top: calc(100% + 30px);
+  transform: translateX(-50%) scale(2.78);
+}
 .hero-deko .deko-stand {
   width: 78px; height: 26px;
   margin: 0 auto;
