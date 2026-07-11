@@ -40,7 +40,18 @@
 
 /* scrollbar-gutter: der Platz für den Scrollbalken ist IMMER reserviert,
    damit sich Header und Inhalt nie verschieben, wenn er auftaucht */
-html { scroll-behavior: smooth; scroll-padding-top: calc(var(--header-h) + 12px); scrollbar-gutter: stable; }
+html { scroll-behavior: smooth; scroll-padding-top: calc(var(--header-h) + 12px); scrollbar-gutter: stable; scrollbar-width: thin; scrollbar-color: rgba(44, 33, 24, 0.3) transparent; }
+
+/* Schlanker, warmer Scrollbalken statt des klobigen Standards */
+::-webkit-scrollbar { width: 12px; height: 12px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: rgba(44, 33, 24, 0.22);
+  border-radius: 999px;
+  border: 3.5px solid transparent;
+  background-clip: padding-box;
+}
+::-webkit-scrollbar-thumb:hover { background-color: rgba(44, 33, 24, 0.38); background-clip: padding-box; }
 
 body {
   font-family: var(--font-sans);
@@ -202,6 +213,13 @@ section.tight { padding: 56px 0; }
 .site-header.scrolled .header-inner {
   background: rgba(253, 250, 244, 0.62);
   box-shadow: 0 14px 40px rgba(44, 33, 24, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+
+/* Beim Laden gleitet die Pille sanft von oben ins Bild */
+.header-inner { animation: header-slide 0.65s var(--ease-out) 0.15s backwards; }
+@keyframes header-slide {
+  from { transform: translateY(-160%); opacity: 0; }
+  to { transform: none; opacity: 1; }
 }
 
 .logo { display: inline-flex; align-items: center; gap: 10px; font-weight: 700; font-size: 1.28rem; color: var(--ink); letter-spacing: -0.02em; }
@@ -434,14 +452,11 @@ section.tight { padding: 56px 0; }
   .flieger.ring.r3, .flieger.karte.k1, .flieger.punkt.p2, .flieger.quadrat { display: none; }
 }
 
-/* Unten weich in den Seitenhintergrund auslaufen: Bewegung bleibt "nur oben" */
-.hero-start::after {
-  content: "";
-  position: absolute;
-  left: 0; right: 0; bottom: 0;
-  height: 150px;
-  background: linear-gradient(180deg, transparent, var(--bg));
-  pointer-events: none;
+/* Nahtloser Übergang nach unten: der Hero-Hintergrund löst sich per Maske
+   in die Seiten-Aurora auf - keine sichtbare Kante zwischen den Bereichen */
+.hero-start .hero-bg {
+  -webkit-mask-image: linear-gradient(180deg, #000 70%, transparent 100%);
+  mask-image: linear-gradient(180deg, #000 70%, transparent 100%);
 }
 
 /* ---------- Live-Demos im Beispiel-Fenster (Sektion 2) ---------- */
