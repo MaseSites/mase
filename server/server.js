@@ -1004,7 +1004,10 @@ const CSP = [
   "style-src 'self' 'unsafe-inline' https://accounts.google.com https://fonts.googleapis.com",
   "font-src 'self' https://fonts.gstatic.com",
   "img-src 'self' data: https:",
-  "frame-src https:",
+  /* 'self' ist noetig, damit intern hochgeladene Demos aus
+     /beispiel-demos/ im Vollbild-Viewer laufen – ueber https greift zwar
+     auch die Schema-Regel, aber nicht bei http (lokal, Vorschau). */
+  "frame-src 'self' https:",
   "connect-src 'self' https://accounts.google.com",
   "object-src 'none'",
   "base-uri 'self'",
@@ -1012,11 +1015,28 @@ const CSP = [
   "frame-ancestors 'self'"
 ].join("; ");
 
-function sicherheitsKoepfe(res, req, istHtml) {
+/* Hochgeladene Demos brauchen eine lockerere Regel: viele nutzen
+   Inline-Skripte und -Stile. Genau so hält es auch beispiel-demos/.htaccess
+   auf dem Apache-Server – ohne diese Angleichung funktionieren Demos hier
+   anders als live. Abgesichert sind sie über die iframe-Sandbox im Viewer
+   und das Skript-Ausführungsverbot des Ordners. */
+const CSP_DEMO = [
+  "default-src 'self' https: data: blob:",
+  "script-src 'self' 'unsafe-inline' 'unsafe-eval' https:",
+  "style-src 'self' 'unsafe-inline' https:",
+  "img-src 'self' https: data: blob:",
+  "font-src 'self' https: data:",
+  "connect-src 'self' https:",
+  "media-src 'self' https: data: blob:",
+  "object-src 'none'",
+  "frame-ancestors 'self'"
+].join("; ");
+
+function sicherheitsKoepfe(res, req, istHtml, istDemo) {
   res.setHeader("X-Content-Type-Options", "nosniff");
   res.setHeader("Referrer-Policy", "strict-origin-when-cross-origin");
   if (istHtml) {
-    res.setHeader("Content-Security-Policy", CSP);
+    res.setHeader("Content-Security-Policy", istDemo ? CSP_DEMO : CSP);
     res.setHeader("X-Frame-Options", "SAMEORIGIN");
   }
   if (istHttps(req)) {
@@ -1061,7 +1081,8 @@ function liefereDatei(req, res, pfadname) {
   const endung = path.extname(voll).toLowerCase();
   const typ = MIME[endung] || "application/octet-stream";
   const istHtml = endung === ".html";
-  sicherheitsKoepfe(res, req, istHtml);
+  const istDemo = voll.indexOf(path.join(WURZEL, "beispiel-demos") + path.sep) === 0;
+  sicherheitsKoepfe(res, req, istHtml, istDemo);
   res.writeHead(200, {
     "Content-Type": typ,
     "Content-Length": stat.size,

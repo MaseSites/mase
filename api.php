@@ -872,14 +872,45 @@ function ladeInhalte(): array
         'projekte' => saeubereReferenzProjekte($p),
     ];
 }
-/* Beim ersten Lauf mit den vier bestehenden Live-Demos befüllen,
+/* Beim ersten Lauf mit den bestehenden Live-Demos befüllen,
    damit die Beispiele-Seite ohne Pflege genauso aussieht wie bisher. */
 function stelleInhalteSicher(): void
 {
+    /* Die Webapp-Demo kam später dazu. Sie wird deshalb auch bestehenden
+       Installationen genau EINMAL hinzugefügt (per Merker), damit sie nicht
+       wieder auftaucht, wenn sie im Admin bewusst gelöscht wurde. */
+    $tavolo = [
+        'id' => 'B-tavolo',
+        'name' => 'tavolo – Restaurant-Software',
+        'branche' => 'Webapp',
+        'beschreibung' => 'Bedienbare Webapp: Reservierungen, Kalender, Menüs, Schichten und Preisrechner.',
+        'url' => '/beispiel-demos/tavolo',
+        'bild' => 'assets/img/demos/tavolo.jpg',
+    ];
+
     if (einstellung('inhalte_beispiele') !== null) {
+        if (einstellung('inhalte_tavolo_ergaenzt') === null) {
+            $liste = json_decode((string)einstellung('inhalte_beispiele'), true);
+            if (is_array($liste)) {
+                $vorhanden = false;
+                foreach ($liste as $e) {
+                    if (is_array($e) && ($e['id'] ?? '') === 'B-tavolo') {
+                        $vorhanden = true;
+                        break;
+                    }
+                }
+                if (!$vorhanden) {
+                    $liste[] = $tavolo;
+                    setzeEinstellung('inhalte_beispiele', json_encode(saeubereBeispiele($liste), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+                }
+            }
+            setzeEinstellung('inhalte_tavolo_ergaenzt', '1');
+        }
         return;
     }
+    setzeEinstellung('inhalte_tavolo_ergaenzt', '1');
     setzeEinstellung('inhalte_beispiele', json_encode([
+        $tavolo,
         ['id' => 'B-kebab', 'name' => 'Kebab Palace', 'branche' => 'Gastronomie', 'beschreibung' => 'Speisekarte, Bestellung und Standort im Fokus.', 'url' => 'https://masesites.ch/demo/doener-site/index.html', 'bild' => 'assets/img/demos/kebab.jpg'],
         ['id' => 'B-nails', 'name' => 'Nails & Co.', 'branche' => 'Beauty', 'beschreibung' => 'Elegantes Einseiten-Design mit Galerie und Terminbuchung.', 'url' => 'https://masesites.ch/demo/nagelstudio-site/index.html', 'bild' => 'assets/img/demos/nagelstudio.jpg'],
         ['id' => 'B-praxis', 'name' => 'Praxis Dr. Müller', 'branche' => 'Gesundheit', 'beschreibung' => 'Seriöser Auftritt mit ruhiger Typografie und Terminbuchung.', 'url' => 'https://masesites.ch/demo/praxis-site/index.html', 'bild' => 'assets/img/demos/praxis.jpg'],
