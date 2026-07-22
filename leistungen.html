@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/style.css?v=29">
-  <link rel="stylesheet" href="assets/css/leistungen.css?v=3">
+  <link rel="stylesheet" href="assets/css/leistungen.css?v=8">
 </head>
 <body>
 
@@ -207,7 +207,7 @@
       <div class="wrap lw-buehne">
         <div class="lw-text">
           <h2>Software, die deine Abläufe kennt.</h2>
-          <p>Buchungen, Kundendaten, Lager oder Rapporte: Eine Webapp bündelt, was heute in Excel-Listen, WhatsApp-Chats und Telefonaten steckt – zugeschnitten auf deinen Betrieb. Sie läuft im Browser, ohne Installation, am PC wie am Handy. Das Bild rechts ist keine Attrappe: So sieht das Kundenportal aus, das wir für unsere eigenen Kunden gebaut haben – mit Projekten, Tickets und Chat an einem Ort.</p>
+          <p>Buchungen, Kundendaten, Lager oder Rapporte: Eine Webapp bündelt, was heute in Excel-Listen, WhatsApp-Chats und Telefonaten steckt – zugeschnitten auf deinen Betrieb. Sie läuft im Browser, ohne Installation, am PC wie am Handy. Rechts siehst du, wie so etwas aussehen kann: ein Reservierungs-System für ein Restaurant – mit Kalender, Menüverwaltung und Planung an einem Ort.</p>
           <ul class="lw-merkmale">
             <li><b>Ein System statt zehn Listen</b><span>Alle im Team arbeiten mit denselben, aktuellen Daten – nichts wird doppelt geführt.</span></li>
             <li><b>Zugriff nach Rollen</b><span>Jeder sieht genau das, was er sehen soll: Chef, Team, Kunden.</span></li>
@@ -218,9 +218,125 @@
           </div>
         </div>
         <div class="lw-schau">
-          <div class="dio-browser ruhig">
-            <div class="dio-bar"><i></i><i></i><i></i><em>Kundenportal – echtes Projekt von masesites</em></div>
-            <img class="echt-bild" src="assets/img/leistungen/webapp-dashboard.jpg" alt="Echtes Beispiel: das masesites-Kundenportal mit Übersicht, Projekten und Kennzahlen" loading="lazy">
+          <!-- Erfundenes Beispiel-GUI: «tavolo» – Reservierungs-System für ein
+               Restaurant. Eigenes Produkt-Farbsystem, bewusst nicht im
+               masesites-Look, damit es wie echte Software wirkt. -->
+          <div class="tavolo" role="img" aria-label="Beispiel einer Restaurant-Software: Reservierungsübersicht mit Kalender, Tischplan und Auslastung">
+
+            <aside class="tv-seite">
+              <div class="tv-marke">
+                <span class="tv-logo" aria-hidden="true">
+                  <!-- «tavolo» heisst Tisch: die Marke ist zugleich ein t und
+                       ein Säulentisch – Platte, Stiel, Fuss. -->
+                  <svg viewBox="0 0 20 20" fill="none">
+                    <rect x="2.4" y="4.6" width="15.2" height="2.5" rx="1.25" fill="currentColor"/>
+                    <rect x="8.85" y="7.1" width="2.3" height="6.6" fill="currentColor"/>
+                    <rect x="5.3" y="13.7" width="9.4" height="2.3" rx="1.15" fill="currentColor"/>
+                  </svg>
+                </span>tavolo</div>
+
+              <span class="tv-gruppe">Betrieb</span>
+              <a class="tv-punkt">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+                Übersicht
+              </a>
+              <a class="tv-punkt aktiv">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9.5" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/></svg>
+                Reservierungen<i>12</i>
+              </a>
+              <a class="tv-punkt">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="2.5"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+                Kalender
+              </a>
+              <a class="tv-punkt">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 3h13a2 2 0 0 1 2 2v16l-6-3-6 3V5a2 2 0 0 0-2-2z"/><path d="M8 8h6M8 12h4"/></svg>
+                Menüs
+              </a>
+
+              <span class="tv-gruppe">Planung</span>
+              <a class="tv-punkt">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M3 12h12M3 18h7"/></svg>
+                Schichten
+              </a>
+              <a class="tv-punkt">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17.5 6.5H9.75a3.25 3.25 0 0 0 0 6.5h4.5a3.25 3.25 0 0 1 0 6.5H6"/></svg>
+                Preisrechner
+              </a>
+              <a class="tv-punkt">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 15l4-5 3 3 4-6"/></svg>
+                Auswertungen
+              </a>
+
+              <div class="tv-konto">
+                <span class="tv-avatar">SB</span>
+                <span class="tv-wer">S. Brunner<em>Serviceleitung</em></span>
+              </div>
+            </aside>
+
+            <div class="tv-haupt">
+              <div class="tv-topbar">
+                <div class="tv-pfad">Reservierungen <span>/</span> <b>Freitag, 24. Juli</b></div>
+                <div class="tv-werkzeuge">
+                  <span class="tv-suche">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+                    Suchen
+                  </span>
+                  <span class="tv-knopf">+ Reservierung</span>
+                </div>
+              </div>
+
+              <div class="tv-inhalt">
+                <div class="tv-kacheln">
+                  <div class="tv-kachel">
+                    <span>Gäste heute</span><b>86</b>
+                    <i class="trend hoch">+12%</i>
+                  </div>
+                  <div class="tv-kachel">
+                    <span>Auslastung</span><b>78%</b>
+                    <i class="balken"><u style="--f:78%"></u></i>
+                  </div>
+                  <div class="tv-kachel">
+                    <span>Offen</span><b>3</b>
+                    <i class="trend warn">zu bestätigen</i>
+                  </div>
+                </div>
+
+                <div class="tv-filter">
+                  <span class="chip an">Alle 12</span>
+                  <span class="chip">Bestätigt 9</span>
+                  <span class="chip">Angefragt 3</span>
+                  <span class="chip weit">Abendservice ab 18:00</span>
+                </div>
+
+                <div class="tv-tabelle">
+                  <div class="tv-kopf"><span>Zeit</span><span>Gast</span><span>Tisch</span><span>Status</span></div>
+                  <div class="tv-zeile">
+                    <span class="zeit">18:00</span>
+                    <span class="gast"><u>FB</u>Familie Brunner<em>4 Pers. · Fenster</em></span>
+                    <span class="tisch">7</span>
+                    <span><i class="badge ok">Bestätigt</i></span>
+                  </div>
+                  <div class="tv-zeile">
+                    <span class="zeit">18:30</span>
+                    <span class="gast"><u>KE</u>M. Keller<em>2 Pers.</em></span>
+                    <span class="tisch">3</span>
+                    <span><i class="badge ok">Bestätigt</i></span>
+                  </div>
+                  <div class="tv-zeile hervor">
+                    <span class="zeit">19:00</span>
+                    <span class="gast"><u>GM</u>Geburtstag Meier<em>8 Pers. · Torte 21:00</em></span>
+                    <span class="tisch">10–11</span>
+                    <span><i class="badge">Angefragt</i></span>
+                  </div>
+                  <div class="tv-zeile">
+                    <span class="zeit">20:15</span>
+                    <span class="gast"><u>RO</u>L. Rossi<em>2 Pers. · Bar</em></span>
+                    <span class="tisch">B2</span>
+                    <span><i class="badge ok">Bestätigt</i></span>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
