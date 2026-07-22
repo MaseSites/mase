@@ -117,16 +117,6 @@ var MS_GOOGLE_CLIENT_ID = "117777636536-nd77bnlv9co4l7g8cbn6de0q8uhj3njt.apps.go
       });
     }
 
-    /* Demo-Zugang: frisch aufgesetzt, damit immer aufgeräumt */
-    var demoLink = document.getElementById("demo-login");
-    if (demoLink) {
-      demoLink.addEventListener("click", function (e) {
-        e.preventDefault();
-        D.demoAnmeldung().then(function () {
-          window.location.href = "/dashboard";
-        }).catch(function (fehler) { zeigeFehler("login-fehler", fehler.message); });
-      });
-    }
 
     /* Google-Knopf ohne Client-ID: ehrlicher Hinweis statt toter Knopf */
     var fallback = document.getElementById("google-fallback");

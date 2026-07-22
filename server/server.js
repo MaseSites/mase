@@ -588,72 +588,6 @@ function logLabel(sitzung) {
 
 /* ---------- Demo-Konto ---------- */
 
-function demoKonto() {
-  function ts(tag, monat, stunde, minute) {
-    return new Date(2026, monat - 1, tag, stunde, minute).getTime();
-  }
-  return {
-    name: "Deniz Yilmaz", firma: "Kebab Palace", telefon: "+41 79 123 45 67",
-    email: "demo@masesites.ch", provider: "demo", erstellt: "20.06.2026",
-    projekte: [
-      {
-        id: "P-1001", titel: "Website Kebab Palace", paket: "Neue Website: Business",
-        schritt: 2, vorschau: "https://masesites.ch/demo/doener-site/index.html",
-        erstellt: "28.06.2026",
-        aktivitaet: [
-          { text: "Galerie-Bereich eingebaut, Bilder folgen", datum: "05.07.2026", zeit: ts(5, 7, 9, 40) },
-          { text: "Farben nach deinem Feedback angepasst", datum: "03.07.2026", zeit: ts(3, 7, 15, 10) },
-          { text: "Design-Entwurf in die Vorschau gestellt", datum: "01.07.2026", zeit: ts(1, 7, 14, 0) },
-          { text: "Konzept-Besprechung abgeschlossen, Projekt gestartet", datum: "28.06.2026", zeit: ts(28, 6, 11, 30) }
-        ]
-      },
-      {
-        id: "P-1002", titel: "KI-Bot für die Website", paket: "KI-Bot: Einrichtung und Training",
-        schritt: 1, vorschau: "", erstellt: "02.07.2026",
-        aktivitaet: [
-          { text: "Fragen und Antworten für das Training gesammelt", datum: "04.07.2026", zeit: ts(4, 7, 16, 20) },
-          { text: "Auftrag bestätigt, Einrichtung geplant", datum: "02.07.2026", zeit: ts(2, 7, 10, 5) }
-        ]
-      }
-    ],
-    nachrichten: [
-      { von: "masesites", text: "Hallo Deniz! Der erste Design-Entwurf ist online. Schau ihn dir unter Projekte in der Vorschau an und sag uns, was du denkst.", datum: "01.07.2026", zeit: ts(1, 7, 14, 20), gelesen: true },
-      { von: "ich", text: "Sieht stark aus! Könnt ihr das Rot etwas dunkler machen?", datum: "02.07.2026", zeit: ts(2, 7, 9, 41), gelesen: true },
-      { von: "masesites", text: "Erledigt, das Rot ist jetzt dunkler. Als Nächstes bauen wir die Galerie ein.", datum: "03.07.2026", zeit: ts(3, 7, 11, 5), gelesen: true },
-      { von: "masesites", text: "Die Galerie ist eingebaut. Sobald du die finalen Bilder hast, schick sie uns per Ticket oder Mail.", datum: "05.07.2026", zeit: ts(5, 7, 10, 12), gelesen: false }
-    ],
-    auftraege: [
-      { titel: "Neue Website: Business", betrag: "ab CHF 1'300.–", status: "In Arbeit", datum: "28.06.2026" },
-      { titel: "KI-Bot: Einrichtung", betrag: "CHF 200.–", status: "In Arbeit", datum: "02.07.2026" },
-      { titel: "Online-Terminbuchung", betrag: "ab CHF 400.–", status: "Offen", datum: "02.07.2026" },
-      { titel: "Logo-Feinschliff", betrag: "CHF 150.–", status: "Abgeschlossen", datum: "21.06.2026" }
-    ],
-    tickets: [
-      {
-        nr: "T-1025", betreff: "Neues Foto für die Galerie",
-        text: "Ich habe ein neues Bild vom Lokal, wohin darf ich es schicken?",
-        prio: "Normal", status: "Offen", datum: "04.07.2026", zeit: ts(4, 7, 18, 2), antworten: []
-      },
-      {
-        nr: "T-1024", betreff: "Öffnungszeiten ändern",
-        text: "Bitte neu Montag bis Samstag, 10 bis 22 Uhr.",
-        prio: "Normal", status: "Beantwortet", datum: "01.07.2026", zeit: ts(1, 7, 9, 15),
-        antworten: [
-          { von: "masesites", text: "Erledigt, die neuen Öffnungszeiten sind online. Schau kurz drüber, ob alles stimmt.", datum: "02.07.2026", zeit: ts(2, 7, 8, 50) }
-        ]
-      },
-      {
-        nr: "T-1019", betreff: "Logo etwas grösser",
-        text: "Könnt ihr das Logo im Kopfbereich etwas grösser machen?",
-        prio: "Normal", status: "Geschlossen", datum: "24.06.2026", zeit: ts(24, 6, 13, 40),
-        antworten: [
-          { von: "masesites", text: "Ist angepasst, das Logo ist jetzt besser sichtbar.", datum: "25.06.2026", zeit: ts(25, 6, 10, 25) }
-        ]
-      }
-    ]
-  };
-}
-
 /* ---------- Konto ohne Geheimnisse an den Client geben ---------- */
 
 function kontoFuerClient(konto) {
@@ -778,19 +712,6 @@ route("POST", "/api/google", null, async (req, res, p, body) => {
   const token = erstelleSitzung("kunde", emailIndex(email));
   setzeSitzungscookie(res, req, token, "kunde");
   schreibeLog(email, clientIp(req), "login.html", "Angemeldet (Google)", "");
-  antwortJson(res, 200, { ok: true, konto: kontoFuerClient(konto) });
-});
-
-route("POST", "/api/demo", null, (req, res) => {
-  if (!ratenbegrenzung("anmelden", clientIp(req), 20, 10 * 60000)) {
-    return fehler(res, 429, "Zu viele Versuche. Warte ein paar Minuten.");
-  }
-  /* Demo-Zugang: frisch aufgesetzt, damit immer aufgeräumt */
-  const konto = demoKonto();
-  speichereKunde(konto, null, "demo");
-  db.prepare("UPDATE kunden SET provider = 'demo' WHERE email_idx = ?").run(emailIndex(konto.email));
-  const token = erstelleSitzung("kunde", emailIndex(konto.email));
-  setzeSitzungscookie(res, req, token, "kunde");
   antwortJson(res, 200, { ok: true, konto: kontoFuerClient(konto) });
 });
 

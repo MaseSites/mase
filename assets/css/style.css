@@ -63,6 +63,16 @@ body {
   overflow-x: hidden;
 }
 
+/* Seitliches Verschieben komplett unterbinden: overflow-x auf dem Body
+   allein reicht in iOS Safari nicht – erst «clip» auf html UND body
+   verhindert, dass sich die Seite beim Laden oder durch überstehende
+   Deko-Elemente horizontal ziehen lässt. «clip» erzeugt (anders als
+   «hidden») keinen Scroll-Container und lässt sticky-Elemente in Ruhe. */
+html, body { overflow-x: clip; }
+@supports not (overflow: clip) {
+  html, body { overflow-x: hidden; }
+}
+
 /* Hintergrund-Canvas: warmes Licht + feine Körnung, einmal fix komponiert (performant) */
 body::before {
   content: "";

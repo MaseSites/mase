@@ -166,9 +166,6 @@ window.MSDaten = (function () {
   function googleAnmeldung(credential) {
     return api("/api/google", "POST", { credential: credential });
   }
-  function demoAnmeldung() {
-    return api("/api/demo", "POST", {});
-  }
   function abmelden() {
     /* Nur die eigene Rolle abmelden — Admin-, Mitarbeiter- und Kunden-
        Sitzung haben eigene Cookies und stören sich nicht gegenseitig */
@@ -450,7 +447,6 @@ window.MSDaten = (function () {
     registrieren: registrieren,
     anmelden: anmelden,
     googleAnmeldung: googleAnmeldung,
-    demoAnmeldung: demoAnmeldung,
     abmelden: abmelden,
     adminAnmelden: adminAnmelden,
     adminPasswortAendern: adminPasswortAendern,
