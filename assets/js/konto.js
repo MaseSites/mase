@@ -250,6 +250,9 @@ var MS_GOOGLE_CLIENT_ID = "117777636536-nd77bnlv9co4l7g8cbn6de0q8uhj3njt.apps.go
       document.querySelectorAll(".dash-panel").forEach(function (p) {
         p.classList.toggle("active", p.id === "panel-" + panelName);
       });
+      /* Aktuelle Route am Body vermerken: das CSS nutzt das z. B. für den
+         Vollbild-Chat auf dem Handy (Fussbereich und Navigation weichen). */
+      document.body.setAttribute("data-route", panelName);
       document.querySelectorAll(".side-item[data-route]").forEach(function (b) {
         b.classList.toggle("active", b.getAttribute("data-route") === name);
       });
