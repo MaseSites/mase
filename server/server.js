@@ -968,6 +968,166 @@ route("POST", "/api/log", null, (req, res, p, body, sitzung) => {
   antwortJson(res, 200, { ok: true });
 });
 
+/* ============================================================
+   KI-Chat: lokales Sprachmodell über Ollama.
+   Das gesamte Website-Wissen (data/website.txt, erzeugt von
+   scripts/wissen.js) wandert bei jeder Frage in den Prompt –
+   bewusst ohne Vektor-Datenbank oder RAG, die Website ist klein
+   genug. Antworten werden gestreamt.
+   Konfiguration über Umgebungsvariablen:
+     KI_URL      Adresse des Ollama-Servers (Standard: lokal)
+     KI_MODELL   bevorzugtes Modell, Fallback automatisch
+   ============================================================ */
+
+const KI_URL = (process.env.KI_URL || "http://127.0.0.1:11434").replace(/\/$/, "");
+const KI_MODELL = process.env.KI_MODELL || "qwen2.5:3b";
+const KI_MODELL_FALLBACK = process.env.KI_MODELL_FALLBACK || "llama3.2:3b";
+const KI_ANFRAGEN_DATEI = path.join(DATEN_ORDNER, "ki-anfragen.json");
+
+let kiWissen = "";
+try {
+  kiWissen = fs.readFileSync(path.join(WURZEL, "data", "website.txt"), "utf8");
+  console.log("KI-Wissen geladen: " + kiWissen.length + " Zeichen");
+} catch (e) {
+  console.log("Hinweis: data/website.txt fehlt – vorher `node scripts/wissen.js` ausführen.");
+}
+
+const KI_SYSTEM =
+  "Du bist der Beratungs-Assistent von masesites, einer Schweizer Webagentur. " +
+  "Du hilfst Besuchern, die passende Leistung und das passende Paket zu finden. " +
+  "Sprich Deutsch in der Du-Form, freundlich und knapp (2 bis 5 Sätze). Kein ß, schreib ss. " +
+  "WISSENSBASIS: Verwende AUSSCHLIESSLICH die Informationen aus dem Abschnitt WEBSITE unten. " +
+  "Erfinde nichts. Fehlt eine Information dort, antworte woertlich: " +
+  "'Dazu habe ich aktuell keine Informationen.' und verweise auf info@masesites.ch. " +
+  "BERATUNG: Stell gezielte Rueckfragen (was fuer ein Betrieb, gibt es schon eine Website, " +
+  "was soll die Seite koennen), bevor du ein Paket empfiehlst. " +
+  "PROJEKTANFRAGE: Will jemand ein Projekt starten, sammle im Gespraech: Name, " +
+  "E-Mail oder Telefon, Ziel des Projekts, ungefaehres Budget, besondere Anforderungen. " +
+  "Sobald du mindestens Name, Kontakt und Ziel hast, bestaetige kurz und haenge GANZ AM ENDE " +
+  "deiner Antwort exakt diesen Block an (einzige erlaubte Ausnahme vom Nur-Text): " +
+  '```anfrage\n{"name":"…","kontakt":"…","ziel":"…","budget":"…","anforderungen":"…"}\n``` ' +
+  "Den Block niemals ohne echte Nutzerdaten erzeugen.";
+
+function kiNachrichten(verlauf) {
+  const msgs = [{ role: "system", content: KI_SYSTEM + "\n\n### WEBSITE\n" + kiWissen }];
+  for (const eintrag of verlauf.slice(-10)) {
+    msgs.push({
+      role: eintrag.von === "bot" ? "assistant" : "user",
+      content: s(eintrag.text, 1200)
+    });
+  }
+  return msgs;
+}
+
+function speichereKiAnfrage(daten, ip) {
+  let liste = [];
+  try { liste = JSON.parse(fs.readFileSync(KI_ANFRAGEN_DATEI, "utf8")); } catch (e) {}
+  if (!Array.isArray(liste)) liste = [];
+  liste.push({ zeit: new Date().toISOString(), ...daten });
+  fs.writeFileSync(KI_ANFRAGEN_DATEI, JSON.stringify(liste, null, 2), "utf8");
+  schreibeLog("KI-Chat", ip, "widget", "Projektanfrage über den Assistenten",
+    s(daten.name || "", 60) + " · " + s(daten.ziel || "", 100));
+}
+
+async function frageOllama(modell, msgs) {
+  return fetch(KI_URL + "/api/chat", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ model: modell, messages: msgs, stream: true,
+      options: { temperature: 0.3, num_ctx: 12288 } })
+  });
+}
+
+route("GET", "/api/ki/status", null, async (req, res) => {
+  try {
+    const r = await fetch(KI_URL + "/api/tags", { signal: AbortSignal.timeout(2500) });
+    const d = await r.json();
+    const modelle = (d.models || []).map(m => m.name);
+    antwortJson(res, 200, { bereit: modelle.length > 0, modelle });
+  } catch (e) {
+    antwortJson(res, 200, { bereit: false, modelle: [] });
+  }
+});
+
+route("POST", "/api/ki/chat", null, async (req, res, p, body) => {
+  if (!ratenbegrenzung("kichat", clientIp(req), 20, 5 * 60000)) {
+    return fehler(res, 429, "Zu viele Anfragen. Warte einen Moment.");
+  }
+  const verlauf = Array.isArray(body.verlauf) ? body.verlauf : [];
+  if (!verlauf.length) return fehler(res, 400, "Leerer Verlauf.");
+  const msgs = kiNachrichten(verlauf);
+
+  let antwortStrom;
+  try {
+    antwortStrom = await frageOllama(KI_MODELL, msgs);
+    if (antwortStrom.status === 404) antwortStrom = await frageOllama(KI_MODELL_FALLBACK, msgs);
+    if (!antwortStrom.ok) throw new Error("Ollama " + antwortStrom.status);
+  } catch (e) {
+    return fehler(res, 503, "Der Assistent ist gerade nicht erreichbar.");
+  }
+
+  /* Antwort als Text streamen. Der anfrage-Block wird dabei abgefangen:
+     ein kleiner Rückhalte-Puffer sorgt dafür, dass der Marker nie halb
+     beim Besucher landet. */
+  res.writeHead(200, {
+    "Content-Type": "text/plain; charset=utf-8",
+    "Cache-Control": "no-store",
+    "X-Accel-Buffering": "no"
+  });
+  const MARKER = "```anfrage";
+  let voll = "", gesendet = 0, abgeschnitten = false;
+
+  const leser = antwortStrom.body.getReader();
+  const dec = new TextDecoder();
+  let rest = "";
+  try {
+    for (;;) {
+      const { done, value } = await leser.read();
+      if (done) break;
+      rest += dec.decode(value, { stream: true });
+      const zeilen = rest.split("\n");
+      rest = zeilen.pop();
+      for (const zeile of zeilen) {
+        if (!zeile.trim()) continue;
+        let stueck;
+        try { stueck = JSON.parse(zeile); } catch (e) { continue; }
+        if (stueck.message && stueck.message.content) voll += stueck.message.content;
+        if (!abgeschnitten) {
+          const markerBei = voll.indexOf(MARKER);
+          if (markerBei > -1) {
+            abgeschnitten = true;
+            if (markerBei > gesendet) res.write(voll.slice(gesendet, markerBei));
+            gesendet = markerBei;
+          } else {
+            /* alles bis auf eine Marker-Länge Rückhalt ausliefern */
+            const bis = Math.max(gesendet, voll.length - MARKER.length);
+            if (bis > gesendet) { res.write(voll.slice(gesendet, bis)); gesendet = bis; }
+          }
+        }
+      }
+    }
+  } catch (e) { /* Abbruch durch Client oder Ollama: bisher Gesendetes gilt */ }
+
+  if (!abgeschnitten && voll.length > gesendet) res.write(voll.slice(gesendet));
+
+  /* Projektanfrage herausparsen und speichern */
+  if (abgeschnitten) {
+    const m = voll.slice(voll.indexOf(MARKER)).match(/```anfrage\s*([\s\S]*?)```/);
+    if (m) {
+      try {
+        const daten = JSON.parse(m[1]);
+        speichereKiAnfrage({
+          name: s(daten.name, 120), kontakt: s(daten.kontakt, 160),
+          ziel: s(daten.ziel, 400), budget: s(daten.budget, 80),
+          anforderungen: s(daten.anforderungen, 600)
+        }, clientIp(req));
+        res.write("\n[[ANFRAGE_GESPEICHERT]]");
+      } catch (e) { /* kaputtes JSON vom Modell: still ignorieren */ }
+    }
+  }
+  res.end();
+});
+
 route("POST", "/api/bot-log", null, (req, res, p, body, sitzung) => {
   if (!ratenbegrenzung("botlog", clientIp(req), 30, 60000)) {
     return antwortJson(res, 200, { ok: true });

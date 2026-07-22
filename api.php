@@ -1721,6 +1721,152 @@ route('POST', '/api/log', null, function ($p, $body, $sitzung) {
     antwortJson(200, ['ok' => true]);
 });
 
+/* ============================================================
+   KI-Chat für die PHP-Fassung (Plesk/Apache).
+   ANNAHME: Auf Shared Hosting läuft KEIN Ollama. Diese Fassung
+   spricht deshalb einen KI-Server an, der woanders läuft (per
+   docker compose auf einem VPS). Die Adresse kommt aus der
+   Einstellung 'ki_url' oder der Umgebungsvariable KI_URL.
+   Ist nichts gesetzt, antwortet die Route ehrlich mit 503 und das
+   Widget zeigt den Kontakt-Hinweis – niemals erfundene Antworten.
+   Vereinfachung gegenüber Node: keine Streams, eine Antwort am
+   Stück (PHP/Apache puffert ohnehin meist).
+   ============================================================ */
+
+function kiUrl(): string
+{
+    $u = (string)(einstellung('ki_url') ?? cfg('KI_URL') ?? '');
+    return rtrim(trim($u), '/');
+}
+
+function kiWissen(): string
+{
+    $p = __DIR__ . '/data/website.txt';
+    return is_readable($p) ? (string)file_get_contents($p) : '';
+}
+
+function kiSystemPrompt(): string
+{
+    return "Du bist der Beratungs-Assistent von masesites, einer Schweizer Webagentur. "
+        . "Du hilfst Besuchern, die passende Leistung und das passende Paket zu finden. "
+        . "Sprich Deutsch in der Du-Form, freundlich und knapp (2 bis 5 Saetze). Kein Eszett, schreib ss. "
+        . "WISSENSBASIS: Verwende AUSSCHLIESSLICH die Informationen aus dem Abschnitt WEBSITE unten. "
+        . "Erfinde nichts. Fehlt eine Information dort, antworte woertlich: "
+        . "'Dazu habe ich aktuell keine Informationen.' und verweise auf info@masesites.ch. "
+        . "BERATUNG: Stell gezielte Rueckfragen, bevor du ein Paket empfiehlst. "
+        . "PROJEKTANFRAGE: Will jemand ein Projekt starten, sammle Name, Kontakt, Ziel, Budget "
+        . "und Anforderungen. Sobald Name, Kontakt und Ziel vorliegen, bestaetige kurz und haenge "
+        . "GANZ AM ENDE exakt diesen Block an: "
+        . "```anfrage\n{\"name\":\"…\",\"kontakt\":\"…\",\"ziel\":\"…\",\"budget\":\"…\",\"anforderungen\":\"…\"}\n``` "
+        . "Den Block niemals ohne echte Nutzerdaten erzeugen.";
+}
+
+function speichereKiAnfrage(array $daten): void
+{
+    global $DATEN_ORDNER;
+    $datei = $DATEN_ORDNER . '/ki-anfragen.json';
+    $liste = [];
+    if (is_readable($datei)) {
+        $roh = json_decode((string)file_get_contents($datei), true);
+        if (is_array($roh)) {
+            $liste = $roh;
+        }
+    }
+    $liste[] = ['zeit' => gmdate('c')] + $daten;
+    @file_put_contents($datei, json_encode($liste, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES), LOCK_EX);
+    schreibeLog('KI-Chat', clientIp(), 'widget', 'Projektanfrage über den Assistenten',
+        s($daten['name'] ?? '', 60) . ' · ' . s($daten['ziel'] ?? '', 100));
+}
+
+route('GET', '/api/ki/status', null, function () {
+    $url = kiUrl();
+    if ($url === '') {
+        antwortJson(200, ['bereit' => false, 'grund' => 'nicht konfiguriert']);
+    }
+    $ch = curl_init($url . '/api/tags');
+    curl_setopt_array($ch, [CURLOPT_RETURNTRANSFER => true, CURLOPT_TIMEOUT => 3]);
+    $roh = curl_exec($ch);
+    $code = (int)curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    curl_close($ch);
+    $d = json_decode((string)$roh, true);
+    $modelle = is_array($d['models'] ?? null) ? array_column($d['models'], 'name') : [];
+    antwortJson(200, ['bereit' => $code === 200 && $modelle, 'modelle' => $modelle]);
+});
+
+route('POST', '/api/ki/chat', null, function ($p, $body) {
+    if (!ratenbegrenzung('kichat', clientIp(), 20, 5 * 60000)) {
+        fehler(429, 'Zu viele Anfragen. Warte einen Moment.');
+    }
+    $url = kiUrl();
+    if ($url === '') {
+        fehler(503, 'Der Assistent ist gerade nicht erreichbar.');
+    }
+    $verlauf = is_array($body['verlauf'] ?? null) ? $body['verlauf'] : [];
+    if (!$verlauf) {
+        fehler(400, 'Leerer Verlauf.');
+    }
+
+    $msgs = [['role' => 'system', 'content' => kiSystemPrompt() . "\n\n### WEBSITE\n" . kiWissen()]];
+    foreach (array_slice($verlauf, -10) as $e) {
+        if (!is_array($e)) {
+            continue;
+        }
+        $msgs[] = [
+            'role' => ($e['von'] ?? '') === 'bot' ? 'assistant' : 'user',
+            'content' => s($e['text'] ?? '', 1200),
+        ];
+    }
+
+    $nutzlast = json_encode([
+        'model' => cfg('KI_MODELL') ?: 'qwen2.5:3b',
+        'messages' => $msgs,
+        'stream' => false,
+        'options' => ['temperature' => 0.3, 'num_ctx' => 12288],
+    ], JSON_UNESCAPED_UNICODE);
+
+    $ch = curl_init($url . '/api/chat');
+    curl_setopt_array($ch, [
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_POST => true,
+        CURLOPT_POSTFIELDS => $nutzlast,
+        CURLOPT_HTTPHEADER => ['Content-Type: application/json'],
+        CURLOPT_TIMEOUT => 120,
+    ]);
+    $roh = curl_exec($ch);
+    $code = (int)curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    curl_close($ch);
+    if ($code !== 200 || !$roh) {
+        fehler(503, 'Der Assistent ist gerade nicht erreichbar.');
+    }
+    $d = json_decode((string)$roh, true);
+    $text = (string)($d['message']['content'] ?? '');
+    if ($text === '') {
+        fehler(503, 'Der Assistent ist gerade nicht erreichbar.');
+    }
+
+    /* Projektanfrage abtrennen: der Block darf den Besucher nie erreichen */
+    $sentinel = '';
+    if (preg_match('/```anfrage\s*([\s\S]*?)```/', $text, $m)) {
+        $daten = json_decode(trim($m[1]), true);
+        if (is_array($daten)) {
+            speichereKiAnfrage([
+                'name' => s($daten['name'] ?? '', 120),
+                'kontakt' => s($daten['kontakt'] ?? '', 160),
+                'ziel' => s($daten['ziel'] ?? '', 400),
+                'budget' => s($daten['budget'] ?? '', 80),
+                'anforderungen' => s($daten['anforderungen'] ?? '', 600),
+            ]);
+            $sentinel = "\n[[ANFRAGE_GESPEICHERT]]";
+        }
+        $text = trim(preg_replace('/```anfrage[\s\S]*$/', '', $text));
+    }
+
+    header('Content-Type: text/plain; charset=utf-8');
+    header('Cache-Control: no-store');
+    echo $text . $sentinel;
+    exit;
+});
+
 route('POST', '/api/bot-log', null, function ($p, $body, $sitzung) {
     if (!ratenbegrenzung('botlog', clientIp(), 30, 60000)) {
         antwortJson(200, ['ok' => true]);
