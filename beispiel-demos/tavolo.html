@@ -1,0 +1,1186 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>tavolo – Restaurant-Software</title>
+<meta name="description" content="Live-Demo einer Restaurant-Software: Reservierungen, Kalender, Menüs, Schichten, Preisrechner und Auswertungen.">
+<style>
+/* ============================================================
+   tavolo – Live-Demo einer Restaurant-Software.
+   Alles ist bedienbar, nichts wird gespeichert: die Daten leben
+   nur im Browser und sind beim Neuladen wieder wie am Anfang.
+
+   Gestaltung bewusst fast monochrom mit EINER semantischen Farbe
+   (Grün für bestätigt) – dichte Typografie, Haarlinien, enge
+   Radien, wie man es von professionellen Arbeitswerkzeugen kennt.
+   ============================================================ */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+:root {
+  --canvas: #FAFAFA;
+  --flaeche: #FFFFFF;
+  --linie: #E7E7E9;
+  --linie-zart: #F0F0F1;
+  --ink: #16181D;
+  --ink-2: #5C6068;
+  --ink-3: #90949B;
+  --ink-4: #B4B7BC;
+  --d1: #141519;
+  --d2: #1D1F24;
+  --d3: #2A2C32;
+  --d-ink: #9A9EA6;
+  --gruen: #3C7D52;
+  --gruen-hell: #EAF1EC;
+  --radius: 8px;
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+html, body { height: 100%; }
+body {
+  margin: 0;
+  background: var(--canvas);
+  color: var(--ink);
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  font-size: 13px;
+  line-height: 1.45;
+  letter-spacing: -0.004em;
+  font-variant-numeric: tabular-nums;
+  -webkit-font-smoothing: antialiased;
+}
+button { font: inherit; color: inherit; border: none; background: none; cursor: pointer; }
+input, select { font: inherit; color: inherit; }
+a { color: inherit; }
+
+.app { display: grid; grid-template-columns: 208px minmax(0, 1fr); min-height: 100vh; }
+
+/* ---------- Seitenleiste ---------- */
+
+.seite {
+  background: var(--d1);
+  padding: 16px 10px 12px;
+  display: flex; flex-direction: column; gap: 1px;
+}
+.marke {
+  display: flex; align-items: center; gap: 9px;
+  padding: 2px 8px 16px;
+  font-weight: 600; font-size: 14px; letter-spacing: -0.015em;
+  color: #F2F3F5;
+}
+.marke .zeichen {
+  width: 24px; height: 24px; flex: none;
+  border-radius: 7px;
+  background: #F2F3F5;
+  display: grid; place-items: center;
+  color: var(--d1);
+}
+.marke .zeichen svg { width: 17px; height: 17px; display: block; }
+.gruppe {
+  font-size: 9.5px; font-weight: 600;
+  letter-spacing: 0.07em; text-transform: uppercase;
+  color: #5B5F67;
+  padding: 13px 8px 5px;
+}
+.punkt {
+  display: flex; align-items: center; gap: 9px;
+  width: 100%;
+  padding: 6px 8px;
+  border-radius: 6px;
+  font-size: 12px; font-weight: 450;
+  color: var(--d-ink);
+  text-align: left;
+  transition: background 0.14s, color 0.14s;
+}
+.punkt svg { width: 14px; height: 14px; flex: none; color: #6E727A; transition: color 0.14s; }
+.punkt:hover { background: #191B20; color: #D8DADE; }
+.punkt[aria-current="page"] { background: var(--d2); color: #F2F3F5; font-weight: 500; }
+.punkt[aria-current="page"] svg { color: #C3C6CB; }
+.punkt .zahl { margin-left: auto; font-size: 10.5px; color: #7E828A; }
+.konto {
+  display: flex; align-items: center; gap: 9px;
+  margin-top: auto; padding: 11px 8px 0;
+  border-top: 1px solid #22242A;
+}
+.konto .av {
+  width: 24px; height: 24px; flex: none; border-radius: 50%;
+  background: var(--d3);
+  display: grid; place-items: center;
+  font-size: 9.5px; font-weight: 600; color: #C3C6CB;
+}
+.konto .wer { display: grid; font-size: 11px; font-weight: 500; color: #D8DADE; }
+.konto .wer em { font-style: normal; font-weight: 400; font-size: 10px; color: #6E727A; }
+
+/* ---------- Hauptbereich ---------- */
+
+.haupt { display: flex; flex-direction: column; min-width: 0; }
+.topbar {
+  display: flex; align-items: center; justify-content: space-between; gap: 14px;
+  padding: 11px 18px;
+  background: var(--flaeche);
+  border-bottom: 1px solid var(--linie);
+  position: sticky; top: 0; z-index: 20;
+}
+.pfad { font-size: 12px; color: var(--ink-3); font-weight: 450; min-width: 0; }
+.pfad .tr { margin: 0 5px; color: var(--ink-4); }
+.pfad b { color: var(--ink); font-weight: 550; }
+.werkzeuge { display: flex; align-items: center; gap: 8px; flex: none; }
+.suchfeld {
+  display: inline-flex; align-items: center; gap: 6px;
+  border: 1px solid var(--linie);
+  border-radius: 7px;
+  padding: 0 10px;
+  background: var(--flaeche);
+  transition: border-color 0.14s, box-shadow 0.14s;
+}
+.suchfeld:focus-within { border-color: var(--ink-3); box-shadow: 0 0 0 3px rgba(22,24,29,0.06); }
+.suchfeld svg { width: 13px; height: 13px; color: var(--ink-3); flex: none; }
+.suchfeld input {
+  border: none; outline: none; background: none;
+  padding: 7px 0; width: 130px;
+  font-size: 12px;
+}
+.suchfeld input::placeholder { color: var(--ink-3); }
+.knopf {
+  background: var(--ink); color: #fff;
+  border-radius: 7px;
+  padding: 7px 13px;
+  font-size: 11.5px; font-weight: 550;
+  white-space: nowrap;
+  transition: opacity 0.14s;
+}
+.knopf:hover { opacity: 0.85; }
+.knopf.leise {
+  background: var(--flaeche); color: var(--ink-2);
+  border: 1px solid var(--linie);
+}
+.knopf.leise:hover { background: var(--canvas); opacity: 1; }
+
+.inhalt { padding: 16px 18px 40px; display: grid; gap: 12px; align-content: start; }
+.ansicht { display: none; }
+.ansicht.an { display: grid; gap: 12px; align-content: start; animation: rein 0.3s var(--ease) both; }
+@keyframes rein { from { opacity: 0; transform: translateY(6px); } }
+
+/* ---------- Bausteine ---------- */
+
+.karte {
+  background: var(--flaeche);
+  border: 1px solid var(--linie);
+  border-radius: var(--radius);
+}
+.karte-kopf {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  padding: 11px 14px;
+  border-bottom: 1px solid var(--linie);
+}
+.karte-kopf h2 { margin: 0; font-size: 12.5px; font-weight: 600; }
+.karte-kopf .neben { font-size: 11px; color: var(--ink-3); }
+
+.kacheln { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; }
+.kachel {
+  background: var(--flaeche);
+  border: 1px solid var(--linie);
+  border-radius: var(--radius);
+  padding: 12px 14px;
+  display: grid; gap: 3px;
+}
+.kachel .titel { font-size: 10.5px; font-weight: 500; color: var(--ink-3); }
+.kachel .wert { font-size: 22px; font-weight: 600; letter-spacing: -0.03em; line-height: 1.15; }
+.kachel .fuss { font-size: 10.5px; font-weight: 500; color: var(--ink-3); }
+.kachel .fuss.gut { color: var(--gruen); }
+.balken { height: 4px; margin-top: 5px; background: var(--linie-zart); border-radius: 999px; overflow: hidden; }
+.balken span { display: block; height: 100%; background: var(--ink-2); border-radius: 999px; transition: width 0.5s var(--ease); }
+
+.chips { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+.chip {
+  font-size: 11px; font-weight: 500;
+  border: 1px solid var(--linie);
+  background: var(--flaeche);
+  color: var(--ink-2);
+  border-radius: 6px;
+  padding: 4px 10px;
+  transition: background 0.14s, border-color 0.14s, color 0.14s;
+}
+.chip:hover { border-color: var(--ink-4); }
+.chip[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: #fff; }
+
+.badge {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 10.5px; font-weight: 500;
+  border-radius: 5px;
+  padding: 3px 8px;
+  white-space: nowrap;
+  border: 1px solid var(--linie);
+  color: var(--ink-2);
+  background: var(--flaeche);
+}
+.badge::before { content: ""; width: 5px; height: 5px; border-radius: 50%; background: var(--ink-4); }
+.badge.ok { background: var(--gruen-hell); border-color: #D3E2D8; color: #2F6742; }
+.badge.ok::before { background: var(--gruen); }
+
+/* ---------- Tabelle ---------- */
+
+.tabelle { width: 100%; }
+.t-kopf, .t-zeile {
+  display: grid;
+  grid-template-columns: 62px minmax(0, 1fr) 78px 66px 104px;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 14px;
+}
+.t-kopf {
+  background: #FCFCFD;
+  border-bottom: 1px solid var(--linie);
+  font-size: 9.5px; font-weight: 600;
+  letter-spacing: 0.06em; text-transform: uppercase;
+  color: var(--ink-3);
+}
+.t-zeile {
+  border-bottom: 1px solid var(--linie-zart);
+  width: 100%; text-align: left;
+  transition: background 0.12s;
+}
+.t-zeile:last-child { border-bottom: none; }
+.t-zeile:hover { background: #FCFCFD; }
+.t-zeile.offen { background: #FAFAFA; box-shadow: inset 2px 0 0 var(--ink-4); }
+.t-zeile .zeit { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 11.5px; font-weight: 500; color: var(--ink-2); }
+.t-zeile .gast { display: grid; grid-template-columns: 24px 1fr; column-gap: 9px; min-width: 0; font-size: 12px; font-weight: 550; }
+.t-zeile .gast .av {
+  grid-row: 1 / 3; width: 24px; height: 24px; border-radius: 50%;
+  background: #F1F1F3; border: 1px solid var(--linie);
+  display: grid; place-items: center;
+  font-size: 9px; font-weight: 600; color: var(--ink-2);
+}
+.t-zeile .gast em { font-style: normal; font-weight: 400; font-size: 11px; color: var(--ink-3); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.t-zeile .zahl2 { font-size: 11.5px; font-weight: 500; color: var(--ink-2); }
+.leer { padding: 26px 14px; text-align: center; font-size: 12px; color: var(--ink-3); }
+
+/* ---------- Schublade (Detail) ---------- */
+
+.schublade {
+  position: fixed; inset: 0; z-index: 60;
+  background: rgba(20, 21, 25, 0.32);
+  display: none;
+}
+.schublade.auf { display: block; animation: dunkel 0.22s ease both; }
+@keyframes dunkel { from { opacity: 0; } }
+.schublade-blatt {
+  position: absolute; top: 0; right: 0; bottom: 0;
+  width: min(360px, 100%);
+  background: var(--flaeche);
+  border-left: 1px solid var(--linie);
+  display: flex; flex-direction: column;
+  animation: schieben 0.34s var(--ease) both;
+}
+@keyframes schieben { from { transform: translateX(100%); } }
+.sb-kopf {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  padding: 13px 16px;
+  border-bottom: 1px solid var(--linie);
+}
+.sb-kopf h3 { margin: 0; font-size: 13px; font-weight: 600; }
+.schliessen {
+  width: 28px; height: 28px; border-radius: 6px;
+  display: grid; place-items: center;
+  color: var(--ink-3);
+}
+.schliessen:hover { background: var(--canvas); color: var(--ink); }
+.schliessen svg { width: 15px; height: 15px; }
+.sb-rumpf { padding: 16px; overflow-y: auto; display: grid; gap: 14px; align-content: start; }
+.feldliste { display: grid; gap: 10px; }
+.feldliste div { display: grid; grid-template-columns: 96px 1fr; gap: 10px; align-items: baseline; }
+.feldliste dt, .feldliste .k { font-size: 11px; color: var(--ink-3); }
+.feldliste .w { font-size: 12.5px; font-weight: 500; }
+.sb-fuss { margin-top: auto; padding: 13px 16px; border-top: 1px solid var(--linie); display: flex; gap: 8px; }
+.sb-fuss .knopf { flex: 1; text-align: center; }
+
+/* ---------- Formular / Dialog ---------- */
+
+.dialog { position: fixed; inset: 0; z-index: 70; background: rgba(20, 21, 25, 0.32); display: none; }
+.dialog.auf { display: grid; place-items: center; padding: 20px; animation: dunkel 0.22s ease both; }
+.dialog-blatt {
+  width: min(400px, 100%);
+  background: var(--flaeche);
+  border-radius: 12px;
+  border: 1px solid var(--linie);
+  box-shadow: 0 24px 60px rgba(20, 21, 25, 0.22);
+  animation: hoch 0.3s var(--ease) both;
+  max-height: 90vh; display: flex; flex-direction: column;
+}
+@keyframes hoch { from { opacity: 0; transform: translateY(12px) scale(0.98); } }
+.feld { display: grid; gap: 5px; }
+.feld label { font-size: 11px; font-weight: 550; color: var(--ink-2); }
+.feld input, .feld select {
+  border: 1px solid var(--linie);
+  border-radius: 7px;
+  padding: 8px 10px;
+  font-size: 12.5px;
+  background: var(--flaeche);
+  outline: none;
+  transition: border-color 0.14s, box-shadow 0.14s;
+  width: 100%;
+}
+.feld input:focus, .feld select:focus { border-color: var(--ink-3); box-shadow: 0 0 0 3px rgba(22,24,29,0.06); }
+.zweispalt { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+/* ---------- Kalender ---------- */
+
+.kal { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; padding: 14px; }
+.kal .wt { font-size: 10px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; color: var(--ink-3); text-align: center; padding-bottom: 4px; }
+.tag {
+  aspect-ratio: 1 / 0.82;
+  border: 1px solid var(--linie);
+  border-radius: 7px;
+  padding: 6px;
+  display: grid; align-content: start; gap: 4px;
+  background: var(--flaeche);
+  text-align: left;
+  transition: border-color 0.14s, background 0.14s;
+}
+.tag:hover { border-color: var(--ink-4); }
+.tag .n { font-size: 11.5px; font-weight: 550; }
+.tag .p { display: flex; gap: 2px; flex-wrap: wrap; }
+.tag .p i { width: 4px; height: 4px; border-radius: 50%; background: var(--ink-4); }
+.tag.voll .p i { background: var(--gruen); }
+.tag.leerX { background: #FCFCFD; color: var(--ink-4); }
+.tag[aria-pressed="true"] { border-color: var(--ink); box-shadow: inset 0 0 0 1px var(--ink); }
+.tag.heute .n::after { content: ""; display: inline-block; width: 4px; height: 4px; border-radius: 50%; background: var(--ink); margin-left: 4px; vertical-align: middle; }
+
+/* ---------- Menüs ---------- */
+
+.speisen { display: grid; }
+.speise {
+  display: grid; grid-template-columns: 1fr auto auto;
+  align-items: center; gap: 12px;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--linie-zart);
+  width: 100%; text-align: left;
+  transition: background 0.12s;
+}
+.speise:last-child { border-bottom: none; }
+.speise:hover { background: #FCFCFD; }
+.speise .n { font-size: 12.5px; font-weight: 550; }
+.speise .k { font-size: 11px; color: var(--ink-3); }
+.speise .pr { font-size: 12px; font-weight: 550; }
+.speise.aus .n, .speise.aus .pr { color: var(--ink-4); text-decoration: line-through; }
+.schalter {
+  width: 34px; height: 20px; border-radius: 999px;
+  background: var(--linie); position: relative; flex: none;
+  transition: background 0.18s;
+}
+.schalter::after {
+  content: ""; position: absolute; top: 2px; left: 2px;
+  width: 16px; height: 16px; border-radius: 50%;
+  background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+  transition: transform 0.18s var(--ease);
+}
+.speise:not(.aus) .schalter { background: var(--gruen); }
+.speise:not(.aus) .schalter::after { transform: translateX(14px); }
+
+/* ---------- Schichten ---------- */
+
+.schicht-gitter { display: grid; grid-template-columns: 108px repeat(7, minmax(0, 1fr)); gap: 4px; padding: 14px; }
+.schicht-gitter .wt { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--ink-3); text-align: center; }
+.schicht-gitter .wer { font-size: 11.5px; font-weight: 500; display: flex; align-items: center; }
+.zelle {
+  border: 1px solid var(--linie); border-radius: 6px;
+  padding: 7px 4px; font-size: 10px; font-weight: 550;
+  text-align: center; color: var(--ink-3);
+  background: var(--flaeche);
+  transition: background 0.14s, color 0.14s, border-color 0.14s;
+}
+.zelle:hover { border-color: var(--ink-4); }
+.zelle.f { background: #F3F4F5; color: var(--ink); }
+.zelle.a { background: var(--ink); color: #fff; border-color: var(--ink); }
+
+/* ---------- Preisrechner ---------- */
+
+.rechner { display: grid; grid-template-columns: minmax(0, 1fr) 240px; gap: 0; }
+.rechner-form { padding: 16px; display: grid; gap: 13px; align-content: start; }
+.rechner-summe {
+  border-left: 1px solid var(--linie);
+  background: #FCFCFD;
+  padding: 16px;
+  display: grid; gap: 10px; align-content: start;
+}
+.summenzeile { display: flex; justify-content: space-between; gap: 10px; font-size: 12px; color: var(--ink-2); }
+.summenzeile.gesamt {
+  border-top: 1px solid var(--linie); padding-top: 10px; margin-top: 4px;
+  font-size: 15px; font-weight: 650; color: var(--ink);
+}
+.wahl { display: flex; gap: 6px; flex-wrap: wrap; }
+.schieber { width: 100%; accent-color: var(--ink); }
+
+/* ---------- Auswertungen ---------- */
+
+.diagramm { display: flex; align-items: flex-end; gap: 10px; height: 190px; padding: 16px; }
+.saeule { flex: 1; display: grid; align-content: end; gap: 7px; justify-items: center; height: 100%; }
+.saeule .stab {
+  width: 100%; border-radius: 5px 5px 2px 2px;
+  background: var(--ink-2);
+  transition: height 0.6s var(--ease), background 0.14s;
+  min-height: 3px;
+}
+.saeule:hover .stab { background: var(--ink); }
+.saeule .lab { font-size: 10.5px; color: var(--ink-3); }
+.saeule .val { font-size: 10.5px; font-weight: 600; }
+
+/* ---------- Handy ---------- */
+
+@media (max-width: 860px) {
+  .app { grid-template-columns: 1fr; }
+  .seite {
+    flex-direction: row; align-items: center; gap: 2px;
+    padding: 9px 10px;
+    overflow-x: auto; scrollbar-width: none;
+    position: sticky; top: 0; z-index: 30;
+  }
+  .seite::-webkit-scrollbar { display: none; }
+  .marke { padding: 0 8px 0 2px; flex: none; }
+  .marke span:not(.zeichen) { display: none; }
+  .gruppe, .konto { display: none; }
+  .punkt { flex: none; width: auto; white-space: nowrap; padding: 6px 10px; }
+  .punkt .zahl { margin-left: 4px; }
+  .topbar { padding: 10px 13px; flex-wrap: wrap; }
+  .suchfeld input { width: 100px; }
+  .inhalt { padding: 13px; }
+  .t-kopf, .t-zeile { grid-template-columns: 52px minmax(0, 1fr) 94px; }
+  .t-kopf span:nth-child(3), .t-kopf span:nth-child(4),
+  .t-zeile .zahl2 { display: none; }
+  .rechner { grid-template-columns: 1fr; }
+  .rechner-summe { border-left: none; border-top: 1px solid var(--linie); }
+  .schicht-gitter { grid-template-columns: 84px repeat(7, minmax(0, 1fr)); padding: 11px; gap: 3px; }
+  .schicht-gitter .wer { font-size: 10.5px; }
+  .zelle { font-size: 9px; padding: 6px 2px; }
+  .diagramm { height: 160px; gap: 6px; padding: 13px; }
+  .kal { gap: 4px; padding: 11px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
+</style>
+</head>
+<body>
+
+<div class="app">
+
+  <nav class="seite" aria-label="Hauptnavigation">
+    <div class="marke">
+      <span class="zeichen" aria-hidden="true">
+        <!-- «tavolo» heisst Tisch: das Zeichen ist zugleich ein t und ein Säulentisch -->
+        <svg viewBox="0 0 20 20" fill="none">
+          <rect x="2.4" y="4.6" width="15.2" height="2.5" rx="1.25" fill="currentColor"/>
+          <rect x="8.85" y="7.1" width="2.3" height="6.6" fill="currentColor"/>
+          <rect x="5.3" y="13.7" width="9.4" height="2.3" rx="1.15" fill="currentColor"/>
+        </svg>
+      </span>
+      <span>tavolo</span>
+    </div>
+
+    <span class="gruppe">Betrieb</span>
+    <button class="punkt" data-ansicht="uebersicht" aria-current="page">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+      Übersicht
+    </button>
+    <button class="punkt" data-ansicht="reservierungen">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9.5" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/></svg>
+      Reservierungen<span class="zahl" id="nav-anzahl">–</span>
+    </button>
+    <button class="punkt" data-ansicht="kalender">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="2.5"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+      Kalender
+    </button>
+    <button class="punkt" data-ansicht="menues">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 3h13a2 2 0 0 1 2 2v16l-6-3-6 3V5a2 2 0 0 0-2-2z"/><path d="M8 8h6M8 12h4"/></svg>
+      Menüs
+    </button>
+
+    <span class="gruppe">Planung</span>
+    <button class="punkt" data-ansicht="schichten">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M3 12h12M3 18h7"/></svg>
+      Schichten
+    </button>
+    <button class="punkt" data-ansicht="rechner">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17.5 6.5H9.75a3.25 3.25 0 0 0 0 6.5h4.5a3.25 3.25 0 0 1 0 6.5H6"/></svg>
+      Preisrechner
+    </button>
+    <button class="punkt" data-ansicht="auswertungen">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 15l4-5 3 3 4-6"/></svg>
+      Auswertungen
+    </button>
+
+    <div class="konto">
+      <span class="av">SB</span>
+      <span class="wer">S. Brunner<em>Serviceleitung</em></span>
+    </div>
+  </nav>
+
+  <div class="haupt">
+    <header class="topbar">
+      <div class="pfad" id="pfad"><b>Übersicht</b></div>
+      <div class="werkzeuge">
+        <label class="suchfeld">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+          <input type="search" id="suche" placeholder="Gast suchen" aria-label="Gast suchen">
+        </label>
+        <button class="knopf" id="neu-knopf">+ Reservierung</button>
+      </div>
+    </header>
+
+    <main class="inhalt">
+
+      <!-- Übersicht -->
+      <section class="ansicht an" data-ansicht="uebersicht" aria-label="Übersicht">
+        <div class="kacheln" id="kpi"></div>
+        <div class="karte">
+          <div class="karte-kopf">
+            <h2>Nächste Reservierungen</h2>
+            <button class="knopf leise" data-springe="reservierungen">Alle ansehen</button>
+          </div>
+          <div class="tabelle" id="naechste"></div>
+        </div>
+        <div class="karte">
+          <div class="karte-kopf"><h2>Auslastung dieser Woche</h2><span class="neben">Gäste pro Tag</span></div>
+          <div class="diagramm" id="mini-diagramm"></div>
+        </div>
+      </section>
+
+      <!-- Reservierungen -->
+      <section class="ansicht" data-ansicht="reservierungen" aria-label="Reservierungen">
+        <div class="chips" id="filter"></div>
+        <div class="karte">
+          <div class="karte-kopf">
+            <h2 id="res-titel">Reservierungen</h2>
+            <span class="neben" id="res-zahl"></span>
+          </div>
+          <div class="tabelle">
+            <div class="t-kopf"><span>Zeit</span><span>Gast</span><span>Personen</span><span>Tisch</span><span>Status</span></div>
+            <div id="res-liste"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Kalender -->
+      <section class="ansicht" data-ansicht="kalender" aria-label="Kalender">
+        <div class="karte">
+          <div class="karte-kopf">
+            <h2 id="kal-titel">Juli 2026</h2>
+            <span class="neben">Punkte zeigen die Anzahl Reservierungen</span>
+          </div>
+          <div class="kal" id="kal"></div>
+        </div>
+        <div class="karte">
+          <div class="karte-kopf"><h2 id="kal-tag-titel">Freitag, 24. Juli</h2><span class="neben" id="kal-tag-zahl"></span></div>
+          <div class="tabelle" id="kal-liste"></div>
+        </div>
+      </section>
+
+      <!-- Menüs -->
+      <section class="ansicht" data-ansicht="menues" aria-label="Menüs">
+        <div class="chips" id="menue-filter"></div>
+        <div class="karte">
+          <div class="karte-kopf">
+            <h2>Speisekarte</h2>
+            <span class="neben">Tippen schaltet ein Gericht für heute ab</span>
+          </div>
+          <div class="speisen" id="speisen"></div>
+        </div>
+      </section>
+
+      <!-- Schichten -->
+      <section class="ansicht" data-ansicht="schichten" aria-label="Schichten">
+        <div class="karte">
+          <div class="karte-kopf">
+            <h2>Dienstplan Woche 30</h2>
+            <span class="neben">Tippen wechselt: frei → früh → abend</span>
+          </div>
+          <div class="schicht-gitter" id="schichten"></div>
+        </div>
+      </section>
+
+      <!-- Preisrechner -->
+      <section class="ansicht" data-ansicht="rechner" aria-label="Preisrechner">
+        <div class="karte">
+          <div class="karte-kopf"><h2>Preisrechner für Anlässe</h2><span class="neben">Richtwert für Gruppen ab 8 Personen</span></div>
+          <div class="rechner">
+            <div class="rechner-form">
+              <div class="feld">
+                <label for="r-gaeste">Personen: <b id="r-gaeste-wert">24</b></label>
+                <input class="schieber" type="range" id="r-gaeste" min="8" max="80" value="24" step="1">
+              </div>
+              <div class="feld">
+                <span style="font-size:11px;font-weight:550;color:var(--ink-2)">Menü</span>
+                <div class="wahl" id="r-menue"></div>
+              </div>
+              <div class="feld">
+                <span style="font-size:11px;font-weight:550;color:var(--ink-2)">Extras</span>
+                <div class="wahl" id="r-extras"></div>
+              </div>
+              <div class="feld">
+                <label for="r-tag">Wochentag</label>
+                <select id="r-tag">
+                  <option value="1">Montag bis Donnerstag</option>
+                  <option value="1.15" selected>Freitag oder Samstag</option>
+                  <option value="1.1">Sonntag</option>
+                </select>
+              </div>
+            </div>
+            <div class="rechner-summe" id="r-summe"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Auswertungen -->
+      <section class="ansicht" data-ansicht="auswertungen" aria-label="Auswertungen">
+        <div class="kacheln" id="aus-kpi"></div>
+        <div class="karte">
+          <div class="karte-kopf"><h2>Gäste pro Wochentag</h2><span class="neben">Letzte Woche</span></div>
+          <div class="diagramm" id="diagramm"></div>
+        </div>
+        <div class="karte">
+          <div class="karte-kopf"><h2>Beliebteste Gerichte</h2><span class="neben">Bestellungen letzte Woche</span></div>
+          <div class="speisen" id="top-gerichte"></div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+</div>
+
+<!-- Detail-Schublade -->
+<div class="schublade" id="schublade">
+  <div class="schublade-blatt" role="dialog" aria-label="Reservierung" aria-modal="true">
+    <div class="sb-kopf">
+      <h3 id="sb-titel">Reservierung</h3>
+      <button class="schliessen" data-schliessen aria-label="Schliessen">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div class="sb-rumpf" id="sb-rumpf"></div>
+    <div class="sb-fuss" id="sb-fuss"></div>
+  </div>
+</div>
+
+<!-- Neue Reservierung -->
+<div class="dialog" id="dialog">
+  <div class="dialog-blatt" role="dialog" aria-label="Neue Reservierung" aria-modal="true">
+    <div class="sb-kopf">
+      <h3>Neue Reservierung</h3>
+      <button class="schliessen" data-dialog-zu aria-label="Schliessen">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div class="sb-rumpf">
+      <div class="feld">
+        <label for="f-name">Name</label>
+        <input id="f-name" type="text" placeholder="z. B. Familie Weber">
+      </div>
+      <div class="zweispalt">
+        <div class="feld">
+          <label for="f-zeit">Zeit</label>
+          <input id="f-zeit" type="time" value="19:00">
+        </div>
+        <div class="feld">
+          <label for="f-personen">Personen</label>
+          <input id="f-personen" type="number" min="1" max="40" value="2">
+        </div>
+      </div>
+      <div class="zweispalt">
+        <div class="feld">
+          <label for="f-tisch">Tisch</label>
+          <select id="f-tisch"></select>
+        </div>
+        <div class="feld">
+          <label for="f-status">Status</label>
+          <select id="f-status">
+            <option value="ok">Bestätigt</option>
+            <option value="offen">Angefragt</option>
+          </select>
+        </div>
+      </div>
+      <div class="feld">
+        <label for="f-notiz">Notiz</label>
+        <input id="f-notiz" type="text" placeholder="Allergien, Kinderstuhl, Anlass …">
+      </div>
+    </div>
+    <div class="sb-fuss">
+      <button class="knopf leise" data-dialog-zu>Abbrechen</button>
+      <button class="knopf" id="f-speichern">Eintragen</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ============================================================
+   tavolo – Demo-Logik.
+   Alle Daten leben nur im Arbeitsspeicher. Es wird bewusst nichts
+   gespeichert: ein Neuladen stellt den Anfangszustand her.
+   ============================================================ */
+(function () {
+  "use strict";
+
+  /* ---------- Daten ---------- */
+
+  var TISCHE = ["1", "2", "3", "5", "7", "8", "10", "10–11", "12", "B1", "B2", "Terrasse 1", "Terrasse 2"];
+  var WOCHENTAGE = ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"];
+  var MONAT = "Juli 2026";
+
+  var reservierungen = [
+    { id: 1, tag: 24, zeit: "17:45", name: "R. Schneider", personen: 2, tisch: "2", status: "ok", notiz: "Sitzt gern ruhig", tel: "079 412 88 03" },
+    { id: 2, tag: 24, zeit: "18:00", name: "Familie Brunner", personen: 4, tisch: "7", status: "ok", notiz: "Kinderstuhl gewünscht", tel: "078 220 14 76" },
+    { id: 3, tag: 24, zeit: "18:30", name: "M. Keller", personen: 2, tisch: "3", status: "ok", notiz: "", tel: "079 883 40 12" },
+    { id: 4, tag: 24, zeit: "19:00", name: "Geburtstag Meier", personen: 8, tisch: "10–11", status: "offen", notiz: "Torte um 21:00, 40 Kerzen", tel: "076 551 90 28" },
+    { id: 5, tag: 24, zeit: "19:15", name: "T. Lehmann", personen: 3, tisch: "5", status: "ok", notiz: "Eine Person glutenfrei", tel: "079 104 66 51" },
+    { id: 6, tag: 24, zeit: "19:45", name: "Firma Aeschbach", personen: 6, tisch: "12", status: "offen", notiz: "Rechnung an Firma", tel: "044 810 22 90" },
+    { id: 7, tag: 24, zeit: "20:15", name: "L. Rossi", personen: 2, tisch: "B2", status: "ok", notiz: "An der Bar", tel: "078 907 31 44" },
+    { id: 8, tag: 24, zeit: "20:30", name: "S. Widmer", personen: 5, tisch: "8", status: "offen", notiz: "", tel: "079 336 27 15" },
+    { id: 9, tag: 25, zeit: "18:00", name: "Hochzeit Frei", personen: 12, tisch: "Terrasse 1", status: "ok", notiz: "Apéro ab 17:30", tel: "079 445 12 87" },
+    { id: 10, tag: 25, zeit: "19:30", name: "P. Baumann", personen: 2, tisch: "3", status: "ok", notiz: "", tel: "076 228 55 09" },
+    { id: 11, tag: 26, zeit: "12:15", name: "Sonntagsbrunch Vogt", personen: 6, tisch: "10", status: "ok", notiz: "", tel: "079 771 03 62" },
+    { id: 12, tag: 23, zeit: "19:00", name: "A. Furrer", personen: 4, tisch: "5", status: "ok", notiz: "", tel: "078 664 19 30" }
+  ];
+  var naechsteId = 13;
+
+  var speisen = [
+    { id: 1, name: "Vitello tonnato", kat: "Vorspeise", preis: 18.5, an: true, bestellt: 34 },
+    { id: 2, name: "Burrata mit Ofentomaten", kat: "Vorspeise", preis: 16.0, an: true, bestellt: 41 },
+    { id: 3, name: "Tagliatelle al ragù", kat: "Hauptgang", preis: 27.5, an: true, bestellt: 88 },
+    { id: 4, name: "Risotto ai funghi", kat: "Hauptgang", preis: 26.0, an: true, bestellt: 52 },
+    { id: 5, name: "Kalbsschnitzel nach Zürcher Art", kat: "Hauptgang", preis: 38.0, an: true, bestellt: 67 },
+    { id: 6, name: "Branzino vom Grill", kat: "Hauptgang", preis: 42.0, an: false, bestellt: 23 },
+    { id: 7, name: "Tiramisù della casa", kat: "Dessert", preis: 12.5, an: true, bestellt: 71 },
+    { id: 8, name: "Panna cotta mit Waldbeeren", kat: "Dessert", preis: 11.0, an: true, bestellt: 38 }
+  ];
+
+  var personal = ["S. Brunner", "M. Ferrari", "J. Kaufmann", "N. Steiner", "D. Hofer"];
+  var schichten = personal.map(function (_, i) {
+    return [0, 1, 2, 1, 2, 2, 0].map(function (v, t) { return (i + t) % 3 === 0 ? 0 : v; });
+  });
+  var SCHICHT_NAMEN = ["frei", "früh", "abend"];
+
+  var wocheGaeste = [42, 38, 51, 47, 86, 94, 63];
+
+  /* ---------- Hilfen ---------- */
+
+  var $ = function (s, w) { return (w || document).querySelector(s); };
+  var $$ = function (s, w) { return Array.prototype.slice.call((w || document).querySelectorAll(s)); };
+  function initialen(name) {
+    var t = name.replace(/^(Familie|Firma|Geburtstag|Hochzeit)\s+/i, "").trim().split(/[\s.]+/).filter(Boolean);
+    return ((t[0] || "")[0] + ((t[1] || "")[0] || "")).toUpperCase();
+  }
+  function frRappen(n) { return n.toFixed(2).replace(".", "."); }
+  function leerZeile(text) { return '<div class="leer">' + text + "</div>"; }
+
+  var gewaehlterTag = 24;
+  var filterStatus = "alle";
+  var menueKat = "alle";
+  var suchText = "";
+
+  /* ---------- Ansichten umschalten ---------- */
+
+  var TITEL = {
+    uebersicht: "Übersicht", reservierungen: "Reservierungen", kalender: "Kalender",
+    menues: "Menüs", schichten: "Schichten", rechner: "Preisrechner", auswertungen: "Auswertungen"
+  };
+
+  function zeige(name) {
+    $$(".ansicht").forEach(function (a) { a.classList.toggle("an", a.dataset.ansicht === name); });
+    $$(".punkt").forEach(function (b) {
+      if (b.dataset.ansicht === name) b.setAttribute("aria-current", "page");
+      else b.removeAttribute("aria-current");
+    });
+    $("#pfad").innerHTML = name === "uebersicht"
+      ? "<b>Übersicht</b>"
+      : 'Betrieb <span class="tr">/</span> <b>' + TITEL[name] + "</b>";
+    if (name === "uebersicht") zeichneUebersicht();
+    if (name === "reservierungen") zeichneReservierungen();
+    if (name === "kalender") { zeichneKalender(); zeichneTagesListe(); }
+    if (name === "menues") zeichneSpeisen();
+    if (name === "schichten") zeichneSchichten();
+    if (name === "auswertungen") zeichneAuswertungen();
+    document.querySelector(".inhalt").scrollIntoView({ block: "start", behavior: "smooth" });
+  }
+
+  $$(".punkt").forEach(function (b) {
+    b.addEventListener("click", function () { zeige(b.dataset.ansicht); });
+  });
+  $$("[data-springe]").forEach(function (b) {
+    b.addEventListener("click", function () { zeige(b.dataset.springe); });
+  });
+
+  /* ---------- Reservierungen ---------- */
+
+  function passt(r) {
+    if (filterStatus !== "alle" && r.status !== filterStatus) return false;
+    if (suchText && (r.name + " " + r.tisch).toLowerCase().indexOf(suchText) === -1) return false;
+    return true;
+  }
+  function sortiert(liste) {
+    return liste.slice().sort(function (a, b) { return a.tag - b.tag || a.zeit.localeCompare(b.zeit); });
+  }
+
+  function zeileHtml(r) {
+    return '<button class="t-zeile' + (r.status === "offen" ? " offen" : "") + '" data-id="' + r.id + '">' +
+      '<span class="zeit">' + r.zeit + "</span>" +
+      '<span class="gast"><span class="av">' + initialen(r.name) + "</span>" + r.name +
+      "<em>" + r.personen + " Pers." + (r.notiz ? " · " + r.notiz : "") + "</em></span>" +
+      '<span class="zahl2">' + r.personen + "</span>" +
+      '<span class="zahl2">' + r.tisch + "</span>" +
+      '<span><i class="badge ' + (r.status === "ok" ? "ok" : "") + '">' +
+      (r.status === "ok" ? "Bestätigt" : "Angefragt") + "</i></span>" +
+      "</button>";
+  }
+
+  function zeichneFilter() {
+    var zahlen = {
+      alle: reservierungen.filter(function (r) { return r.tag === gewaehlterTag; }).length,
+      ok: reservierungen.filter(function (r) { return r.tag === gewaehlterTag && r.status === "ok"; }).length,
+      offen: reservierungen.filter(function (r) { return r.tag === gewaehlterTag && r.status === "offen"; }).length
+    };
+    $("#filter").innerHTML =
+      '<button class="chip" data-f="alle" aria-pressed="' + (filterStatus === "alle") + '">Alle ' + zahlen.alle + "</button>" +
+      '<button class="chip" data-f="ok" aria-pressed="' + (filterStatus === "ok") + '">Bestätigt ' + zahlen.ok + "</button>" +
+      '<button class="chip" data-f="offen" aria-pressed="' + (filterStatus === "offen") + '">Angefragt ' + zahlen.offen + "</button>";
+    $$("#filter .chip").forEach(function (c) {
+      c.addEventListener("click", function () { filterStatus = c.dataset.f; zeichneReservierungen(); });
+    });
+  }
+
+  function zeichneReservierungen() {
+    zeichneFilter();
+    var liste = sortiert(reservierungen.filter(function (r) { return r.tag === gewaehlterTag && passt(r); }));
+    $("#res-titel").textContent = "Freitag, " + gewaehlterTag + ". Juli";
+    $("#res-zahl").textContent = liste.length + (liste.length === 1 ? " Eintrag" : " Einträge");
+    $("#res-liste").innerHTML = liste.length
+      ? liste.map(zeileHtml).join("")
+      : leerZeile(suchText ? "Keine Treffer für „" + suchText + "“." : "Für diesen Tag ist noch nichts eingetragen.");
+    verdrahteZeilen("#res-liste");
+    $("#nav-anzahl").textContent = reservierungen.filter(function (r) { return r.tag === gewaehlterTag; }).length;
+  }
+
+  function verdrahteZeilen(wo) {
+    $$(wo + " .t-zeile").forEach(function (z) {
+      z.addEventListener("click", function () { oeffneDetail(parseInt(z.dataset.id, 10)); });
+    });
+  }
+
+  /* ---------- Detail-Schublade ---------- */
+
+  var aktuelleId = null;
+
+  function oeffneDetail(id) {
+    var r = reservierungen.find(function (x) { return x.id === id; });
+    if (!r) return;
+    aktuelleId = id;
+    $("#sb-titel").textContent = r.name;
+    $("#sb-rumpf").innerHTML =
+      '<div><i class="badge ' + (r.status === "ok" ? "ok" : "") + '">' +
+        (r.status === "ok" ? "Bestätigt" : "Angefragt") + "</i></div>" +
+      '<div class="feldliste">' +
+        zeile2("Datum", r.tag + ". Juli 2026") +
+        zeile2("Zeit", r.zeit + " Uhr") +
+        zeile2("Personen", String(r.personen)) +
+        zeile2("Tisch", r.tisch) +
+        zeile2("Telefon", r.tel) +
+        zeile2("Notiz", r.notiz || "—") +
+      "</div>";
+    $("#sb-fuss").innerHTML = r.status === "ok"
+      ? '<button class="knopf leise" data-auf-offen>Auf angefragt setzen</button><button class="knopf" data-loeschen>Stornieren</button>'
+      : '<button class="knopf leise" data-loeschen>Stornieren</button><button class="knopf" data-bestaetigen>Bestätigen</button>';
+    $$("#sb-fuss [data-bestaetigen]").forEach(function (b) {
+      b.addEventListener("click", function () { setzeStatus(id, "ok"); });
+    });
+    $$("#sb-fuss [data-auf-offen]").forEach(function (b) {
+      b.addEventListener("click", function () { setzeStatus(id, "offen"); });
+    });
+    $$("#sb-fuss [data-loeschen]").forEach(function (b) {
+      b.addEventListener("click", function () {
+        reservierungen = reservierungen.filter(function (x) { return x.id !== id; });
+        schliesseSchublade();
+        alleNeu();
+      });
+    });
+    $("#schublade").classList.add("auf");
+  }
+  function zeile2(k, w) { return '<div><span class="k">' + k + '</span><span class="w">' + w + "</span></div>"; }
+
+  function setzeStatus(id, status) {
+    var r = reservierungen.find(function (x) { return x.id === id; });
+    if (r) r.status = status;
+    oeffneDetail(id);
+    alleNeu();
+  }
+  function schliesseSchublade() { $("#schublade").classList.remove("auf"); aktuelleId = null; }
+
+  $("#schublade").addEventListener("click", function (e) {
+    if (e.target === $("#schublade")) schliesseSchublade();
+  });
+  $$("[data-schliessen]").forEach(function (b) { b.addEventListener("click", schliesseSchublade); });
+
+  /* ---------- Neue Reservierung ---------- */
+
+  $("#f-tisch").innerHTML = TISCHE.map(function (t) { return '<option value="' + t + '">' + t + "</option>"; }).join("");
+
+  function dialogAuf() { $("#dialog").classList.add("auf"); setTimeout(function () { $("#f-name").focus(); }, 60); }
+  function dialogZu() { $("#dialog").classList.remove("auf"); }
+  $("#neu-knopf").addEventListener("click", dialogAuf);
+  $$("[data-dialog-zu]").forEach(function (b) { b.addEventListener("click", dialogZu); });
+  $("#dialog").addEventListener("click", function (e) { if (e.target === $("#dialog")) dialogZu(); });
+
+  $("#f-speichern").addEventListener("click", function () {
+    var name = $("#f-name").value.trim();
+    if (!name) { $("#f-name").focus(); $("#f-name").style.borderColor = "#B4453C"; return; }
+    $("#f-name").style.borderColor = "";
+    reservierungen.push({
+      id: naechsteId++,
+      tag: gewaehlterTag,
+      zeit: $("#f-zeit").value || "19:00",
+      name: name,
+      personen: parseInt($("#f-personen").value, 10) || 2,
+      tisch: $("#f-tisch").value,
+      status: $("#f-status").value,
+      notiz: $("#f-notiz").value.trim(),
+      tel: "—"
+    });
+    $("#f-name").value = ""; $("#f-notiz").value = "";
+    dialogZu();
+    zeige("reservierungen");
+    alleNeu();
+  });
+
+  document.addEventListener("keydown", function (e) {
+    if (e.key !== "Escape") return;
+    schliesseSchublade(); dialogZu();
+  });
+
+  /* ---------- Suche ---------- */
+
+  $("#suche").addEventListener("input", function () {
+    suchText = this.value.trim().toLowerCase();
+    if (!$('.ansicht[data-ansicht="reservierungen"]').classList.contains("an")) zeige("reservierungen");
+    else zeichneReservierungen();
+  });
+
+  /* ---------- Übersicht ---------- */
+
+  function zeichneUebersicht() {
+    var heute = reservierungen.filter(function (r) { return r.tag === gewaehlterTag; });
+    var gaeste = heute.reduce(function (s, r) { return s + r.personen; }, 0);
+    var offen = heute.filter(function (r) { return r.status === "offen"; }).length;
+    var auslastung = Math.min(100, Math.round((gaeste / 110) * 100));
+    $("#kpi").innerHTML =
+      kachel("Gäste heute", gaeste, '<span class="fuss gut">+12% zur Vorwoche</span>') +
+      kachel("Auslastung", auslastung + "%", '<span class="balken"><span style="width:' + auslastung + '%"></span></span>') +
+      kachel("Reservierungen", heute.length, '<span class="fuss">für den ' + gewaehlterTag + ". Juli</span>") +
+      kachel("Offen", offen, '<span class="fuss">' + (offen ? "zu bestätigen" : "alles erledigt") + "</span>");
+    var naechste = sortiert(heute).slice(0, 4);
+    $("#naechste").innerHTML = naechste.length ? naechste.map(zeileHtml).join("") : leerZeile("Heute ist noch nichts eingetragen.");
+    verdrahteZeilen("#naechste");
+    zeichneDiagramm("#mini-diagramm", wocheGaeste);
+  }
+  function kachel(titel, wert, fuss) {
+    return '<div class="kachel"><span class="titel">' + titel + '</span><span class="wert">' + wert + "</span>" + fuss + "</div>";
+  }
+
+  /* ---------- Kalender ---------- */
+
+  function tageImMonat() { return 31; }
+  function erstesFeld() { return 2; /* 1. Juli 2026 ist ein Mittwoch */ }
+
+  function zeichneKalender() {
+    $("#kal-titel").textContent = MONAT;
+    var html = WOCHENTAGE.map(function (t) { return '<span class="wt">' + t + "</span>"; }).join("");
+    for (var i = 0; i < erstesFeld(); i++) html += '<span class="tag leerX"></span>';
+    for (var d = 1; d <= tageImMonat(); d++) {
+      var anzahl = reservierungen.filter(function (r) { return r.tag === d; }).length;
+      var punkte = "";
+      for (var p = 0; p < Math.min(anzahl, 8); p++) punkte += "<i></i>";
+      html += '<button class="tag' + (anzahl >= 6 ? " voll" : "") + (d === 24 ? " heute" : "") + '" data-tag="' + d +
+        '" aria-pressed="' + (d === gewaehlterTag) + '"><span class="n">' + d + '</span><span class="p">' + punkte + "</span></button>";
+    }
+    $("#kal").innerHTML = html;
+    $$("#kal .tag[data-tag]").forEach(function (t) {
+      t.addEventListener("click", function () {
+        gewaehlterTag = parseInt(t.dataset.tag, 10);
+        zeichneKalender(); zeichneTagesListe(); zeichneReservierungen();
+      });
+    });
+  }
+
+  function zeichneTagesListe() {
+    var liste = sortiert(reservierungen.filter(function (r) { return r.tag === gewaehlterTag; }));
+    var gaeste = liste.reduce(function (s, r) { return s + r.personen; }, 0);
+    $("#kal-tag-titel").textContent = gewaehlterTag + ". Juli 2026";
+    $("#kal-tag-zahl").textContent = liste.length ? liste.length + " Reservierungen · " + gaeste + " Gäste" : "";
+    $("#kal-liste").innerHTML = liste.length ? liste.map(zeileHtml).join("") : leerZeile("Für diesen Tag ist nichts eingetragen.");
+    verdrahteZeilen("#kal-liste");
+  }
+
+  /* ---------- Menüs ---------- */
+
+  function zeichneMenueFilter() {
+    var kats = ["alle"].concat(speisen.map(function (s) { return s.kat; }).filter(function (v, i, a) { return a.indexOf(v) === i; }));
+    $("#menue-filter").innerHTML = kats.map(function (k) {
+      return '<button class="chip" data-k="' + k + '" aria-pressed="' + (menueKat === k) + '">' +
+        (k === "alle" ? "Alle" : k) + "</button>";
+    }).join("");
+    $$("#menue-filter .chip").forEach(function (c) {
+      c.addEventListener("click", function () { menueKat = c.dataset.k; zeichneSpeisen(); });
+    });
+  }
+
+  function zeichneSpeisen() {
+    zeichneMenueFilter();
+    var liste = speisen.filter(function (s) { return menueKat === "alle" || s.kat === menueKat; });
+    $("#speisen").innerHTML = liste.map(function (s) {
+      return '<button class="speise' + (s.an ? "" : " aus") + '" data-id="' + s.id + '">' +
+        '<span><span class="n">' + s.name + '</span><br><span class="k">' + s.kat + "</span></span>" +
+        '<span class="pr">CHF ' + frRappen(s.preis) + "</span>" +
+        '<span class="schalter" aria-hidden="true"></span>' +
+        "</button>";
+    }).join("");
+    $$("#speisen .speise").forEach(function (b) {
+      b.addEventListener("click", function () {
+        var s = speisen.find(function (x) { return x.id === parseInt(b.dataset.id, 10); });
+        if (s) s.an = !s.an;
+        zeichneSpeisen();
+      });
+    });
+  }
+
+  /* ---------- Schichten ---------- */
+
+  function zeichneSchichten() {
+    var html = '<span></span>' + WOCHENTAGE.map(function (t) { return '<span class="wt">' + t + "</span>"; }).join("");
+    personal.forEach(function (p, i) {
+      html += '<span class="wer">' + p + "</span>";
+      schichten[i].forEach(function (v, t) {
+        html += '<button class="zelle ' + (v === 1 ? "f" : v === 2 ? "a" : "") + '" data-i="' + i + '" data-t="' + t + '">' +
+          SCHICHT_NAMEN[v] + "</button>";
+      });
+    });
+    $("#schichten").innerHTML = html;
+    $$("#schichten .zelle").forEach(function (z) {
+      z.addEventListener("click", function () {
+        var i = parseInt(z.dataset.i, 10), t = parseInt(z.dataset.t, 10);
+        schichten[i][t] = (schichten[i][t] + 1) % 3;
+        zeichneSchichten();
+      });
+    });
+  }
+
+  /* ---------- Preisrechner ---------- */
+
+  var MENUES = [
+    { id: "a", name: "Apéro riche", preis: 38 },
+    { id: "b", name: "3-Gang-Menü", preis: 68 },
+    { id: "c", name: "5-Gang-Menü", preis: 96 }
+  ];
+  var EXTRAS = [
+    { id: "wein", name: "Weinbegleitung", preis: 32 },
+    { id: "deko", name: "Tischdekoration", preis: 6 },
+    { id: "raum", name: "Saal exklusiv", preis: 450, pauschal: true },
+    { id: "musik", name: "Musikanlage", preis: 180, pauschal: true }
+  ];
+  var gewMenue = "b";
+  var gewExtras = { wein: true, deko: false, raum: false, musik: false };
+
+  function zeichneRechnerWahl() {
+    $("#r-menue").innerHTML = MENUES.map(function (m) {
+      return '<button class="chip" data-m="' + m.id + '" aria-pressed="' + (gewMenue === m.id) + '">' +
+        m.name + " · " + m.preis + ".–</button>";
+    }).join("");
+    $$("#r-menue .chip").forEach(function (c) {
+      c.addEventListener("click", function () { gewMenue = c.dataset.m; zeichneRechnerWahl(); rechne(); });
+    });
+    $("#r-extras").innerHTML = EXTRAS.map(function (e) {
+      return '<button class="chip" data-e="' + e.id + '" aria-pressed="' + !!gewExtras[e.id] + '">' +
+        e.name + "</button>";
+    }).join("");
+    $$("#r-extras .chip").forEach(function (c) {
+      c.addEventListener("click", function () { gewExtras[c.dataset.e] = !gewExtras[c.dataset.e]; zeichneRechnerWahl(); rechne(); });
+    });
+  }
+
+  function rechne() {
+    var n = parseInt($("#r-gaeste").value, 10);
+    var faktor = parseFloat($("#r-tag").value);
+    var m = MENUES.find(function (x) { return x.id === gewMenue; });
+    $("#r-gaeste-wert").textContent = n;
+
+    var zeilen = [];
+    var summe = m.preis * n;
+    zeilen.push([m.name + " × " + n, summe]);
+    EXTRAS.forEach(function (e) {
+      if (!gewExtras[e.id]) return;
+      var betrag = e.pauschal ? e.preis : e.preis * n;
+      summe += betrag;
+      zeilen.push([e.name + (e.pauschal ? " (pauschal)" : " × " + n), betrag]);
+    });
+    var zuschlag = summe * (faktor - 1);
+    if (zuschlag > 0.5) { zeilen.push(["Wochenend-Zuschlag", zuschlag]); summe += zuschlag; }
+    var rabatt = 0;
+    if (n >= 40) { rabatt = summe * 0.08; zeilen.push(["Gruppenrabatt ab 40 Personen", -rabatt]); summe -= rabatt; }
+
+    $("#r-summe").innerHTML =
+      zeilen.map(function (z) {
+        return '<div class="summenzeile"><span>' + z[0] + "</span><span>" +
+          (z[1] < 0 ? "−" : "") + frRappen(Math.abs(z[1])) + "</span></div>";
+      }).join("") +
+      '<div class="summenzeile gesamt"><span>Total</span><span>CHF ' + frRappen(summe) + "</span></div>" +
+      '<div class="summenzeile" style="font-size:11px;color:var(--ink-3)"><span>pro Person</span><span>CHF ' + frRappen(summe / n) + "</span></div>";
+  }
+  $("#r-gaeste").addEventListener("input", rechne);
+  $("#r-tag").addEventListener("change", rechne);
+
+  /* ---------- Auswertungen ---------- */
+
+  function zeichneDiagramm(wo, werte) {
+    var max = Math.max.apply(null, werte);
+    $(wo).innerHTML = werte.map(function (v, i) {
+      return '<div class="saeule"><span class="val">' + v + '</span><span class="stab" style="height:' +
+        Math.round((v / max) * 100) + '%"></span><span class="lab">' + WOCHENTAGE[i] + "</span></div>";
+    }).join("");
+  }
+
+  function zeichneAuswertungen() {
+    var total = wocheGaeste.reduce(function (a, b) { return a + b; }, 0);
+    var schnitt = Math.round(total / 7);
+    var beste = WOCHENTAGE[wocheGaeste.indexOf(Math.max.apply(null, wocheGaeste))];
+    var umsatz = total * 64;
+    $("#aus-kpi").innerHTML =
+      kachel("Gäste letzte Woche", total, '<span class="fuss gut">+9% zur Vorwoche</span>') +
+      kachel("Schnitt pro Tag", schnitt, '<span class="fuss">über 7 Tage</span>') +
+      kachel("Stärkster Tag", beste, '<span class="fuss">' + Math.max.apply(null, wocheGaeste) + " Gäste</span>") +
+      kachel("Umsatz", "CHF " + (umsatz / 1000).toFixed(1) + "k", '<span class="fuss">Ø 64.– pro Gast</span>');
+    zeichneDiagramm("#diagramm", wocheGaeste);
+    var top = speisen.slice().sort(function (a, b) { return b.bestellt - a.bestellt; }).slice(0, 5);
+    var maxB = top[0].bestellt;
+    $("#top-gerichte").innerHTML = top.map(function (s) {
+      return '<div class="speise" style="grid-template-columns:1fr 90px 52px;cursor:default">' +
+        '<span><span class="n">' + s.name + '</span><br><span class="k">' + s.kat + "</span></span>" +
+        '<span class="balken" style="margin:0"><span style="width:' + Math.round((s.bestellt / maxB) * 100) + '%"></span></span>' +
+        '<span class="pr" style="text-align:right">' + s.bestellt + "×</span>" +
+        "</div>";
+    }).join("");
+  }
+
+  /* ---------- Start ---------- */
+
+  function alleNeu() {
+    $("#nav-anzahl").textContent = reservierungen.filter(function (r) { return r.tag === gewaehlterTag; }).length;
+    if ($('.ansicht[data-ansicht="uebersicht"]').classList.contains("an")) zeichneUebersicht();
+    if ($('.ansicht[data-ansicht="reservierungen"]').classList.contains("an")) zeichneReservierungen();
+    if ($('.ansicht[data-ansicht="kalender"]').classList.contains("an")) { zeichneKalender(); zeichneTagesListe(); }
+  }
+
+  zeichneRechnerWahl();
+  rechne();
+  zeichneUebersicht();
+  $("#nav-anzahl").textContent = reservierungen.filter(function (r) { return r.tag === gewaehlterTag; }).length;
+})();
+</script>
+
+</body>
+</html>

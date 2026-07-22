@@ -20,6 +20,8 @@ daten/*
 # Hochgeladene Demo-HTML-Dateien: nicht committen, Schutz-.htaccess behalten
 beispiel-demos/*
 !beispiel-demos/.htaccess
+# tavolo ist KEIN Upload, sondern fest ausgeliefert (Beispiel-Webapp)
+!beispiel-demos/tavolo.html
 
 # Node
 node_modules/
