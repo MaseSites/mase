@@ -250,16 +250,84 @@ section.tight { padding: 56px 0; }
 .burger.open span:nth-child(2) { opacity: 0; }
 .burger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
+/* Handy-Menü: eine Karte, die sich mit einer Scharnier-Drehung unter der
+   schwebenden Kopfzeile auffaltet. Die Seite bleibt dahinter sichtbar,
+   nur leicht abgedunkelt und weichgezeichnet – Tipp daneben schliesst. */
 .mobile-menu {
   position: fixed; inset: 0; z-index: 55;
-  background: var(--bg);
-  display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 8px;
-  opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
+  background: rgba(31, 24, 16, 0.28);
+  backdrop-filter: blur(7px);
+  -webkit-backdrop-filter: blur(7px);
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.28s ease;
 }
 .mobile-menu.open { opacity: 1; pointer-events: auto; }
-.mobile-menu a { font-family: var(--font-display); font-size: 2rem; color: var(--ink); padding: 10px 20px; }
-.mobile-menu a.active { text-decoration: underline; text-underline-offset: 8px; text-decoration-thickness: 2px; }
-.mobile-menu .btn { margin-top: 22px; font-size: 1.1rem; }
+.menu-karte {
+  position: absolute; top: calc(var(--header-h) + 4px); left: 10px; right: 10px;
+  max-height: calc(100dvh - var(--header-h) - 22px);
+  overflow-y: auto;
+  background: var(--card);
+  border: 1.5px solid var(--line);
+  border-radius: 26px;
+  box-shadow: var(--shadow-l);
+  padding: 10px 10px calc(12px + env(safe-area-inset-bottom, 0px) / 2);
+  display: flex; flex-direction: column;
+  transform: perspective(900px) rotateX(-14deg) translateY(-10px) scale(0.98);
+  transform-origin: top center;
+  transition: transform 0.42s var(--ease-out);
+}
+.mobile-menu.open .menu-karte { transform: perspective(900px) rotateX(0) translateY(0) scale(1); }
+.mobile-menu a {
+  font-family: var(--font-display);
+  font-size: 1.12rem; font-weight: 600; letter-spacing: -0.01em;
+  color: var(--ink);
+  padding: 13px 16px;
+  border-radius: 15px;
+  position: relative;
+  opacity: 0; transform: translateY(8px);
+}
+.mobile-menu.open a { animation: menue-rein 0.4s var(--ease-out) forwards; }
+.mobile-menu.open a:nth-child(1) { animation-delay: 0.05s; }
+.mobile-menu.open a:nth-child(2) { animation-delay: 0.09s; }
+.mobile-menu.open a:nth-child(3) { animation-delay: 0.13s; }
+.mobile-menu.open a:nth-child(4) { animation-delay: 0.17s; }
+.mobile-menu.open a:nth-child(5) { animation-delay: 0.21s; }
+.mobile-menu.open a:nth-child(6) { animation-delay: 0.25s; }
+.mobile-menu.open a:nth-child(7) { animation-delay: 0.30s; }
+.mobile-menu.open a:nth-child(8) { animation-delay: 0.34s; }
+@keyframes menue-rein { to { opacity: 1; transform: none; } }
+.mobile-menu a:active { background: var(--bg-soft); }
+.mobile-menu a.active { padding-left: 38px; }
+.mobile-menu a.active::before {
+  content: "";
+  position: absolute; left: 16px; top: 50%; transform: translateY(-50%);
+  width: 14px; height: 2.5px; border-radius: 2px;
+  background: var(--ink);
+}
+.mobile-menu a.konto-link {
+  margin-top: 6px;
+  border-top: 1px solid var(--line);
+  border-radius: 0 0 15px 15px;
+  padding-top: 16px;
+  font-size: 1rem;
+  color: var(--ink-soft);
+}
+.mobile-menu .btn {
+  margin: 8px 6px 4px;
+  justify-content: center;
+  font-size: 0.98rem; padding: 14px 24px;
+  opacity: 1; transform: none;
+}
+/* Die Menü-Linkfarbe (dunkel) darf nicht auf den dunklen Knopf abfärben –
+   sonst steht dort unsichtbare braune Schrift auf braunem Grund */
+.mobile-menu a.btn-primary { color: #fff; }
+.menu-karte::after {
+  content: "Aus der Schweiz — feste Offerte vor Projektstart";
+  padding: 10px 6px 2px;
+  text-align: center;
+  font-size: 0.74rem; font-weight: 500;
+  color: var(--ink-faint);
+}
 
 /* ---------- Hero ---------- */
 
@@ -539,9 +607,30 @@ section.tight { padding: 56px 0; }
 }
 .taskbar-link:hover { color: var(--ink); }
 
+/* «Alle Demos ansehen»-Zeile: nur auf dem Handy, dort ersetzt sie die
+   Hover-Abdeckung als Weg zur Beispiele-Seite */
+.demo-mehr { display: none; }
+
 @media (max-width: 720px) {
-  .demo-schirm { height: min(60vh, 480px); }
+  .demo-schirm { height: min(64vh, 520px); }
   .showcase { padding: 68px 0 72px; }
+
+  /* Auf dem Handy sind die Demos direkt bedienbar: die Abdeckung
+     (die jeden Fingertipp schluckte) weicht, und die Demo rendert in
+     echter Handy-Breite statt als geschrumpfte Desktop-Ansicht */
+  .demo-abdeckung { display: none; }
+  .demo-schirm iframe { width: 100%; height: 100%; transform: none; }
+
+  .demo-mehr {
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    padding: 14px 16px;
+    border-top: 1px solid var(--line);
+    background: var(--bg-soft);
+    font-size: 0.9rem; font-weight: 650;
+    color: var(--ink);
+  }
+  .demo-mehr .arrow { transition: transform 0.2s ease; }
+  .demo-mehr:active .arrow { transform: translateX(3px); }
 }
 
 /* ---------- Intro: Kamerafahrt durch den Bildschirm ----------
@@ -718,19 +807,33 @@ html.intro-zoom.intro-fahrt .hero-deko {
   border-bottom: 1px solid var(--line);
 }
 .frame-bar .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--line); }
-.frame-schloss { width: 12px; height: 12px; color: var(--ink-faint); flex: none; margin-left: 8px; }
+/* Das Schloss gehörte zur früheren URL-Anzeige – jetzt steht dort ein
+   Live-Etikett mit pulsierendem Punkt statt einer rohen Adresse */
+.frame-schloss { display: none; }
 .frame-bar .dot:nth-child(1) { background: #E8A0A0; }
 .frame-bar .dot:nth-child(2) { background: #E8CFA0; }
 .frame-bar .dot:nth-child(3) { background: #A9C9A9; }
 .frame-url {
-  flex: 1; margin-left: 8px;
+  flex: 1; margin-left: 10px;
+  display: flex; align-items: center; gap: 7px;
   background: var(--bg);
-  border-radius: 8px;
-  font-size: 0.72rem;
-  color: var(--ink-faint);
-  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 0.74rem; font-weight: 600; letter-spacing: 0.01em;
+  color: var(--ink-soft);
+  padding: 4px 13px;
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
   transition: color 0.3s ease;
+}
+.frame-url::before {
+  content: "";
+  width: 7px; height: 7px; flex: none;
+  border-radius: 50%;
+  background: #4CAF6E;
+  animation: live-puls 2.2s ease-in-out infinite;
+}
+@keyframes live-puls {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(76, 175, 110, 0.45); }
+  55% { box-shadow: 0 0 0 5px rgba(76, 175, 110, 0); }
 }
 
 /* Die Mini-Beispielseite im Frame, Themes via data-brand */
@@ -1242,6 +1345,10 @@ a.work-card:hover { color: inherit; }
   transition: transform 0.3s var(--ease-out), box-shadow 0.3s var(--ease-out), opacity 0.5s ease;
 }
 .widget-launcher:hover { transform: scale(1.08) translateY(-2px); box-shadow: 0 20px 42px rgba(28, 20, 12, 0.42); }
+/* Solange das Handy-Menü offen ist, verschwindet der KI-Knopf (und ein
+   eventuell offenes Chat-Fenster) – nichts schwebt über der Menü-Karte */
+body.menue-offen .widget-launcher,
+body.menue-offen .widget-panel { opacity: 0; pointer-events: none; }
 .widget-launcher svg { width: 26px; height: 26px; }
 .widget-launcher .online {
   position: absolute; top: 2px; right: 2px;
@@ -1576,10 +1683,18 @@ body.gescrollt .scroll-cue { opacity: 0; pointer-events: none; }
 
 @media (max-width: 720px) {
   section { padding: 60px 0; }
-  /* Lange deutsche Wörter («Datenschutzerklärung», «zusammenzuarbeiten»)
+  /* Sehr lange deutsche Wörter («Datenschutzerklärung», «zusammenzuarbeiten»)
      sind breiter als das Handy-Display und zoomen sonst die ganze Seite
-     heraus. Silbentrennung lässt Titel sauber umbrechen. */
-  h1, h2 { hyphens: auto; overflow-wrap: break-word; }
+     heraus. Getrennt wird aber nur ab 11 Buchstaben mit mindestens 5 pro
+     Zeile – kurze Wörter wie «Restaurant» bleiben ganz, sonst wirken die
+     Titel zerhackt. */
+  .page-hero h1, .big-cta h2, .section-head h2 {
+    overflow-wrap: break-word;
+    hyphens: auto;
+    hyphenate-limit-chars: 11 5 5;
+    -webkit-hyphenate-limit-before: 5;
+    -webkit-hyphenate-limit-after: 5;
+  }
   .main-nav, .header-cta .btn-ghost { display: none; }
   .header-cta .btn-primary { display: none; }
   .burger { display: flex; }
@@ -1639,7 +1754,7 @@ body.gescrollt .scroll-cue { opacity: 0; pointer-events: none; }
 
 .konto-link { font-weight: 600; font-size: 0.95rem; color: var(--ink-soft); }
 .konto-link:hover { color: var(--ink); }
-.mobile-menu .konto-link { font-size: inherit; }
+/* (Handy-Menü-Stil des Dashboard-Links steht jetzt gebündelt beim Menü) */
 
 .auth-wrap { max-width: 460px; margin: 0 auto; }
 .auth-card { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius-l); padding: 30px 28px; box-shadow: var(--shadow-s); }

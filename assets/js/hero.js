@@ -108,9 +108,8 @@
     frame.style.opacity = "0";
     frame.src = frischeUrl(eintrag.demo.url);
     if (frameUrl) {
-      frameUrl.textContent = /^https?:\/\//i.test(eintrag.demo.url)
-        ? eintrag.demo.url.replace(/^https?:\/\//i, "")
-        : location.host + eintrag.demo.url;
+      /* Statt der rohen Adresse ein freundliches Etikett mit dem Demo-Namen */
+      frameUrl.textContent = "Live-Demo — " + (eintrag.demo.name || "Beispiel");
     }
     taskbar.querySelectorAll(".chip").forEach(function (c) {
       var an = c === eintrag.knopf;
@@ -130,6 +129,16 @@
   function stoppeDemoAuto() {
     if (demoTimer) { clearInterval(demoTimer); demoTimer = null; }
   }
+
+  /* Sobald jemand IN der Demo tippt oder klickt (das iframe bekommt den
+     Fokus, das Hauptfenster meldet «blur»), bleibt die Automatik aus –
+     nichts ist nerviger, als beim Scrollen weggeschaltet zu werden. */
+  window.addEventListener("blur", function () {
+    if (document.activeElement === frame) {
+      demoManuell = true;
+      stoppeDemoAuto();
+    }
+  });
 
   fetch("/api/inhalte", { credentials: "same-origin" })
     .then(function (r) { return r.ok ? r.json() : null; })

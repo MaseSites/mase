@@ -32,18 +32,34 @@
   var burger = document.querySelector(".burger");
   var mobileMenu = document.querySelector(".mobile-menu");
   if (burger && mobileMenu) {
+    /* Die Links liegen flach im Markup – hier wandern sie in eine Karte,
+       damit das Menü als aufklappende Kapsel unter der Kopfzeile erscheint
+       und der Rest des Bildschirms sichtbar bleibt. */
+    var karte = document.createElement("div");
+    karte.className = "menu-karte";
+    while (mobileMenu.firstChild) karte.appendChild(mobileMenu.firstChild);
+    mobileMenu.appendChild(karte);
+
+    function schliesseMenue() {
+      mobileMenu.classList.remove("open");
+      burger.classList.remove("open");
+      burger.setAttribute("aria-expanded", "false");
+      document.body.classList.remove("menue-offen");
+      document.body.style.overflow = "";
+    }
     burger.addEventListener("click", function () {
       var open = mobileMenu.classList.toggle("open");
       burger.classList.toggle("open", open);
       burger.setAttribute("aria-expanded", open ? "true" : "false");
+      document.body.classList.toggle("menue-offen", open);
       document.body.style.overflow = open ? "hidden" : "";
     });
+    /* Tipp auf den abgedunkelten Hintergrund neben der Karte schliesst */
+    mobileMenu.addEventListener("click", function (e) {
+      if (e.target === mobileMenu) schliesseMenue();
+    });
     mobileMenu.querySelectorAll("a").forEach(function (a) {
-      a.addEventListener("click", function () {
-        mobileMenu.classList.remove("open");
-        burger.classList.remove("open");
-        document.body.style.overflow = "";
-      });
+      a.addEventListener("click", schliesseMenue);
     });
   }
 
