@@ -2857,3 +2857,72 @@ html.uu-bau .uu-szene { display: flex; }
 @media (min-width: 721px) {
   .chat-zurueck { display: none; }
 }
+
+/* Neunter Menüpunkt (Leistungen) bekommt seine Einflug-Verzögerung */
+.mobile-menu.open a:nth-child(9) { animation-delay: 0.38s; }
+
+/* ============================================================
+   Header: Hover-Gruppe «Arbeiten» (Beispiele + Projekte)
+   und der «Projekt starten»-Knopf
+   ============================================================ */
+
+.nav-gruppe { position: relative; display: inline-flex; }
+.nav-gruppe-knopf {
+  display: inline-flex; align-items: center; gap: 5px;
+  border: none; background: none; cursor: pointer;
+  color: var(--ink-soft);
+  font: 500 0.98rem var(--font-sans);
+  padding: 0;
+  position: relative;
+}
+.nav-gruppe-knopf svg { width: 13px; height: 13px; transition: transform 0.25s var(--ease-out); }
+.nav-gruppe-knopf::after {
+  content: ""; position: absolute; left: 0; bottom: -6px; height: 2px; width: 0;
+  background: var(--ink); border-radius: 2px; transition: width 0.25s ease;
+}
+.nav-gruppe:hover .nav-gruppe-knopf,
+.nav-gruppe:focus-within .nav-gruppe-knopf { color: var(--ink); }
+.nav-gruppe:hover .nav-gruppe-knopf::after,
+.nav-gruppe:focus-within .nav-gruppe-knopf::after,
+.nav-gruppe.aktiv .nav-gruppe-knopf::after { width: 100%; }
+.nav-gruppe:hover .nav-gruppe-knopf svg,
+.nav-gruppe:focus-within .nav-gruppe-knopf svg { transform: rotate(180deg); }
+
+/* Kleine Karte in derselben Formsprache wie Kopfzeile und Handy-Menü */
+.nav-gruppe-menu {
+  position: absolute; top: calc(100% + 14px); left: 50%;
+  transform: translateX(-50%) translateY(-6px) scale(0.97);
+  transform-origin: top center;
+  min-width: 168px;
+  background: var(--card);
+  border: 1.5px solid var(--line);
+  border-radius: 18px;
+  box-shadow: var(--shadow-l);
+  padding: 8px;
+  display: grid; gap: 2px;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.22s ease, transform 0.28s var(--ease-out);
+}
+/* Unsichtbare Brücke, damit der Hover den Spalt zur Karte übersteht */
+.nav-gruppe-menu::before {
+  content: ""; position: absolute; left: 0; right: 0; top: -14px; height: 14px;
+}
+.nav-gruppe:hover .nav-gruppe-menu,
+.nav-gruppe:focus-within .nav-gruppe-menu {
+  opacity: 1; pointer-events: auto;
+  transform: translateX(-50%) translateY(0) scale(1);
+}
+.main-nav .nav-gruppe-menu a {
+  padding: 10px 14px;
+  border-radius: 11px;
+  font-weight: 600; font-size: 0.94rem;
+}
+.main-nav .nav-gruppe-menu a::after { display: none; }
+.main-nav .nav-gruppe-menu a:hover { background: var(--bg-soft); }
+.main-nav .nav-gruppe-menu a.active { background: var(--accent-soft); color: var(--ink); }
+
+/* «Projekt starten» in der Kopfzeile: kompakt, ab Tablet sichtbar */
+.header-start { padding: 10px 20px; font-size: 0.92rem; white-space: nowrap; }
+@media (max-width: 1020px) {
+  .header-start { display: none; }
+}

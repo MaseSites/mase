@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Leistungen – masesites</title>
+  <meta name="description" content="Website, Überarbeitung, Webapp oder KI-Bot: Wähl eine Leistung und die Seite zeigt dir ihre Welt – mit Beispielen, Merkmalen und fixen Preisen.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css?v=27">
+  <link rel="stylesheet" href="assets/css/leistungen.css?v=2">
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="logo" href="/" aria-label="masesites, zur Startseite">
+        masesites
+      </a>
+      <nav class="main-nav" aria-label="Hauptnavigation">
+        <a href="/">Startseite</a>
+        <a href="/leistungen" class="active">Leistungen</a>
+        <div class="nav-gruppe">
+          <button class="nav-gruppe-knopf" type="button">Arbeiten
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <div class="nav-gruppe-menu">
+            <a href="/beispiele">Beispiele</a>
+            <a href="/projekte">Projekte</a>
+          </div>
+        </div>
+        <a href="/ki-bot">KI-Bot</a>
+        <a href="/preise">Preise</a>
+        <a href="/ueber-uns">Über uns</a>
+      </nav>
+      <div class="header-cta">
+        <a class="btn btn-primary header-start" href="/kontakt">Projekt starten</a>
+        <a class="konto-link" href="/dashboard">Dashboard</a>
+        <button class="burger" aria-label="Menü öffnen" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="mobile-menu">
+    <a href="/">Startseite</a>
+    <a href="/leistungen" class="active">Leistungen</a>
+    <a href="/beispiele">Beispiele</a>
+    <a href="/projekte">Projekte</a>
+    <a href="/ki-bot">KI-Bot</a>
+    <a href="/preise">Preise</a>
+    <a href="/ueber-uns">Über uns</a>
+    <a href="/dashboard" class="konto-link">Dashboard</a>
+    <a class="btn btn-primary" href="/kontakt">Projekt starten →</a>
+  </div>
+
+  <main class="lw" id="lw" data-welt="website">
+
+    <!-- Kopf: Titel und die vier Welt-Knöpfe -->
+    <section class="lw-kopf">
+      <div class="wrap">
+        <h1>Was wir für dich bauen.</h1>
+        <p class="lw-untertitel">Wähl eine Leistung – die Seite zeigt dir ihre Welt.</p>
+        <div class="lw-tabs" role="tablist" aria-label="Leistung wählen">
+          <button class="lw-tab active" type="button" role="tab" aria-selected="true" data-welt="website" id="tab-website">
+            <span class="punkt" aria-hidden="true"></span>Website
+          </button>
+          <button class="lw-tab" type="button" role="tab" aria-selected="false" data-welt="ueberarbeitung" id="tab-ueberarbeitung">
+            <span class="punkt" aria-hidden="true"></span>Überarbeitung
+          </button>
+          <button class="lw-tab" type="button" role="tab" aria-selected="false" data-welt="webapp" id="tab-webapp">
+            <span class="punkt" aria-hidden="true"></span>Webapp
+          </button>
+          <button class="lw-tab" type="button" role="tab" aria-selected="false" data-welt="ki" id="tab-ki">
+            <span class="punkt" aria-hidden="true"></span>KI-Bot
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== Welt: Website ===================== -->
+    <section class="lw-welt" data-panel="website" role="tabpanel" aria-labelledby="tab-website">
+      <div class="wrap lw-buehne">
+        <div class="lw-text">
+          <h2>Deine Website. Von Hand gebaut.</h2>
+          <p>Kein Baukasten, keine Vorlage von der Stange: Wir gestalten deine Seite passend zu Branche, Stil und Zielgruppe – und du bekommst vor dem Start eine feste Offerte.</p>
+          <ul class="lw-merkmale">
+            <li><b>Design nach Mass</b><span>Farben, Schrift und Aufbau entstehen für deine Firma – nicht umgekehrt.</span></li>
+            <li><b>Schnell und auffindbar</b><span>Sauberer Code, kurze Ladezeiten und Grundlagen, damit Google dich findet.</span></li>
+            <li><b>Wächst mit dir</b><span>Terminbuchung, Shop oder KI-Assistent lassen sich jederzeit ergänzen.</span></li>
+          </ul>
+          <div class="lw-aktion">
+            <a class="btn btn-primary" href="/preise">Pakete ab CHF 750.– <span class="arrow">→</span></a>
+            <a class="lw-neben" href="/beispiele">Beispiele ansehen</a>
+          </div>
+        </div>
+        <div class="lw-schau">
+          <!-- Diorama: schwebendes Browser-Fenster mit Mini-Site -->
+          <div class="dio-browser">
+            <div class="dio-bar"><i></i><i></i><i></i><em>Live-Demo — Deine Firma</em></div>
+            <div class="dio-site">
+              <div class="ds-nav"><span class="ds-logo"></span><span class="ds-links"><i></i><i></i><i></i></span></div>
+              <div class="ds-hero"><span class="ds-h1"></span><span class="ds-h2"></span><span class="ds-cta"></span></div>
+              <div class="ds-karten"><i></i><i></i><i></i></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== Welt: Überarbeitung ===================== -->
+    <section class="lw-welt" data-panel="ueberarbeitung" role="tabpanel" aria-labelledby="tab-ueberarbeitung" hidden>
+      <div class="wrap lw-buehne">
+        <div class="lw-text">
+          <h2>Aus alt wird wow.</h2>
+          <p>Deine Seite hat gute Inhalte, sieht aber nach 2012 aus? Wir frischen Design, Technik und Handy-Ansicht auf – vom kleinen Quick Fix bis zum kompletten Neuanstrich.</p>
+          <ul class="lw-merkmale">
+            <li><b>Ehrliche Analyse</b><span>Wir sagen dir, was sich lohnt – und was du dir sparen kannst.</span></li>
+            <li><b>Inhalte bleiben</b><span>Texte, Bilder und Adresse ziehen mit um, nichts geht verloren.</span></li>
+            <li><b>Endlich handytauglich</b><span>Die meisten Besucher kommen vom Handy. Danach sieht es dort top aus.</span></li>
+          </ul>
+          <div class="lw-aktion">
+            <a class="btn btn-primary" href="/preise#ueberarbeitung">Ab CHF 250.– <span class="arrow">→</span></a>
+            <a class="lw-neben" href="/kontakt">Seite prüfen lassen</a>
+          </div>
+        </div>
+        <div class="lw-schau">
+          <!-- Diorama: Vorher/Nachher mit ziehbarem Schieber -->
+          <div class="dio-vergleich" id="dio-vergleich" aria-label="Vorher-Nachher-Vergleich, Schieber ziehbar">
+            <div class="vg-seite vg-nachher">
+              <div class="ds-nav"><span class="ds-logo"></span><span class="ds-links"><i></i><i></i><i></i></span></div>
+              <div class="ds-hero"><span class="ds-h1"></span><span class="ds-h2"></span><span class="ds-cta"></span></div>
+              <div class="ds-karten"><i></i><i></i><i></i></div>
+              <span class="vg-tag">Nachher</span>
+            </div>
+            <div class="vg-seite vg-vorher" id="vg-vorher">
+              <div class="alt-titel">Willkommen auf unserer Homepage!!</div>
+              <div class="alt-zeile"></div><div class="alt-zeile kurz"></div>
+              <div class="alt-bild">Bild lädt…</div>
+              <div class="alt-zeile"></div><div class="alt-zeile"></div><div class="alt-zeile kurz"></div>
+              <span class="vg-tag">Vorher</span>
+            </div>
+            <div class="vg-griff" id="vg-griff" role="slider" tabindex="0" aria-label="Vergleich verschieben" aria-valuemin="0" aria-valuemax="100" aria-valuenow="55"><span></span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== Welt: Webapp ===================== -->
+    <section class="lw-welt" data-panel="webapp" role="tabpanel" aria-labelledby="tab-webapp" hidden>
+      <div class="wrap lw-buehne">
+        <div class="lw-text">
+          <h2>Software, die deine Abläufe kennt.</h2>
+          <p>Buchungen, Kundendaten, Lager oder Rapporte: Eine Webapp bündelt, was heute in Excel-Listen und Telefonaten steckt – zugeschnitten auf deinen Betrieb, erreichbar von überall.</p>
+          <ul class="lw-merkmale">
+            <li><b>Ein System statt zehn Listen</b><span>Alle im Team arbeiten mit denselben, aktuellen Daten.</span></li>
+            <li><b>Läuft im Browser</b><span>Nichts installieren – funktioniert am PC, Tablet und Handy.</span></li>
+            <li><b>Sicher gehostet</b><span>Schweizer Standards, tägliche Sicherung, Zugriffe nach Rollen.</span></li>
+          </ul>
+          <div class="lw-aktion">
+            <a class="btn btn-primary" href="/preise#webapp">Ab CHF 3'500.– <span class="arrow">→</span></a>
+            <a class="lw-neben" href="/kontakt">Ablauf besprechen</a>
+          </div>
+        </div>
+        <div class="lw-schau">
+          <!-- Diorama: SaaS-Dashboard mit zählenden Kennzahlen -->
+          <div class="dio-app">
+            <aside class="da-seite"><span class="da-logo"></span><i class="aktiv"></i><i></i><i></i><i></i></aside>
+            <div class="da-haupt">
+              <div class="da-kopfzeile"><span class="da-titel"></span><span class="da-avatar"></span></div>
+              <div class="da-kpis">
+                <div class="da-kpi"><b data-zahl="128">0</b><span>Buchungen</span></div>
+                <div class="da-kpi"><b data-zahl="42">0</b><span>Neue Kunden</span></div>
+                <div class="da-kpi"><b data-zahl="97" data-suffix="%">0</b><span>Auslastung</span></div>
+              </div>
+              <div class="da-chart" aria-hidden="true">
+                <i style="--h:34%"></i><i style="--h:52%"></i><i style="--h:41%"></i><i style="--h:66%"></i><i style="--h:58%"></i><i style="--h:80%"></i><i style="--h:71%"></i><i style="--h:92%"></i>
+              </div>
+              <div class="da-zeilen"><i></i><i></i><i></i></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== Welt: KI-Bot ===================== -->
+    <section class="lw-welt" data-panel="ki" role="tabpanel" aria-labelledby="tab-ki" hidden>
+      <div class="lw-strahlen" aria-hidden="true"><i></i></div>
+      <div class="wrap lw-buehne">
+        <div class="lw-text">
+          <h2>Dein Assistent.<br>Rund um die Uhr wach.</h2>
+          <p>Der KI-Bot kennt deine Firma, beantwortet Fragen, nimmt Buchungen an und verpasst keine Anfrage – auch sonntags um drei Uhr morgens.</p>
+          <ul class="lw-merkmale">
+            <li><b>Antwortet wie dein Team</b><span>Trainiert auf deine Angebote, Preise und Öffnungszeiten.</span></li>
+            <li><b>Nimmt Anfragen auf</b><span>Termine, Reservationen und Kontaktdaten landen sortiert bei dir.</span></li>
+            <li><b>Monatlich kündbar</b><span>CHF 200.– Einrichtung, CHF 40.– pro Monat. Kein Jahresvertrag.</span></li>
+          </ul>
+          <div class="lw-aktion">
+            <a class="btn btn-primary" href="/ki-bot">Mehr zum KI-Bot <span class="arrow">→</span></a>
+            <a class="lw-neben" href="/kontakt">Bot für meine Firma</a>
+          </div>
+        </div>
+        <div class="lw-schau">
+          <!-- Diorama «Nachtschicht»: das echte Chat-Widget bei der Arbeit,
+               daneben das Protokoll einer einzigen Nacht -->
+          <div class="dio-ki">
+            <div class="ki-fenster">
+              <div class="kf-kopf">
+                <span class="kf-avatar" aria-hidden="true">m</span>
+                <span class="kf-name">masesites Assistent<em>online</em></span>
+              </div>
+              <div class="ki-chat" id="ki-chat" aria-hidden="true">
+                <div class="kc-zeile bot">Hallo! Wie kann ich helfen?</div>
+                <div class="kc-zeile gast">Habt ihr morgen um 18 Uhr einen Tisch frei?</div>
+                <div class="kc-zeile bot tippt"><i></i><i></i><i></i></div>
+                <div class="kc-zeile bot spaeter">Ja – für wie viele Personen darf ich reservieren?</div>
+              </div>
+            </div>
+            <div class="ki-protokoll" aria-hidden="true">
+              <span class="kp-titel">Eine Nacht, drei Anfragen – alle beantwortet</span>
+              <div class="kp-chip"><b>03:12</b>Tisch für 4 reserviert</div>
+              <div class="kp-chip"><b>04:47</b>Frage zu Öffnungszeiten beantwortet</div>
+              <div class="kp-chip"><b>06:05</b>Rückruf für 9 Uhr notiert</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Lichtwechsel-Fläche für den Welt-Übergang -->
+  <div class="lw-wipe" id="lw-wipe" aria-hidden="true"></div>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a class="logo" href="/">
+            masesites
+          </a>
+          <p>Personalisierte, professionelle Websites aus der Schweiz.</p>
+          <a class="mail" href="mailto:info@masesites.ch">info@masesites.ch</a>
+        </div>
+        <div class="footer-col">
+          <h4>Angebot</h4>
+          <ul>
+            <li><a href="/preise">Neue Website</a></li>
+            <li><a href="/preise#ueberarbeitung">Website-Überarbeitung</a></li>
+            <li><a href="/preise#webapp">Webapps</a></li>
+            <li><a href="/ki-bot">KI-Bot</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>masesites</h4>
+          <ul>
+            <li><a href="/beispiele">Beispiele</a></li>
+            <li><a href="/projekte">Projekte</a></li>
+            <li><a href="/ueber-uns">Über uns</a></li>
+            <li><a href="/kontakt">Kontakt</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Rechtliches</h4>
+          <ul>
+            <li><a href="/impressum">Impressum</a></li>
+            <li><a href="/datenschutz">Datenschutz</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-base">
+        <span>© 2026 masesites</span>
+        <span class="ch">🇨🇭 Gebaut in der Schweiz</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/js/sanft.js?v=1"></script>
+  <script src="assets/js/site.js?v=22"></script>
+  <script src="assets/js/leistungen.js?v=1"></script>
+</body>
+</html>

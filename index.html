@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/style.css?v=26">
+  <link rel="stylesheet" href="assets/css/style.css?v=27">
 </head>
 <body>
   <script src="assets/js/sanft.js?v=1"></script>
@@ -22,13 +22,22 @@
       </a>
       <nav class="main-nav" aria-label="Hauptnavigation">
         <a href="/" class="active">Startseite</a>
-        <a href="/beispiele">Beispiele</a>
-        <a href="/projekte">Projekte</a>
+        <a href="/leistungen">Leistungen</a>
+        <div class="nav-gruppe">
+          <button class="nav-gruppe-knopf" type="button">Arbeiten
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <div class="nav-gruppe-menu">
+            <a href="/beispiele">Beispiele</a>
+            <a href="/projekte">Projekte</a>
+          </div>
+        </div>
         <a href="/ki-bot">KI-Bot</a>
         <a href="/preise">Preise</a>
         <a href="/ueber-uns">Über uns</a>
       </nav>
       <div class="header-cta">
+        <a class="btn btn-primary header-start" href="/kontakt">Projekt starten</a>
         <a class="konto-link" href="/dashboard">Dashboard</a>
         <button class="burger" aria-label="Menü öffnen" aria-expanded="false">
           <span></span><span></span><span></span>
@@ -39,6 +48,7 @@
 
   <div class="mobile-menu">
     <a href="/" class="active">Startseite</a>
+    <a href="/leistungen">Leistungen</a>
     <a href="/beispiele">Beispiele</a>
     <a href="/projekte">Projekte</a>
     <a href="/ki-bot">KI-Bot</a>
@@ -239,6 +249,7 @@
           <h4>masesites</h4>
           <ul>
             <li><a href="/">Startseite</a></li>
+            <li><a href="/leistungen">Leistungen</a></li>
             <li><a href="/beispiele">Beispiele</a></li>
             <li><a href="/projekte">Projekte</a></li>
             <li><a href="/ueber-uns">Über uns</a></li>
