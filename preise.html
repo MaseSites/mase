@@ -4,12 +4,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Preise | masesites</title>
-  <meta name="description" content="Websites zu fairen Preisen: neue Website ab CHF 750, Überarbeitung ab CHF 250, KI-Assistent CHF 200 plus CHF 40 pro Monat. Stell dir dein Paket selbst zusammen, die Seite rechnet live mit.">
+  <meta name="description" content="Alle Preise auf einen Blick: neue Website ab CHF 750.-, Ueberarbeitung ab CHF 250.-, Webapp ab CHF 3500.-, KI-Assistent ab CHF 200.-. Feste Offerte vor Projektstart.">
   <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/style.css?v=29">
+  <link rel="stylesheet" href="assets/css/style.css?v=30">
+  <link rel="stylesheet" href="assets/css/preisliste.css?v=2">
 </head>
 <body>
 
@@ -54,327 +55,349 @@
     <a class="btn btn-primary" href="/kontakt">Projekt starten →</a>
   </div>
 
-  <main>
+  <main class="pl">
 
-    <!-- ===== Hero ===== -->
+    <!-- ===== Kopf ===== -->
     <section class="page-hero">
       <div class="wrap">
-        <h1>Bau dir dein Paket.</h1>
-        <p class="lead">Klick an, was du brauchst. Die Leiste unten rechnet live mit, die feste Offerte kommt vor Projektstart.</p>
-        <div class="preis-tabs" role="group" aria-label="Angebot wählen">
-          <button class="preis-tab active" type="button" data-tab="website">Neue Website</button>
-          <button class="preis-tab" type="button" data-tab="ueberarbeitung">Überarbeitung</button>
-          <button class="preis-tab" type="button" data-tab="webapp">Webapp</button>
+        <h1>Was es kostet.</h1>
+        <p class="lead">Alle Preise auf einen Blick. Was draufsteht, gilt für den üblichen Umfang – vor Projektstart bekommst du eine feste Offerte.</p>
+      </div>
+    </section>
+
+    <!-- ===== Einordnung: welche Leistung ist überhaupt gemeint? ===== -->
+    <section class="tight">
+      <div class="wrap">
+        <div class="section-head">
+          <h2>Zuerst: Was brauchst du überhaupt?</h2>
+          <p class="lead">Drei Dinge werden oft verwechselt – diese Fragen klären es.</p>
+        </div>
+
+        <div class="pl-einordnung">
+          <article class="pl-eo">
+            <span class="pl-eo-nr">1</span>
+            <h3>Neue Website</h3>
+            <p class="pl-frage">Du hast noch keine Website – oder die bestehende soll ersetzt werden.</p>
+            <p>Von Grund auf neu gebaut. Besucher können <b>etwas nachlesen</b> und dich <b>kontaktieren</b>.</p>
+            <p class="pl-eo-preis">ab CHF 750.–</p>
+            <a class="pl-mehr" href="/leistungen#website">Was genau dazugehört <span class="arrow">→</span></a>
+          </article>
+
+          <article class="pl-eo">
+            <span class="pl-eo-nr">2</span>
+            <h3>Überarbeitung</h3>
+            <p class="pl-frage">Deine Website gibt es schon, aber sie sieht alt aus oder funktioniert auf dem Handy schlecht.</p>
+            <p>Auch <i>Redesign</i> genannt. Deine <b>Inhalte bleiben</b>, erneuert werden Aussehen, Handy-Ansicht und Technik.</p>
+            <p class="pl-eo-preis">ab CHF 250.–</p>
+            <a class="pl-mehr" href="/leistungen#ueberarbeitung">Was genau dazugehört <span class="arrow">→</span></a>
+          </article>
+
+          <article class="pl-eo">
+            <span class="pl-eo-nr">3</span>
+            <h3>Webapp</h3>
+            <p class="pl-frage">Du brauchst kein Schaufenster, sondern ein Werkzeug zum Arbeiten.</p>
+            <p>Auf einer <b>Website lesen Besucher</b>, in einer <b>Webapp arbeiten Benutzer</b>. Sobald sich jemand anmeldet oder Daten erfasst, ist es eine Webapp.</p>
+            <p class="pl-eo-preis">ab CHF 3'500.–</p>
+            <a class="pl-mehr" href="/leistungen#webapp">Was genau dazugehört <span class="arrow">→</span></a>
+          </article>
+        </div>
+
+        
+      </div>
+    </section>
+
+    <!-- ===== Hilfe beim Wählen: Pfeil zum Assistenten ===== -->
+    <section class="tight" id="hilfe">
+      <div class="wrap">
+        <div class="pl-lotse">
+          <div class="pl-lotse-text">
+            <span class="pl-lotse-label">Unsicher, was passt?</span>
+            <h2>Frag unseren Assistenten.</h2>
+            <p>Beschreib ihm in zwei Sätzen, was du vorhast – er stellt ein paar Rückfragen und sagt dir, welches Paket zu dir passt. Rund um die Uhr, ohne Termin.</p>
+            <button class="btn btn-primary" type="button" id="pl-bot-oeffnen">Assistenten öffnen <span class="arrow">→</span></button>
+          </div>
+          <div class="pl-lotse-pfeil" aria-hidden="true">
+            <svg viewBox="0 0 260 200" fill="none">
+              <path class="pfeil-bogen" d="M8 22 C 120 6, 214 54, 232 140" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-dasharray="1 12"/>
+              <path class="pfeil-spitze" d="M212 118 L233 148 L200 152" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span class="pl-lotse-hinweis">hier unten rechts</span>
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- ===== Neue Website ===== -->
-    <section class="tight preis-panel" data-panel="website">
+    <!-- ===== Preisliste: Neue Website ===== -->
+    <section class="tight" id="website">
       <div class="wrap">
-        <div class="section-head center">
-          <h2 class="reveal">Neue Website</h2>
-          <p class="lead reveal" data-delay="80">Persönlich gestaltet, sauber gebaut, auf jedem Gerät schnell. Wähle eines der drei Pakete als Basis.</p>
+        <div class="pl-block-kopf">
+          <div>
+            <h2>Neue Website</h2>
+            <p>Der Preis richtet sich nach Umfang, nicht nach Branche.</p>
+          </div>
+          <a class="pl-mehr" href="/leistungen#website">Alles im Detail <span class="arrow">→</span></a>
         </div>
-        <div class="price-grid" style="padding-top: 16px;">
 
-          <div class="price-card reveal" data-select data-group="website" data-name="Neue Website: Starter" data-once="750" data-ab>
+        <div class="pl-stufen">
+          <article class="pl-stufe" data-anfrage="Neue Website: Starter (ab CHF 750.–)">
             <h3>Starter</h3>
-            <p class="desc">Eine Landingpage mit allem, was dazugehört. Ideal für den Start.</p>
-            <div class="price-value">ab CHF 750.–<small>einmalig · fertig in 1 bis 2 Wochen</small></div>
-            <ul class="price-features">
-              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg> Eine Seite mit allem Wichtigen: Angebot, Preise, Öffnungszeiten</li>
-              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg> Design passend zu deinem Logo und deinen Farben</li>
-              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg> Texte schreiben wir zusammen mit dir</li>
-              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg> Kontaktformular, Anruf-Knopf und Google-Maps-Karte</li>
-              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg> Sieht auf Handy, Tablet und PC gut aus</li>
-              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg> Bei Google eingetragen und auffindbar</li>
-              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg> 1 Feedback-Runde</li>
+            <p class="pl-fuer-wen">Eine Seite, alles Wichtige drauf.</p>
+            <p class="pl-tarif"><b>ab CHF 750.–</b><span>einmalig · 1–2 Wochen</span></p>
+            <ul class="pl-check">
+              <li>Eine lange Seite</li>
+              <li>Design in deinen Farben</li>
+              <li>Kontaktformular und Karte</li>
+              <li>Handy-Ansicht</li>
+              <li>Bei Google eingetragen</li>
+              <li>1 Feedback-Runde</li>
             </ul>
-            <button class="btn btn-ghost select-btn" type="button">Auswählen</button>
-          </div>
+            <button class="pl-anfragen" type="button">Anfragen</button>
+          </article>
 
-          <div class="price-card featured reveal" data-delay="100" data-select data-group="website" data-name="Neue Website: Business" data-once="1300" data-ab>
-            <span class="price-flag">Beliebt</span>
+          <article class="pl-stufe hervor" data-anfrage="Neue Website: Business (ab CHF 1'300.–)">
+            <span class="pl-marke">Am häufigsten gewählt</span>
             <h3>Business</h3>
-            <p class="desc">Der komplette Auftritt für Firmen, die gefunden werden wollen.</p>
-            <div class="price-value">ab CHF 1'300.–<small>einmalig · fertig in 2 bis 4 Wochen</small></div>
-            <ul class="price-features">
-              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg> Alles aus Starter</li>
-              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg> Bis 5 Unterseiten, zum Beispiel Angebot, Team, Galerie, Kontakt</li>
-              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg> Eigenes Design, nicht ab Vorlage</li>
-              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg> Bildergalerie und Kundenstimmen</li>
-              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg> Anfrageformular nach deinen Wünschen</li>
-              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg> Google-Unternehmensprofil mit Maps-Eintrag eingerichtet</li>
-              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg> Besucherstatistik, anonym und ohne Cookie-Banner</li>
-              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg> 2 Feedback-Runden</li>
+            <p class="pl-fuer-wen">Der komplette Firmenauftritt.</p>
+            <p class="pl-tarif"><b>ab CHF 1'300.–</b><span>einmalig · 2–4 Wochen</span></p>
+            <ul class="pl-check">
+              <li class="pl-plus">Alles aus Starter, dazu:</li>
+              <li>Bis 5 Unterseiten</li>
+              <li>Eigenes Design statt Vorlage</li>
+              <li>Galerie und Kundenstimmen</li>
+              <li>Google-Unternehmensprofil</li>
+              <li>Besucherstatistik</li>
+              <li>2 Feedback-Runden</li>
             </ul>
-            <button class="btn btn-ghost select-btn" type="button">Auswählen</button>
-          </div>
+            <button class="pl-anfragen" type="button">Anfragen</button>
+          </article>
 
-          <div class="price-card reveal" data-delay="200" data-select data-group="website" data-name="Neue Website: Premium" data-once="2500" data-ab data-excludes="termin,shop,cms,seite,sprache">
+          <article class="pl-stufe" data-anfrage="Neue Website: Premium (ab CHF 2'500.–)">
             <h3>Premium</h3>
-            <p class="desc">Alles, was technisch möglich ist, aus einer Hand.</p>
-            <div class="price-value">ab CHF 2'500.–<small>einmalig · fertig in 4 bis 6 Wochen</small></div>
-            <ul class="price-features">
-              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg> Alles aus Business</li>
-              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg> So viele Seiten, wie du brauchst</li>
-              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg> Massgeschneidertes Design mit Animationen und Spezialeffekten</li>
-              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg> Online-Terminbuchung mit automatischer Bestätigung</li>
-              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg> Onlineshop oder Kassensystem mit Twint und Kartenzahlung</li>
-              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg> Admin-Bereich: Texte, Bilder, Preise und Seiten selbst verwalten</li>
-              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg> Dashboard mit Anfragen, Bestellungen und Statistik</li>
-              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg> Mehrsprachig und Login-Bereich für Kunden auf Wunsch</li>
+            <p class="pl-fuer-wen">Wenn die Seite auch verkaufen soll.</p>
+            <p class="pl-tarif"><b>ab CHF 2'500.–</b><span>einmalig · 4–6 Wochen</span></p>
+            <ul class="pl-check">
+              <li class="pl-plus">Alles aus Business, dazu:</li>
+              <li>Beliebig viele Seiten</li>
+              <li>Online-Terminbuchung</li>
+              <li>Shop mit Twint und Karte</li>
+              <li>Admin-Bereich zum Selberändern</li>
+              <li>Mehrsprachig auf Wunsch</li>
             </ul>
-            <button class="btn btn-ghost select-btn" type="button">Auswählen</button>
-          </div>
-
+            <button class="pl-anfragen" type="button">Anfragen</button>
+          </article>
         </div>
-        <p class="price-note reveal">Zahlung: 50 % bei Projektstart, 50 % bei Fertigstellung.</p>
       </div>
     </section>
 
-    <!-- ===== Website-Überarbeitung ===== -->
-    <section class="tight preis-panel" data-panel="ueberarbeitung" id="ueberarbeitung" hidden>
+    <!-- ===== Preisliste: Überarbeitung ===== -->
+    <section class="tight" id="ueberarbeitung">
       <div class="wrap">
-        <div class="section-head center">
-          <h2 class="reveal">Website-Überarbeitung</h2>
-          <p class="lead reveal" data-delay="80">Deine Seite steht schon, wirkt aber in die Jahre gekommen? Eine Überarbeitung ist oft der schnellere Weg.</p>
+        <div class="pl-block-kopf">
+          <div>
+            <h2>Überarbeitung</h2>
+            <p>Deine Inhalte und deine Adresse bleiben. Der Check vorher ist gratis.</p>
+          </div>
+          <a class="pl-mehr" href="/leistungen#ueberarbeitung">Alles im Detail <span class="arrow">→</span></a>
         </div>
-        <div class="price-grid" style="padding-top: 16px;">
 
-          <div class="price-card reveal" data-select data-group="redesign" data-name="Überarbeitung: Quick Fix" data-once="250" data-ab>
+        <div class="pl-stufen">
+          <article class="pl-stufe" data-anfrage="Überarbeitung: Quick Fix (ab CHF 250.–)">
             <h3>Quick Fix</h3>
-            <p class="desc">Kleine Eingriffe mit grosser Wirkung.</p>
-            <div class="price-value">ab CHF 250.–<small>einmalig</small></div>
-            <ul class="price-features">
-              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg> Farben, Schriften und Abstände auffrischen</li>
-              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg> Texte und Bilder austauschen</li>
-              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg> Kaputte Links und kleine Fehler beheben</li>
+            <p class="pl-fuer-wen">Im Kern gut, nur unaufgeräumt.</p>
+            <p class="pl-tarif"><b>ab CHF 250.–</b><span>einmalig · wenige Tage</span></p>
+            <ul class="pl-check">
+              <li>Farben und Schriften auffrischen</li>
+              <li>Texte und Bilder tauschen</li>
+              <li>Kaputte Links beheben</li>
             </ul>
-            <button class="btn btn-ghost select-btn" type="button">Auswählen</button>
-          </div>
+            <button class="pl-anfragen" type="button">Anfragen</button>
+          </article>
 
-          <div class="price-card featured reveal" data-delay="100" data-select data-group="redesign" data-name="Überarbeitung: Plus" data-once="500" data-ab>
-            <span class="price-flag">Empfohlen</span>
+          <article class="pl-stufe hervor" data-anfrage="Überarbeitung: Plus (ab CHF 500.–)">
+            <span class="pl-marke">Meist gewählt</span>
             <h3>Plus</h3>
-            <p class="desc">Die gründliche Auffrischung für bestehende Seiten.</p>
-            <div class="price-value">ab CHF 500.–<small>einmalig</small></div>
-            <ul class="price-features">
-              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg> Design-Auffrischung im ganzen Auftritt</li>
-              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg> Für Handys optimiert</li>
-              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg> Ladezeit spürbar verkürzt</li>
-              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg> 2 Feedback-Runden</li>
+            <p class="pl-fuer-wen">Mühsam auf dem Handy, langsam.</p>
+            <p class="pl-tarif"><b>ab CHF 500.–</b><span>einmalig · 1–2 Wochen</span></p>
+            <ul class="pl-check">
+              <li class="pl-plus">Alles aus Quick Fix, dazu:</li>
+              <li>Design im ganzen Auftritt neu</li>
+              <li>Für Handys überarbeitet</li>
+              <li>Ladezeit verkürzt</li>
+              <li>2 Feedback-Runden</li>
             </ul>
-            <button class="btn btn-ghost select-btn" type="button">Auswählen</button>
-          </div>
+            <button class="pl-anfragen" type="button">Anfragen</button>
+          </article>
 
-          <div class="price-card reveal" data-delay="200" data-select data-group="redesign" data-name="Überarbeitung: Pro" data-once="800" data-ab>
+          <article class="pl-stufe" data-anfrage="Überarbeitung: Pro (ab CHF 800.–)">
             <h3>Pro</h3>
-            <p class="desc">Für Seiten, die mehr als Kosmetik brauchen.</p>
-            <div class="price-value">ab CHF 800.–<small>einmalig</small></div>
-            <ul class="price-features">
-              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg> Einzelne Seiten komplett neu gestaltet</li>
-              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg> Neue Struktur und klare Benutzerführung</li>
-              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg> Technik auf den neusten Stand gebracht</li>
+            <p class="pl-fuer-wen">Mehr als Kosmetik nötig.</p>
+            <p class="pl-tarif"><b>ab CHF 800.–</b><span>einmalig · 2–3 Wochen</span></p>
+            <ul class="pl-check">
+              <li class="pl-plus">Alles aus Plus, dazu:</li>
+              <li>Seiten komplett neu gestaltet</li>
+              <li>Struktur neu gedacht</li>
+              <li>Technik auf aktuellem Stand</li>
             </ul>
-            <button class="btn btn-ghost select-btn" type="button">Auswählen</button>
-          </div>
-
+            <button class="pl-anfragen" type="button">Anfragen</button>
+          </article>
         </div>
+
+        <p class="pl-notiz">Läuft deine Seite auf sehr alter Technik, ist eine <a href="#website">neue Website</a> oft günstiger als Flickwerk. Wir sagen es dir nach dem Gratis-Check.</p>
       </div>
     </section>
 
-    <!-- ===== Webapps für Firmen ===== -->
-    <section class="tight preis-panel" data-panel="webapp" id="webapp" hidden>
+    <!-- ===== Webapp, KI, Betrieb: kompakte Zeilen ===== -->
+    <section class="tight" id="webapp">
       <div class="wrap">
-        <div class="section-head center">
-          <h2 class="reveal">Webapps für Firmen</h2>
-          <p class="lead reveal" data-delay="80">Mehr als eine Website: dein Betrieb als eigenes System, massgeschneidert auf deine Abläufe.</p>
-        </div>
-        <div class="price-grid cols-2" style="padding-top: 16px;">
-
-          <div class="price-card reveal" data-select data-group="webapp" data-name="Webapp: Buchung &amp; System" data-once="3500" data-ab>
-            <h3>Buchung &amp; System</h3>
-            <p class="desc">Online-Buchungen und Kundenverwaltung, direkt in deine Website eingebaut.</p>
-            <div class="price-value">ab CHF 3'500.–<small>einmalig · Umfang nach Offerte</small></div>
-            <ul class="price-features">
-              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg> Online-Buchung rund um die Uhr, ohne Anrufe</li>
-              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg> Automatische Bestätigungen und Erinnerungen</li>
-              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg> Kundenkonten mit Verlauf und Terminen</li>
-              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg> Verwaltung im Browser, von überall</li>
-            </ul>
-            <button class="btn btn-ghost select-btn" type="button">Auswählen</button>
-          </div>
-
-          <div class="price-card featured reveal" data-delay="100" data-select data-group="webapp" data-name="Webapp: Firmen-System" data-once="7500" data-ab>
-            <span class="price-flag">Massgeschneidert</span>
-            <h3>Firmen-Webapp</h3>
-            <p class="desc">Bestellungen, Daten und Abläufe an einem Ort, als eigene App für dein Team.</p>
-            <div class="price-value">ab CHF 7'500.–<small>einmalig · Umfang nach Offerte</small></div>
-            <ul class="price-features">
-              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg> Bestellungen und Aufträge live im Blick</li>
-              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg> Alle Daten zentral und sicher gespeichert</li>
-              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg> Benutzer und Rollen für dein Team</li>
-              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg> Als eigene App auf Handy und PC installierbar</li>
-              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg> Wächst mit deinem Betrieb mit</li>
-            </ul>
-            <button class="btn btn-ghost select-btn" type="button">Auswählen</button>
-          </div>
-
-        </div>
-      </div>
-    </section>
-
-    <!-- ===== KI-Assistent ===== -->
-    <section class="tight">
-      <div class="wrap">
-        <div class="addon-card reveal" data-select data-name="KI-Assistent" data-once="200" data-month="40">
+        <div class="pl-block-kopf">
           <div>
-            <h3><span class="ki-glow">KI-Assistent</span> dazu?</h3>
-            <p>Einrichtung CHF 200.– einmalig, Betrieb CHF 40.– pro Monat. Monatlich kündbar und auch auf bestehenden Websites einsetzbar.</p>
+            <h2>Webapp</h2>
+            <p>Software zum Arbeiten statt einer Seite zum Lesen. Keine festen Pakete – der Preis steht nach dem Konzept fest.</p>
           </div>
-          <div class="addon-actions">
-            <button class="btn btn-ghost select-btn" type="button">Auswählen</button>
-            <a class="btn btn-primary" href="/leistungen#ki">Mehr zum KI-Bot <span class="arrow">→</span></a>
+          <a class="pl-mehr" href="/leistungen#webapp">Alles im Detail <span class="arrow">→</span></a>
+        </div>
+        <div class="pl-liste">
+          <div class="pl-zeile" data-anfrage="Webapp: Buchung &amp; Verwaltung (ab CHF 3'500.–)">
+            <div class="pl-was">
+              <h3>Buchung &amp; Verwaltung</h3>
+              <p>Online-Termine mit Bestätigungen, Erinnerungen und Kundenkonten. Für Coiffeure, Praxen, Restaurants, Studios.</p>
+            </div>
+            <div class="pl-preis">
+              <span class="pl-betrag">ab CHF 3'500.–</span>
+              <span class="pl-einheit">einmalig · ab 6 Wochen</span>
+              <button class="pl-anfragen" type="button">Anfragen</button>
+            </div>
+          </div>
+          <div class="pl-zeile" data-anfrage="Webapp: Firmen-System (ab CHF 7'500.–)">
+            <div class="pl-was">
+              <h3>Firmen-System</h3>
+              <p>Aufträge, Kundendaten, Lager und Rapporte an einem Ort, mit Rollen fürs Team. Ersetzt Excel-Listen und Zettel.</p>
+            </div>
+            <div class="pl-preis">
+              <span class="pl-betrag">ab CHF 7'500.–</span>
+              <span class="pl-einheit">einmalig · ab 10 Wochen</span>
+              <button class="pl-anfragen" type="button">Anfragen</button>
+            </div>
           </div>
         </div>
+        <p class="pl-notiz">Eine bedienbare Webapp zum Ausprobieren steht unter <a href="/beispiele">Beispiele</a>.</p>
       </div>
     </section>
 
-    <!-- ===== Domain & Hosting ===== -->
-    <section class="tight">
+    <section class="tight" id="ki">
       <div class="wrap">
-        <div class="section-head center">
-          <h2 class="reveal">Domain &amp; Hosting</h2>
-          <p class="lead reveal" data-delay="80">Deine Website braucht eine Adresse und ein Zuhause. Beides bekommst du direkt von uns.</p>
-        </div>
-        <div class="price-grid" style="padding-top: 16px;">
-
-          <div class="price-card compact reveal" data-select data-id="domain" data-name="Domain" data-year="20">
-            <h3>Domain</h3>
-            <p class="desc">Registrierung und Verwaltung deiner .ch-, .com- oder .net-Domain.</p>
-            <div class="price-value">CHF 20.–<small>pro Jahr</small></div>
-            <button class="btn btn-ghost select-btn" type="button">Auswählen</button>
-          </div>
-
-          <div class="price-card compact reveal" data-delay="100" data-select data-id="hosting" data-name="Hosting" data-month="15">
-            <h3>Hosting</h3>
-            <p class="desc">Schweizer Server, SSL-Zertifikat und tägliche Backups.</p>
-            <div class="price-value">CHF 15.–<small>pro Monat</small></div>
-            <button class="btn btn-ghost select-btn" type="button">Auswählen</button>
-          </div>
-
-          <div class="price-card compact reveal" data-delay="200" data-select data-id="kombi" data-name="Domain + Hosting im Paket" data-year="160" data-excludes="domain,hosting">
-            <h3>Domain + Hosting</h3>
-            <p class="desc">Domain und 12 Monate Hosting im Paket, 2 Monate geschenkt.</p>
-            <div class="price-value">CHF 160.–<small>pro Jahr</small></div>
-            <button class="btn btn-ghost select-btn" type="button">Auswählen</button>
-          </div>
-
-        </div>
-      </div>
-    </section>
-
-    <!-- ===== Service-Abo ===== -->
-    <section class="tight">
-      <div class="wrap">
-        <div class="addon-card reveal" data-select data-name="Service-Abo" data-month="15">
+        <div class="pl-block-kopf">
           <div>
-            <h3>Service-Abo: CHF 15.– pro Monat</h3>
-            <p>Wir halten deine Website aktuell: kleine Anpassungen an Texten und Bildern, technische Updates und Priorität bei Anfragen. Jederzeit kündbar. Ohne Abo läuft deine Seite normal weiter, Änderungen verrechnen wir dann als Einzelauftrag ab CHF 90.–, und du kannst jederzeit wieder einsteigen.</p>
+            <h2>KI-Assistent</h2>
+            <p>Ein Chat, der deine Firma kennt und Anfragen entgegennimmt – auch nachts. Auch auf fremden Websites einbaubar.</p>
           </div>
-          <div class="addon-actions">
-            <button class="btn btn-ghost select-btn" type="button">Auswählen</button>
+          <a class="pl-mehr" href="/leistungen#ki">Alles im Detail <span class="arrow">→</span></a>
+        </div>
+        <div class="pl-liste">
+          <div class="pl-zeile" data-anfrage="KI-Assistent (CHF 200.– Einrichtung, CHF 40.–/Monat)">
+            <div class="pl-was">
+              <h3>KI-Assistent</h3>
+              <p>Einrichtung: Training auf deine Inhalte, Gestaltung, Einbau. Monatlich: Betrieb, Wartung und Nachtraining. Monatlich kündbar.</p>
+            </div>
+            <div class="pl-preis">
+              <span class="pl-betrag">CHF 200.–</span>
+              <span class="pl-einheit">einmalig</span>
+              <span class="pl-betrag zweit">+ CHF 40.–</span>
+              <span class="pl-einheit">pro Monat</span>
+              <button class="pl-anfragen" type="button">Anfragen</button>
+            </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- ===== Ehrlich gerechnet ===== -->
-    <section class="tight">
+    <section class="tight" id="betrieb">
       <div class="wrap">
-        <div class="section-head center" style="margin-bottom: 0;">
-          <h2 class="reveal">Ehrlich gerechnet</h2>
-          <p class="lead reveal" data-delay="80" style="max-width: 720px;">In einer Website von uns stecken bis zu 50 Stunden Konzept, Design und Entwicklung. Schweizer Agenturen verrechnen für vergleichbare Projekte üblicherweise CHF 3'000 bis 15'000, Freelancer CHF 1'500 bis 5'000 bei Stundensätzen ab CHF 100. Wir halten unsere Struktur schlank und arbeiten mit moderner Technik, darum bekommst du dieselbe Sorgfalt schon ab CHF 750, mit fester Offerte vor Projektstart.</p>
+        <div class="pl-block-kopf">
+          <div>
+            <h2>Laufende Kosten</h2>
+            <p>Adresse und Serverplatz, damit die Seite erreichbar ist. Kannst du auch selbst mitbringen.</p>
+          </div>
         </div>
-      </div>
-    </section>
-
-    <!-- ===== Preis-FAQ ===== -->
-    <section class="tight">
-      <div class="wrap">
-        <div class="section-head center">
-          <h2 class="reveal">Häufige Fragen zu den Kosten</h2>
-        </div>
-        <div class="faq">
-          <div class="faq-item reveal">
-            <button class="faq-q" aria-expanded="false">Warum stehen bei den Paketen Ab-Preise?
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-            </button>
-            <div class="faq-a"><p>Weil jedes Projekt anders ist. Der Ab-Preis gilt für den Umfang, der beim Paket beschrieben ist. Braucht dein Projekt mehr, besprechen wir das im Erstgespräch, und du bekommst eine Offerte mit einem festen Preis. Der gilt dann verbindlich, ohne Nachträge.</p></div>
+        <div class="pl-liste schmal">
+          <div class="pl-zeile" data-anfrage="Domain + Hosting im Paket (CHF 160.–/Jahr)">
+            <div class="pl-was">
+              <h3>Domain + Hosting <span class="pl-marke">Empfohlen</span></h3>
+              <p>Adresse und 12 Monate Betrieb auf Schweizer Servern, SSL und tägliche Sicherung. Rund 2 Monate günstiger als einzeln.</p>
+            </div>
+            <div class="pl-preis">
+              <span class="pl-betrag">CHF 160.–</span>
+              <span class="pl-einheit">pro Jahr</span>
+              <button class="pl-anfragen" type="button">Anfragen</button>
+            </div>
           </div>
-          <div class="faq-item reveal" data-delay="60">
-            <button class="faq-q" aria-expanded="false">Wie funktioniert der Paket-Rechner?
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-            </button>
-            <div class="faq-a"><p>Klick einfach alles an, was dich interessiert. Die Leiste unten zählt die Auswahl zusammen, getrennt nach einmaligen und laufenden Kosten. Mit einem Klick auf «Unverbindlich anfragen» landet dein Wunschpaket direkt im Kontaktformular. Das Ganze ist unverbindlich, du bestellst damit noch nichts.</p></div>
+          <div class="pl-zeile" data-anfrage="Domain einzeln (CHF 20.–/Jahr)">
+            <div class="pl-was"><h3>Domain einzeln</h3><p>Deine Adresse, zum Beispiel deine-firma.ch</p></div>
+            <div class="pl-preis">
+              <span class="pl-betrag">CHF 20.–</span><span class="pl-einheit">pro Jahr</span>
+              <button class="pl-anfragen" type="button">Anfragen</button>
+            </div>
           </div>
-          <div class="faq-item reveal" data-delay="120">
-            <button class="faq-q" aria-expanded="false">Wie läuft die Bezahlung?
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-            </button>
-            <div class="faq-a"><p>50 % bei Projektstart, 50 % bei Fertigstellung. So tragen beide Seiten das gleiche Risiko.</p></div>
+          <div class="pl-zeile" data-anfrage="Hosting einzeln (CHF 15.–/Monat)">
+            <div class="pl-was"><h3>Hosting einzeln</h3><p>Schweizer Server, SSL, tägliche Sicherung.</p></div>
+            <div class="pl-preis">
+              <span class="pl-betrag">CHF 15.–</span><span class="pl-einheit">pro Monat</span>
+              <button class="pl-anfragen" type="button">Anfragen</button>
+            </div>
           </div>
-          <div class="faq-item reveal" data-delay="150">
-            <button class="faq-q" aria-expanded="false">Welche laufenden Kosten kommen dazu?
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-            </button>
-            <div class="faq-a"><p>Domain und Hosting, im Paket zusammen CHF 160.– pro Jahr. Optional dazu: das Service-Abo für CHF 15.– pro Monat und der KI-Assistent für CHF 40.– pro Monat. Beides ist monatlich kündbar. Mehr nicht.</p></div>
-          </div>
-          <div class="faq-item reveal" data-delay="180">
-            <button class="faq-q" aria-expanded="false">Was passiert, wenn ich das Service-Abo kündige?
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-            </button>
-            <div class="faq-a"><p>Nichts Schlimmes: Deine Website läuft ganz normal weiter. Du verzichtest nur auf die inkludierten Anpassungen und den Prioritäts-Support. Änderungen erledigen wir dann als Einzelauftrag ab CHF 90.–, und du kannst das Abo jederzeit wieder aktivieren.</p></div>
-          </div>
-          <div class="faq-item reveal" data-delay="210">
-            <button class="faq-q" aria-expanded="false">Kann ich klein starten und später erweitern?
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-            </button>
-            <div class="faq-a"><p>Ja, das empfehlen wir sogar oft. Starte zum Beispiel mit dem Starter-Paket und ergänze später die Terminbuchung, den Shop oder den KI-Assistenten. Deine Seite wächst mit dir.</p></div>
+          <div class="pl-zeile" data-anfrage="Service-Abo (CHF 15.–/Monat)">
+            <div class="pl-was"><h3>Service-Abo <span class="pl-marke">Freiwillig</span></h3><p>Änderungen und Updates, wann du willst. Ohne Abo CHF 90.– pro Stunde.</p></div>
+            <div class="pl-preis">
+              <span class="pl-betrag">CHF 15.–</span><span class="pl-einheit">pro Monat</span>
+              <button class="pl-anfragen" type="button">Anfragen</button>
+            </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- ===== Abschluss-CTA ===== -->
+    <!-- ===== Bedingungen ===== -->
+    <section class="tight" id="bedingungen">
+      <div class="wrap">
+        <div class="section-head">
+          <h2>Gut zu wissen</h2>
+        </div>
+        <div class="pl-fakten">
+          <div>
+            <h3>Warum überall «ab»?</h3>
+            <p>Weil der Aufwand vom Umfang abhängt: Anzahl Seiten, Menge an Inhalten, Sonderwünsche. Der Preis in der Liste gilt für den üblichen Fall. Nach unserem Gespräch bekommst du eine Offerte mit einer festen Zahl – und dabei bleibt es, auch wenn wir uns verschätzt haben.</p>
+          </div>
+          <div>
+            <h3>Zahlung</h3>
+            <p>Bei Websites und Überarbeitungen die Hälfte bei Projektstart, die Hälfte bei Fertigstellung. Bei Webapps in Etappen nach vereinbarten Zwischenzielen. Rechnung auf 30 Tage, keine Vorauszahlung des ganzen Betrags.</p>
+          </div>
+          <div>
+            <h3>Was nichts kostet</h3>
+            <p>Das erste Gespräch, die Beratung, welche Variante passt, der Check einer bestehenden Website und die Offerte selbst. Erst wenn du zusagst, entstehen Kosten.</p>
+          </div>
+          <div>
+            <h3>Die Website gehört dir</h3>
+            <p>Nach der Bezahlung gehören dir Website, Inhalte und Domain – ohne Bindung an uns. Du kannst jederzeit zu einem anderen Anbieter wechseln, wir übergeben alles vollständig.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Abschluss ===== -->
     <section class="tight">
       <div class="wrap">
-        <div class="big-cta reveal">
-          <h2>Unsicher, welches Paket passt?</h2>
-          <p>Schreib uns kurz. Wir sagen dir ehrlich, was du brauchst und was nicht.</p>
-          <div class="hero-ctas">
-            <a class="btn btn-primary" href="/kontakt">Projekt starten <span class="arrow">→</span></a>
-            <a class="btn btn-ghost" href="/beispiele">Beispiele ansehen</a>
+        <div class="big-cta">
+          <h2>Sag uns, was du brauchst.</h2>
+          <p>Du musst dich nicht auf ein Paket festlegen. Beschreib in ein paar Sätzen, was du vorhast – wir melden uns innert 24 Stunden mit einer ehrlichen Einschätzung und einer festen Offerte.</p>
+          <div class="cta-row">
+            <a class="btn btn-primary" href="/kontakt">Unverbindlich anfragen <span class="arrow">→</span></a>
+            <a class="btn btn-ghost" href="/leistungen">Leistungen im Detail</a>
           </div>
         </div>
       </div>
     </section>
 
   </main>
-
-  <!-- ===== Summenleiste des Paket-Rechners ===== -->
-  <div class="builder-bar" id="builder-bar" role="region" aria-label="Dein Paket">
-    <div class="builder-info">
-      <b>Dein Paket</b>
-      <span class="builder-sum" id="builder-sum" aria-live="polite"></span>
-    </div>
-    <div class="builder-actions">
-      <button class="builder-reset" id="builder-reset" type="button">Auswahl löschen</button>
-      <a class="btn" id="builder-cta" href="/kontakt">Unverbindlich anfragen <span class="arrow">→</span></a>
-    </div>
-  </div>
 
   <footer class="site-footer">
     <div class="wrap">
@@ -427,6 +450,6 @@
   <script src="assets/js/sanft.js?v=1"></script>
   <script src="assets/js/protokoll.js?v=20"></script>
   <script src="assets/js/site.js?v=22"></script>
-  <script src="assets/js/preise.js?v=20"></script>
+  <script src="assets/js/preisliste.js?v=2"></script>
 </body>
 </html>

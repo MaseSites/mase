@@ -1,0 +1,368 @@
+/* masesites – Preisliste.
+   Eine echte Liste statt eines Konfigurators: links steht, was man
+   bekommt, rechts der Preis und ein Weg, genau das anzufragen.
+   Aufbau bewusst ruhig – die Zahlen sollen lesbar sein, nicht
+   dekoriert. */
+
+/* ---------- Einordnung: Website / Überarbeitung / Webapp ---------- */
+
+.pl-einordnung {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+  margin-top: 26px;
+}
+.pl-eo {
+  position: relative;
+  background: var(--card);
+  border: 1.5px solid var(--line);
+  border-radius: var(--radius-l);
+  padding: 26px 24px 22px;
+  display: grid; gap: 10px; align-content: start;
+}
+.pl-eo-nr {
+  position: absolute; top: 22px; right: 22px;
+  font-family: var(--font-display);
+  font-size: 2.4rem; font-weight: 750;
+  line-height: 1;
+  color: var(--line-strong);
+}
+.pl-eo h3 { font-size: 1.22rem; margin: 0; padding-right: 40px; }
+.pl-frage {
+  font-weight: 600;
+  color: var(--ink);
+  padding-bottom: 2px;
+}
+.pl-eo p { margin: 0; font-size: 0.94rem; color: var(--ink-soft); }
+.pl-eo b { color: var(--ink); font-weight: 650; }
+.pl-eo-preis {
+  font-family: var(--font-display);
+  font-size: 1.05rem; font-weight: 700;
+  color: var(--ink) !important;
+  padding-top: 4px;
+}
+.pl-mehr {
+  display: inline-flex; align-items: center; gap: 7px;
+  font-size: 0.9rem; font-weight: 650;
+  color: var(--ink);
+  white-space: nowrap;
+}
+.pl-mehr .arrow { transition: transform 0.2s var(--ease-out); }
+.pl-mehr:hover .arrow { transform: translateX(3px); }
+
+.pl-hinweis {
+  margin-top: 22px;
+  padding: 16px 20px;
+  background: var(--bg-soft);
+  border: 1.5px solid var(--line);
+  border-radius: var(--radius-m);
+  font-size: 0.94rem;
+  color: var(--ink-soft);
+}
+.pl-hinweis b { color: var(--ink); }
+.pl-hinweis a { font-weight: 650; text-decoration: underline; text-underline-offset: 3px; }
+
+/* ---------- Block-Kopf je Leistung ---------- */
+
+.pl-block-kopf {
+  display: flex; align-items: flex-end; justify-content: space-between;
+  gap: 24px; flex-wrap: wrap;
+  padding-bottom: 22px;
+  border-bottom: 2px solid var(--ink);
+  margin-bottom: 4px;
+}
+.pl-block-kopf h2 { margin: 0 0 8px; }
+.pl-block-kopf p { margin: 0; max-width: 62ch; color: var(--ink-soft); font-size: 0.96rem; }
+
+/* ---------- Die Liste ---------- */
+
+.pl-liste { display: grid; }
+.pl-zeile {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 210px;
+  gap: 30px;
+  padding: 26px 0;
+  border-bottom: 1px solid var(--line);
+  align-items: start;
+}
+.pl-liste.schmal .pl-zeile { padding: 20px 0; }
+.pl-was h3 {
+  font-size: 1.16rem;
+  margin: 0 0 8px;
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+}
+.pl-marke {
+  font-family: var(--font-sans);
+  font-size: 0.68rem; font-weight: 700;
+  letter-spacing: 0.06em; text-transform: uppercase;
+  background: var(--accent-soft);
+  color: var(--ink);
+  border-radius: 999px;
+  padding: 4px 10px;
+}
+.pl-was p { margin: 0 0 8px; font-size: 0.95rem; color: var(--ink-soft); }
+.pl-was p:last-child { margin-bottom: 0; }
+.pl-fuer {
+  font-size: 0.9rem !important;
+  padding-top: 4px;
+  border-top: 1px dashed var(--line-strong);
+}
+.pl-fuer b { color: var(--ink); font-weight: 650; }
+
+/* Preisspalte: die Zahl trägt, alles andere ordnet sich unter */
+.pl-preis {
+  display: grid; gap: 1px;
+  justify-items: end;
+  text-align: right;
+}
+.pl-betrag {
+  font-family: var(--font-display);
+  font-size: 1.5rem; font-weight: 750;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  white-space: nowrap;
+}
+.pl-betrag.zweit { font-size: 1.15rem; margin-top: 8px; color: var(--ink-soft); }
+.pl-einheit { font-size: 0.84rem; color: var(--ink-faint); }
+.pl-anfragen {
+  margin-top: 14px;
+  border: 1.5px solid var(--ink);
+  background: none;
+  color: var(--ink);
+  border-radius: 999px;
+  padding: 9px 20px;
+  font: 650 0.88rem var(--font-sans);
+  cursor: pointer;
+  transition: background 0.2s var(--ease-out), color 0.2s var(--ease-out);
+}
+.pl-anfragen:hover { background: var(--ink); color: var(--bg); }
+.pl-anfragen.gewaehlt {
+  background: var(--ink); color: var(--bg);
+  border-color: var(--ink);
+}
+
+.pl-notiz {
+  margin-top: 22px;
+  font-size: 0.92rem;
+  color: var(--ink-soft);
+  max-width: 78ch;
+}
+.pl-notiz b { color: var(--ink); }
+.pl-notiz a { text-decoration: underline; text-underline-offset: 3px; font-weight: 600; }
+
+/* ---------- Gut zu wissen ---------- */
+
+.pl-fakten {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px 40px;
+  margin-top: 8px;
+}
+.pl-fakten h3 { font-size: 1.02rem; margin: 0 0 6px; }
+.pl-fakten p { margin: 0; font-size: 0.95rem; color: var(--ink-soft); }
+
+/* ---------- Handy ---------- */
+
+@media (max-width: 900px) {
+  .pl-einordnung { grid-template-columns: 1fr; gap: 14px; }
+  .pl-fakten { grid-template-columns: 1fr; gap: 20px; }
+}
+
+@media (max-width: 720px) {
+  .pl-eo { padding: 22px 20px 20px; }
+  .pl-eo-nr { font-size: 1.9rem; top: 18px; right: 18px; }
+  .pl-block-kopf { align-items: flex-start; gap: 14px; padding-bottom: 16px; }
+
+  /* Der Preis rutscht unter die Beschreibung und wird zur Fusszeile
+     der Zeile – nebeneinander wäre auf dem Handy beides zu schmal. */
+  .pl-zeile {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    padding: 22px 0;
+  }
+  .pl-preis {
+    justify-items: start;
+    text-align: left;
+    grid-template-columns: auto auto;
+    align-items: baseline;
+    gap: 4px 8px;
+    padding-top: 14px;
+    border-top: 1px solid var(--line);
+    width: 100%;
+  }
+  .pl-betrag { font-size: 1.35rem; }
+  .pl-betrag.zweit { margin-top: 0; }
+  .pl-anfragen {
+    grid-column: 1 / -1;
+    width: 100%;
+    margin-top: 12px;
+    padding: 13px 20px;
+    font-size: 0.95rem;
+  }
+}
+
+/* ---------- Leiste, sobald Positionen gewählt sind ---------- */
+
+.pl-leiste {
+  position: fixed;
+  left: 50%; bottom: 20px;
+  transform: translateX(-50%) translateY(20px);
+  z-index: 70;
+  display: flex; align-items: center; gap: 18px;
+  background: var(--card);
+  border: 1.5px solid var(--line-strong);
+  border-radius: 999px;
+  box-shadow: var(--shadow-l);
+  padding: 10px 10px 10px 22px;
+  opacity: 0;
+  transition: opacity 0.3s ease, transform 0.4s var(--ease-out);
+  max-width: calc(100vw - 32px);
+}
+.pl-leiste.da { opacity: 1; transform: translateX(-50%) translateY(0); }
+.pl-leiste-text { font-size: 0.92rem; font-weight: 600; white-space: nowrap; }
+.pl-leiste .btn { padding: 10px 20px; font-size: 0.9rem; white-space: nowrap; }
+
+@media (max-width: 720px) {
+  .pl-leiste {
+    left: 12px; right: 12px; bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+    transform: translateY(20px);
+    padding: 10px 10px 10px 18px;
+    gap: 12px;
+  }
+  .pl-leiste.da { transform: translateY(0); }
+  .pl-leiste-text { font-size: 0.86rem; }
+  .pl-leiste .btn { flex: none; padding: 10px 16px; font-size: 0.86rem; }
+}
+
+/* ---------- Stufen als kurze Checklisten ---------- */
+
+.pl-stufen {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 26px;
+}
+.pl-stufe {
+  position: relative;
+  background: var(--card);
+  border: 1.5px solid var(--line);
+  border-radius: var(--radius-l);
+  padding: 26px 22px 22px;
+  display: flex; flex-direction: column;
+}
+.pl-stufe.hervor { border-color: var(--ink); }
+.pl-stufe .pl-marke {
+  position: absolute; top: -11px; left: 22px;
+  background: var(--ink); color: var(--bg);
+}
+.pl-stufe h3 { font-size: 1.3rem; margin: 0 0 4px; }
+.pl-fuer-wen { font-size: 0.9rem; color: var(--ink-soft); margin: 0 0 16px; }
+.pl-tarif {
+  margin: 0 0 18px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--line);
+  display: grid; gap: 2px;
+}
+.pl-tarif b {
+  font-family: var(--font-display);
+  font-size: 1.55rem; font-weight: 750; letter-spacing: -0.02em;
+}
+.pl-tarif span { font-size: 0.82rem; color: var(--ink-faint); }
+
+.pl-check { list-style: none; display: grid; gap: 9px; margin: 0 0 22px; padding: 0; }
+.pl-check li {
+  position: relative;
+  padding-left: 24px;
+  font-size: 0.92rem;
+}
+/* Häkchen als CSS-Zeichen: kein zusätzliches Markup je Punkt */
+.pl-check li::before {
+  content: "";
+  position: absolute; left: 2px; top: 6px;
+  width: 11px; height: 6px;
+  border-left: 2px solid var(--ink);
+  border-bottom: 2px solid var(--ink);
+  transform: rotate(-45deg);
+}
+.pl-check .pl-plus {
+  padding-left: 0;
+  font-weight: 650;
+  color: var(--ink-soft);
+  font-size: 0.86rem;
+}
+.pl-check .pl-plus::before { display: none; }
+.pl-stufe .pl-anfragen { margin-top: auto; width: 100%; }
+
+/* ---------- Lotse: Pfeil zum Assistenten ---------- */
+
+.pl-lotse {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 260px;
+  gap: 20px;
+  align-items: center;
+  background: var(--bg-soft);
+  border: 1.5px solid var(--line);
+  border-radius: var(--radius-l);
+  padding: 30px 34px;
+}
+.pl-lotse-label {
+  display: inline-block;
+  font-size: 0.72rem; font-weight: 700;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-bottom: 8px;
+}
+.pl-lotse h2 { margin: 0 0 10px; font-size: clamp(1.5rem, 3vw, 2rem); }
+.pl-lotse p { margin: 0 0 20px; color: var(--ink-soft); max-width: 52ch; }
+
+.pl-lotse-pfeil {
+  position: relative;
+  color: var(--ink);
+  display: grid; justify-items: center;
+}
+.pl-lotse-pfeil svg { width: 100%; max-width: 230px; height: auto; overflow: visible; }
+/* Der Bogen zeichnet sich einmal, wenn er ins Bild kommt, und der
+   Pfeil wippt danach sanft in Richtung Chat-Knopf unten rechts. */
+.pfeil-bogen {
+  stroke-dasharray: 6 11;
+  animation: pfeil-wandern 1.4s linear infinite;
+}
+@keyframes pfeil-wandern { to { stroke-dashoffset: -34; } }
+.pl-lotse-pfeil svg { animation: pfeil-wippen 2.6s ease-in-out infinite; }
+@keyframes pfeil-wippen {
+  50% { transform: translate(5px, 6px); }
+}
+.pl-lotse-hinweis {
+  font-family: var(--font-display);
+  font-size: 0.95rem; font-weight: 650;
+  color: var(--ink-soft);
+  transform: rotate(-4deg);
+  margin-top: -6px;
+}
+
+@media (max-width: 900px) {
+  .pl-stufen { grid-template-columns: 1fr; gap: 14px; }
+  .pl-stufe.hervor { order: -1; }
+}
+
+@media (max-width: 720px) {
+  .pl-lotse {
+    grid-template-columns: 1fr;
+    padding: 24px 20px 18px;
+    gap: 0;
+  }
+  .pl-lotse-text { order: 1; }
+  .pl-lotse-pfeil {
+    order: 2;
+    justify-items: end;
+    margin-top: 14px;
+    padding-right: 6px;
+  }
+  .pl-lotse-pfeil svg { max-width: 150px; }
+  .pl-lotse h2 { font-size: 1.4rem; }
+  .pl-stufe { padding: 24px 20px 20px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pfeil-bogen, .pl-lotse-pfeil svg { animation: none; }
+}

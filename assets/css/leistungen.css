@@ -924,3 +924,23 @@
   .tv-kopf, .tv-zeile { grid-template-columns: 40px minmax(0, 1fr) 70px; padding: 7px 10px; }
   .tv-kopf span:nth-child(3), .tv-zeile .tisch { display: none; }
 }
+
+/* Abgrenzungs-Absatz: sagt, was eine Leistung NICHT ist und wohin
+   man stattdessen gehört. Optisch abgesetzt, damit man ihn findet. */
+.lw-abgrenzung {
+  font-size: 0.92rem;
+  padding: 13px 16px;
+  margin-top: -8px;
+  background: color-mix(in srgb, var(--lw-karte) 70%, transparent);
+  border-left: 2.5px solid var(--lw-ink-3, var(--lw-ink-soft));
+  border-radius: 0 10px 10px 0;
+  color: var(--lw-ink-soft);
+}
+.lw-abgrenzung b { color: var(--lw-ink); font-weight: 650; }
+.lw-abgrenzung a {
+  color: var(--lw-ink);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.lw[data-welt="ki"] .lw-abgrenzung { background: rgba(17, 16, 28, 0.6); }
