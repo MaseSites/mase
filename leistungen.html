@@ -8,8 +8,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/style.css?v=27">
-  <link rel="stylesheet" href="assets/css/leistungen.css?v=2">
+  <link rel="stylesheet" href="assets/css/style.css?v=28">
+  <link rel="stylesheet" href="assets/css/leistungen.css?v=3">
 </head>
 <body>
 
@@ -30,7 +30,6 @@
             <a href="/projekte">Projekte</a>
           </div>
         </div>
-        <a href="/ki-bot">KI-Bot</a>
         <a href="/preise">Preise</a>
         <a href="/ueber-uns">Über uns</a>
       </nav>
@@ -49,7 +48,6 @@
     <a href="/leistungen" class="active">Leistungen</a>
     <a href="/beispiele">Beispiele</a>
     <a href="/projekte">Projekte</a>
-    <a href="/ki-bot">KI-Bot</a>
     <a href="/preise">Preise</a>
     <a href="/ueber-uns">Über uns</a>
     <a href="/dashboard" class="konto-link">Dashboard</a>
@@ -65,16 +63,16 @@
         <p class="lw-untertitel">Wähl eine Leistung – die Seite zeigt dir ihre Welt.</p>
         <div class="lw-tabs" role="tablist" aria-label="Leistung wählen">
           <button class="lw-tab active" type="button" role="tab" aria-selected="true" data-welt="website" id="tab-website">
-            <span class="punkt" aria-hidden="true"></span>Website
+            Website
           </button>
           <button class="lw-tab" type="button" role="tab" aria-selected="false" data-welt="ueberarbeitung" id="tab-ueberarbeitung">
-            <span class="punkt" aria-hidden="true"></span>Überarbeitung
+            Überarbeitung
           </button>
           <button class="lw-tab" type="button" role="tab" aria-selected="false" data-welt="webapp" id="tab-webapp">
-            <span class="punkt" aria-hidden="true"></span>Webapp
+            Webapp
           </button>
           <button class="lw-tab" type="button" role="tab" aria-selected="false" data-welt="ki" id="tab-ki">
-            <span class="punkt" aria-hidden="true"></span>KI-Bot
+            KI-Bot
           </button>
         </div>
       </div>
@@ -85,27 +83,54 @@
       <div class="wrap lw-buehne">
         <div class="lw-text">
           <h2>Deine Website. Von Hand gebaut.</h2>
-          <p>Kein Baukasten, keine Vorlage von der Stange: Wir gestalten deine Seite passend zu Branche, Stil und Zielgruppe – und du bekommst vor dem Start eine feste Offerte.</p>
+          <p>Kein Baukasten, keine Vorlage von der Stange: Wir gestalten deine Seite passend zu Branche, Stil und Zielgruppe. Du erzählst uns, was deine Firma ausmacht – wir bauen daraus eine Website, die auf jedem Gerät sauber läuft, bei Google gefunden wird und die du nie selber warten musst. Vor dem Start bekommst du eine feste Offerte: Der Preis, der draufsteht, ist der Preis, den du zahlst.</p>
           <ul class="lw-merkmale">
-            <li><b>Design nach Mass</b><span>Farben, Schrift und Aufbau entstehen für deine Firma – nicht umgekehrt.</span></li>
-            <li><b>Schnell und auffindbar</b><span>Sauberer Code, kurze Ladezeiten und Grundlagen, damit Google dich findet.</span></li>
-            <li><b>Wächst mit dir</b><span>Terminbuchung, Shop oder KI-Assistent lassen sich jederzeit ergänzen.</span></li>
+            <li><b>Design nach Mass</b><span>Farben, Schrift und Aufbau entstehen für deine Firma – nicht umgekehrt. Ein Coiffeur sieht anders aus als eine Autogarage.</span></li>
+            <li><b>Schnell und auffindbar</b><span>Sauberer Code, kurze Ladezeiten und saubere Grundlagen, damit Google dich findet. Handy-Ansicht inklusive, nicht als Extra.</span></li>
+            <li><b>Wächst mit dir</b><span>Terminbuchung, Onlineshop mit Twint, Mehrsprachigkeit oder der KI-Assistent lassen sich jederzeit ergänzen – ohne Neubau.</span></li>
           </ul>
           <div class="lw-aktion">
-            <a class="btn btn-primary" href="/preise">Pakete ab CHF 750.– <span class="arrow">→</span></a>
-            <a class="lw-neben" href="/beispiele">Beispiele ansehen</a>
+            <a class="btn btn-primary" href="/kontakt">Unverbindlich anfragen <span class="arrow">→</span></a>
           </div>
         </div>
         <div class="lw-schau">
-          <!-- Diorama: schwebendes Browser-Fenster mit Mini-Site -->
           <div class="dio-browser">
-            <div class="dio-bar"><i></i><i></i><i></i><em>Live-Demo — Deine Firma</em></div>
-            <div class="dio-site">
-              <div class="ds-nav"><span class="ds-logo"></span><span class="ds-links"><i></i><i></i><i></i></span></div>
-              <div class="ds-hero"><span class="ds-h1"></span><span class="ds-h2"></span><span class="ds-cta"></span></div>
-              <div class="ds-karten"><i></i><i></i><i></i></div>
+            <div class="dio-bar"><i></i><i></i><i></i><em>ristorante-milano.ch</em></div>
+            <div class="foto-site">
+              <img src="assets/img/demos/restaurant.jpg" alt="Beispiel: Website für ein Restaurant, gebaut von masesites" loading="lazy">
+              <div class="fs-inhalt">
+                <span class="fs-marke">Ristorante Milano</span>
+                <span class="fs-claim">Hausgemachte Pasta seit 1987</span>
+                <span class="fs-knopf">Tisch reservieren</span>
+              </div>
             </div>
           </div>
+        </div>
+      </div>
+      <div class="wrap lw-details">
+        <div class="lw-spalte">
+          <h3>So läuft's</h3>
+          <ol class="lw-ablauf">
+            <li><b>Kennenlernen</b>Du erzählst uns von deiner Firma – per Formular, Telefon oder bei einem Kaffee.</li>
+            <li><b>Entwurf</b>Innert weniger Tage siehst du einen ersten Design-Entwurf und gibst Feedback.</li>
+            <li><b>Online</b>Wir bauen fertig, du gibst frei – Domain, Hosting und Aufschaltung übernehmen wir.</li>
+          </ol>
+        </div>
+        <div class="lw-spalte">
+          <h3>Die Pakete</h3>
+          <ul class="lw-preise">
+            <li><span><b>Starter</b><em>Einstiegsseite mit allem Wichtigen: Angebot, Kontakt, Anfahrt.</em></span><i>CHF 750.–</i></li>
+            <li><span><b>Business</b><em>Mehr Seiten, mehr Inhalt – für Firmen, die zeigen wollen, was sie können.</em></span><i>CHF 1'300.–</i></li>
+            <li><span><b>Premium</b><em>Alles drin: Terminbuchung, Onlineshop mit Twint, Mehrsprachigkeit, Login-Bereich.</em></span><i>CHF 2'500.–</i></li>
+          </ul>
+        </div>
+        <div class="lw-spalte">
+          <h3>Laufende Kosten</h3>
+          <ul class="lw-preise">
+            <li><span><b>Domain + Hosting</b><em>Deine Adresse und der Betrieb der Seite, im Paket günstiger.</em></span><i>CHF 160.–/Jahr</i></li>
+            <li><span><b>Service-Abo</b><em>Änderungen, Updates und Hilfe, wann immer du sie brauchst. Optional.</em></span><i>CHF 15.–/Mt.</i></li>
+          </ul>
+          <p class="lw-notiz">Alle Preise fix – keine versteckten Kosten, keine Überraschungen auf der Rechnung.</p>
         </div>
       </div>
     </section>
@@ -115,24 +140,27 @@
       <div class="wrap lw-buehne">
         <div class="lw-text">
           <h2>Aus alt wird wow.</h2>
-          <p>Deine Seite hat gute Inhalte, sieht aber nach 2012 aus? Wir frischen Design, Technik und Handy-Ansicht auf – vom kleinen Quick Fix bis zum kompletten Neuanstrich.</p>
+          <p>Deine Seite hat gute Inhalte, sieht aber nach 2012 aus? Wir frischen Design, Technik und Handy-Ansicht auf – vom kleinen Quick Fix bis zum kompletten Neuanstrich. Deine Texte, Bilder und deine Adresse ziehen mit um, nichts geht verloren. Und bevor irgendetwas kostet, sagen wir dir ehrlich, was sich bei deiner Seite lohnt – und was nicht.</p>
           <ul class="lw-merkmale">
-            <li><b>Ehrliche Analyse</b><span>Wir sagen dir, was sich lohnt – und was du dir sparen kannst.</span></li>
-            <li><b>Inhalte bleiben</b><span>Texte, Bilder und Adresse ziehen mit um, nichts geht verloren.</span></li>
-            <li><b>Endlich handytauglich</b><span>Die meisten Besucher kommen vom Handy. Danach sieht es dort top aus.</span></li>
+            <li><b>Ehrliche Analyse zuerst</b><span>Wir schauen deine Seite gratis an und sagen dir konkret, wo sie Besucher verliert.</span></li>
+            <li><b>Endlich handytauglich</b><span>Die meisten Besucher kommen heute vom Handy. Nach der Überarbeitung sieht es dort top aus.</span></li>
+            <li><b>Google merkt's</b><span>Schnellere Ladezeiten und saubere Technik verbessern auch dein Ranking.</span></li>
           </ul>
           <div class="lw-aktion">
-            <a class="btn btn-primary" href="/preise#ueberarbeitung">Ab CHF 250.– <span class="arrow">→</span></a>
-            <a class="lw-neben" href="/kontakt">Seite prüfen lassen</a>
+            <a class="btn btn-primary" href="/kontakt">Seite gratis prüfen lassen <span class="arrow">→</span></a>
           </div>
         </div>
         <div class="lw-schau">
-          <!-- Diorama: Vorher/Nachher mit ziehbarem Schieber -->
           <div class="dio-vergleich" id="dio-vergleich" aria-label="Vorher-Nachher-Vergleich, Schieber ziehbar">
             <div class="vg-seite vg-nachher">
-              <div class="ds-nav"><span class="ds-logo"></span><span class="ds-links"><i></i><i></i><i></i></span></div>
-              <div class="ds-hero"><span class="ds-h1"></span><span class="ds-h2"></span><span class="ds-cta"></span></div>
-              <div class="ds-karten"><i></i><i></i><i></i></div>
+              <div class="foto-site klein">
+                <img src="assets/img/demos/coiffeur.jpg" alt="Beispiel: modernisierte Coiffeur-Website" loading="lazy">
+                <div class="fs-inhalt">
+                  <span class="fs-marke">Salon Aurora</span>
+                  <span class="fs-claim">Dein Termin, online gebucht</span>
+                  <span class="fs-knopf">Termin buchen</span>
+                </div>
+              </div>
               <span class="vg-tag">Nachher</span>
             </div>
             <div class="vg-seite vg-vorher" id="vg-vorher">
@@ -146,6 +174,32 @@
           </div>
         </div>
       </div>
+      <div class="wrap lw-details">
+        <div class="lw-spalte">
+          <h3>So läuft's</h3>
+          <ol class="lw-ablauf">
+            <li><b>Gratis-Check</b>Schick uns deine Adresse – wir schauen die Seite an und melden uns mit einer ehrlichen Einschätzung.</li>
+            <li><b>Fixe Offerte</b>Du bekommst einen festen Preis für genau das, was gemacht wird.</li>
+            <li><b>Frisch online</b>Wir bauen um, du gibst frei – die alte Adresse bleibt, Google-Rankings ziehen mit.</li>
+          </ol>
+        </div>
+        <div class="lw-spalte">
+          <h3>Die Pakete</h3>
+          <ul class="lw-preise">
+            <li><span><b>Quick Fix</b><em>Die dringendsten Baustellen: Handy-Ansicht, Ladezeit, kaputte Stellen.</em></span><i>CHF 250.–</i></li>
+            <li><span><b>Plus</b><em>Neues Design für die wichtigsten Seiten, Inhalte aufgeräumt.</em></span><i>CHF 500.–</i></li>
+            <li><span><b>Pro</b><em>Kompletter Neuanstrich der ganzen Seite – wie neu, nur mit deiner Geschichte.</em></span><i>CHF 800.–</i></li>
+          </ul>
+        </div>
+        <div class="lw-spalte">
+          <h3>Gut zu wissen</h3>
+          <ul class="lw-preise">
+            <li><span><b>Inhalte bleiben</b><em>Texte, Bilder, Adresse und E-Mail ziehen vollständig mit um.</em></span></li>
+            <li><span><b>Kein Unterbruch</b><em>Deine Seite bleibt erreichbar, bis die neue Version live geht.</em></span></li>
+          </ul>
+          <p class="lw-notiz">Nicht sicher, welches Paket passt? Der Gratis-Check sagt es dir – unverbindlich.</p>
+        </div>
+      </div>
     </section>
 
     <!-- ===================== Welt: Webapp ===================== -->
@@ -153,58 +207,68 @@
       <div class="wrap lw-buehne">
         <div class="lw-text">
           <h2>Software, die deine Abläufe kennt.</h2>
-          <p>Buchungen, Kundendaten, Lager oder Rapporte: Eine Webapp bündelt, was heute in Excel-Listen und Telefonaten steckt – zugeschnitten auf deinen Betrieb, erreichbar von überall.</p>
+          <p>Buchungen, Kundendaten, Lager oder Rapporte: Eine Webapp bündelt, was heute in Excel-Listen, WhatsApp-Chats und Telefonaten steckt – zugeschnitten auf deinen Betrieb. Sie läuft im Browser, ohne Installation, am PC wie am Handy. Das Bild rechts ist keine Attrappe: So sieht das Kundenportal aus, das wir für unsere eigenen Kunden gebaut haben – mit Projekten, Tickets und Chat an einem Ort.</p>
           <ul class="lw-merkmale">
-            <li><b>Ein System statt zehn Listen</b><span>Alle im Team arbeiten mit denselben, aktuellen Daten.</span></li>
-            <li><b>Läuft im Browser</b><span>Nichts installieren – funktioniert am PC, Tablet und Handy.</span></li>
-            <li><b>Sicher gehostet</b><span>Schweizer Standards, tägliche Sicherung, Zugriffe nach Rollen.</span></li>
+            <li><b>Ein System statt zehn Listen</b><span>Alle im Team arbeiten mit denselben, aktuellen Daten – nichts wird doppelt geführt.</span></li>
+            <li><b>Zugriff nach Rollen</b><span>Jeder sieht genau das, was er sehen soll: Chef, Team, Kunden.</span></li>
+            <li><b>Sicher gehostet</b><span>Schweizer Standards, verschlüsselte Daten, tägliche Sicherung.</span></li>
           </ul>
           <div class="lw-aktion">
-            <a class="btn btn-primary" href="/preise#webapp">Ab CHF 3'500.– <span class="arrow">→</span></a>
-            <a class="lw-neben" href="/kontakt">Ablauf besprechen</a>
+            <a class="btn btn-primary" href="/kontakt">Ablauf besprechen <span class="arrow">→</span></a>
           </div>
         </div>
         <div class="lw-schau">
-          <!-- Diorama: SaaS-Dashboard mit zählenden Kennzahlen -->
-          <div class="dio-app">
-            <aside class="da-seite"><span class="da-logo"></span><i class="aktiv"></i><i></i><i></i><i></i></aside>
-            <div class="da-haupt">
-              <div class="da-kopfzeile"><span class="da-titel"></span><span class="da-avatar"></span></div>
-              <div class="da-kpis">
-                <div class="da-kpi"><b data-zahl="128">0</b><span>Buchungen</span></div>
-                <div class="da-kpi"><b data-zahl="42">0</b><span>Neue Kunden</span></div>
-                <div class="da-kpi"><b data-zahl="97" data-suffix="%">0</b><span>Auslastung</span></div>
-              </div>
-              <div class="da-chart" aria-hidden="true">
-                <i style="--h:34%"></i><i style="--h:52%"></i><i style="--h:41%"></i><i style="--h:66%"></i><i style="--h:58%"></i><i style="--h:80%"></i><i style="--h:71%"></i><i style="--h:92%"></i>
-              </div>
-              <div class="da-zeilen"><i></i><i></i><i></i></div>
-            </div>
+          <div class="dio-browser ruhig">
+            <div class="dio-bar"><i></i><i></i><i></i><em>Kundenportal – echtes Projekt von masesites</em></div>
+            <img class="echt-bild" src="assets/img/leistungen/webapp-dashboard.jpg" alt="Echtes Beispiel: das masesites-Kundenportal mit Übersicht, Projekten und Kennzahlen" loading="lazy">
           </div>
+        </div>
+      </div>
+      <div class="wrap lw-details">
+        <div class="lw-spalte">
+          <h3>So läuft's</h3>
+          <ol class="lw-ablauf">
+            <li><b>Abläufe verstehen</b>Wir schauen uns an, wie dein Betrieb heute arbeitet – und wo Zeit verloren geht.</li>
+            <li><b>Konzept + Festpreis</b>Du bekommst ein Konzept mit Bildschirm-Entwürfen und einen fixen Preis.</li>
+            <li><b>Schrittweise live</b>Wir bauen in Etappen – du arbeitest früh mit dem System und gibst Feedback.</li>
+          </ol>
+        </div>
+        <div class="lw-spalte">
+          <h3>Die Pakete</h3>
+          <ul class="lw-preise">
+            <li><span><b>Buchung &amp; System</b><em>Online-Buchung mit Verwaltung: Termine, Kunden, Erinnerungen.</em></span><i>ab CHF 3'500.–</i></li>
+            <li><span><b>Firmen-System</b><em>Massgeschneidert für deinen Betrieb: Aufträge, Lager, Rapporte, Auswertungen.</em></span><i>ab CHF 7'500.–</i></li>
+          </ul>
+        </div>
+        <div class="lw-spalte">
+          <h3>Danach</h3>
+          <ul class="lw-preise">
+            <li><span><b>Betrieb inklusive Hosting</b><em>Wir halten das System am Laufen, spielen Updates ein und sichern täglich.</em></span></li>
+            <li><span><b>Wächst mit</b><em>Neue Funktionen lassen sich jederzeit ergänzen – das System gehört dir.</em></span></li>
+          </ul>
+          <p class="lw-notiz">Der genaue Preis hängt vom Umfang ab – nach dem Konzept steht er fest und bleibt fix.</p>
         </div>
       </div>
     </section>
 
     <!-- ===================== Welt: KI-Bot ===================== -->
     <section class="lw-welt" data-panel="ki" role="tabpanel" aria-labelledby="tab-ki" hidden>
-      <div class="lw-strahlen" aria-hidden="true"><i></i></div>
+      <canvas class="ki-netz" id="ki-netz" aria-hidden="true"></canvas>
+      <div class="lw-strahlen" aria-hidden="true"><i></i><i></i></div>
       <div class="wrap lw-buehne">
         <div class="lw-text">
           <h2>Dein Assistent.<br>Rund um die Uhr wach.</h2>
-          <p>Der KI-Bot kennt deine Firma, beantwortet Fragen, nimmt Buchungen an und verpasst keine Anfrage – auch sonntags um drei Uhr morgens.</p>
+          <p>Der KI-Bot ist ein Chat auf deiner Website, der deine Firma kennt: Angebote, Preise, Öffnungszeiten, häufige Fragen. Er antwortet in Sekunden, nimmt Reservationen und Rückruf-Wünsche auf und schickt dir alles sortiert – auch sonntags um drei Uhr morgens, wenn niemand ans Telefon geht. Eingerichtet ist er in wenigen Tagen, gekündigt mit einem Klick: kein Jahresvertrag, keine Bindung.</p>
           <ul class="lw-merkmale">
-            <li><b>Antwortet wie dein Team</b><span>Trainiert auf deine Angebote, Preise und Öffnungszeiten.</span></li>
-            <li><b>Nimmt Anfragen auf</b><span>Termine, Reservationen und Kontaktdaten landen sortiert bei dir.</span></li>
-            <li><b>Monatlich kündbar</b><span>CHF 200.– Einrichtung, CHF 40.– pro Monat. Kein Jahresvertrag.</span></li>
+            <li><b>Antwortet wie dein Team</b><span>Wir trainieren ihn auf deine Inhalte – er sagt nur, was stimmt, und in deinem Ton.</span></li>
+            <li><b>Nimmt Anfragen auf</b><span>Termine, Reservationen und Kontaktdaten landen strukturiert bei dir im Postfach oder Dashboard.</span></li>
+            <li><b>Lernt dazu</b><span>Neue Angebote, neue Preise, neue Fragen: Wir halten deinen Bot aktuell – im Preis inbegriffen.</span></li>
           </ul>
           <div class="lw-aktion">
-            <a class="btn btn-primary" href="/ki-bot">Mehr zum KI-Bot <span class="arrow">→</span></a>
-            <a class="lw-neben" href="/kontakt">Bot für meine Firma</a>
+            <a class="btn btn-primary" href="/kontakt">Bot für meine Firma <span class="arrow">→</span></a>
           </div>
         </div>
         <div class="lw-schau">
-          <!-- Diorama «Nachtschicht»: das echte Chat-Widget bei der Arbeit,
-               daneben das Protokoll einer einzigen Nacht -->
           <div class="dio-ki">
             <div class="ki-fenster">
               <div class="kf-kopf">
@@ -225,6 +289,31 @@
               <div class="kp-chip"><b>06:05</b>Rückruf für 9 Uhr notiert</div>
             </div>
           </div>
+        </div>
+      </div>
+      <div class="wrap lw-details">
+        <div class="lw-spalte">
+          <h3>So läuft's</h3>
+          <ol class="lw-ablauf">
+            <li><b>Wissen sammeln</b>Wir übernehmen deine Inhalte: Website, Preislisten, häufige Fragen.</li>
+            <li><b>Testen</b>Du probierst den Bot aus, bevor er live geht – und korrigierst, was er anders sagen soll.</li>
+            <li><b>Live in Tagen</b>Ein Code-Schnipsel auf deiner Seite – fertig. Auch auf Websites, die nicht von uns sind.</li>
+          </ol>
+        </div>
+        <div class="lw-spalte">
+          <h3>Der Preis</h3>
+          <ul class="lw-preise">
+            <li><span><b>Einrichtung</b><em>Training auf deine Firma, Design passend zu deiner Seite, Einbau.</em></span><i>CHF 200.–</i></li>
+            <li><span><b>Betrieb</b><em>Hosting, Wartung, Updates und laufendes Nachtraining – alles inklusive.</em></span><i>CHF 40.–/Mt.</i></li>
+          </ul>
+        </div>
+        <div class="lw-spalte">
+          <h3>Gut zu wissen</h3>
+          <ul class="lw-preise">
+            <li><span><b>Monatlich kündbar</b><em>Kein Jahresvertrag. Wenn er dir nichts bringt, hörst du einfach auf.</em></span></li>
+            <li><span><b>Deine Daten bleiben deine</b><em>Anfragen gehören dir und werden nicht weiterverkauft.</em></span></li>
+          </ul>
+          <p class="lw-notiz">Rechne selbst: Eine einzige nicht verpasste Reservation pro Monat zahlt den Bot meist schon.</p>
         </div>
       </div>
     </section>
@@ -250,7 +339,7 @@
             <li><a href="/preise">Neue Website</a></li>
             <li><a href="/preise#ueberarbeitung">Website-Überarbeitung</a></li>
             <li><a href="/preise#webapp">Webapps</a></li>
-            <li><a href="/ki-bot">KI-Bot</a></li>
+            <li></li>
           </ul>
         </div>
         <div class="footer-col">
@@ -279,6 +368,6 @@
 
   <script src="assets/js/sanft.js?v=1"></script>
   <script src="assets/js/site.js?v=22"></script>
-  <script src="assets/js/leistungen.js?v=1"></script>
+  <script src="assets/js/leistungen.js?v=2"></script>
 </body>
 </html>

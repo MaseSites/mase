@@ -37,8 +37,7 @@
         p.classList.add("an");
       }
     });
-    if (name === "webapp") starteZaehler();
-    if (name === "ki") starteChat();
+    if (name === "ki") { starteChat(); starteNetz(); } else { stoppeNetz(); }
     if (history.replaceState) history.replaceState(null, "", "#" + name);
   }
 
@@ -64,6 +63,7 @@
     wipe.classList.add("laueft");
     wipe.style.clipPath = "circle(" + Math.ceil(radius) + "px at " + x + "px " + y + "px)";
 
+    if (name === "ki") zuendeBlitz();
     setTimeout(function () {
       zeigeWelt(name);
       wipe.classList.add("weg");
@@ -108,24 +108,6 @@
     });
   }
 
-  /* ---------- Zählende Kennzahlen (Welt Webapp) ---------- */
-
-  function starteZaehler() {
-    document.querySelectorAll(".da-kpi b[data-zahl]").forEach(function (el) {
-      var ziel = parseInt(el.dataset.zahl, 10);
-      var suffix = el.dataset.suffix || "";
-      if (ruhig) { el.textContent = ziel + suffix; return; }
-      var start = performance.now();
-      var dauer = 900;
-      (function schritt(t) {
-        var f = Math.min(1, (t - start) / dauer);
-        f = 1 - Math.pow(1 - f, 3);
-        el.textContent = Math.round(ziel * f) + suffix;
-        if (f < 1) requestAnimationFrame(schritt);
-      })(start);
-    });
-  }
-
   /* ---------- Chat-Schleife (Welt KI) ---------- */
 
   var chatTimer = null;
@@ -137,6 +119,103 @@
     if (ruhig) { chat.classList.add("fertig"); return; }
     chatTimer = setTimeout(function () { chat.classList.add("fertig"); }, 2200);
   }
+
+  /* ---------- Neon-Blitz: zwei Klingen fegen beim KI-Wechsel durchs Bild ---------- */
+
+  var blitz = null;
+  function zuendeBlitz() {
+    if (ruhig) return;
+    if (!blitz) {
+      blitz = document.createElement("div");
+      blitz.className = "lw-blitz";
+      blitz.setAttribute("aria-hidden", "true");
+      blitz.innerHTML = "<i></i><i></i>";
+      document.body.appendChild(blitz);
+    }
+    blitz.classList.remove("zuendet");
+    void blitz.offsetWidth;
+    blitz.classList.add("zuendet");
+    setTimeout(function () { blitz.classList.remove("zuendet"); }, 1100);
+  }
+
+  /* ---------- Partikelnetz: schwebende Punkte, die sich verbinden ---------- */
+
+  var netz = document.getElementById("ki-netz");
+  var netzLauf = null;
+  var punkte = [];
+
+  function baueNetz() {
+    var panel = netz.closest(".lw-welt");
+    var dpr = Math.min(2, window.devicePixelRatio || 1);
+    var b = panel.clientWidth, h = panel.clientHeight;
+    netz.width = b * dpr; netz.height = h * dpr;
+    netz.getContext("2d").setTransform(dpr, 0, 0, dpr, 0, 0);
+    var anzahl = b < 720 ? 28 : 55;
+    punkte = [];
+    for (var i = 0; i < anzahl; i++) {
+      punkte.push({
+        x: Math.random() * b, y: Math.random() * h,
+        vx: (Math.random() - 0.5) * 0.35,
+        vy: (Math.random() - 0.5) * 0.35,
+        r: 1.2 + Math.random() * 1.8
+      });
+    }
+    return { b: b, h: h };
+  }
+
+  function starteNetz() {
+    if (ruhig || !netz || netzLauf) return;
+    var mass = baueNetz();
+    var ctx = netz.getContext("2d");
+    var NAH = 130;
+    function frame() {
+      ctx.clearRect(0, 0, mass.b, mass.h);
+      for (var i = 0; i < punkte.length; i++) {
+        var p = punkte[i];
+        p.x += p.vx; p.y += p.vy;
+        if (p.x < 0 || p.x > mass.b) p.vx *= -1;
+        if (p.y < 0 || p.y > mass.h) p.vy *= -1;
+      }
+      for (var a = 0; a < punkte.length; a++) {
+        for (var z = a + 1; z < punkte.length; z++) {
+          var dx = punkte[a].x - punkte[z].x;
+          var dy = punkte[a].y - punkte[z].y;
+          var d = Math.sqrt(dx * dx + dy * dy);
+          if (d < NAH) {
+            var kraft = 1 - d / NAH;
+            ctx.strokeStyle = "rgba(139, 92, 246, " + (0.28 * kraft).toFixed(3) + ")";
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(punkte[a].x, punkte[a].y);
+            ctx.lineTo(punkte[z].x, punkte[z].y);
+            ctx.stroke();
+          }
+        }
+      }
+      for (var j = 0; j < punkte.length; j++) {
+        var q = punkte[j];
+        ctx.fillStyle = j % 4 === 0 ? "rgba(56, 225, 255, 0.8)" : "rgba(168, 139, 250, 0.8)";
+        ctx.beginPath();
+        ctx.arc(q.x, q.y, q.r, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      netzLauf = requestAnimationFrame(frame);
+    }
+    netzLauf = requestAnimationFrame(frame);
+  }
+
+  function stoppeNetz() {
+    if (netzLauf) { cancelAnimationFrame(netzLauf); netzLauf = null; }
+  }
+
+  /* Bei Grössenänderung neu vermessen; im Hintergrund pausieren */
+  window.addEventListener("resize", function () {
+    if (netzLauf) { stoppeNetz(); starteNetz(); }
+  });
+  document.addEventListener("visibilitychange", function () {
+    if (document.hidden) stoppeNetz();
+    else if (lw.getAttribute("data-welt") === "ki") starteNetz();
+  });
 
   /* ---------- Start: Welt aus der Adresse oder Standard ---------- */
 

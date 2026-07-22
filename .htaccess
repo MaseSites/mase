@@ -20,6 +20,12 @@
   # RewriteBase /
   RewriteRule ^api/ api.php [QSA,L]
 
+  # ---------- Alte KI-Bot-Seite: dauerhaft zur Leistungs-Welt ----------
+  # Die Inhalte leben jetzt unter /leistungen#ki – alte Links und
+  # Google-Treffer landen automatisch dort.
+  RewriteRule ^ki-bot/?$ /leistungen#ki [R=301,L,NE]
+  RewriteRule ^ki-bot\.html$ /leistungen#ki [R=301,L,NE]
+
   # ---------- Saubere Adressen ohne .html ----------
   # Sichtbare index-/index.html-Adressen auf die Verzeichnis-URL umleiten
   # (z. B. /index.html -> /, /admin/index.html -> /admin/).
