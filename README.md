@@ -149,12 +149,35 @@ Der Chat unten rechts wird von einem **lokalen Sprachmodell** beantwortet
 Cloud, keine externen Dienste. Der frühere Stichwort-Bot ist vollständig
 entfernt.
 
-### Start
+### Server einrichten (ein Befehl)
+
+Auf einem frischen Linux-Server (VPS mit mindestens 6, besser 8 GB RAM):
 
 ```bash
 git clone https://github.com/MaseSites/mase.git
 cd mase
-docker compose up
+sudo ./setup.sh
+```
+
+Das Skript installiert Docker (falls nötig), startet Website + Modell,
+wartet auf den Modell-Download und zeigt am Ende, wie man das
+Admin-Startpasswort ausliest. Alles startet nach einem Server-Neustart
+von selbst wieder.
+
+**Aktualisieren** nach neuen Commits: `./update.sh` (holt den Stand,
+baut die Website neu, erzeugt das Chat-Wissen frisch).
+
+**HTTPS mit eigener Domain** (Zertifikat automatisch via Let's Encrypt),
+sobald die Domain per DNS auf den Server zeigt:
+
+```bash
+DOMAIN=masesites.ch docker compose --profile https up -d
+```
+
+Von Hand statt per Skript geht es auch:
+
+```bash
+docker compose up -d
 ```
 
 Danach läuft die Website auf <http://localhost:8080>, der Chat funktioniert

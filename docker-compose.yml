@@ -69,6 +69,29 @@ services:
       # Datenbank, Logs und eingegangene Projektanfragen überleben Neustarts
       - mase-daten:/daten
 
+  # Optional: HTTPS mit automatischem Zertifikat.
+  # Start:  DOMAIN=deine-domain.ch docker compose --profile https up -d
+  # Voraussetzung: die Domain zeigt per DNS auf diesen Server,
+  # Ports 80 und 443 sind offen.
+  caddy:
+    image: caddy:2-alpine
+    container_name: mase-caddy
+    profiles: ["https"]
+    restart: unless-stopped
+    depends_on:
+      - web
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      DOMAIN: ${DOMAIN:-localhost}
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-daten:/data
+      - caddy-config:/config
+
 volumes:
   ollama-modelle:
   mase-daten:
+  caddy-daten:
+  caddy-config:
