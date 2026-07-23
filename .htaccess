@@ -3,15 +3,21 @@
 # Es wird KEIN Node.js benötigt – das Backend ist reines PHP (api.php).
 
 # ---------- Node.js/Passenger abschalten ----------
-# Läuft die Seite nicht (überall Fehler 500) und ist in Plesk unter
-# "Node.js" für diese Domain versehentlich noch eine App aktiv, dann fängt
-# Phusion Passenger alle Anfragen ab und scheitert, weil kein Node da ist.
-# Sauberste Lösung: in Plesk unter Websites & Domains → Node.js auf
-# "Node.js deaktivieren" klicken. Klappt das nicht, die folgende Zeile
-# (das # davor entfernen) erzwingt dasselbe direkt hier:
-#<IfModule mod_passenger.c>
-#  PassengerEnabled off
-#</IfModule>
+# Diese Website ist reines PHP. Ist in Plesk unter "Node.js" fuer die
+# Domain eine App aktiv, faengt Phusion Passenger ALLE Anfragen ab und
+# startet server/server.js. Schlaegt das fehl - etwa weil Plesk eine
+# aeltere Node-Version nutzt als die in package.json geforderte 22.5
+# (der Server braucht node:sqlite) - meldet Passenger nach aussen
+# "502 Bad Gateway", und zwar auf der ganzen Seite.
+#
+# Darum hier fest abgeschaltet. Die IfModule-Klammer sorgt dafuer, dass
+# die Zeile ohne Passenger einfach ignoriert wird.
+#
+# Sauberer ist zusaetzlich: in Plesk unter Websites & Domains → Node.js
+# auf "Node.js deaktivieren" klicken.
+<IfModule mod_passenger.c>
+  PassengerEnabled off
+</IfModule>
 
 # ---------- API-Routing: /api/... an die PHP-API ----------
 <IfModule mod_rewrite.c>
