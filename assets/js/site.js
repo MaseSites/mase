@@ -275,8 +275,29 @@
   }
 
   /* Eingebettete Demos auf den Seiten */
-  document.querySelectorAll("[data-chat]").forEach(function (el) {
-    buildChatUI(el, { greeting: el.getAttribute("data-chat-greeting") || undefined });
+  /* Chat nur zeigen, wenn wirklich ein Modell antwortet. Ohne bereites
+     Modell (z. B. Hosting ohne KI-Server) verschwinden Knopf und
+     eingebettete Demos – ein sichtbarer, toter Chat wäre schlimmer als
+     gar keiner. Die Prüfung läuft einmal pro Seitenaufruf. */
+  var kiBereit = fetch("/api/ki/status", { credentials: "same-origin" })
+    .then(function (r) { return r.json(); })
+    .then(function (d) { return !!(d && d.bereit); })
+    .catch(function () { return false; });
+
+  kiBereit.then(function (bereit) {
+    document.querySelectorAll("[data-chat]").forEach(function (el) {
+      if (!bereit) {
+        /* Platzhalter statt kaputter Demo: die umgebende Sektion behält
+           ihre Form, verspricht aber nichts, was nicht funktioniert. */
+        var karte = el.closest("[data-chat-abschnitt]");
+        if (karte) { karte.hidden = true; return; }
+        el.innerHTML = '<div class="chat-body"><div class="msg bot">' +
+          "Die Live-Demo ist gerade offline. Schreib uns über das Kontaktformular – " +
+          "wir zeigen dir den Assistenten gern persönlich.</div></div>";
+        return;
+      }
+      buildChatUI(el, { greeting: el.getAttribute("data-chat-greeting") || undefined });
+    });
   });
 
   /* ---------- Globales Chat-Widget unten rechts ---------- */
@@ -292,8 +313,11 @@
     panel.setAttribute("role", "dialog");
     panel.setAttribute("aria-label", "masesites-Bot Chat");
 
-    document.body.appendChild(panel);
-    document.body.appendChild(launcher);
+    kiBereit.then(function (bereit) {
+      if (!bereit) return;
+      document.body.appendChild(panel);
+      document.body.appendChild(launcher);
+    });
 
     var built = false;
     launcher.addEventListener("click", function () {
