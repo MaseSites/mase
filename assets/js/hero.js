@@ -144,6 +144,14 @@
     .then(function (r) { return r.ok ? r.json() : null; })
     .then(function (daten) {
       var demos = (daten && Array.isArray(daten.beispiele)) ? daten.beispiele : [];
+      /* Nur Demos zeigen, die im Admin fürs Beispiel-Fenster angehakt sind.
+         Fehlt das Feld (ältere Einträge), gilt eine Demo weiterhin als
+         sichtbar - so ändert sich nichts, bis jemand im Admin bewusst
+         Demos abwählt. Genau das ist der Sinn: läuft die Startseite mit
+         allen Demos aus dem Katalog zu voll oder zu langsam, wählt man
+         hier eine kleine, schnelle Auswahl. Die Beispiele-Seite zeigt
+         weiterhin immer den ganzen Katalog. */
+      demos = demos.filter(function (d) { return d.startseite !== false; });
       if (!demos.length) {
         if (sektion) sektion.hidden = true;
         return;

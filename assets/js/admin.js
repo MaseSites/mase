@@ -1555,9 +1555,13 @@
           INHALTE[def.key] = INHALTE[def.key].filter(function (e) { return e.id !== eintrag.id; });
           speichereWebsiteInhalte().catch(function (f) { alert(f.message); ladeWebsiteInhalte(); });
         });
+        var neben = (eintrag.branche ? eintrag.branche + " · " : "") + kurz(eintrag.beschreibung || eintrag.url || "", 60);
+        if (art === "beispiel") {
+          neben += eintrag.startseite === false ? " · nicht auf Startseite" : " · auf Startseite";
+        }
         liste.appendChild(zeile(
           eintrag[def.titelFeld],
-          (eintrag.branche ? eintrag.branche + " · " : "") + kurz(eintrag.beschreibung || eintrag.url || "", 60),
+          neben,
           [bearbeiten, loeschen]
         ));
       });
@@ -1573,7 +1577,9 @@
     form.querySelector('[name="id"]').value = eintrag ? eintrag.id : "";
     if (eintrag) {
       form.querySelectorAll("[name]").forEach(function (feldEl) {
-        if (feldEl.name !== "id" && eintrag[feldEl.name] !== undefined) feldEl.value = eintrag[feldEl.name];
+        if (feldEl.name === "id" || eintrag[feldEl.name] === undefined) return;
+        if (feldEl.type === "checkbox") feldEl.checked = eintrag[feldEl.name] !== false;
+        else feldEl.value = eintrag[feldEl.name];
       });
     }
     /* Beispiel-Formular: Datei-Feld leeren, Status zur bestehenden Demo zeigen */
@@ -1621,7 +1627,9 @@
       if (absenden && absenden.disabled) return;
 
       var eintrag = {};
-      form.querySelectorAll("[name]").forEach(function (feldEl) { eintrag[feldEl.name] = feldEl.value.trim(); });
+      form.querySelectorAll("[name]").forEach(function (feldEl) {
+        eintrag[feldEl.name] = feldEl.type === "checkbox" ? feldEl.checked : feldEl.value.trim();
+      });
 
       /* Beispiel: optional eine HTML-Datei hochladen und als url verwenden */
       var dateiInput = (art === "beispiel") ? form.querySelector('input[type="file"]') : null;

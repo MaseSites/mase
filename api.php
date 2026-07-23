@@ -833,6 +833,11 @@ function saeubereBeispiele($liste): array
             'beschreibung' => s($b['beschreibung'] ?? '', 300),
             'url' => $url,
             'bild' => s($b['bild'] ?? '', 400),
+            /* Fehlt das Feld (alte Eintraege vor dieser Funktion), gilt eine
+               Demo weiterhin als auf der Startseite sichtbar - sonst wuerden
+               nach dem Update ploetzlich alle Demos von der Startseite
+               verschwinden. Explizit auf false gesetzt, bleibt sie es. */
+            'startseite' => !array_key_exists('startseite', $b) || $b['startseite'] !== false,
         ];
     }
     return $ergebnis;
@@ -886,6 +891,7 @@ function stelleInhalteSicher(): void
         'beschreibung' => 'Bedienbare Webapp: Reservierungen, Kalender, Menüs, Schichten und Preisrechner.',
         'url' => '/beispiel-demos/tavolo',
         'bild' => 'assets/img/demos/tavolo.jpg',
+        'startseite' => true,
     ];
 
     if (einstellung('inhalte_beispiele') !== null) {

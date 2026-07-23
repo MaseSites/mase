@@ -1420,6 +1420,21 @@ body.menue-offen .widget-panel { opacity: 0; pointer-events: none; }
 .form-field textarea { min-height: 130px; resize: vertical; }
 .form-field input:focus, .form-field select:focus, .form-field textarea:focus { outline: none; border-color: var(--ink); box-shadow: 0 0 0 3px rgba(44, 33, 24, 0.08); }
 
+/* Einzelne Ja/Nein-Option in einem Formular, z. B. "Auf der Startseite
+   zeigen" - schlichter als eine Pille, weil es hier nur eine Option ist */
+.form-checkbox {
+  display: flex; align-items: center; gap: 10px;
+  font-size: 0.92rem; font-weight: 500;
+  color: var(--ink);
+  cursor: pointer;
+  padding: 2px 0;
+}
+.form-checkbox input {
+  width: 17px; height: 17px; flex: none;
+  accent-color: var(--ink);
+  cursor: pointer;
+}
+
 .check-row { display: flex; flex-wrap: wrap; gap: 12px; }
 .check-pill { position: relative; }
 .check-pill input { position: absolute; opacity: 0; inset: 0; cursor: pointer; }
