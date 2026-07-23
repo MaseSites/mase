@@ -1,7 +1,0 @@
-# HTTPS-Vorschaltung (nur mit --profile https aktiv).
-# Caddy holt und erneuert das Let's-Encrypt-Zertifikat von selbst –
-# einzige Voraussetzung: die Domain zeigt per DNS auf diesen Server.
-{$DOMAIN:localhost} {
-	reverse_proxy web:8080
-	encode gzip
-}

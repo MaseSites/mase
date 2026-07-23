@@ -99,17 +99,59 @@
     });
   });
 
-  /* ============================================================
-     KI-Chat: Die Antworten kommen von einem lokalen Sprachmodell
-     (Ollama) über POST /api/ki/chat – gestreamt, Wort für Wort.
-     Ist das Modell nicht erreichbar (z. B. Hosting ohne KI-Server),
-     sagt der Assistent das ehrlich und verweist auf das
-     Kontaktformular. Es gibt keine vorgetäuschten Antworten mehr.
-     ============================================================ */
+  /* ---------- Chat-Bot: skriptete Demo-Antworten ----------
+     Ohne Backend: Stichwort-Matcher mit realistischen Antworten.
+     Später durch echtes Bot-Backend ersetzbar (eine Stelle: botReply). */
 
-  var KI_FEHLERTEXT =
-    "Der Assistent ist gerade nicht erreichbar. " +
-    "Schreib uns direkt – wir melden uns innert 24 Stunden.";
+  var BOT_RULES = [
+    {
+      match: /(preis|kost|chf|teuer|budget|offert)/i,
+      reply: "Gute Frage! Eine neue Website gibt es ab CHF 750.–, die Überarbeitung einer bestehenden Seite ab CHF 250.–. Der KI-Bot kostet CHF 200.– Einrichtung plus CHF 40.– pro Monat. Auf der Preisseite kannst du dir dein Paket selbst zusammenklicken, und vor Projektstart bekommst du eine Offerte mit festem Preis.",
+      link: { href: "/preise", label: "Zu den Preisen →" }
+    },
+    {
+      match: /(einbau|integr|bestehend|nachträglich|wordpress|wix|shopify)/i,
+      reply: "Der KI-Bot lässt sich in fast jede Website einbauen, auch nachträglich in bestehende Seiten. Bei einer neuen masesites-Website ist er auf Wunsch von Anfang an drin."
+    },
+    {
+      match: /(termin|buch|reserv|anfrage annehmen)/i,
+      reply: "Ja! Der Bot kann Terminwünsche, Reservierungen und Anfragen direkt im Chat entgegennehmen und leitet sie an dich weiter, rund um die Uhr."
+    },
+    {
+      match: /(sprach|englisch|français|italien|mehrsprach)/i,
+      reply: "Der Bot antwortet mehrsprachig: Er erkennt die Sprache deiner Besucher und antwortet passend, zum Beispiel auf Deutsch, Englisch oder Französisch."
+    },
+    {
+      match: /(daten|dsgvo|datenschutz|privacy)/i,
+      reply: "Datenschutz nehmen wir ernst: Der Bot sammelt nur, was für deine Anfrage nötig ist. Die Details klären wir transparent im Projekt, frag uns einfach direkt."
+    },
+    {
+      match: /(roboter|künstlich|klingt|ton)/i,
+      reply: "Keine Sorge, wir stellen Ton und Antworten auf deine Marke ein. Der Bot klingt nach dir, nicht nach Maschine. Und wenn er etwas nicht weiss, leitet er die Frage an dich weiter, statt zu raten."
+    },
+    {
+      match: /(website|webseite|homepage|projekt|starten|angebot)/i,
+      reply: "Wir bauen dir eine persönliche, professionelle Website, massgeschneidert für deine Branche, mobil optimiert und auf Wunsch mit KI-Bot. Erzähl uns kurz von deinem Projekt!",
+      link: { href: "/kontakt", label: "Projekt starten →" }
+    },
+    {
+      match: /(hallo|hi|hoi|hey|grüezi|guten tag|servus|moin)/i,
+      reply: "Hallo! Schön, dass du da bist. Ich bin der masesites-Bot, genau so einer, wie du ihn für deine Website haben kannst. Frag mich etwas zu Websites, Preisen oder dem KI-Bot!"
+    },
+    {
+      match: /(danke|merci|super|cool|toll)/i,
+      reply: "Sehr gern! Wenn du mehr wissen willst: Das Team ist per E-Mail an info@masesites.ch erreichbar. Oder du startest direkt dein Projekt."
+    }
+  ];
+
+  var BOT_FALLBACK = "Das weiss ich nicht auswendig, und ich rate lieber nicht. Schreib kurz an info@masesites.ch oder nutz das Kontaktformular, dann meldet sich ein Mensch bei dir.";
+
+  function botReply(text) {
+    for (var i = 0; i < BOT_RULES.length; i++) {
+      if (BOT_RULES[i].match.test(text)) return BOT_RULES[i];
+    }
+    return { reply: BOT_FALLBACK, link: { href: "/kontakt", label: "Zum Kontaktformular →" } };
+  }
 
   /* Bot-Chats für den Admin-Bereich aufzeichnen: gehen an den Server und
      liegen dort verschlüsselt in der Datenbank. Wer angemeldet ist,
@@ -151,7 +193,7 @@
         '<input type="text" placeholder="Schreib mir etwas …" aria-label="Nachricht an den Bot">' +
         '<button type="submit" aria-label="Senden">' + sendIconSvg + '</button>' +
       '</form>' +
-      '<div class="chat-note">Antwortet auf Basis der Website-Inhalte. Ohne Gewähr – verbindlich ist die Offerte.</div>';
+      '<div class="chat-note">Demo: So fühlt sich dein Bot an, trainiert auf deine Inhalte.</div>';
 
     var body = root.querySelector(".chat-body");
     var form = root.querySelector(".chat-input");
@@ -179,83 +221,21 @@
       return div;
     }
 
-    /* Gesprächsverlauf für das Modell. Bleibt im Fenster, wird nirgends
-       gespeichert; nur die letzten Einträge gehen mit, damit der Prompt
-       nicht wächst. */
-    var verlauf = [];
-
     function respond(text) {
       if (busy) return;
       busy = true;
       addMsg(text, "user");
-      verlauf.push({ von: "gast", text: text });
-      if (verlauf.length > 12) verlauf = verlauf.slice(-12);
-
       var typing = document.createElement("div");
       typing.className = "msg bot typing";
       typing.innerHTML = "<i></i><i></i><i></i>";
       body.appendChild(typing);
       body.scrollTop = body.scrollHeight;
-
-      var ziel = null;
-      var gesamt = "";
-
-      function schreibe(stueck) {
-        if (!ziel) {
-          typing.remove();
-          ziel = document.createElement("div");
-          ziel.className = "msg bot";
-          body.appendChild(ziel);
-        }
-        gesamt += stueck;
-        /* Sentinel des Servers nicht anzeigen */
-        ziel.textContent = gesamt.replace("\n[[ANFRAGE_GESPEICHERT]]", "");
-        body.scrollTop = body.scrollHeight;
-      }
-
-      function fertig() {
-        if (typing.parentNode) typing.remove();
-        var sauber = gesamt.replace("\n[[ANFRAGE_GESPEICHERT]]", "").trim();
-        if (!sauber) {
-          scheitern();
-          return;
-        }
-        if (echterDialog) botLog("bot", sauber);
-        verlauf.push({ von: "bot", text: sauber });
-        if (gesamt.indexOf("[[ANFRAGE_GESPEICHERT]]") > -1) {
-          var ok = document.createElement("div");
-          ok.className = "msg bot";
-          ok.textContent = "Deine Anfrage ist bei uns eingegangen – wir melden uns innert 24 Stunden.";
-          body.appendChild(ok);
-          body.scrollTop = body.scrollHeight;
-        }
+      setTimeout(function () {
+        typing.remove();
+        var r = botReply(text);
+        addMsg(r.reply, "bot", r.link);
         busy = false;
-      }
-
-      function scheitern() {
-        if (typing.parentNode) typing.remove();
-        if (ziel && !gesamt.trim()) ziel.remove();
-        addMsg(KI_FEHLERTEXT, "bot", { href: "/kontakt", label: "Zum Kontaktformular →" });
-        busy = false;
-      }
-
-      fetch("/api/ki/chat", {
-        method: "POST",
-        credentials: "same-origin",
-        headers: { "Content-Type": "application/json", "X-Requested-With": "fetch" },
-        body: JSON.stringify({ verlauf: verlauf })
-      }).then(function (r) {
-        if (!r.ok || !r.body) throw new Error("nicht erreichbar");
-        var leser = r.body.getReader();
-        var dec = new TextDecoder();
-        return (function lies() {
-          return leser.read().then(function (res) {
-            if (res.done) { fertig(); return; }
-            schreibe(dec.decode(res.value, { stream: true }));
-            return lies();
-          });
-        })();
-      }).catch(scheitern);
+      }, reducedMotion ? 60 : 750 + Math.random() * 450);
     }
 
     form.addEventListener("submit", function (e) {
@@ -275,29 +255,8 @@
   }
 
   /* Eingebettete Demos auf den Seiten */
-  /* Chat nur zeigen, wenn wirklich ein Modell antwortet. Ohne bereites
-     Modell (z. B. Hosting ohne KI-Server) verschwinden Knopf und
-     eingebettete Demos – ein sichtbarer, toter Chat wäre schlimmer als
-     gar keiner. Die Prüfung läuft einmal pro Seitenaufruf. */
-  var kiBereit = fetch("/api/ki/status", { credentials: "same-origin" })
-    .then(function (r) { return r.json(); })
-    .then(function (d) { return !!(d && d.bereit); })
-    .catch(function () { return false; });
-
-  kiBereit.then(function (bereit) {
-    document.querySelectorAll("[data-chat]").forEach(function (el) {
-      if (!bereit) {
-        /* Platzhalter statt kaputter Demo: die umgebende Sektion behält
-           ihre Form, verspricht aber nichts, was nicht funktioniert. */
-        var karte = el.closest("[data-chat-abschnitt]");
-        if (karte) { karte.hidden = true; return; }
-        el.innerHTML = '<div class="chat-body"><div class="msg bot">' +
-          "Die Live-Demo ist gerade offline. Schreib uns über das Kontaktformular – " +
-          "wir zeigen dir den Assistenten gern persönlich.</div></div>";
-        return;
-      }
-      buildChatUI(el, { greeting: el.getAttribute("data-chat-greeting") || undefined });
-    });
+  document.querySelectorAll("[data-chat]").forEach(function (el) {
+    buildChatUI(el, { greeting: el.getAttribute("data-chat-greeting") || undefined });
   });
 
   /* ---------- Globales Chat-Widget unten rechts ---------- */
@@ -313,11 +272,8 @@
     panel.setAttribute("role", "dialog");
     panel.setAttribute("aria-label", "masesites-Bot Chat");
 
-    kiBereit.then(function (bereit) {
-      if (!bereit) return;
-      document.body.appendChild(panel);
-      document.body.appendChild(launcher);
-    });
+    document.body.appendChild(panel);
+    document.body.appendChild(launcher);
 
     var built = false;
     launcher.addEventListener("click", function () {
