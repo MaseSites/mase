@@ -925,16 +925,13 @@
   .tv-kopf span:nth-child(3), .tv-zeile .tisch { display: none; }
 }
 
-/* Abgrenzungs-Absatz: sagt, was eine Leistung NICHT ist und wohin
-   man stattdessen gehört. Optisch abgesetzt, damit man ihn findet. */
+/* Abgrenzung: sagt, was eine Leistung NICHT ist. Bewusst ohne Kasten –
+   im Textteil sind allein die Merkmal-Karten gerahmt, alles andere
+   ordnet sich typografisch unter. */
 .lw-abgrenzung {
-  font-size: 0.92rem;
-  padding: 13px 16px;
-  margin-top: -8px;
-  background: color-mix(in srgb, var(--lw-karte) 70%, transparent);
-  border-left: 2.5px solid var(--lw-ink-3, var(--lw-ink-soft));
-  border-radius: 0 10px 10px 0;
+  font-size: 0.94rem;
   color: var(--lw-ink-soft);
+  margin-bottom: 26px;
 }
 .lw-abgrenzung b { color: var(--lw-ink); font-weight: 650; }
 .lw-abgrenzung a {
@@ -943,4 +940,63 @@
   text-decoration: underline;
   text-underline-offset: 3px;
 }
-.lw[data-welt="ki"] .lw-abgrenzung { background: rgba(17, 16, 28, 0.6); }
+
+/* Kurzfassung direkt unter der Überschrift: trägt die Aussage, darum
+   etwas grösser als Fliesstext. */
+.lw-kurz {
+  font-size: 1.06rem;
+  line-height: 1.6;
+  color: var(--lw-ink);
+}
+
+/* Website oder Webapp? Die häufigste Verwechslung – als direkte
+   Gegenüberstellung statt als Absatz zum Durchlesen. */
+.lw-vergleich {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px 28px;
+  margin: 2px 0 18px;
+}
+.lw-vs-titel {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  font-weight: 700;
+  margin-bottom: 7px;
+  padding-bottom: 6px;
+  border-bottom: 1.5px solid var(--lw-linie);
+  color: var(--lw-ink);
+}
+.lw-vergleich ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 5px; }
+.lw-vergleich li {
+  font-size: 0.9rem;
+  color: var(--lw-ink-soft);
+  padding-left: 14px;
+  position: relative;
+}
+.lw-vergleich li::before {
+  content: "";
+  position: absolute; left: 0; top: 8px;
+  width: 5px; height: 5px; border-radius: 50%;
+  background: var(--lw-ink-soft);
+  opacity: 0.55;
+}
+.lw-vergleich b { color: var(--lw-ink); font-weight: 700; }
+.lw-vs-trenn { display: none; }
+
+/* Hinweis, der aktiv Geld sparen kann. Ohne Rahmen – die Auszeichnung
+   passiert im Text selbst. */
+.lw-hinweis-stark { color: var(--lw-ink-soft); }
+.lw-hinweis-stark b { color: var(--lw-ink); }
+.lw-hinweis-stark a {
+  color: var(--lw-ink);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+@media (max-width: 720px) {
+  .lw-kurz { font-size: 1rem; }
+  .lw-vergleich { grid-template-columns: 1fr 1fr; gap: 6px 16px; }
+  .lw-vergleich li { font-size: 0.85rem; }
+}

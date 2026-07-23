@@ -109,6 +109,9 @@
       img.src = demo.bild;
       img.alt = "Website " + demo.name + ", echtes Live-Demo von masesites";
       img.loading = "lazy";
+      img.decoding = "async";
+      /* Masse angeben, damit die Karte nicht springt, waehrend das Bild laedt */
+      img.width = 1100; img.height = 733;
       img.onerror = function () { img.remove(); };
       thumb.appendChild(img);
     }

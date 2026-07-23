@@ -425,6 +425,94 @@ a { color: inherit; }
 .saeule .lab { font-size: 10.5px; color: var(--ink-3); }
 .saeule .val { font-size: 10.5px; font-weight: 600; }
 
+/* ---------- Assistent ---------- */
+
+.punkt-ki { margin-bottom: 2px; }
+.punkt-ki svg { color: #C3C6CB; }
+
+.ki-karte { display: flex; flex-direction: column; min-height: 460px; }
+
+.ki-lauf {
+  flex: 1;
+  padding: 16px;
+  display: flex; flex-direction: column; gap: 10px;
+  overflow-y: auto;
+  max-height: 420px;
+}
+.ki-blase {
+  max-width: 78%;
+  padding: 9px 13px;
+  border-radius: 12px;
+  font-size: 12.5px;
+  line-height: 1.5;
+  animation: blase 0.28s var(--ease) both;
+}
+@keyframes blase { from { opacity: 0; transform: translateY(5px); } }
+.ki-blase.von-ki {
+  align-self: flex-start;
+  background: var(--canvas);
+  border: 1px solid var(--linie);
+  border-bottom-left-radius: 4px;
+  color: var(--ink);
+}
+.ki-blase.von-mir {
+  align-self: flex-end;
+  background: var(--ink);
+  color: #fff;
+  border-bottom-right-radius: 4px;
+}
+.ki-blase .hinweis {
+  display: block;
+  margin-top: 6px;
+  padding-top: 6px;
+  border-top: 1px dashed var(--linie);
+  font-size: 11px;
+  color: var(--ink-3);
+}
+/* Tippen-Anzeige */
+.ki-tippt { display: flex; gap: 4px; align-items: center; padding: 11px 13px; }
+.ki-tippt i {
+  width: 5px; height: 5px; border-radius: 50%;
+  background: var(--ink-4);
+  animation: tippen 1.3s ease-in-out infinite;
+}
+.ki-tippt i:nth-child(2) { animation-delay: 0.18s; }
+.ki-tippt i:nth-child(3) { animation-delay: 0.36s; }
+@keyframes tippen { 30% { transform: translateY(-4px); opacity: 0.6; } }
+
+.ki-vorschlaege {
+  display: flex; gap: 6px; flex-wrap: wrap;
+  padding: 0 16px 12px;
+}
+.ki-vorschlag {
+  font-size: 11px; font-weight: 500;
+  border: 1px solid var(--linie);
+  background: var(--flaeche);
+  color: var(--ink-2);
+  border-radius: 6px;
+  padding: 5px 10px;
+  text-align: left;
+  transition: border-color 0.14s, background 0.14s;
+}
+.ki-vorschlag:hover { border-color: var(--ink-4); background: var(--canvas); }
+
+.ki-eingabe {
+  display: flex; gap: 8px;
+  padding: 12px 16px;
+  border-top: 1px solid var(--linie);
+}
+.ki-eingabe input {
+  flex: 1; min-width: 0;
+  border: 1px solid var(--linie);
+  border-radius: 7px;
+  padding: 9px 12px;
+  font-size: 12.5px;
+  background: var(--flaeche);
+  outline: none;
+  transition: border-color 0.14s, box-shadow 0.14s;
+}
+.ki-eingabe input:focus { border-color: var(--ink-3); box-shadow: 0 0 0 3px rgba(22,24,29,0.06); }
+
 /* ---------- Handy ---------- */
 
 @media (max-width: 860px) {
@@ -453,6 +541,11 @@ a { color: inherit; }
   .schicht-gitter .wer { font-size: 10.5px; }
   .zelle { font-size: 9px; padding: 6px 2px; }
   .diagramm { height: 160px; gap: 6px; padding: 13px; }
+  .ki-karte { min-height: 0; }
+  .ki-lauf { max-height: 300px; padding: 13px; }
+  .ki-blase { max-width: 88%; }
+  .ki-vorschlaege { padding: 0 13px 10px; }
+  .ki-eingabe { padding: 10px 13px; }
   .kal { gap: 4px; padding: 11px; }
 }
 
@@ -477,6 +570,11 @@ a { color: inherit; }
       </span>
       <span>tavolo</span>
     </div>
+
+    <button class="punkt punkt-ki" data-ansicht="assistent">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/><path d="M18 15.5l.7 1.8 1.8.7-1.8.7-.7 1.8-.7-1.8-1.8-.7 1.8-.7z"/></svg>
+      Assistent
+    </button>
 
     <span class="gruppe">Betrieb</span>
     <button class="punkt" data-ansicht="uebersicht" aria-current="page">
@@ -631,6 +729,25 @@ a { color: inherit; }
         </div>
       </section>
 
+      <!-- Assistent -->
+      <section class="ansicht" data-ansicht="assistent" aria-label="Assistent">
+        <div class="karte ki-karte">
+          <div class="karte-kopf">
+            <h2>Assistent</h2>
+            <span class="neben">Sag, was du brauchst – statt zu klicken</span>
+          </div>
+
+          <div class="ki-lauf" id="ki-lauf"></div>
+
+          <div class="ki-vorschlaege" id="ki-vorschlaege"></div>
+
+          <div class="ki-eingabe">
+            <input type="text" id="ki-feld" placeholder="Zum Beispiel: Trag Familie Meier am Freitag um 19 Uhr ein" aria-label="Nachricht an den Assistenten">
+            <button class="knopf" id="ki-senden">Senden</button>
+          </div>
+        </div>
+      </section>
+
       <!-- Auswertungen -->
       <section class="ansicht" data-ansicht="auswertungen" aria-label="Auswertungen">
         <div class="kacheln" id="aus-kpi"></div>
@@ -781,7 +898,8 @@ a { color: inherit; }
 
   var TITEL = {
     uebersicht: "Übersicht", reservierungen: "Reservierungen", kalender: "Kalender",
-    menues: "Menüs", schichten: "Schichten", rechner: "Preisrechner", auswertungen: "Auswertungen"
+    menues: "Menüs", schichten: "Schichten", rechner: "Preisrechner", auswertungen: "Auswertungen",
+    assistent: "Assistent"
   };
 
   function zeige(name) {
@@ -799,6 +917,7 @@ a { color: inherit; }
     if (name === "menues") zeichneSpeisen();
     if (name === "schichten") zeichneSchichten();
     if (name === "auswertungen") zeichneAuswertungen();
+    if (name === "assistent") zeichneAssistent();
     document.querySelector(".inhalt").scrollIntoView({ block: "start", behavior: "smooth" });
   }
 
@@ -1165,6 +1284,85 @@ a { color: inherit; }
         "</div>";
     }).join("");
   }
+
+  /* ---------- Assistent ----------
+     Bewusst ohne echtes Sprachmodell: Diese Demo soll überall laufen,
+     ohne Server und ohne Schlüssel. Der Assistent antwortet deshalb mit
+     Platzhaltern und sagt das auch offen. In der echten Anwendung würde
+     er den Eintrag anlegen, suchen oder auswerten. Gespeichert wird
+     hier nichts – ein Neuladen setzt alles zurück. */
+
+  var KI_VORSCHLAEGE = [
+    "Trag Familie Meier am Freitag um 19 Uhr für 4 Personen ein",
+    "Wie war letzte Woche im Vergleich zur Vorwoche?",
+    "Welche Tische sind heute Abend noch frei?",
+    "Setz die Anfrage von Geburtstag Meier auf bestätigt"
+  ];
+
+  var KI_ANTWORTEN = [
+    "Hier käme jetzt die Antwort des Assistenten. In der echten Anwendung würde ich den Eintrag direkt anlegen und dir zur Kontrolle anzeigen.",
+    "Hier käme jetzt die Antwort des Assistenten. In der echten Anwendung würde ich die Zahlen zusammenrechnen und dir eine kurze Zusammenfassung geben.",
+    "Hier käme jetzt die Antwort des Assistenten. In der echten Anwendung würde ich in deinen Daten nachschauen und dir das Ergebnis auflisten.",
+    "Hier käme jetzt die Antwort des Assistenten. In der echten Anwendung würde ich die Änderung vornehmen und dich fragen, ob der Gast benachrichtigt werden soll."
+  ];
+  var kiZaehler = 0;
+  var kiBeschaeftigt = false;
+
+  function kiBlase(text, wer, hinweis) {
+    var d = document.createElement("div");
+    d.className = "ki-blase von-" + wer;
+    d.textContent = text;
+    if (hinweis) {
+      var h = document.createElement("span");
+      h.className = "hinweis";
+      h.textContent = hinweis;
+      d.appendChild(h);
+    }
+    $("#ki-lauf").appendChild(d);
+    $("#ki-lauf").scrollTop = $("#ki-lauf").scrollHeight;
+    return d;
+  }
+
+  function kiSenden(text) {
+    text = (text || $("#ki-feld").value).trim();
+    if (!text || kiBeschaeftigt) return;
+    kiBeschaeftigt = true;
+    $("#ki-feld").value = "";
+    kiBlase(text, "mir");
+
+    var tippt = document.createElement("div");
+    tippt.className = "ki-blase von-ki ki-tippt";
+    tippt.innerHTML = "<i></i><i></i><i></i>";
+    $("#ki-lauf").appendChild(tippt);
+    $("#ki-lauf").scrollTop = $("#ki-lauf").scrollHeight;
+
+    setTimeout(function () {
+      tippt.remove();
+      kiBlase(KI_ANTWORTEN[kiZaehler % KI_ANTWORTEN.length], "ki",
+        "Demo-Antwort – es wird nichts gespeichert.");
+      kiZaehler++;
+      kiBeschaeftigt = false;
+    }, 700 + Math.random() * 500);
+  }
+
+  function zeichneAssistent() {
+    /* Nur beim ersten Öffnen begrüssen, danach den Verlauf stehen lassen */
+    if (!$("#ki-lauf").children.length) {
+      kiBlase("Hallo Severin! Sag mir, was du brauchst – ich trage ein, suche heraus oder fasse zusammen. Probier einen der Vorschläge unten.", "ki");
+      $("#ki-vorschlaege").innerHTML = KI_VORSCHLAEGE.map(function (v) {
+        return '<button class="ki-vorschlag" type="button">' + v + "</button>";
+      }).join("");
+      $$("#ki-vorschlaege .ki-vorschlag").forEach(function (b) {
+        b.addEventListener("click", function () { kiSenden(b.textContent); });
+      });
+    }
+    setTimeout(function () { $("#ki-feld").focus(); }, 80);
+  }
+
+  $("#ki-senden").addEventListener("click", function () { kiSenden(); });
+  $("#ki-feld").addEventListener("keydown", function (e) {
+    if (e.key === "Enter") kiSenden();
+  });
 
   /* ---------- Start ---------- */
 

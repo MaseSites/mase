@@ -75,6 +75,15 @@ RedirectMatch 404 (^|/)\.(git|env)(/|$)
 # inklusive aktueller Sicherheits-Header). CSS/JS/Bilder duerfen lange in den
 # Cache, weil ihre Version an der Adresse haengt (?v=N bzw. neue Ordnernamen
 # bei Demo-Uploads).
+# Textdateien komprimiert ausliefern: style.css schrumpft damit von
+# 120 KB auf rund 20 KB. Auf Plesk ist mod_deflate praktisch immer aktiv;
+# die IfModule-Klammer schuetzt, falls nicht.
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css text/plain text/xml
+  AddOutputFilterByType DEFLATE application/javascript application/json
+  AddOutputFilterByType DEFLATE image/svg+xml application/xml
+</IfModule>
+
 <IfModule mod_headers.c>
   <FilesMatch "\.html?$">
     Header set Cache-Control "no-cache"

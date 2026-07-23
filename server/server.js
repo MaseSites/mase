@@ -22,6 +22,7 @@
 
 const http = require("node:http");
 const fs = require("node:fs");
+const zlib = require("node:zlib");
 const path = require("node:path");
 const crypto = require("node:crypto");
 const { promisify } = require("node:util");
@@ -1083,11 +1084,29 @@ function liefereDatei(req, res, pfadname) {
   const istHtml = endung === ".html";
   const istDemo = voll.indexOf(path.join(WURZEL, "beispiel-demos") + path.sep) === 0;
   sicherheitsKoepfe(res, req, istHtml, istDemo);
-  res.writeHead(200, {
+
+  /* Textdateien komprimiert ausliefern – style.css geht damit mit rund
+     20 statt 120 KB über die Leitung. Bilder und Schriften sind schon
+     komprimiert und bleiben unangetastet. */
+  const komprimierbar = [".html", ".css", ".js", ".mjs", ".svg", ".json", ".txt", ".xml"].includes(endung);
+  const willGzip = /\bgzip\b/.test(req.headers["accept-encoding"] || "");
+  const koepfe = {
     "Content-Type": typ,
-    "Content-Length": stat.size,
-    "Cache-Control": istHtml ? "no-cache" : "public, max-age=3600"
-  });
+    "Cache-Control": istHtml ? "no-cache" : "public, max-age=3600",
+    "Vary": "Accept-Encoding"
+  };
+
+  if (komprimierbar && willGzip && stat.size > 1024) {
+    const gz = zlib.gzipSync(fs.readFileSync(voll));
+    koepfe["Content-Encoding"] = "gzip";
+    koepfe["Content-Length"] = gz.length;
+    res.writeHead(200, koepfe);
+    if (req.method === "HEAD") return res.end();
+    return res.end(gz);
+  }
+
+  koepfe["Content-Length"] = stat.size;
+  res.writeHead(200, koepfe);
   if (req.method === "HEAD") return res.end();
   fs.createReadStream(voll).pipe(res);
 }
