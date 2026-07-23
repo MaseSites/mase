@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/style.css?v=30">
+  <link rel="stylesheet" href="assets/css/style.css?v=31">
 </head>
 <body>
   <script src="assets/js/sanft.js?v=1"></script>
@@ -136,26 +136,38 @@
         <div class="section-head center">
           <h2 class="reveal">Unsere Leistungen</h2>
         </div>
+        <!-- Reihenfolge wie auf der Leistungsseite: erst der Neubau, dann
+             die Überarbeitung, dann die Webapp – der KI-Assistent als
+             Ergänzung zum Schluss. Jede Zeile führt in die passende Welt
+             auf /leistungen, wo die Leistung erklärt wird; die Preise
+             stehen dort ebenfalls. -->
+        <!-- Redaktionelle Liste statt Preistabelle: Nummer, grosser Titel,
+             ein Satz, Pfeil. Preise stehen bewusst nicht mehr hier - dafuer
+             gibt es die Leistungs- und die Preisseite. -->
         <div class="offer-list">
-          <a class="offer-row reveal" href="/preise">
+          <a class="offer-row reveal" href="/leistungen#website">
+            <span class="offer-nr" aria-hidden="true">01</span>
             <h3>Neue Website</h3>
             <p>Persönlich gestaltet, sauber gebaut, für Mobilgeräte optimiert.</p>
-            <span class="offer-price">ab CHF 750.– <span class="arrow">→</span></span>
+            <span class="offer-pfeil" aria-hidden="true">→</span>
           </a>
-          <a class="offer-row reveal" data-delay="80" href="/leistungen#ki">
-            <h3><span class="ki-glow">KI-Integration</span></h3>
-            <p>Ein smarter Chat, der Fragen beantwortet und Anfragen annimmt. Rund um die Uhr.</p>
-            <span class="offer-price">CHF 200.– + 40.–/Mt. <span class="arrow">→</span></span>
-          </a>
-          <a class="offer-row reveal" data-delay="160" href="/preise#ueberarbeitung">
+          <a class="offer-row reveal" data-delay="80" href="/leistungen#ueberarbeitung">
+            <span class="offer-nr" aria-hidden="true">02</span>
             <h3>Website-Überarbeitung</h3>
             <p>Deine bestehende Seite, aufgefrischt und technisch auf Stand gebracht.</p>
-            <span class="offer-price">ab CHF 250.– <span class="arrow">→</span></span>
+            <span class="offer-pfeil" aria-hidden="true">→</span>
           </a>
-          <a class="offer-row reveal" data-delay="240" href="/preise#webapp">
+          <a class="offer-row reveal" data-delay="160" href="/leistungen#webapp">
+            <span class="offer-nr" aria-hidden="true">03</span>
             <h3>Webapp</h3>
             <p>Login, Datenbank und Dashboard: eine Anwendung im Browser, massgeschneidert für deine Abläufe.</p>
-            <span class="offer-price">auf Anfrage <span class="arrow">→</span></span>
+            <span class="offer-pfeil" aria-hidden="true">→</span>
+          </a>
+          <a class="offer-row reveal" data-delay="240" href="/leistungen#ki">
+            <span class="offer-nr" aria-hidden="true">04</span>
+            <h3><span class="ki-glow">KI-Assistent</span></h3>
+            <p>Ein smarter Chat, der Fragen beantwortet und Anfragen annimmt. Rund um die Uhr.</p>
+            <span class="offer-pfeil" aria-hidden="true">→</span>
           </a>
         </div>
       </div>

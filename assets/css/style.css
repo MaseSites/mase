@@ -1035,48 +1035,90 @@ html.intro-zoom.intro-fahrt .hero-deko {
 
 /* ---------- Angebots-Index (3 Produkte als typografische Zeilen) ---------- */
 
+/* Redaktionelle Leistungs-Liste: Nummer, grosser Titel, ein Satz,
+   Pfeil-Kreis. Ohne Preise - die stehen auf der Leistungs- und der
+   Preisseite, hier zaehlt die Neugier. */
 .offer-list { border-top: 1px solid var(--line-strong); }
 
 a.offer-row {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  grid-template-areas: "titel preis" "text text";
-  align-items: baseline;
-  gap: 10px 28px;
-  padding: 30px 8px;
+  grid-template-columns: 52px minmax(0, 1fr) auto;
+  grid-template-areas: "nr titel pfeil" "nr text pfeil";
+  align-items: center;
+  gap: 6px 24px;
+  padding: 34px 8px;
   border-bottom: 1px solid var(--line-strong);
   color: var(--ink);
   transition: background 0.25s ease;
 }
-a.offer-row:hover { background: var(--bg-soft); color: var(--ink); }
+/* Jede Leistung traegt die Farbe ihrer Welt auf der Leistungsseite -
+   Webapp blaeulich, KI violett wie der ki-glow, Website warm, die
+   Ueberarbeitung gruen. Bewusst nur als Akzent (Nummer) und beim
+   Ueberfahren (hauchfeine Flaeche + gefuellter Pfeil-Kreis), nicht als
+   dauerhafte Farbflaeche - die Liste soll ruhig bleiben. Verdrahtet
+   ueber das Sprungziel, damit Farbe und Ziel nie auseinanderlaufen. */
+a.offer-row[href$="#website"]        { --of: #A87C4F; --of-tint: rgba(168, 124, 79, 0.07); }
+a.offer-row[href$="#ueberarbeitung"] { --of: #3E6B4F; --of-tint: rgba(62, 107, 79, 0.06); }
+a.offer-row[href$="#webapp"]         { --of: #3E5F82; --of-tint: rgba(62, 95, 130, 0.07); }
+a.offer-row[href$="#ki"]             { --of: #7C3AED; --of-tint: rgba(124, 58, 237, 0.05); }
+
+a.offer-row:hover { background: var(--of-tint, var(--bg-soft)); color: var(--ink); }
+
+.offer-nr {
+  grid-area: nr;
+  align-self: start;
+  padding-top: 8px;
+  font-family: var(--font-display);
+  font-size: 0.92rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--of, var(--ink-faint));
+  transition: color 0.25s ease;
+}
 
 .offer-row h3 {
   grid-area: titel;
-  font-size: clamp(1.5rem, 2.6vw, 2rem);
-  font-weight: 700;
+  font-size: clamp(1.7rem, 3vw, 2.4rem);
+  font-weight: 750;
   letter-spacing: -0.03em;
+  line-height: 1.1;
   transition: transform 0.3s ease;
 }
 a.offer-row:hover h3 { transform: translateX(8px); }
 
-.offer-row p { grid-area: text; margin: 0; max-width: 60ch; color: var(--ink-soft); font-size: 0.98rem; }
+.offer-row p { grid-area: text; margin: 0; max-width: 56ch; color: var(--ink-soft); font-size: 0.98rem; }
 
-/* Schmale Screens: Titel, Text, Preis sauber untereinander */
+/* Pfeil im Kreis: fuellt sich beim Ueberfahren dunkel und zeigt schraeg
+   nach oben - "da geht es weiter" */
+.offer-pfeil {
+  grid-area: pfeil;
+  width: 54px; height: 54px; flex: none;
+  display: inline-flex; align-items: center; justify-content: center;
+  border: 1.5px solid var(--line-strong);
+  border-radius: 50%;
+  font-size: 1.25rem;
+  color: var(--ink);
+  transition: background 0.28s ease, color 0.28s ease, border-color 0.28s ease, transform 0.28s ease;
+}
+a.offer-row:hover .offer-pfeil {
+  background: var(--of, var(--ink));
+  border-color: var(--of, var(--ink));
+  color: #fff;
+  transform: rotate(-45deg);
+}
+
+/* Schmale Screens: Nummer klein ueber dem Titel, Pfeil-Kreis kompakter */
 @media (max-width: 640px) {
-  a.offer-row { grid-template-columns: 1fr; grid-template-areas: "titel" "text" "preis"; gap: 8px; padding: 24px 4px; }
-  .offer-row .offer-price { justify-self: start; margin-top: 4px; }
+  a.offer-row {
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas: "nr pfeil" "titel pfeil" "text pfeil";
+    gap: 4px 18px;
+    padding: 26px 4px;
+  }
+  .offer-nr { padding-top: 0; margin-bottom: 2px; }
+  .offer-row h3 { font-size: 1.55rem; }
+  .offer-pfeil { width: 46px; height: 46px; font-size: 1.1rem; align-self: center; }
 }
-
-.offer-row .offer-price {
-  grid-area: preis;
-  display: inline-flex; align-items: center; gap: 14px;
-  justify-self: end; align-self: baseline;
-  font-weight: 700;
-  font-size: 1.05rem;
-  white-space: nowrap;
-}
-.offer-row .offer-price .arrow { transition: transform 0.3s ease; }
-a.offer-row:hover .offer-price .arrow { transform: translateX(5px); }
 
 /* ---------- Schritt-Karten (Prozess) ---------- */
 
@@ -1130,7 +1172,11 @@ a.offer-row:hover .offer-price .arrow { transform: translateX(5px); }
 
 /* ---------- KI-Bot Sektion / Chat-Demo ---------- */
 
-.bot-section { background: transparent; border-top: 1px solid var(--line-strong); padding: 60px 0 0; }
+/* Kein eigener Rahmen und kein eigenes Padding: Die Sektion (.tight)
+   bringt den Rhythmus schon mit, und die Leistungs-Liste darüber
+   schliesst bereits mit einer Linie ab. Vorher ergab das eine doppelte
+   Trennlinie und 116px Abstand statt der 56px aller anderen Sektionen. */
+.bot-section { background: transparent; padding: 0; }
 .bot-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: center; }
 
 .steps.cols-3 { grid-template-columns: repeat(3, 1fr); }
@@ -1305,16 +1351,28 @@ a.work-card:hover { color: inherit; }
 
 /* ---------- Großer CTA-Block ---------- */
 
+/* Dunkle Espresso-Karte statt transparent schwebendem Text: Die Seite
+   endet damit mit einem klaren Block statt auszufransen. Gilt bewusst
+   auf allen Seiten, die den Abschluss-Block nutzen. */
 .big-cta {
-  background: transparent;
-  color: var(--ink);
-  border-top: 1px solid var(--line-strong);
-  padding: 64px 0 8px;
+  background: var(--ink);
+  color: var(--bg);
+  border-radius: var(--radius-xl);
+  padding: 64px 44px;
   text-align: center;
 }
-.big-cta h2 { margin-bottom: 14px; }
-.big-cta p { color: var(--ink-soft); max-width: 520px; margin: 0 auto 30px; }
+.big-cta h2 { margin-bottom: 14px; color: var(--bg); }
+.big-cta p { color: rgba(246, 241, 231, 0.72); max-width: 520px; margin: 0 auto 30px; }
 .big-cta .hero-ctas { justify-content: center; margin-bottom: 0; }
+/* Knöpfe auf dunklem Grund umgekehrt */
+.big-cta .btn-primary {
+  background: var(--bg);
+  color: var(--ink);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.35);
+}
+.big-cta .btn-primary:hover { background: #fff; color: var(--ink); }
+.big-cta .btn-ghost { color: var(--bg); border-color: rgba(246, 241, 231, 0.35); }
+.big-cta .btn-ghost:hover { color: #fff; border-color: rgba(246, 241, 231, 0.7); }
 
 /* ---------- Footer ---------- */
 
@@ -1709,8 +1767,6 @@ body.gescrollt .scroll-cue { opacity: 0; pointer-events: none; }
   .steps, .steps.cols-3, .why-grid, .values-grid { grid-template-columns: repeat(2, 1fr); }
   .contact-grid { grid-template-columns: 1fr; }
   .work-grid, .card-grid.cols-3, .usecase-grid, .price-grid { grid-template-columns: repeat(2, 1fr); }
-  a.offer-row { grid-template-columns: 1fr auto; }
-  .offer-row p { grid-column: 1 / -1; }
   .bot-grid, .about-teaser { grid-template-columns: 1fr; gap: 36px; }
   .footer-grid { grid-template-columns: 1fr 1fr; }
   .price-card.featured { transform: none; }
@@ -1736,9 +1792,6 @@ body.gescrollt .scroll-cue { opacity: 0; pointer-events: none; }
   .site-header { top: 10px; padding: 0 10px; }
   .header-inner { padding: 7px 8px 7px 18px; }
   .steps, .steps.cols-3, .why-grid, .values-grid, .work-grid, .card-grid.cols-3, .card-grid.cols-2, .usecase-grid, .price-grid, .form-grid { grid-template-columns: 1fr; }
-  a.offer-row { grid-template-columns: 1fr; padding: 26px 2px; }
-  .offer-row .offer-price { justify-self: start; }
-  .bot-section { padding: 36px 22px; }
   .form-field.full { grid-column: auto; }
   .about-teaser { padding: 28px; }
   .big-cta { padding: 52px 24px; }
@@ -3000,4 +3053,8 @@ html.uu-bau .uu-szene { display: flex; }
   /* Chat-Demo einen Tick kompakter, damit die Sektion nicht fast
      anderthalb Bildschirme einnimmt */
   .chat-body { height: 230px; }
+
+  /* Einzelne Sektions-Knöpfe ("Mehr über …") ebenfalls volle Breite,
+     damit sie nicht als lose, unterschiedlich breite Klötze hängen */
+  .bot-grid .btn, .about-teaser .btn { width: 100%; justify-content: center; }
 }
