@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/style.css?v=29">
+  <link rel="stylesheet" href="assets/css/style.css?v=30">
 </head>
 <body>
 
@@ -85,21 +85,37 @@
                   <input id="f-telefon" name="telefon" type="tel" autocomplete="tel" placeholder="+41 …">
                 </div>
                 <div class="form-field">
-                  <label for="f-branche">Branche</label>
-                  <select id="f-branche" name="branche">
-                    <option value="Restaurant">Restaurant</option>
-                    <option value="Event">Event</option>
-                    <option value="Friseur">Friseur</option>
-                    <option value="Onlineshop">Onlineshop</option>
-                    <option value="App">App</option>
-                    <option value="Anderes" selected>Anderes</option>
-                  </select>
+                  <label for="f-branche">Branche <span class="opt">(optional)</span></label>
+                  <!-- Freies Textfeld mit Vorschlagsliste: tippen ODER aus der
+                       Liste wählen. Eine reine Auswahlliste hätte nie alle
+                       Branchen abgedeckt. -->
+                  <input id="f-branche" name="branche" type="text" maxlength="60"
+                         list="branchen-liste" autocomplete="organization-title"
+                         placeholder="z. B. Schreinerei – frei eintippen">
+                  <datalist id="branchen-liste">
+                    <option value="Restaurant / Café"></option>
+                    <option value="Coiffeur / Beauty"></option>
+                    <option value="Handwerk / Bau"></option>
+                    <option value="Garage / Autohandel"></option>
+                    <option value="Arztpraxis / Therapie"></option>
+                    <option value="Fitness / Sport"></option>
+                    <option value="Onlineshop / Handel"></option>
+                    <option value="Beratung / Dienstleistung"></option>
+                    <option value="Verein / Event"></option>
+                    <option value="Immobilien"></option>
+                  </datalist>
                 </div>
                 <div class="form-field full">
-                  <label>Ich interessiere mich für …</label>
+                  <label>Ich interessiere mich für … <span class="opt">(mehrere möglich)</span></label>
+                  <!-- Bewusst nichts vorangehakt: war "Website" vorgewählt,
+                       hat ein Klick darauf es abgewählt statt ausgewählt –
+                       das wirkte, als ginge nur eine Auswahl. -->
                   <div class="check-row">
-                    <label class="check-pill"><input type="checkbox" name="interesse" value="Website" checked><span>Website</span></label>
-                    <label class="check-pill"><input type="checkbox" name="interesse" value="KI-Bot"><span>KI-Bot</span></label>
+                    <label class="check-pill"><input type="checkbox" name="interesse" value="Neue Website"><span>Neue Website</span></label>
+                    <label class="check-pill"><input type="checkbox" name="interesse" value="Überarbeitung"><span>Überarbeitung</span></label>
+                    <label class="check-pill"><input type="checkbox" name="interesse" value="Webapp"><span>Webapp</span></label>
+                    <label class="check-pill"><input type="checkbox" name="interesse" value="KI-Assistent"><span>KI-Assistent</span></label>
+                    <label class="check-pill"><input type="checkbox" name="interesse" value="Noch unklar"><span>Weiss ich noch nicht</span></label>
                   </div>
                 </div>
                 <div class="form-field full">
@@ -201,6 +217,6 @@
 
   <script src="assets/js/sanft.js?v=1"></script>
   <script src="assets/js/protokoll.js?v=20"></script>
-  <script src="assets/js/site.js?v=22"></script>
+  <script src="assets/js/site.js?v=24"></script>
 </body>
 </html>

@@ -722,6 +722,16 @@ html.intro-zoom.intro-fahrt .hero-deko {
   color: var(--ink);
 }
 .hero-deko .deko-wort i { color: var(--accent); font-style: normal; }
+/* Home-Balken: sitzt unten IM Bildschirm, nur beim Handy-Rahmen sichtbar */
+.hero-deko .deko-griff {
+  display: none;
+  position: absolute;
+  left: 50%; top: -24px;
+  transform: translateX(-50%);
+  width: 46px; height: 4px;
+  border-radius: 999px;
+  background: rgba(31, 26, 20, 0.55);
+}
 
 @media (prefers-reduced-motion: reduce) {
   html.intro-zoom .hero-start { transform: none; border-radius: 0; box-shadow: none; }
@@ -1741,16 +1751,30 @@ body.gescrollt .scroll-cue { opacity: 0; pointer-events: none; }
   .hero-vollbild .preview-site { padding: calc(var(--header-h) + 6px) 16px 212px; }
   .hero-vollbild .ps-links { display: none; }
   .hero-vollbild .ps-hero-text strong { font-size: 1.3rem; }
-  html.intro-zoom .hero-buehne {
+  /* Auf dem Handy ist der Rahmen ein Smartphone, kein Monitor: runde
+     Ecken, dünner Rand, Home-Balken im Bildschirm - und darunter nur
+     der Schriftzug. Standfuss und Sockel gehören dem Desktop.
+     (Der frühere Selektor .hero-buehne stammte aus einer alten
+     Markup-Fassung und traf nichts mehr - darum sah das Intro auf dem
+     Handy wie ein gequetschter Monitor aus.) */
+  html.intro-zoom .hero-start {
     transform: scale(0.44);
-    border-radius: 34px;
+    border-radius: 76px;
     box-shadow:
-      0 0 0 14px #1F1A14,
-      0 0 0 16px rgba(0, 0, 0, 0.18),
-      0 36px 90px rgba(44, 33, 24, 0.4);
+      0 0 0 15px #1F1A14,
+      0 0 0 17px rgba(0, 0, 0, 0.22),
+      0 30px 80px rgba(44, 33, 24, 0.42);
   }
-  .hero-deko { top: calc(68.6% + 7px); }
-  .hero-deko .deko-wort { font-size: 1.2rem; margin-top: 14px; }
+  /* Fahrt: gleicher Wachstumsfaktor wie der Bildschirm (1/0.44) */
+  html.intro-zoom.intro-fahrt .hero-deko {
+    top: calc(100% + 24px);
+    transform: translateX(-50%) scale(2.27);
+  }
+  .hero-deko { top: calc(68.6% + 8px); }
+  .hero-deko .deko-stand,
+  .hero-deko .deko-base { display: none; }
+  .hero-deko .deko-wort { font-size: 1.15rem; margin-top: 16px; }
+  .hero-deko .deko-griff { display: block; }
   .ps-hero { height: 140px; }
   .ps-cards { grid-template-columns: repeat(3, 1fr); }
   .footer-grid { grid-template-columns: 1fr; gap: 28px; }
@@ -2950,4 +2974,30 @@ html.uu-bau .uu-szene { display: flex; }
 .header-start { padding: 10px 20px; font-size: 0.92rem; white-space: nowrap; }
 @media (max-width: 1020px) {
   .header-start { display: none; }
+}
+
+/* ---------- Startseite auf dem Handy: Feinschliff ----------
+   Gehört zum Handy-Intro-Umbau: Knöpfe und Vertrauens-Zeile sahen auf
+   schmalen Bildschirmen zufällig gestapelt aus. */
+@media (max-width: 720px) {
+  /* Aktions-Knöpfe (Hero und Abschluss): volle Breite statt
+     unterschiedlich breiter, linksbündig hängender Stapel */
+  .hero-ctas { flex-direction: column; align-items: stretch; gap: 10px; }
+  .hero-ctas .btn { width: 100%; justify-content: center; }
+
+  /* Vertrauens-Zeile: untereinander mit Häkchen. Die Trennpunkte
+     schwebten nach dem Umbruch verloren am Zeilenanfang. */
+  .trust-zeile { flex-direction: column; align-items: center; gap: 9px; }
+  .trust-zeile .punkt { display: none; }
+  .trust-zeile > span:not(.punkt) { display: inline-flex; align-items: center; gap: 8px; }
+  .trust-zeile > span:not(.punkt)::before {
+    content: "✓";
+    font-weight: 700;
+    font-size: 0.82rem;
+    color: var(--green);
+  }
+
+  /* Chat-Demo einen Tick kompakter, damit die Sektion nicht fast
+     anderthalb Bildschirme einnimmt */
+  .chat-body { height: 230px; }
 }

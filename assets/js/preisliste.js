@@ -1,7 +1,8 @@
 /* masesites – Preisliste.
-   Jede Zeile lässt sich einzeln anfragen. Gesammelt wird nur, was
-   angeklickt wurde; beim Wechsel aufs Kontaktformular landet die
-   Auswahl als vorformulierte Nachricht (site.js liest ms_paket aus).
+   Jede Zeile lässt sich einzeln anfragen. Beim Wechsel aufs
+   Kontaktformular wird nur die Leistung übergeben (ms_interesse),
+   nicht Paketname oder Preis: dort werden damit die passenden
+   Interessen angehakt, die Nachricht bleibt leer.
    Bewusst kein Rechner: die Liste soll lesbar bleiben, die
    verbindliche Zahl kommt mit der Offerte. */
 
@@ -36,15 +37,19 @@
     merke();
   }
 
-  /* Auswahl für das Kontaktformular hinterlegen */
+  /* Auswahl für das Kontaktformular hinterlegen.
+     Bewusst NUR die Leistung, ohne Paketname und ohne Preis: Im
+     Kontaktformular werden damit die passenden Interessen angehakt.
+     Die Nachricht bleibt leer, damit dort niemand gegen eine bereits
+     ausgefüllte Preisliste anschreiben muss. */
   function merke() {
+    var interessen = [];
+    gewaehlt.forEach(function (g) {
+      if (g.interesse && interessen.indexOf(g.interesse) === -1) interessen.push(g.interesse);
+    });
     try {
-      sessionStorage.setItem(
-        "ms_paket",
-        "Ich interessiere mich für:\n" +
-          gewaehlt.map(function (t) { return "- " + t; }).join("\n") +
-          "\n\nWorum es geht: "
-      );
+      if (interessen.length) sessionStorage.setItem("ms_interesse", interessen.join("|"));
+      else sessionStorage.removeItem("ms_interesse");
     } catch (e) { /* Speichern gesperrt: dann eben ohne Vorbelegung */ }
   }
 
@@ -52,14 +57,16 @@
     var knopf = zeile.querySelector(".pl-anfragen");
     if (!knopf) return;
     var titel = zeile.getAttribute("data-anfrage");
+    var interesse = zeile.getAttribute("data-interesse") || "";
     knopf.addEventListener("click", function () {
-      var i = gewaehlt.indexOf(titel);
+      var i = -1;
+      gewaehlt.forEach(function (g, n) { if (g.titel === titel) i = n; });
       if (i > -1) {
         gewaehlt.splice(i, 1);
         knopf.classList.remove("gewaehlt");
         knopf.textContent = "Anfragen";
       } else {
-        gewaehlt.push(titel);
+        gewaehlt.push({ titel: titel, interesse: interesse });
         knopf.classList.add("gewaehlt");
         knopf.textContent = "Ausgewählt ✓";
       }

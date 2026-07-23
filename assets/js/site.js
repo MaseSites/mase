@@ -299,13 +299,20 @@
 
   var contactForm = document.getElementById("contact-form");
   if (contactForm) {
-    /* Wunschpaket aus dem Preis-Rechner in die Nachricht übernehmen */
-    var paket = sessionStorage.getItem("ms_paket");
-    if (paket) {
-      var nachrichtFeld = contactForm.querySelector('[name="nachricht"]');
-      if (nachrichtFeld && !nachrichtFeld.value) nachrichtFeld.value = paket;
-      sessionStorage.removeItem("ms_paket");
+    /* Von der Preisliste kommend nur die passenden Interessen anhaken.
+       Die Nachricht bleibt bewusst leer: Wer hier landet, soll frei
+       schreiben können, statt eine vorgefertigte Paketliste samt Preisen
+       vorzufinden – die kennen wir ohnehin. */
+    var interesse = sessionStorage.getItem("ms_interesse");
+    if (interesse) {
+      var gewuenscht = interesse.split("|");
+      contactForm.querySelectorAll('[name="interesse"]').forEach(function (c) {
+        if (gewuenscht.indexOf(c.value) > -1) c.checked = true;
+      });
+      sessionStorage.removeItem("ms_interesse");
     }
+    /* Altlast aus einer früheren Fassung wegräumen, falls noch gesetzt */
+    sessionStorage.removeItem("ms_paket");
 
     contactForm.addEventListener("submit", function (e) {
       e.preventDefault();
@@ -332,7 +339,7 @@
         "Name: " + get("name") + "\n" +
         "E-Mail: " + get("email") + "\n" +
         (get("telefon") ? "Telefon: " + get("telefon") + "\n" : "") +
-        "Branche: " + get("branche") + "\n" +
+        (get("branche") ? "Branche: " + get("branche") + "\n" : "") +
         "Interesse: " + (interessen.join(", ") || "keine Angabe") + "\n\n" +
         get("nachricht");
 
