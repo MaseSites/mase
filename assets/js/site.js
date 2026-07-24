@@ -107,6 +107,22 @@
 
   var BOT_NETZFEHLER = "Das hat gerade etwas länger gedauert als sonst. Stell mir die Frage bitte gleich nochmal – oder schreib an info@masesites.ch, wir melden uns zuverlässig.";
 
+  /* Dezenter Schreib-Cursor für den Tipp-Effekt – einmal global eingefügt,
+     damit die ausgelieferte style.css unangetastet bleibt. currentColor passt
+     sich automatisch an Hell/Dunkel und die Sprechblasenfarbe an. */
+  (function () {
+    if (document.getElementById("ms-tipp-stil")) return;
+    var st = document.createElement("style");
+    st.id = "ms-tipp-stil";
+    st.textContent =
+      ".msg.bot .ms-caret{display:inline-block;width:2px;height:1.05em;margin-left:2px;" +
+      "vertical-align:-2px;background:currentColor;opacity:.5;border-radius:1px;" +
+      "animation:msCaret 1s steps(1) infinite}" +
+      "@keyframes msCaret{50%{opacity:0}}" +
+      "@media (prefers-reduced-motion: reduce){.msg.bot .ms-caret{animation:none;opacity:.35}}";
+    (document.head || document.documentElement).appendChild(st);
+  })();
+
   /* Stabile, anonyme Besucher-Kennung, damit der Admin Gespräche pro Besucher
      getrennt sieht (kein Login nötig, keine personenbezogene Kennung). */
   function botChatId() {
@@ -191,6 +207,60 @@
       return div;
     }
 
+    /* Bot-Antwort Zeichen für Zeichen einblenden (wie ein tippender Assistent).
+       Am Ende werden Links klickbar. Bei reduzierter Bewegung sofort ganz da.
+       Ein Klick in den Verlauf springt ans Ende (überspringt das Tippen). */
+    var tippenGerade = null;
+    function tippeMsg(text, fertig) {
+      var div = document.createElement("div");
+      div.className = "msg bot";
+      var span = document.createElement("span");
+      div.appendChild(span);
+      var caret = document.createElement("span");
+      caret.className = "ms-caret";
+      caret.setAttribute("aria-hidden", "true");
+      div.appendChild(caret);
+      body.appendChild(div);
+      var erledigt = false;
+
+      function abschluss() {
+        if (erledigt) return;
+        erledigt = true;
+        if (timer) { clearTimeout(timer); timer = null; }
+        div.textContent = "";
+        botTextInDom(div, text);        /* jetzt mit klickbaren Links */
+        body.scrollTop = body.scrollHeight;
+        tippenGerade = null;
+        if (typeof fertig === "function") fertig();
+      }
+
+      var timer = null;
+      if (reducedMotion || text.length < 2) {
+        span.textContent = text;
+        abschluss();
+        return;
+      }
+
+      /* Gleichmässiges Tempo, Gesamtdauer gedeckelt (~2,5 s), damit auch lange
+         Antworten nicht ewig rattern. */
+      var i = 0, len = text.length;
+      var proSchritt = Math.max(1, Math.round(len / 140));
+      function tick() {
+        i = Math.min(len, i + proSchritt);
+        span.textContent = text.slice(0, i);
+        body.scrollTop = body.scrollHeight;
+        if (i < len) timer = setTimeout(tick, 18);
+        else abschluss();
+      }
+      tippenGerade = abschluss;   /* erlaubt „überspringen" von aussen */
+      timer = setTimeout(tick, 18);
+    }
+
+    /* Klick/Tipp in den Verlauf: laufendes Tippen sofort fertig zeigen. */
+    body.addEventListener("click", function (e) {
+      if (tippenGerade && e.target.tagName !== "A") tippenGerade();
+    });
+
     /* Eine Anfrage an /api/bot mit eigenem Zeitlimit. Wirft bei Netz-, Timeout-
        oder Serverproblem, damit darüber automatisch ein neuer Versuch startet. */
     function botAnfrage() {
@@ -230,24 +300,26 @@
       (function versuch(n) {
         botAnfrage().then(function (daten) {
           typing.remove();
-          addMsg(daten.reply, "bot");
           verlauf.push({ von: "bot", text: daten.reply });
-          busy = false;
-          if (input && window.matchMedia("(pointer: fine)").matches) input.focus();
+          tippeMsg(daten.reply, function () {
+            busy = false;
+            if (input && window.matchMedia("(pointer: fine)").matches) input.focus();
+          });
         }).catch(function () {
           if (n < maxVersuche) {
             setTimeout(function () { versuch(n + 1); }, 800 * n);
             return;
           }
           typing.remove();
-          addMsg(BOT_NETZFEHLER, "bot");
-          busy = false;
+          tippeMsg(BOT_NETZFEHLER, function () { busy = false; });
         });
       })(1);
     }
 
     form.addEventListener("submit", function (e) {
       e.preventDefault();
+      if (tippenGerade) tippenGerade();   /* tippt noch? erst fertig zeigen */
+      if (busy) return;                    /* Antwort noch unterwegs: Eingabe behalten */
       var v = input.value.trim();
       if (!v) return;
       input.value = "";
