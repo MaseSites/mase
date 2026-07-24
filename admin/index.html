@@ -604,48 +604,23 @@
             </div>
 
             <div class="dash-card" style="margin-bottom: 20px;">
-              <h3>KI-Bot (Chat-Assistent)</h3>
+              <h3>Chat-Bot: Verhalten</h3>
               <p class="dash-hinweis" id="ki-status" style="margin-top: 0;"></p>
               <form id="ki-form" class="auth-form">
-                <div class="auth-row">
-                  <div class="form-field">
-                    <label for="ki-provider">Anbieter</label>
-                    <select id="ki-provider" name="provider">
-                      <option value="groq">Groq – gratis, ohne Kreditkarte (empfohlen)</option>
-                      <option value="gemini">Google Gemini</option>
-                      <option value="mistral">Mistral (EU)</option>
-                      <option value="openai">OpenAI</option>
-                      <option value="openrouter">OpenRouter</option>
-                    </select>
-                  </div>
-                  <div class="form-field">
-                    <label for="ki-modell">Modell <span class="opt">(optional)</span></label>
-                    <input id="ki-modell" name="modell" type="text" maxlength="120" placeholder="Standard des Anbieters">
-                  </div>
-                </div>
                 <div class="form-field">
-                  <label for="ki-key">API-Schlüssel</label>
-                  <input id="ki-key" name="key" type="password" autocomplete="off" maxlength="400" placeholder="Schlüssel einfügen">
-                  <small class="feld-hinweis" id="ki-key-hinweis">Der Schlüssel wird verschlüsselt auf dem Server gespeichert und nie an Besucher gesendet. Leer lassen, um den bestehenden Schlüssel zu behalten.</small>
+                  <label for="ki-system-zusatz">So soll der Bot reagieren und antworten</label>
+                  <textarea id="ki-system-zusatz" name="systemZusatz" rows="10" maxlength="4000" placeholder="Beispiele:&#10;Sei besonders herzlich und verwende ab und zu ein Emoji.&#10;Frage bei Interesse immer nach der Branche.&#10;Erwähne, dass wir gerade Kapazität für zwei neue Projekte haben.&#10;Empfiehl bei kleinem Budget zuerst die Überarbeitung statt einer neuen Website."></textarea>
+                  <small class="feld-hinweis">Hier bestimmst du Ton und Verhalten des Bots. Was er über masesites weiss (Leistungen, Preise, Ablauf) und dass er Termine aufnehmen kann, ist fest eingebaut und bleibt immer erhalten – du kannst hier also nichts kaputt machen.</small>
                 </div>
-                <div class="form-field">
-                  <label for="ki-system-zusatz">Zusätzliche Anweisungen für den Bot <span class="opt">(optional)</span></label>
-                  <textarea id="ki-system-zusatz" name="systemZusatz" rows="5" maxlength="4000" placeholder="z. B. Besonderheiten, aktuelle Aktionen, Dinge, die der Bot betonen oder vermeiden soll …"></textarea>
-                  <small class="feld-hinweis">Wird an die fest einprogrammierten Anweisungen angehängt (Wissen über masesites, Preise, Sicherheitsregeln, Termin-Erfassung) – die bleiben immer erhalten, damit der Bot nichts Falsches verspricht oder seine Anweisungen preisgibt. Hier kannst du ergänzen, zum Beispiel Ton, aktuelle Hinweise oder zusätzliches Wissen.</small>
-                </div>
-                <label class="check-zeile" for="ki-an" style="display:flex;align-items:center;gap:10px;margin:6px 0 14px;">
-                  <input id="ki-an" name="an" type="checkbox">
-                  <span>KI-Bot aktiv (Besucher bekommen echte KI-Antworten)</span>
-                </label>
                 <p class="form-error" id="ki-fehler" role="alert"></p>
                 <div class="panel-aktionen">
-                  <button class="btn btn-primary" type="submit">KI-Einstellungen speichern</button>
+                  <button class="btn btn-primary" type="submit">Speichern</button>
                 </div>
                 <div class="form-success" id="ki-ok" role="status">
-                  <strong>Gespeichert!</strong> Der KI-Bot nutzt jetzt diese Einstellungen.
+                  <strong>Gespeichert!</strong> Der Bot verhält sich ab sofort so.
                 </div>
               </form>
-              <p class="dash-hinweis">Groq-Schlüssel gratis unter <b>console.groq.com</b> · Gemini unter <b>aistudio.google.com/apikey</b>. Für Schweizer Besucher ist Googles Gratis-Tier laut Bedingungen nicht erlaubt – dort Groq nutzen oder Gemini nur mit bezahltem Google-Konto.</p>
+              <p class="dash-hinweis" id="ki-technik" style="margin-top: 16px;"></p>
             </div>
 
             <div class="panel-grid">
@@ -693,6 +668,6 @@
 
   <script src="../assets/js/sanft.js?v=1"></script>
   <script src="../assets/js/daten.js?v=22"></script>
-  <script src="../assets/js/admin.js?v=26"></script>
+  <script src="../assets/js/admin.js?v=27"></script>
 </body>
 </html>

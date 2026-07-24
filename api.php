@@ -1726,21 +1726,33 @@ route('GET', '/api/admin/daten', 'admin', function () {
 
 /* KI-Bot konfigurieren: Anbieter, Modell, Schlüssel (verschlüsselt), an/aus. */
 route('PUT', '/api/admin/ki', 'admin', function ($p, $body) {
-    $erlaubt = ['groq', 'gemini', 'mistral', 'openai', 'openrouter'];
-    $provider = in_array($body['provider'] ?? '', $erlaubt, true) ? $body['provider'] : 'groq';
-    setzeEinstellung('ki_provider', $provider);
-    setzeEinstellung('ki_modell', s($body['modell'] ?? '', 120));
+    /* WICHTIG: Nur Felder anfassen, die auch wirklich mitgeschickt wurden.
+       Sonst wuerde ein Speichern, das nur den System-Prompt enthaelt,
+       Anbieter und Modell ueberschreiben und den Bot ausschalten - der
+       Schluessel des Kollegen waere zwar noch da, der Bot aber tot. */
+    if (array_key_exists('provider', $body)) {
+        $erlaubt = ['groq', 'gemini', 'mistral', 'openai', 'openrouter'];
+        $provider = in_array($body['provider'], $erlaubt, true) ? $body['provider'] : 'groq';
+        setzeEinstellung('ki_provider', $provider);
+    }
+    if (array_key_exists('modell', $body)) {
+        setzeEinstellung('ki_modell', s($body['modell'], 120));
+    }
     /* Leeres Schlüsselfeld = bestehenden Schlüssel behalten. */
     $key = (string)($body['key'] ?? '');
     if ($key !== '') {
         setzeEinstellung('ki_key_enc', verschluessele(trim($key)));
     }
-    setzeEinstellung('ki_an', !empty($body['an']) ? '1' : '0');
-    /* Zusatz zum System-Prompt: bis zu 4000 Zeichen, unter Einstellungen ->
-       Chat-Bot editierbar. Wird an den festen Kern angehängt, siehe
-       botSystemPrompt(). */
-    setzeEinstellung('ki_system_zusatz', s($body['systemZusatz'] ?? '', 4000));
-    schreibeLog('Admin', clientIp(), 'admin', 'KI-Bot konfiguriert', $provider);
+    if (array_key_exists('an', $body)) {
+        setzeEinstellung('ki_an', !empty($body['an']) ? '1' : '0');
+    }
+    if (array_key_exists('systemZusatz', $body)) {
+        /* Zusatz zum System-Prompt: bis zu 4000 Zeichen, unter
+           Einstellungen -> Chat-Bot editierbar. Wird an den festen Kern
+           angehängt, siehe botSystemPrompt(). */
+        setzeEinstellung('ki_system_zusatz', s($body['systemZusatz'], 4000));
+    }
+    schreibeLog('Admin', clientIp(), 'admin', 'KI-Bot konfiguriert', einstellung('ki_provider') ?: 'groq');
     $ki = kiEinstellungen();
     antwortJson(200, ['ok' => true, 'ki' => [
         'provider' => $ki['provider'],

@@ -1327,53 +1327,44 @@
 
   function renderKiConfig() {
     var cfg = D.kiConfig();
-    var prov = document.getElementById("ki-provider");
-    var modell = document.getElementById("ki-modell");
-    var key = document.getElementById("ki-key");
-    var an = document.getElementById("ki-an");
     var zusatz = document.getElementById("ki-system-zusatz");
     var status = document.getElementById("ki-status");
-    if (!prov) return;
-    prov.value = cfg.provider || "groq";
-    modell.value = cfg.modell || "";
-    modell.placeholder = "Standard: " + (cfg.standard || "automatisch");
-    an.checked = !!cfg.an;
-    if (zusatz) zusatz.value = cfg.systemZusatz || "";
-    key.value = "";
-    key.placeholder = cfg.konfiguriert ? "•••••••• gespeichert – leer lassen zum Behalten" : "Schlüssel einfügen";
+    var technik = document.getElementById("ki-technik");
+    if (!zusatz) return;
+    zusatz.value = cfg.systemZusatz || "";
     if (status) {
       status.textContent = cfg.konfiguriert
-        ? ("Schlüssel hinterlegt · Bot ist " + (cfg.an ? "aktiv" : "ausgeschaltet") + ".")
-        : "Noch kein Schlüssel hinterlegt – der Bot antwortet mit einem freundlichen Hinweis, bis du einen einträgst.";
+        ? (cfg.an
+            ? "Der Bot ist aktiv und beantwortet Besucherfragen."
+            : "Der Bot ist eingerichtet, aber gerade ausgeschaltet.")
+        : "Der Bot ist noch nicht eingerichtet und antwortet vorerst mit einem freundlichen Hinweis.";
+    }
+    /* Technik nur zum Ablesen, absichtlich nicht bearbeitbar: Anbieter und
+       Schlüssel sind eingerichtet und sollen im Alltag nicht aus Versehen
+       verstellt werden. */
+    if (technik) {
+      technik.textContent = "Technik (eingerichtet, hier nicht änderbar): "
+        + (cfg.provider || "groq")
+        + (cfg.modell ? " · " + cfg.modell : " · " + (cfg.standard || "Standardmodell"))
+        + (cfg.konfiguriert ? " · Schlüssel hinterlegt" : " · noch kein Schlüssel");
     }
   }
 
   var kiForm = document.getElementById("ki-form");
   if (kiForm) {
-    var provSelect = document.getElementById("ki-provider");
-    if (provSelect) {
-      provSelect.addEventListener("change", function () {
-        var m = document.getElementById("ki-modell");
-        var std = { groq: "openai/gpt-oss-120b", gemini: "gemini-2.5-flash", mistral: "mistral-small-latest", openai: "gpt-4o-mini", openrouter: "meta-llama/llama-3.3-70b-instruct" };
-        m.placeholder = "Standard: " + (std[provSelect.value] || "automatisch");
-      });
-    }
     kiForm.addEventListener("submit", function (e) {
       e.preventDefault();
       zeigeFehler("ki-fehler", "");
-      var cfg = {
-        provider: document.getElementById("ki-provider").value,
-        modell: document.getElementById("ki-modell").value.trim(),
-        key: document.getElementById("ki-key").value,
-        an: document.getElementById("ki-an").checked,
-        systemZusatz: document.getElementById("ki-system-zusatz").value.trim()
-      };
+      /* Bewusst NUR der System-Prompt: Anbieter, Modell, Schlüssel und
+         An/Aus werden nicht mitgeschickt und bleiben dadurch serverseitig
+         unangetastet. */
+      var cfg = { systemZusatz: document.getElementById("ki-system-zusatz").value.trim() };
       D.kiSpeichern(cfg).then(function () {
         renderKiConfig();
         var ok = document.getElementById("ki-ok");
         ok.classList.add("show");
         setTimeout(function () { ok.classList.remove("show"); }, 3000);
-        adminLog("KI-Bot konfiguriert", cfg.provider);
+        adminLog("Chat-Bot-Verhalten geändert", "");
       }).catch(function (fehler) {
         zeigeFehler("ki-fehler", fehler.message);
       });

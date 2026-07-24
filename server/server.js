@@ -1150,19 +1150,27 @@ route("GET", "/api/admin/daten", "admin", (req, res) => {
   antwortJson(res, 200, antwort);
 });
 
-/* KI-Bot konfigurieren: Anbieter, Modell, Schlüssel (verschlüsselt), an/aus. */
+/* KI-Bot konfigurieren. WICHTIG: Nur Felder anfassen, die auch wirklich
+   mitgeschickt wurden - sonst wuerde ein Speichern, das nur den
+   System-Prompt enthaelt, Anbieter/Modell ueberschreiben und den Bot
+   ausschalten. */
 route("PUT", "/api/admin/ki", "admin", (req, res, p, body) => {
-  const erlaubt = ["groq", "gemini", "mistral", "openai", "openrouter"];
-  const provider = erlaubt.includes(body.provider) ? body.provider : "groq";
-  setzeEinstellung("ki_provider", provider);
-  setzeEinstellung("ki_modell", s(body.modell, 120));
+  if (Object.prototype.hasOwnProperty.call(body, "provider")) {
+    const erlaubt = ["groq", "gemini", "mistral", "openai", "openrouter"];
+    setzeEinstellung("ki_provider", erlaubt.includes(body.provider) ? body.provider : "groq");
+  }
+  if (Object.prototype.hasOwnProperty.call(body, "modell")) {
+    setzeEinstellung("ki_modell", s(body.modell, 120));
+  }
   const key = String(body.key || "");
   if (key !== "") setzeEinstellung("ki_key_enc", verschluessele(key.trim()));
-  setzeEinstellung("ki_an", body.an ? "1" : "0");
-  /* Zusatz zum System-Prompt: unter Einstellungen -> Chat-Bot editierbar,
-     wird an den festen Kern angehängt, siehe botSystemPrompt(). */
-  setzeEinstellung("ki_system_zusatz", s(body.systemZusatz, 4000));
-  schreibeLog("Admin", clientIp(req), "admin", "KI-Bot konfiguriert", provider);
+  if (Object.prototype.hasOwnProperty.call(body, "an")) {
+    setzeEinstellung("ki_an", body.an ? "1" : "0");
+  }
+  if (Object.prototype.hasOwnProperty.call(body, "systemZusatz")) {
+    setzeEinstellung("ki_system_zusatz", s(body.systemZusatz, 4000));
+  }
+  schreibeLog("Admin", clientIp(req), "admin", "KI-Bot konfiguriert", einstellung("ki_provider") || "groq");
   const ki = kiEinstellungen();
   antwortJson(res, 200, { ok: true, ki: { provider: ki.provider, modell: einstellung("ki_modell") || "", standard: kiStandardModell(ki.provider), an: ki.an, konfiguriert: ki.konfiguriert, systemZusatz: einstellung("ki_system_zusatz") || "" } });
 });
