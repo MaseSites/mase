@@ -250,6 +250,28 @@
   function renderUebersicht() {
     document.getElementById("uebersicht-datum").textContent = D.langesDatum(new Date());
 
+    /* Unlesbare Datensaetze deutlich melden. Ein einzelner beschaedigter
+       Datensatz darf die Anzeige nie stillschweigend auf 0 zerren. */
+    var altBanner = document.getElementById("unlesbar-banner");
+    if (altBanner) altBanner.remove();
+    var u = D.unlesbar();
+    if (u) {
+      var summe = (u.kunden || 0) + (u.mitarbeiter || 0) + (u.log || 0);
+      if (summe > 0) {
+        var banner = document.createElement("div");
+        banner.id = "unlesbar-banner";
+        banner.className = "hinweis-banner";
+        banner.textContent = "Achtung: " + summe + " Datensatz" + (summe === 1 ? "" : "e") +
+          " (Kunden: " + (u.kunden || 0) + ", Mitarbeiter: " + (u.mitarbeiter || 0) +
+          ", Protokoll: " + (u.log || 0) + ") konnte" + (summe === 1 ? "" : "n") +
+          " nicht gelesen werden – vermutlich beschädigt oder mit einem anderen " +
+          "Verschlüsselungs-Schlüssel (daten/geheim.key) geschrieben. " +
+          "Die übrigen Daten werden normal angezeigt.";
+        var kopf = document.getElementById("uebersicht-datum");
+        kopf.parentNode.insertBefore(banner, kopf.nextSibling);
+      }
+    }
+
     var wartend = document.getElementById("uebersicht-wartend");
     wartend.innerHTML = "";
     var liste = wartendeKonten();
@@ -1296,12 +1318,14 @@
     var modell = document.getElementById("ki-modell");
     var key = document.getElementById("ki-key");
     var an = document.getElementById("ki-an");
+    var zusatz = document.getElementById("ki-system-zusatz");
     var status = document.getElementById("ki-status");
     if (!prov) return;
     prov.value = cfg.provider || "groq";
     modell.value = cfg.modell || "";
     modell.placeholder = "Standard: " + (cfg.standard || "automatisch");
     an.checked = !!cfg.an;
+    if (zusatz) zusatz.value = cfg.systemZusatz || "";
     key.value = "";
     key.placeholder = cfg.konfiguriert ? "•••••••• gespeichert – leer lassen zum Behalten" : "Schlüssel einfügen";
     if (status) {
@@ -1328,7 +1352,8 @@
         provider: document.getElementById("ki-provider").value,
         modell: document.getElementById("ki-modell").value.trim(),
         key: document.getElementById("ki-key").value,
-        an: document.getElementById("ki-an").checked
+        an: document.getElementById("ki-an").checked,
+        systemZusatz: document.getElementById("ki-system-zusatz").value.trim()
       };
       D.kiSpeichern(cfg).then(function () {
         renderKiConfig();

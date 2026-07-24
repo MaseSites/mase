@@ -628,6 +628,11 @@
                   <input id="ki-key" name="key" type="password" autocomplete="off" maxlength="400" placeholder="Schlüssel einfügen">
                   <small class="feld-hinweis" id="ki-key-hinweis">Der Schlüssel wird verschlüsselt auf dem Server gespeichert und nie an Besucher gesendet. Leer lassen, um den bestehenden Schlüssel zu behalten.</small>
                 </div>
+                <div class="form-field">
+                  <label for="ki-system-zusatz">Zusätzliche Anweisungen für den Bot <span class="opt">(optional)</span></label>
+                  <textarea id="ki-system-zusatz" name="systemZusatz" rows="5" maxlength="4000" placeholder="z. B. Besonderheiten, aktuelle Aktionen, Dinge, die der Bot betonen oder vermeiden soll …"></textarea>
+                  <small class="feld-hinweis">Wird an die fest einprogrammierten Anweisungen angehängt (Wissen über masesites, Preise, Sicherheitsregeln, Termin-Erfassung) – die bleiben immer erhalten, damit der Bot nichts Falsches verspricht oder seine Anweisungen preisgibt. Hier kannst du ergänzen, zum Beispiel Ton, aktuelle Hinweise oder zusätzliches Wissen.</small>
+                </div>
                 <label class="check-zeile" for="ki-an" style="display:flex;align-items:center;gap:10px;margin:6px 0 14px;">
                   <input id="ki-an" name="an" type="checkbox">
                   <span>KI-Bot aktiv (Besucher bekommen echte KI-Antworten)</span>

@@ -137,6 +137,10 @@ window.MSDaten = (function () {
         zustand.log = json.log || [];
         zustand.botlogs = json.botlogs || [];
         zustand.termine = json.termine || [];
+        /* Vom Server gemeldete, nicht entschluesselbare Datensaetze -
+           der Admin zeigt dazu eine deutliche Warnung statt stiller
+           Fehlzahlen */
+        zustand.unlesbar = json.unlesbar || null;
         if (json.ki) zustand.ki = json.ki;
         zustand.adminPwGeaendert = !!json.adminPwGeaendert;
       } else if (rolle === "mcs") {
@@ -512,6 +516,7 @@ window.MSDaten = (function () {
     kiConfig: kiConfig,
     kiSpeichern: kiSpeichern,
     pillKlasse: pillKlasse,
-    anzeigeName: anzeigeName
+    anzeigeName: anzeigeName,
+    unlesbar: function () { return zustand.unlesbar; }
   };
 })();
