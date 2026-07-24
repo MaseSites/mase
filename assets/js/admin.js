@@ -255,18 +255,31 @@
     var altBanner = document.getElementById("unlesbar-banner");
     if (altBanner) altBanner.remove();
     var u = D.unlesbar();
-    if (u) {
-      var summe = (u.kunden || 0) + (u.mitarbeiter || 0) + (u.log || 0);
-      if (summe > 0) {
+    var defekt = D.defekteListen();
+    if (u || defekt) {
+      var teile = [];
+      if (u) {
+        if (u.kunden) teile.push(u.kunden + "× Kunden");
+        if (u.mitarbeiter) teile.push(u.mitarbeiter + "× Mitarbeiter");
+        if (u.log) teile.push(u.log + "× Protokoll");
+        if (u.chats) teile.push(u.chats + "× Chats");
+        if (u.termine) teile.push(u.termine + "× Termine");
+      }
+      if (teile.length || defekt) {
         var banner = document.createElement("div");
         banner.id = "unlesbar-banner";
         banner.className = "hinweis-banner";
-        banner.textContent = "Achtung: " + summe + " Datensatz" + (summe === 1 ? "" : "e") +
-          " (Kunden: " + (u.kunden || 0) + ", Mitarbeiter: " + (u.mitarbeiter || 0) +
-          ", Protokoll: " + (u.log || 0) + ") konnte" + (summe === 1 ? "" : "n") +
-          " nicht gelesen werden – vermutlich beschädigt oder mit einem anderen " +
-          "Verschlüsselungs-Schlüssel (daten/geheim.key) geschrieben. " +
-          "Die übrigen Daten werden normal angezeigt.";
+        var text = "";
+        if (teile.length) {
+          text += "Achtung: Einzelne Datensätze konnten nicht gelesen werden (" +
+            teile.join(", ") + ") – vermutlich beschädigt oder mit einem anderen " +
+            "Verschlüsselungs-Schlüssel (daten/geheim.key) geschrieben. " +
+            "Alle übrigen Daten werden normal angezeigt. ";
+        }
+        if (defekt) {
+          text += "Diese Bereiche liessen sich gar nicht laden: " + defekt.join(", ") + ".";
+        }
+        banner.textContent = text;
         var kopf = document.getElementById("uebersicht-datum");
         kopf.parentNode.insertBefore(banner, kopf.nextSibling);
       }

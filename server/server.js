@@ -238,7 +238,7 @@ function ladeKundeNachIndex(idx) {
    Datensatz darf NICHT die ganze Liste blockieren - genau das passierte
    frueher und liess /api/admin/daten mit 500 sterben, worauf der Admin
    ueberall 0 zeigte, obwohl die uebrigen Datensaetze intakt waren. */
-const UNLESBAR = { kunden: 0, mitarbeiter: 0, log: 0 };
+const UNLESBAR = { kunden: 0, mitarbeiter: 0, log: 0, chats: 0, termine: 0 };
 
 function alleKunden() {
   const liste = [];
@@ -344,11 +344,17 @@ function schreibeBotlog(konto, seite, von, text) {
               (SELECT id FROM botlog ORDER BY id DESC LIMIT ?)`).run(BOTLOG_LIMIT);
 }
 function ladeBotlog() {
-  return db.prepare("SELECT zeit, daten FROM botlog ORDER BY id").all().map((zeile) => {
-    const e = entschluessele(zeile.daten);
-    e.zeit = zeile.zeit;
-    return e;
-  });
+  const liste = [];
+  for (const zeile of db.prepare("SELECT zeit, daten FROM botlog ORDER BY id").all()) {
+    try {
+      const e = entschluessele(zeile.daten);
+      e.zeit = zeile.zeit;
+      liste.push(e);
+    } catch (t) {
+      UNLESBAR.chats++;
+    }
+  }
+  return liste;
 }
 
 /* ---------- Termine (vom KI-Bot erfasst) ---------- */
@@ -377,13 +383,19 @@ function speichereTermin(termin) {
   return termin;
 }
 function ladeTermine() {
-  return db.prepare("SELECT id, zeit, status, daten FROM termine ORDER BY id DESC").all().map((zeile) => {
-    const e = entschluessele(zeile.daten);
-    e.db_id = zeile.id;
-    e.zeit = zeile.zeit;
-    e.status = zeile.status;
-    return e;
-  });
+  const liste = [];
+  for (const zeile of db.prepare("SELECT id, zeit, status, daten FROM termine ORDER BY id DESC").all()) {
+    try {
+      const e = entschluessele(zeile.daten);
+      e.db_id = zeile.id;
+      e.zeit = zeile.zeit;
+      e.status = zeile.status;
+      liste.push(e);
+    } catch (t) {
+      UNLESBAR.termine++;
+    }
+  }
+  return liste;
 }
 function aktualisiereTermin(dbId, status, antwort) {
   const zeile = db.prepare("SELECT daten FROM termine WHERE id = ?").get(dbId);
@@ -1108,17 +1120,33 @@ route("POST", "/api/admin/anmelden", null, async (req, res, p, body) => {
 
 route("GET", "/api/admin/daten", "admin", (req, res) => {
   const ki = kiEinstellungen();
+
+  /* Jede Teilliste einzeln absichern: Ein beschaedigter Datensatz in
+     irgendeiner Tabelle darf nie die ganze Antwort mitreissen, sonst
+     steht im Admin ueberall 0 - keine Kunden, keine Chats, kein Log. */
+  const defekt = [];
+  const sicher = (fn, name) => {
+    try {
+      return fn();
+    } catch (e) {
+      console.error('Liste "' + name + '" nicht ladbar:', e.message);
+      defekt.push(name);
+      return [];
+    }
+  };
+
   const antwort = {
-    kunden: alleKunden().map(kontoFuerClient),
-    mitarbeiter: alleMitarbeiter(),
-    log: ladeLog(),
-    botlogs: ladeBotlog(),
-    termine: ladeTermine(),
+    kunden: sicher(() => alleKunden().map(kontoFuerClient), "Kunden"),
+    mitarbeiter: sicher(alleMitarbeiter, "Mitarbeiter"),
+    log: sicher(ladeLog, "Protokoll"),
+    botlogs: sicher(ladeBotlog, "Chats"),
+    termine: sicher(ladeTermine, "Termine"),
     ki: { provider: ki.provider, modell: einstellung("ki_modell") || "", standard: kiStandardModell(ki.provider), an: ki.an, konfiguriert: ki.konfiguriert, systemZusatz: einstellung("ki_system_zusatz") || "" },
     adminPwGeaendert: einstellung("admin_pw_geaendert") === "1"
   };
-  const summeUnlesbar = UNLESBAR.kunden + UNLESBAR.mitarbeiter + UNLESBAR.log;
+  const summeUnlesbar = UNLESBAR.kunden + UNLESBAR.mitarbeiter + UNLESBAR.log + UNLESBAR.chats + UNLESBAR.termine;
   if (summeUnlesbar > 0) antwort.unlesbar = UNLESBAR;
+  if (defekt.length) antwort.defekteListen = defekt;
   antwortJson(res, 200, antwort);
 });
 

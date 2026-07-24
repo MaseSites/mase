@@ -374,7 +374,7 @@ function ladeKundeNachIndex(string $idx): ?array
    frueher: entschluessele() warf, alleKunden() fing nicht ab, und
    /api/admin/daten starb mit 500. Der Admin zeigte dann ueberall 0,
    obwohl die uebrigen Datensaetze intakt waren. */
-$UNLESBAR = ['kunden' => 0, 'mitarbeiter' => 0, 'log' => 0];
+$UNLESBAR = ['kunden' => 0, 'mitarbeiter' => 0, 'log' => 0, 'chats' => 0, 'termine' => 0];
 
 function alleKunden(): array
 {
@@ -511,10 +511,15 @@ function schreibeBotlog(string $konto, string $seite, string $von, string $text)
 }
 function ladeBotlog(): array
 {
-    global $db;
+    global $db, $UNLESBAR;
     $liste = [];
     foreach ($db->query('SELECT zeit, daten FROM botlog ORDER BY id') as $zeile) {
-        $e = entschluessele($zeile['daten']);
+        try {
+            $e = entschluessele($zeile['daten']);
+        } catch (Throwable $t) {
+            $UNLESBAR['chats']++;
+            continue;
+        }
         $e['zeit'] = (int)$zeile['zeit'];
         $liste[] = $e;
     }
@@ -552,10 +557,15 @@ function speichereTermin(array $termin): array
 }
 function ladeTermine(): array
 {
-    global $db;
+    global $db, $UNLESBAR;
     $liste = [];
     foreach ($db->query('SELECT id, zeit, status, daten FROM termine ORDER BY id DESC') as $zeile) {
-        $e = entschluessele($zeile['daten']);
+        try {
+            $e = entschluessele($zeile['daten']);
+        } catch (Throwable $t) {
+            $UNLESBAR['termine']++;
+            continue;
+        }
         $e['db_id'] = (int)$zeile['id'];
         $e['zeit'] = (int)$zeile['zeit'];
         $e['status'] = (string)$zeile['status'];
@@ -1673,12 +1683,29 @@ route('POST', '/api/admin/anmelden', null, function ($p, $body) {
 route('GET', '/api/admin/daten', 'admin', function () {
     global $UNLESBAR;
     $ki = kiEinstellungen();
+
+    /* Jede Teilliste einzeln absichern. Frueher riss ein einziger
+       beschaedigter Datensatz - egal in welcher Tabelle - die komplette
+       Antwort mit sich (HTTP 500), worauf der Admin ueberall 0 zeigte:
+       keine Kunden, keine Inhalte, keine Chats, kein Protokoll. Jetzt
+       faellt hoechstens die betroffene Liste aus, der Rest kommt an. */
+    $sicher = function (callable $fn, string $name) use (&$defekt) {
+        try {
+            return $fn();
+        } catch (Throwable $t) {
+            error_log('masesites: Liste "' . $name . '" nicht ladbar: ' . $t->getMessage());
+            $defekt[] = $name;
+            return [];
+        }
+    };
+    $defekt = [];
+
     $antwort = [
-        'kunden' => array_map('kontoFuerClient', alleKunden()),
-        'mitarbeiter' => alleMitarbeiter(),
-        'log' => ladeLog(),
-        'botlogs' => ladeBotlog(),
-        'termine' => ladeTermine(),
+        'kunden' => $sicher(function () { return array_map('kontoFuerClient', alleKunden()); }, 'Kunden'),
+        'mitarbeiter' => $sicher('alleMitarbeiter', 'Mitarbeiter'),
+        'log' => $sicher('ladeLog', 'Protokoll'),
+        'botlogs' => $sicher('ladeBotlog', 'Chats'),
+        'termine' => $sicher('ladeTermine', 'Termine'),
         'ki' => [
             'provider' => $ki['provider'],
             'modell' => einstellung('ki_modell') ?: '',
@@ -1690,6 +1717,9 @@ route('GET', '/api/admin/daten', 'admin', function () {
     ];
     if (array_sum($UNLESBAR) > 0) {
         $antwort['unlesbar'] = $UNLESBAR;
+    }
+    if ($defekt) {
+        $antwort['defekteListen'] = $defekt;
     }
     antwortJson(200, $antwort);
 });
