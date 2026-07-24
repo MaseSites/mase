@@ -34,3 +34,10 @@ _devserver.php
 
 # Graphify: lokal erzeugter Wissensgraph (Tooling, nicht Teil der Website)
 graphify-out/
+
+# claude-flow: lokaler Tool-Cache
+.claude-flow/
+
+# Python-Cache
+__pycache__/
+*.pyc

@@ -117,6 +117,8 @@ window.MSDaten = (function () {
     ma: null,             /* eigenes Mitarbeiterkonto im /mcs-Portal */
     log: [],
     botlogs: [],
+    termine: [],
+    ki: { provider: "groq", modell: "", an: false, konfiguriert: false },
     adminPwGeaendert: false
   };
 
@@ -134,6 +136,8 @@ window.MSDaten = (function () {
         zustand.mitarbeiter = (json.mitarbeiter || []).map(normalisiereMitarbeiter);
         zustand.log = json.log || [];
         zustand.botlogs = json.botlogs || [];
+        zustand.termine = json.termine || [];
+        if (json.ki) zustand.ki = json.ki;
         zustand.adminPwGeaendert = !!json.adminPwGeaendert;
       } else if (rolle === "mcs") {
         zustand.ma = normalisiereMitarbeiter(json.ma || {});
@@ -359,6 +363,33 @@ window.MSDaten = (function () {
   function ladeLog() { return zustand.log; }
   function botLogs() { return zustand.botlogs; }
 
+  /* ---------- Termine (vom KI-Bot erfasst) ---------- */
+
+  function termine() { return zustand.termine; }
+  function terminAktualisieren(dbId, status, antwort) {
+    return api("/api/admin/termine/" + dbId, "PUT", { status: status, antwort: antwort })
+      .then(function () {
+        zustand.termine.forEach(function (t) {
+          if (t.db_id === dbId) { t.status = status; if (antwort !== undefined) t.antwort = antwort; }
+        });
+      });
+  }
+  function terminLoeschen(dbId) {
+    return api("/api/admin/termine/" + dbId, "DELETE").then(function () {
+      zustand.termine = zustand.termine.filter(function (t) { return t.db_id !== dbId; });
+    });
+  }
+
+  /* ---------- KI-Bot-Konfiguration ---------- */
+
+  function kiConfig() { return zustand.ki; }
+  function kiSpeichern(cfg) {
+    return api("/api/admin/ki", "PUT", cfg).then(function (json) {
+      if (json && json.ki) zustand.ki = json.ki;
+      return zustand.ki;
+    });
+  }
+
   function protokolliere(kontoLabel, seite, aktion, detail) {
     var eintrag = {
       zeit: Date.now(),
@@ -475,6 +506,11 @@ window.MSDaten = (function () {
     protokolliere: protokolliere,
     logLeeren: logLeeren,
     botLogs: botLogs,
+    termine: termine,
+    terminAktualisieren: terminAktualisieren,
+    terminLoeschen: terminLoeschen,
+    kiConfig: kiConfig,
+    kiSpeichern: kiSpeichern,
     pillKlasse: pillKlasse,
     anzeigeName: anzeigeName
   };

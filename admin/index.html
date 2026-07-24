@@ -94,6 +94,11 @@
               KI-Chats
               <span class="side-badge" data-badge="ki"></span>
             </button>
+            <button class="side-item" type="button" data-route="termine">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+              Termine
+              <span class="side-badge" data-badge="termine"></span>
+            </button>
 
             <span class="side-label">Website</span>
             <button class="side-item" type="button" data-route="inhalte">
@@ -357,6 +362,37 @@
             </div>
           </section>
 
+          <!-- ===== Termine (vom KI-Bot erfasst) ===== -->
+          <section class="dash-panel" id="panel-termine" aria-label="Termine">
+            <div class="panel-kopf">
+              <div>
+                <h1>Termine</h1>
+                <p>Terminwünsche, die der KI-Bot im Chat aufgenommen hat. Bestätige oder lehne sie ab – der Kontakt wird für die Rückmeldung mitgeliefert.</p>
+              </div>
+            </div>
+            <div class="dash-card schlank">
+              <div class="filter-zeile">
+                <input type="search" id="termin-filter" placeholder="Filtern nach Name, Kontakt oder Thema">
+                <select id="termin-status-filter" class="mini-knopf" aria-label="Nach Status filtern">
+                  <option value="">Alle</option>
+                  <option value="offen">Offen</option>
+                  <option value="bestaetigt">Bestätigt</option>
+                  <option value="abgelehnt">Abgelehnt</option>
+                  <option value="erledigt">Erledigt</option>
+                </select>
+              </div>
+              <div class="tab-wrap">
+                <table class="dash-tabelle">
+                  <thead>
+                    <tr><th>Eingegangen</th><th>Name</th><th>Kontakt</th><th>Wunschtermin</th><th>Thema</th><th>Status</th><th>Aktionen</th></tr>
+                  </thead>
+                  <tbody id="termine-tabelle"></tbody>
+                </table>
+              </div>
+              <p class="dash-hinweis" id="termine-hinweis"></p>
+            </div>
+          </section>
+
           <!-- ===== Mitarbeiter: Liste ===== -->
           <section class="dash-panel" id="panel-mitarbeiter" aria-label="Mitarbeiter">
             <div class="panel-kopf">
@@ -550,9 +586,50 @@
             <div class="panel-kopf">
               <div>
                 <h1>Einstellungen</h1>
-                <p>Zugang und gespeicherte Daten.</p>
+                <p>KI-Bot, Zugang und gespeicherte Daten.</p>
               </div>
             </div>
+
+            <div class="dash-card" style="margin-bottom: 20px;">
+              <h3>KI-Bot (Chat-Assistent)</h3>
+              <p class="dash-hinweis" id="ki-status" style="margin-top: 0;"></p>
+              <form id="ki-form" class="auth-form">
+                <div class="auth-row">
+                  <div class="form-field">
+                    <label for="ki-provider">Anbieter</label>
+                    <select id="ki-provider" name="provider">
+                      <option value="groq">Groq – gratis, ohne Kreditkarte (empfohlen)</option>
+                      <option value="gemini">Google Gemini</option>
+                      <option value="mistral">Mistral (EU)</option>
+                      <option value="openai">OpenAI</option>
+                      <option value="openrouter">OpenRouter</option>
+                    </select>
+                  </div>
+                  <div class="form-field">
+                    <label for="ki-modell">Modell <span class="opt">(optional)</span></label>
+                    <input id="ki-modell" name="modell" type="text" maxlength="120" placeholder="Standard des Anbieters">
+                  </div>
+                </div>
+                <div class="form-field">
+                  <label for="ki-key">API-Schlüssel</label>
+                  <input id="ki-key" name="key" type="password" autocomplete="off" maxlength="400" placeholder="Schlüssel einfügen">
+                  <small class="feld-hinweis" id="ki-key-hinweis">Der Schlüssel wird verschlüsselt auf dem Server gespeichert und nie an Besucher gesendet. Leer lassen, um den bestehenden Schlüssel zu behalten.</small>
+                </div>
+                <label class="check-zeile" for="ki-an" style="display:flex;align-items:center;gap:10px;margin:6px 0 14px;">
+                  <input id="ki-an" name="an" type="checkbox">
+                  <span>KI-Bot aktiv (Besucher bekommen echte KI-Antworten)</span>
+                </label>
+                <p class="form-error" id="ki-fehler" role="alert"></p>
+                <div class="panel-aktionen">
+                  <button class="btn btn-primary" type="submit">KI-Einstellungen speichern</button>
+                </div>
+                <div class="form-success" id="ki-ok" role="status">
+                  <strong>Gespeichert!</strong> Der KI-Bot nutzt jetzt diese Einstellungen.
+                </div>
+              </form>
+              <p class="dash-hinweis">Groq-Schlüssel gratis unter <b>console.groq.com</b> · Gemini unter <b>aistudio.google.com/apikey</b>. Für Schweizer Besucher ist Googles Gratis-Tier laut Bedingungen nicht erlaubt – dort Groq nutzen oder Gemini nur mit bezahltem Google-Konto.</p>
+            </div>
+
             <div class="panel-grid">
               <div class="dash-card">
                 <h3>Admin-Passwort ändern</h3>
@@ -597,7 +674,7 @@
   </footer>
 
   <script src="../assets/js/sanft.js?v=1"></script>
-  <script src="../assets/js/daten.js?v=20"></script>
-  <script src="../assets/js/admin.js?v=23"></script>
+  <script src="../assets/js/daten.js?v=21"></script>
+  <script src="../assets/js/admin.js?v=24"></script>
 </body>
 </html>

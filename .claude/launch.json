@@ -2,9 +2,9 @@
   "version": "0.0.1",
   "configurations": [
     {
-      "name": "masesites-php",
-      "runtimeExecutable": "php",
-      "runtimeArgs": ["-S", "127.0.0.1:8091", "_devserver.php"],
+      "name": "masesites-dev",
+      "runtimeExecutable": "python",
+      "runtimeArgs": ["scripts/devserver.py", "8091"],
       "port": 8091
     },
     {

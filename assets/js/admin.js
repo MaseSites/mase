@@ -73,7 +73,7 @@
 
   /* ---------- Routing über den Hash ---------- */
 
-  var HAUPTROUTEN = ["uebersicht", "kunden", "projekte", "tickets", "nachrichten", "ki", "inhalte", "mitarbeiter", "protokoll", "einstellungen"];
+  var HAUPTROUTEN = ["uebersicht", "kunden", "projekte", "tickets", "nachrichten", "ki", "termine", "inhalte", "mitarbeiter", "protokoll", "einstellungen"];
   var neuProjektVorwahl = "";
 
   function navigiere(pfad) {
@@ -232,6 +232,7 @@
       tickets: alleTickets().filter(function (e) { return e.ticket.status === "Offen"; }).length,
       nachrichten: alleKonten().filter(function (k) { return ungeleseneVonKunde(k) > 0; }).length,
       ki: kiGruppen().length,
+      termine: D.termine().filter(function (t) { return t.status === "offen"; }).length,
       mitarbeiter: D.mitarbeiter().length
     };
     Object.keys(werte).forEach(function (name) {
@@ -1196,6 +1197,151 @@
     });
   }
 
+  /* ---------- Termine (vom KI-Bot erfasst) ---------- */
+
+  var TERMIN_STATUS_LABEL = {
+    offen: { text: "Offen", klasse: "pill arbeit" },
+    bestaetigt: { text: "Bestätigt", klasse: "pill fertig" },
+    abgelehnt: { text: "Abgelehnt", klasse: "pill" },
+    erledigt: { text: "Erledigt", klasse: "pill fertig" }
+  };
+
+  function renderTermine() {
+    var tbody = document.getElementById("termine-tabelle");
+    if (!tbody) return;
+    var hinweis = document.getElementById("termine-hinweis");
+    var textFilter = (document.getElementById("termin-filter").value || "").trim().toLowerCase();
+    var statusFilter = document.getElementById("termin-status-filter").value;
+    tbody.innerHTML = "";
+
+    var liste = D.termine().filter(function (t) {
+      if (statusFilter && t.status !== statusFilter) return false;
+      if (textFilter) {
+        var heu = ((t.name || "") + " " + (t.kontakt || "") + " " + (t.thema || "") + " " + (t.wunsch || "")).toLowerCase();
+        if (heu.indexOf(textFilter) === -1) return false;
+      }
+      return true;
+    });
+
+    if (!liste.length) {
+      leerTabelle(tbody, 7, (textFilter || statusFilter) ? "Keine Termine für diesen Filter." : "Noch keine Termine. Sobald der KI-Bot einen Terminwunsch aufnimmt, erscheint er hier.");
+      if (hinweis) hinweis.textContent = "";
+      return;
+    }
+
+    liste.forEach(function (t) {
+      var tr = document.createElement("tr");
+      tr.appendChild(tdText(D.zeitText(t.zeit), "klein nowrap"));
+      tr.appendChild(tdText(t.name || "–"));
+      tr.appendChild(tdText(t.kontakt || "–", "klein"));
+      tr.appendChild(tdText(t.wunsch || "–", "klein"));
+      tr.appendChild(tdText(t.thema || "–", "klein"));
+
+      var stTd = document.createElement("td");
+      var info = TERMIN_STATUS_LABEL[t.status] || TERMIN_STATUS_LABEL.offen;
+      stTd.appendChild(pill(info.text, info.klasse));
+      tr.appendChild(stTd);
+
+      var aktTd = document.createElement("td");
+      aktTd.className = "nowrap";
+      if (t.status !== "bestaetigt") aktTd.appendChild(terminKnopf("Bestätigen", "mini-knopf", t, "bestaetigt"));
+      if (t.status !== "abgelehnt") aktTd.appendChild(terminKnopf("Ablehnen", "mini-knopf", t, "abgelehnt"));
+      if (t.status === "bestaetigt") aktTd.appendChild(terminKnopf("Erledigt", "mini-knopf", t, "erledigt"));
+      var loesch = terminKnopf("Löschen", "mini-knopf gefahr", t, null);
+      aktTd.appendChild(loesch);
+      tr.appendChild(aktTd);
+
+      tbody.appendChild(tr);
+    });
+
+    var offen = D.termine().filter(function (t) { return t.status === "offen"; }).length;
+    if (hinweis) hinweis.textContent = liste.length + " angezeigt · " + offen + " offen.";
+  }
+
+  function tdText(text, klasse) {
+    var td = document.createElement("td");
+    if (klasse) td.className = klasse;
+    td.textContent = text;
+    return td;
+  }
+  function terminKnopf(text, klasse, termin, neuerStatus) {
+    var b = el("button", klasse, text);
+    b.type = "button";
+    b.style.marginRight = "6px";
+    b.addEventListener("click", function () {
+      if (neuerStatus === null) {
+        if (!confirm('Termin von "' + (termin.name || "?") + '" wirklich löschen?')) return;
+        D.terminLoeschen(termin.db_id).then(function () {
+          renderTermine(); renderBadges();
+        }).catch(function (f) { alert(f.message); });
+        return;
+      }
+      D.terminAktualisieren(termin.db_id, neuerStatus, termin.antwort || "").then(function () {
+        renderTermine(); renderBadges();
+      }).catch(function (f) { alert(f.message); });
+    });
+    return b;
+  }
+
+  var terminFilter = document.getElementById("termin-filter");
+  if (terminFilter) terminFilter.addEventListener("input", renderTermine);
+  var terminStatusFilter = document.getElementById("termin-status-filter");
+  if (terminStatusFilter) terminStatusFilter.addEventListener("change", renderTermine);
+
+  /* ---------- KI-Bot-Konfiguration (Einstellungen) ---------- */
+
+  function renderKiConfig() {
+    var cfg = D.kiConfig();
+    var prov = document.getElementById("ki-provider");
+    var modell = document.getElementById("ki-modell");
+    var key = document.getElementById("ki-key");
+    var an = document.getElementById("ki-an");
+    var status = document.getElementById("ki-status");
+    if (!prov) return;
+    prov.value = cfg.provider || "groq";
+    modell.value = cfg.modell || "";
+    modell.placeholder = "Standard: " + (cfg.standard || "automatisch");
+    an.checked = !!cfg.an;
+    key.value = "";
+    key.placeholder = cfg.konfiguriert ? "•••••••• gespeichert – leer lassen zum Behalten" : "Schlüssel einfügen";
+    if (status) {
+      status.textContent = cfg.konfiguriert
+        ? ("Schlüssel hinterlegt · Bot ist " + (cfg.an ? "aktiv" : "ausgeschaltet") + ".")
+        : "Noch kein Schlüssel hinterlegt – der Bot antwortet mit einem freundlichen Hinweis, bis du einen einträgst.";
+    }
+  }
+
+  var kiForm = document.getElementById("ki-form");
+  if (kiForm) {
+    var provSelect = document.getElementById("ki-provider");
+    if (provSelect) {
+      provSelect.addEventListener("change", function () {
+        var m = document.getElementById("ki-modell");
+        var std = { groq: "openai/gpt-oss-120b", gemini: "gemini-2.5-flash", mistral: "mistral-small-latest", openai: "gpt-4o-mini", openrouter: "meta-llama/llama-3.3-70b-instruct" };
+        m.placeholder = "Standard: " + (std[provSelect.value] || "automatisch");
+      });
+    }
+    kiForm.addEventListener("submit", function (e) {
+      e.preventDefault();
+      zeigeFehler("ki-fehler", "");
+      var cfg = {
+        provider: document.getElementById("ki-provider").value,
+        modell: document.getElementById("ki-modell").value.trim(),
+        key: document.getElementById("ki-key").value,
+        an: document.getElementById("ki-an").checked
+      };
+      D.kiSpeichern(cfg).then(function () {
+        renderKiConfig();
+        var ok = document.getElementById("ki-ok");
+        ok.classList.add("show");
+        setTimeout(function () { ok.classList.remove("show"); }, 3000);
+        adminLog("KI-Bot konfiguriert", cfg.provider);
+      }).catch(function (fehler) {
+        zeigeFehler("ki-fehler", fehler.message);
+      });
+    });
+  }
+
   /* ---------- Mitarbeiter ---------- */
 
   function renderMitarbeiterTabelle() {
@@ -1467,6 +1613,7 @@
       ["Mitarbeiter", String(D.mitarbeiter().length)],
       ["Protokoll-Einträge", String(D.ladeLog().length)],
       ["Bot-Nachrichten", String(D.botLogs().length)],
+      ["Termine", String(D.termine().length)],
       ["Admin-Passwort", D.adminPwGeaendert() ? "Eigenes gesetzt" : "Startpasswort (siehe Server)"]
     ].forEach(function (paar) {
       var li = document.createElement("li");
@@ -1671,9 +1818,11 @@
     renderInbox();
     renderThread();
     renderKi();
+    renderTermine();
     renderMitarbeiterTabelle();
     renderProtokoll();
     renderDatenInfo();
+    renderKiConfig();
     renderWebsiteInhalte();
   }
 
