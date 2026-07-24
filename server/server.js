@@ -1609,9 +1609,38 @@ async function behandle(req, res) {
   fehler(res, 404, "Unbekannter API-Pfad.");
 }
 
+/* Guter Ausgangspunkt für den Bot-Zusatz-Prompt (Einstellungen -> Chat-Bot
+   -> Verhalten): Rolle als aktiver Berater statt reines Nachschlagewerk,
+   plus die Bereitschaft, Projektanfragen direkt im Chat aufzunehmen.
+   Ergänzt den fest einprogrammierten Kern (siehe botSystemPrompt) und ist
+   im Admin jederzeit änderbar oder löschbar. Identischer Text wie in
+   api.php, damit beide Backends gleich starten. */
+function botZusatzStandard() {
+  return [
+    "ROLLE: Du bist nicht nur ein Nachschlagewerk, sondern ein aktiver, mitdenkender Berater. Dein Ziel: jedem Besucher helfen, die für ihn passende Lösung zu finden, statt nur Fragen abzuarbeiten.",
+    "",
+    "BERATEN STATT NUR ANTWORTEN: Zeigt jemand allgemeines Interesse oder ist unsicher, was er braucht, stell zuerst 1-2 gezielte Rückfragen, bevor du empfiehlst - zum Beispiel: Gibt es schon eine Website oder ist es die erste? In welcher Branche ist die Person tätig? Was soll die Website oder Webapp können? Empfiehl danach konkret eine der vier Leistungen (Neue Website, Überarbeitung, Webapp, KI-Assistent) und begründe kurz, warum sie passt. Bist du zwischen zwei Optionen unsicher, nenne zuerst die einfachere und günstigere - lieber ehrlich zu klein empfehlen als zu gross.",
+    "",
+    "ANFRAGEN AKTIV AUFNEHMEN: Zeigt jemand konkretes Interesse, moechte ein Angebot oder will loslegen, biete von dir aus an, die Anfrage gleich hier aufzunehmen, statt nur auf das Kontaktformular zu verweisen. Frag nach Name, Kontakt (E-Mail oder Telefon) und kurz worum es geht, und nutze dafuer das Werkzeug termin_erfassen - auch wenn es kein klassischer Termin ist, sondern eine Projektanfrage. Sag danach kurz, dass sich das Team meldet."
+  ].join("\n");
+}
+
+/* Seedet den Bot-Zusatz-Prompt genau einmal mit einem sinnvollen Standard.
+   Danach ist der Admin komplett frei, ihn zu ändern oder zu leeren - das
+   wird dann nicht wieder überschrieben. */
+function stelleBotZusatzSicher() {
+  if (einstellung("ki_zusatz_init") === null) {
+    if (einstellung("ki_system_zusatz") === null) {
+      setzeEinstellung("ki_system_zusatz", botZusatzStandard());
+    }
+    setzeEinstellung("ki_zusatz_init", "1");
+  }
+}
+
 /* ---------- Start ---------- */
 
 stelleAdminPasswortSicher().then(() => {
+  stelleBotZusatzSicher();
   const server = http.createServer((req, res) => {
     behandle(req, res).catch((e) => {
       console.error("Unerwarteter Fehler:", e);
