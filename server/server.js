@@ -328,9 +328,21 @@ function ladeBotlog() {
 const TERMIN_STATUS = ["offen", "bestaetigt", "abgelehnt", "erledigt"];
 
 function speichereTermin(termin) {
+  /* Doppelschutz: wiederholt der Browser dieselbe Anfrage (z. B. nach Timeout),
+     keinen zweiten identischen Termin anlegen (Vergleich der letzten Minuten). */
+  const jetzt = Date.now();
+  const letzte = db.prepare("SELECT daten FROM termine WHERE zeit > ? ORDER BY id DESC LIMIT 20").all(jetzt - 10 * 60000);
+  for (const zeile of letzte) {
+    let alt; try { alt = entschluessele(zeile.daten); } catch (e) { continue; }
+    if ((alt.kontakt || "") === (termin.kontakt || "")
+      && (alt.wunsch || "") === (termin.wunsch || "")
+      && (alt.chatId || "") === (termin.chatId || "")) {
+      return alt;
+    }
+  }
   termin.id = "T-" + naechsteNummer("termin", 1000);
   termin.status = TERMIN_STATUS.includes(termin.status) ? termin.status : "offen";
-  termin.zeit = Date.now();
+  termin.zeit = jetzt;
   termin.erstellt = heute();
   db.prepare("INSERT INTO termine (zeit, status, daten) VALUES (?, ?, ?)")
     .run(termin.zeit, termin.status, verschluessele(termin));
@@ -432,7 +444,7 @@ function terminWerkzeugSchema() {
 /* HTTP-POST mit JSON und Zeitlimit. Gibt { status, body } zurück. */
 async function httpPostJson(url, headers, body, timeoutMs) {
   const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), timeoutMs || 25000);
+  const timer = setTimeout(() => controller.abort(), timeoutMs || 18000);
   try {
     const antwort = await fetch(url, { method: "POST", headers, body, signal: controller.signal });
     const text = await antwort.text();
@@ -1303,14 +1315,24 @@ route("POST", "/api/bot", null, async (req, res, p, body, sitzung) => {
   }
 
   const kontoLabel = sitzung ? logLabel(sitzung) : ("Gast " + (chatId ? chatId.slice(0, 6) : "anonym"));
-  const ergebnis = await kiAntwort(cfg, turns, { chatId, seite, kontoLabel });
 
-  for (let i = turns.length - 1; i >= 0; i--) {
-    if (turns[i].von === "user") { schreibeBotlog(kontoLabel, seite, "besucher", turns[i].text); break; }
+  /* Egal was schiefgeht: immer ein gültiges JSON mit reply, nie ein 500er. */
+  let ergebnis;
+  try {
+    ergebnis = await kiAntwort(cfg, turns, { chatId, seite, kontoLabel });
+  } catch (e) {
+    console.error("masesites /api/bot:", e);
+    ergebnis = { reply: "Da ist bei mir gerade eine kleine Störung. Probier es bitte gleich nochmal – oder schreib an info@masesites.ch.", terminAngelegt: false };
   }
-  schreibeBotlog(kontoLabel, seite, "bot", ergebnis.reply);
 
-  antwortJson(res, 200, { reply: ergebnis.reply, terminAngelegt: ergebnis.terminAngelegt, konfiguriert: true });
+  try {
+    for (let i = turns.length - 1; i >= 0; i--) {
+      if (turns[i].von === "user") { schreibeBotlog(kontoLabel, seite, "besucher", turns[i].text); break; }
+    }
+    schreibeBotlog(kontoLabel, seite, "bot", ergebnis.reply);
+  } catch (e) { console.error("masesites botlog:", e); }
+
+  antwortJson(res, 200, { reply: ergebnis.reply, terminAngelegt: !!ergebnis.terminAngelegt, konfiguriert: true });
 });
 
 /* ---------- Statische Dateien ---------- */

@@ -511,9 +511,23 @@ const TERMIN_STATUS = ['offen', 'bestaetigt', 'abgelehnt', 'erledigt'];
 function speichereTermin(array $termin): array
 {
     global $db;
+    /* Doppelschutz: wiederholt der Browser dieselbe Anfrage (z. B. nach einem
+       Timeout), keinen zweiten identischen Termin anlegen. Vergleich über die
+       letzten Minuten anhand Kontakt + Wunsch (+ chatId). */
+    $jetzt = jetztMs();
+    $stmt = $db->prepare('SELECT daten FROM termine WHERE zeit > ? ORDER BY id DESC LIMIT 20');
+    $stmt->execute([$jetzt - 10 * 60000]);
+    foreach ($stmt->fetchAll(PDO::FETCH_COLUMN) as $roh) {
+        try { $alt = entschluessele((string)$roh); } catch (Throwable $e) { continue; }
+        if (($alt['kontakt'] ?? '') === ($termin['kontakt'] ?? '')
+            && ($alt['wunsch'] ?? '') === ($termin['wunsch'] ?? '')
+            && ($alt['chatId'] ?? '') === ($termin['chatId'] ?? '')) {
+            return $alt; /* schon vorhanden – nicht doppelt anlegen */
+        }
+    }
     $termin['id'] = 'T-' . naechsteNummer('termin', 1000);
     $termin['status'] = in_array($termin['status'] ?? 'offen', TERMIN_STATUS, true) ? $termin['status'] : 'offen';
-    $termin['zeit'] = jetztMs();
+    $termin['zeit'] = $jetzt;
     $termin['erstellt'] = heute();
     $db->prepare('INSERT INTO termine (zeit, status, daten) VALUES (?, ?, ?)')
         ->execute([$termin['zeit'], $termin['status'], verschluessele($termin)]);
@@ -636,7 +650,7 @@ function terminWerkzeugSchema(): array
 }
 
 /* HTTP-POST mit JSON – nutzt cURL, sonst Streams. Gibt [status, body] zurück. */
-function httpPostJson(string $url, array $headers, string $body, int $timeout = 25): array
+function httpPostJson(string $url, array $headers, string $body, int $timeout = 18): array
 {
     if (function_exists('curl_init')) {
         $ch = curl_init($url);
@@ -646,7 +660,7 @@ function httpPostJson(string $url, array $headers, string $body, int $timeout = 
             CURLOPT_HTTPHEADER => $headers,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_TIMEOUT => $timeout,
-            CURLOPT_CONNECTTIMEOUT => 10,
+            CURLOPT_CONNECTTIMEOUT => 6,
         ]);
         $antwort = curl_exec($ch);
         $status = (int)curl_getinfo($ch, CURLINFO_HTTP_CODE);
@@ -2131,6 +2145,12 @@ route('POST', '/api/bot-log', null, function ($p, $body, $sitzung) {
    Verlauf und Antwort werden verschlüsselt ins botlog geschrieben, damit der
    Admin die Gespräche sieht. Jeder Besucher hat eine eigene chatId. */
 route('POST', '/api/bot', null, function ($p, $body, $sitzung) {
+    /* Der KI-Aufruf kann ein paar Sekunden dauern. PHP nicht bei 30 s abwürgen
+       und einen Besucher-Abbruch ignorieren, damit die Anfrage sauber als JSON
+       endet statt als 500/502 (das sähe der Besucher als Fehlermeldung). */
+    @set_time_limit(60);
+    @ignore_user_abort(true);
+
     if (!ratenbegrenzung('bot', clientIp(), 20, 60000)) {
         antwortJson(200, ['reply' => 'Kurze Pause – du warst gerade sehr schnell. Probier es in einer Minute nochmal, oder schreib an info@masesites.ch.', 'gedrosselt' => true]);
     }
@@ -2160,17 +2180,29 @@ route('POST', '/api/bot', null, function ($p, $body, $sitzung) {
     }
 
     $kontoLabel = $sitzung ? logLabel($sitzung) : ('Gast ' . ($chatId !== '' ? substr($chatId, 0, 6) : 'anonym'));
-    $ergebnis = kiAntwort($cfg, $turns, ['chatId' => $chatId, 'seite' => $seite, 'kontoLabel' => $kontoLabel]);
 
-    /* Letzte Besucher-Nachricht + Bot-Antwort verschlüsselt protokollieren. */
-    for ($i = count($turns) - 1; $i >= 0; $i--) {
-        if ($turns[$i]['von'] === 'user') { schreibeBotlog($kontoLabel, $seite, 'besucher', $turns[$i]['text']); break; }
+    /* Egal was beim KI-Aufruf schiefgeht: der Besucher bekommt immer ein
+       gültiges JSON mit 'reply', nie einen 500er. */
+    try {
+        $ergebnis = kiAntwort($cfg, $turns, ['chatId' => $chatId, 'seite' => $seite, 'kontoLabel' => $kontoLabel]);
+    } catch (Throwable $e) {
+        error_log('masesites /api/bot: ' . $e->getMessage());
+        $ergebnis = ['reply' => 'Da ist bei mir gerade eine kleine Störung. Probier es bitte gleich nochmal – oder schreib an info@masesites.ch.', 'terminAngelegt' => false];
     }
-    schreibeBotlog($kontoLabel, $seite, 'bot', $ergebnis['reply']);
+
+    /* Protokoll ist Nebensache – ein Log-/DB-Fehler darf die Antwort nie kippen. */
+    try {
+        for ($i = count($turns) - 1; $i >= 0; $i--) {
+            if ($turns[$i]['von'] === 'user') { schreibeBotlog($kontoLabel, $seite, 'besucher', $turns[$i]['text']); break; }
+        }
+        schreibeBotlog($kontoLabel, $seite, 'bot', $ergebnis['reply']);
+    } catch (Throwable $e) {
+        error_log('masesites botlog: ' . $e->getMessage());
+    }
 
     antwortJson(200, [
         'reply' => $ergebnis['reply'],
-        'terminAngelegt' => $ergebnis['terminAngelegt'],
+        'terminAngelegt' => !empty($ergebnis['terminAngelegt']),
         'konfiguriert' => true,
     ]);
 });

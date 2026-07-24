@@ -105,7 +105,7 @@
      Der Schlüssel liegt nur auf dem Server. Fällt der Server aus, zeigt der
      Bot eine ehrliche Ausweich-Nachricht statt zu raten. */
 
-  var BOT_NETZFEHLER = "Ups, ich erreiche gerade meinen Server nicht. Probier es gleich nochmal, oder schreib an info@masesites.ch – wir melden uns zuverlässig.";
+  var BOT_NETZFEHLER = "Das hat gerade etwas länger gedauert als sonst. Stell mir die Frage bitte gleich nochmal – oder schreib an info@masesites.ch, wir melden uns zuverlässig.";
 
   /* Stabile, anonyme Besucher-Kennung, damit der Admin Gespräche pro Besucher
      getrennt sieht (kein Login nötig, keine personenbezogene Kennung). */
@@ -191,6 +191,28 @@
       return div;
     }
 
+    /* Eine Anfrage an /api/bot mit eigenem Zeitlimit. Wirft bei Netz-, Timeout-
+       oder Serverproblem, damit darüber automatisch ein neuer Versuch startet. */
+    function botAnfrage() {
+      var controller = window.AbortController ? new AbortController() : null;
+      var timer = controller ? setTimeout(function () { controller.abort(); }, 30000) : null;
+      function fertig() { if (timer) { clearTimeout(timer); timer = null; } }
+      return fetch("/api/bot", {
+        method: "POST",
+        credentials: "same-origin",
+        headers: { "Content-Type": "application/json", "X-Requested-With": "fetch" },
+        body: JSON.stringify({ chatId: botChatId(), seite: seite, konversation: verlauf.slice(-16) }),
+        signal: controller ? controller.signal : undefined
+      }).then(function (r) {
+        fertig();
+        if (!r.ok) throw new Error("HTTP " + r.status);
+        return r.json();
+      }, function (fehler) { fertig(); throw fehler; }).then(function (daten) {
+        if (!daten || typeof daten.reply !== "string" || !daten.reply) throw new Error("leere Antwort");
+        return daten;
+      });
+    }
+
     function respond(text) {
       if (busy) return;
       busy = true;
@@ -202,25 +224,26 @@
       body.appendChild(typing);
       body.scrollTop = body.scrollHeight;
 
-      fetch("/api/bot", {
-        method: "POST",
-        credentials: "same-origin",
-        headers: { "Content-Type": "application/json", "X-Requested-With": "fetch" },
-        body: JSON.stringify({ chatId: botChatId(), seite: seite, konversation: verlauf.slice(-16) })
-      }).then(function (r) {
-        return r.json().catch(function () { return {}; });
-      }).then(function (daten) {
-        typing.remove();
-        var antwort = (daten && daten.reply) || BOT_NETZFEHLER;
-        addMsg(antwort, "bot");
-        verlauf.push({ von: "bot", text: antwort });
-        busy = false;
-        if (input && window.matchMedia("(pointer: fine)").matches) input.focus();
-      }).catch(function () {
-        typing.remove();
-        addMsg(BOT_NETZFEHLER, "bot");
-        busy = false;
-      });
+      /* Bis zu drei Anläufe mit kurzer Pause: ein einzelner Server-Schluckauf
+         (Timeout/502 während der KI-Antwort) soll den Besucher nie erreichen. */
+      var maxVersuche = 3;
+      (function versuch(n) {
+        botAnfrage().then(function (daten) {
+          typing.remove();
+          addMsg(daten.reply, "bot");
+          verlauf.push({ von: "bot", text: daten.reply });
+          busy = false;
+          if (input && window.matchMedia("(pointer: fine)").matches) input.focus();
+        }).catch(function () {
+          if (n < maxVersuche) {
+            setTimeout(function () { versuch(n + 1); }, 800 * n);
+            return;
+          }
+          typing.remove();
+          addMsg(BOT_NETZFEHLER, "bot");
+          busy = false;
+        });
+      })(1);
     }
 
     form.addEventListener("submit", function (e) {
