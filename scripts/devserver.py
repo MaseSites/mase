@@ -192,6 +192,11 @@ class Handler(BaseHTTPRequestHandler):
             if methode == "DELETE":
                 STAND["termine"] = [t for t in STAND["termine"] if t["db_id"] != tid]
                 return self._json(200, {"ok": True})
+        if pfad == "/api/admin/beispiele-massenupload" and methode == "POST":
+            if not self._hat_cookie("devadmin"):
+                return self._json(401, {"fehler": "Nicht angemeldet."})
+            return self._json(200, {"ok": True, "aktualisiert": ["Restaurant", "Coiffeur"],
+                                    "neu": ["Baeckerei"], "ohneHtml": []})
         if pfad == "/api/bot" and methode == "POST":
             return self._json(200, _bot_antwort(body))
         if pfad in ("/api/log", "/api/bot-log"):

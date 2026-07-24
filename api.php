@@ -2119,6 +2119,142 @@ route('POST', '/api/admin/beispiel-upload', 'admin', function () {
     antwortJson(200, ['ok' => true, 'url' => $url, 'dateien' => $geschrieben]);
 });
 
+/* Alle Demos auf einmal aktualisieren: EIN ZIP mit einem Ordner pro Demo.
+   Jeder oberste Ordner wird zu einer Demo. Ordnername passt (per Name) auf eine
+   bestehende Demo -> deren Website wird ersetzt (Eintrag/Bild/Text bleiben);
+   sonst wird eine neue Demo angelegt. So muss nicht jede Demo einzeln hoch. */
+route('POST', '/api/admin/beispiele-massenupload', 'admin', function () {
+    @set_time_limit(120);
+    $datei = $_FILES['datei'] ?? null;
+    if ($datei === null) {
+        if ((int)($_SERVER['CONTENT_LENGTH'] ?? 0) > 0) {
+            fehler(413, 'Das ZIP ist zu gross für die Server-Einstellung (post_max_size). Erhöhe die Werte in der .user.ini oder in den Plesk-PHP-Einstellungen.');
+        }
+        fehler(400, 'Keine Datei empfangen.');
+    }
+    $err = is_array($datei) ? ($datei['error'] ?? UPLOAD_ERR_NO_FILE) : UPLOAD_ERR_NO_FILE;
+    if ($err === UPLOAD_ERR_INI_SIZE || $err === UPLOAD_ERR_FORM_SIZE) {
+        fehler(413, 'Das ZIP überschreitet das Upload-Limit des Servers (upload_max_filesize).');
+    }
+    if ($err !== UPLOAD_ERR_OK || !is_uploaded_file($datei['tmp_name'] ?? '')) {
+        fehler(400, 'Keine gültige Datei empfangen.');
+    }
+    if (strtolower(pathinfo((string)($datei['name'] ?? ''), PATHINFO_EXTENSION)) !== 'zip') {
+        fehler(400, 'Bitte EIN ZIP hochladen, mit einem Ordner pro Demo.');
+    }
+    if (!class_exists('ZipArchive')) {
+        fehlerAbbruch('Die PHP-Erweiterung zip fehlt auf dem Server (in Plesk unter PHP-Einstellungen aktivieren).');
+    }
+    $ordner = __DIR__ . '/' . DEMO_ORDNER;
+    if (!is_dir($ordner)) { @mkdir($ordner, 0755, true); }
+    if (!is_dir($ordner) || !is_writable($ordner)) {
+        fehlerAbbruch('Der Ordner ' . DEMO_ORDNER . ' ist nicht beschreibbar.');
+    }
+
+    $erlaubt = ['html', 'htm', 'css', 'js', 'mjs', 'json', 'txt', 'xml', 'svg', 'png', 'jpg', 'jpeg', 'gif', 'webp', 'avif', 'ico', 'woff', 'woff2', 'ttf', 'otf', 'eot', 'mp4', 'webm', 'mp3', 'ogg', 'map', 'webmanifest', 'pdf'];
+    $zip = new ZipArchive();
+    if ($zip->open($datei['tmp_name']) !== true) {
+        fehler(400, 'Das ZIP liess sich nicht öffnen.');
+    }
+
+    /* Gültige Dateien nach oberstem Ordner gruppieren (Zip-Slip-sicher). */
+    $gruppen = [];
+    $gesamt = 0; $anzahl = 0;
+    for ($i = 0; $i < $zip->numFiles; $i++) {
+        $st = $zip->statIndex($i);
+        $pf = str_replace('\\', '/', (string)$st['name']);
+        if ($pf === '' || substr($pf, -1) === '/') { continue; }
+        if (strpos($pf, '..') !== false || $pf[0] === '/' || strpos($pf, "\0") !== false) { continue; }
+        if (strpos($pf, '__MACOSX/') === 0 || basename($pf) === '.DS_Store') { continue; }
+        if (!in_array(strtolower(pathinfo($pf, PATHINFO_EXTENSION)), $erlaubt, true)) { continue; }
+        $teile = explode('/', $pf);
+        if (count($teile) < 2) { continue; }   /* lose Datei ohne Ordner -> ignorieren */
+        $top = $teile[0];
+        $rel = substr($pf, strlen($top) + 1);
+        if ($rel === '') { continue; }
+        $gruppen[$top][] = ['zip' => $pf, 'rel' => $rel];
+        $gesamt += (int)$st['size']; $anzahl++;
+    }
+    if (!$gruppen) {
+        $zip->close();
+        fehler(400, 'Im ZIP wurden keine Demo-Ordner gefunden. Lege pro Demo einen Ordner an (mit index.html darin).');
+    }
+    if ($anzahl > 3000) { $zip->close(); fehler(400, 'Das ZIP enthält zu viele Dateien (maximal 3000).'); }
+    if ($gesamt > 250 * 1024 * 1024) { $zip->close(); fehler(400, 'Das ZIP ist entpackt zu gross (maximal 250 MB).'); }
+
+    $demos = saeubereBeispiele(json_decode((string)(einstellung('inhalte_beispiele') ?? '[]'), true));
+    $normal = function ($x) { return preg_replace('/[^a-z0-9]/', '', strtolower((string)$x)); };
+    $benutzt = [];
+    $aktualisiert = []; $neu = []; $ohneHtml = [];
+
+    foreach ($gruppen as $top => $dateien) {
+        /* Startdatei im Ordner: index.html, sonst erste HTML. */
+        $start = '';
+        foreach ($dateien as $d) {
+            if (strtolower($d['rel']) === 'index.html') { $start = $d['rel']; break; }
+            if ($start === '' && preg_match('/\.html?$/i', $d['rel'])) { $start = $d['rel']; }
+        }
+        if ($start === '') { $ohneHtml[] = $top; continue; }
+
+        $slug = trim(preg_replace('/[^a-z0-9]+/i', '-', strtolower($top)), '-');
+        $slug = $slug !== '' ? substr($slug, 0, 40) : 'demo';
+        $zielName = $slug . '-' . bin2hex(random_bytes(4));
+        $zielOrdner = $ordner . '/' . $zielName;
+        if (!@mkdir($zielOrdner, 0755, true)) { continue; }
+
+        $geschrieben = 0;
+        foreach ($dateien as $d) {
+            $ziel = $zielOrdner . '/' . $d['rel'];
+            $unter = dirname($ziel);
+            if (!is_dir($unter)) { @mkdir($unter, 0755, true); }
+            $inhalt = $zip->getFromName($d['zip']);
+            if ($inhalt === false) { continue; }
+            if (@file_put_contents($ziel, $inhalt) !== false) { @chmod($ziel, 0644); $geschrieben++; }
+        }
+        if (!$geschrieben) { continue; }
+
+        $url = strtolower($start) === 'index.html'
+            ? '/' . DEMO_ORDNER . '/' . $zielName . '/'
+            : '/' . DEMO_ORDNER . '/' . $zielName . '/' . preg_replace('/\.html?$/i', '', $start);
+
+        /* Passende bestehende Demo finden: erst exakter Name, dann Präfix. */
+        $nt = $normal($top);
+        $treffer = -1;
+        foreach ($demos as $idx => $dm) {
+            if (isset($benutzt[$idx])) { continue; }
+            if ($nt !== '' && $normal($dm['name']) === $nt) { $treffer = $idx; break; }
+        }
+        if ($treffer < 0 && strlen($nt) >= 4) {
+            foreach ($demos as $idx => $dm) {
+                if (isset($benutzt[$idx])) { continue; }
+                $nd = $normal($dm['name']);
+                if ($nd !== '' && (strpos($nd, $nt) === 0 || (strlen($nd) >= 4 && strpos($nt, $nd) === 0))) { $treffer = $idx; break; }
+            }
+        }
+
+        if ($treffer >= 0) {
+            $demos[$treffer]['url'] = $url;
+            $benutzt[$treffer] = true;
+            $aktualisiert[] = $demos[$treffer]['name'];
+        } else {
+            $demos[] = [
+                'id' => 'B-' . bin2hex(random_bytes(4)),
+                'name' => s($top, 120), 'branche' => '', 'beschreibung' => '',
+                'url' => $url, 'bild' => '', 'startseite' => true,
+            ];
+            $neu[] = s($top, 120);
+        }
+    }
+    $zip->close();
+
+    if (!$aktualisiert && !$neu) {
+        fehler(400, 'Keine Demo aktualisiert. Achte darauf, dass jeder Ordner im ZIP eine index.html (oder andere HTML) enthält.');
+    }
+    setzeEinstellung('inhalte_beispiele', json_encode(saeubereBeispiele($demos), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+    schreibeLog('Admin', clientIp(), 'admin', 'Demos massenweise aktualisiert', count($aktualisiert) . ' aktualisiert, ' . count($neu) . ' neu');
+    antwortJson(200, ['ok' => true, 'aktualisiert' => $aktualisiert, 'neu' => $neu, 'ohneHtml' => $ohneHtml]);
+});
+
 route('POST', '/api/log', null, function ($p, $body, $sitzung) {
     if (!ratenbegrenzung('log', clientIp(), 120, 60000)) {
         antwortJson(200, ['ok' => true]);

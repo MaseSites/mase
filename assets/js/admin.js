@@ -1759,6 +1759,67 @@
     });
   }
 
+  /* ---------- Alle Demos auf einmal aktualisieren (ein ZIP, ein Ordner je Demo) ---------- */
+  (function () {
+    var knopf = document.getElementById("beispiele-alle");
+    var box = document.getElementById("beispiele-alle-box");
+    var dateiInput = document.getElementById("beispiele-alle-datei");
+    var waehlen = document.getElementById("beispiele-alle-waehlen");
+    var zu = document.getElementById("beispiele-alle-zu");
+    var status = document.getElementById("beispiele-alle-status");
+    var ordnerHinweis = document.getElementById("beispiele-alle-ordner");
+    if (!knopf || !box || !dateiInput || !waehlen) return;
+
+    function zeigeOrdnernamen() {
+      var namen = (INHALTE.beispiele || []).map(function (b) { return b.name; }).filter(Boolean);
+      ordnerHinweis.textContent = namen.length
+        ? "Deine Demos heissen: " + namen.join(", ") + ". Benenne die Ordner im ZIP entsprechend, dann werden sie ersetzt."
+        : "Noch keine Demos vorhanden – die Ordner im ZIP werden alle als neue Demos angelegt.";
+    }
+    knopf.addEventListener("click", function () {
+      var offen = box.style.display !== "none";
+      box.style.display = offen ? "none" : "block";
+      if (!offen) { zeigeOrdnernamen(); status.textContent = ""; }
+    });
+    zu.addEventListener("click", function () { box.style.display = "none"; });
+    waehlen.addEventListener("click", function () { dateiInput.value = ""; dateiInput.click(); });
+
+    dateiInput.addEventListener("change", function () {
+      var datei = dateiInput.files && dateiInput.files[0];
+      if (!datei) return;
+      status.style.color = "";
+      status.textContent = "Wird hochgeladen und entpackt … das kann bei vielen Dateien einen Moment dauern.";
+      waehlen.disabled = true;
+      var fd = new FormData();
+      fd.append("datei", datei);
+      fetch("/api/admin/beispiele-massenupload", {
+        method: "POST",
+        credentials: "same-origin",
+        headers: { "X-Requested-With": "fetch" },
+        body: fd
+      }).then(function (r) {
+        return r.json().catch(function () { return {}; }).then(function (j) {
+          if (!r.ok || !j.ok) throw new Error(j.fehler || "Upload fehlgeschlagen (" + r.status + ").");
+          return j;
+        });
+      }).then(function (j) {
+        var teile = [];
+        if (j.aktualisiert && j.aktualisiert.length) teile.push(j.aktualisiert.length + " aktualisiert (" + j.aktualisiert.join(", ") + ")");
+        if (j.neu && j.neu.length) teile.push(j.neu.length + " neu (" + j.neu.join(", ") + ")");
+        if (j.ohneHtml && j.ohneHtml.length) teile.push("ohne HTML übersprungen: " + j.ohneHtml.join(", "));
+        status.style.color = "";
+        status.textContent = "Fertig — " + (teile.join(" · ") || "nichts geändert") + ".";
+        adminLog("Demos massenweise aktualisiert", (j.aktualisiert || []).length + " aktualisiert, " + (j.neu || []).length + " neu");
+        ladeWebsiteInhalte();       /* Liste frisch vom Server holen + neu zeichnen */
+      }).catch(function (fehler) {
+        status.style.color = "#b3261e";
+        status.textContent = fehler.message;
+      }).then(function () {
+        waehlen.disabled = false;
+      });
+    });
+  })();
+
   Object.keys(INHALT_ARTEN).forEach(function (art) {
     var def = INHALT_ARTEN[art];
     var form = document.getElementById(def.form);

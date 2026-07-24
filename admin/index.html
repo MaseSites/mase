@@ -497,7 +497,20 @@
               <div class="dash-card">
                 <div class="card-head">
                   <h3>Beispiele (Live-Demos)</h3>
-                  <button class="btn btn-ghost klein" type="button" id="beispiel-neu">Hinzufügen</button>
+                  <div class="panel-aktionen" style="gap:8px;">
+                    <button class="btn btn-ghost klein" type="button" id="beispiele-alle">Alle aktualisieren</button>
+                    <button class="btn btn-ghost klein" type="button" id="beispiel-neu">Hinzufügen</button>
+                  </div>
+                </div>
+                <input id="beispiele-alle-datei" type="file" accept=".zip,application/zip" hidden>
+                <div class="massen-hinweis" id="beispiele-alle-box" style="display:none;">
+                  <p class="feld-hinweis" style="margin:0 0 8px;">Lade <b>ein</b> ZIP mit <b>einem Ordner pro Demo</b> hoch (in jedem Ordner eine <span class="k" style="font-family:monospace;">index.html</span>). Passt ein Ordnername zu einer bestehenden Demo, wird deren Website ersetzt – Name, Text und Vorschaubild bleiben. Neue Ordner werden als neue Demo angelegt.</p>
+                  <p class="feld-hinweis" id="beispiele-alle-ordner" style="margin:0 0 10px;"></p>
+                  <div class="panel-aktionen">
+                    <button class="btn btn-primary klein" type="button" id="beispiele-alle-waehlen">ZIP auswählen &amp; hochladen</button>
+                    <button class="btn btn-ghost klein" type="button" id="beispiele-alle-zu">Schliessen</button>
+                  </div>
+                  <p class="feld-status" id="beispiele-alle-status" style="margin-top:10px;"></p>
                 </div>
                 <ul class="zeilen-liste" id="inhalt-beispiele"></ul>
                 <form id="beispiel-form" class="auth-form hidden" style="margin-top: 16px;">
@@ -675,6 +688,6 @@
 
   <script src="../assets/js/sanft.js?v=1"></script>
   <script src="../assets/js/daten.js?v=21"></script>
-  <script src="../assets/js/admin.js?v=24"></script>
+  <script src="../assets/js/admin.js?v=25"></script>
 </body>
 </html>
