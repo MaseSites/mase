@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/style.css?v=33">
+  <link rel="stylesheet" href="assets/css/style.css?v=34">
 </head>
 <body>
 
@@ -78,10 +78,20 @@
         <p>Beim Besuch dieser Website fallen technisch bedingt Zugriffsdaten an (z. B. IP-Adresse, Datum, aufgerufene Seite). Diese dienen der Sicherheit und Fehleranalyse. [Hosting-Anbieter hier ergänzen.]</p>
         <p>Zusätzlich protokolliert die Website Seitenaufrufe, Klicks und Formular-Absendungen zusammen mit Zeitpunkt, IP-Adresse und, bei angemeldeten Kunden, dem Kundenkonto. Diese Protokolle nutzen wir für Sicherheit, Fehleranalyse und die Betreuung im Kundenbereich; sie werden verschlüsselt auf unserem Server gespeichert und nicht an Dritte weitergegeben.</p>
 
-        <h2>5. Externe Inhalte</h2>
+        <h2>5. Cookies</h2>
+        <p>Diese Website verwendet ausschliesslich technisch notwendige Cookies. Sie dienen einzig dazu, eine Anmeldung über einen Seitenwechsel hinweg aufrechtzuerhalten:</p>
+        <ul>
+          <li><b>ms_sitzung</b> – hält die Anmeldung im Kundenbereich (Laufzeit: bis zur Abmeldung, längstens 30 Tage)</li>
+          <li><b>ms_sitzung_ma</b> – dasselbe für Mitarbeitende (Laufzeit: bis zum Schliessen des Browsers)</li>
+          <li><b>ms_sitzung_admin</b> – dasselbe für den Administrationsbereich (Laufzeit: bis zum Schliessen des Browsers)</li>
+        </ul>
+        <p>Diese Cookies enthalten nur eine zufällige Kennung, keine persönlichen Daten. Sie sind so gesetzt, dass Skripte nicht darauf zugreifen können (httpOnly) und sie nicht an andere Websites mitgesendet werden (SameSite=Lax). Wer sich nicht anmeldet, bekommt gar kein Cookie.</p>
+        <p>Wir setzen <b>keine</b> Cookies für Statistik, Analyse, Werbung oder Wiedererkennung, und binden auch keine entsprechenden Dienste ein. Weil ausschliesslich technisch notwendige Cookies zum Einsatz kommen, ist dafür keine Einwilligung erforderlich; der Hinweis beim ersten Besuch dient der Transparenz. Zusätzlich speichern wir im Browser (localStorage), dass du diesen Hinweis gesehen hast – das ist kein Cookie und verlässt dein Gerät nicht.</p>
+
+        <h2>6. Externe Inhalte</h2>
         <p>Diese Website lädt Schriften von Google Fonts und einzelne Bilder von Unsplash. Dabei wird deine IP-Adresse an die jeweiligen Anbieter übermittelt. [Falls gewünscht: Schriften/Bilder vor Livegang lokal einbinden.]</p>
 
-        <h2>6. Deine Rechte</h2>
+        <h2>7. Deine Rechte</h2>
         <ul>
           <li>Auskunft über die zu deiner Person bearbeiteten Daten</li>
           <li>Berichtigung unrichtiger Daten</li>
@@ -108,6 +118,7 @@
 
   <script src="assets/js/sanft.js?v=1"></script>
   <script src="assets/js/protokoll.js?v=20"></script>
-  <script src="assets/js/site.js?v=28"></script>
+  <script src="assets/js/cookie.js?v=1"></script>
+  <script src="assets/js/site.js?v=29"></script>
 </body>
 </html>

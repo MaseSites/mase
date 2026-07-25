@@ -3112,3 +3112,110 @@ html.uu-bau .uu-szene { display: flex; }
   max-width: 64ch;
 }
 .pl-faq-a p { margin: 0; color: var(--ink-soft); line-height: 1.65; }
+
+/* ---------- Cookie-Hinweis ----------
+   Unten links, damit der Chat-Knopf unten rechts frei bleibt. */
+.ms-cookie {
+  position: fixed;
+  left: 22px; bottom: 22px;
+  z-index: 90;
+  width: min(460px, calc(100vw - 44px));
+  display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+  padding: 16px 18px;
+  background: var(--card);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-l);
+  box-shadow: 0 18px 46px rgba(44, 33, 24, 0.22);
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 0.35s ease, transform 0.35s var(--ease-out);
+}
+.ms-cookie.ms-an { opacity: 1; transform: none; }
+.ms-cookie-text {
+  margin: 0; flex: 1 1 240px;
+  font-size: 0.88rem; line-height: 1.5;
+  color: var(--ink-soft);
+}
+.ms-cookie-text b { color: var(--ink); font-weight: 650; }
+.ms-cookie-text a { color: var(--ink); text-decoration: underline; text-underline-offset: 2px; }
+.ms-cookie-ok { flex: none; padding: 10px 22px; font-size: 0.9rem; }
+
+/* Auf breiten Bildschirmen steht das Banner links, der Chat-Knopf
+   rechts - sie kommen sich nicht in die Quere. Nur auf schmalen
+   Geraeten spannt das Banner ueber die volle Breite, dort weicht der
+   Knopf nach oben aus (siehe Handy-Block weiter unten). */
+.widget-launcher { transition: transform 0.3s var(--ease-out), box-shadow 0.3s var(--ease-out), opacity 0.5s ease, bottom 0.35s var(--ease-out); }
+
+@media (max-width: 720px) {
+  .ms-cookie {
+    left: 12px; right: 12px; bottom: 12px;
+    width: auto;
+    padding: 14px 16px;
+    gap: 12px;
+  }
+  .ms-cookie-ok { width: 100%; }
+  /* --ms-cookie-h wird von cookie.js aus der echten Bannerhoehe gesetzt,
+     damit es bei jeder Textlaenge und Bildschirmhoehe passt. */
+  body.ms-cookie-offen .widget-launcher { bottom: calc(var(--ms-cookie-h, 150px) + 34px); }
+  body.ms-cookie-offen .widget-panel { bottom: calc(var(--ms-cookie-h, 150px) + 108px); }
+}
+
+/* ---------- Chat-Bot: KI-Auftritt statt klassischem Braun ----------
+   Der Bot ist ein KI-Assistent - das soll man auf den ersten Blick
+   sehen. Die Weltfarbe der KI (--ki) traegt darum das ganze Fenster,
+   nicht nur den Knopf aussen. Gilt nur fuer den Bot-Chat: die Klassen
+   .chat-head/.msg werden ausschliesslich von buildChatUI() in site.js
+   erzeugt, der Kundenbereich nutzt eigene Klassen. */
+.chat-head {
+  background: linear-gradient(135deg, var(--ki) 0%, var(--ki-dark) 100%);
+  color: #fff;
+  border-bottom: none;
+}
+.chat-head .name { color: #fff; }
+.chat-head .status { color: rgba(255, 255, 255, 0.78); }
+.chat-head .status i { background: #6EE7A8; box-shadow: 0 0 0 3px rgba(110, 231, 168, 0.25); }
+
+/* Avatar hell auf dem farbigen Kopf. Drei Klassen, damit diese Regel
+   die per JS eingefuegte Widget-Optik sicher uebersteuert - die faerbt
+   den Avatar lila ein, was auf lila Grund verschwaende. */
+.widget-panel .chat-head .ps-avatar,
+.chat-demo .chat-head .ps-avatar {
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  box-shadow: none;
+  color: #fff;
+}
+
+/* Der Schliessen-Knopf war weiss auf cremefarbenem Kopf - praktisch
+   unsichtbar. Auf dem farbigen Kopf stimmt Weiss jetzt. */
+.widget-close { color: #fff; }
+
+/* "KI"-Abzeichen: macht ohne Worte klar, dass hier eine KI antwortet */
+.chat-head .ki-badge {
+  margin-left: auto;
+  align-self: flex-start;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.22);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: #fff;
+}
+.widget-panel .chat-head .ki-badge { margin-left: 0; margin-right: 4px; }
+
+/* Eigene Nachrichten in der KI-Farbe statt Espresso */
+.msg.user { background: linear-gradient(135deg, var(--ki), var(--ki-dark)); color: #fff; }
+.msg.bot { background: #fff; border-color: #EDE6FA; }
+.msg.typing i { background: var(--ki); }
+
+/* Chatverlauf mit einem Hauch Lila statt warmem Creme */
+.chat-body { background: #FBF9FF; }
+
+.chat-input input:focus { border-color: var(--ki); box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.14); }
+.chat-input button { background: linear-gradient(135deg, var(--ki), var(--ki-dark)); }
+.chat-input button:hover { background: linear-gradient(135deg, var(--ki-dark), #5B21B6); }
+
+/* Vorschlags-Knoepfe im Chat ebenfalls in der KI-Farbe */
+.chat-chips button:hover { border-color: var(--ki); color: var(--ki); }
