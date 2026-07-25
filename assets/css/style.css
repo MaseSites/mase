@@ -3492,3 +3492,13 @@ body.ms-cookie-offen .widget-panel { bottom: calc(var(--ms-cookie-h, 90px) + 90p
 /* Einzelne Preis-Karte (KI-Assistent) nicht auf volle Breite ziehen -
    sie soll wie eine Karte aussehen, nicht wie ein Banner. */
 .pl-stufen-eins { max-width: 400px; margin-inline: auto; }
+
+/* Sichtbare Markierung fuer noch fehlende Pflichtangaben, damit sie
+   beim Aufschalten nicht uebersehen werden. */
+.legal-content mark {
+  background: #FBE4C4;
+  color: #6B4E16;
+  padding: 1px 6px;
+  border-radius: 4px;
+  font-weight: 600;
+}
