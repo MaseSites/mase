@@ -592,13 +592,19 @@ section.tight { padding: 56px 0; }
   transform: none;
 }
 
-/* Abdeckung: die Vorschau bleibt Vorschau, Klick führt zu den Beispielen */
+/* Abdeckung: die Vorschau ist jetzt direkt bedienbar - man kann IM Fenster
+   scrollen und klicken. Die Abdeckung selbst fängt keine Gesten mehr ab
+   (pointer-events: none), sie erreichen die Demo darunter. Nur die
+   «In voller Grösse»-Pille bleibt klickbar und blendet sich beim Überfahren
+   des Fensters ein. */
 .demo-abdeckung {
   position: absolute; inset: 0;
   display: grid; place-items: end center;
   padding-bottom: 22px;
+  pointer-events: none;
 }
 .demo-abdeckung span {
+  pointer-events: auto;
   opacity: 0; transform: translateY(6px);
   background: rgba(22, 16, 11, 0.84); color: #fff;
   font-size: 0.88rem; font-weight: 600;
@@ -607,7 +613,7 @@ section.tight { padding: 56px 0; }
   box-shadow: var(--shadow-m);
   transition: opacity 0.25s ease, transform 0.25s ease;
 }
-.demo-abdeckung:hover span,
+.demo-schirm:hover .demo-abdeckung span,
 .demo-abdeckung:focus-visible span { opacity: 1; transform: none; }
 
 /* Taskbar: unten im Fenster integriert, schaltet zwischen den Demos um */
