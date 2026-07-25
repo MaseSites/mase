@@ -2797,7 +2797,8 @@ html.uu-bau .uu-szene { display: flex; }
 .uu-szene.uu-steht .uu-arm2,
 .uu-szene.uu-zieht .uu-arm,
 .uu-szene.uu-zieht .uu-arm2 { animation: none; transition: transform 0.5s var(--ease-out); }
-.uu-szene.uu-steht .uu-figur { transform: translateY(-16px); }
+/* Kein Aufstehen mehr: die Figur bleibt sitzen und tippt ruhig weiter,
+   bis sie am Ende sanft ausblendet. Das Hochrucken wirkte abgehackt. */
 /* Kein Ducken mehr: die Figur gleitet sanft nach unten weg und blendet
    dabei aus, waehrend der Vorhang hochfaehrt - so verschwindet sie ruhig,
    statt sich unschoen zusammenzuquetschen. */
@@ -3114,80 +3115,139 @@ html.uu-bau .uu-szene { display: flex; }
 .pl-faq-a p { margin: 0; color: var(--ink-soft); line-height: 1.65; }
 
 /* ---------- Cookie-Hinweis ----------
-   Unten links, damit der Chat-Knopf unten rechts frei bleibt. */
+   Volle Breite am unteren Rand, Inhalt auf Lesebreite zentriert. */
 .ms-cookie {
   position: fixed;
-  left: 22px; bottom: 22px;
+  left: 0; right: 0; bottom: 0;
   z-index: 90;
-  width: min(460px, calc(100vw - 44px));
-  display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
-  padding: 16px 18px;
   background: var(--card);
-  border: 1px solid var(--line-strong);
-  border-radius: var(--radius-l);
-  box-shadow: 0 18px 46px rgba(44, 33, 24, 0.22);
+  border-top: 1px solid var(--line-strong);
+  box-shadow: 0 -14px 40px rgba(44, 33, 24, 0.14);
   opacity: 0;
-  transform: translateY(14px);
-  transition: opacity 0.35s ease, transform 0.35s var(--ease-out);
+  transform: translateY(100%);
+  transition: opacity 0.4s ease, transform 0.45s var(--ease-out);
 }
 .ms-cookie.ms-an { opacity: 1; transform: none; }
+.ms-cookie-inner {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 18px 24px;
+  /* Mit offenen Einstellungen darf das Banner nie den halben Bildschirm
+     schlucken - auf dem Handy waeren es sonst 675 von 844px. */
+  max-height: min(72vh, 620px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.ms-cookie-zeile {
+  display: flex; align-items: center; gap: 18px; flex-wrap: wrap;
+}
+
+/* Keks in einem warmen Kreis - freundlicher Blickfang statt Deko */
+.ms-cookie-keks {
+  flex: none;
+  width: 46px; height: 46px;
+  display: grid; place-items: center;
+  font-size: 1.45rem;
+  line-height: 1;
+  background: var(--bg-warm);
+  border: 1px solid var(--line-strong);
+  border-radius: 50%;
+}
 .ms-cookie-text {
-  margin: 0; flex: 1 1 240px;
-  font-size: 0.88rem; line-height: 1.5;
+  margin: 0; flex: 1 1 320px;
+  font-size: 0.92rem; line-height: 1.55;
   color: var(--ink-soft);
 }
 .ms-cookie-text b { color: var(--ink); font-weight: 650; }
 .ms-cookie-text a { color: var(--ink); text-decoration: underline; text-underline-offset: 2px; }
-.ms-cookie-ok { flex: none; padding: 10px 22px; font-size: 0.9rem; }
+.ms-cookie-knoepfe { display: flex; gap: 10px; flex: none; flex-wrap: wrap; }
+.ms-cookie-knoepfe .btn { padding: 10px 22px; font-size: 0.9rem; }
 
-/* Auf breiten Bildschirmen steht das Banner links, der Chat-Knopf
-   rechts - sie kommen sich nicht in die Quere. Nur auf schmalen
-   Geraeten spannt das Banner ueber die volle Breite, dort weicht der
-   Knopf nach oben aus (siehe Handy-Block weiter unten). */
+/* Aufgeklappte Einstellungen */
+.ms-cookie-details {
+  margin-top: 18px;
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 26px;
+}
+.ms-cookie-kopf {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 12px; margin-bottom: 7px;
+}
+.ms-cookie-titel { font-weight: 650; font-size: 0.98rem; color: var(--ink); }
+.ms-cookie-stand {
+  flex: none;
+  font-size: 0.72rem; font-weight: 700;
+  letter-spacing: 0.04em;
+  padding: 4px 11px;
+  border-radius: 999px;
+  background: var(--bg-warm);
+  color: var(--ink-soft);
+  border: 1px solid var(--line-strong);
+}
+.ms-cookie-stand.ms-aktiv {
+  background: #EAF3EC;
+  border-color: #B7D4BF;
+  color: #2C4A37;
+}
+.ms-cookie-gruppe p {
+  margin: 0; font-size: 0.86rem; line-height: 1.55; color: var(--ink-soft);
+}
+.ms-cookie-gruppe ul {
+  margin: 9px 0 0; padding-left: 18px;
+  font-size: 0.83rem; line-height: 1.6; color: var(--ink-soft);
+}
+.ms-cookie-gruppe ul b { color: var(--ink); font-weight: 600; }
+
+/* Chat-Knopf ausweichen lassen: das Banner spannt ueber die volle
+   Breite und wuerde ihn sonst verdecken. --ms-cookie-h kommt aus
+   cookie.js und enthaelt die echte Hoehe (auch mit offenen Details). */
 .widget-launcher { transition: transform 0.3s var(--ease-out), box-shadow 0.3s var(--ease-out), opacity 0.5s ease, bottom 0.35s var(--ease-out); }
+.widget-panel { transition: opacity 0.28s ease, transform 0.28s ease, bottom 0.35s var(--ease-out); }
+body.ms-cookie-offen .widget-launcher { bottom: calc(var(--ms-cookie-h, 90px) + 18px); }
+body.ms-cookie-offen .widget-panel { bottom: calc(var(--ms-cookie-h, 90px) + 90px); }
 
 @media (max-width: 720px) {
-  .ms-cookie {
-    left: 12px; right: 12px; bottom: 12px;
-    width: auto;
-    padding: 14px 16px;
-    gap: 12px;
-  }
-  .ms-cookie-ok { width: 100%; }
-  /* --ms-cookie-h wird von cookie.js aus der echten Bannerhoehe gesetzt,
-     damit es bei jeder Textlaenge und Bildschirmhoehe passt. */
-  body.ms-cookie-offen .widget-launcher { bottom: calc(var(--ms-cookie-h, 150px) + 34px); }
-  body.ms-cookie-offen .widget-panel { bottom: calc(var(--ms-cookie-h, 150px) + 108px); }
+  .ms-cookie-inner { padding: 15px 16px; }
+  .ms-cookie-zeile { gap: 13px; }
+  .ms-cookie-keks { width: 40px; height: 40px; font-size: 1.25rem; }
+  .ms-cookie-text { flex: 1 1 100%; order: 2; font-size: 0.88rem; }
+  .ms-cookie-knoepfe { order: 3; width: 100%; }
+  .ms-cookie-knoepfe .btn { flex: 1 1 0; justify-content: center; }
+  .ms-cookie-details { grid-template-columns: 1fr; gap: 20px; }
+  /* Auf dem Handy strenger begrenzen, damit hinter dem Banner noch
+     Seite sichtbar bleibt; die Details lassen sich scrollen. */
+  .ms-cookie-inner { max-height: 62vh; }
 }
 
-/* ---------- Chat-Bot: KI-Auftritt statt klassischem Braun ----------
-   Der Bot ist ein KI-Assistent - das soll man auf den ersten Blick
-   sehen. Die Weltfarbe der KI (--ki) traegt darum das ganze Fenster,
-   nicht nur den Knopf aussen. Gilt nur fuer den Bot-Chat: die Klassen
-   .chat-head/.msg werden ausschliesslich von buildChatUI() in site.js
-   erzeugt, der Kundenbereich nutzt eigene Klassen. */
+/* ---------- Chat-Bot: masesites-Optik ----------
+   Espresso und Creme wie der Rest der Seite. Erkennbar wird der
+   Assistent nicht ueber eine Fremdfarbe, sondern ueber den Funken im
+   Knopf, das KI-Abzeichen im Kopf und die Beschriftung. */
 .chat-head {
-  background: linear-gradient(135deg, var(--ki) 0%, var(--ki-dark) 100%);
+  background: linear-gradient(135deg, #3A2C1F 0%, var(--ink) 60%, #1A130C 100%);
   color: #fff;
   border-bottom: none;
 }
 .chat-head .name { color: #fff; }
-.chat-head .status { color: rgba(255, 255, 255, 0.78); }
-.chat-head .status i { background: #6EE7A8; box-shadow: 0 0 0 3px rgba(110, 231, 168, 0.25); }
+.chat-head .status { color: rgba(246, 241, 231, 0.72); }
+.chat-head .status i { background: #6EE7A8; box-shadow: 0 0 0 3px rgba(110, 231, 168, 0.22); }
 
-/* Avatar hell auf dem farbigen Kopf. Drei Klassen, damit diese Regel
-   die per JS eingefuegte Widget-Optik sicher uebersteuert - die faerbt
-   den Avatar lila ein, was auf lila Grund verschwaende. */
+/* Avatar hell auf dem dunklen Kopf. Drei Klassen, damit diese Regel die
+   per JS eingefuegte Avatar-Farbe sicher uebersteuert - sonst waere
+   dunkel auf dunkel unsichtbar. */
 .widget-panel .chat-head .ps-avatar,
 .chat-demo .chat-head .ps-avatar {
-  background: rgba(255, 255, 255, 0.2);
-  border: 1px solid rgba(255, 255, 255, 0.35);
+  background: rgba(246, 241, 231, 0.16);
+  border: 1px solid rgba(246, 241, 231, 0.3);
   box-shadow: none;
-  color: #fff;
+  color: var(--bg);
 }
 
 /* Der Schliessen-Knopf war weiss auf cremefarbenem Kopf - praktisch
-   unsichtbar. Auf dem farbigen Kopf stimmt Weiss jetzt. */
+   unsichtbar. Auf dem dunklen Kopf stimmt Weiss jetzt. */
 .widget-close { color: #fff; }
 
 /* "KI"-Abzeichen: macht ohne Worte klar, dass hier eine KI antwortet */
@@ -3199,23 +3259,48 @@ html.uu-bau .uu-szene { display: flex; }
   letter-spacing: 0.1em;
   padding: 3px 8px;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.22);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  color: #fff;
+  background: rgba(246, 241, 231, 0.18);
+  border: 1px solid rgba(246, 241, 231, 0.28);
+  color: var(--bg);
 }
 .widget-panel .chat-head .ki-badge { margin-left: 0; margin-right: 4px; }
 
-/* Eigene Nachrichten in der KI-Farbe statt Espresso */
-.msg.user { background: linear-gradient(135deg, var(--ki), var(--ki-dark)); color: #fff; }
-.msg.bot { background: #fff; border-color: #EDE6FA; }
-.msg.typing i { background: var(--ki); }
+.msg.bot { background: #fff; border-color: var(--line); }
+.msg.user { background: linear-gradient(135deg, #3A2C1F, #1A130C); color: #fff; }
+.msg.typing i { background: var(--ink-faint); }
+.chat-body { background: var(--bg-soft); }
 
-/* Chatverlauf mit einem Hauch Lila statt warmem Creme */
-.chat-body { background: #FBF9FF; }
+.chat-input input:focus { border-color: var(--ink); box-shadow: 0 0 0 3px rgba(44, 33, 24, 0.1); }
+.chat-input button { background: linear-gradient(135deg, #3A2C1F, #1A130C); }
+.chat-input button:hover { background: linear-gradient(135deg, #1A130C, #000); }
+.chat-chips button:hover { border-color: var(--ink); color: var(--ink); }
 
-.chat-input input:focus { border-color: var(--ki); box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.14); }
-.chat-input button { background: linear-gradient(135deg, var(--ki), var(--ki-dark)); }
-.chat-input button:hover { background: linear-gradient(135deg, var(--ki-dark), #5B21B6); }
+/* ---------- Chat-Knopf: Pille statt Sprechblase ----------
+   Eine runde Blase sieht aus wie jedes beliebige Chat-Widget. Die
+   beschriftete Pille sagt direkt, was einen erwartet. */
+.widget-launcher {
+  width: auto; height: 54px;
+  padding: 0 20px 0 16px;
+  gap: 9px;
+  border-radius: 999px;
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+  color: var(--bg);
+  white-space: nowrap;
+}
+.widget-launcher .wl-funke { display: inline-flex; }
+.widget-launcher .wl-funke svg { width: 20px; height: 20px; }
+.widget-launcher .wl-text { line-height: 1; }
+/* Der Funke dreht sich beim Ueberfahren leicht - lebendig, nicht laut */
+.widget-launcher .wl-funke { transition: transform 0.4s var(--ease-out); }
+.widget-launcher:hover .wl-funke { transform: rotate(90deg) scale(1.1); }
+.widget-launcher .online { top: -3px; right: -3px; }
 
-/* Vorschlags-Knoepfe im Chat ebenfalls in der KI-Farbe */
-.chat-chips button:hover { border-color: var(--ki); color: var(--ki); }
+@media (max-width: 480px) {
+  /* Auf schmalen Handys nur der Funke, damit die Pille nicht ueber den
+     halben Bildschirm laeuft */
+  .widget-launcher { padding: 0; width: 54px; justify-content: center; }
+  .widget-launcher .wl-text { display: none; }
+}

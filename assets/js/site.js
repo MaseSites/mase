@@ -157,6 +157,9 @@
   }
 
   var botIconSvg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>';
+  /* Funke statt Sprechblase: ein Vier-Zack-Stern liest sich als
+     "kluger Assistent", nicht als beliebiges Chat-Fenster. */
+  var funkeSvg = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.6l1.85 5.32a3 3 0 0 0 1.86 1.85L21 11.6l-5.29 1.84a3 3 0 0 0-1.86 1.85L12 20.6l-1.85-5.31a3 3 0 0 0-1.86-1.85L3 11.6l5.29-1.83a3 3 0 0 0 1.86-1.85z"/><path d="M18.6 2.4l.62 1.78.62-1.78.62 1.78-.62 1.78-.62-1.78z" opacity=".85"/></svg>';
   var sendIconSvg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>';
 
   function buildChatUI(root, opts) {
@@ -351,23 +354,26 @@
       var st = document.createElement("style");
       st.id = "ms-widget-stil";
       st.textContent =
-        "body .widget-launcher{background:radial-gradient(120% 120% at 30% 22%, #8B5CF6 0%, var(--ki,#7C3AED) 48%, var(--ki-dark,#6D28D9) 100%);box-shadow:0 14px 34px rgba(124,58,237,.42)}" +
-        "body .widget-launcher:hover{box-shadow:0 22px 48px rgba(124,58,237,.52)}" +
-        "body .chat-head .ps-avatar{background:linear-gradient(140deg, var(--ki,#7C3AED), var(--ki-dark,#6D28D9));box-shadow:0 5px 14px rgba(124,58,237,.32)}" +
+        /* Espresso/Creme statt Lila: der Bot gehoert sichtbar zu
+           masesites. Der Knopf ist eine Pille mit Text, keine
+           x-beliebige Chatblase - darum runde Ecken statt Kreis. */
+        "body .widget-launcher{background:linear-gradient(140deg, #3A2C1F 0%, var(--ink,#2C2118) 55%, #1A130C 100%);box-shadow:0 14px 34px rgba(44,33,24,.34)}" +
+        "body .widget-launcher:hover{box-shadow:0 20px 44px rgba(44,33,24,.44)}" +
+        "body .chat-head .ps-avatar{background:linear-gradient(140deg, #3A2C1F, #1A130C);box-shadow:0 5px 14px rgba(44,33,24,.28)}" +
         ".widget-launcher.ms-pop{animation:msPop .55s cubic-bezier(.22,1,.36,1) both}" +
         "@keyframes msPop{0%{transform:scale(.5);opacity:0}60%{transform:scale(1.1)}100%{transform:scale(1);opacity:1}}" +
-        ".widget-launcher.ms-ping::before,.widget-launcher.ms-ping::after{content:\"\";position:absolute;inset:0;border-radius:50%;border:2px solid rgba(124,58,237,.55);pointer-events:none;animation:msPing 1.9s ease-out 3}" +
+        ".widget-launcher.ms-ping::before,.widget-launcher.ms-ping::after{content:\"\";position:absolute;inset:0;border-radius:999px;border:2px solid rgba(44,33,24,.4);pointer-events:none;animation:msPing 1.9s ease-out 3}" +
         ".widget-launcher.ms-ping::after{animation-delay:.65s}" +
-        "@keyframes msPing{0%{transform:scale(1);opacity:.7}100%{transform:scale(2);opacity:0}}" +
-        ".ms-teaser{position:fixed;right:92px;bottom:30px;z-index:80;max-width:min(290px,calc(100vw - 120px));background:var(--card,#fff);color:var(--ink,#1b1b1b);border:1px solid var(--line,rgba(20,16,30,.1));border-radius:16px;border-bottom-right-radius:6px;padding:12px 30px 12px 12px;box-shadow:0 18px 44px rgba(70,40,120,.22);display:flex;gap:10px;align-items:flex-start;cursor:pointer;opacity:0;transform:translateY(8px) scale(.96);transition:opacity .35s ease, transform .35s cubic-bezier(.22,1,.36,1)}" +
+        "@keyframes msPing{0%{transform:scale(1);opacity:.7}100%{transform:scale(1.5);opacity:0}}" +
+        ".ms-teaser{position:fixed;right:22px;bottom:96px;z-index:80;max-width:min(290px,calc(100vw - 44px));background:var(--card,#fff);color:var(--ink,#2C2118);border:1px solid var(--line,#E4D9C6);border-radius:16px;border-bottom-right-radius:6px;padding:12px 30px 12px 12px;box-shadow:0 18px 44px rgba(44,33,24,.2);display:flex;gap:10px;align-items:flex-start;cursor:pointer;opacity:0;transform:translateY(8px) scale(.96);transition:opacity .35s ease, transform .35s cubic-bezier(.22,1,.36,1)}" +
         ".ms-teaser.ms-an{opacity:1;transform:none}" +
-        ".ms-teaser .ms-av{flex:0 0 auto;width:30px;height:30px;border-radius:50%;background:radial-gradient(120% 120% at 30% 22%,#8B5CF6,var(--ki-dark,#6D28D9));color:#fff;display:grid;place-items:center;box-shadow:0 4px 12px rgba(124,58,237,.4)}" +
+        ".ms-teaser .ms-av{flex:0 0 auto;width:30px;height:30px;border-radius:50%;background:linear-gradient(140deg,#3A2C1F,#1A130C);color:var(--bg,#F6F1E7);display:grid;place-items:center;box-shadow:0 4px 12px rgba(44,33,24,.3)}" +
         ".ms-teaser .ms-av svg{width:16px;height:16px}" +
         ".ms-teaser .ms-txt{font-size:13.5px;line-height:1.42}" +
         ".ms-teaser .ms-txt b{font-weight:650}" +
-        ".ms-teaser .ms-zu{position:absolute;top:5px;right:6px;width:22px;height:22px;border:none;background:transparent;color:var(--ink-faint,#9a92a6);cursor:pointer;font-size:16px;line-height:1;border-radius:50%}" +
-        ".ms-teaser .ms-zu:hover{background:rgba(20,16,30,.07)}" +
-        ".ms-teaser::after{content:\"\";position:absolute;right:-6px;bottom:16px;width:12px;height:12px;background:inherit;border-right:1px solid var(--line,rgba(20,16,30,.1));border-bottom:1px solid var(--line,rgba(20,16,30,.1));transform:rotate(-45deg);border-bottom-right-radius:3px}" +
+        ".ms-teaser .ms-zu{position:absolute;top:5px;right:6px;width:22px;height:22px;border:none;background:transparent;color:var(--ink-faint,#9C8C7A);cursor:pointer;font-size:16px;line-height:1;border-radius:50%}" +
+        ".ms-teaser .ms-zu:hover{background:rgba(44,33,24,.08)}" +
+        ".ms-teaser::after{content:\"\";position:absolute;right:-6px;bottom:16px;width:12px;height:12px;background:inherit;border-right:1px solid var(--line,#E4D9C6);border-bottom:1px solid var(--line,#E4D9C6);transform:rotate(-45deg);border-bottom-right-radius:3px}" +
         "@media (prefers-reduced-motion: reduce){.widget-launcher.ms-pop{animation:none}.widget-launcher.ms-ping::before,.widget-launcher.ms-ping::after{display:none}.ms-teaser{transition:opacity .3s ease;transform:none}}";
       (document.head || document.documentElement).appendChild(st);
     })();
@@ -375,7 +381,12 @@
     var launcher = document.createElement("button");
     launcher.className = "widget-launcher";
     launcher.setAttribute("aria-label", "Chat mit dem masesites-Bot öffnen");
-    launcher.innerHTML = botIconSvg + '<span class="online" aria-hidden="true"></span>';
+    /* Pille mit Funke und Text statt runder Sprechblase - man sieht
+       sofort, dass hier ein Assistent wartet, statt es raten zu muessen. */
+    launcher.innerHTML =
+      '<span class="wl-funke" aria-hidden="true">' + funkeSvg + '</span>' +
+      '<span class="wl-text">Frag mich</span>' +
+      '<span class="online" aria-hidden="true"></span>';
 
     var panel = document.createElement("div");
     panel.className = "widget-panel chat-demo";

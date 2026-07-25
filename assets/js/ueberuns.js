@@ -87,16 +87,12 @@
       });
 
       /* ---------- Finale ----------
-         1) der Coder steht auf, 2) er blendet weich aus und sinkt weg,
-         waehrend die fertige Seite von unten hochgezogen wird,
-         3) darunter ist er verschwunden und die Website steht sauber. */
+         Der Coder bleibt sitzen und blendet weich aus, waehrend die
+         fertige Seite von unten hochgezogen wird; darunter ist er
+         verschwunden und die Website steht sauber. */
       var bauEnde = 520 + teile.length * 380 + 480;
 
-      nach(bauEnde, function () {                 /* 1) aufstehen */
-        if (szene) szene.classList.add("uu-steht");
-      });
-
-      nach(bauEnde + 780, function () {           /* 2) ausblenden + Seite hochziehen */
+      nach(bauEnde + 780, function () {           /* ausblenden + Seite hochziehen */
         if (fertig) return;
         if (szene) szene.classList.add("uu-zieht");
         vorhang = d.createElement("div");

@@ -1,26 +1,29 @@
 /* masesites – Cookie-Hinweis.
-   Bewusst eine eigene Datei: site.js wird gerade parallel bearbeitet,
-   so gibt es keine Konflikte.
+   Bewusst eine eigene Datei: site.js wird parallel bearbeitet, so gibt
+   es keine Konflikte.
 
    WICHTIG zum Verstaendnis: Diese Website setzt ausschliesslich
    technisch notwendige Cookies (ms_sitzung, ms_sitzung_ma,
    ms_sitzung_admin) - reine Anmelde-Cookies, httpOnly und SameSite=Lax.
    Es gibt kein Analytics, kein Tracking, keine Werbe-Skripte und keine
-   Drittanbieter. Darum ist dies ein Hinweis-Banner mit Bestaetigung und
-   kein Zustimmungs-Dialog mit Ablehnen-Knopf: Es gaebe schlicht nichts
-   abzulehnen, und ein Ablehnen-Knopf, der nichts tut, waere irrefuehrend.
+   Drittanbieter.
 
-   Kommt spaeter Analytics dazu, muss daraus ein echtes Zustimmungs-
-   Banner werden (Ablehnen gleichwertig, Skripte erst nach Zustimmung
-   laden). Die Struktur hier ist darauf vorbereitet: gespeichert wird
-   nicht nur "gesehen", sondern eine Fassung (STAND), damit man den
-   Hinweis bei einer Aenderung erneut zeigen kann. */
+   Darum zeigen die Einstellungen die notwendigen Cookies als "immer
+   aktiv" und die uebrigen Kategorien als "nicht vorhanden", statt
+   Schalter anzubieten, die nichts bewirken. Ein Schalter, der nichts
+   tut, waere irrefuehrend - die ehrliche Auskunft "wir setzen so etwas
+   gar nicht" ist fuer Besucher mehr wert als ein Schein-Regler.
+
+   Kommt spaeter Analytics dazu, wird aus der Statistik-Zeile ein echter
+   Schalter, und die Skripte duerfen erst nach Zustimmung laden. Die
+   Struktur ist darauf vorbereitet: gespeichert wird eine Fassung
+   (STAND), damit der Hinweis bei einer Aenderung erneut erscheint. */
 
 (function () {
   "use strict";
 
   var SCHLUESSEL = "ms_cookie_hinweis";
-  var STAND = "1";                 /* hochzaehlen, wenn sich der Text aendert */
+  var STAND = "2";                 /* hochzaehlen, wenn sich der Text aendert */
 
   function gespeichert() {
     try {
@@ -51,32 +54,57 @@
     box.setAttribute("role", "region");
     box.setAttribute("aria-label", "Hinweis zu Cookies");
 
-    var text = d.createElement("p");
-    text.className = "ms-cookie-text";
-    text.innerHTML =
-      "<b>Cookies</b> – wir setzen nur, was technisch nötig ist: ein Cookie, " +
-      "damit die Anmeldung funktioniert. Kein Tracking, keine Werbung, " +
-      "keine Weitergabe an Dritte. ";
+    box.innerHTML =
+      '<div class="ms-cookie-inner">' +
+        '<div class="ms-cookie-zeile">' +
+          '<span class="ms-cookie-keks" aria-hidden="true">🍪</span>' +
+          '<p class="ms-cookie-text">' +
+            '<b>Nur das N&ouml;tigste.</b> Wir setzen ein Cookie, damit die Anmeldung ' +
+            'funktioniert &ndash; kein Tracking, keine Werbung, keine Weitergabe an Dritte. ' +
+            '<a href="/datenschutz">Datenschutz</a>' +
+          '</p>' +
+          '<div class="ms-cookie-knoepfe">' +
+            '<button type="button" class="btn btn-ghost ms-cookie-mehr" aria-expanded="false">Einstellungen</button>' +
+            '<button type="button" class="btn btn-primary ms-cookie-ok">Verstanden</button>' +
+          '</div>' +
+        '</div>' +
+        '<div class="ms-cookie-details" hidden>' +
+          '<div class="ms-cookie-gruppe">' +
+            '<div class="ms-cookie-kopf">' +
+              '<span class="ms-cookie-titel">Notwendig</span>' +
+              '<span class="ms-cookie-stand ms-aktiv">Immer aktiv</span>' +
+            '</div>' +
+            '<p>Halten deine Anmeldung &uuml;ber einen Seitenwechsel hinweg. Ohne sie ' +
+            'k&ouml;nntest du dich nicht einloggen. Sie enthalten nur eine zuf&auml;llige ' +
+            'Kennung, keine pers&ouml;nlichen Daten.</p>' +
+            '<ul>' +
+              '<li><b>ms_sitzung</b> &ndash; Kundenbereich, bis zur Abmeldung (max. 30 Tage)</li>' +
+              '<li><b>ms_sitzung_ma</b> &ndash; Mitarbeitende, bis der Browser schliesst</li>' +
+              '<li><b>ms_sitzung_admin</b> &ndash; Verwaltung, bis der Browser schliesst</li>' +
+            '</ul>' +
+          '</div>' +
+          '<div class="ms-cookie-gruppe">' +
+            '<div class="ms-cookie-kopf">' +
+              '<span class="ms-cookie-titel">Statistik &amp; Marketing</span>' +
+              '<span class="ms-cookie-stand">Nicht vorhanden</span>' +
+            '</div>' +
+            '<p>Wir messen dein Verhalten nicht und binden keine Werbe- oder ' +
+            'Analysedienste ein. Darum gibt es hier nichts ein- oder auszuschalten. ' +
+            'Sollte sich das je &auml;ndern, fragen wir dich vorher.</p>' +
+          '</div>' +
+        '</div>' +
+      '</div>';
 
-    var mehr = d.createElement("a");
-    mehr.href = "/datenschutz";
-    mehr.textContent = "Datenschutz";
-    text.appendChild(mehr);
-
-    var knopf = d.createElement("button");
-    knopf.type = "button";
-    knopf.className = "btn btn-primary ms-cookie-ok";
-    knopf.textContent = "Verstanden";
-
-    box.appendChild(text);
-    box.appendChild(knopf);
     d.body.appendChild(box);
 
-    /* Der Chat-Knopf sitzt unten rechts - solange das Banner steht,
-       rutscht er hoch, damit sich beide nicht verdecken. Die noetige
-       Hoehe wird gemessen statt geraten: auf dem Handy steht der Knopf
-       auf einer eigenen Zeile, das Banner ist dort deutlich hoeher, und
-       laengerer Text kann es weiter wachsen lassen. */
+    var mehr = box.querySelector(".ms-cookie-mehr");
+    var details = box.querySelector(".ms-cookie-details");
+    var ok = box.querySelector(".ms-cookie-ok");
+
+    /* Das Banner liegt unten ueber die volle Breite - der Chat-Knopf
+       sitzt dort ebenfalls. Statt die Hoehe zu raten wird sie gemessen
+       und als --ms-cookie-h gesetzt, damit der Knopf sauber ausweicht,
+       egal wie lang der Text umbricht oder ob die Details offen sind. */
     function hoeheMelden() {
       d.documentElement.style.setProperty("--ms-cookie-h", box.offsetHeight + "px");
     }
@@ -86,6 +114,14 @@
 
     void box.offsetHeight;         /* Reflow, damit die Einblendung laeuft */
     box.classList.add("ms-an");
+
+    mehr.addEventListener("click", function () {
+      var offen = !details.hidden;
+      details.hidden = offen;
+      mehr.setAttribute("aria-expanded", String(!offen));
+      mehr.textContent = offen ? "Einstellungen" : "Weniger anzeigen";
+      hoeheMelden();
+    });
 
     function schliessen() {
       merken();
@@ -97,9 +133,9 @@
       }, 400);
     }
 
-    knopf.addEventListener("click", schliessen);
+    ok.addEventListener("click", schliessen);
     /* Wer auf "Datenschutz" geht, hat den Hinweis auch gesehen. */
-    mehr.addEventListener("click", merken);
+    box.querySelector(".ms-cookie-text a").addEventListener("click", merken);
   }
 
   /* Erst nach dem Laden zeigen, damit das Banner nicht in eine
