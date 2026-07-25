@@ -94,3 +94,84 @@
     });
   }
 })();
+
+/* ---------- Paket-Finder ----------
+   Eine Frage, vier Antworten, danach direkt zum passenden Preisblock.
+   Die frueheren Erklaer-Karten standen fuer alle Besucher oben auf der
+   Seite; ihre Inhalte stecken jetzt kompakt im Ergebnis - man liest nur
+   noch, was zur eigenen Auswahl gehoert. */
+(function () {
+  "use strict";
+
+  var pf = document.querySelector(".pf");
+  if (!pf) return;
+
+  var ANTWORTEN = {
+    website: {
+      titel: "Neue Website",
+      text: "Von Grund auf neu gebaut, auf deine Branche zugeschnitten und für Mobilgeräte optimiert. Besucher können etwas nachlesen und dich unkompliziert kontaktieren.",
+      ab: "ab CHF 750.–",
+      ziel: "#website"
+    },
+    ueberarbeitung: {
+      titel: "Überarbeitung",
+      text: "Auch Redesign genannt: Deine Inhalte bleiben, erneuert werden Aussehen, Handy-Ansicht und Technik. Deutlich günstiger als ein Neubau.",
+      ab: "ab CHF 250.–",
+      ziel: "#ueberarbeitung"
+    },
+    webapp: {
+      titel: "Webapp",
+      text: "Login, Datenbank und Dashboard: eine Anwendung im Browser für deine Abläufe. Faustregel: Machst du sie morgens auf, um darin zu arbeiten? Dann Webapp.",
+      ab: "ab CHF 3'500.–",
+      ziel: "#webapp"
+    },
+    ki: {
+      titel: "KI-Assistent",
+      text: "Ein Chat, der rund um die Uhr Fragen beantwortet und Anfragen aufnimmt. Lässt sich auch nachträglich in eine bestehende Website einbauen.",
+      ab: "CHF 200.– Einrichtung + CHF 40.–/Monat",
+      ziel: "#ki"
+    }
+  };
+
+  var frageBox = pf.querySelector(".pf-frage");
+  var ergebnisBox = pf.querySelector(".pf-ergebnis");
+  var titel = pf.querySelector(".pf-titel");
+  var text = pf.querySelector(".pf-text");
+  var ab = pf.querySelector(".pf-ab");
+  var hin = pf.querySelector(".pf-hin");
+
+  function zeigeErgebnis(schluessel) {
+    var a = ANTWORTEN[schluessel];
+    if (!a) return;
+    titel.textContent = a.titel;
+    text.textContent = a.text;
+    ab.textContent = a.ab;
+    hin.setAttribute("href", a.ziel);
+    frageBox.hidden = true;
+    ergebnisBox.hidden = false;
+    pf.setAttribute("data-schritt", "ergebnis");
+    /* Nicht automatisch wegspringen: Wer die Empfehlung noch liest,
+       soll nicht mitten im Satz weggescrollt werden. */
+  }
+
+  pf.querySelectorAll(".pf-opt").forEach(function (knopf) {
+    knopf.addEventListener("click", function () {
+      zeigeErgebnis(knopf.getAttribute("data-ziel"));
+    });
+  });
+
+  pf.querySelector(".pf-zurueck").addEventListener("click", function () {
+    ergebnisBox.hidden = true;
+    frageBox.hidden = false;
+    pf.setAttribute("data-schritt", "frage");
+  });
+
+  /* Der Knopf im Fliesstext oeffnet den Chat-Assistenten */
+  var botKnopf = document.getElementById("pf-bot");
+  if (botKnopf) {
+    botKnopf.addEventListener("click", function () {
+      var launcher = document.querySelector(".widget-launcher");
+      if (launcher) launcher.click();
+    });
+  }
+})();

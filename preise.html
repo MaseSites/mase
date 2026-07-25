@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/style.css?v=37">
+  <link rel="stylesheet" href="assets/css/style.css?v=38">
   <link rel="stylesheet" href="assets/css/preisliste.css?v=3">
 </head>
 <body>
@@ -65,64 +65,54 @@
       </div>
     </section>
 
-    <!-- ===== Einordnung: welche Leistung ist überhaupt gemeint? ===== -->
-    <section class="tight">
+    <!-- ===== Paket-Finder =====
+         Ersetzt die frueheren Erklaer-Karten und den Assistenten-Hinweis.
+         Beides zusammen waren rund 450 Woerter, bevor der erste Preis
+         kam - auf dem Handy fast sieben Bildschirme. Eine Frage genuegt,
+         um die passende Leistung zu bestimmen; die Erklaerung steht
+         kompakt im Ergebnis statt vorab fuer alle. -->
+    <section class="tight" id="finder">
       <div class="wrap">
-        <div class="section-head">
-          <h2>Zuerst: Was brauchst du überhaupt?</h2>
-          <p class="lead">Drei Dinge werden oft verwechselt – diese Fragen klären es.</p>
-        </div>
+        <div class="pf" data-schritt="frage">
 
-        <div class="pl-einordnung">
-          <article class="pl-eo">
-            <span class="pl-eo-nr">1</span>
-            <h3>Neue Website</h3>
-            <p class="pl-frage">Du hast noch keine Website – oder die bestehende soll ersetzt werden.</p>
-            <p>Von Grund auf neu gebaut. Besucher können <b>etwas nachlesen</b> und dich <b>kontaktieren</b>.</p>
-            <p class="pl-eo-preis">ab CHF 750.–</p>
-            <a class="pl-mehr" href="/leistungen#website">Was genau dazugehört <span class="arrow">→</span></a>
-          </article>
-
-          <article class="pl-eo">
-            <span class="pl-eo-nr">2</span>
-            <h3>Überarbeitung</h3>
-            <p class="pl-frage">Deine Website gibt es schon, aber sie sieht alt aus oder funktioniert auf dem Handy schlecht.</p>
-            <p>Auch <i>Redesign</i> genannt. Deine <b>Inhalte bleiben</b>, erneuert werden Aussehen, Handy-Ansicht und Technik.</p>
-            <p class="pl-eo-preis">ab CHF 250.–</p>
-            <a class="pl-mehr" href="/leistungen#ueberarbeitung">Was genau dazugehört <span class="arrow">→</span></a>
-          </article>
-
-          <article class="pl-eo">
-            <span class="pl-eo-nr">3</span>
-            <h3>Webapp</h3>
-            <p class="pl-frage">Du brauchst kein Schaufenster, sondern ein Werkzeug zum Arbeiten.</p>
-            <p>Auf einer <b>Website lesen Besucher</b>, in einer <b>Webapp arbeiten Benutzer</b>. Faustregel: Machst du es morgens auf, um darin zu arbeiten? Dann Webapp.</p>
-            <p class="pl-eo-preis">ab CHF 3'500.–</p>
-            <a class="pl-mehr" href="/leistungen#webapp">Was genau dazugehört <span class="arrow">→</span></a>
-          </article>
-        </div>
-
-        
-      </div>
-    </section>
-
-    <!-- ===== Hilfe beim Wählen: Pfeil zum Assistenten ===== -->
-    <section class="tight" id="hilfe">
-      <div class="wrap">
-        <div class="pl-lotse">
-          <div class="pl-lotse-text">
-            <span class="pl-lotse-label">Unsicher, was passt?</span>
-            <h2>Frag unseren Assistenten.</h2>
-            <p>Beschreib ihm in zwei Sätzen, was du vorhast – er stellt ein paar Rückfragen und sagt dir, welches Paket zu dir passt. Rund um die Uhr, ohne Termin.</p>
-            <button class="btn btn-primary" type="button" id="pl-bot-oeffnen">Assistenten öffnen <span class="arrow">→</span></button>
+          <div class="pf-frage">
+            <span class="pf-label">In 10 Sekunden zum richtigen Paket</span>
+            <h2>Was trifft auf dich zu?</h2>
+            <div class="pf-optionen">
+              <button type="button" class="pf-opt" data-ziel="website">
+                <span class="pf-opt-titel">Ich habe noch keine Website</span>
+                <span class="pf-opt-text">Oder sie soll komplett ersetzt werden.</span>
+              </button>
+              <button type="button" class="pf-opt" data-ziel="ueberarbeitung">
+                <span class="pf-opt-titel">Meine Website ist veraltet</span>
+                <span class="pf-opt-text">Sieht alt aus oder klemmt auf dem Handy.</span>
+              </button>
+              <button type="button" class="pf-opt" data-ziel="webapp">
+                <span class="pf-opt-titel">Ich brauche ein Werkzeug zum Arbeiten</span>
+                <span class="pf-opt-text">Mit Login, Daten und Abläufen.</span>
+              </button>
+              <button type="button" class="pf-opt" data-ziel="ki">
+                <span class="pf-opt-titel">Ich will einen KI-Assistenten</span>
+                <span class="pf-opt-text">Beantwortet Fragen, nimmt Anfragen auf.</span>
+              </button>
+            </div>
+            <p class="pf-unsicher">
+              Unsicher? <button type="button" id="pf-bot">Frag unseren Assistenten</button> –
+              oder scroll weiter, alle Preise stehen unten.
+            </p>
           </div>
-          <div class="pl-lotse-pfeil" aria-hidden="true">
-            <svg viewBox="0 0 260 200" fill="none">
-              <path class="pfeil-bogen" d="M12 30 C 130 8, 158 80, 228 150" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-dasharray="1 12"/>
-              <path class="pfeil-spitze" d="M202 142 L228 150 L220 124" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-            <span class="pl-lotse-hinweis">hier unten rechts</span>
+
+          <div class="pf-ergebnis" hidden>
+            <span class="pf-label">Das passt zu dir</span>
+            <h2 class="pf-titel"></h2>
+            <p class="pf-text"></p>
+            <p class="pf-ab"></p>
+            <div class="pf-aktionen">
+              <a class="btn btn-primary pf-hin" href="#website">Preise ansehen <span class="arrow">→</span></a>
+              <button type="button" class="btn btn-ghost pf-zurueck">Andere Auswahl</button>
+            </div>
           </div>
+
         </div>
       </div>
     </section>
@@ -477,6 +467,6 @@
   <script src="assets/js/protokoll.js?v=20"></script>
   <script src="assets/js/cookie.js?v=2"></script>
   <script src="assets/js/site.js?v=32"></script>
-  <script src="assets/js/preisliste.js?v=3"></script>
+  <script src="assets/js/preisliste.js?v=4"></script>
 </body>
 </html>

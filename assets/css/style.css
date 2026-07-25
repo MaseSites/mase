@@ -2785,10 +2785,12 @@ html.uu-bau .uu-szene { display: flex; }
   100% { opacity: 0; }
 }
 
-/* ---------- Finale: aufstehen, dann sanft verschwinden ----------
-   ueberuns.js schaltet am Ende .uu-steht (Coder erhebt sich) und .uu-zieht
-   (er blendet weich aus und sinkt weg), waehrend der .uu-vorhang von unten
-   hochfaehrt: die fertige Seite wird wie ein Tuch darueber gezogen. */
+/* ---------- Finale: der Coder blendet aus ----------
+   Wenn der letzte Abschnitt gebaut ist, steht die Seite fertig da.
+   ueberuns.js schaltet dann .uu-zieht - die Figur sinkt sanft weg und
+   blendet aus, mehr passiert nicht. Ein zusaetzlicher Vorhang ueber die
+   ganze Seite (frueher hier) liess fertigen Inhalt grundlos wieder
+   verschwinden und neu erscheinen; das wirkte wie ein Fehler. */
 .uu-szene .uu-figur {
   transform-box: view-box; transform-origin: 150px 208px;
   transition: transform 0.7s var(--ease-out), opacity 0.7s ease;
@@ -2803,25 +2805,6 @@ html.uu-bau .uu-szene { display: flex; }
    dabei aus, waehrend der Vorhang hochfaehrt - so verschwindet sie ruhig,
    statt sich unschoen zusammenzuquetschen. */
 .uu-szene.uu-zieht .uu-figur { transform: translateY(46px); opacity: 0; }
-
-/* Der Vorhang liegt UNTER dem Header (z-index 60), aber ueber dem Inhalt:
-   so bleibt der Header immer im Vordergrund und nur der Inhalt (Text, Bilder)
-   wird wie ein Tuch hochgezogen. */
-.uu-vorhang {
-  position: fixed; inset: 0; z-index: 50;
-  background: var(--bg);
-  transform: translateY(100%);
-  transition: transform 1.0s cubic-bezier(0.5, 0, 0.16, 1), opacity 0.55s ease;
-  will-change: transform;
-  box-shadow: 0 -24px 55px rgba(72, 52, 30, 0.22);
-}
-/* sichtbare Oberkante, damit man das "Tuch" hochziehen sieht */
-.uu-vorhang::before {
-  content: ""; position: absolute; left: 0; right: 0; top: 0; height: 2px;
-  background: linear-gradient(90deg, transparent, rgba(72, 52, 30, 0.22), transparent);
-}
-.uu-vorhang.hoch { transform: translateY(0); }
-.uu-vorhang.weg { opacity: 0; }
 
 @media (prefers-reduced-motion: reduce) {
   .stagger-warten > *, .stagger-los > * { opacity: 1; animation: none; }
@@ -3332,4 +3315,89 @@ body.ms-cookie-offen .widget-panel { bottom: calc(var(--ms-cookie-h, 90px) + 90p
      halben Bildschirm laeuft */
   .widget-launcher { padding: 0; width: 54px; justify-content: center; }
   .widget-launcher .wl-text { display: none; }
+}
+
+/* ---------- Paket-Finder auf der Preisseite ----------
+   Ersetzt lange Erklaertexte: eine Frage, vier Antworten, dann direkt
+   zum passenden Preisblock. */
+.pf {
+  max-width: 780px;
+  margin: 0 auto;
+  background: var(--card);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-xl);
+  padding: 34px 30px;
+}
+.pf-label {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-bottom: 9px;
+}
+.pf h2 { font-size: clamp(1.5rem, 3vw, 2rem); margin-bottom: 22px; letter-spacing: -0.02em; }
+
+.pf-optionen { display: grid; gap: 10px; }
+.pf-opt {
+  display: block;
+  width: 100%;
+  text-align: left;
+  font-family: inherit;
+  background: var(--bg-soft);
+  border: 1.5px solid var(--line);
+  border-radius: var(--radius-m);
+  padding: 15px 18px;
+  cursor: pointer;
+  transition: border-color 0.2s ease, background 0.2s ease, transform 0.2s ease;
+}
+.pf-opt:hover { border-color: var(--ink); background: #fff; transform: translateX(3px); }
+.pf-opt:focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
+.pf-opt-titel {
+  display: block;
+  font-weight: 650;
+  font-size: 1.02rem;
+  color: var(--ink);
+  margin-bottom: 3px;
+}
+.pf-opt-text { display: block; font-size: 0.88rem; line-height: 1.5; color: var(--ink-soft); }
+
+.pf-unsicher {
+  margin: 18px 0 0;
+  font-size: 0.86rem;
+  line-height: 1.6;
+  color: var(--ink-soft);
+}
+.pf-unsicher button {
+  border: none;
+  background: none;
+  padding: 0;
+  font: inherit;
+  color: var(--ink);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  cursor: pointer;
+}
+
+/* Ergebnis */
+.pf-text { margin: 0 0 14px; color: var(--ink-soft); line-height: 1.6; max-width: 58ch; }
+.pf-ab {
+  margin: 0 0 22px;
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--ink);
+}
+.pf-aktionen { display: flex; gap: 10px; flex-wrap: wrap; }
+
+@media (max-width: 720px) {
+  .pf { padding: 22px 17px; border-radius: var(--radius-l); }
+  .pf h2 { margin-bottom: 16px; }
+  .pf-optionen { gap: 8px; }
+  .pf-opt { padding: 12px 14px; }
+  .pf-opt-titel { font-size: 0.97rem; }
+  .pf-opt-text { font-size: 0.84rem; }
+  .pf-unsicher { margin-top: 14px; font-size: 0.83rem; }
+  .pf-aktionen .btn { flex: 1 1 100%; justify-content: center; }
 }

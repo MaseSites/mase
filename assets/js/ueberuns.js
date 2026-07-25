@@ -14,7 +14,7 @@
 
   wurzel.classList.add("uu-bau");
 
-  var timer = [], fertig = false, vorhang = null, szene = null;
+  var timer = [], fertig = false, szene = null;
   function nach(ms, fn) { timer.push(setTimeout(fn, ms)); }
 
   var SKIP_EVENTS = ["pointerdown", "keydown", "wheel", "touchstart"];
@@ -39,8 +39,6 @@
     var lead = d.querySelector(".uu-hero .lead");
     if (lead) lead.classList.add("uu-an");
     d.querySelectorAll(".uu-teil").forEach(function (t) { t.classList.add("uu-fertig"); });
-    if (vorhang && vorhang.parentNode) vorhang.parentNode.removeChild(vorhang);
-    vorhang = null;
     wurzel.classList.remove("uu-bau"); /* Coder-Szene verschwindet ueber CSS */
   }
 
@@ -87,33 +85,25 @@
       });
 
       /* ---------- Finale ----------
-         Der Coder bleibt sitzen und blendet weich aus, waehrend die
-         fertige Seite von unten hochgezogen wird; darunter ist er
-         verschwunden und die Website steht sauber. */
+         Wenn der letzte Abschnitt gebaut ist, steht die Seite bereits
+         fertig da - es gibt nichts mehr aufzudecken. Frueher fuhr hier
+         noch ein Vorhang ueber die ganze Seite und blendete alles ein
+         zweites Mal ein; das wirkte wie ein Fehler, weil fertiger
+         Inhalt grundlos wieder verschwand und neu erschien.
+         Jetzt blendet nur noch der Coder aus - ein Schritt, keine
+         zweite Uebergangsschicht. */
       var bauEnde = 520 + teile.length * 380 + 480;
 
-      nach(bauEnde + 780, function () {           /* ausblenden + Seite hochziehen */
+      nach(bauEnde + 420, function () {
         if (fertig) return;
-        if (szene) szene.classList.add("uu-zieht");
-        vorhang = d.createElement("div");
-        vorhang.className = "uu-vorhang";
-        vorhang.setAttribute("aria-hidden", "true");
-        d.body.appendChild(vorhang);
-        void vorhang.offsetHeight;                /* Reflow, damit die Fahrt animiert */
-        vorhang.classList.add("hoch");
+        if (szene) szene.classList.add("uu-zieht");   /* Coder blendet aus */
       });
 
-      nach(bauEnde + 780 + 1020, function () {     /* 3) verdeckt: aufraeumen + aufdecken */
+      nach(bauEnde + 420 + 700, function () {
         if (fertig) return;
-        window.scrollTo(0, 0);
-        wurzel.classList.remove("uu-bau");         /* Coder verschwindet, Seite final */
-        if (vorhang) { void vorhang.offsetHeight; vorhang.classList.add("weg"); }
-        nach(560, function () {
-          if (vorhang && vorhang.parentNode) vorhang.parentNode.removeChild(vorhang);
-          vorhang = null;
-          fertig = true;
-          skipHoerer(false);
-        });
+        wurzel.classList.remove("uu-bau");             /* Szene weg, Seite normal */
+        fertig = true;
+        skipHoerer(false);
       });
     });
   });
