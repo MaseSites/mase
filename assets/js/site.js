@@ -156,6 +156,32 @@
     if (pos < text.length) ziel.appendChild(document.createTextNode(text.slice(pos)));
   }
 
+  /* Profilbild des Bots: ein freundliches Gesicht statt einer
+     Sprechblase. Bewusst wenige, grosse Formen - der Avatar wird nur
+     30 bis 36 Pixel gross dargestellt, feine Details wuerden dort
+     verschwinden. Fuellt seinen Kreis selbst aus (eigener Hintergrund),
+     damit er wie ein echtes Profilbild wirkt. */
+  var avatarSvg =
+    '<svg viewBox="0 0 40 40" class="ms-avatar-bild" aria-hidden="true">' +
+      '<defs><linearGradient id="msAvBg" x1="0" y1="0" x2="0" y2="1">' +
+        '<stop offset="0" stop-color="#F3E9D8"/><stop offset="1" stop-color="#E4D3B8"/>' +
+      '</linearGradient></defs>' +
+      '<circle cx="20" cy="20" r="20" fill="url(#msAvBg)"/>' +
+      /* Antenne mit warmem Punkt */
+      '<path d="M20 12V8.4" stroke="#2C2118" stroke-width="2" stroke-linecap="round"/>' +
+      '<circle cx="20" cy="6.6" r="2.5" fill="#A87C4F"/>' +
+      /* Kopf */
+      '<rect x="8.5" y="11.5" width="23" height="20" rx="8.5" fill="#2C2118"/>' +
+      /* Augen */
+      '<circle cx="15.6" cy="20" r="2.6" fill="#FDFAF4"/>' +
+      '<circle cx="24.4" cy="20" r="2.6" fill="#FDFAF4"/>' +
+      /* Laecheln */
+      '<path d="M16 25.6c1.5 1.6 6.5 1.6 8 0" stroke="#FDFAF4" stroke-width="2" stroke-linecap="round" fill="none"/>' +
+      /* Wangen fuer Waerme */
+      '<circle cx="11.8" cy="24" r="1.5" fill="#A87C4F" opacity=".55"/>' +
+      '<circle cx="28.2" cy="24" r="1.5" fill="#A87C4F" opacity=".55"/>' +
+    '</svg>';
+
   var botIconSvg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>';
   /* Funke statt Sprechblase: ein Vier-Zack-Stern liest sich als
      "kluger Assistent", nicht als beliebiges Chat-Fenster. */
@@ -166,7 +192,7 @@
     opts = opts || {};
     root.innerHTML =
       '<div class="chat-head">' +
-        '<div class="ps-avatar">' + botIconSvg + '<span class="online" aria-hidden="true"></span></div>' +
+        '<div class="ps-avatar ms-hat-bild">' + avatarSvg + '<span class="online" aria-hidden="true"></span></div>' +
         '<div><div class="name">masesites-Bot</div><div class="status"><i></i>online</div></div>' +
         '<span class="ki-badge">KI</span>' +
         (opts.closable ? '<button class="widget-close" aria-label="Chat schließen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>' : '') +
@@ -367,8 +393,8 @@
         "@keyframes msPing{0%{transform:scale(1);opacity:.7}100%{transform:scale(1.5);opacity:0}}" +
         ".ms-teaser{position:fixed;right:22px;bottom:96px;z-index:80;max-width:min(290px,calc(100vw - 44px));background:var(--card,#fff);color:var(--ink,#2C2118);border:1px solid var(--line,#E4D9C6);border-radius:16px;border-bottom-right-radius:6px;padding:12px 30px 12px 12px;box-shadow:0 12px 32px rgba(44,33,24,.14);display:flex;gap:10px;align-items:flex-start;cursor:pointer;opacity:0;transform:translateY(8px) scale(.96);transition:opacity .35s ease, transform .35s cubic-bezier(.22,1,.36,1)}" +
         ".ms-teaser.ms-an{opacity:1;transform:none}" +
-        ".ms-teaser .ms-av{flex:0 0 auto;width:30px;height:30px;border-radius:50%;background:var(--ink,#2C2118);color:var(--bg,#F6F1E7);display:grid;place-items:center;box-shadow:none}" +
-        ".ms-teaser .ms-av svg{width:16px;height:16px}" +
+        ".ms-teaser .ms-av{flex:0 0 auto;width:30px;height:30px;border-radius:50%;background:transparent;display:grid;place-items:center;box-shadow:none;overflow:hidden}" +
+        ".ms-teaser .ms-av svg{width:100%;height:100%;border-radius:50%}" +
         ".ms-teaser .ms-txt{font-size:13.5px;line-height:1.42}" +
         ".ms-teaser .ms-txt b{font-weight:650}" +
         ".ms-teaser .ms-zu{position:absolute;top:5px;right:6px;width:22px;height:22px;border:none;background:transparent;color:var(--ink-faint,#9C8C7A);cursor:pointer;font-size:16px;line-height:1;border-radius:50%}" +
@@ -459,7 +485,7 @@
       teaserEl.setAttribute("role", "button");
       teaserEl.setAttribute("tabindex", "0");
       teaserEl.innerHTML =
-        '<span class="ms-av" aria-hidden="true">' + botIconSvg + '</span>' +
+        '<span class="ms-av ms-hat-bild" aria-hidden="true">' + avatarSvg + '</span>' +
         '<span class="ms-txt"><b>Hoi!</b> Ich bin die masesites-KI. 👋 Frag mich zu Websites &amp; Preisen – oder wünsch dir gleich einen Termin.</span>' +
         '<button class="ms-zu" type="button" aria-label="Hinweis schließen">×</button>';
       document.body.appendChild(teaserEl);
