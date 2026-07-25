@@ -2785,24 +2785,23 @@ html.uu-bau .uu-szene { display: flex; }
   100% { opacity: 0; }
 }
 
-/* ---------- Finale: aufstehen, ducken, die Seite ueber sich hochziehen ----------
+/* ---------- Finale: aufstehen, dann sanft verschwinden ----------
    ueberuns.js schaltet am Ende .uu-steht (Coder erhebt sich) und .uu-zieht
-   (er duckt sich und greift nach oben), waehrend der .uu-vorhang von unten
-   hochfaehrt: die fertige Seite wird wie ein Tuch ueber ihn gezogen. */
+   (er blendet weich aus und sinkt weg), waehrend der .uu-vorhang von unten
+   hochfaehrt: die fertige Seite wird wie ein Tuch darueber gezogen. */
 .uu-szene .uu-figur {
   transform-box: view-box; transform-origin: 150px 208px;
-  transition: transform 0.6s var(--ease-out);
+  transition: transform 0.7s var(--ease-out), opacity 0.7s ease;
 }
 .uu-szene.uu-steht .uu-arm,
 .uu-szene.uu-steht .uu-arm2,
 .uu-szene.uu-zieht .uu-arm,
 .uu-szene.uu-zieht .uu-arm2 { animation: none; transition: transform 0.5s var(--ease-out); }
 .uu-szene.uu-steht .uu-figur { transform: translateY(-16px); }
-/* richtig ducken: tief in die Hocke, Kopf runter, waehrend die Arme das Tuch
-   nach oben ueber sich ziehen */
-.uu-szene.uu-zieht .uu-figur { transform: translateY(12px) scale(1.06, 0.55); }
-.uu-szene.uu-zieht .uu-arm { transform: rotate(-72deg); }
-.uu-szene.uu-zieht .uu-arm2 { transform: rotate(-64deg); }
+/* Kein Ducken mehr: die Figur gleitet sanft nach unten weg und blendet
+   dabei aus, waehrend der Vorhang hochfaehrt - so verschwindet sie ruhig,
+   statt sich unschoen zusammenzuquetschen. */
+.uu-szene.uu-zieht .uu-figur { transform: translateY(46px); opacity: 0; }
 
 /* Der Vorhang liegt UNTER dem Header (z-index 60), aber ueber dem Inhalt:
    so bleibt der Header immer im Vordergrund und nur der Inhalt (Text, Bilder)
@@ -3070,3 +3069,46 @@ html.uu-bau .uu-szene { display: flex; }
   font-size: 0.92rem;
   line-height: 1.5;
 }
+
+/* ---------- Preise: aufklappbare Fragen (Gut zu wissen) ----------
+   Native <details>/<summary>: Antwort bleibt verborgen, bis man die
+   Frage antippt - so steht nicht aller Text auf einmal da. */
+.pl-faq { max-width: 760px; margin: 0 auto; }
+.pl-faq-item {
+  border-bottom: 1px solid var(--line-strong);
+}
+.pl-faq-item summary {
+  list-style: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 22px 4px;
+  font-size: 1.12rem;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  transition: color 0.2s ease;
+}
+.pl-faq-item summary::-webkit-details-marker { display: none; }
+.pl-faq-item summary:hover { color: var(--accent); }
+/* Plus-Zeichen rechts, dreht sich beim Öffnen zum Minus */
+.pl-faq-item summary::after {
+  content: "";
+  flex: none;
+  width: 20px; height: 20px;
+  position: relative;
+  background:
+    linear-gradient(currentColor, currentColor) center / 100% 2px no-repeat,
+    linear-gradient(currentColor, currentColor) center / 2px 100% no-repeat;
+  transition: transform 0.28s ease;
+  color: var(--ink-faint);
+}
+.pl-faq-item[open] summary::after { transform: rotate(135deg); }
+.pl-faq-item[open] summary { color: var(--accent); }
+.pl-faq-a {
+  padding: 0 4px 22px;
+  max-width: 64ch;
+}
+.pl-faq-a p { margin: 0; color: var(--ink-soft); line-height: 1.65; }
