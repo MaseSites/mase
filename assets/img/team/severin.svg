@@ -1,15 +1,26 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 560" role="img" aria-label="Platzhalter-Portraet Severin">
-  <!-- PLATZHALTER: durch ein echtes Foto ersetzen (siehe Kommentar in ueber-uns.html) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 560" role="img" aria-label="Illustriertes Portraet von Severin">
+  <!-- PLATZHALTER-ILLUSTRATION: durch ein echtes Foto ersetzen,
+       siehe Kommentar in ueber-uns.html. Figur mittig auf x=240. -->
   <defs>
     <linearGradient id="sBg" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#EFE6D6"/><stop offset="1" stop-color="#DCCCB0"/>
+      <stop offset="0" stop-color="#F1E7D6"/><stop offset="1" stop-color="#DCCBAD"/>
     </linearGradient>
   </defs>
   <rect width="480" height="560" fill="url(#sBg)"/>
-  <circle cx="240" cy="200" r="118" fill="#E8DBC3"/>
-  <path d="M60 560c0-104 80-172 180-172s180 68 180 172z" fill="#3A2C1F"/>
-  <rect x="163" y="118" width="154" height="182" rx="72" fill="#483726"/>
-  <!-- Kuerzeres, welliges Haar -->
-  <path d="M163 190c4-56 36-90 77-90s73 34 77 90c-8-22-30-34-77-34s-69 12-77 34z" fill="#A87C4F"/>
-  <path d="M198 402l42 46 42-46 26 14-68 74-68-74z" fill="#EFE6D6" opacity=".92"/>
+  <circle cx="240" cy="215" r="132" fill="#EBDFC8" opacity=".75"/>
+
+  <path d="M84 560c0-96 70-160 156-160s156 64 156 160z" fill="#3A2C1F"/>
+  <path d="M206 404l34 40 34-40 22 12-56 66-56-66z" fill="#F1E7D6"/>
+  <path d="M214 330h52v58c0 10-52 10-52 0z" fill="#E0B48C"/>
+  <ellipse cx="171" cy="240" rx="11" ry="16" fill="#E0B48C"/>
+  <ellipse cx="309" cy="240" rx="11" ry="16" fill="#E0B48C"/>
+  <path d="M240 128c40 0 68 32 68 78 0 52-30 96-68 96s-68-44-68-96c0-46 28-78 68-78z" fill="#EFC49B"/>
+  <!-- Haare: welliger, hellbraun -->
+  <path d="M170 208c0-48 32-80 70-80s70 32 70 80c-8-20-16-30-30-36-10 8-24 10-38 6-12-4-22-10-30-4-14 10-36 16-42 34z" fill="#8A5A34"/>
+  <path d="M310 208c5 16 4 30 0 40-1-16-3-28-6-38z" fill="#8A5A34"/>
+  <path d="M204 212c8-5 20-5 27-1M249 211c7-4 19-4 27 1" stroke="#6B4526" stroke-width="5" stroke-linecap="round" fill="none"/>
+  <ellipse cx="217" cy="230" rx="7" ry="8" fill="#3A2C1F"/>
+  <ellipse cx="263" cy="230" rx="7" ry="8" fill="#3A2C1F"/>
+  <path d="M240 240v20l-7 7" stroke="#D19A69" stroke-width="4" stroke-linecap="round" fill="none"/>
+  <path d="M224 283c9 8 23 8 32 0" stroke="#A9603C" stroke-width="5" stroke-linecap="round" fill="none"/>
 </svg>

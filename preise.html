@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/style.css?v=40">
+  <link rel="stylesheet" href="assets/css/style.css?v=41">
   <link rel="stylesheet" href="assets/css/preisliste.css?v=3">
 </head>
 <body>
@@ -246,50 +246,52 @@
           </div>
           <a class="pl-mehr" href="/leistungen#webapp">Alles im Detail <span class="arrow">→</span></a>
         </div>
-        <div class="pl-liste">
-          <div class="pl-zeile" data-anfrage="Webapp: Ein Ablauf (ab CHF 3'500.–)" data-interesse="Webapp">
-            <div class="pl-was">
-              <h3>Ein Ablauf</h3>
-              <p>Ein Bereich, sauber gelöst – zum Beispiel Termine: Kunden buchen selbst, du verwaltest alles an einem Ort. Eine Team-Ansicht.</p>
-            </div>
-            <div class="pl-preis">
-              <span class="pl-betrag">ab CHF 3'500.–</span>
-              <span class="pl-einheit">einmalig · ab 6 Wochen</span>
-              <button class="pl-anfragen" type="button">Anfragen</button>
-            </div>
-          </div>
-          <div class="pl-zeile" data-anfrage="Webapp: Mehrere Abläufe (ab CHF 7'500.–)" data-interesse="Webapp">
-            <div class="pl-was">
-              <h3>Mehrere Abläufe</h3>
-              <p>Bereiche, die zusammenhängen – etwa Aufträge, Kunden und Lager. Dazu Rollen und Rechte fürs Team sowie Auswertungen.</p>
-            </div>
-            <div class="pl-preis">
-              <span class="pl-betrag">ab CHF 7'500.–</span>
-              <span class="pl-einheit">einmalig · ab 10 Wochen</span>
-              <button class="pl-anfragen" type="button">Anfragen</button>
-            </div>
-          </div>
-        </div>
-        <div class="pl-liste schmal">
-          <div class="pl-zeile" data-anfrage="Webapp: KI-Assistent (CHF 200.– Einrichtung, CHF 40.–/Monat)" data-interesse="KI-Assistent">
-            <div class="pl-was">
-              <h3>KI-Assistent für deine Webapp <span class="pl-marke">Optional</span></h3>
-              <p>Statt zu klicken sagst du, was du willst: «Trag Familie Meier am Freitag um 19 Uhr ein» oder «Wie lief letzte Woche?». Er legt Einträge an, ändert sie und fasst zusammen – im Rahmen deiner Rechte. Gleicher Preis wie auf der Website.</p>
-            </div>
-            <div class="pl-preis">
-              <span class="pl-betrag">CHF 200.–</span>
-              <span class="pl-einheit">einmalig</span>
-              <span class="pl-betrag zweit">+ CHF 40.–</span>
-              <span class="pl-einheit">pro Monat</span>
-              <button class="pl-anfragen" type="button">Anfragen</button>
-            </div>
-          </div>
-        </div>
+        <div class="pl-stufen">
+          <article class="pl-stufe" data-anfrage="Webapp: Ein Ablauf (ab CHF 3'500.–)" data-interesse="Webapp">
+            <h3>Ein Ablauf</h3>
+            <p class="pl-fuer-wen">Ein Bereich, sauber gelöst.</p>
+            <p class="pl-tarif"><b>ab CHF 3'500.–</b><span>einmalig · ab 6 Wochen</span></p>
+            <ul class="pl-check">
+              <li>Ein Ablauf, zum Beispiel Termine</li>
+              <li>Kunden buchen selbst</li>
+              <li>Du verwaltest alles an einem Ort</li>
+              <li>Eine Team-Ansicht</li>
+              <li>Login und Datenbank</li>
+            </ul>
+            <button class="pl-anfragen" type="button">Anfragen</button>
+          </article>
 
-        <p class="pl-notiz"><b>Achtung, oft verwechselt:</b> Terminbuchung gibt es auch schon in der Premium-Website ab CHF 2'500 – dort als Standard-Zusatz mit einem Kalender und Bestätigungsmail. Eine Webapp lohnt sich erst, wenn es auf deinen Betrieb zugeschnitten sein muss: mehrere Mitarbeitende mit eigenen Kalendern, Räume, Schichten, Kundenhistorie. Reicht dir die Standard-Buchung, nimm die Website und spar das Geld. <a href="/leistungen#webapp">Unterschied im Detail</a></p>
-        <p class="pl-notiz">Eine bedienbare Webapp zum Ausprobieren steht unter <a href="/beispiele">Beispiele</a>.</p>
-      </div>
-    </section>
+          <article class="pl-stufe hervor" data-anfrage="Webapp: Mehrere Abläufe (ab CHF 7'500.–)" data-interesse="Webapp">
+            <span class="pl-marke">Für Firmen</span>
+            <h3>Mehrere Abläufe</h3>
+            <p class="pl-fuer-wen">Bereiche, die zusammenhängen.</p>
+            <p class="pl-tarif"><b>ab CHF 7'500.–</b><span>einmalig · ab 10 Wochen</span></p>
+            <ul class="pl-check">
+              <li>Etwa Aufträge, Kunden und Lager</li>
+              <li>Rollen und Rechte fürs Team</li>
+              <li>Auswertungen</li>
+              <li>Login und Datenbank</li>
+              <li>Mehrere Team-Ansichten</li>
+            </ul>
+            <button class="pl-anfragen" type="button">Anfragen</button>
+          </article>
+
+          <article class="pl-stufe" data-anfrage="Webapp: KI-Assistent (CHF 200.– Einrichtung, CHF 40.–/Monat)" data-interesse="KI-Assistent">
+            <span class="pl-marke">Optional</span>
+            <h3>KI-Assistent</h3>
+            <p class="pl-fuer-wen">Sagen statt klicken.</p>
+            <p class="pl-tarif"><b>CHF 200.–</b><span>einmalig · dann CHF 40.– pro Monat</span></p>
+            <ul class="pl-check">
+              <li>«Trag Familie Meier am Freitag ein»</li>
+              <li>Legt Einträge an und ändert sie</li>
+              <li>Fasst zusammen: «Wie lief letzte Woche?»</li>
+              <li>Immer im Rahmen deiner Rechte</li>
+              <li>Gleicher Preis wie auf der Website</li>
+            </ul>
+            <button class="pl-anfragen" type="button">Anfragen</button>
+          </article>
+        </div>
+      </section>
 
     <section class="tight" id="ki">
       <div class="wrap">
@@ -300,23 +302,22 @@
           </div>
           <a class="pl-mehr" href="/leistungen#ki">Alles im Detail <span class="arrow">→</span></a>
         </div>
-        <div class="pl-liste">
-          <div class="pl-zeile" data-anfrage="KI-Assistent (CHF 200.– Einrichtung, CHF 40.–/Monat)" data-interesse="KI-Assistent">
-            <div class="pl-was">
-              <h3>KI-Assistent</h3>
-              <p>Einrichtung: Training auf deine Inhalte, Gestaltung, Einbau. Monatlich: Betrieb, Wartung und Nachtraining. Monatlich kündbar.</p>
-            </div>
-            <div class="pl-preis">
-              <span class="pl-betrag">CHF 200.–</span>
-              <span class="pl-einheit">einmalig</span>
-              <span class="pl-betrag zweit">+ CHF 40.–</span>
-              <span class="pl-einheit">pro Monat</span>
-              <button class="pl-anfragen" type="button">Anfragen</button>
-            </div>
-          </div>
+        <div class="pl-stufen pl-stufen-eins">
+          <article class="pl-stufe" data-anfrage="KI-Assistent (CHF 200.– Einrichtung, CHF 40.–/Monat)" data-interesse="KI-Assistent">
+            <h3>KI-Assistent</h3>
+            <p class="pl-fuer-wen">Rund um die Uhr erreichbar.</p>
+            <p class="pl-tarif"><b>CHF 200.–</b><span>einmalig · dann CHF 40.– pro Monat</span></p>
+            <ul class="pl-check">
+              <li>Training auf deine Inhalte</li>
+              <li>Gestaltung in deinen Farben</li>
+              <li>Einbau in deine Website</li>
+              <li>Betrieb, Wartung und Nachtraining</li>
+              <li>Monatlich kündbar</li>
+            </ul>
+            <button class="pl-anfragen" type="button">Anfragen</button>
+          </article>
         </div>
-      </div>
-    </section>
+      </section>
 
     <section class="tight" id="betrieb">
       <div class="wrap">
@@ -326,42 +327,59 @@
             <p>Nichts davon ist Pflicht. Adresse und Serverplatz brauchst du zwar, du kannst sie aber genauso gut selbst mitbringen oder woanders beziehen – die Website gehört dir und läuft überall.</p>
           </div>
         </div>
-        <div class="pl-liste schmal">
-          <div class="pl-zeile" data-anfrage="Domain + Hosting im Paket (CHF 160.–/Jahr)">
-            <div class="pl-was">
-              <h3>Domain + Hosting <span class="pl-marke">Günstigste Variante</span></h3>
-              <p>Adresse und 12 Monate Betrieb auf Schweizer Servern, SSL und tägliche Sicherung. Rund 2 Monate günstiger als einzeln.</p>
-            </div>
-            <div class="pl-preis">
-              <span class="pl-betrag">CHF 160.–</span>
-              <span class="pl-einheit">pro Jahr</span>
-              <button class="pl-anfragen" type="button">Anfragen</button>
-            </div>
-          </div>
-          <div class="pl-zeile" data-anfrage="Domain einzeln (CHF 20.–/Jahr)">
-            <div class="pl-was"><h3>Domain einzeln</h3><p>Deine Adresse, zum Beispiel deine-firma.ch</p></div>
-            <div class="pl-preis">
-              <span class="pl-betrag">CHF 20.–</span><span class="pl-einheit">pro Jahr</span>
-              <button class="pl-anfragen" type="button">Anfragen</button>
-            </div>
-          </div>
-          <div class="pl-zeile" data-anfrage="Hosting einzeln (CHF 15.–/Monat)">
-            <div class="pl-was"><h3>Hosting einzeln</h3><p>Schweizer Server, SSL, tägliche Sicherung.</p></div>
-            <div class="pl-preis">
-              <span class="pl-betrag">CHF 15.–</span><span class="pl-einheit">pro Monat</span>
-              <button class="pl-anfragen" type="button">Anfragen</button>
-            </div>
-          </div>
-          <div class="pl-zeile" data-anfrage="Service-Abo (CHF 15.–/Monat)">
-            <div class="pl-was"><h3>Service-Abo</h3><p>Änderungen und Updates, wann du willst. Ohne Abo CHF 90.– pro Stunde.</p></div>
-            <div class="pl-preis">
-              <span class="pl-betrag">CHF 15.–</span><span class="pl-einheit">pro Monat</span>
-              <button class="pl-anfragen" type="button">Anfragen</button>
-            </div>
-          </div>
+        <div class="pl-stufen">
+          <article class="pl-stufe hervor" data-anfrage="Domain + Hosting im Paket (CHF 160.–/Jahr)">
+            <span class="pl-marke">Günstigste Variante</span>
+            <h3>Domain + Hosting</h3>
+            <p class="pl-fuer-wen">Adresse und Serverplatz zusammen.</p>
+            <p class="pl-tarif"><b>CHF 160.–</b><span>pro Jahr</span></p>
+            <ul class="pl-check">
+              <li>Deine Adresse, z. B. deine-firma.ch</li>
+              <li>12 Monate Schweizer Server</li>
+              <li>SSL-Verschlüsselung</li>
+              <li>Tägliche Sicherung</li>
+              <li>Rund 2 Monate günstiger als einzeln</li>
+            </ul>
+            <button class="pl-anfragen" type="button">Anfragen</button>
+          </article>
+
+          <article class="pl-stufe" data-anfrage="Domain einzeln (CHF 20.–/Jahr)">
+            <h3>Domain einzeln</h3>
+            <p class="pl-fuer-wen">Nur die Adresse.</p>
+            <p class="pl-tarif"><b>CHF 20.–</b><span>pro Jahr</span></p>
+            <ul class="pl-check">
+              <li>Zum Beispiel deine-firma.ch</li>
+              <li>Falls du den Serverplatz schon hast</li>
+            </ul>
+            <button class="pl-anfragen" type="button">Anfragen</button>
+          </article>
+
+          <article class="pl-stufe" data-anfrage="Hosting einzeln (CHF 15.–/Monat)">
+            <h3>Hosting einzeln</h3>
+            <p class="pl-fuer-wen">Nur der Serverplatz.</p>
+            <p class="pl-tarif"><b>CHF 15.–</b><span>pro Monat</span></p>
+            <ul class="pl-check">
+              <li>Schweizer Server</li>
+              <li>SSL-Verschlüsselung</li>
+              <li>Tägliche Sicherung</li>
+            </ul>
+            <button class="pl-anfragen" type="button">Anfragen</button>
+          </article>
+
+          <article class="pl-stufe" data-anfrage="Service-Abo (CHF 15.–/Monat)">
+            <span class="pl-marke">Optional</span>
+            <h3>Service-Abo</h3>
+            <p class="pl-fuer-wen">Änderungen, wann du willst.</p>
+            <p class="pl-tarif"><b>CHF 15.–</b><span>pro Monat</span></p>
+            <ul class="pl-check">
+              <li>Änderungen und Updates inbegriffen</li>
+              <li>Ohne Abo CHF 90.– pro Stunde</li>
+              <li>Monatlich kündbar</li>
+            </ul>
+            <button class="pl-anfragen" type="button">Anfragen</button>
+          </article>
         </div>
-      </div>
-    </section>
+      </section>
 
     <!-- ===== Bedingungen ===== -->
     <section class="tight" id="bedingungen">
@@ -405,7 +423,7 @@
         <div class="big-cta">
           <h2>Sag uns, was du brauchst.</h2>
           <p>Du musst dich nicht auf ein Paket festlegen. Beschreib in ein paar Sätzen, was du vorhast – wir melden uns innert 24 Stunden mit einer ehrlichen Einschätzung und einer festen Offerte.</p>
-          <div class="cta-row">
+          <div class="hero-ctas">
             <a class="btn btn-primary" href="/kontakt">Unverbindlich anfragen <span class="arrow">→</span></a>
             <a class="btn btn-ghost" href="/leistungen">Leistungen im Detail</a>
           </div>
