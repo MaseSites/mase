@@ -23,7 +23,7 @@
   "use strict";
 
   var SCHLUESSEL = "ms_cookie_hinweis";
-  var STAND = "3";                 /* hochzaehlen, wenn sich der Text aendert */
+  var STAND = "4";                 /* hochzaehlen, wenn sich der Text aendert */
 
   function gespeichert() {
     try {
@@ -64,7 +64,7 @@
             '<a href="/datenschutz">Datenschutz</a>' +
           '</p>' +
           '<div class="ms-cookie-knoepfe">' +
-            '<button type="button" class="btn btn-ghost ms-cookie-mehr" aria-expanded="false">Einstellungen</button>' +
+            '<button type="button" class="btn btn-ghost ms-cookie-mehr" aria-expanded="false">Infos</button>' +
             '<button type="button" class="btn btn-primary ms-cookie-ok">Verstanden</button>' +
           '</div>' +
         '</div>' +
@@ -120,7 +120,7 @@
       var offen = !details.hidden;
       details.hidden = offen;
       mehr.setAttribute("aria-expanded", String(!offen));
-      mehr.textContent = offen ? "Einstellungen" : "Weniger anzeigen";
+      mehr.textContent = offen ? "Infos" : "Infos ausblenden";
       hoeheMelden();
     });
 

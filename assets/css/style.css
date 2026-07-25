@@ -3180,6 +3180,11 @@ html.uu-bau .uu-szene { display: flex; }
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 26px;
 }
+/* Ohne diese Zeile bleibt der Bereich immer sichtbar: Ein eigenes
+   display im Stylesheet ueberschreibt das hidden-Attribut, das der
+   Browser sonst als display:none umsetzt. Der Knopf schaltete zwar
+   korrekt um, man sah davon nur nichts. */
+.ms-cookie-details[hidden] { display: none; }
 .ms-cookie-kopf {
   display: flex; align-items: center; justify-content: space-between;
   gap: 12px; margin-bottom: 7px;
