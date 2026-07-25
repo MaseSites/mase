@@ -249,12 +249,19 @@ class Handler(BaseHTTPRequestHandler):
 
 
 def main():
+    # Port-Reihenfolge: 1) Umgebungsvariable PORT (setzt das Vorschau-Tool bei
+    # autoPort), 2) Argument auf der Kommandozeile, 3) Standard 8091. So wird ein
+    # frei zugewiesener Port genutzt, wenn 8091 schon belegt ist, und der manuelle
+    # Aufruf "python scripts/devserver.py 8091" funktioniert weiterhin.
     port = 8091
-    if len(sys.argv) > 1:
-        try:
-            port = int(sys.argv[1])
-        except ValueError:
-            pass
+    quellen = [os.environ.get("PORT"), sys.argv[1] if len(sys.argv) > 1 else None]
+    for wert in quellen:
+        if wert:
+            try:
+                port = int(wert)
+                break
+            except ValueError:
+                pass
     server = ThreadingHTTPServer(("127.0.0.1", port), Handler)
     print("masesites Dev-Mock laeuft auf http://127.0.0.1:%d  (Ctrl+C zum Beenden)" % port)
     print("ACHTUNG: Nur Vorschau mit Beispieldaten - kein echtes Backend, keine echte KI.")
