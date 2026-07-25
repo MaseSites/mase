@@ -23,7 +23,7 @@
   "use strict";
 
   var SCHLUESSEL = "ms_cookie_hinweis";
-  var STAND = "2";                 /* hochzaehlen, wenn sich der Text aendert */
+  var STAND = "3";                 /* hochzaehlen, wenn sich der Text aendert */
 
   function gespeichert() {
     try {
@@ -60,7 +60,7 @@
           '<span class="ms-cookie-keks" aria-hidden="true">🍪</span>' +
           '<p class="ms-cookie-text">' +
             '<b>Nur das N&ouml;tigste.</b> Wir setzen ein Cookie, damit die Anmeldung ' +
-            'funktioniert &ndash; kein Tracking, keine Werbung, keine Weitergabe an Dritte. ' +
+            'funktioniert &ndash; kein Tracking und keine Werbung. ' +
             '<a href="/datenschutz">Datenschutz</a>' +
           '</p>' +
           '<div class="ms-cookie-knoepfe">' +
@@ -90,7 +90,8 @@
             '</div>' +
             '<p>Wir messen dein Verhalten nicht und binden keine Werbe- oder ' +
             'Analysedienste ein. Darum gibt es hier nichts ein- oder auszuschalten. ' +
-            'Sollte sich das je &auml;ndern, fragen wir dich vorher.</p>' +
+            'Auf der Anmeldeseite l&auml;dt ein Skript von Google f&uuml;r &laquo;Mit Google ' +
+            'anmelden&raquo; &ndash; Details dazu in der Datenschutzerkl&auml;rung.</p>' +
           '</div>' +
         '</div>' +
       '</div>';

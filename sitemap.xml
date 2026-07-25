@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  masesites – Sitemap für Suchmaschinen.
+
+  Enthalten sind nur öffentliche Seiten, die auch indexiert werden sollen.
+  Bewusst NICHT enthalten:
+    - /login, /dashboard, /admin/, /mcs/  → interne bzw. angemeldete Bereiche
+    - /impressum, /datenschutz, /agb      → tragen ein noindex im Seitenkopf.
+      Eine Seite in die Sitemap zu schreiben und ihr gleichzeitig
+      noindex mitzugeben, ist widersprüchlich: Die Google Search Console
+      meldet das als Fehler. Sollen diese Seiten gefunden werden, muss
+      zuerst das noindex raus – dann gehören sie auch hier hinein.
+
+  Nach jeder grösseren Änderung: lastmod aktualisieren.
+-->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+  <url>
+    <loc>https://masesites.ch/</loc>
+    <lastmod>2026-07-25</lastmod>
+  </url>
+
+  <url>
+    <loc>https://masesites.ch/leistungen</loc>
+    <lastmod>2026-07-25</lastmod>
+  </url>
+
+  <url>
+    <loc>https://masesites.ch/preise</loc>
+    <lastmod>2026-07-25</lastmod>
+  </url>
+
+  <url>
+    <loc>https://masesites.ch/beispiele</loc>
+    <lastmod>2026-07-25</lastmod>
+  </url>
+
+  <url>
+    <loc>https://masesites.ch/projekte</loc>
+    <lastmod>2026-07-25</lastmod>
+  </url>
+
+  <url>
+    <loc>https://masesites.ch/ueber-uns</loc>
+    <lastmod>2026-07-25</lastmod>
+  </url>
+
+  <url>
+    <loc>https://masesites.ch/kontakt</loc>
+    <lastmod>2026-07-25</lastmod>
+  </url>
+
+</urlset>

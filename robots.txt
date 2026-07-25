@@ -1,0 +1,15 @@
+# masesites – Hinweise für Suchmaschinen
+
+User-agent: *
+
+# Interne und angemeldete Bereiche gehören nicht in den Suchindex.
+Disallow: /admin/
+Disallow: /mcs/
+Disallow: /dashboard
+Disallow: /login
+Disallow: /api/
+
+# Alles Übrige darf gelesen werden.
+Allow: /
+
+Sitemap: https://masesites.ch/sitemap.xml
