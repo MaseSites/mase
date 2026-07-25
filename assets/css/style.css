@@ -3452,6 +3452,10 @@ body.ms-cookie-offen .widget-panel { bottom: calc(var(--ms-cookie-h, 90px) + 90p
   align-items: center;
 }
 .person-gedreht .person-bild { order: 2; }
+/* Beim gespiegelten Layout die Spalten mitspiegeln, damit das Bild in
+   derselben schmalen Spalte landet wie bei der normalen Person – sonst
+   sitzt es in der breiten 7fr-Spalte und wirkt groesser. */
+.person-gedreht { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); }
 .person-bild {
   margin: 0;
   border-radius: var(--radius-xl);
