@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>tavolo – Restaurant-Software</title>
 <meta name="description" content="Live-Demo einer Restaurant-Software: Assistent, der wirklich handelt, Reservierungen, Tischplan, Gäste, Menüs, Schichten, Preisrechner, Auswertungen – und eine echte Gäste-Seite mit Online-Reservierung.">
+<meta name="robots" content="noindex, nofollow">
 <style>
 /* ============================================================
    tavolo – Live-Demo einer Restaurant-Software.
@@ -1490,6 +1491,14 @@ a { color: inherit; }
   var $ = function (s, w) { return (w || document).querySelector(s); };
   var $$ = function (s, w) { return Array.prototype.slice.call((w || document).querySelectorAll(s)); };
 
+  // Escaping für alles, was aus Eingaben/Daten per innerHTML gerendert wird.
+  // In der Demo nur Self-XSS möglich (kein Backend), aber saubere Basis fürs echte Produkt.
+  function esc(s) {
+    return String(s == null ? "" : s).replace(/[&<>"]/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c];
+    });
+  }
+
   function initialen(name) {
     var t = name.replace(/^(Familie|Firma|Geburtstag|Hochzeit|Sonntagsbrunch)\s+/i, "").trim().split(/[\s.]+/).filter(Boolean);
     return ((t[0] || "")[0] + ((t[1] || "")[0] || "")).toUpperCase();
@@ -1603,8 +1612,8 @@ a { color: inherit; }
     return '<button class="t-zeile' + (r.status === "offen" ? " offen" : "") + (r._neu ? " neu" : "") + '" data-id="' + r.id + '">' +
       '<span class="zeit">' + r.zeit + "</span>" +
       '<span class="gast"><span class="av">' + initialen(r.name) + "</span>" +
-        '<span class="nm"><b>' + r.name + "</b>" + stern + "</span>" +
-        "<em>" + r.personen + " Pers." + (r.notiz ? " · " + r.notiz : "") + "</em></span>" +
+        '<span class="nm"><b>' + esc(r.name) + "</b>" + stern + "</span>" +
+        "<em>" + r.personen + " Pers." + (r.notiz ? " · " + esc(r.notiz) : "") + "</em></span>" +
       '<span class="zahl2">' + r.personen + "</span>" +
       '<span class="zahl2">' + r.tisch + "</span>" +
       "<span>" + badge + "</span>" +
@@ -1668,7 +1677,7 @@ a { color: inherit; }
     $("#res-zahl").textContent = liste.length + (liste.length === 1 ? " Eintrag" : " Einträge");
     $("#res-liste").innerHTML = liste.length
       ? liste.map(zeileHtml).join("")
-      : leerZeile(suchText ? "Keine Treffer für „" + suchText + "“." : "Für diesen Tag ist noch nichts eingetragen.");
+      : leerZeile(suchText ? "Keine Treffer für „" + esc(suchText) + "“." : "Für diesen Tag ist noch nichts eingetragen.");
     verdrahteZeilen("#res-liste");
     aktualisiereNav();
   }
@@ -1705,7 +1714,7 @@ a { color: inherit; }
     oeffneSchublade();
   }
   function statusText(s) { return s === "ok" ? "Bestätigt" : s === "warteliste" ? "Warteliste" : "Angefragt"; }
-  function zeile2(k, w) { return '<div><span class="k">' + k + '</span><span class="w">' + w + "</span></div>"; }
+  function zeile2(k, w) { return '<div><span class="k">' + k + '</span><span class="w">' + esc(w) + "</span></div>"; }
   function gastBadges(g) {
     if (!g) return '<i class="badge mini">Neugast</i>';
     var b = g.tags.map(function (t) {
@@ -2462,7 +2471,7 @@ a { color: inherit; }
       var html = "";
       if (spec.tags && spec.tags.length) {
         html += '<div class="ki-verstanden"><span class="lb">Verstanden</span>' +
-          spec.tags.map(function (t, i) { return '<span class="ki-tag' + (i === 0 ? " stark" : "") + '">' + t + "</span>"; }).join("") + "</div>";
+          spec.tags.map(function (t, i) { return '<span class="ki-tag' + (i === 0 ? " stark" : "") + '">' + esc(t) + "</span>"; }).join("") + "</div>";
       }
       html += textZuHtml(spec.text);
       d.innerHTML = html;
@@ -2670,7 +2679,7 @@ a { color: inherit; }
     t.innerHTML = (ok
       ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>'
       : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.5"/></svg>') +
-      "<span>" + text + "</span>";
+      "<span>" + esc(text) + "</span>";
     $("#toast-lauf").appendChild(t);
     setTimeout(function () { t.classList.add("weg"); setTimeout(function () { t.remove(); }, 320); }, 3200);
   }
