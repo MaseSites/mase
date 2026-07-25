@@ -342,6 +342,35 @@
   /* ---------- Globales Chat-Widget unten rechts ---------- */
 
   if (!document.body.hasAttribute("data-no-widget")) {
+    /* Auffälliger, aber sauberer Auftritt: lila KI-Knopf mit weichem Glow,
+       einmaliger Pop, begrenzte Ping-Ringe und eine einladende Teaser-Bubble.
+       Alles per JS eingefügt, damit die ausgelieferte style.css unberührt bleibt. */
+    (function () {
+      if (document.getElementById("ms-widget-stil")) return;
+      var st = document.createElement("style");
+      st.id = "ms-widget-stil";
+      st.textContent =
+        "body .widget-launcher{background:radial-gradient(120% 120% at 30% 22%, #8B5CF6 0%, var(--ki,#7C3AED) 48%, var(--ki-dark,#6D28D9) 100%);box-shadow:0 14px 34px rgba(124,58,237,.42)}" +
+        "body .widget-launcher:hover{box-shadow:0 22px 48px rgba(124,58,237,.52)}" +
+        "body .chat-head .ps-avatar{background:linear-gradient(140deg, var(--ki,#7C3AED), var(--ki-dark,#6D28D9));box-shadow:0 5px 14px rgba(124,58,237,.32)}" +
+        ".widget-launcher.ms-pop{animation:msPop .55s cubic-bezier(.22,1,.36,1) both}" +
+        "@keyframes msPop{0%{transform:scale(.5);opacity:0}60%{transform:scale(1.1)}100%{transform:scale(1);opacity:1}}" +
+        ".widget-launcher.ms-ping::before,.widget-launcher.ms-ping::after{content:\"\";position:absolute;inset:0;border-radius:50%;border:2px solid rgba(124,58,237,.55);pointer-events:none;animation:msPing 1.9s ease-out 3}" +
+        ".widget-launcher.ms-ping::after{animation-delay:.65s}" +
+        "@keyframes msPing{0%{transform:scale(1);opacity:.7}100%{transform:scale(2);opacity:0}}" +
+        ".ms-teaser{position:fixed;right:92px;bottom:30px;z-index:80;max-width:min(290px,calc(100vw - 120px));background:var(--card,#fff);color:var(--ink,#1b1b1b);border:1px solid var(--line,rgba(20,16,30,.1));border-radius:16px;border-bottom-right-radius:6px;padding:12px 30px 12px 12px;box-shadow:0 18px 44px rgba(70,40,120,.22);display:flex;gap:10px;align-items:flex-start;cursor:pointer;opacity:0;transform:translateY(8px) scale(.96);transition:opacity .35s ease, transform .35s cubic-bezier(.22,1,.36,1)}" +
+        ".ms-teaser.ms-an{opacity:1;transform:none}" +
+        ".ms-teaser .ms-av{flex:0 0 auto;width:30px;height:30px;border-radius:50%;background:radial-gradient(120% 120% at 30% 22%,#8B5CF6,var(--ki-dark,#6D28D9));color:#fff;display:grid;place-items:center;box-shadow:0 4px 12px rgba(124,58,237,.4)}" +
+        ".ms-teaser .ms-av svg{width:16px;height:16px}" +
+        ".ms-teaser .ms-txt{font-size:13.5px;line-height:1.42}" +
+        ".ms-teaser .ms-txt b{font-weight:650}" +
+        ".ms-teaser .ms-zu{position:absolute;top:5px;right:6px;width:22px;height:22px;border:none;background:transparent;color:var(--ink-faint,#9a92a6);cursor:pointer;font-size:16px;line-height:1;border-radius:50%}" +
+        ".ms-teaser .ms-zu:hover{background:rgba(20,16,30,.07)}" +
+        ".ms-teaser::after{content:\"\";position:absolute;right:-6px;bottom:16px;width:12px;height:12px;background:inherit;border-right:1px solid var(--line,rgba(20,16,30,.1));border-bottom:1px solid var(--line,rgba(20,16,30,.1));transform:rotate(-45deg);border-bottom-right-radius:3px}" +
+        "@media (prefers-reduced-motion: reduce){.widget-launcher.ms-pop{animation:none}.widget-launcher.ms-ping::before,.widget-launcher.ms-ping::after{display:none}.ms-teaser{transition:opacity .3s ease;transform:none}}";
+      (document.head || document.documentElement).appendChild(st);
+    })();
+
     var launcher = document.createElement("button");
     launcher.className = "widget-launcher";
     launcher.setAttribute("aria-label", "Chat mit dem masesites-Bot öffnen");
@@ -355,12 +384,33 @@
     document.body.appendChild(panel);
     document.body.appendChild(launcher);
 
-    var built = false;
+    /* Sanfter Auftritt beim ersten Erscheinen. */
+    if (!reducedMotion) {
+      launcher.classList.add("ms-pop");
+      setTimeout(function () { launcher.classList.remove("ms-pop"); }, 650);
+    }
+
+    var built = false, chatBeruehrt = false, teaserEl = null, teaserTimer = null;
+
+    function entferneTeaser() {
+      if (teaserTimer) { clearTimeout(teaserTimer); teaserTimer = null; }
+      launcher.classList.remove("ms-ping");
+      if (teaserEl) {
+        teaserEl.classList.remove("ms-an");
+        var t = teaserEl; teaserEl = null;
+        setTimeout(function () { if (t.parentNode) t.remove(); }, 350);
+      }
+    }
+    function teaserWeg() { try { sessionStorage.setItem("ms_teaser_weg", "1"); } catch (e) {} }
+
     launcher.addEventListener("click", function () {
+      chatBeruehrt = true;
+      teaserWeg();
+      entferneTeaser();
       if (!built) {
         buildChatUI(panel, {
           closable: true,
-          greeting: "Hallo! Ich bin der masesites-Bot. Womit kann ich helfen? Frag mich zu Websites, Preisen oder wünsch dir einen Termin.",
+          greeting: "Hallo! Ich bin die masesites-KI. Womit kann ich helfen? Frag mich zu Websites, Preisen oder wünsch dir einen Termin.",
           note: "Echte KI · für Fragen und Terminwünsche da."
         });
         panel.querySelector(".widget-close").addEventListener("click", function () {
@@ -374,6 +424,52 @@
         if (inp && window.matchMedia("(pointer: fine)").matches) inp.focus();
       }
     });
+
+    /* ---------- Aufmerksamkeit: einmal pro Sitzung, wenn der Chat ungenutzt bleibt ---------- */
+    var teaserSchonWeg = false;
+    try { teaserSchonWeg = sessionStorage.getItem("ms_teaser_weg") === "1"; } catch (e) {}
+
+    function sichtbar(el) {
+      if (!el) return false;
+      var cs = getComputedStyle(el);   /* .widget-launcher ist position:fixed -> kein offsetParent */
+      if (cs.display === "none" || cs.visibility === "hidden" || parseFloat(cs.opacity) === 0) return false;
+      var r = el.getBoundingClientRect();
+      return r.width > 0 && r.height > 0;
+    }
+    function zeigeTeaser(versuch) {
+      if (chatBeruehrt || teaserSchonWeg || teaserEl) return;
+      if (!sichtbar(launcher)) {           /* Intro-Kamerafahrt/Menü offen: später */
+        if ((versuch || 0) < 6) { setTimeout(function () { zeigeTeaser((versuch || 0) + 1); }, 1500); }
+        return;
+      }
+      teaserEl = document.createElement("div");
+      teaserEl.className = "ms-teaser";
+      teaserEl.setAttribute("role", "button");
+      teaserEl.setAttribute("tabindex", "0");
+      teaserEl.innerHTML =
+        '<span class="ms-av" aria-hidden="true">' + botIconSvg + '</span>' +
+        '<span class="ms-txt"><b>Hoi!</b> Ich bin die masesites-KI. 👋 Frag mich zu Websites &amp; Preisen – oder wünsch dir gleich einen Termin.</span>' +
+        '<button class="ms-zu" type="button" aria-label="Hinweis schließen">×</button>';
+      document.body.appendChild(teaserEl);
+      if (!reducedMotion) {
+        launcher.classList.add("ms-ping");
+        setTimeout(function () { launcher.classList.remove("ms-ping"); }, 5800);
+      }
+      /* Reflow erzwingen und dann einblenden – zuverlässiger als
+         requestAnimationFrame (das in Hintergrund-Tabs pausiert). */
+      void teaserEl.offsetHeight;
+      teaserEl.classList.add("ms-an");
+
+      teaserEl.querySelector(".ms-zu").addEventListener("click", function (e) {
+        e.stopPropagation(); teaserWeg(); teaserSchonWeg = true; entferneTeaser();
+      });
+      teaserEl.addEventListener("click", function () { launcher.click(); });
+      teaserEl.addEventListener("keydown", function (e) {
+        if (e.key === "Enter" || e.key === " ") { e.preventDefault(); launcher.click(); }
+      });
+      teaserTimer = setTimeout(entferneTeaser, 15000);   /* von selbst wieder weg */
+    }
+    if (!teaserSchonWeg) setTimeout(function () { zeigeTeaser(0); }, 4500);
   }
 
   /* ---------- Kontaktformular: mailto-Versand + Honeypot ---------- */
