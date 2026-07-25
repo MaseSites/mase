@@ -4,16 +4,21 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>tavolo – Restaurant-Software</title>
-<meta name="description" content="Live-Demo einer Restaurant-Software: Reservierungen, Kalender, Menüs, Schichten, Preisrechner und Auswertungen.">
+<meta name="description" content="Live-Demo einer Restaurant-Software: Assistent, der wirklich handelt, Reservierungen, Tischplan, Gäste, Menüs, Schichten, Preisrechner, Auswertungen – und eine echte Gäste-Seite mit Online-Reservierung.">
+<meta name="robots" content="noindex, nofollow">
 <style>
 /* ============================================================
    tavolo – Live-Demo einer Restaurant-Software.
    Alles ist bedienbar, nichts wird gespeichert: die Daten leben
    nur im Browser und sind beim Neuladen wieder wie am Anfang.
+   Eine einzige Datei, keine externen Abhängigkeiten – läuft überall.
 
-   Gestaltung bewusst fast monochrom mit EINER semantischen Farbe
-   (Grün für bestätigt) – dichte Typografie, Haarlinien, enge
-   Radien, wie man es von professionellen Arbeitswerkzeugen kennt.
+   Zwei Welten in einer Datei:
+   1) Die Verwaltung (Back of House) – fast monochrom mit EINER
+      semantischen Farbe (Grün für bestätigt), dichte Typografie,
+      Haarlinien, enge Radien, wie ein professionelles Werkzeug.
+   2) Die Gäste-Seite (Front of House) – warm, Espresso/Creme/Gold,
+      elegante Serifen: so sieht der Gast das Restaurant.
    ============================================================ */
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -33,8 +38,23 @@
   --d-ink: #9A9EA6;
   --gruen: #3C7D52;
   --gruen-hell: #EAF1EC;
+  --bernstein: #9A6B2F;
+  --bernstein-hell: #F6EFE2;
+  --rot: #B4453C;
+  --rot-hell: #F8ECEA;
   --radius: 8px;
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* Gäste-Seite (warm) */
+  --g-espresso: #211A15;
+  --g-espresso-2: #2C231C;
+  --g-cream: #F7F1E8;
+  --g-cream-2: #EEE4D5;
+  --g-gold: #B98A44;
+  --g-gold-2: #CBA05B;
+  --g-terra: #B5623F;
+  --g-ink: #2A211B;
+  --serif: Georgia, "Iowan Old Style", "Times New Roman", serif;
 }
 
 html, body { height: 100%; }
@@ -97,6 +117,7 @@ a { color: inherit; }
 .punkt[aria-current="page"] { background: var(--d2); color: #F2F3F5; font-weight: 500; }
 .punkt[aria-current="page"] svg { color: #C3C6CB; }
 .punkt .zahl { margin-left: auto; font-size: 10.5px; color: #7E828A; }
+.punkt .zahl.warn { color: #E7C06A; }
 .konto {
   display: flex; align-items: center; gap: 9px;
   margin-top: auto; padding: 11px 8px 0;
@@ -155,6 +176,13 @@ a { color: inherit; }
   border: 1px solid var(--linie);
 }
 .knopf.leise:hover { background: var(--canvas); opacity: 1; }
+.knopf.gast {
+  background: var(--bernstein-hell); color: var(--bernstein);
+  border: 1px solid #E9DBC2;
+  display: inline-flex; align-items: center; gap: 6px;
+}
+.knopf.gast svg { width: 13px; height: 13px; }
+.knopf.gast:hover { background: #F1E6CF; opacity: 1; }
 
 .inhalt { padding: 16px 18px 40px; display: grid; gap: 12px; align-content: start; }
 .ansicht { display: none; }
@@ -188,6 +216,7 @@ a { color: inherit; }
 .kachel .wert { font-size: 22px; font-weight: 600; letter-spacing: -0.03em; line-height: 1.15; }
 .kachel .fuss { font-size: 10.5px; font-weight: 500; color: var(--ink-3); }
 .kachel .fuss.gut { color: var(--gruen); }
+.kachel .fuss.schlecht { color: var(--rot); }
 .balken { height: 4px; margin-top: 5px; background: var(--linie-zart); border-radius: 999px; overflow: hidden; }
 .balken span { display: block; height: 100%; background: var(--ink-2); border-radius: 999px; transition: width 0.5s var(--ease); }
 
@@ -217,6 +246,16 @@ a { color: inherit; }
 .badge::before { content: ""; width: 5px; height: 5px; border-radius: 50%; background: var(--ink-4); }
 .badge.ok { background: var(--gruen-hell); border-color: #D3E2D8; color: #2F6742; }
 .badge.ok::before { background: var(--gruen); }
+.badge.warte { background: var(--bernstein-hell); border-color: #E9DBC2; color: var(--bernstein); }
+.badge.warte::before { background: var(--bernstein); }
+.badge.mini { padding: 2px 6px; font-size: 9.5px; }
+.badge.mini::before { display: none; }
+.badge.stamm { background: #EEF1F6; border-color: #DFE3EB; color: #46506A; }
+.badge.stamm::before { background: #6C7690; }
+.badge.vip { background: #F3ECF8; border-color: #E4D6EF; color: #6B4C86; }
+.badge.vip::before { background: #8A5CB0; }
+.badge.allergie { background: var(--rot-hell); border-color: #EBD3D0; color: #9A3F37; }
+.badge.allergie::before { background: var(--rot); }
 
 /* ---------- Tabelle ---------- */
 
@@ -243,6 +282,8 @@ a { color: inherit; }
 .t-zeile:last-child { border-bottom: none; }
 .t-zeile:hover { background: #FCFCFD; }
 .t-zeile.offen { background: #FAFAFA; box-shadow: inset 2px 0 0 var(--ink-4); }
+.t-zeile.neu { animation: aufblitzen 1.4s var(--ease) both; }
+@keyframes aufblitzen { from { background: var(--gruen-hell); } 60% { background: var(--gruen-hell); } }
 .t-zeile .zeit { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 11.5px; font-weight: 500; color: var(--ink-2); }
 .t-zeile .gast { display: grid; grid-template-columns: 24px 1fr; column-gap: 9px; min-width: 0; font-size: 12px; font-weight: 550; }
 .t-zeile .gast .av {
@@ -251,9 +292,27 @@ a { color: inherit; }
   display: grid; place-items: center;
   font-size: 9px; font-weight: 600; color: var(--ink-2);
 }
+.t-zeile .gast .nm { display: flex; align-items: center; gap: 6px; min-width: 0; }
+.t-zeile .gast .nm b { font-weight: 550; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.t-zeile .gast .stern { color: var(--bernstein); flex: none; }
 .t-zeile .gast em { font-style: normal; font-weight: 400; font-size: 11px; color: var(--ink-3); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .t-zeile .zahl2 { font-size: 11.5px; font-weight: 500; color: var(--ink-2); }
+.t-zeile .quelle { font-size: 9px; color: var(--ink-4); font-weight: 500; }
 .leer { padding: 26px 14px; text-align: center; font-size: 12px; color: var(--ink-3); }
+
+/* ---------- Hinweis-Banner ---------- */
+
+.banner {
+  display: flex; align-items: center; gap: 11px;
+  padding: 10px 13px;
+  border: 1px solid #E9DBC2; background: var(--bernstein-hell);
+  border-radius: var(--radius);
+  font-size: 12px; color: #6E5325;
+}
+.banner svg { width: 16px; height: 16px; color: var(--bernstein); flex: none; }
+.banner .txt { flex: 1; }
+.banner .txt b { color: #5A431D; }
+.banner .knopf { flex: none; }
 
 /* ---------- Schublade (Detail) ---------- */
 
@@ -266,7 +325,7 @@ a { color: inherit; }
 @keyframes dunkel { from { opacity: 0; } }
 .schublade-blatt {
   position: absolute; top: 0; right: 0; bottom: 0;
-  width: min(360px, 100%);
+  width: min(380px, 100%);
   background: var(--flaeche);
   border-left: 1px solid var(--linie);
   display: flex; flex-direction: column;
@@ -279,6 +338,7 @@ a { color: inherit; }
   border-bottom: 1px solid var(--linie);
 }
 .sb-kopf h3 { margin: 0; font-size: 13px; font-weight: 600; }
+.sb-kopf .zeile-badges { display: flex; gap: 5px; margin-top: 5px; flex-wrap: wrap; }
 .schliessen {
   width: 28px; height: 28px; border-radius: 6px;
   display: grid; place-items: center;
@@ -291,6 +351,11 @@ a { color: inherit; }
 .feldliste div { display: grid; grid-template-columns: 96px 1fr; gap: 10px; align-items: baseline; }
 .feldliste dt, .feldliste .k { font-size: 11px; color: var(--ink-3); }
 .feldliste .w { font-size: 12.5px; font-weight: 500; }
+.sb-abschnitt { font-size: 9.5px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-3); }
+.verlauf { display: grid; gap: 1px; }
+.verlauf-zeile { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; padding: 7px 0; border-bottom: 1px solid var(--linie-zart); font-size: 12px; }
+.verlauf-zeile:last-child { border-bottom: none; }
+.verlauf-zeile em { font-style: normal; color: var(--ink-3); font-size: 11px; }
 .sb-fuss { margin-top: auto; padding: 13px 16px; border-top: 1px solid var(--linie); display: flex; gap: 8px; }
 .sb-fuss .knopf { flex: 1; text-align: center; }
 
@@ -424,23 +489,148 @@ a { color: inherit; }
 .saeule:hover .stab { background: var(--ink); }
 .saeule .lab { font-size: 10.5px; color: var(--ink-3); }
 .saeule .val { font-size: 10.5px; font-weight: 600; }
+.zweikarten { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.quellenliste { padding: 14px; display: grid; gap: 12px; }
+.quelle-zeile { display: grid; grid-template-columns: 92px 1fr 40px; align-items: center; gap: 10px; }
+.quelle-zeile .ql { font-size: 11.5px; font-weight: 500; color: var(--ink-2); }
+.quelle-zeile .qb { height: 8px; background: var(--linie-zart); border-radius: 999px; overflow: hidden; }
+.quelle-zeile .qb span { display: block; height: 100%; border-radius: 999px; background: var(--ink-2); transition: width 0.6s var(--ease); }
+.quelle-zeile .qp { font-size: 11px; font-weight: 600; text-align: right; }
+
+/* ---------- Tischplan (Grundriss von oben) ---------- */
+
+.plan-leiste { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; padding: 11px 14px; border-bottom: 1px solid var(--linie); }
+.plan-zeit { display: flex; align-items: center; gap: 10px; min-width: 220px; flex: 1; }
+.plan-zeit label { font-size: 11px; font-weight: 550; color: var(--ink-2); white-space: nowrap; }
+.plan-zeit .uhr { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 12px; font-weight: 600; min-width: 42px; }
+.plan-legende { display: flex; gap: 12px; flex-wrap: wrap; }
+.plan-legende span { display: inline-flex; align-items: center; gap: 5px; font-size: 10.5px; color: var(--ink-3); }
+.plan-legende i { width: 10px; height: 10px; border-radius: 3px; border: 1px solid var(--linie); }
+.plan-legende i.frei { background: #FCF9F3; border-color: #C9BFAE; }
+.plan-legende i.best { background: var(--gruen); border-color: var(--gruen); }
+.plan-legende i.anfr { background: var(--gruen-hell); border-color: #B6D2BE; }
+
+.raum {
+  position: relative;
+  margin: 14px; border-radius: 10px;
+  aspect-ratio: 16 / 9;
+  background: #F3EDE3;
+  border: 3px solid #CBC2B2;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.6);
+  overflow: hidden;
+}
+/* Böden: Holzdielen innen, Deck auf der Terrasse */
+.raum .floor {
+  position: absolute; inset: 0;
+  background:
+    repeating-linear-gradient(90deg, rgba(150,118,74,0.055) 0 1px, transparent 1px 54px),
+    repeating-linear-gradient(0deg, rgba(150,118,74,0.03) 0 1px, transparent 1px 30px),
+    linear-gradient(180deg, #F8F3EB, #F1EADF);
+}
+.raum .deck {
+  position: absolute; left: 0; right: 0; top: 0; height: 22%;
+  background:
+    repeating-linear-gradient(90deg, rgba(110,132,98,0.16) 0 2px, transparent 2px 19px),
+    linear-gradient(180deg, #E9EFE0, #E0E8D4);
+}
+.raum .railing { position: absolute; top: 22%; height: 0; border-top: 2px dashed #AEC0A0; }
+/* Bar-Tresen */
+.raum .tresen {
+  position: absolute; border-radius: 8px;
+  background: linear-gradient(180deg, #7E6C53, #5E5040);
+  box-shadow: inset 0 0 0 2px rgba(255,255,255,0.10), 0 1px 3px rgba(0,0,0,0.15);
+  display: grid; place-items: center;
+}
+.raum .tresen span { font-size: 9px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(255,255,255,0.82); transform: rotate(90deg); }
+/* Küche */
+.raum .kueche {
+  position: absolute; border-radius: 6px;
+  background: repeating-linear-gradient(45deg, #E6E1D6 0 7px, #EDE8DE 7px 14px);
+  border: 1.5px solid #CDC5B5;
+  display: grid; place-items: end center; padding-bottom: 6px;
+}
+.raum .kueche span { font-size: 9.5px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: #A0977F; }
+/* WC */
+.raum .wc {
+  position: absolute; border-radius: 5px;
+  background: #EEE9DE; border: 1.5px solid #D4CCBC;
+  display: grid; place-items: center;
+}
+.raum .wc span { font-size: 9px; font-weight: 700; letter-spacing: 0.06em; color: #ADA390; }
+/* Eingang: Türschwung */
+.raum .eingang { position: absolute; border: 1.5px dashed #BBB1A1; border-top: none; border-right: none; border-bottom-left-radius: 100%; }
+.raum .eingang-tuer { position: absolute; height: 0; border-top: 2px solid #B4AB9B; }
+.raum .tp-label { position: absolute; font-size: 8.5px; font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase; color: var(--ink-4); transform: translateX(-50%); white-space: nowrap; }
+/* Pflanzen & Fenster */
+.raum .pflanze { position: absolute; width: 14px; height: 14px; border-radius: 50%; transform: translate(-50%, -50%);
+  background: radial-gradient(circle at 34% 30%, #86AE6C, #4C7844); box-shadow: 0 0 0 2.5px rgba(255,255,255,0.55), 0 1px 2px rgba(0,0,0,0.12); }
+.raum .fenster { position: absolute; width: 5px; border-radius: 3px; background: #CFE0EA; box-shadow: 0 0 0 1px #B7CEDB; }
+.raum .zone-label { position: absolute; font-size: 9px; font-weight: 600; letter-spacing: 0.09em; text-transform: uppercase; color: var(--ink-4); }
+
+/* Tisch mit Stühlen (von oben) */
+.tisch-platz { position: absolute; transform: translate(-50%, -50%); z-index: 2; }
+.stuhl { position: absolute; width: 9px; height: 7px; border-radius: 3px 3px 2px 2px; background: #D8D2C6; border: 1px solid #C2BAAB; }
+.tisch-platz.eckig .stuhl { border-radius: 2px; }
+.tisch {
+  position: relative;
+  display: grid; place-items: center; gap: 0;
+  border: 1.5px solid #B0A68F;
+  background: #FCF9F3;
+  color: var(--ink-2);
+  transition: background 0.18s, border-color 0.18s, color 0.18s, box-shadow 0.18s;
+  z-index: 2;
+}
+.tisch .tn { font-size: 11px; font-weight: 650; line-height: 1; }
+.tisch .tp { font-size: 8px; font-weight: 500; opacity: 0.7; margin-top: 1px; }
+.tisch.rund { border-radius: 50%; }
+.tisch.eckig { border-radius: 6px; }
+.tisch:hover { box-shadow: 0 0 0 4px rgba(22,24,29,0.06); border-color: var(--ink-2); }
+.tisch.best { background: var(--gruen); border-color: #2F6742; color: #fff; }
+.tisch.best .tp { opacity: 0.85; }
+.tisch.anfr { background: var(--gruen-hell); border-color: #A6C9B1; color: #2F6742; }
+.plan-fuss { padding: 10px 14px; border-top: 1px solid var(--linie); font-size: 11px; color: var(--ink-3); display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+.plan-fuss b { color: var(--ink); }
+
+/* ---------- Gäste (CRM) ---------- */
+
+.gast-gitter { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 10px; }
+.gast-karte {
+  border: 1px solid var(--linie); border-radius: var(--radius);
+  background: var(--flaeche); padding: 13px 14px;
+  display: grid; gap: 8px; text-align: left; align-content: start;
+  transition: border-color 0.14s, box-shadow 0.14s;
+}
+.gast-karte:hover { border-color: var(--ink-4); box-shadow: 0 2px 8px rgba(20,21,25,0.05); }
+.gast-karte .kopf { display: grid; grid-template-columns: 32px 1fr; gap: 10px; align-items: center; }
+.gast-karte .av {
+  width: 32px; height: 32px; border-radius: 50%;
+  background: #F1F1F3; border: 1px solid var(--linie);
+  display: grid; place-items: center; font-size: 11px; font-weight: 600; color: var(--ink-2);
+}
+.gast-karte .nm { font-size: 12.5px; font-weight: 600; }
+.gast-karte .un { font-size: 10.5px; color: var(--ink-3); }
+.gast-karte .badges { display: flex; gap: 4px; flex-wrap: wrap; }
+.gast-karte .zahlen { display: flex; gap: 14px; padding-top: 3px; border-top: 1px solid var(--linie-zart); }
+.gast-karte .zahlen div { display: grid; }
+.gast-karte .zahlen b { font-size: 14px; font-weight: 650; letter-spacing: -0.02em; }
+.gast-karte .zahlen em { font-style: normal; font-size: 9.5px; color: var(--ink-3); }
 
 /* ---------- Assistent ---------- */
 
 .punkt-ki { margin-bottom: 2px; }
 .punkt-ki svg { color: #C3C6CB; }
 
-.ki-karte { display: flex; flex-direction: column; min-height: 460px; }
+.ki-karte { display: flex; flex-direction: column; min-height: 480px; }
 
 .ki-lauf {
   flex: 1;
   padding: 16px;
   display: flex; flex-direction: column; gap: 10px;
   overflow-y: auto;
-  max-height: 420px;
+  max-height: 440px;
 }
 .ki-blase {
-  max-width: 78%;
+  max-width: 82%;
   padding: 9px 13px;
   border-radius: 12px;
   font-size: 12.5px;
@@ -461,14 +651,28 @@ a { color: inherit; }
   color: #fff;
   border-bottom-right-radius: 4px;
 }
-.ki-blase .hinweis {
-  display: block;
-  margin-top: 6px;
-  padding-top: 6px;
-  border-top: 1px dashed var(--linie);
-  font-size: 11px;
-  color: var(--ink-3);
+.ki-blase b { font-weight: 650; }
+.ki-verstanden {
+  display: flex; align-items: center; gap: 6px; flex-wrap: wrap;
+  margin-bottom: 7px; padding-bottom: 7px;
+  border-bottom: 1px solid var(--linie);
 }
+.ki-verstanden .lb { font-size: 9.5px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; color: var(--ink-3); }
+.ki-tag {
+  font-size: 10px; font-weight: 550;
+  background: var(--flaeche); border: 1px solid var(--linie);
+  color: var(--ink-2); border-radius: 5px; padding: 2px 7px;
+}
+.ki-tag.stark { background: var(--ink); color: #fff; border-color: var(--ink); }
+.ki-aktion {
+  margin-top: 9px; display: inline-flex; align-items: center; gap: 6px;
+  background: var(--flaeche); border: 1px solid var(--linie);
+  color: var(--ink); border-radius: 7px; padding: 6px 11px;
+  font-size: 11.5px; font-weight: 550;
+  transition: border-color 0.14s, background 0.14s;
+}
+.ki-aktion:hover { border-color: var(--ink-3); background: var(--canvas); }
+.ki-aktion svg { width: 13px; height: 13px; }
 /* Tippen-Anzeige */
 .ki-tippt { display: flex; gap: 4px; align-items: center; padding: 11px 13px; }
 .ki-tippt i {
@@ -513,6 +717,187 @@ a { color: inherit; }
 }
 .ki-eingabe input:focus { border-color: var(--ink-3); box-shadow: 0 0 0 3px rgba(22,24,29,0.06); }
 
+/* ---------- Meldung (Toast) ---------- */
+
+.toast-lauf { position: fixed; right: 18px; bottom: 18px; z-index: 90; display: flex; flex-direction: column; gap: 8px; align-items: flex-end; }
+.toast {
+  display: flex; align-items: center; gap: 10px;
+  background: var(--d1); color: #F2F3F5;
+  border-radius: 9px; padding: 11px 14px;
+  font-size: 12px; font-weight: 500;
+  box-shadow: 0 12px 34px rgba(20,21,25,0.28);
+  animation: toast-rein 0.34s var(--ease) both;
+  max-width: 320px;
+}
+.toast svg { width: 15px; height: 15px; flex: none; color: #7FBF94; }
+.toast.weg { animation: toast-weg 0.3s var(--ease) both; }
+@keyframes toast-rein { from { opacity: 0; transform: translateY(10px); } }
+@keyframes toast-weg { to { opacity: 0; transform: translateY(6px); } }
+
+/* ============================================================
+   Gäste-Seite (Front of House) – warmer, eigener Look
+   ============================================================ */
+
+.gast-portal {
+  position: fixed; inset: 0; z-index: 80;
+  background: var(--g-cream);
+  color: var(--g-ink);
+  overflow-y: auto;
+  display: none;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+}
+.gast-portal.auf { display: block; animation: dunkel 0.3s ease both; }
+.gp-leiste {
+  position: sticky; top: 0; z-index: 5;
+  display: flex; align-items: center; justify-content: space-between; gap: 14px;
+  padding: 14px 26px;
+  background: rgba(33,26,21,0.9);
+  backdrop-filter: blur(8px);
+  color: var(--g-cream);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+.gp-marke { display: flex; align-items: center; gap: 10px; font-family: var(--serif); font-size: 17px; letter-spacing: 0.01em; }
+.gp-marke .z { width: 26px; height: 26px; border-radius: 7px; background: var(--g-gold); display: grid; place-items: center; color: var(--g-espresso); }
+.gp-marke .z svg { width: 17px; height: 17px; }
+.gp-nav { display: flex; align-items: center; gap: 22px; }
+.gp-nav a { font-size: 12.5px; color: rgba(247,241,232,0.75); text-decoration: none; transition: color 0.15s; }
+.gp-nav a:hover { color: var(--g-cream); }
+.gp-zurueck {
+  display: inline-flex; align-items: center; gap: 7px;
+  font-size: 11.5px; font-weight: 550;
+  border: 1px solid rgba(247,241,232,0.28); color: var(--g-cream);
+  border-radius: 999px; padding: 7px 13px;
+  transition: background 0.15s;
+}
+.gp-zurueck:hover { background: rgba(247,241,232,0.12); }
+.gp-zurueck svg { width: 13px; height: 13px; }
+
+.gp-hero {
+  position: relative;
+  background:
+    radial-gradient(120% 100% at 80% -10%, rgba(185,138,68,0.34), transparent 55%),
+    linear-gradient(180deg, var(--g-espresso), var(--g-espresso-2));
+  color: var(--g-cream);
+  padding: 78px 26px 88px;
+  text-align: center;
+  overflow: hidden;
+}
+.gp-hero::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: -1px; height: 60px;
+  background: linear-gradient(180deg, transparent, var(--g-cream));
+}
+.gp-hero .kicker {
+  font-size: 11px; font-weight: 600; letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--g-gold-2); margin-bottom: 20px;
+}
+.gp-hero h1 {
+  font-family: var(--serif); font-weight: 400;
+  font-size: clamp(34px, 6vw, 62px); line-height: 1.05; letter-spacing: -0.01em;
+  margin: 0 auto; max-width: 12ch;
+}
+.gp-hero p {
+  margin: 20px auto 0; max-width: 46ch;
+  font-size: 15px; line-height: 1.6; color: rgba(247,241,232,0.78);
+}
+.gp-hero .cta { margin-top: 32px; display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+.gp-knopf {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--g-gold); color: #2A1E0E;
+  border-radius: 999px; padding: 13px 24px;
+  font-size: 13.5px; font-weight: 650; letter-spacing: 0.01em;
+  transition: transform 0.16s var(--ease), background 0.16s, box-shadow 0.16s;
+  box-shadow: 0 10px 26px rgba(185,138,68,0.28);
+}
+.gp-knopf:hover { transform: translateY(-1px); background: var(--g-gold-2); }
+.gp-knopf.leise { background: transparent; color: var(--g-cream); box-shadow: none; border: 1px solid rgba(247,241,232,0.32); }
+.gp-knopf.leise:hover { background: rgba(247,241,232,0.1); }
+.gp-knopf svg { width: 15px; height: 15px; }
+
+.gp-wrap { max-width: 1000px; margin: 0 auto; padding: 0 26px; }
+.gp-abschnitt { padding: 56px 0; }
+.gp-reveal { opacity: 0; transform: translateY(14px); transition: opacity 0.6s var(--ease), transform 0.6s var(--ease); }
+.gp-reveal.sicht { opacity: 1; transform: none; }
+.gp-titel { text-align: center; margin-bottom: 8px; }
+.gp-titel .k { font-size: 11px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--g-gold); }
+.gp-titel h2 { font-family: var(--serif); font-weight: 400; font-size: clamp(26px, 4vw, 38px); margin: 10px 0 0; letter-spacing: -0.01em; }
+.gp-titel p { margin: 12px auto 0; max-width: 48ch; color: #6E6154; font-size: 14px; line-height: 1.6; }
+
+/* Reservierungs-Widget */
+.gp-buchung {
+  margin: 34px auto 0; max-width: 720px;
+  background: #fff; border: 1px solid var(--g-cream-2);
+  border-radius: 16px; box-shadow: 0 20px 50px rgba(42,33,27,0.08);
+  overflow: hidden;
+}
+.gp-buchung-kopf { padding: 18px 22px; border-bottom: 1px solid var(--g-cream-2); font-family: var(--serif); font-size: 17px; }
+.gp-buchung-rumpf { padding: 22px; display: grid; gap: 18px; }
+.gp-frage { display: grid; gap: 9px; }
+.gp-frage > span.lb { font-size: 12px; font-weight: 600; color: #6E6154; letter-spacing: 0.02em; }
+.gp-optionen { display: flex; gap: 8px; flex-wrap: wrap; }
+.gp-opt {
+  border: 1px solid var(--g-cream-2); background: #fff;
+  border-radius: 10px; padding: 9px 15px;
+  font-size: 13px; font-weight: 550; color: var(--g-ink);
+  transition: border-color 0.14s, background 0.14s, color 0.14s;
+  display: grid; justify-items: center; gap: 1px; min-width: 58px;
+}
+.gp-opt em { font-style: normal; font-size: 10px; color: #9A8B7B; font-weight: 500; }
+.gp-opt:hover { border-color: var(--g-gold); }
+.gp-opt[aria-pressed="true"] { background: var(--g-espresso); border-color: var(--g-espresso); color: var(--g-cream); }
+.gp-opt[aria-pressed="true"] em { color: rgba(247,241,232,0.7); }
+.gp-stepper { display: inline-flex; align-items: center; gap: 0; border: 1px solid var(--g-cream-2); border-radius: 10px; overflow: hidden; width: max-content; }
+.gp-stepper button { width: 42px; height: 42px; font-size: 18px; color: var(--g-ink); background: #fff; transition: background 0.14s; }
+.gp-stepper button:hover { background: var(--g-cream); }
+.gp-stepper .anz { width: 54px; text-align: center; font-size: 15px; font-weight: 650; }
+.gp-buchen {
+  width: 100%; background: var(--g-espresso); color: var(--g-cream);
+  border-radius: 11px; padding: 14px; font-size: 14px; font-weight: 650;
+  transition: background 0.16s; display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+}
+.gp-buchen:hover { background: #100C09; }
+.gp-buchen svg { width: 16px; height: 16px; }
+.gp-antwort { margin-top: 2px; }
+.gp-ergebnis {
+  border-radius: 12px; padding: 16px 18px; font-size: 13px; line-height: 1.55;
+  display: flex; gap: 12px; align-items: flex-start;
+  animation: hoch 0.32s var(--ease) both;
+}
+.gp-ergebnis svg { width: 20px; height: 20px; flex: none; margin-top: 1px; }
+.gp-ergebnis.gut { background: #EEF5EF; border: 1px solid #CFE3D5; color: #2C5B3D; }
+.gp-ergebnis.gut svg { color: var(--gruen); }
+.gp-ergebnis.voll { background: var(--bernstein-hell); border: 1px solid #E9DBC2; color: #6E5325; }
+.gp-ergebnis.voll svg { color: var(--bernstein); }
+.gp-ergebnis .titel { font-weight: 650; margin-bottom: 2px; font-size: 13.5px; }
+.gp-ergebnis .warte-knopf {
+  margin-top: 9px; display: inline-flex; align-items: center; gap: 6px;
+  background: var(--bernstein); color: #fff; border-radius: 8px;
+  padding: 8px 13px; font-size: 12px; font-weight: 600;
+}
+
+/* Digitale Speisekarte */
+.gp-menue { margin-top: 30px; display: grid; gap: 30px; }
+.gp-menue-gruppe > h3 {
+  font-family: var(--serif); font-weight: 400; font-size: 21px;
+  margin: 0 0 4px; padding-bottom: 10px;
+  border-bottom: 1px solid var(--g-cream-2);
+  display: flex; align-items: baseline; justify-content: space-between;
+}
+.gp-menue-gruppe > h3 em { font-style: normal; font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--g-gold); font-family: "Inter", sans-serif; }
+.gp-gericht { display: grid; grid-template-columns: 1fr auto; gap: 6px 16px; padding: 14px 0; border-bottom: 1px dashed var(--g-cream-2); }
+.gp-gericht:last-child { border-bottom: none; }
+.gp-gericht .gn { font-size: 15px; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+.gp-gericht .gp2 { font-family: var(--serif); font-size: 15px; color: var(--g-gold); white-space: nowrap; }
+.gp-gericht .gt { grid-column: 1 / 2; font-size: 12.5px; color: #857567; line-height: 1.5; }
+.gp-vegi { font-size: 8.5px; font-weight: 700; letter-spacing: 0.05em; color: var(--gruen); border: 1px solid #C9E0CF; border-radius: 4px; padding: 1px 5px; text-transform: uppercase; }
+.gp-menue-hinweis { text-align: center; margin-top: 26px; font-size: 12px; color: #9A8B7B; }
+.gp-info-gitter { margin-top: 30px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.gp-info { text-align: center; padding: 22px 16px; background: #fff; border: 1px solid var(--g-cream-2); border-radius: 12px; }
+.gp-info svg { width: 20px; height: 20px; color: var(--g-gold); margin-bottom: 10px; }
+.gp-info .t { font-weight: 650; font-size: 13px; margin-bottom: 3px; }
+.gp-info .u { font-size: 12px; color: #857567; line-height: 1.5; }
+.gp-fuss { background: var(--g-espresso); color: rgba(247,241,232,0.7); text-align: center; padding: 30px 26px; font-size: 12px; }
+.gp-fuss .demo { margin-top: 8px; font-size: 11px; color: rgba(247,241,232,0.45); }
+
 /* ---------- Handy ---------- */
 
 @media (max-width: 860px) {
@@ -531,7 +916,7 @@ a { color: inherit; }
   .punkt .zahl { margin-left: 4px; }
   .topbar { padding: 10px 13px; flex-wrap: wrap; }
   .suchfeld input { width: 100px; }
-  .inhalt { padding: 13px; }
+  .knopf.gast span { display: none; }
   .t-kopf, .t-zeile { grid-template-columns: 52px minmax(0, 1fr) 94px; }
   .t-kopf span:nth-child(3), .t-kopf span:nth-child(4),
   .t-zeile .zahl2 { display: none; }
@@ -541,16 +926,26 @@ a { color: inherit; }
   .schicht-gitter .wer { font-size: 10.5px; }
   .zelle { font-size: 9px; padding: 6px 2px; }
   .diagramm { height: 160px; gap: 6px; padding: 13px; }
+  .zweikarten { grid-template-columns: 1fr; }
   .ki-karte { min-height: 0; }
-  .ki-lauf { max-height: 300px; padding: 13px; }
+  .ki-lauf { max-height: 320px; padding: 13px; }
   .ki-blase { max-width: 88%; }
   .ki-vorschlaege { padding: 0 13px 10px; }
   .ki-eingabe { padding: 10px 13px; }
   .kal { gap: 4px; padding: 11px; }
+  .raum { aspect-ratio: 4 / 5; margin: 11px; }
+  .tisch .tp { display: none; }
+  .gp-leiste { padding: 12px 16px; }
+  .gp-nav { display: none; }
+  .gp-wrap { padding: 0 16px; }
+  .gp-hero { padding: 56px 18px 70px; }
+  .gp-info-gitter { grid-template-columns: 1fr; }
+  .gp-buchung-rumpf { padding: 18px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+  .gp-reveal { opacity: 1; transform: none; }
 }
 </style>
 </head>
@@ -585,16 +980,24 @@ a { color: inherit; }
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9.5" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/></svg>
       Reservierungen<span class="zahl" id="nav-anzahl">–</span>
     </button>
+    <button class="punkt" data-ansicht="tischplan">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2.5"/><circle cx="8" cy="8" r="1.6"/><circle cx="16" cy="8" r="1.6"/><circle cx="8" cy="16" r="1.6"/><circle cx="16" cy="16" r="1.6"/></svg>
+      Tischplan
+    </button>
     <button class="punkt" data-ansicht="kalender">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="2.5"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
       Kalender
     </button>
+    <button class="punkt" data-ansicht="gaeste">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a6 6 0 0 1 12 0v1"/><path d="M18 11a3 3 0 1 0-2-5.24"/></svg>
+      Gäste
+    </button>
+
+    <span class="gruppe">Küche &amp; Planung</span>
     <button class="punkt" data-ansicht="menues">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 3h13a2 2 0 0 1 2 2v16l-6-3-6 3V5a2 2 0 0 0-2-2z"/><path d="M8 8h6M8 12h4"/></svg>
       Menüs
     </button>
-
-    <span class="gruppe">Planung</span>
     <button class="punkt" data-ansicht="schichten">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M3 12h12M3 18h7"/></svg>
       Schichten
@@ -622,6 +1025,10 @@ a { color: inherit; }
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
           <input type="search" id="suche" placeholder="Gast suchen" aria-label="Gast suchen">
         </label>
+        <button class="knopf gast" id="gast-knopf" title="Öffentliche Gäste-Seite ansehen">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>
+          <span>Gäste-Seite</span>
+        </button>
         <button class="knopf" id="neu-knopf">+ Reservierung</button>
       </div>
     </header>
@@ -646,6 +1053,7 @@ a { color: inherit; }
 
       <!-- Reservierungen -->
       <section class="ansicht" data-ansicht="reservierungen" aria-label="Reservierungen">
+        <div id="warte-banner"></div>
         <div class="chips" id="filter"></div>
         <div class="karte">
           <div class="karte-kopf">
@@ -655,6 +1063,29 @@ a { color: inherit; }
           <div class="tabelle">
             <div class="t-kopf"><span>Zeit</span><span>Gast</span><span>Personen</span><span>Tisch</span><span>Status</span></div>
             <div id="res-liste"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Tischplan -->
+      <section class="ansicht" data-ansicht="tischplan" aria-label="Tischplan">
+        <div class="karte">
+          <div class="plan-leiste">
+            <div class="plan-zeit">
+              <label for="plan-schieber">Belegung um</label>
+              <span class="uhr" id="plan-uhr">19:30</span>
+              <input class="schieber" type="range" id="plan-schieber" min="1020" max="1380" step="15" value="1170" aria-label="Uhrzeit">
+            </div>
+            <div class="plan-legende">
+              <span><i class="frei"></i> frei</span>
+              <span><i class="best"></i> bestätigt</span>
+              <span><i class="anfr"></i> angefragt</span>
+            </div>
+          </div>
+          <div class="raum" id="raum"></div>
+          <div class="plan-fuss">
+            <span id="plan-info">–</span>
+            <span id="plan-tag">Freitag, 24. Juli</span>
           </div>
         </div>
       </section>
@@ -674,13 +1105,25 @@ a { color: inherit; }
         </div>
       </section>
 
+      <!-- Gäste -->
+      <section class="ansicht" data-ansicht="gaeste" aria-label="Gäste">
+        <div class="kacheln" id="gaeste-kpi"></div>
+        <div class="karte">
+          <div class="karte-kopf">
+            <h2>Gästekartei</h2>
+            <span class="neben">Stammgäste erkennen, bevor sie am Tisch sitzen</span>
+          </div>
+          <div class="gast-gitter" id="gast-gitter" style="padding:14px"></div>
+        </div>
+      </section>
+
       <!-- Menüs -->
       <section class="ansicht" data-ansicht="menues" aria-label="Menüs">
         <div class="chips" id="menue-filter"></div>
         <div class="karte">
           <div class="karte-kopf">
             <h2>Speisekarte</h2>
-            <span class="neben">Tippen schaltet ein Gericht für heute ab</span>
+            <span class="neben">Tippen schaltet ein Gericht ab – auch auf der Gäste-Seite</span>
           </div>
           <div class="speisen" id="speisen"></div>
         </div>
@@ -734,7 +1177,7 @@ a { color: inherit; }
         <div class="karte ki-karte">
           <div class="karte-kopf">
             <h2>Assistent</h2>
-            <span class="neben">Sag, was du brauchst – statt zu klicken</span>
+            <span class="neben">Sag, was du brauchst – er erledigt es wirklich</span>
           </div>
 
           <div class="ki-lauf" id="ki-lauf"></div>
@@ -742,7 +1185,7 @@ a { color: inherit; }
           <div class="ki-vorschlaege" id="ki-vorschlaege"></div>
 
           <div class="ki-eingabe">
-            <input type="text" id="ki-feld" placeholder="Zum Beispiel: Trag Familie Meier am Freitag um 19 Uhr ein" aria-label="Nachricht an den Assistenten">
+            <input type="text" id="ki-feld" placeholder="Zum Beispiel: Trag Familie Weber am Samstag um 19:30 für 4 Personen ein" aria-label="Nachricht an den Assistenten">
             <button class="knopf" id="ki-senden">Senden</button>
           </div>
         </div>
@@ -755,9 +1198,15 @@ a { color: inherit; }
           <div class="karte-kopf"><h2>Gäste pro Wochentag</h2><span class="neben">Letzte Woche</span></div>
           <div class="diagramm" id="diagramm"></div>
         </div>
-        <div class="karte">
-          <div class="karte-kopf"><h2>Beliebteste Gerichte</h2><span class="neben">Bestellungen letzte Woche</span></div>
-          <div class="speisen" id="top-gerichte"></div>
+        <div class="zweikarten">
+          <div class="karte">
+            <div class="karte-kopf"><h2>Woher die Reservierungen kommen</h2><span class="neben">Letzte 30 Tage</span></div>
+            <div class="quellenliste" id="quellen"></div>
+          </div>
+          <div class="karte">
+            <div class="karte-kopf"><h2>Beliebteste Gerichte</h2><span class="neben">Bestellungen letzte Woche</span></div>
+            <div class="speisen" id="top-gerichte"></div>
+          </div>
         </div>
       </section>
 
@@ -765,11 +1214,14 @@ a { color: inherit; }
   </div>
 </div>
 
-<!-- Detail-Schublade -->
+<!-- Detail-Schublade (Reservierung ODER Gast) -->
 <div class="schublade" id="schublade">
-  <div class="schublade-blatt" role="dialog" aria-label="Reservierung" aria-modal="true">
+  <div class="schublade-blatt" role="dialog" aria-label="Detail" aria-modal="true">
     <div class="sb-kopf">
-      <h3 id="sb-titel">Reservierung</h3>
+      <div>
+        <h3 id="sb-titel">Reservierung</h3>
+        <div class="zeile-badges" id="sb-badges"></div>
+      </div>
       <button class="schliessen" data-schliessen aria-label="Schliessen">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
       </button>
@@ -795,26 +1247,30 @@ a { color: inherit; }
       </div>
       <div class="zweispalt">
         <div class="feld">
-          <label for="f-zeit">Zeit</label>
-          <input id="f-zeit" type="time" value="19:00">
+          <label for="f-tag">Tag</label>
+          <select id="f-tag"></select>
         </div>
         <div class="feld">
-          <label for="f-personen">Personen</label>
-          <input id="f-personen" type="number" min="1" max="40" value="2">
+          <label for="f-zeit">Zeit</label>
+          <input id="f-zeit" type="time" value="19:00">
         </div>
       </div>
       <div class="zweispalt">
         <div class="feld">
+          <label for="f-personen">Personen</label>
+          <input id="f-personen" type="number" min="1" max="40" value="2">
+        </div>
+        <div class="feld">
           <label for="f-tisch">Tisch</label>
           <select id="f-tisch"></select>
         </div>
-        <div class="feld">
-          <label for="f-status">Status</label>
-          <select id="f-status">
-            <option value="ok">Bestätigt</option>
-            <option value="offen">Angefragt</option>
-          </select>
-        </div>
+      </div>
+      <div class="feld">
+        <label for="f-status">Status</label>
+        <select id="f-status">
+          <option value="ok">Bestätigt</option>
+          <option value="offen">Angefragt</option>
+        </select>
       </div>
       <div class="feld">
         <label for="f-notiz">Notiz</label>
@@ -828,6 +1284,128 @@ a { color: inherit; }
   </div>
 </div>
 
+<!-- ============================================================
+     Gäste-Seite (öffentliche Ansicht)
+     ============================================================ -->
+<div class="gast-portal" id="gast-portal" aria-label="Gäste-Ansicht">
+  <div class="gp-leiste">
+    <div class="gp-marke">
+      <span class="z" aria-hidden="true">
+        <svg viewBox="0 0 20 20" fill="none">
+          <rect x="2.4" y="4.6" width="15.2" height="2.5" rx="1.25" fill="currentColor"/>
+          <rect x="8.85" y="7.1" width="2.3" height="6.6" fill="currentColor"/>
+          <rect x="5.3" y="13.7" width="9.4" height="2.3" rx="1.15" fill="currentColor"/>
+        </svg>
+      </span>
+      Ristorante tavolo
+    </div>
+    <nav class="gp-nav">
+      <a href="#gp-reservieren" data-gp-scroll="gp-reservieren">Reservieren</a>
+      <a href="#gp-karte" data-gp-scroll="gp-karte">Speisekarte</a>
+      <a href="#gp-info" data-gp-scroll="gp-info">Besuch</a>
+    </nav>
+    <button class="gp-zurueck" id="gp-zurueck">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l-6-6 6-6"/><path d="M3 12h13a5 5 0 0 1 0 10h-3"/></svg>
+      Zur Verwaltung
+    </button>
+  </div>
+
+  <header class="gp-hero">
+    <div class="kicker">Cucina italiana · seit 1998</div>
+    <h1>Ein Abend, der bleibt.</h1>
+    <p>Saisonale italienische Küche, ein ruhiger Saal und eine Terrasse für laue Abende. Reservieren Sie in wenigen Sekunden – wir bestätigen persönlich.</p>
+    <div class="cta">
+      <button class="gp-knopf" data-gp-scroll="gp-reservieren">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="2.5"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        Tisch reservieren
+      </button>
+      <button class="gp-knopf leise" data-gp-scroll="gp-karte">Speisekarte ansehen</button>
+    </div>
+  </header>
+
+  <div class="gp-wrap">
+
+    <!-- Reservieren -->
+    <section class="gp-abschnitt gp-reveal" id="gp-reservieren">
+      <div class="gp-titel">
+        <span class="k">Reservierung</span>
+        <h2>Ihr Tisch bei uns</h2>
+        <p>Wählen Sie Tag, Zeit und Personenzahl. Die Anfrage landet direkt bei unserem Serviceteam – in dieser Demo im Verwaltungs-Backend, das Sie eben gesehen haben.</p>
+      </div>
+
+      <div class="gp-buchung">
+        <div class="gp-buchung-kopf">Verfügbarkeit prüfen</div>
+        <div class="gp-buchung-rumpf">
+          <div class="gp-frage">
+            <span class="lb">Tag</span>
+            <div class="gp-optionen" id="gp-tage"></div>
+          </div>
+          <div class="gp-frage">
+            <span class="lb">Uhrzeit</span>
+            <div class="gp-optionen" id="gp-zeiten"></div>
+          </div>
+          <div class="gp-frage">
+            <span class="lb">Personen</span>
+            <div class="gp-stepper">
+              <button type="button" id="gp-minus" aria-label="weniger">−</button>
+              <span class="anz" id="gp-personen">2</span>
+              <button type="button" id="gp-plus" aria-label="mehr">+</button>
+            </div>
+          </div>
+          <button class="gp-buchen" id="gp-buchen">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+            Verfügbarkeit prüfen &amp; anfragen
+          </button>
+          <div class="gp-antwort" id="gp-antwort"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Speisekarte -->
+    <section class="gp-abschnitt gp-reveal" id="gp-karte">
+      <div class="gp-titel">
+        <span class="k">Speisekarte</span>
+        <h2>Was heute auf den Tisch kommt</h2>
+        <p>Diese Karte pflegt das Restaurant selbst. Was in der Verwaltung abgeschaltet wird, verschwindet hier automatisch – kein doppeltes Nachführen.</p>
+      </div>
+      <div class="gp-menue" id="gp-menue"></div>
+      <div class="gp-menue-hinweis" id="gp-menue-hinweis"></div>
+    </section>
+
+    <!-- Info -->
+    <section class="gp-abschnitt gp-reveal" id="gp-info">
+      <div class="gp-titel">
+        <span class="k">Ihr Besuch</span>
+        <h2>Gut zu wissen</h2>
+      </div>
+      <div class="gp-info-gitter">
+        <div class="gp-info">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+          <div class="t">Öffnungszeiten</div>
+          <div class="u">Di – So, 17:30 – 23:30<br>Montag Ruhetag</div>
+        </div>
+        <div class="gp-info">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 6-9 12-9 12s-9-6-9-12a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          <div class="t">Adresse</div>
+          <div class="u">Musterstrasse 12<br>8000 Zürich</div>
+        </div>
+        <div class="gp-info">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3-8.6A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.4-1.2a2 2 0 0 1 2.1-.5c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg>
+          <div class="t">Telefon</div>
+          <div class="u">044 123 45 67<br>Wir rufen bei Fragen zurück</div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <footer class="gp-fuss">
+    Ristorante tavolo · Musterstrasse 12 · 8000 Zürich
+    <div class="demo">Demo-Seite von MASESites – Beispiel-Kontaktdaten, keine echte Buchung.</div>
+  </footer>
+</div>
+
+<div class="toast-lauf" id="toast-lauf"></div>
+
 <script>
 /* ============================================================
    tavolo – Demo-Logik.
@@ -837,37 +1415,67 @@ a { color: inherit; }
 (function () {
   "use strict";
 
-  /* ---------- Daten ---------- */
+  /* ---------- Stammdaten ---------- */
 
-  var TISCHE = ["1", "2", "3", "5", "7", "8", "10", "10–11", "12", "B1", "B2", "Terrasse 1", "Terrasse 2"];
+  // Tische mit Kapazität, Zone und Position (in % des Raums) für den Tischplan.
+  var TISCHE = [
+    { id: "Terrasse 1", kurz: "T1", plaetze: 4, zone: "Terrasse", x: 27, y: 11, form: "rund" },
+    { id: "Terrasse 2", kurz: "T2", plaetze: 4, zone: "Terrasse", x: 47, y: 11, form: "rund" },
+    { id: "1", kurz: "1", plaetze: 2, zone: "Saal", x: 28, y: 39, form: "rund" },
+    { id: "2", kurz: "2", plaetze: 2, zone: "Saal", x: 41, y: 39, form: "rund" },
+    { id: "3", kurz: "3", plaetze: 2, zone: "Saal", x: 54, y: 39, form: "rund" },
+    { id: "5", kurz: "5", plaetze: 2, zone: "Saal", x: 67, y: 39, form: "rund" },
+    { id: "7", kurz: "7", plaetze: 4, zone: "Saal", x: 28, y: 64, form: "eckig" },
+    { id: "8", kurz: "8", plaetze: 4, zone: "Saal", x: 42, y: 64, form: "eckig" },
+    { id: "10", kurz: "10", plaetze: 4, zone: "Saal", x: 56, y: 64, form: "eckig" },
+    { id: "12", kurz: "12", plaetze: 6, zone: "Saal", x: 69, y: 51, form: "eckig" },
+    { id: "10–11", kurz: "10·11", plaetze: 8, zone: "Saal", x: 41, y: 85, form: "eckig" },
+    { id: "B1", kurz: "B1", plaetze: 2, zone: "Bar", x: 87, y: 33, form: "rund" },
+    { id: "B2", kurz: "B2", plaetze: 2, zone: "Bar", x: 87, y: 45, form: "rund" }
+  ];
   var WOCHENTAGE = ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"];
+  var WOCHENTAGE_LANG = ["Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag", "Sonntag"];
   var MONAT = "Juli 2026";
+  var HEUTE = 24;            // "heute" in der Demo: Freitag, 24. Juli 2026
+  var STANDARD_DAUER = 120;  // Minuten, die eine Reservierung einen Tisch belegt
+
+  // Gästekartei (CRM). Reservierungen werden über den Namen verknüpft.
+  var gaeste = [
+    { id: "g1", name: "Familie Brunner", tel: "078 220 14 76", besuche: 14, letzter: "12. Juli 2026", tags: ["Stammgast"], tisch: "7", bon: 82, notiz: "Kinderstuhl, sitzt gern etwas hinten." },
+    { id: "g2", name: "R. Schneider", tel: "079 412 88 03", besuche: 9, letzter: "5. Juli 2026", tags: ["Stammgast"], tisch: "2", bon: 64, notiz: "Mag einen ruhigen Tisch." },
+    { id: "g3", name: "L. Rossi", tel: "078 907 31 44", besuche: 23, letzter: "18. Juli 2026", tags: ["Stammgast", "VIP"], tisch: "B2", bon: 96, notiz: "Immer an der Bar, trinkt Amarone." },
+    { id: "g4", name: "T. Lehmann", tel: "079 104 66 51", besuche: 6, letzter: "1. Juli 2026", tags: ["Allergie"], tisch: "5", bon: 58, notiz: "Eine Person isst glutenfrei." },
+    { id: "g5", name: "Firma Aeschbach", tel: "044 810 22 90", besuche: 11, letzter: "20. Juni 2026", tags: ["Firma"], tisch: "12", bon: 121, notiz: "Rechnung an Firma, Quartalsessen." },
+    { id: "g6", name: "M. Keller", tel: "079 883 40 12", besuche: 4, letzter: "28. Juni 2026", tags: [], tisch: "3", bon: 52, notiz: "" },
+    { id: "g7", name: "P. Baumann", tel: "076 228 55 09", besuche: 2, letzter: "14. Juni 2026", tags: [], tisch: "3", bon: 47, notiz: "" }
+  ];
 
   var reservierungen = [
-    { id: 1, tag: 24, zeit: "17:45", name: "R. Schneider", personen: 2, tisch: "2", status: "ok", notiz: "Sitzt gern ruhig", tel: "079 412 88 03" },
-    { id: 2, tag: 24, zeit: "18:00", name: "Familie Brunner", personen: 4, tisch: "7", status: "ok", notiz: "Kinderstuhl gewünscht", tel: "078 220 14 76" },
-    { id: 3, tag: 24, zeit: "18:30", name: "M. Keller", personen: 2, tisch: "3", status: "ok", notiz: "", tel: "079 883 40 12" },
-    { id: 4, tag: 24, zeit: "19:00", name: "Geburtstag Meier", personen: 8, tisch: "10–11", status: "offen", notiz: "Torte um 21:00, 40 Kerzen", tel: "076 551 90 28" },
-    { id: 5, tag: 24, zeit: "19:15", name: "T. Lehmann", personen: 3, tisch: "5", status: "ok", notiz: "Eine Person glutenfrei", tel: "079 104 66 51" },
-    { id: 6, tag: 24, zeit: "19:45", name: "Firma Aeschbach", personen: 6, tisch: "12", status: "offen", notiz: "Rechnung an Firma", tel: "044 810 22 90" },
-    { id: 7, tag: 24, zeit: "20:15", name: "L. Rossi", personen: 2, tisch: "B2", status: "ok", notiz: "An der Bar", tel: "078 907 31 44" },
-    { id: 8, tag: 24, zeit: "20:30", name: "S. Widmer", personen: 5, tisch: "8", status: "offen", notiz: "", tel: "079 336 27 15" },
-    { id: 9, tag: 25, zeit: "18:00", name: "Hochzeit Frei", personen: 12, tisch: "Terrasse 1", status: "ok", notiz: "Apéro ab 17:30", tel: "079 445 12 87" },
-    { id: 10, tag: 25, zeit: "19:30", name: "P. Baumann", personen: 2, tisch: "3", status: "ok", notiz: "", tel: "076 228 55 09" },
-    { id: 11, tag: 26, zeit: "12:15", name: "Sonntagsbrunch Vogt", personen: 6, tisch: "10", status: "ok", notiz: "", tel: "079 771 03 62" },
-    { id: 12, tag: 23, zeit: "19:00", name: "A. Furrer", personen: 4, tisch: "5", status: "ok", notiz: "", tel: "078 664 19 30" }
+    { id: 1, tag: 24, zeit: "17:45", name: "R. Schneider", personen: 2, tisch: "2", status: "ok", notiz: "Sitzt gern ruhig", tel: "079 412 88 03", quelle: "Telefon" },
+    { id: 2, tag: 24, zeit: "18:00", name: "Familie Brunner", personen: 4, tisch: "7", status: "ok", notiz: "Kinderstuhl gewünscht", tel: "078 220 14 76", quelle: "Stammgast" },
+    { id: 3, tag: 24, zeit: "18:30", name: "M. Keller", personen: 2, tisch: "3", status: "ok", notiz: "", tel: "079 883 40 12", quelle: "Online" },
+    { id: 4, tag: 24, zeit: "19:00", name: "Geburtstag Meier", personen: 8, tisch: "10–11", status: "offen", notiz: "Torte um 21:00, 40 Kerzen", tel: "076 551 90 28", quelle: "Online" },
+    { id: 5, tag: 24, zeit: "19:15", name: "T. Lehmann", personen: 3, tisch: "5", status: "ok", notiz: "Eine Person glutenfrei", tel: "079 104 66 51", quelle: "Telefon" },
+    { id: 6, tag: 24, zeit: "19:45", name: "Firma Aeschbach", personen: 6, tisch: "12", status: "offen", notiz: "Rechnung an Firma", tel: "044 810 22 90", quelle: "Telefon" },
+    { id: 7, tag: 24, zeit: "20:15", name: "L. Rossi", personen: 2, tisch: "B2", status: "ok", notiz: "An der Bar", tel: "078 907 31 44", quelle: "Stammgast" },
+    { id: 8, tag: 24, zeit: "20:30", name: "S. Widmer", personen: 5, tisch: "8", status: "offen", notiz: "", tel: "079 336 27 15", quelle: "Online" },
+    { id: 9, tag: 25, zeit: "18:00", name: "Hochzeit Frei", personen: 12, tisch: "Terrasse 1", status: "ok", notiz: "Apéro ab 17:30", tel: "079 445 12 87", quelle: "Telefon" },
+    { id: 10, tag: 25, zeit: "19:30", name: "P. Baumann", personen: 2, tisch: "3", status: "ok", notiz: "", tel: "076 228 55 09", quelle: "Online" },
+    { id: 11, tag: 25, zeit: "20:00", name: "K. Moser", personen: 2, tisch: "—", status: "warteliste", notiz: "möchte auf die Terrasse", tel: "078 662 09 41", quelle: "Online" },
+    { id: 12, tag: 26, zeit: "12:15", name: "Sonntagsbrunch Vogt", personen: 6, tisch: "10", status: "ok", notiz: "", tel: "079 771 03 62", quelle: "Online" },
+    { id: 13, tag: 23, zeit: "19:00", name: "A. Furrer", personen: 4, tisch: "5", status: "ok", notiz: "", tel: "078 664 19 30", quelle: "Telefon" }
   ];
-  var naechsteId = 13;
+  var naechsteId = 14;
 
   var speisen = [
-    { id: 1, name: "Vitello tonnato", kat: "Vorspeise", preis: 18.5, an: true, bestellt: 34 },
-    { id: 2, name: "Burrata mit Ofentomaten", kat: "Vorspeise", preis: 16.0, an: true, bestellt: 41 },
-    { id: 3, name: "Tagliatelle al ragù", kat: "Hauptgang", preis: 27.5, an: true, bestellt: 88 },
-    { id: 4, name: "Risotto ai funghi", kat: "Hauptgang", preis: 26.0, an: true, bestellt: 52 },
-    { id: 5, name: "Kalbsschnitzel nach Zürcher Art", kat: "Hauptgang", preis: 38.0, an: true, bestellt: 67 },
-    { id: 6, name: "Branzino vom Grill", kat: "Hauptgang", preis: 42.0, an: false, bestellt: 23 },
-    { id: 7, name: "Tiramisù della casa", kat: "Dessert", preis: 12.5, an: true, bestellt: 71 },
-    { id: 8, name: "Panna cotta mit Waldbeeren", kat: "Dessert", preis: 11.0, an: true, bestellt: 38 }
+    { id: 1, name: "Vitello tonnato", kat: "Vorspeise", preis: 18.5, an: true, bestellt: 34, vegi: false, text: "Rosa Kalbsrücken, Thunfischsauce, Kapern" },
+    { id: 2, name: "Burrata mit Ofentomaten", kat: "Vorspeise", preis: 16.0, an: true, bestellt: 41, vegi: true, text: "Apulische Burrata, geschmorte Tomaten, Basilikum" },
+    { id: 3, name: "Tagliatelle al ragù", kat: "Hauptgang", preis: 27.5, an: true, bestellt: 88, vegi: false, text: "Hausgemachte Bandnudeln, Rinderragù aus 4 Stunden" },
+    { id: 4, name: "Risotto ai funghi", kat: "Hauptgang", preis: 26.0, an: true, bestellt: 52, vegi: true, text: "Carnaroli-Reis, Steinpilze, Parmigiano" },
+    { id: 5, name: "Kalbsschnitzel nach Zürcher Art", kat: "Hauptgang", preis: 38.0, an: true, bestellt: 67, vegi: false, text: "Kalbsgeschnetzeltes, Rösti, Champignonrahm" },
+    { id: 6, name: "Branzino vom Grill", kat: "Hauptgang", preis: 42.0, an: false, bestellt: 23, vegi: false, text: "Ganzer Wolfsbarsch, Zitrone, Gartenkräuter" },
+    { id: 7, name: "Tiramisù della casa", kat: "Dessert", preis: 12.5, an: true, bestellt: 71, vegi: true, text: "Mascarpone, Espresso, Amaretto" },
+    { id: 8, name: "Panna cotta mit Waldbeeren", kat: "Dessert", preis: 11.0, an: true, bestellt: 38, vegi: true, text: "Vanille-Panna-cotta, warmes Waldbeeren-Ragout" }
   ];
 
   var personal = ["S. Brunner", "M. Ferrari", "J. Kaufmann", "N. Steiner", "D. Hofer"];
@@ -882,23 +1490,74 @@ a { color: inherit; }
 
   var $ = function (s, w) { return (w || document).querySelector(s); };
   var $$ = function (s, w) { return Array.prototype.slice.call((w || document).querySelectorAll(s)); };
+
+  // Escaping für alles, was aus Eingaben/Daten per innerHTML gerendert wird.
+  // In der Demo nur Self-XSS möglich (kein Backend), aber saubere Basis fürs echte Produkt.
+  function esc(s) {
+    return String(s == null ? "" : s).replace(/[&<>"]/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c];
+    });
+  }
+
   function initialen(name) {
-    var t = name.replace(/^(Familie|Firma|Geburtstag|Hochzeit)\s+/i, "").trim().split(/[\s.]+/).filter(Boolean);
+    var t = name.replace(/^(Familie|Firma|Geburtstag|Hochzeit|Sonntagsbrunch)\s+/i, "").trim().split(/[\s.]+/).filter(Boolean);
     return ((t[0] || "")[0] + ((t[1] || "")[0] || "")).toUpperCase();
   }
-  function frRappen(n) { return n.toFixed(2).replace(".", "."); }
+  function frRappen(n) { return n.toFixed(2); }
   function leerZeile(text) { return '<div class="leer">' + text + "</div>"; }
+  function pad2(n) { n = String(n); return n.length < 2 ? "0" + n : n; }
+  function wochentagIndex(d) { return ((d - 1) + 2) % 7; }          // 1. Juli 2026 = Mittwoch
+  function wochentagName(d) { return WOCHENTAGE_LANG[wochentagIndex(d)]; }
+  function langTag(d) { return wochentagName(d) + ", " + d + ". Juli"; }
+  function zeitMin(z) { var p = z.split(":"); return (+p[0]) * 60 + (+p[1]); }
+  function minZeit(m) { return pad2(Math.floor(m / 60)) + ":" + pad2(m % 60); }
+
+  function tischObj(id) { return TISCHE.find(function (t) { return t.id === id; }); }
+  function gastZu(name) {
+    if (!name) return null;
+    var n = name.toLowerCase();
+    return gaeste.find(function (g) { return g.name.toLowerCase() === n; }) ||
+           gaeste.find(function (g) { return n.indexOf(g.name.toLowerCase()) !== -1 || g.name.toLowerCase().indexOf(n) !== -1; }) || null;
+  }
+
+  // Ist ein Tisch zu Minute m an Tag d belegt?
+  function tischBelegtUm(tischId, tag, m) {
+    return reservierungen.some(function (r) {
+      if (r.tag !== tag || r.tisch !== tischId || r.status === "warteliste") return false;
+      var s = zeitMin(r.zeit);
+      return m >= s && m < s + STANDARD_DAUER;
+    });
+  }
+  function reservierungAmTisch(tischId, tag, m) {
+    return reservierungen.find(function (r) {
+      if (r.tag !== tag || r.tisch !== tischId || r.status === "warteliste") return false;
+      var s = zeitMin(r.zeit);
+      return m >= s && m < s + STANDARD_DAUER;
+    });
+  }
+  // Freie Tische zu Tag/Zeit, optional mit Mindest-Plätzen; kleinster passender zuerst.
+  function freieTische(tag, m, minPlaetze) {
+    return TISCHE.filter(function (t) {
+      return t.plaetze >= (minPlaetze || 1) && !tischBelegtUm(t.id, tag, m);
+    }).sort(function (a, b) { return a.plaetze - b.plaetze; });
+  }
 
   var gewaehlterTag = 24;
   var filterStatus = "alle";
   var menueKat = "alle";
   var suchText = "";
+  var planMinute = 1170; // 19:30
 
   /* ---------- Ansichten umschalten ---------- */
 
   var TITEL = {
-    uebersicht: "Übersicht", reservierungen: "Reservierungen", kalender: "Kalender",
-    menues: "Menüs", schichten: "Schichten", rechner: "Preisrechner", auswertungen: "Auswertungen",
+    uebersicht: "Übersicht", reservierungen: "Reservierungen", tischplan: "Tischplan",
+    kalender: "Kalender", gaeste: "Gäste", menues: "Menüs", schichten: "Schichten",
+    rechner: "Preisrechner", auswertungen: "Auswertungen", assistent: "Assistent"
+  };
+  var GRUPPE = {
+    uebersicht: "Betrieb", reservierungen: "Betrieb", tischplan: "Betrieb", kalender: "Betrieb", gaeste: "Betrieb",
+    menues: "Küche & Planung", schichten: "Küche & Planung", rechner: "Küche & Planung", auswertungen: "Küche & Planung",
     assistent: "Assistent"
   };
 
@@ -910,10 +1569,12 @@ a { color: inherit; }
     });
     $("#pfad").innerHTML = name === "uebersicht"
       ? "<b>Übersicht</b>"
-      : 'Betrieb <span class="tr">/</span> <b>' + TITEL[name] + "</b>";
+      : GRUPPE[name] + ' <span class="tr">/</span> <b>' + TITEL[name] + "</b>";
     if (name === "uebersicht") zeichneUebersicht();
     if (name === "reservierungen") zeichneReservierungen();
+    if (name === "tischplan") zeichneTischplan();
     if (name === "kalender") { zeichneKalender(); zeichneTagesListe(); }
+    if (name === "gaeste") zeichneGaeste();
     if (name === "menues") zeichneSpeisen();
     if (name === "schichten") zeichneSchichten();
     if (name === "auswertungen") zeichneAuswertungen();
@@ -940,42 +1601,85 @@ a { color: inherit; }
   }
 
   function zeileHtml(r) {
-    return '<button class="t-zeile' + (r.status === "offen" ? " offen" : "") + '" data-id="' + r.id + '">' +
+    var g = gastZu(r.name);
+    var stamm = g && (g.tags.indexOf("Stammgast") !== -1 || g.tags.indexOf("VIP") !== -1);
+    var stern = stamm ? '<svg class="stern" width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.3 6.9.7-5.1 4.6 1.4 6.8L12 17.8 5 20.4l1.4-6.8L1.3 9l6.9-.7z"/></svg>' : "";
+    var badge = r.status === "ok"
+      ? '<i class="badge ok">Bestätigt</i>'
+      : r.status === "warteliste"
+        ? '<i class="badge warte">Warteliste</i>'
+        : '<i class="badge">Angefragt</i>';
+    return '<button class="t-zeile' + (r.status === "offen" ? " offen" : "") + (r._neu ? " neu" : "") + '" data-id="' + r.id + '">' +
       '<span class="zeit">' + r.zeit + "</span>" +
-      '<span class="gast"><span class="av">' + initialen(r.name) + "</span>" + r.name +
-      "<em>" + r.personen + " Pers." + (r.notiz ? " · " + r.notiz : "") + "</em></span>" +
+      '<span class="gast"><span class="av">' + initialen(r.name) + "</span>" +
+        '<span class="nm"><b>' + esc(r.name) + "</b>" + stern + "</span>" +
+        "<em>" + r.personen + " Pers." + (r.notiz ? " · " + esc(r.notiz) : "") + "</em></span>" +
       '<span class="zahl2">' + r.personen + "</span>" +
       '<span class="zahl2">' + r.tisch + "</span>" +
-      '<span><i class="badge ' + (r.status === "ok" ? "ok" : "") + '">' +
-      (r.status === "ok" ? "Bestätigt" : "Angefragt") + "</i></span>" +
+      "<span>" + badge + "</span>" +
       "</button>";
   }
 
+  function zeichneWarteBanner() {
+    var warte = reservierungen.filter(function (r) { return r.status === "warteliste"; });
+    var box = $("#warte-banner");
+    if (!warte.length) { box.innerHTML = ""; return; }
+    box.innerHTML =
+      '<div class="banner">' +
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>' +
+      '<span class="txt"><b>' + warte.length + " auf der Warteliste.</b> Sobald ein Tisch frei wird, rückt der nächste Gast nach.</span>" +
+      '<button class="knopf" id="warte-nachruecken">Nächsten setzen</button>' +
+      "</div>";
+    $("#warte-nachruecken").addEventListener("click", function () { nachruecken(); });
+  }
+
+  function nachruecken() {
+    var w = sortiert(reservierungen.filter(function (r) { return r.status === "warteliste"; }))[0];
+    if (!w) return;
+    var frei = freieTische(w.tag, zeitMin(w.zeit), w.personen);
+    if (!frei.length) { meldung("Für " + w.name + " ist gerade kein passender Tisch frei.", false); return; }
+    w.tisch = frei[0].id;
+    w.status = "offen";
+    w._neu = true;
+    gewaehlterTag = w.tag;
+    meldung(w.name + " ist von der Warteliste auf Tisch " + w.tisch + " gerückt.");
+    zeige("reservierungen");
+    setTimeout(function () { delete w._neu; }, 1500);
+  }
+
   function zeichneFilter() {
+    var amTag = reservierungen.filter(function (r) { return r.tag === gewaehlterTag; });
     var zahlen = {
-      alle: reservierungen.filter(function (r) { return r.tag === gewaehlterTag; }).length,
-      ok: reservierungen.filter(function (r) { return r.tag === gewaehlterTag && r.status === "ok"; }).length,
-      offen: reservierungen.filter(function (r) { return r.tag === gewaehlterTag && r.status === "offen"; }).length
+      alle: amTag.length,
+      ok: amTag.filter(function (r) { return r.status === "ok"; }).length,
+      offen: amTag.filter(function (r) { return r.status === "offen"; }).length,
+      warteliste: amTag.filter(function (r) { return r.status === "warteliste"; }).length
     };
-    $("#filter").innerHTML =
-      '<button class="chip" data-f="alle" aria-pressed="' + (filterStatus === "alle") + '">Alle ' + zahlen.alle + "</button>" +
-      '<button class="chip" data-f="ok" aria-pressed="' + (filterStatus === "ok") + '">Bestätigt ' + zahlen.ok + "</button>" +
-      '<button class="chip" data-f="offen" aria-pressed="' + (filterStatus === "offen") + '">Angefragt ' + zahlen.offen + "</button>";
+    var chips = [
+      ["alle", "Alle", zahlen.alle],
+      ["ok", "Bestätigt", zahlen.ok],
+      ["offen", "Angefragt", zahlen.offen]
+    ];
+    if (zahlen.warteliste) chips.push(["warteliste", "Warteliste", zahlen.warteliste]);
+    $("#filter").innerHTML = chips.map(function (c) {
+      return '<button class="chip" data-f="' + c[0] + '" aria-pressed="' + (filterStatus === c[0]) + '">' + c[1] + " " + c[2] + "</button>";
+    }).join("");
     $$("#filter .chip").forEach(function (c) {
       c.addEventListener("click", function () { filterStatus = c.dataset.f; zeichneReservierungen(); });
     });
   }
 
   function zeichneReservierungen() {
+    zeichneWarteBanner();
     zeichneFilter();
     var liste = sortiert(reservierungen.filter(function (r) { return r.tag === gewaehlterTag && passt(r); }));
-    $("#res-titel").textContent = "Freitag, " + gewaehlterTag + ". Juli";
+    $("#res-titel").textContent = langTag(gewaehlterTag);
     $("#res-zahl").textContent = liste.length + (liste.length === 1 ? " Eintrag" : " Einträge");
     $("#res-liste").innerHTML = liste.length
       ? liste.map(zeileHtml).join("")
-      : leerZeile(suchText ? "Keine Treffer für „" + suchText + "“." : "Für diesen Tag ist noch nichts eingetragen.");
+      : leerZeile(suchText ? "Keine Treffer für „" + esc(suchText) + "“." : "Für diesen Tag ist noch nichts eingetragen.");
     verdrahteZeilen("#res-liste");
-    $("#nav-anzahl").textContent = reservierungen.filter(function (r) { return r.tag === gewaehlterTag; }).length;
+    aktualisiereNav();
   }
 
   function verdrahteZeilen(wo) {
@@ -984,45 +1688,79 @@ a { color: inherit; }
     });
   }
 
-  /* ---------- Detail-Schublade ---------- */
-
-  var aktuelleId = null;
+  /* ---------- Detail-Schublade: Reservierung ---------- */
 
   function oeffneDetail(id) {
     var r = reservierungen.find(function (x) { return x.id === id; });
     if (!r) return;
-    aktuelleId = id;
+    var g = gastZu(r.name);
     $("#sb-titel").textContent = r.name;
+    $("#sb-badges").innerHTML = gastBadges(g);
     $("#sb-rumpf").innerHTML =
-      '<div><i class="badge ' + (r.status === "ok" ? "ok" : "") + '">' +
-        (r.status === "ok" ? "Bestätigt" : "Angefragt") + "</i></div>" +
+      '<div><i class="badge ' + (r.status === "ok" ? "ok" : r.status === "warteliste" ? "warte" : "") + '">' +
+        statusText(r.status) + "</i>" +
+        ' <i class="badge mini">' + r.quelle + "</i></div>" +
       '<div class="feldliste">' +
-        zeile2("Datum", r.tag + ". Juli 2026") +
+        zeile2("Datum", r.tag + ". Juli 2026 (" + wochentagName(r.tag) + ")") +
         zeile2("Zeit", r.zeit + " Uhr") +
         zeile2("Personen", String(r.personen)) +
         zeile2("Tisch", r.tisch) +
         zeile2("Telefon", r.tel) +
         zeile2("Notiz", r.notiz || "—") +
-      "</div>";
-    $("#sb-fuss").innerHTML = r.status === "ok"
-      ? '<button class="knopf leise" data-auf-offen>Auf angefragt setzen</button><button class="knopf" data-loeschen>Stornieren</button>'
-      : '<button class="knopf leise" data-loeschen>Stornieren</button><button class="knopf" data-bestaetigen>Bestätigen</button>';
-    $$("#sb-fuss [data-bestaetigen]").forEach(function (b) {
-      b.addEventListener("click", function () { setzeStatus(id, "ok"); });
+      "</div>" +
+      (g ? gastMiniHistorie(g) : "");
+    $("#sb-fuss").innerHTML = fussKnoepfe(r);
+    verdrahteDetail(r);
+    oeffneSchublade();
+  }
+  function statusText(s) { return s === "ok" ? "Bestätigt" : s === "warteliste" ? "Warteliste" : "Angefragt"; }
+  function zeile2(k, w) { return '<div><span class="k">' + k + '</span><span class="w">' + esc(w) + "</span></div>"; }
+  function gastBadges(g) {
+    if (!g) return '<i class="badge mini">Neugast</i>';
+    var b = g.tags.map(function (t) {
+      var kl = t === "VIP" ? "vip" : t === "Allergie" ? "allergie" : t === "Stammgast" ? "stamm" : "";
+      return '<i class="badge mini ' + kl + '">' + t + "</i>";
     });
-    $$("#sb-fuss [data-auf-offen]").forEach(function (b) {
-      b.addEventListener("click", function () { setzeStatus(id, "offen"); });
+    b.push('<i class="badge mini">' + g.besuche + ". Besuch</i>");
+    return b.join(" ");
+  }
+  function gastMiniHistorie(g) {
+    return '<div><div class="sb-abschnitt" style="margin-bottom:8px">Gast</div>' +
+      '<div class="feldliste">' +
+        zeile2("Besuche", String(g.besuche)) +
+        zeile2("Letzter", g.letzter) +
+        zeile2("Ø Bon", "CHF " + g.bon + ".–") +
+        zeile2("Lieblingstisch", g.tisch) +
+        (g.notiz ? zeile2("Merke", g.notiz) : "") +
+      "</div></div>";
+  }
+  function fussKnoepfe(r) {
+    if (r.status === "warteliste")
+      return '<button class="knopf leise" data-loeschen>Entfernen</button><button class="knopf" data-nachruecken>Tisch geben</button>';
+    if (r.status === "ok")
+      return '<button class="knopf leise" data-auf-offen>Auf angefragt</button><button class="knopf" data-loeschen>Stornieren</button>';
+    return '<button class="knopf leise" data-loeschen>Stornieren</button><button class="knopf" data-bestaetigen>Bestätigen</button>';
+  }
+  function verdrahteDetail(r) {
+    var id = r.id;
+    $$("#sb-fuss [data-bestaetigen]").forEach(function (b) { b.addEventListener("click", function () { setzeStatus(id, "ok"); }); });
+    $$("#sb-fuss [data-auf-offen]").forEach(function (b) { b.addEventListener("click", function () { setzeStatus(id, "offen"); }); });
+    $$("#sb-fuss [data-nachruecken]").forEach(function (b) {
+      b.addEventListener("click", function () {
+        var frei = freieTische(r.tag, zeitMin(r.zeit), r.personen);
+        if (!frei.length) { meldung("Gerade kein passender Tisch frei.", false); return; }
+        r.tisch = frei[0].id; r.status = "offen";
+        schliesseSchublade(); alleNeu();
+        meldung(r.name + " auf Tisch " + r.tisch + " gesetzt.");
+      });
     });
     $$("#sb-fuss [data-loeschen]").forEach(function (b) {
       b.addEventListener("click", function () {
         reservierungen = reservierungen.filter(function (x) { return x.id !== id; });
-        schliesseSchublade();
-        alleNeu();
+        schliesseSchublade(); alleNeu();
       });
     });
-    $("#schublade").classList.add("auf");
   }
-  function zeile2(k, w) { return '<div><span class="k">' + k + '</span><span class="w">' + w + "</span></div>"; }
 
   function setzeStatus(id, status) {
     var r = reservierungen.find(function (x) { return x.id === id; });
@@ -1030,20 +1768,65 @@ a { color: inherit; }
     oeffneDetail(id);
     alleNeu();
   }
-  function schliesseSchublade() { $("#schublade").classList.remove("auf"); aktuelleId = null; }
 
-  $("#schublade").addEventListener("click", function (e) {
-    if (e.target === $("#schublade")) schliesseSchublade();
-  });
+  /* ---------- Schublade: Gast-Profil ---------- */
+
+  function oeffneGast(gId) {
+    var g = gaeste.find(function (x) { return x.id === gId; });
+    if (!g) return;
+    $("#sb-titel").textContent = g.name;
+    $("#sb-badges").innerHTML = gastBadges(g);
+    var eigene = sortiert(reservierungen.filter(function (r) { return r.name === g.name; }));
+    var verlauf = eigene.length
+      ? '<div class="verlauf">' + eigene.map(function (r) {
+          return '<div class="verlauf-zeile"><span>' + r.tag + ". Juli · " + r.zeit + '</span><em>' + r.personen + " Pers. · Tisch " + r.tisch + " · " + statusText(r.status) + "</em></div>";
+        }).join("") + "</div>"
+      : '<div style="font-size:12px;color:var(--ink-3)">Aktuell keine offene Reservierung.</div>';
+    $("#sb-rumpf").innerHTML =
+      '<div class="feldliste">' +
+        zeile2("Telefon", g.tel) +
+        zeile2("Besuche", String(g.besuche)) +
+        zeile2("Letzter Besuch", g.letzter) +
+        zeile2("Ø Bon", "CHF " + g.bon + ".–") +
+        zeile2("Lieblingstisch", g.tisch) +
+        (g.notiz ? zeile2("Merke", g.notiz) : "") +
+      "</div>" +
+      '<div><div class="sb-abschnitt" style="margin-bottom:8px">Reservierungen</div>' + verlauf + "</div>";
+    $("#sb-fuss").innerHTML = '<button class="knopf" data-neu-fuer>Reservierung anlegen</button>';
+    $$("#sb-fuss [data-neu-fuer]").forEach(function (b) {
+      b.addEventListener("click", function () { schliesseSchublade(); dialogAuf(g.name); });
+    });
+    oeffneSchublade();
+  }
+
+  /* ---------- Schublade allgemein ---------- */
+
+  function oeffneSchublade() { $("#schublade").classList.add("auf"); }
+  function schliesseSchublade() { $("#schublade").classList.remove("auf"); }
+  $("#schublade").addEventListener("click", function (e) { if (e.target === $("#schublade")) schliesseSchublade(); });
   $$("[data-schliessen]").forEach(function (b) { b.addEventListener("click", schliesseSchublade); });
 
-  /* ---------- Neue Reservierung ---------- */
+  /* ---------- Neue Reservierung (Dialog) ---------- */
 
-  $("#f-tisch").innerHTML = TISCHE.map(function (t) { return '<option value="' + t + '">' + t + "</option>"; }).join("");
+  $("#f-tisch").innerHTML = '<option value="auto">Automatisch (bester freier)</option>' +
+    TISCHE.map(function (t) { return '<option value="' + t.id + '">Tisch ' + t.id + " · " + t.plaetze + " Pl. · " + t.zone + "</option>"; }).join("");
+  $("#f-tag").innerHTML = [20, 21, 22, 23, 24, 25, 26].map(function (d) {
+    return '<option value="' + d + '"' + (d === gewaehlterTag ? " selected" : "") + ">" + wochentagName(d) + ", " + d + ". Juli</option>";
+  }).join("");
 
-  function dialogAuf() { $("#dialog").classList.add("auf"); setTimeout(function () { $("#f-name").focus(); }, 60); }
+  function dialogAuf(vorname) {
+    var tage = [20, 21, 22, 23, 24, 25, 26];
+    if (tage.indexOf(gewaehlterTag) === -1) tage = tage.concat([gewaehlterTag]).sort(function (a, b) { return a - b; });
+    $("#f-tag").innerHTML = tage.map(function (d) {
+      return '<option value="' + d + '">' + wochentagName(d) + ", " + d + ". Juli</option>";
+    }).join("");
+    $("#f-tag").value = String(gewaehlterTag);
+    if (vorname) $("#f-name").value = vorname;
+    $("#dialog").classList.add("auf");
+    setTimeout(function () { $(vorname ? "#f-zeit" : "#f-name").focus(); }, 60);
+  }
   function dialogZu() { $("#dialog").classList.remove("auf"); }
-  $("#neu-knopf").addEventListener("click", dialogAuf);
+  $("#neu-knopf").addEventListener("click", function () { dialogAuf(); });
   $$("[data-dialog-zu]").forEach(function (b) { b.addEventListener("click", dialogZu); });
   $("#dialog").addEventListener("click", function (e) { if (e.target === $("#dialog")) dialogZu(); });
 
@@ -1051,26 +1834,31 @@ a { color: inherit; }
     var name = $("#f-name").value.trim();
     if (!name) { $("#f-name").focus(); $("#f-name").style.borderColor = "#B4453C"; return; }
     $("#f-name").style.borderColor = "";
+    var tag = parseInt($("#f-tag").value, 10);
+    var zeit = $("#f-zeit").value || "19:00";
+    var personen = parseInt($("#f-personen").value, 10) || 2;
+    var tischWahl = $("#f-tisch").value;
+    var tisch;
+    if (tischWahl === "auto") {
+      var frei = freieTische(tag, zeitMin(zeit), personen);
+      tisch = frei.length ? frei[0].id : "—";
+    } else { tisch = tischWahl; }
     reservierungen.push({
-      id: naechsteId++,
-      tag: gewaehlterTag,
-      zeit: $("#f-zeit").value || "19:00",
-      name: name,
-      personen: parseInt($("#f-personen").value, 10) || 2,
-      tisch: $("#f-tisch").value,
-      status: $("#f-status").value,
-      notiz: $("#f-notiz").value.trim(),
-      tel: "—"
+      id: naechsteId++, tag: tag, zeit: zeit, name: name, personen: personen,
+      tisch: tisch, status: $("#f-status").value, notiz: $("#f-notiz").value.trim(),
+      tel: "—", quelle: "Telefon"
     });
     $("#f-name").value = ""; $("#f-notiz").value = "";
+    gewaehlterTag = tag;
     dialogZu();
     zeige("reservierungen");
-    alleNeu();
+    meldung("Reservierung für " + name + " eingetragen.");
   });
 
   document.addEventListener("keydown", function (e) {
     if (e.key !== "Escape") return;
     schliesseSchublade(); dialogZu();
+    if ($("#gast-portal").classList.contains("auf")) schliesseGastPortal();
   });
 
   /* ---------- Suche ---------- */
@@ -1084,12 +1872,12 @@ a { color: inherit; }
   /* ---------- Übersicht ---------- */
 
   function zeichneUebersicht() {
-    var heute = reservierungen.filter(function (r) { return r.tag === gewaehlterTag; });
-    var gaeste = heute.reduce(function (s, r) { return s + r.personen; }, 0);
+    var heute = reservierungen.filter(function (r) { return r.tag === gewaehlterTag && r.status !== "warteliste"; });
+    var gaesteZ = heute.reduce(function (s, r) { return s + r.personen; }, 0);
     var offen = heute.filter(function (r) { return r.status === "offen"; }).length;
-    var auslastung = Math.min(100, Math.round((gaeste / 110) * 100));
+    var auslastung = Math.min(100, Math.round((gaesteZ / 110) * 100));
     $("#kpi").innerHTML =
-      kachel("Gäste heute", gaeste, '<span class="fuss gut">+12% zur Vorwoche</span>') +
+      kachel("Gäste heute", gaesteZ, '<span class="fuss gut">+12% zur Vorwoche</span>') +
       kachel("Auslastung", auslastung + "%", '<span class="balken"><span style="width:' + auslastung + '%"></span></span>') +
       kachel("Reservierungen", heute.length, '<span class="fuss">für den ' + gewaehlterTag + ". Juli</span>") +
       kachel("Offen", offen, '<span class="fuss">' + (offen ? "zu bestätigen" : "alles erledigt") + "</span>");
@@ -1102,6 +1890,98 @@ a { color: inherit; }
     return '<div class="kachel"><span class="titel">' + titel + '</span><span class="wert">' + wert + "</span>" + fuss + "</div>";
   }
 
+  /* ---------- Tischplan (Grundriss von oben) ---------- */
+
+  // Feste Raum-Elemente (Wände sind der Rahmen; hier Boden, Terrasse, Bar,
+  // Küche, WC, Eingang, Pflanzen, Fenster) – rein dekorativ, ändern sich nie.
+  var RAUM_FIXTURES =
+    '<div class="floor"></div>' +
+    '<div class="deck"></div>' +
+    '<div class="railing" style="left:3%;width:23%"></div>' +
+    '<div class="railing" style="left:44%;right:3%"></div>' +
+    '<div class="tresen" style="left:90.5%;top:27%;width:7.5%;height:27%"><span>Bar</span></div>' +
+    '<div class="kueche" style="left:74%;top:71%;width:24.5%;height:27%"><span>Küche</span></div>' +
+    '<div class="wc" style="left:3.5%;top:29%;width:12%;height:15%"><span>WC</span></div>' +
+    '<div class="eingang" style="left:6%;top:83%;width:13%;height:14%"></div>' +
+    '<span class="tp-label" style="left:12.5%;top:98%">Eingang</span>' +
+    '<i class="pflanze" style="left:5%;top:9%"></i>' +
+    '<i class="pflanze" style="left:94%;top:10%"></i>' +
+    '<i class="pflanze" style="left:6%;top:77%"></i>' +
+    '<span class="fenster" style="left:0;top:48%;height:11%"></span>' +
+    '<span class="fenster" style="left:0;top:63%;height:11%"></span>' +
+    '<span class="zone-label" style="left:3.5%;top:4%">Terrasse</span>' +
+    '<span class="zone-label" style="left:45%;top:25%">Saal</span>';
+
+  // Stühle rund um einen Tisch (rund = im Kreis, eckig = zwei Reihen).
+  function stuehleHtml(n, form, D) {
+    var s = "", i, x, y, r, ang, deg;
+    if (form === "rund") {
+      r = D / 2 + 6.5;
+      for (i = 0; i < n; i++) {
+        ang = (-90 + i * (360 / n)) * Math.PI / 180;
+        x = D / 2 + r * Math.cos(ang);
+        y = D / 2 + r * Math.sin(ang);
+        deg = i * (360 / n);
+        s += '<i class="stuhl" style="left:' + x.toFixed(1) + 'px;top:' + y.toFixed(1) + 'px;transform:translate(-50%,-50%) rotate(' + deg.toFixed(0) + 'deg)"></i>';
+      }
+    } else {
+      var oben = Math.ceil(n / 2), unten = n - oben;
+      for (i = 0; i < oben; i++) { x = D * (i + 1) / (oben + 1); s += '<i class="stuhl" style="left:' + x.toFixed(1) + 'px;top:-6px;transform:translate(-50%,-50%)"></i>'; }
+      for (i = 0; i < unten; i++) { x = D * (i + 1) / (unten + 1); s += '<i class="stuhl" style="left:' + x.toFixed(1) + 'px;top:' + (D + 6) + 'px;transform:translate(-50%,-50%)"></i>'; }
+    }
+    return s;
+  }
+
+  function zeichneTischplan() {
+    $("#plan-tag").textContent = langTag(gewaehlterTag);
+    $("#plan-uhr").textContent = minZeit(planMinute);
+    var html = "";
+    TISCHE.forEach(function (t) {
+      var r = reservierungAmTisch(t.id, gewaehlterTag, planMinute);
+      var kl = "frei", info = t.plaetze + " Plätze · frei";
+      if (r) {
+        kl = r.status === "ok" ? "best" : "anfr";
+        info = r.name + " · " + r.zeit + " · " + r.personen + " Pers.";
+      }
+      var groesse = 36 + (t.plaetze - 2) * 3.5; // 2→36px … 8→57px
+      html += '<div class="tisch-platz ' + t.form + '" style="left:' + t.x + "%;top:" + t.y + '%">' +
+        stuehleHtml(t.plaetze, t.form, groesse) +
+        '<button class="tisch ' + t.form + " " + kl + '" data-tisch="' + t.id + '" ' +
+        'style="width:' + groesse + "px;height:" + groesse + 'px" ' +
+        'title="' + info + '"><span class="tn">' + t.kurz + '</span><span class="tp">' + t.plaetze + "P</span></button>" +
+        "</div>";
+    });
+    $("#raum").innerHTML = RAUM_FIXTURES + html;
+    var belegt = TISCHE.filter(function (t) { return tischBelegtUm(t.id, gewaehlterTag, planMinute); }).length;
+    $("#plan-info").innerHTML = "<b>" + belegt + " von " + TISCHE.length + "</b> Tischen belegt um " + minZeit(planMinute);
+    $$("#raum .tisch").forEach(function (b) {
+      b.addEventListener("click", function () { tischKlick(b.dataset.tisch); });
+    });
+  }
+
+  function tischKlick(tischId) {
+    var t = tischObj(tischId);
+    var r = reservierungAmTisch(tischId, gewaehlterTag, planMinute);
+    if (r) { oeffneDetail(r.id); return; }
+    // frei → Reservierung auf diesem Tisch anlegen
+    $("#sb-titel").textContent = "Tisch " + tischId;
+    $("#sb-badges").innerHTML = '<i class="badge mini">' + t.plaetze + " Plätze</i> <i class=\"badge mini\">" + t.zone + "</i> <i class=\"badge ok mini\">frei</i>";
+    $("#sb-rumpf").innerHTML =
+      '<div style="font-size:12.5px;color:var(--ink-2);line-height:1.6">Tisch ' + tischId + " ist am " + langTag(gewaehlterTag) +
+      " um " + minZeit(planMinute) + " frei. Direkt hier belegen?</div>";
+    $("#sb-fuss").innerHTML = '<button class="knopf leise" data-schliessen-inline>Abbrechen</button><button class="knopf" data-belegen>Tisch belegen</button>';
+    $$("#sb-fuss [data-schliessen-inline]").forEach(function (b) { b.addEventListener("click", schliesseSchublade); });
+    $$("#sb-fuss [data-belegen]").forEach(function (b) {
+      b.addEventListener("click", function () { schliesseSchublade(); dialogAuf(); $("#f-tisch").value = tischId; $("#f-zeit").value = minZeit(planMinute); });
+    });
+    oeffneSchublade();
+  }
+
+  $("#plan-schieber").addEventListener("input", function () {
+    planMinute = parseInt(this.value, 10);
+    zeichneTischplan();
+  });
+
   /* ---------- Kalender ---------- */
 
   function tageImMonat() { return 31; }
@@ -1112,28 +1992,59 @@ a { color: inherit; }
     var html = WOCHENTAGE.map(function (t) { return '<span class="wt">' + t + "</span>"; }).join("");
     for (var i = 0; i < erstesFeld(); i++) html += '<span class="tag leerX"></span>';
     for (var d = 1; d <= tageImMonat(); d++) {
-      var anzahl = reservierungen.filter(function (r) { return r.tag === d; }).length;
+      var anzahl = reservierungen.filter(function (r) { return r.tag === d && r.status !== "warteliste"; }).length;
       var punkte = "";
       for (var p = 0; p < Math.min(anzahl, 8); p++) punkte += "<i></i>";
-      html += '<button class="tag' + (anzahl >= 6 ? " voll" : "") + (d === 24 ? " heute" : "") + '" data-tag="' + d +
+      html += '<button class="tag' + (anzahl >= 6 ? " voll" : "") + (d === HEUTE ? " heute" : "") + '" data-tag="' + d +
         '" aria-pressed="' + (d === gewaehlterTag) + '"><span class="n">' + d + '</span><span class="p">' + punkte + "</span></button>";
     }
     $("#kal").innerHTML = html;
     $$("#kal .tag[data-tag]").forEach(function (t) {
       t.addEventListener("click", function () {
         gewaehlterTag = parseInt(t.dataset.tag, 10);
-        zeichneKalender(); zeichneTagesListe(); zeichneReservierungen();
+        zeichneKalender(); zeichneTagesListe();
       });
     });
   }
 
   function zeichneTagesListe() {
     var liste = sortiert(reservierungen.filter(function (r) { return r.tag === gewaehlterTag; }));
-    var gaeste = liste.reduce(function (s, r) { return s + r.personen; }, 0);
-    $("#kal-tag-titel").textContent = gewaehlterTag + ". Juli 2026";
-    $("#kal-tag-zahl").textContent = liste.length ? liste.length + " Reservierungen · " + gaeste + " Gäste" : "";
+    var gaesteZ = liste.filter(function (r) { return r.status !== "warteliste"; }).reduce(function (s, r) { return s + r.personen; }, 0);
+    $("#kal-tag-titel").textContent = langTag(gewaehlterTag);
+    $("#kal-tag-zahl").textContent = liste.length ? liste.length + " Reservierungen · " + gaesteZ + " Gäste" : "";
     $("#kal-liste").innerHTML = liste.length ? liste.map(zeileHtml).join("") : leerZeile("Für diesen Tag ist nichts eingetragen.");
     verdrahteZeilen("#kal-liste");
+  }
+
+  /* ---------- Gäste (CRM) ---------- */
+
+  function zeichneGaeste() {
+    var stamm = gaeste.filter(function (g) { return g.tags.indexOf("Stammgast") !== -1 || g.tags.indexOf("VIP") !== -1; }).length;
+    var schnitt = Math.round(gaeste.reduce(function (s, g) { return s + g.bon; }, 0) / gaeste.length);
+    var treu = gaeste.slice().sort(function (a, b) { return b.besuche - a.besuche; })[0];
+    $("#gaeste-kpi").innerHTML =
+      kachel("Gäste in der Kartei", gaeste.length, '<span class="fuss">mit Historie</span>') +
+      kachel("Stammgäste", stamm, '<span class="fuss gut">wiederkehrend</span>') +
+      kachel("Ø Bon", "CHF " + schnitt + ".–", '<span class="fuss">pro Besuch</span>') +
+      kachel("Treuster Gast", treu.besuche + "×", '<span class="fuss">' + treu.name + "</span>");
+    $("#gast-gitter").innerHTML = gaeste.slice().sort(function (a, b) { return b.besuche - a.besuche; }).map(function (g) {
+      var badges = g.tags.map(function (t) {
+        var kl = t === "VIP" ? "vip" : t === "Allergie" ? "allergie" : t === "Stammgast" ? "stamm" : "";
+        return '<i class="badge mini ' + kl + '">' + t + "</i>";
+      }).join(" ");
+      return '<button class="gast-karte" data-gast="' + g.id + '">' +
+        '<div class="kopf"><span class="av">' + initialen(g.name) + '</span>' +
+          '<span><div class="nm">' + g.name + '</div><div class="un">' + g.tel + "</div></span></div>" +
+        (badges ? '<div class="badges">' + badges + "</div>" : "") +
+        '<div class="zahlen">' +
+          "<div><b>" + g.besuche + '</b><em>Besuche</em></div>' +
+          "<div><b>CHF " + g.bon + '</b><em>Ø Bon</em></div>' +
+          "<div><b>" + g.tisch + '</b><em>Tisch</em></div>' +
+        "</div></button>";
+    }).join("");
+    $$("#gast-gitter .gast-karte").forEach(function (b) {
+      b.addEventListener("click", function () { oeffneGast(b.dataset.gast); });
+    });
   }
 
   /* ---------- Menüs ---------- */
@@ -1141,8 +2052,7 @@ a { color: inherit; }
   function zeichneMenueFilter() {
     var kats = ["alle"].concat(speisen.map(function (s) { return s.kat; }).filter(function (v, i, a) { return a.indexOf(v) === i; }));
     $("#menue-filter").innerHTML = kats.map(function (k) {
-      return '<button class="chip" data-k="' + k + '" aria-pressed="' + (menueKat === k) + '">' +
-        (k === "alle" ? "Alle" : k) + "</button>";
+      return '<button class="chip" data-k="' + k + '" aria-pressed="' + (menueKat === k) + '">' + (k === "alle" ? "Alle" : k) + "</button>";
     }).join("");
     $$("#menue-filter .chip").forEach(function (c) {
       c.addEventListener("click", function () { menueKat = c.dataset.k; zeichneSpeisen(); });
@@ -1154,8 +2064,8 @@ a { color: inherit; }
     var liste = speisen.filter(function (s) { return menueKat === "alle" || s.kat === menueKat; });
     $("#speisen").innerHTML = liste.map(function (s) {
       return '<button class="speise' + (s.an ? "" : " aus") + '" data-id="' + s.id + '">' +
-        '<span><span class="n">' + s.name + '</span><br><span class="k">' + s.kat + "</span></span>" +
-        '<span class="pr">CHF ' + frRappen(s.preis) + "</span>" +
+        '<span><span class="n">' + s.name + '</span><br><span class="k">' + s.kat + " · CHF " + frRappen(s.preis) + "</span></span>" +
+        '<span class="pr">' + (s.an ? "auf der Karte" : "abgeschaltet") + "</span>" +
         '<span class="schalter" aria-hidden="true"></span>' +
         "</button>";
     }).join("");
@@ -1175,8 +2085,7 @@ a { color: inherit; }
     personal.forEach(function (p, i) {
       html += '<span class="wer">' + p + "</span>";
       schichten[i].forEach(function (v, t) {
-        html += '<button class="zelle ' + (v === 1 ? "f" : v === 2 ? "a" : "") + '" data-i="' + i + '" data-t="' + t + '">' +
-          SCHICHT_NAMEN[v] + "</button>";
+        html += '<button class="zelle ' + (v === 1 ? "f" : v === 2 ? "a" : "") + '" data-i="' + i + '" data-t="' + t + '">' + SCHICHT_NAMEN[v] + "</button>";
       });
     });
     $("#schichten").innerHTML = html;
@@ -1207,15 +2116,13 @@ a { color: inherit; }
 
   function zeichneRechnerWahl() {
     $("#r-menue").innerHTML = MENUES.map(function (m) {
-      return '<button class="chip" data-m="' + m.id + '" aria-pressed="' + (gewMenue === m.id) + '">' +
-        m.name + " · " + m.preis + ".–</button>";
+      return '<button class="chip" data-m="' + m.id + '" aria-pressed="' + (gewMenue === m.id) + '">' + m.name + " · " + m.preis + ".–</button>";
     }).join("");
     $$("#r-menue .chip").forEach(function (c) {
       c.addEventListener("click", function () { gewMenue = c.dataset.m; zeichneRechnerWahl(); rechne(); });
     });
     $("#r-extras").innerHTML = EXTRAS.map(function (e) {
-      return '<button class="chip" data-e="' + e.id + '" aria-pressed="' + !!gewExtras[e.id] + '">' +
-        e.name + "</button>";
+      return '<button class="chip" data-e="' + e.id + '" aria-pressed="' + !!gewExtras[e.id] + '">' + e.name + "</button>";
     }).join("");
     $$("#r-extras .chip").forEach(function (c) {
       c.addEventListener("click", function () { gewExtras[c.dataset.e] = !gewExtras[c.dataset.e]; zeichneRechnerWahl(); rechne(); });
@@ -1227,7 +2134,6 @@ a { color: inherit; }
     var faktor = parseFloat($("#r-tag").value);
     var m = MENUES.find(function (x) { return x.id === gewMenue; });
     $("#r-gaeste-wert").textContent = n;
-
     var zeilen = [];
     var summe = m.preis * n;
     zeilen.push([m.name + " × " + n, summe]);
@@ -1241,11 +2147,9 @@ a { color: inherit; }
     if (zuschlag > 0.5) { zeilen.push(["Wochenend-Zuschlag", zuschlag]); summe += zuschlag; }
     var rabatt = 0;
     if (n >= 40) { rabatt = summe * 0.08; zeilen.push(["Gruppenrabatt ab 40 Personen", -rabatt]); summe -= rabatt; }
-
     $("#r-summe").innerHTML =
       zeilen.map(function (z) {
-        return '<div class="summenzeile"><span>' + z[0] + "</span><span>" +
-          (z[1] < 0 ? "−" : "") + frRappen(Math.abs(z[1])) + "</span></div>";
+        return '<div class="summenzeile"><span>' + z[0] + "</span><span>" + (z[1] < 0 ? "−" : "") + frRappen(Math.abs(z[1])) + "</span></div>";
       }).join("") +
       '<div class="summenzeile gesamt"><span>Total</span><span>CHF ' + frRappen(summe) + "</span></div>" +
       '<div class="summenzeile" style="font-size:11px;color:var(--ink-3)"><span>pro Person</span><span>CHF ' + frRappen(summe / n) + "</span></div>";
@@ -1270,10 +2174,20 @@ a { color: inherit; }
     var umsatz = total * 64;
     $("#aus-kpi").innerHTML =
       kachel("Gäste letzte Woche", total, '<span class="fuss gut">+9% zur Vorwoche</span>') +
-      kachel("Schnitt pro Tag", schnitt, '<span class="fuss">über 7 Tage</span>') +
-      kachel("Stärkster Tag", beste, '<span class="fuss">' + Math.max.apply(null, wocheGaeste) + " Gäste</span>") +
+      kachel("Auslastung Ø", "74%", '<span class="fuss">Fr/Sa fast voll</span>') +
+      kachel("No-Show-Quote", "3,2%", '<span class="fuss gut">−0,8% zum Vormonat</span>') +
       kachel("Umsatz", "CHF " + (umsatz / 1000).toFixed(1) + "k", '<span class="fuss">Ø 64.– pro Gast</span>');
     zeichneDiagramm("#diagramm", wocheGaeste);
+
+    var quellen = [
+      ["Telefon", 46], ["Online", 34], ["Stammgäste", 12], ["Laufkundschaft", 8]
+    ];
+    $("#quellen").innerHTML = quellen.map(function (q) {
+      return '<div class="quelle-zeile"><span class="ql">' + q[0] + '</span>' +
+        '<span class="qb"><span style="width:' + q[1] + '%"></span></span>' +
+        '<span class="qp">' + q[1] + "%</span></div>";
+    }).join("");
+
     var top = speisen.slice().sort(function (a, b) { return b.bestellt - a.bestellt; }).slice(0, 5);
     var maxB = top[0].bestellt;
     $("#top-gerichte").innerHTML = top.map(function (s) {
@@ -1285,42 +2199,302 @@ a { color: inherit; }
     }).join("");
   }
 
-  /* ---------- Assistent ----------
-     Bewusst ohne echtes Sprachmodell: Diese Demo soll überall laufen,
-     ohne Server und ohne Schlüssel. Der Assistent antwortet deshalb mit
-     Platzhaltern und sagt das auch offen. In der echten Anwendung würde
-     er den Eintrag anlegen, suchen oder auswerten. Gespeichert wird
-     hier nichts – ein Neuladen setzt alles zurück. */
+  /* ============================================================
+     Assistent – versteht deutsche Eingaben und HANDELT wirklich.
+     Bewusst regelbasiert (kein Server, kein Schlüssel): erkennt
+     Absicht + Angaben, führt die Aktion auf den echten Demo-Daten
+     aus und zeigt sichtbar, was verstanden wurde.
+     ============================================================ */
 
-  var KI_VORSCHLAEGE = [
-    "Trag Familie Meier am Freitag um 19 Uhr für 4 Personen ein",
-    "Wie war letzte Woche im Vergleich zur Vorwoche?",
-    "Welche Tische sind heute Abend noch frei?",
-    "Setz die Anfrage von Geburtstag Meier auf bestätigt"
-  ];
-
-  var KI_ANTWORTEN = [
-    "Hier käme jetzt die Antwort des Assistenten. In der echten Anwendung würde ich den Eintrag direkt anlegen und dir zur Kontrolle anzeigen.",
-    "Hier käme jetzt die Antwort des Assistenten. In der echten Anwendung würde ich die Zahlen zusammenrechnen und dir eine kurze Zusammenfassung geben.",
-    "Hier käme jetzt die Antwort des Assistenten. In der echten Anwendung würde ich in deinen Daten nachschauen und dir das Ergebnis auflisten.",
-    "Hier käme jetzt die Antwort des Assistenten. In der echten Anwendung würde ich die Änderung vornehmen und dich fragen, ob der Gast benachrichtigt werden soll."
-  ];
-  var kiZaehler = 0;
   var kiBeschaeftigt = false;
 
-  function kiBlase(text, wer, hinweis) {
+  var KI_VORSCHLAEGE = [
+    "Trag Familie Weber am Samstag um 19:30 für 4 Personen ein",
+    "Welche Tische sind heute Abend noch frei?",
+    "Wie war letzte Woche im Vergleich zur Vorwoche?",
+    "Setz die Anfrage von Geburtstag Meier auf bestätigt",
+    "Nimm das Kalbsschnitzel heute von der Karte",
+    "Wie viele Gäste haben wir am Samstag?"
+  ];
+
+  // -- Kleine Sprach-Helfer --------------------------------------------------
+
+  function tagAus(text) {
+    if (/\bübermorgen\b|\buebermorgen\b/.test(text)) return HEUTE + 2;
+    if (/\bmorgen\b/.test(text)) return HEUTE + 1;
+    if (/\bheute\b|\bheut\b|\bheute abend\b/.test(text)) return HEUTE;
+    var wt = text.match(/\b(montag|dienstag|mittwoch|donnerstag|freitag|samstag|sonntag)\b/);
+    if (wt) {
+      var idx = ["montag", "dienstag", "mittwoch", "donnerstag", "freitag", "samstag", "sonntag"].indexOf(wt[1]);
+      for (var d = 20; d <= 26; d++) if (wochentagIndex(d) === idx) return d;
+    }
+    var num = text.match(/\bam\s+(\d{1,2})\.?(?:\s*juli)?\b/);
+    if (num) { var n = parseInt(num[1], 10); if (n >= 1 && n <= 31) return n; }
+    return null;
+  }
+
+  function zeitAus(text) {
+    var m = text.match(/(\d{1,2})[:.](\d{2})\s*(?:uhr)?/);
+    if (m) return pad2(m[1]) + ":" + m[2];
+    m = text.match(/(?:um\s*)?(\d{1,2})\s*uhr(?:\s*(\d{2}))?/);
+    if (m) return pad2(m[1]) + ":" + (m[2] || "00");
+    m = text.match(/\bum\s+(\d{1,2})\b/);
+    if (m) return pad2(m[1]) + ":00";
+    return null;
+  }
+
+  function personenAus(text) {
+    var m = text.match(/(\d+)\s*(?:personen|person|pers\b|leute|g[äa]ste|gedecke?|köpfe|kopf)/);
+    if (m) return parseInt(m[1], 10);
+    m = text.match(/f[üu]r\s+(\d+)\b/);
+    if (m) return parseInt(m[1], 10);
+    m = text.match(/tisch\s+f[üu]r\s+(\d+)/);
+    if (m) return parseInt(m[1], 10);
+    return null;
+  }
+
+  var NAME_STOPP = /^(Anfrage|Reservierung|Reservation|Tisch|Bestätigung|Bestaetigung|Gast|Gäste|Gaeste|Person|Personen|Tag|Abend|Woche|Karte|Speisekarte|Termin|Uhr)$/i;
+  function nameOk(nm) { return nm && !NAME_STOPP.test(nm.split(/\s+/)[0]); }
+  function nameAus(orig) {
+    // Schlüsselwörter case-tolerant ([Ff]ür …), Name case-sensitiv ([A-ZÄÖÜ] …),
+    // damit „Trag Familie Weber …“ ebenso greift wie „Storniere R. Schneider“.
+    var q = orig.match(/["„»'‚]([^"“«'‘]{2,40})["“«'’]/);
+    if (q) return q[1].trim();
+    var m = orig.match(/(?:^|\s)(?:[Ff]ür|[Ff]uer|[Vv]on|[Nn]amens|[Aa]uf den [Nn]amen)\s+([A-ZÄÖÜ][\wäöüéèàç.\-]+(?:\s+[A-ZÄÖÜ][\wäöüéèàç.\-]+){0,2})/);
+    if (m && !/^\d/.test(m[1]) && nameOk(m[1])) return m[1].trim();
+    m = orig.match(/(?:^|\s)(?:[Tt]rag\w*|[Rr]eservier\w*|[Bb]uch\w*|[Ll]eg\w*|[Ee]intrag\w*|[Ee]rfass\w*|[Ss]tornier\w*|[Aa]bsag\w*|[Aa]bmeld\w*|[Ss]etz\w*|[Bb]est[äa]tig\w*|[Zz]usag\w*|[Ss]treich\w*|[Ee]ntfern\w*)\s+(?:mir\s+)?(?:bitte\s+)?(?:die\s+(?:[Aa]nfrage|[Rr]eservierung)\s+(?:von\s+|für\s+)?|einen\s+[Tt]isch\s+f[üu]r\s+|die\s+|den\s+|das\s+)?([A-ZÄÖÜ][\wäöüéèàç.\-]+(?:\s+[A-ZÄÖÜ][\wäöüéèàç.\-]+){0,2})/);
+    if (m && nameOk(m[1])) return m[1].trim();
+    return null;
+  }
+
+  function findeReservierungNachName(name) {
+    if (!name) return null;
+    var n = name.toLowerCase();
+    var treffer = reservierungen.filter(function (r) {
+      var rn = r.name.toLowerCase();
+      return rn.indexOf(n) !== -1 || n.indexOf(rn) !== -1;
+    });
+    treffer.sort(function (a, b) {
+      var pa = a.status === "offen" ? 0 : 1, pb = b.status === "offen" ? 0 : 1;
+      return pa - pb || a.tag - b.tag;
+    });
+    return treffer[0] || null;
+  }
+
+  function findeSpeise(text) {
+    var t = text.toLowerCase();
+    var kandidaten = speisen.map(function (s) {
+      var worte = s.name.toLowerCase().split(/\s+/).filter(function (w) { return w.length >= 4; });
+      var treffer = worte.filter(function (w) { return t.indexOf(w) !== -1; }).length;
+      return { s: s, treffer: treffer };
+    }).filter(function (k) { return k.treffer > 0; });
+    kandidaten.sort(function (a, b) { return b.treffer - a.treffer; });
+    return kandidaten.length ? kandidaten[0].s : null;
+  }
+
+  // -- Verstehen: Absicht + Angaben ------------------------------------------
+
+  function verstehe(orig) {
+    var t = orig.toLowerCase();
+    var tag = tagAus(t), zeit = zeitAus(t), personen = personenAus(t);
+    var abend = /\babend\b|heute abend|heut abend/.test(t);
+
+    if (/\b(stornier|absag|abgesagt|abmeld|streich|entfern)/.test(t) || /\bl[öo]sch/.test(t) ||
+        /\bsag(?:e|st)?\b.*\bab\b/.test(t) || /\bmeld(?:e|est)?\b.*\bab\b/.test(t))
+      return { intent: "stornieren", name: nameAus(orig) };
+    if (/\b(best[äa]tig|zusag|annehm|freigeb)/.test(t) || /auf\s+best[äa]tigt/.test(t))
+      return { intent: "bestaetigen", name: nameAus(orig) };
+    if (/(von der karte|von der speisekarte|abschalten|deaktivier|nimm|streich).*(karte)?/.test(t) && /(von der karte|abschalt|deaktivier|ausverkauft|aus\b|weg\b|streich|nimm)/.test(t) && findeSpeise(t) && !/frei/.test(t))
+      return { intent: "gericht_aus", speise: findeSpeise(t) };
+    if (/(zur[üu]ck auf die karte|wieder (auf|an)|aktivier|einschalt|anschalt)/.test(t) && findeSpeise(t))
+      return { intent: "gericht_an", speise: findeSpeise(t) };
+    if (/frei/.test(t) && /(tisch|pl[äa]tz|platz)/.test(t))
+      return { intent: "freie_tische", tag: tag, zeit: zeit, personen: personen, abend: abend };
+    if (/wie viele\s+g[äa]ste/.test(t) || (/wie viele/.test(t) && /g[äa]ste/.test(t)))
+      return { intent: "gaeste_zaehlen", tag: tag };
+    if (/(vergleich|letzte woche|vorwoche|wie war|wie l[äa]uft|umsatz|auslastung|statistik|zahlen|auswertung|no.?show)/.test(t))
+      return { intent: "auswertung", frage: t };
+    if (/(trag|reservier|buch|leg|eintrag|erfass|neuer? tisch|neue reservierung)/.test(t) || (personen && (tag || zeit)))
+      return { intent: "reservieren", name: nameAus(orig), tag: tag, zeit: zeit, personen: personen, abend: abend };
+    if (/(zeig|öffne|oeffne|geh|wechsel|zur |zum |bring mich)/.test(t)) {
+      var ziel = null;
+      if (/kalender/.test(t)) ziel = "kalender";
+      else if (/tischplan|saal|plan/.test(t)) ziel = "tischplan";
+      else if (/men[üu]|karte|speise/.test(t)) ziel = "menues";
+      else if (/schicht|dienstplan|personal/.test(t)) ziel = "schichten";
+      else if (/auswert|statistik|zahlen/.test(t)) ziel = "auswertungen";
+      else if (/g[äa]ste|kartei|stammg/.test(t)) ziel = "gaeste";
+      else if (/reservier/.test(t)) ziel = "reservierungen";
+      else if (/[üu]bersicht|start|dashboard/.test(t)) ziel = "uebersicht";
+      else if (/rechner|preis|offerte|anlass/.test(t)) ziel = "rechner";
+      if (ziel) return { intent: "navigation", ziel: ziel };
+    }
+    return { intent: "hilfe" };
+  }
+
+  // -- Ausführen: Aktion + Antwort -------------------------------------------
+
+  function fuehreAus(v) {
+    switch (v.intent) {
+      case "reservieren": return tueReservieren(v);
+      case "bestaetigen": return tueStatus(v, "ok");
+      case "stornieren": return tueStornieren(v);
+      case "freie_tische": return tueFreieTische(v);
+      case "gaeste_zaehlen": return tueGaesteZaehlen(v);
+      case "auswertung": return tueAuswertung(v);
+      case "gericht_aus": return tueGericht(v.speise, false);
+      case "gericht_an": return tueGericht(v.speise, true);
+      case "navigation": return { text: "Ich öffne die Ansicht **" + TITEL[v.ziel] + "** für dich.", tags: ["Öffnen", TITEL[v.ziel]], aktion: { label: TITEL[v.ziel] + " öffnen", ansicht: v.ziel } };
+      default: return tueHilfe();
+    }
+  }
+
+  function tueReservieren(v) {
+    var fehlt = [];
+    if (!v.name) fehlt.push("den Namen");
+    if (!v.personen) fehlt.push("die Personenzahl");
+    if (fehlt.length)
+      return { text: "Fast – mir fehlt noch " + fehlt.join(" und ") + ". Zum Beispiel: „Trag Familie Weber am Samstag um 19:30 für 4 Personen ein.“" };
+    var tag = v.tag || HEUTE;
+    var zeit = v.zeit || (v.abend ? "19:30" : "19:00");
+    var frei = freieTische(tag, zeitMin(zeit), v.personen);
+    var tisch, statusWort, wartend = false;
+    if (frei.length) { tisch = frei[0].id; statusWort = "bestätigt"; }
+    else { tisch = "—"; wartend = true; }
+    var neu = {
+      id: naechsteId++, tag: tag, zeit: zeit, name: v.name, personen: v.personen,
+      tisch: tisch, status: wartend ? "warteliste" : "ok",
+      notiz: "", tel: "—", quelle: "Assistent", _neu: true
+    };
+    reservierungen.push(neu);
+    gewaehlterTag = tag;
+    setTimeout(function () { delete neu._neu; }, 1600);
+    var tags = ["Neue Reservierung", wochentagName(tag) + " " + tag + ".7.", zeit, v.personen + " Pers."];
+    if (wartend)
+      return {
+        text: "Am **" + langTag(tag) + "** um **" + zeit + "** ist für **" + v.personen + " Personen** leider alles belegt. Ich habe **" + v.name + "** auf die **Warteliste** gesetzt – sobald ein Tisch frei wird, rückt sie nach.",
+        tags: tags.concat(["Warteliste"]), aktion: { label: "Warteliste ansehen", ansicht: "reservierungen" }
+      };
+    return {
+      text: "Erledigt: **" + v.name + "** ist eingetragen – **Tisch " + tisch + "**, " + langTag(tag) + ", **" + zeit + "**, " + v.personen + " Personen. Status: bestätigt.",
+      tags: tags, aktion: { label: "Im Tischplan zeigen", ansicht: "tischplan" }
+    };
+  }
+
+  function tueStatus(v, status) {
+    var r = findeReservierungNachName(v.name);
+    if (!r) return { text: "Ich finde keine Reservierung" + (v.name ? " für „" + v.name + "“" : "") + ". Sag mir den Namen, dann bestätige ich sie." };
+    r.status = status; r._neu = true;
+    gewaehlterTag = r.tag;
+    setTimeout(function () { delete r._neu; }, 1600);
+    return {
+      text: "**" + r.name + "** (" + langTag(r.tag) + ", " + r.zeit + ") ist jetzt **bestätigt**. Soll ich dem Gast eine Bestätigung senden?",
+      tags: ["Bestätigt", r.name], aktion: { label: "Reservierung zeigen", resId: r.id }
+    };
+  }
+
+  function tueStornieren(v) {
+    var r = findeReservierungNachName(v.name);
+    if (!r) return { text: "Ich finde keine passende Reservierung zum Stornieren. Welchen Namen meinst du?" };
+    reservierungen = reservierungen.filter(function (x) { return x.id !== r.id; });
+    gewaehlterTag = r.tag;
+    return {
+      text: "**" + r.name + "** (" + langTag(r.tag) + ", " + r.zeit + ") ist **storniert**. Tisch " + r.tisch + " ist wieder frei.",
+      tags: ["Storniert", r.name], aktion: { label: "Tag ansehen", ansicht: "reservierungen" }
+    };
+  }
+
+  function tueFreieTische(v) {
+    var tag = v.tag || HEUTE;
+    var m = v.zeit ? zeitMin(v.zeit) : (v.abend ? 1200 : planMinute); // Abend ≈ 20:00
+    var frei = freieTische(tag, m, v.personen);
+    var zeitWort = minZeit(m);
+    if (!frei.length)
+      return { text: "Um **" + zeitWort + "** am " + langTag(tag) + " ist leider **kein Tisch** frei" + (v.personen ? " für " + v.personen + " Personen" : "") + ". Soll ich auf die Warteliste setzen?", tags: ["Ausgebucht", zeitWort] };
+    var zeig = frei.slice(0, 6);
+    var namen = zeig.map(function (t) { return "Tisch " + t.id + " (" + t.plaetze + ")"; }).join(", ");
+    var rest = frei.length - zeig.length;
+    if (rest > 0) namen += " und " + rest + " weitere";
+    return {
+      text: "Um **" + zeitWort + "** am " + langTag(tag) + " sind **" + frei.length + " Tische frei**" + (v.personen ? " für " + v.personen + "+ Personen" : "") + ": " + namen + ".",
+      tags: ["Freie Tische", zeitWort, frei.length + " frei"], aktion: { label: "Im Tischplan zeigen", ansicht: "tischplan" }
+    };
+  }
+
+  function tueGaesteZaehlen(v) {
+    var tag = v.tag || HEUTE;
+    var liste = reservierungen.filter(function (r) { return r.tag === tag && r.status !== "warteliste"; });
+    var g = liste.reduce(function (s, r) { return s + r.personen; }, 0);
+    return {
+      text: "Am **" + langTag(tag) + "** erwarten wir **" + g + " Gäste** auf **" + liste.length + " Reservierungen**.",
+      tags: ["Gäste zählen", wochentagName(tag)], aktion: { label: "Tag öffnen", ansicht: "reservierungen", tag: tag }
+    };
+  }
+
+  function tueAuswertung(v) {
+    var total = wocheGaeste.reduce(function (a, b) { return a + b; }, 0);
+    var umsatz = total * 64;
+    if (/umsatz/.test(v.frage))
+      return { text: "Der Umsatz letzte Woche lag bei rund **CHF " + (umsatz / 1000).toFixed(1) + "k** (Ø 64.– pro Gast, " + total + " Gäste).", tags: ["Umsatz"], aktion: { label: "Auswertungen öffnen", ansicht: "auswertungen" } };
+    if (/auslastung/.test(v.frage))
+      return { text: "Die Auslastung lag im Schnitt bei **74%** – Freitag und Samstag waren mit über 90% fast voll.", tags: ["Auslastung"], aktion: { label: "Auswertungen öffnen", ansicht: "auswertungen" } };
+    if (/no.?show/.test(v.frage))
+      return { text: "Die No-Show-Quote lag bei **3,2%** – 0,8 Punkte besser als im Vormonat.", tags: ["No-Show"], aktion: { label: "Auswertungen öffnen", ansicht: "auswertungen" } };
+    return {
+      text: "Letzte Woche: **" + total + " Gäste** (+9% zur Vorwoche), stärkster Tag Samstag mit 94. Umsatz rund **CHF " + (umsatz / 1000).toFixed(1) + "k**.",
+      tags: ["Vergleich", "+9%"], aktion: { label: "Auswertungen öffnen", ansicht: "auswertungen" }
+    };
+  }
+
+  function tueGericht(s, an) {
+    s.an = an;
+    return {
+      text: "**" + s.name + "** ist " + (an ? "wieder **auf der Karte**." : "für heute **von der Karte genommen** – auch auf der Gäste-Seite ausgeblendet."),
+      tags: [an ? "Aktiviert" : "Abgeschaltet", s.name], aktion: { label: "Speisekarte öffnen", ansicht: "menues" }
+    };
+  }
+
+  function tueHilfe() {
+    return {
+      text: "Ich kann im Betrieb wirklich mit anpacken – zum Beispiel:\n• **Reservierungen anlegen** („Trag Familie Weber am Samstag um 19:30 für 4 ein“)\n• **bestätigen oder stornieren** („Setz Geburtstag Meier auf bestätigt“)\n• **freie Tische finden** („Welche Tische sind heute Abend frei?“)\n• **auswerten** („Wie war letzte Woche?“)\n• **Gerichte abschalten** („Nimm das Kalbsschnitzel von der Karte“). Probier einfach einen Vorschlag unten.",
+      tags: ["Hilfe"]
+    };
+  }
+
+  // -- Chat-Fluss ------------------------------------------------------------
+
+  function kiBlase(spec, wer) {
     var d = document.createElement("div");
     d.className = "ki-blase von-" + wer;
-    d.textContent = text;
-    if (hinweis) {
-      var h = document.createElement("span");
-      h.className = "hinweis";
-      h.textContent = hinweis;
-      d.appendChild(h);
+    if (typeof spec === "string") { d.textContent = spec; }
+    else {
+      var html = "";
+      if (spec.tags && spec.tags.length) {
+        html += '<div class="ki-verstanden"><span class="lb">Verstanden</span>' +
+          spec.tags.map(function (t, i) { return '<span class="ki-tag' + (i === 0 ? " stark" : "") + '">' + esc(t) + "</span>"; }).join("") + "</div>";
+      }
+      html += textZuHtml(spec.text);
+      d.innerHTML = html;
+      if (spec.aktion) {
+        var btn = document.createElement("button");
+        btn.className = "ki-aktion";
+        btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>' + spec.aktion.label;
+        btn.addEventListener("click", function () {
+          if (spec.aktion.tag) gewaehlterTag = spec.aktion.tag;
+          if (spec.aktion.resId) { zeige("reservierungen"); oeffneDetail(spec.aktion.resId); }
+          else if (spec.aktion.ansicht) zeige(spec.aktion.ansicht);
+        });
+        d.appendChild(btn);
+      }
     }
     $("#ki-lauf").appendChild(d);
     $("#ki-lauf").scrollTop = $("#ki-lauf").scrollHeight;
     return d;
+  }
+  function textZuHtml(t) {
+    return t.replace(/&/g, "&amp;").replace(/</g, "&lt;")
+      .replace(/\*\*([^*]+)\*\*/g, "<b>$1</b>")
+      .replace(/\n/g, "<br>");
   }
 
   function kiSenden(text) {
@@ -1338,17 +2512,18 @@ a { color: inherit; }
 
     setTimeout(function () {
       tippt.remove();
-      kiBlase(KI_ANTWORTEN[kiZaehler % KI_ANTWORTEN.length], "ki",
-        "Demo-Antwort – es wird nichts gespeichert.");
-      kiZaehler++;
+      var antwort = fuehreAus(verstehe(text));
+      kiBlase(antwort, "ki");
+      aktualisiereNav();
+      // Falls gerade eine betroffene Ansicht offen ist, live nachziehen
+      alleNeu(true);
       kiBeschaeftigt = false;
-    }, 700 + Math.random() * 500);
+    }, 480 + Math.random() * 360);
   }
 
   function zeichneAssistent() {
-    /* Nur beim ersten Öffnen begrüssen, danach den Verlauf stehen lassen */
     if (!$("#ki-lauf").children.length) {
-      kiBlase("Hallo Severin! Sag mir, was du brauchst – ich trage ein, suche heraus oder fasse zusammen. Probier einen der Vorschläge unten.", "ki");
+      kiBlase("Hallo Severin! Sag mir, was du brauchst – ich lege Reservierungen an, bestätige, finde freie Tische oder werte aus. Und ich mache es wirklich, nicht nur zum Schein.", "ki");
       $("#ki-vorschlaege").innerHTML = KI_VORSCHLAEGE.map(function (v) {
         return '<button class="ki-vorschlag" type="button">' + v + "</button>";
       }).join("");
@@ -1360,23 +2535,183 @@ a { color: inherit; }
   }
 
   $("#ki-senden").addEventListener("click", function () { kiSenden(); });
-  $("#ki-feld").addEventListener("keydown", function (e) {
-    if (e.key === "Enter") kiSenden();
+  $("#ki-feld").addEventListener("keydown", function (e) { if (e.key === "Enter") kiSenden(); });
+
+  /* ============================================================
+     Gäste-Seite (öffentliche Ansicht)
+     ============================================================ */
+
+  var GAST_TAGE = [24, 25, 26, 27];
+  var GAST_ZEITEN = ["18:00", "18:30", "19:00", "19:30", "20:00", "20:30", "21:00"];
+  var gastTag = 24, gastZeit = "19:30", gastPersonen = 2, neueOnline = 0;
+
+  function oeffneGastPortal() {
+    neueOnline = 0;
+    baueGastTage(); baueGastZeiten(); setzeGastPersonen(2);
+    $("#gp-antwort").innerHTML = "";
+    zeichneGastMenue();
+    $("#gast-portal").classList.add("auf");
+    document.body.style.overflow = "hidden";
+    $("#gast-portal").scrollTop = 0;
+    setTimeout(beobachteReveals, 60);
+  }
+  function schliesseGastPortal() {
+    $("#gast-portal").classList.remove("auf");
+    document.body.style.overflow = "";
+    if (neueOnline > 0) {
+      meldung(neueOnline + (neueOnline === 1 ? " neue Online-Anfrage" : " neue Online-Anfragen") + " im Posteingang.");
+      neueOnline = 0;
+    }
+    alleNeu();
+  }
+  $("#gast-knopf").addEventListener("click", oeffneGastPortal);
+  $("#gp-zurueck").addEventListener("click", schliesseGastPortal);
+
+  $$("[data-gp-scroll]").forEach(function (b) {
+    b.addEventListener("click", function (e) {
+      e.preventDefault();
+      var el = document.getElementById(b.dataset.gpScroll);
+      if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
   });
 
-  /* ---------- Start ---------- */
-
-  function alleNeu() {
-    $("#nav-anzahl").textContent = reservierungen.filter(function (r) { return r.tag === gewaehlterTag; }).length;
-    if ($('.ansicht[data-ansicht="uebersicht"]').classList.contains("an")) zeichneUebersicht();
-    if ($('.ansicht[data-ansicht="reservierungen"]').classList.contains("an")) zeichneReservierungen();
-    if ($('.ansicht[data-ansicht="kalender"]').classList.contains("an")) { zeichneKalender(); zeichneTagesListe(); }
+  function baueGastTage() {
+    $("#gp-tage").innerHTML = GAST_TAGE.map(function (d) {
+      return '<button class="gp-opt" data-tag="' + d + '" aria-pressed="' + (d === gastTag) + '">' +
+        WOCHENTAGE[wochentagIndex(d)] + "<em>" + d + ". Juli</em></button>";
+    }).join("");
+    $$("#gp-tage .gp-opt").forEach(function (b) {
+      b.addEventListener("click", function () { gastTag = parseInt(b.dataset.tag, 10); baueGastTage(); });
+    });
   }
+  function baueGastZeiten() {
+    $("#gp-zeiten").innerHTML = GAST_ZEITEN.map(function (z) {
+      return '<button class="gp-opt" data-zeit="' + z + '" aria-pressed="' + (z === gastZeit) + '">' + z + "</button>";
+    }).join("");
+    $$("#gp-zeiten .gp-opt").forEach(function (b) {
+      b.addEventListener("click", function () { gastZeit = b.dataset.zeit; baueGastZeiten(); });
+    });
+  }
+  function setzeGastPersonen(n) { gastPersonen = Math.max(1, Math.min(12, n)); $("#gp-personen").textContent = gastPersonen; }
+  $("#gp-minus").addEventListener("click", function () { setzeGastPersonen(gastPersonen - 1); });
+  $("#gp-plus").addEventListener("click", function () { setzeGastPersonen(gastPersonen + 1); });
+
+  $("#gp-buchen").addEventListener("click", function () {
+    var frei = freieTische(gastTag, zeitMin(gastZeit), gastPersonen);
+    var box = $("#gp-antwort");
+    if (frei.length) {
+      var tisch = frei[0].id;
+      var neu = {
+        id: naechsteId++, tag: gastTag, zeit: gastZeit, name: "Online-Gast", personen: gastPersonen,
+        tisch: tisch, status: "offen", notiz: "über die Website angefragt", tel: "—", quelle: "Online", _neu: true
+      };
+      reservierungen.push(neu);
+      neueOnline++;
+      gewaehlterTag = gastTag;
+      setTimeout(function () { delete neu._neu; }, 4000);
+      box.innerHTML =
+        '<div class="gp-ergebnis gut">' +
+        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>' +
+        '<div><div class="titel">Anfrage erhalten – danke!</div>' +
+        "Für <b>" + WOCHENTAGE_LANG[wochentagIndex(gastTag)] + ", " + gastTag + ". Juli</b> um <b>" + gastZeit + "</b>, " + gastPersonen + " Personen. " +
+        "Wir bestätigen in Kürze. <br><span style=\"font-size:11.5px;color:#6E6154\">In der Demo landet diese Anfrage sofort im Verwaltungs-Backend (Tisch " + tisch + ", Status „angefragt“).</span></div></div>";
+    } else {
+      box.innerHTML =
+        '<div class="gp-ergebnis voll">' +
+        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>' +
+        '<div><div class="titel">Dieser Slot ist leider ausgebucht</div>' +
+        "Um " + gastZeit + " haben wir am " + gastTag + ". Juli keinen Tisch für " + gastPersonen + " Personen frei. " +
+        "Sollen wir Sie auf die Warteliste setzen?" +
+        '<br><button class="warte-knopf" id="gp-warte">Auf die Warteliste</button></div></div>';
+      $("#gp-warte").addEventListener("click", function () {
+        var neu = {
+          id: naechsteId++, tag: gastTag, zeit: gastZeit, name: "Online-Gast", personen: gastPersonen,
+          tisch: "—", status: "warteliste", notiz: "Warteliste über Website", tel: "—", quelle: "Online", _neu: true
+        };
+        reservierungen.push(neu); neueOnline++;
+        setTimeout(function () { delete neu._neu; }, 4000);
+        box.innerHTML = '<div class="gp-ergebnis gut"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><div><div class="titel">Sie stehen auf der Warteliste</div>Wir melden uns, sobald ein Tisch frei wird.</div></div>';
+      });
+    }
+    box.scrollIntoView({ behavior: "smooth", block: "center" });
+  });
+
+  var KAT_PLURAL = { "Vorspeise": "Vorspeisen", "Hauptgang": "Hauptgänge", "Dessert": "Desserts" };
+  function zeichneGastMenue() {
+    var kats = ["Vorspeise", "Hauptgang", "Dessert"];
+    var aktiv = speisen.filter(function (s) { return s.an; });
+    $("#gp-menue").innerHTML = kats.map(function (k) {
+      var liste = aktiv.filter(function (s) { return s.kat === k; });
+      if (!liste.length) return "";
+      return '<div class="gp-menue-gruppe"><h3>' + (KAT_PLURAL[k] || k) + ' <em>' + liste.length + '</em></h3>' +
+        liste.map(function (s) {
+          return '<div class="gp-gericht">' +
+            '<div class="gn">' + s.name + (s.vegi ? ' <span class="gp-vegi">Vegi</span>' : "") + "</div>" +
+            '<div class="gp2">CHF ' + frRappen(s.preis) + "</div>" +
+            '<div class="gt">' + s.text + "</div>" +
+          "</div>";
+        }).join("") + "</div>";
+    }).join("");
+    var aus = speisen.length - aktiv.length;
+    $("#gp-menue-hinweis").textContent = aus > 0
+      ? aus + (aus === 1 ? " Gericht ist heute nicht verfügbar und wird" : " Gerichte sind heute nicht verfügbar und werden") + " hier automatisch ausgeblendet."
+      : "Alle Gerichte sind heute verfügbar.";
+  }
+
+  // Sanfte Reveal-Animation der Gäste-Abschnitte
+  var revealBeobachter = null;
+  function beobachteReveals() {
+    if (!("IntersectionObserver" in window)) { $$(".gp-reveal").forEach(function (e) { e.classList.add("sicht"); }); return; }
+    if (!revealBeobachter) {
+      revealBeobachter = new IntersectionObserver(function (eintraege) {
+        eintraege.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add("sicht"); revealBeobachter.unobserve(e.target); } });
+      }, { threshold: 0.12 });
+    }
+    $$("#gast-portal .gp-reveal").forEach(function (e) { revealBeobachter.observe(e); });
+  }
+
+  /* ---------- Meldungen (Toast) ---------- */
+
+  function meldung(text, gut) {
+    var t = document.createElement("div");
+    t.className = "toast";
+    var ok = gut !== false;
+    t.innerHTML = (ok
+      ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>'
+      : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.5"/></svg>') +
+      "<span>" + esc(text) + "</span>";
+    $("#toast-lauf").appendChild(t);
+    setTimeout(function () { t.classList.add("weg"); setTimeout(function () { t.remove(); }, 320); }, 3200);
+  }
+
+  /* ---------- Navigation / Neuzeichnen ---------- */
+
+  function aktualisiereNav() {
+    var offen = reservierungen.filter(function (r) { return r.tag === gewaehlterTag && r.status === "offen"; }).length;
+    var anzahl = reservierungen.filter(function (r) { return r.tag === gewaehlterTag; }).length;
+    var el = $("#nav-anzahl");
+    el.textContent = anzahl;
+    el.className = "zahl" + (offen ? " warn" : "");
+  }
+
+  function alleNeu(nurWennOffen) {
+    aktualisiereNav();
+    function offen(name) { return $('.ansicht[data-ansicht="' + name + '"]').classList.contains("an"); }
+    if (offen("uebersicht")) zeichneUebersicht();
+    if (offen("reservierungen")) zeichneReservierungen();
+    if (offen("tischplan")) zeichneTischplan();
+    if (offen("kalender")) { zeichneKalender(); zeichneTagesListe(); }
+    if (offen("gaeste")) zeichneGaeste();
+    if (offen("menues")) zeichneSpeisen();
+    if (offen("auswertungen")) zeichneAuswertungen();
+  }
+
+  /* ---------- Start ---------- */
 
   zeichneRechnerWahl();
   rechne();
   zeichneUebersicht();
-  $("#nav-anzahl").textContent = reservierungen.filter(function (r) { return r.tag === gewaehlterTag; }).length;
+  aktualisiereNav();
 })();
 </script>
 

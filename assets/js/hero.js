@@ -140,6 +140,17 @@
     }
   });
 
+  /* Solange die Maus im Fenster ist (Lesen, Scrollen, Erkunden), nicht
+     automatisch weiterschalten. Verlässt sie das Fenster wieder, läuft die
+     Rotation weiter - ausser jemand hat schon bewusst eine Demo gewählt. */
+  var schirm = frame.parentNode;
+  if (schirm) {
+    schirm.addEventListener("mouseenter", stoppeDemoAuto);
+    schirm.addEventListener("mouseleave", function () {
+      if (!demoManuell) starteDemoAuto();
+    });
+  }
+
   fetch("/api/inhalte", { credentials: "same-origin" })
     .then(function (r) { return r.ok ? r.json() : null; })
     .then(function (daten) {
