@@ -3314,7 +3314,9 @@ body.ms-cookie-offen .widget-panel { bottom: calc(var(--ms-cookie-h, 90px) + 90p
 /* Der Funke dreht sich beim Ueberfahren leicht - lebendig, nicht laut */
 .widget-launcher .wl-funke { transition: transform 0.4s var(--ease-out); }
 .widget-launcher:hover .wl-funke { transform: rotate(90deg) scale(1.1); }
-.widget-launcher .online { top: -3px; right: -3px; }
+/* Der Online-Punkt ist am Knopf entfernt (siehe site.js); die Regel
+   bleibt als Sicherheitsnetz, falls er je zurueckkommt. */
+.widget-launcher .online { display: none; }
 
 @media (max-width: 480px) {
   /* Auf schmalen Handys nur der Funke, damit die Pille nicht ueber den

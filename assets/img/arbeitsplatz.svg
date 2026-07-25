@@ -1,139 +1,96 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 640" role="img" aria-label="Unser Arbeitsplatz als Illustration">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 640" width="1200" height="640" role="img"
+     aria-label="Illustration unseres Büros: Schreibtisch am Fenster mit Blick auf einen Schweizer See und die Berge">
   <defs>
     <linearGradient id="wand" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#FBF5EA"/>
-      <stop offset="1" stop-color="#F2E8D6"/>
+      <stop offset="0" stop-color="#F7F1E5"/><stop offset="1" stop-color="#EBE0CB"/>
     </linearGradient>
-    <radialGradient id="sonne" cx="0.78" cy="0.16" r="0.75">
-      <stop offset="0" stop-color="#E9C89A" stop-opacity="0.55"/>
-      <stop offset="1" stop-color="#E9C89A" stop-opacity="0"/>
-    </radialGradient>
+    <linearGradient id="himmel" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#C6DCEA"/><stop offset="0.6" stop-color="#E4EDEC"/>
+      <stop offset="1" stop-color="#F2E9DA"/>
+    </linearGradient>
+    <linearGradient id="see" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#7FA9BE"/><stop offset="1" stop-color="#5E8AA2"/>
+    </linearGradient>
     <linearGradient id="tisch" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#3A2C1E"/>
-      <stop offset="1" stop-color="#2C2118"/>
+      <stop offset="0" stop-color="#CB9E6E"/><stop offset="1" stop-color="#A87C4F"/>
     </linearGradient>
-    <linearGradient id="fenster" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#F6E3C4"/>
-      <stop offset="0.6" stop-color="#EDD3AC"/>
-      <stop offset="1" stop-color="#E2BF92"/>
-    </linearGradient>
-    <linearGradient id="code" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#241C13"/>
-      <stop offset="1" stop-color="#1B140D"/>
-    </linearGradient>
+    <!-- Fenster endet oberhalb der Tischgeraete, damit der See frei bleibt -->
+    <clipPath id="scheibe"><rect x="162" y="52" width="876" height="266" rx="12"/></clipPath>
   </defs>
 
-  <!-- Wand und Licht -->
   <rect width="1200" height="640" fill="url(#wand)"/>
-  <rect width="1200" height="640" fill="url(#sonne)"/>
 
-  <!-- Fenster links mit warmem Abendlicht -->
-  <g>
-    <rect x="70" y="60" width="250" height="330" rx="18" fill="#E8DCC8"/>
-    <rect x="84" y="74" width="222" height="302" rx="10" fill="url(#fenster)"/>
-    <path d="M84 300 Q160 250 230 285 T306 268 V376 H84 Z" fill="#D9B383" opacity="0.85"/>
-    <path d="M84 322 Q170 285 250 315 T306 305 V376 H84 Z" fill="#C89B5A" opacity="0.75"/>
-    <circle cx="255" cy="140" r="26" fill="#F9EBCE"/>
-    <rect x="190" y="74" width="8" height="302" fill="#E8DCC8"/>
-    <rect x="84" y="216" width="222" height="8" fill="#E8DCC8"/>
+  <!-- ===== Fenster ===== -->
+  <rect x="148" y="38" width="904" height="294" rx="20" fill="#3A2C1F"/>
+  <g clip-path="url(#scheibe)">
+    <rect x="162" y="52" width="876" height="266" fill="url(#himmel)"/>
+    <!-- weiche Sonne -->
+    <circle cx="792" cy="118" r="38" fill="#F8EBCF" opacity=".8"/>
+    <!-- Wolkenschleier -->
+    <path d="M240 104h150M300 122h130M700 92h120" stroke="#FFFFFF" stroke-width="7"
+          stroke-linecap="round" opacity=".55"/>
+    <!-- Berge: hintere Kette hell, vordere dunkler -->
+    <path d="M162 232L318 122l96 70 88-58 122 88 92-52 160 84v34H162z" fill="#AEBBBC" opacity=".7"/>
+    <path d="M162 250L286 160l92 62 114-40 116 78 104-48 164 72v22H162z" fill="#84959A"/>
+    <path d="M286 160l28 20-17 6-22-14z" fill="#F6F8F7" opacity=".9"/>
+    <path d="M492 260l-1-1 1 1z" fill="#F6F8F7"/>
+    <path d="M608 200l26 18-16 5-21-12z" fill="#F6F8F7" opacity=".85"/>
+    <!-- gegenueberliegendes Ufer -->
+    <rect x="162" y="266" width="876" height="10" fill="#5F7264" opacity=".6"/>
+    <!-- See: von hier bis zur Fensterbank frei sichtbar -->
+    <rect x="162" y="276" width="876" height="42" fill="url(#see)"/>
+    <!-- Lichtspiegelungen -->
+    <path d="M250 288h190M470 300h160M300 310h150M660 290h140M820 306h170M540 312h90"
+          stroke="#DCEAF1" stroke-width="4" stroke-linecap="round" opacity=".55"/>
+    <!-- Segelboot -->
+    <path d="M712 276l1-30 24 30z" fill="#FDFAF4"/>
+    <path d="M708 276h38l-8 11h-24z" fill="#3A2C1F"/>
   </g>
+  <!-- Sprossen -->
+  <rect x="594" y="38" width="11" height="294" fill="#3A2C1F"/>
+  <rect x="148" y="180" width="904" height="9" fill="#3A2C1F"/>
+  <!-- Fensterbank -->
+  <rect x="130" y="328" width="940" height="17" rx="6" fill="#DACCB4"/>
 
-  <!-- Haengeregal mit Buechern rechts -->
-  <g>
-    <rect x="905" y="120" width="220" height="12" rx="6" fill="#3A2C1E"/>
-    <rect x="922" y="70" width="16" height="50" rx="3" fill="#C89B5A"/>
-    <rect x="942" y="62" width="16" height="58" rx="3" fill="#2C2118"/>
-    <rect x="962" y="76" width="14" height="44" rx="3" fill="#A9805C"/>
-    <rect x="982" y="68" width="16" height="52" rx="3" fill="#E3D2B4"/>
-    <g transform="translate(1010 84) rotate(8)">
-      <rect width="16" height="48" rx="3" fill="#8F6D4B"/>
-    </g>
-    <circle cx="1085" cy="96" r="24" fill="#DCE5D2"/>
-    <path d="M1085 96 q-6 -26 10 -34 q4 20 -10 34 Z" fill="#7E9469"/>
-    <rect x="1074" y="112" width="22" height="10" rx="4" fill="#C89B5A"/>
-  </g>
+  <!-- Pflanze auf der Bank -->
+  <path d="M1082 328c2-28 12-48 28-60-6 22-4 42 4 60z" fill="#5E7F5A"/>
+  <path d="M1082 328c-18-18-24-42-22-60 13 14 24 34 28 60z" fill="#48684A"/>
+  <path d="M1066 328h46l-7 32h-33z" fill="#B5734A"/>
 
-  <!-- Tisch -->
-  <rect x="0" y="470" width="1200" height="34" fill="url(#tisch)"/>
-  <rect x="0" y="504" width="1200" height="136" fill="#EDE2CC"/>
-  <rect x="120" y="504" width="26" height="120" fill="#3A2C1E"/>
-  <rect x="1054" y="504" width="26" height="120" fill="#3A2C1E"/>
+  <!-- ===== Schreibtisch ===== -->
+  <rect x="74" y="468" width="1052" height="23" rx="8" fill="url(#tisch)"/>
+  <rect x="138" y="491" width="17" height="122" rx="7" fill="#8C6238"/>
+  <rect x="1046" y="491" width="17" height="122" rx="7" fill="#8C6238"/>
 
-  <!-- Monitor links: masesites-Startseite -->
-  <g>
-    <rect x="300" y="180" width="330" height="230" rx="16" fill="#241C13"/>
-    <rect x="312" y="192" width="306" height="206" rx="8" fill="#FDFAF4"/>
-    <!-- Mini-Header-Pille -->
-    <rect x="330" y="206" width="270" height="22" rx="11" fill="#FFFFFF" stroke="#E8DCC8"/>
-    <circle cx="344" cy="217" r="5" fill="#2C2118"/>
-    <rect x="356" y="213" width="40" height="8" rx="4" fill="#D9CBB2"/>
-    <rect x="402" y="213" width="30" height="8" rx="4" fill="#E3D6BD"/>
-    <rect x="438" y="213" width="34" height="8" rx="4" fill="#E3D6BD"/>
-    <rect x="548" y="210" width="44" height="14" rx="7" fill="#2C2118"/>
-    <!-- Grosse Headline -->
-    <rect x="360" y="256" width="210" height="20" rx="8" fill="#2C2118"/>
-    <rect x="384" y="284" width="120" height="20" rx="8" fill="#C89B5A"/>
-    <rect x="510" y="284" width="60" height="20" rx="8" fill="#2C2118"/>
-    <rect x="396" y="318" width="140" height="9" rx="4.5" fill="#D9CBB2"/>
-    <!-- Knoepfe -->
-    <rect x="386" y="342" width="76" height="22" rx="11" fill="#2C2118"/>
-    <rect x="470" y="342" width="76" height="22" rx="11" fill="#FFFFFF" stroke="#C8B695"/>
-    <!-- Standfuss -->
-    <path d="M448 410 h34 l8 34 h-50 Z" fill="#2C2118"/>
-    <rect x="414" y="444" width="104" height="10" rx="5" fill="#241C13"/>
-  </g>
+  <!-- Bildschirm: beginnt auf Höhe der Fensterbank, verdeckt den See nicht -->
+  <rect x="404" y="336" width="286" height="124" rx="11" fill="#2C2118"/>
+  <rect x="415" y="347" width="264" height="102" rx="6" fill="#FDFAF4"/>
+  <rect x="415" y="347" width="264" height="22" rx="6" fill="#EFE6D6"/>
+  <circle cx="429" cy="358" r="3.5" fill="#C4B69E"/><circle cx="442" cy="358" r="3.5" fill="#C4B69E"/>
+  <rect x="430" y="382" width="132" height="12" rx="6" fill="#3A2C1F"/>
+  <rect x="430" y="402" width="200" height="7" rx="3.5" fill="#D6CAB2"/>
+  <rect x="430" y="416" width="168" height="7" rx="3.5" fill="#D6CAB2"/>
+  <rect x="430" y="430" width="72" height="14" rx="7" fill="#2C2118"/>
+  <path d="M523 460h48l10 8h-68z" fill="#2C2118"/>
+  <rect x="498" y="460" width="98" height="8" rx="4" fill="#2C2118"/>
 
-  <!-- Monitor rechts: Code-Editor -->
-  <g>
-    <rect x="660" y="200" width="290" height="210" rx="16" fill="#241C13"/>
-    <rect x="672" y="212" width="266" height="186" rx="8" fill="url(#code)"/>
-    <circle cx="688" cy="228" r="4" fill="#D98E7A"/>
-    <circle cx="702" cy="228" r="4" fill="#E4C387"/>
-    <circle cx="716" cy="228" r="4" fill="#9DB98A"/>
-    <rect x="688" y="248" width="90" height="8" rx="4" fill="#C89B5A"/>
-    <rect x="700" y="264" width="150" height="8" rx="4" fill="#8A7A64"/>
-    <rect x="700" y="280" width="120" height="8" rx="4" fill="#B9A88C"/>
-    <rect x="712" y="296" width="170" height="8" rx="4" fill="#9DB98A"/>
-    <rect x="712" y="312" width="130" height="8" rx="4" fill="#8A7A64"/>
-    <rect x="700" y="328" width="105" height="8" rx="4" fill="#D9B383"/>
-    <rect x="688" y="344" width="70" height="8" rx="4" fill="#C89B5A"/>
-    <rect x="688" y="364" width="34" height="8" rx="4" fill="#6E604E"/>
-    <path d="M790 410 h30 l8 34 h-46 Z" fill="#2C2118"/>
-    <rect x="758" y="444" width="96" height="10" rx="5" fill="#241C13"/>
-  </g>
+  <!-- Laptop, tiefer als der Bildschirm -->
+  <path d="M742 386h190l14 74H728z" fill="#2C2118"/>
+  <path d="M752 395h170l10 56H741z" fill="#F3ECDD"/>
+  <path d="M716 460h232l10 12H706z" fill="#3A2C1F"/>
 
-  <!-- Tastatur und Maus -->
-  <rect x="420" y="478" width="230" height="16" rx="8" fill="#3A2C1E"/>
-  <rect x="432" y="481" width="206" height="4" rx="2" fill="#5A4732" opacity="0.7"/>
-  <ellipse cx="700" cy="486" rx="20" ry="12" fill="#3A2C1E"/>
-
-  <!-- Kaffee mit Dampf -->
-  <g>
-    <path d="M880 448 q0 34 30 34 q30 0 30 -34 Z" fill="#FFFFFF" stroke="#E0D2B8"/>
-    <path d="M940 452 q18 4 0 20" fill="none" stroke="#E0D2B8" stroke-width="6" stroke-linecap="round"/>
-    <ellipse cx="910" cy="448" rx="30" ry="7" fill="#8F6D4B"/>
-    <path d="M898 420 q6 -10 0 -20 M916 424 q6 -10 0 -20" fill="none" stroke="#C9B392" stroke-width="4" stroke-linecap="round" opacity="0.8"/>
-    <ellipse cx="910" cy="486" rx="40" ry="6" fill="#D9C8A8" opacity="0.6"/>
-  </g>
-
-  <!-- Pflanze links auf dem Tisch -->
-  <g>
-    <path d="M212 470 q-4 -46 -30 -62 q30 2 38 40 q4 -44 26 -58 q8 34 -18 62 q26 -18 40 -12 q-14 26 -46 30 Z" fill="#7E9469"/>
-    <path d="M196 470 h64 l-8 34 h-48 Z" fill="#C89B5A"/>
-    <ellipse cx="228" cy="510" rx="46" ry="6" fill="#D9C8A8" opacity="0.6"/>
-  </g>
+  <!-- Kaffeetasse -->
+  <path d="M250 418h52v30a14 14 0 0 1-14 14h-24a14 14 0 0 1-14-14z" fill="#FDFAF4"/>
+  <path d="M302 424h13a10 10 0 0 1 0 20h-13z" fill="none" stroke="#FDFAF4" stroke-width="6"/>
+  <ellipse cx="276" cy="418" rx="26" ry="6" fill="#8C6238"/>
+  <path d="M267 400c6-8-4-14 2-22M285 400c6-8-4-14 2-22"
+        stroke="#C4B69E" stroke-width="3" stroke-linecap="round" fill="none" opacity=".75"/>
 
   <!-- Notizbuch und Stift -->
-  <g transform="translate(1000 470) rotate(-4)">
-    <rect width="110" height="26" rx="5" fill="#FFFFFF" stroke="#E0D2B8"/>
-    <rect x="10" y="6" width="70" height="4" rx="2" fill="#D9CBB2"/>
-    <rect x="10" y="14" width="52" height="4" rx="2" fill="#E3D6BD"/>
-    <rect x="118" y="4" width="46" height="6" rx="3" fill="#2C2118"/>
-  </g>
+  <rect x="176" y="444" width="112" height="21" rx="5" fill="#A87C4F"/>
+  <rect x="184" y="440" width="112" height="21" rx="5" fill="#EFE6D6"/>
+  <path d="M312 446l56-8 4 12-56 8z" fill="#3A2C1F"/>
 
-  <!-- masesites-Schriftzug als Poster an der Wand -->
-  <g>
-    <rect x="475" y="80" width="250" height="64" rx="14" fill="#FFFFFF" stroke="#E8DCC8"/>
-    <text x="600" y="122" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="30" font-weight="700" fill="#2C2118" letter-spacing="-1">mase<tspan fill="#C89B5A">sites</tspan></text>
-  </g>
+  <!-- Stuhllehne -->
+  <rect x="516" y="574" width="180" height="66" rx="24" fill="#DCD0BA"/>
 </svg>

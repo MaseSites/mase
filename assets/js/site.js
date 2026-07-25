@@ -409,10 +409,12 @@
     launcher.setAttribute("aria-label", "Chat mit dem masesites-Bot öffnen");
     /* Pille mit Funke und Text statt runder Sprechblase - man sieht
        sofort, dass hier ein Assistent wartet, statt es raten zu muessen. */
+    /* Kein Online-Punkt am Knopf: Auf der Pille sass er halb ausserhalb
+       und wirkte wie ein Darstellungsfehler. Im Chat-Kopf steht er
+       weiterhin - dort hat er Platz und einen Zweck. */
     launcher.innerHTML =
       '<span class="wl-funke" aria-hidden="true">' + funkeSvg + '</span>' +
-      '<span class="wl-text">Frag mich</span>' +
-      '<span class="online" aria-hidden="true"></span>';
+      '<span class="wl-text">Frag mich</span>';
 
     var panel = document.createElement("div");
     panel.className = "widget-panel chat-demo";
