@@ -3222,58 +3222,78 @@ body.ms-cookie-offen .widget-panel { bottom: calc(var(--ms-cookie-h, 90px) + 90p
   .ms-cookie-inner { max-height: 62vh; }
 }
 
-/* ---------- Chat-Bot: masesites-Optik ----------
-   Espresso und Creme wie der Rest der Seite. Erkennbar wird der
-   Assistent nicht ueber eine Fremdfarbe, sondern ueber den Funken im
-   Knopf, das KI-Abzeichen im Kopf und die Beschriftung. */
+/* ---------- Chat-Bot: hell und ruhig ----------
+   Kein farbiger Balken oben, keine dunklen Flaechen: Das Fenster ist
+   hell, die Struktur kommt aus feinen Linien und Weissraum. Espresso
+   bleibt Akzent (eigene Nachricht, Senden-Knopf) statt Grundfarbe -
+   grosse dunkle Flaechen wirkten schwer und altmodisch. */
 .chat-head {
-  background: linear-gradient(135deg, #3A2C1F 0%, var(--ink) 60%, #1A130C 100%);
-  color: #fff;
-  border-bottom: none;
+  background: #fff;
+  color: var(--ink);
+  border-bottom: 1px solid var(--line);
+  padding: 15px 18px;
 }
-.chat-head .name { color: #fff; }
-.chat-head .status { color: rgba(246, 241, 231, 0.72); }
-.chat-head .status i { background: #6EE7A8; box-shadow: 0 0 0 3px rgba(110, 231, 168, 0.22); }
+.chat-head .name { color: var(--ink); font-weight: 650; letter-spacing: -0.01em; }
+.chat-head .status { color: var(--ink-faint); font-size: 0.74rem; }
+.chat-head .status i { background: #4CAF6E; box-shadow: none; }
 
-/* Avatar hell auf dem dunklen Kopf. Drei Klassen, damit diese Regel die
-   per JS eingefuegte Avatar-Farbe sicher uebersteuert - sonst waere
-   dunkel auf dunkel unsichtbar. */
+/* Kleiner, flacher Avatar statt glaenzendem Farbklecks. Drei Klassen,
+   damit diese Regel die per JS eingefuegte Avatar-Optik uebersteuert -
+   die bringt einen kraeftigen Verlauf samt Schlagschatten mit. */
 .widget-panel .chat-head .ps-avatar,
 .chat-demo .chat-head .ps-avatar {
-  background: rgba(246, 241, 231, 0.16);
-  border: 1px solid rgba(246, 241, 231, 0.3);
+  width: 34px; height: 34px;
+  background: var(--ink);
+  border: none;
   box-shadow: none;
   color: var(--bg);
 }
 
-/* Der Schliessen-Knopf war weiss auf cremefarbenem Kopf - praktisch
-   unsichtbar. Auf dem dunklen Kopf stimmt Weiss jetzt. */
-.widget-close { color: #fff; }
+/* Auf hellem Kopf muss der Schliessen-Knopf dunkel sein - als er weiss
+   war, war er auf Creme praktisch unsichtbar. */
+.widget-close { color: var(--ink-faint); }
+.widget-close:hover { color: var(--ink); }
 
-/* "KI"-Abzeichen: macht ohne Worte klar, dass hier eine KI antwortet */
+/* "KI"-Abzeichen dezent als Umriss, nicht als bunter Aufkleber */
 .chat-head .ki-badge {
   margin-left: auto;
-  align-self: flex-start;
-  font-size: 0.62rem;
+  align-self: center;
+  font-size: 0.6rem;
   font-weight: 700;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.12em;
   padding: 3px 8px;
   border-radius: 999px;
-  background: rgba(246, 241, 231, 0.18);
-  border: 1px solid rgba(246, 241, 231, 0.28);
-  color: var(--bg);
+  background: transparent;
+  border: 1px solid var(--line-strong);
+  color: var(--ink-faint);
 }
-.widget-panel .chat-head .ki-badge { margin-left: 0; margin-right: 4px; }
+.widget-panel .chat-head .ki-badge { margin-left: auto; margin-right: 10px; }
 
-.msg.bot { background: #fff; border-color: var(--line); }
-.msg.user { background: linear-gradient(135deg, #3A2C1F, #1A130C); color: #fff; }
+/* Verlauf hell, Blasen ruhig: die eigene Nachricht ist der einzige
+   dunkle Punkt, damit man den Faden sofort liest. */
+.chat-body { background: #fff; gap: 12px; }
+.msg { box-shadow: none; }
+.msg.bot {
+  background: var(--bg-soft);
+  border: 1px solid var(--line);
+  color: var(--ink);
+}
+.msg.user { background: var(--ink); color: #fff; border: none; }
+.msg.typing { background: var(--bg-soft); border: 1px solid var(--line); }
 .msg.typing i { background: var(--ink-faint); }
-.chat-body { background: var(--bg-soft); }
 
-.chat-input input:focus { border-color: var(--ink); box-shadow: 0 0 0 3px rgba(44, 33, 24, 0.1); }
-.chat-input button { background: linear-gradient(135deg, #3A2C1F, #1A130C); }
-.chat-input button:hover { background: linear-gradient(135deg, #1A130C, #000); }
-.chat-chips button:hover { border-color: var(--ink); color: var(--ink); }
+.chat-input { background: #fff; border-top: 1px solid var(--line); }
+.chat-input input { background: var(--bg-soft); border-color: var(--line); }
+.chat-input input:focus { border-color: var(--ink-soft); box-shadow: none; background: #fff; }
+.chat-input button { background: var(--ink); width: 40px; height: 40px; }
+.chat-input button:hover { background: #000; transform: none; }
+.chat-input button svg { width: 16px; height: 16px; }
+
+.chat-chips button:hover { border-color: var(--ink-soft); color: var(--ink); }
+.chat-note { color: var(--ink-faint); }
+
+/* Fenster selbst: weicher Rahmen, ruhiger Schatten */
+.widget-panel { background: #fff; border-color: var(--line); }
 
 /* ---------- Chat-Knopf: Pille statt Sprechblase ----------
    Eine runde Blase sieht aus wie jedes beliebige Chat-Widget. Die

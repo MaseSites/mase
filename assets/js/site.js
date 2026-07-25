@@ -357,17 +357,17 @@
         /* Espresso/Creme statt Lila: der Bot gehoert sichtbar zu
            masesites. Der Knopf ist eine Pille mit Text, keine
            x-beliebige Chatblase - darum runde Ecken statt Kreis. */
-        "body .widget-launcher{background:linear-gradient(140deg, #3A2C1F 0%, var(--ink,#2C2118) 55%, #1A130C 100%);box-shadow:0 14px 34px rgba(44,33,24,.34)}" +
-        "body .widget-launcher:hover{box-shadow:0 20px 44px rgba(44,33,24,.44)}" +
-        "body .chat-head .ps-avatar{background:linear-gradient(140deg, #3A2C1F, #1A130C);box-shadow:0 5px 14px rgba(44,33,24,.28)}" +
+        "body .widget-launcher{background:var(--ink,#2C2118);box-shadow:0 8px 24px rgba(44,33,24,.22)}" +
+        "body .widget-launcher:hover{background:#1A130C;box-shadow:0 12px 30px rgba(44,33,24,.28)}" +
+        "body .chat-head .ps-avatar{background:var(--ink,#2C2118);box-shadow:none}" +
         ".widget-launcher.ms-pop{animation:msPop .55s cubic-bezier(.22,1,.36,1) both}" +
         "@keyframes msPop{0%{transform:scale(.5);opacity:0}60%{transform:scale(1.1)}100%{transform:scale(1);opacity:1}}" +
-        ".widget-launcher.ms-ping::before,.widget-launcher.ms-ping::after{content:\"\";position:absolute;inset:0;border-radius:999px;border:2px solid rgba(44,33,24,.4);pointer-events:none;animation:msPing 1.9s ease-out 3}" +
+        ".widget-launcher.ms-ping::before,.widget-launcher.ms-ping::after{content:\"\";position:absolute;inset:0;border-radius:999px;border:1.5px solid rgba(44,33,24,.28);pointer-events:none;animation:msPing 1.9s ease-out 2}" +
         ".widget-launcher.ms-ping::after{animation-delay:.65s}" +
         "@keyframes msPing{0%{transform:scale(1);opacity:.7}100%{transform:scale(1.5);opacity:0}}" +
-        ".ms-teaser{position:fixed;right:22px;bottom:96px;z-index:80;max-width:min(290px,calc(100vw - 44px));background:var(--card,#fff);color:var(--ink,#2C2118);border:1px solid var(--line,#E4D9C6);border-radius:16px;border-bottom-right-radius:6px;padding:12px 30px 12px 12px;box-shadow:0 18px 44px rgba(44,33,24,.2);display:flex;gap:10px;align-items:flex-start;cursor:pointer;opacity:0;transform:translateY(8px) scale(.96);transition:opacity .35s ease, transform .35s cubic-bezier(.22,1,.36,1)}" +
+        ".ms-teaser{position:fixed;right:22px;bottom:96px;z-index:80;max-width:min(290px,calc(100vw - 44px));background:var(--card,#fff);color:var(--ink,#2C2118);border:1px solid var(--line,#E4D9C6);border-radius:16px;border-bottom-right-radius:6px;padding:12px 30px 12px 12px;box-shadow:0 12px 32px rgba(44,33,24,.14);display:flex;gap:10px;align-items:flex-start;cursor:pointer;opacity:0;transform:translateY(8px) scale(.96);transition:opacity .35s ease, transform .35s cubic-bezier(.22,1,.36,1)}" +
         ".ms-teaser.ms-an{opacity:1;transform:none}" +
-        ".ms-teaser .ms-av{flex:0 0 auto;width:30px;height:30px;border-radius:50%;background:linear-gradient(140deg,#3A2C1F,#1A130C);color:var(--bg,#F6F1E7);display:grid;place-items:center;box-shadow:0 4px 12px rgba(44,33,24,.3)}" +
+        ".ms-teaser .ms-av{flex:0 0 auto;width:30px;height:30px;border-radius:50%;background:var(--ink,#2C2118);color:var(--bg,#F6F1E7);display:grid;place-items:center;box-shadow:none}" +
         ".ms-teaser .ms-av svg{width:16px;height:16px}" +
         ".ms-teaser .ms-txt{font-size:13.5px;line-height:1.42}" +
         ".ms-teaser .ms-txt b{font-weight:650}" +
