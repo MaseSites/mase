@@ -9,11 +9,11 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/style.css?v=38">
+  <link rel="stylesheet" href="assets/css/style.css?v=40">
 </head>
 <body>
   <script src="assets/js/sanft.js?v=1"></script>
-  <script src="assets/js/ueberuns.js?v=26"></script>
+  <script src="assets/js/ueberuns.js?v=27"></script>
 
   <header class="site-header">
     <div class="wrap header-inner">
@@ -133,23 +133,39 @@
         <div class="section-head center">
           <h2 class="reveal">Wer dahintersteckt</h2>
         </div>
-        <div class="team-grid">
+        <!-- FOTOS ERSETZEN:
+             Die beiden Bilder sind Platzhalter-Illustrationen
+             (assets/img/team/matteo.svg und severin.svg). Fuer echte
+             Fotos einfach das src auf die Bilddatei aendern, z. B.
+             assets/img/team/matteo.jpg - Zuschnitt moeglichst
+             hochkant (etwa 480x560), der Rest passt sich an. -->
+        <div class="personen">
 
-          <div class="team-card reveal">
-            <span class="team-avatar" aria-hidden="true">M</span>
-            <div>
+          <article class="person reveal">
+            <figure class="person-bild">
+              <img src="assets/img/team/matteo.svg" alt="Matteo, Gründer von masesites"
+                   width="480" height="560" loading="lazy">
+            </figure>
+            <div class="person-text">
+              <span class="person-rolle">Gründer · Design und Umsetzung</span>
               <h3>Matteo</h3>
-              <p>Gründer von masesites. Gestaltet und baut die Websites, vom ersten Entwurf bis zur fertigen Seite.</p>
+              <p>Matteo gestaltet und baut die Websites – vom ersten Entwurf bis zur fertigen Seite. Er entscheidet, wie eine Seite aussieht, wie sie sich anfühlt und wie Besucher durch sie hindurchfinden.</p>
+              <p>Sein Anspruch: Jede Seite soll aussehen, als wäre sie nur für dieses eine Geschäft gemacht. Keine Vorlage, der man ansieht, dass tausend andere sie auch benutzen.</p>
             </div>
-          </div>
+          </article>
 
-          <div class="team-card reveal" data-delay="100">
-            <span class="team-avatar" aria-hidden="true">S</span>
-            <div>
+          <article class="person person-gedreht reveal" data-delay="100">
+            <figure class="person-bild">
+              <img src="assets/img/team/severin.svg" alt="Severin, Mitgründer von masesites"
+                   width="480" height="560" loading="lazy">
+            </figure>
+            <div class="person-text">
+              <span class="person-rolle">Mitgründer · Technik und Projekte</span>
               <h3>Severin</h3>
-              <p>Mitgründer von masesites. Sorgt dafür, dass Projekte rund laufen und die Technik dahinter zuverlässig ist.</p>
+              <p>Severin sorgt dafür, dass die Technik dahinter zuverlässig läuft und Projekte rund durchlaufen: Server, Sicherheit, Datenschutz und die Absprachen, damit niemand auf eine Antwort warten muss.</p>
+              <p>Er ist meistens der erste Kontakt: Er hört zu, schätzt ehrlich ein, was ein Projekt braucht – und sagt auch, wenn etwas Kleineres genügt.</p>
             </div>
-          </div>
+          </article>
 
         </div>
       </div>

@@ -96,7 +96,14 @@
 
       nach(bauEnde + 420, function () {
         if (fertig) return;
-        if (szene) szene.classList.add("uu-zieht");   /* Coder blendet aus */
+        if (!szene) return;
+        /* Echte Hoehe messen, damit die Szene genau um ihre eigene
+           Hoehe nach oben faehrt und der Inhalt darunter passgenau
+           nachrueckt - ein fester Wert wuerde je nach Bildschirm
+           entweder eine Luecke oder einen Sprung erzeugen. */
+        szene.style.setProperty("--uu-hoehe", szene.offsetHeight + "px");
+        void szene.offsetHeight;
+        szene.classList.add("uu-zieht");   /* Text schiebt den Coder hinaus */
       });
 
       nach(bauEnde + 420 + 700, function () {

@@ -51,8 +51,10 @@
     e.preventDefault();
     zeigeFehler("admin-fehler", "");
     var pw = loginForm.querySelector('[name="passwort"]').value;
+    var merkenFeld = document.getElementById("a-merken");
+    var merken = !!(merkenFeld && merkenFeld.checked);
     /* Der Server prüft das Passwort und setzt das Sitzungscookie */
-    D.adminAnmelden(pw).then(function () {
+    D.adminAnmelden(pw, merken).then(function () {
       return D.bereit("admin");
     }).then(function (zustand) {
       if (!zustand.angemeldet) {
@@ -242,6 +244,21 @@
       document.querySelectorAll('[data-kz="' + name + '"]').forEach(function (b) {
         b.textContent = String(werte[name]);
       });
+    });
+  }
+
+  /* Angemeldet-bleiben auf allen Geraeten aufheben */
+  var merkerKnopf = document.getElementById("merker-loeschen");
+  if (merkerKnopf) {
+    merkerKnopf.addEventListener("click", function () {
+      if (!confirm("Auf allen Geräten abmelden? Danach ist überall wieder das Passwort nötig – auch hier.")) return;
+      zeigeFehler("merker-fehler", "");
+      D.adminMerkerLoeschen().then(function () {
+        var ok = document.getElementById("merker-ok");
+        ok.classList.add("show");
+        setTimeout(function () { ok.classList.remove("show"); }, 4000);
+        adminLog("Angemeldet-bleiben aufgehoben", "alle Geräte");
+      }).catch(function (f) { zeigeFehler("merker-fehler", f.message); });
     });
   }
 

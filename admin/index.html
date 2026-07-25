@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../assets/css/style.css?v=38">
+  <link rel="stylesheet" href="../assets/css/style.css?v=40">
 </head>
 <body class="app" data-no-widget>
 
@@ -36,6 +36,12 @@
               <label for="a-passwort">Passwort</label>
               <input id="a-passwort" name="passwort" type="password" required autocomplete="current-password" placeholder="Admin-Passwort">
             </div>
+            <label class="check-zeile" for="a-merken" style="display:flex;align-items:flex-start;gap:10px;margin:4px 0 14px;cursor:pointer;">
+              <input id="a-merken" name="merken" type="checkbox" style="margin-top:3px;">
+              <span>Auf diesem Gerät angemeldet bleiben
+                <small class="feld-hinweis" style="display:block;margin-top:2px;">Nur auf deinen eigenen Geräten aktivieren. Gilt bis zu 14 Tage ohne Nutzung, längstens 90 Tage. Jederzeit unter Einstellungen widerrufbar.</small>
+              </span>
+            </label>
             <p class="form-error" id="admin-fehler" role="alert"></p>
             <button class="btn btn-primary" type="submit">Anmelden <span class="arrow">→</span></button>
           </form>
@@ -625,6 +631,15 @@
 
             <div class="panel-grid">
               <div class="dash-card">
+                <h3>Angemeldet bleiben</h3>
+                <p class="dash-hinweis" style="margin-top:0;">Hebt «angemeldet bleiben» auf allen Geräten auf. Danach ist überall wieder das Passwort nötig – sinnvoll, wenn ein Gerät verloren geht oder du dir unsicher bist.</p>
+                <p class="form-error" id="merker-fehler" role="alert"></p>
+                <button class="btn btn-ghost" type="button" id="merker-loeschen">Auf allen Geräten abmelden</button>
+                <div class="form-success" id="merker-ok" role="status">
+                  <strong>Erledigt.</strong> Alle Geräte müssen sich neu anmelden.
+                </div>
+              </div>
+              <div class="dash-card">
                 <h3>Admin-Passwort ändern</h3>
                 <form id="pw-form" class="auth-form">
                   <div class="form-field">
@@ -667,7 +682,7 @@
   </footer>
 
   <script src="../assets/js/sanft.js?v=1"></script>
-  <script src="../assets/js/daten.js?v=22"></script>
-  <script src="../assets/js/admin.js?v=27"></script>
+  <script src="../assets/js/daten.js?v=23"></script>
+  <script src="../assets/js/admin.js?v=28"></script>
 </body>
 </html>

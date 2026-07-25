@@ -38,6 +38,13 @@ const COOKIE_NAMEN = [
     'mitarbeiter' => 'ms_sitzung_ma',
     'admin' => 'ms_sitzung_admin',
 ];
+/* "Angemeldet bleiben" fuer den Admin-Bereich.
+   MERKER_DAUER laeuft bei jeder Nutzung neu an, MERKER_MAX ist die
+   harte Obergrenze ab Erstanmeldung - ohne sie waere ein einmal
+   gestohlener Zugang unbegrenzt lange gueltig. */
+const MERKER_COOKIE = 'ms_merker_admin';
+const MERKER_DAUER = 14 * 24 * 3600;   /* 14 Tage ohne Nutzung */
+const MERKER_MAX   = 90 * 24 * 3600;   /* 90 Tage absolut */
 const LOG_LIMIT = 5000;
 const BOTLOG_LIMIT = 2000;
 const KOERPER_LIMIT = 256 * 1024;
@@ -275,6 +282,13 @@ try {
     typ        TEXT NOT NULL,
     wer        TEXT NOT NULL,
     ablauf     INTEGER NOT NULL
+  );
+  CREATE TABLE IF NOT EXISTS merker (
+    token_hash TEXT PRIMARY KEY,
+    wer        TEXT NOT NULL,
+    geraet     TEXT NOT NULL,
+    ablauf     INTEGER NOT NULL,
+    erstellt   INTEGER NOT NULL
   );
   CREATE TABLE IF NOT EXISTS einstellungen (
     schluessel TEXT PRIMARY KEY,
@@ -990,6 +1004,131 @@ function loescheSitzungscookie(array $typen): void
         ]);
     }
 }
+/* ---------- "Angemeldet bleiben" (nur Admin) ----------
+   Sicherheitsentwurf, weil es hier um den hoechstprivilegierten Bereich
+   geht:
+   - Eigener Token, getrennt von der Sitzung, nur als SHA-256-Hash
+     gespeichert. Wer die Datenbank liest, kann sich nicht anmelden.
+   - Rotation: Bei jeder Nutzung wird der Token verbraucht und ein neuer
+     ausgegeben. Ein abgefangener Token ist damit hoechstens einmal
+     brauchbar.
+   - Diebstahl-Erkennung: Taucht ein Token auf, der gueltig aussieht,
+     aber nicht (mehr) in der Datenbank steht, wurde er entweder
+     gestohlen und bereits benutzt oder widerrufen. Dann fliegen ALLE
+     Merker raus und es wird protokolliert - der Angreifer verliert den
+     Zugang, auch wenn er schneller war als der echte Nutzer.
+   - Geraetebindung: Der Token gilt nur mit demselben Browser-Kennzeichen.
+   - Zwei Fristen: MERKER_DAUER laeuft bei Nutzung neu an, MERKER_MAX ist
+     die harte Grenze ab Erstanmeldung.
+   Bewusst nur fuer Admin und nur auf ausdruecklichen Wunsch (Haekchen). */
+
+function geraeteKennung(): string
+{
+    global $K_INDEX;
+    $ua = (string)($_SERVER['HTTP_USER_AGENT'] ?? '');
+    return hash_hmac('sha256', $ua, $K_INDEX);
+}
+
+function setzeMerkerCookie(string $token, int $ablauf): void
+{
+    setcookie(MERKER_COOKIE, $token, [
+        'expires' => $ablauf,
+        'path' => '/',
+        'httponly' => true,
+        'samesite' => 'Lax',
+        'secure' => istHttps(),
+    ]);
+}
+
+function erstelleMerker(string $wer, ?int $erstellt = null): void
+{
+    global $db;
+    $token = bin2hex(random_bytes(32));
+    $jetzt = time();
+    $erstellt = $erstellt ?? $jetzt;
+    /* Ablauf ist das Minimum aus gleitender Frist und harter Obergrenze */
+    $ablauf = min($jetzt + MERKER_DAUER, $erstellt + MERKER_MAX);
+    if ($ablauf <= $jetzt) {
+        loescheMerkerCookie();
+        return;
+    }
+    $db->prepare('INSERT INTO merker (token_hash, wer, geraet, ablauf, erstellt) VALUES (?, ?, ?, ?, ?)')
+        ->execute([tokenHash($token), $wer, geraeteKennung(), $ablauf, $erstellt]);
+    setzeMerkerCookie($token, $ablauf);
+}
+
+function loescheMerkerCookie(): void
+{
+    setcookie(MERKER_COOKIE, '', [
+        'expires' => time() - 3600, 'path' => '/',
+        'httponly' => true, 'samesite' => 'Lax', 'secure' => istHttps(),
+    ]);
+}
+
+/* Alle Merker widerrufen - bei Diebstahlverdacht, Abmeldung auf allen
+   Geraeten oder Passwortwechsel. */
+function loescheAlleMerker(string $wer = 'admin'): void
+{
+    global $db;
+    $db->prepare('DELETE FROM merker WHERE wer = ?')->execute([$wer]);
+}
+
+/* Prueft den Merker-Token und stellt bei Erfolg eine Sitzung her.
+   Gibt true zurueck, wenn danach eine gueltige Admin-Sitzung besteht. */
+function versucheMerker(): bool
+{
+    global $db;
+    $token = (string)($_COOKIE[MERKER_COOKIE] ?? '');
+    if ($token === '' || !preg_match('/^[a-f0-9]{64}$/', $token)) {
+        return false;
+    }
+    $s = $db->prepare('SELECT token_hash, wer, geraet, ablauf, erstellt FROM merker WHERE token_hash = ?');
+    $s->execute([tokenHash($token)]);
+    $zeile = $s->fetch();
+
+    if (!$zeile) {
+        /* Formal gueltiger Token, der nicht existiert: entweder bereits
+           verbraucht (also kopiert) oder widerrufen. Beides ist ein
+           Alarmzeichen - alles widerrufen statt einfach abzulehnen. */
+        loescheAlleMerker('admin');
+        loescheMerkerCookie();
+        schreibeLog('System', clientIp(), 'admin',
+            'Angemeldet-bleiben widerrufen', 'Unbekannter Merker-Token - moeglicher Diebstahl');
+        return false;
+    }
+
+    $jetzt = time();
+    $verbraucht = function () use ($db, $zeile) {
+        $db->prepare('DELETE FROM merker WHERE token_hash = ?')->execute([$zeile['token_hash']]);
+    };
+
+    if ((int)$zeile['ablauf'] < $jetzt || (int)$zeile['erstellt'] + MERKER_MAX < $jetzt) {
+        $verbraucht();
+        loescheMerkerCookie();
+        return false;
+    }
+    if (!hash_equals((string)$zeile['geraet'], geraeteKennung())) {
+        /* Anderer Browser als bei der Anmeldung: Token gilt nicht. */
+        $verbraucht();
+        loescheMerkerCookie();
+        schreibeLog('System', clientIp(), 'admin',
+            'Angemeldet-bleiben abgelehnt', 'Anderes Geraet');
+        return false;
+    }
+
+    /* Gueltig: Token verbrauchen, neuen ausgeben, Sitzung herstellen. */
+    $verbraucht();
+    erstelleMerker((string)$zeile['wer'], (int)$zeile['erstellt']);
+    $neu = erstelleSitzung('admin', (string)$zeile['wer']);
+    setzeSitzungscookie($neu, 'admin');
+    /* $_COOKIE stammt aus der eingehenden Anfrage und weiss nichts von
+       dem Cookie, das wir gerade erst setzen. Ohne diese Zeile faende
+       findeSitzung() im selben Durchlauf nichts und die Anfrage wuerde
+       trotz gueltigem Merker mit 401 enden. */
+    $_COOKIE[COOKIE_NAMEN['admin']] = $neu;
+    return true;
+}
+
 function raeumeSitzungenAuf(): void
 {
     global $db;
@@ -997,6 +1136,8 @@ function raeumeSitzungenAuf(): void
         return;   /* nur gelegentlich, spart Arbeit */
     }
     $db->prepare('DELETE FROM sitzungen WHERE ablauf < ?')->execute([time()]);
+    $db->prepare('DELETE FROM merker WHERE ablauf < ? OR erstellt + ? < ?')
+        ->execute([time(), MERKER_MAX, time()]);
     $db->prepare('DELETE FROM raten WHERE bis < ?')->execute([jetztMs()]);
 }
 
@@ -1629,6 +1770,11 @@ route('POST', '/api/abmelden', null, function ($p, $body) {
         loescheSitzung($typ);
     }
     loescheSitzungscookie($typen);
+    /* Wer sich abmeldet, will auch nicht automatisch wieder drin sein. */
+    if (in_array('admin', $typen, true)) {
+        loescheAlleMerker('admin');
+        loescheMerkerCookie();
+    }
     antwortJson(200, ['ok' => true]);
 });
 
@@ -1706,7 +1852,25 @@ route('POST', '/api/admin/anmelden', null, function ($p, $body) {
         fehler(401, 'Falsches Passwort.');
     }
     setzeSitzungscookie(erstelleSitzung('admin', 'admin'), 'admin');
-    schreibeLog('Admin', clientIp(), 'admin', 'Admin angemeldet', '');
+    /* Nur auf ausdruecklichen Wunsch: bestehende Merker dieses Kontos
+       zuerst widerrufen, damit nicht unbemerkt mehrere alte Zugaenge
+       gueltig bleiben. */
+    if (!empty($body['merken'])) {
+        loescheAlleMerker('admin');
+        erstelleMerker('admin');
+        schreibeLog('Admin', clientIp(), 'admin', 'Admin angemeldet', 'mit "angemeldet bleiben"');
+    } else {
+        loescheMerkerCookie();
+        schreibeLog('Admin', clientIp(), 'admin', 'Admin angemeldet', '');
+    }
+    antwortJson(200, ['ok' => true]);
+});
+
+/* Auf allen Geraeten abmelden: widerruft jeden Merker sofort. */
+route('POST', '/api/admin/merker-loeschen', 'admin', function () {
+    loescheAlleMerker('admin');
+    loescheMerkerCookie();
+    schreibeLog('Admin', clientIp(), 'admin', 'Angemeldet-bleiben auf allen Geräten aufgehoben', '');
     antwortJson(200, ['ok' => true]);
 });
 
@@ -1940,6 +2104,17 @@ route('POST', '/api/admin/passwort', 'admin', function ($p, $body) {
     /* Andere Admin-Sitzungen beenden, die eigene bleibt gültig */
     $eigenes = tokenHash($_COOKIE[COOKIE_NAMEN['admin']] ?? '');
     $db->prepare("DELETE FROM sitzungen WHERE typ = 'admin' AND token_hash != ?")->execute([$eigenes]);
+    /* Auch jedes "angemeldet bleiben" widerrufen: Wer das Passwort
+       aendert, will Zugaenge schliessen - ein alter Merker wuerde das
+       sonst aushebeln. Fuer dieses Geraet gleich einen neuen ausgeben,
+       damit man nicht selbst ausgesperrt wird. */
+    $hatteMerker = isset($_COOKIE[MERKER_COOKIE]) && $_COOKIE[MERKER_COOKIE] !== '';
+    loescheAlleMerker('admin');
+    if ($hatteMerker) {
+        erstelleMerker('admin');
+    } else {
+        loescheMerkerCookie();
+    }
     @unlink($DATEN_ORDNER . '/admin-startpasswort.txt');
     schreibeLog('Admin', clientIp(), 'admin', 'Admin-Passwort geändert', '');
     antwortJson(200, ['ok' => true]);
@@ -2503,6 +2678,11 @@ foreach ($ROUTEN as $r) {
         $params[$name] = $treffer[$i + 1];
     }
     $sitzung = $r['schutz'] ? findeSitzung($r['schutz']) : irgendeineSitzung();
+    /* Keine Admin-Sitzung, aber ein "angemeldet bleiben"-Token? Dann
+       einmalig einloesen (und dabei rotieren). Bewusst nur fuer Admin. */
+    if (!$sitzung && $r['schutz'] === 'admin' && versucheMerker()) {
+        $sitzung = findeSitzung('admin');
+    }
     if ($r['schutz'] && !$sitzung) {
         fehler(401, 'Nicht angemeldet.');
     }

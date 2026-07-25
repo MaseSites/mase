@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 560" role="img" aria-label="Platzhalter-Portraet Severin">
+  <!-- PLATZHALTER: durch ein echtes Foto ersetzen (siehe Kommentar in ueber-uns.html) -->
+  <defs>
+    <linearGradient id="sBg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#EFE6D6"/><stop offset="1" stop-color="#DCCCB0"/>
+    </linearGradient>
+  </defs>
+  <rect width="480" height="560" fill="url(#sBg)"/>
+  <circle cx="240" cy="200" r="118" fill="#E8DBC3"/>
+  <path d="M60 560c0-104 80-172 180-172s180 68 180 172z" fill="#3A2C1F"/>
+  <rect x="163" y="118" width="154" height="182" rx="72" fill="#483726"/>
+  <!-- Kuerzeres, welliges Haar -->
+  <path d="M163 190c4-56 36-90 77-90s73 34 77 90c-8-22-30-34-77-34s-69 12-77 34z" fill="#A87C4F"/>
+  <path d="M198 402l42 46 42-46 26 14-68 74-68-74z" fill="#EFE6D6" opacity=".92"/>
+</svg>

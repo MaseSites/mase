@@ -2785,15 +2785,23 @@ html.uu-bau .uu-szene { display: flex; }
   100% { opacity: 0; }
 }
 
-/* ---------- Finale: der Coder blendet aus ----------
-   Wenn der letzte Abschnitt gebaut ist, steht die Seite fertig da.
-   ueberuns.js schaltet dann .uu-zieht - die Figur sinkt sanft weg und
-   blendet aus, mehr passiert nicht. Ein zusaetzlicher Vorhang ueber die
-   ganze Seite (frueher hier) liess fertigen Inhalt grundlos wieder
-   verschwinden und neu erscheinen; das wirkte wie ein Fehler. */
+/* ---------- Finale: der Text schiebt den Coder aus dem Bild ----------
+   Frueher blendete die Figur einfach aus - sie verschwand aus dem
+   Nichts, ohne dass etwas ihren Platz einnahm. Jetzt faehrt die Szene
+   nach oben aus dem Bild, waehrend ihr Platz zusammengeht: Der Inhalt
+   darunter rueckt dabei sichtbar nach, als wuerde der Text den Coder
+   nach oben hinausschieben. Die Hoehe misst ueberuns.js und setzt sie
+   als --uu-hoehe, damit die Bewegung genau passt. */
+.uu-szene {
+  overflow: hidden;
+  transition: margin-top 0.85s var(--ease-out), opacity 0.5s ease 0.2s;
+}
+.uu-szene.uu-zieht {
+  margin-top: calc(var(--uu-hoehe, 260px) * -1);
+  opacity: 0;
+}
 .uu-szene .uu-figur {
   transform-box: view-box; transform-origin: 150px 208px;
-  transition: transform 0.7s var(--ease-out), opacity 0.7s ease;
 }
 .uu-szene.uu-steht .uu-arm,
 .uu-szene.uu-steht .uu-arm2,
@@ -2801,10 +2809,8 @@ html.uu-bau .uu-szene { display: flex; }
 .uu-szene.uu-zieht .uu-arm2 { animation: none; transition: transform 0.5s var(--ease-out); }
 /* Kein Aufstehen mehr: die Figur bleibt sitzen und tippt ruhig weiter,
    bis sie am Ende sanft ausblendet. Das Hochrucken wirkte abgehackt. */
-/* Kein Ducken mehr: die Figur gleitet sanft nach unten weg und blendet
-   dabei aus, waehrend der Vorhang hochfaehrt - so verschwindet sie ruhig,
-   statt sich unschoen zusammenzuquetschen. */
-.uu-szene.uu-zieht .uu-figur { transform: translateY(46px); opacity: 0; }
+/* Die Figur selbst bleibt unveraendert - bewegt wird die ganze Szene,
+   damit es aussieht, als schoebe der nachrueckende Text sie hinaus. */
 
 @media (prefers-reduced-motion: reduce) {
   .stagger-warten > *, .stagger-los > * { opacity: 1; animation: none; }
@@ -3400,4 +3406,67 @@ body.ms-cookie-offen .widget-panel { bottom: calc(var(--ms-cookie-h, 90px) + 90p
   .pf-opt-text { font-size: 0.84rem; }
   .pf-unsicher { margin-top: 14px; font-size: 0.83rem; }
   .pf-aktionen .btn { flex: 1 1 100%; justify-content: center; }
+}
+
+/* "Alles optional" neben der Ueberschrift der laufenden Kosten:
+   ruhiger als die Preis-Marken in der Liste, damit es als Hinweis
+   und nicht als Werbeaufkleber gelesen wird. */
+.pl-marke-frei {
+  background: var(--bg-warm);
+  color: var(--ink-soft);
+  border: 1px solid var(--line-strong);
+  vertical-align: middle;
+  margin-left: 10px;
+}
+
+/* ---------- Ueber uns: Personen als eigene Abschnitte ----------
+   Statt zwei kleiner Kaestchen bekommt jede Person einen eigenen
+   Abschnitt mit Bild und Text; der zweite ist gespiegelt, damit die
+   Seite nicht monoton wirkt. */
+.personen { display: grid; gap: 56px; }
+.person {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: 40px;
+  align-items: center;
+}
+.person-gedreht .person-bild { order: 2; }
+.person-bild {
+  margin: 0;
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  background: var(--bg-warm);
+  border: 1px solid var(--line-strong);
+}
+.person-bild img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 480 / 560;
+  object-fit: cover;
+}
+.person-rolle {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-bottom: 8px;
+}
+.person-text h3 {
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  letter-spacing: -0.02em;
+  margin-bottom: 14px;
+}
+.person-text p { color: var(--ink-soft); line-height: 1.65; margin-bottom: 12px; max-width: 54ch; }
+.person-text p:last-child { margin-bottom: 0; }
+
+@media (max-width: 860px) {
+  .person { grid-template-columns: 1fr; gap: 22px; }
+  /* Auf dem Handy steht das Bild immer oben - gespiegelt zu stapeln
+     wuerde die Reihenfolge Bild/Text unvorhersehbar machen. */
+  .person-gedreht .person-bild { order: 0; }
+  .person-bild { max-width: 320px; }
+  .personen { gap: 44px; }
 }

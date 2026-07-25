@@ -183,8 +183,12 @@ window.MSDaten = (function () {
       : "kunde";
     return api("/api/abmelden", "POST", { typ: typ }).catch(function () {});
   }
-  function adminAnmelden(passwort) {
-    return api("/api/admin/anmelden", "POST", { passwort: passwort });
+  function adminAnmelden(passwort, merken) {
+    return api("/api/admin/anmelden", "POST", { passwort: passwort, merken: !!merken });
+  }
+  /* Hebt "angemeldet bleiben" auf allen Geraeten auf */
+  function adminMerkerLoeschen() {
+    return api("/api/admin/merker-loeschen", "POST", {});
   }
   function adminPasswortAendern(alt, neu) {
     return api("/api/admin/passwort", "POST", { alt: alt, neu: neu }).then(function () {
@@ -485,6 +489,7 @@ window.MSDaten = (function () {
     googleAnmeldung: googleAnmeldung,
     abmelden: abmelden,
     adminAnmelden: adminAnmelden,
+    adminMerkerLoeschen: adminMerkerLoeschen,
     adminPasswortAendern: adminPasswortAendern,
     adminPwGeaendert: adminPwGeaendert,
     mcsAnmelden: mcsAnmelden,

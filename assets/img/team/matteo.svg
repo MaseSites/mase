@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 560" role="img" aria-label="Platzhalter-Portraet Matteo">
+  <!-- PLATZHALTER: durch ein echtes Foto ersetzen (siehe Kommentar in ueber-uns.html) -->
+  <defs>
+    <linearGradient id="mBg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#F3E9D8"/><stop offset="1" stop-color="#E2D2B6"/>
+    </linearGradient>
+  </defs>
+  <rect width="480" height="560" fill="url(#mBg)"/>
+  <circle cx="240" cy="200" r="118" fill="#EFE3CD"/>
+  <!-- Schultern -->
+  <path d="M60 560c0-104 80-172 180-172s180 68 180 172z" fill="#2C2118"/>
+  <!-- Kopf -->
+  <rect x="163" y="118" width="154" height="182" rx="72" fill="#3A2C1F"/>
+  <!-- Haare -->
+  <path d="M163 196c0-58 34-96 77-96s77 38 77 96c0-30-24-44-77-44s-77 14-77 44z" fill="#241A11"/>
+  <!-- Kragen -->
+  <path d="M198 402l42 46 42-46 26 14-68 74-68-74z" fill="#F3E9D8" opacity=".92"/>
+</svg>

@@ -165,6 +165,13 @@ db.exec(`
     wer        TEXT NOT NULL,     -- email_idx bzw. Mitarbeiter-ID bzw. 'admin'
     ablauf     INTEGER NOT NULL
   );
+  CREATE TABLE IF NOT EXISTS merker (
+    token_hash TEXT PRIMARY KEY,
+    wer        TEXT NOT NULL,
+    geraet     TEXT NOT NULL,
+    ablauf     INTEGER NOT NULL,
+    erstellt   INTEGER NOT NULL
+  );
   CREATE TABLE IF NOT EXISTS einstellungen (
     schluessel TEXT PRIMARY KEY,
     wert       TEXT NOT NULL
@@ -715,6 +722,17 @@ function raeumeSitzungenAuf() {
   if (Date.now() - letzteAufraeumzeit < 5 * 60000) return;
   letzteAufraeumzeit = Date.now();
   db.prepare("DELETE FROM sitzungen WHERE ablauf < ?").run(Date.now());
+  db.prepare("DELETE FROM merker WHERE ablauf < ? OR erstellt + ? < ?")
+    .run(Date.now(), MERKER_MAX, Date.now());
+}
+
+/* Set-Cookie darf mehrfach vorkommen; setHeader wuerde den vorherigen
+   Wert ersetzen. Beim Anmelden mit "angemeldet bleiben" werden zwei
+   Cookies gesetzt - ohne dieses Anhaengen ginge eines verloren. */
+function fuegeCookieHinzu(res, cookie) {
+  const bisher = res.getHeader("Set-Cookie");
+  if (!bisher) res.setHeader("Set-Cookie", cookie);
+  else res.setHeader("Set-Cookie", (Array.isArray(bisher) ? bisher : [bisher]).concat(cookie));
 }
 
 function setzeSitzungscookie(res, req, token, typ) {
@@ -723,11 +741,89 @@ function setzeSitzungscookie(res, req, token, typ) {
   let cookie = COOKIE_NAMEN[typ] + "=" + token + "; Path=/; HttpOnly; SameSite=Lax";
   if (typ === "kunde") cookie += "; Max-Age=" + Math.floor(SITZUNG_DAUER.kunde / 1000);
   if (istHttps(req)) cookie += "; Secure";
-  res.setHeader("Set-Cookie", cookie);
+  fuegeCookieHinzu(res, cookie);
 }
 function loescheSitzungscookie(res, typen) {
-  res.setHeader("Set-Cookie", typen.map((typ) =>
+  fuegeCookieHinzu(res, typen.map((typ) =>
     COOKIE_NAMEN[typ] + "=; Path=/; HttpOnly; SameSite=Lax; Max-Age=0"));
+}
+
+/* ---------- "Angemeldet bleiben" (nur Admin) ----------
+   Gegenstueck zur PHP-Fassung, gleiche Schutzmassnahmen: eigener Token
+   getrennt von der Sitzung, nur gehasht gespeichert, Rotation bei jeder
+   Nutzung, Diebstahl-Erkennung bei unbekanntem Token, Geraetebindung,
+   plus gleitende und absolute Frist. */
+const MERKER_COOKIE = "ms_merker_admin";
+const MERKER_DAUER = 14 * 24 * 3600 * 1000;   /* 14 Tage ohne Nutzung */
+const MERKER_MAX = 90 * 24 * 3600 * 1000;     /* 90 Tage absolut */
+
+function geraeteKennung(req) {
+  return crypto.createHmac("sha256", K_INDEX)
+    .update(String(req.headers["user-agent"] || "")).digest("hex");
+}
+function setzeMerkerCookie(res, req, token, maxAlterMs) {
+  let c = MERKER_COOKIE + "=" + token + "; Path=/; HttpOnly; SameSite=Lax; Max-Age=" +
+    Math.floor(maxAlterMs / 1000);
+  if (istHttps(req)) c += "; Secure";
+  fuegeCookieHinzu(res, c);
+}
+function loescheMerkerCookie(res) {
+  fuegeCookieHinzu(res, MERKER_COOKIE + "=; Path=/; HttpOnly; SameSite=Lax; Max-Age=0");
+}
+function loescheAlleMerker(wer) {
+  db.prepare("DELETE FROM merker WHERE wer = ?").run(wer || "admin");
+}
+function erstelleMerker(res, req, wer, erstellt) {
+  const jetzt = Date.now();
+  erstellt = erstellt || jetzt;
+  const ablauf = Math.min(jetzt + MERKER_DAUER, erstellt + MERKER_MAX);
+  if (ablauf <= jetzt) { loescheMerkerCookie(res); return; }
+  const token = crypto.randomBytes(32).toString("hex");
+  db.prepare("INSERT INTO merker (token_hash, wer, geraet, ablauf, erstellt) VALUES (?, ?, ?, ?, ?)")
+    .run(tokenHash(token), wer, geraeteKennung(req), ablauf, erstellt);
+  setzeMerkerCookie(res, req, token, ablauf - jetzt);
+}
+/* Loest den Merker ein und stellt bei Erfolg eine Admin-Sitzung her. */
+function versucheMerker(req, res) {
+  const token = lesecookie(req, MERKER_COOKIE);
+  if (!token || !/^[a-f0-9]{64}$/.test(token)) return false;
+  const zeile = db.prepare("SELECT token_hash, wer, geraet, ablauf, erstellt FROM merker WHERE token_hash = ?")
+    .get(tokenHash(token));
+
+  if (!zeile) {
+    /* Formal gueltig, aber unbekannt: bereits verbraucht (also kopiert)
+       oder widerrufen. Alles widerrufen statt nur abzulehnen. */
+    loescheAlleMerker("admin");
+    loescheMerkerCookie(res);
+    schreibeLog("System", clientIp(req), "admin",
+      "Angemeldet-bleiben widerrufen", "Unbekannter Merker-Token - moeglicher Diebstahl");
+    return false;
+  }
+
+  const weg = () => db.prepare("DELETE FROM merker WHERE token_hash = ?").run(zeile.token_hash);
+  const jetzt = Date.now();
+  if (zeile.ablauf < jetzt || zeile.erstellt + MERKER_MAX < jetzt) {
+    weg(); loescheMerkerCookie(res); return false;
+  }
+  const a = Buffer.from(String(zeile.geraet));
+  const b = Buffer.from(geraeteKennung(req));
+  if (a.length !== b.length || !crypto.timingSafeEqual(a, b)) {
+    weg(); loescheMerkerCookie(res);
+    schreibeLog("System", clientIp(req), "admin", "Angemeldet-bleiben abgelehnt", "Anderes Geraet");
+    return false;
+  }
+
+  weg();
+  erstelleMerker(res, req, zeile.wer, zeile.erstellt);
+  const neu = erstelleSitzung("admin", zeile.wer);
+  setzeSitzungscookie(res, req, neu, "admin");
+  /* req.headers.cookie stammt aus der eingehenden Anfrage und kennt das
+     eben gesetzte Cookie nicht. Ohne diese Ergaenzung faende
+     findeSitzung() im selben Durchlauf nichts und die Anfrage wuerde
+     trotz gueltigem Merker mit 401 enden. */
+  req.headers.cookie = (req.headers.cookie ? req.headers.cookie + "; " : "") +
+    COOKIE_NAMEN.admin + "=" + neu;
+  return true;
 }
 
 /* ---------- Kleine HTTP-Helfer ---------- */
@@ -1047,6 +1143,11 @@ route("POST", "/api/abmelden", null, (req, res, p, body) => {
   const typen = COOKIE_NAMEN[body.typ] ? [body.typ] : ["kunde", "mitarbeiter", "admin"];
   typen.forEach((typ) => loescheSitzung(req, typ));
   loescheSitzungscookie(res, typen);
+  /* Wer sich abmeldet, will auch nicht automatisch wieder drin sein. */
+  if (typen.includes("admin")) {
+    loescheAlleMerker("admin");
+    loescheMerkerCookie(res);
+  }
   antwortJson(res, 200, { ok: true });
 });
 
@@ -1114,7 +1215,24 @@ route("POST", "/api/admin/anmelden", null, async (req, res, p, body) => {
   }
   const token = erstelleSitzung("admin", "admin");
   setzeSitzungscookie(res, req, token, "admin");
-  schreibeLog("Admin", clientIp(req), "admin", "Admin angemeldet", "");
+  /* Nur auf ausdruecklichen Wunsch. Bestehende Merker zuerst widerrufen,
+     damit nicht unbemerkt alte Zugaenge gueltig bleiben. */
+  if (body.merken) {
+    loescheAlleMerker("admin");
+    erstelleMerker(res, req, "admin");
+    schreibeLog("Admin", clientIp(req), "admin", "Admin angemeldet", 'mit "angemeldet bleiben"');
+  } else {
+    loescheMerkerCookie(res);
+    schreibeLog("Admin", clientIp(req), "admin", "Admin angemeldet", "");
+  }
+  antwortJson(res, 200, { ok: true });
+});
+
+/* Auf allen Geraeten abmelden: widerruft jeden Merker sofort. */
+route("POST", "/api/admin/merker-loeschen", "admin", (req, res) => {
+  loescheAlleMerker("admin");
+  loescheMerkerCookie(res);
+  schreibeLog("Admin", clientIp(req), "admin", "Angemeldet-bleiben auf allen Geräten aufgehoben", "");
   antwortJson(res, 200, { ok: true });
 });
 
@@ -1284,6 +1402,14 @@ route("POST", "/api/admin/passwort", "admin", async (req, res, p, body) => {
   /* Andere Admin-Sitzungen beenden, die eigene bleibt gültig */
   const eigenes = tokenHash(lesecookie(req, COOKIE_NAMEN.admin) || "");
   db.prepare("DELETE FROM sitzungen WHERE typ = 'admin' AND token_hash != ?").run(eigenes);
+  /* Auch jedes "angemeldet bleiben" widerrufen: Wer das Passwort
+     aendert, will Zugaenge schliessen - ein alter Merker wuerde das
+     sonst aushebeln. Fuer dieses Geraet gleich einen neuen ausgeben,
+     damit man sich nicht selbst aussperrt. */
+  const hatteMerker = !!lesecookie(req, MERKER_COOKIE);
+  loescheAlleMerker("admin");
+  if (hatteMerker) erstelleMerker(res, req, "admin");
+  else loescheMerkerCookie(res);
   try { fs.unlinkSync(path.join(DATEN_ORDNER, "admin-startpasswort.txt")); } catch (e) {}
   schreibeLog("Admin", clientIp(req), "admin", "Admin-Passwort geändert", "");
   antwortJson(res, 200, { ok: true });
@@ -1586,7 +1712,12 @@ async function behandle(req, res) {
 
     /* Geschützte Routen lesen das Cookie ihrer Rolle; offene Routen
        (Protokoll, Abmelden) nehmen die erste vorhandene Sitzung */
-    const sitzung = r.schutz ? findeSitzung(req, r.schutz) : irgendeineSitzung(req);
+    let sitzung = r.schutz ? findeSitzung(req, r.schutz) : irgendeineSitzung(req);
+    /* Keine Admin-Sitzung, aber ein "angemeldet bleiben"-Token? Dann
+       einmalig einloesen (und dabei rotieren). Nur fuer Admin. */
+    if (!sitzung && r.schutz === "admin" && versucheMerker(req, res)) {
+      sitzung = findeSitzung(req, "admin");
+    }
     if (r.schutz && !sitzung) {
       return fehler(res, 401, "Nicht angemeldet.");
     }
