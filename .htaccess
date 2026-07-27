@@ -51,6 +51,8 @@
 # ---------- Schutz sensibler Dateien ----------
 # Node-Server-Ordner (falls vorhanden) nie ausliefern
 RedirectMatch 404 ^/server(/|$)
+# Lokales Tooling (Sync-Skripte, Devserver) nie ausliefern
+RedirectMatch 404 ^/scripts(/|$)
 # Git-Metadaten und versteckte Konfigdateien sperren
 RedirectMatch 404 (^|/)\.(git|env)(/|$)
 # Datenbank-, Schlüssel- und Konfig-Dateien in jedem Ordner blocken

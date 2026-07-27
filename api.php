@@ -1568,6 +1568,36 @@ function stelleInhalteSicher(): void
             }
             setzeEinstellung('inhalte_tavolo_bild_fix', '1');
         }
+        /* Die 7 Original-Demos lagen auf Admin-Upload-Zufallsslugs
+           (/beispiel-demos/index-xxxx). Ab jetzt werden sie fest via
+           scripts/vorlagen-sync als /beispiel-demos/<slug>/ ausgeliefert.
+           Einmalig die URLs der 7 Eintraege (per Live-ID) auf die sauberen
+           Slugs umstellen. */
+        if (einstellung('inhalte_slugs7_gesetzt') === null) {
+            $slugs7 = [
+                'B-95369c68' => '/beispiel-demos/restaurant/',
+                'B-5e3f34c6' => '/beispiel-demos/reinigung/',
+                'B-30c72769' => '/beispiel-demos/coiffeur/',
+                'B-dde68005' => '/beispiel-demos/bauunternehmen/',
+                'B-9edf0bce' => '/beispiel-demos/gartenbau/',
+                'B-0a6deea6' => '/beispiel-demos/maler-gipser/',
+                'B-eceb26cd' => '/beispiel-demos/autogarage/',
+            ];
+            $liste = json_decode((string)einstellung('inhalte_beispiele'), true);
+            if (is_array($liste)) {
+                $geaendert = false;
+                foreach ($liste as $i => $e) {
+                    if (is_array($e) && isset($e['id'], $slugs7[$e['id']])) {
+                        $liste[$i]['url'] = $slugs7[$e['id']];
+                        $geaendert = true;
+                    }
+                }
+                if ($geaendert) {
+                    setzeEinstellung('inhalte_beispiele', json_encode(saeubereBeispiele($liste), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+                }
+            }
+            setzeEinstellung('inhalte_slugs7_gesetzt', '1');
+        }
         return;
     }
     setzeEinstellung('inhalte_tavolo_ergaenzt', '1');
