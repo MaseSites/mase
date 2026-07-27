@@ -34,6 +34,7 @@ $map = [ordered]@{
   "Fahrschulen Vorlage"                                  = "fahrschule"
   "Optiker und Brillengeschäfte Vorlage"                 = "optik"
   "Metzgereien und Feinkostläden Vorlage"                = "metzgerei"
+  "Arztpraxen und Hausarztpraxen Vorlage"                = "praxis"
 }
 
 if (-not (Test-Path $vorlagen)) { throw "Ordner nicht gefunden: $vorlagen" }

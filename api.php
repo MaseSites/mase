@@ -1598,6 +1598,27 @@ function stelleInhalteSicher(): void
             }
             setzeEinstellung('inhalte_slugs7_gesetzt', '1');
         }
+        /* Praxis-Demo (Hausarztpraxis) kam spaeter dazu - einmalig ergaenzen
+           (nur wenn nicht schon vorhanden). Wird via scripts/vorlagen-sync
+           unter /beispiel-demos/praxis/ ausgeliefert. */
+        if (einstellung('inhalte_praxis_ergaenzt') === null) {
+            $praxis = ['id' => 'B-arztpraxis', 'name' => 'Praxis am Park', 'branche' => 'Arztpraxis', 'beschreibung' => 'Ruhiger, vertrauensvoller Auftritt mit Leistungen, Sprechzeiten und Online-Terminanfrage.', 'url' => '/beispiel-demos/praxis/', 'bild' => 'assets/img/demos/praxis.jpg', 'startseite' => false];
+            $liste = json_decode((string)einstellung('inhalte_beispiele'), true);
+            if (is_array($liste)) {
+                $vorhanden = false;
+                foreach ($liste as $e) {
+                    if (is_array($e) && ($e['id'] ?? '') === 'B-arztpraxis') {
+                        $vorhanden = true;
+                        break;
+                    }
+                }
+                if (!$vorhanden) {
+                    $liste[] = $praxis;
+                    setzeEinstellung('inhalte_beispiele', json_encode(saeubereBeispiele($liste), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+                }
+            }
+            setzeEinstellung('inhalte_praxis_ergaenzt', '1');
+        }
         return;
     }
     setzeEinstellung('inhalte_tavolo_ergaenzt', '1');
