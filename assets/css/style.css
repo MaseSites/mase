@@ -3507,3 +3507,106 @@ body.ms-cookie-offen .widget-panel { bottom: calc(var(--ms-cookie-h, 90px) + 90p
 /* Einzelne Preis-Karte (KI-Assistent) nicht auf volle Breite ziehen -
    sie soll wie eine Karte aussehen, nicht wie ein Banner. */
 .pl-stufen-eins { max-width: 400px; margin-inline: auto; }
+
+/* ---------- To-do-Liste im Admin ----------
+   Prioritaet zeigt sich als farbiger Balken links. Bewusst nicht die
+   ganze Zeile einfaerben: Bei zwanzig Aufgaben waere die Liste sonst
+   ein Farbteppich, in dem nichts mehr heraussticht. */
+.td-liste { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+
+.td-item {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: start;
+  gap: 12px;
+  padding: 13px 14px 13px 11px;
+  background: var(--bg-soft);
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--line-strong);
+  border-radius: 10px;
+  transition: border-color 0.2s ease, background 0.2s ease, opacity 0.2s ease;
+}
+.td-item:hover { background: #fff; }
+.td-item.prio-hoch { border-left-color: #C0442F; }
+.td-item.prio-mittel { border-left-color: #D9A441; }
+.td-item.prio-tief { border-left-color: #6E8F76; }
+
+/* Abhak-Knopf */
+.td-haken {
+  width: 22px; height: 22px; flex: none;
+  margin-top: 1px;
+  border: 2px solid var(--line-strong);
+  border-radius: 6px;
+  background: #fff;
+  cursor: pointer;
+  display: grid; place-items: center;
+  color: #fff;
+  transition: background 0.18s ease, border-color 0.18s ease;
+}
+.td-haken:hover { border-color: var(--ink); }
+.td-haken svg { width: 13px; height: 13px; }
+.ist-fertig .td-haken { background: #4C7A5A; border-color: #4C7A5A; }
+
+.td-mitte { min-width: 0; }
+.td-titel { font-weight: 600; line-height: 1.4; color: var(--ink); word-break: break-word; }
+.td-notiz {
+  margin: 4px 0 0;
+  font-size: 0.87rem; line-height: 1.5;
+  color: var(--ink-soft);
+  word-break: break-word;
+}
+.td-meta { margin-top: 7px; display: flex; flex-wrap: wrap; gap: 7px; align-items: center; }
+.td-meta span {
+  font-size: 0.71rem; font-weight: 650; letter-spacing: 0.02em;
+  padding: 3px 9px; border-radius: 999px;
+  background: var(--bg-warm); color: var(--ink-soft);
+  border: 1px solid var(--line);
+}
+.prio-hoch .td-prio { background: #F7E2DE; border-color: #E3B6AC; color: #8A2F1F; }
+.prio-mittel .td-prio { background: #FBEFDC; border-color: #E0C68F; color: #6B4E16; }
+.prio-tief .td-prio { background: #E6EEE8; border-color: #B7CDBE; color: #33543D; }
+.td-wer.offen { opacity: 0.7; font-weight: 500; }
+.td-datum { background: transparent; border-color: transparent; color: var(--ink-faint); }
+
+.td-werkzeuge { display: flex; gap: 4px; align-items: center; flex: none; }
+.td-pfeil, .td-weg {
+  width: 28px; height: 28px;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  background: #fff;
+  color: var(--ink-soft);
+  cursor: pointer;
+  font-size: 0.95rem; line-height: 1;
+  display: grid; place-items: center;
+  transition: border-color 0.18s ease, color 0.18s ease;
+}
+.td-pfeil:hover:not(:disabled), .td-weg:hover { border-color: var(--ink); color: var(--ink); }
+.td-pfeil:disabled { opacity: 0.3; cursor: default; }
+.td-weg:hover { border-color: #C0442F; color: #C0442F; }
+
+/* Ziehen */
+.td-item[draggable="true"] { cursor: grab; }
+.td-item.wird-gezogen { opacity: 0.45; cursor: grabbing; }
+.td-item.ziel-oben { box-shadow: 0 -3px 0 var(--ink); }
+.td-item.ziel-unten { box-shadow: 0 3px 0 var(--ink); }
+
+.td-item.ist-fertig { opacity: 0.6; border-left-color: var(--line); }
+.td-item.ist-fertig .td-titel { text-decoration: line-through; color: var(--ink-soft); }
+.td-liste-fertig { margin-top: 4px; }
+
+.td-leer {
+  padding: 22px 14px;
+  text-align: center;
+  color: var(--ink-faint);
+  background: var(--bg-soft);
+  border: 1px dashed var(--line-strong);
+  border-radius: 10px;
+}
+.td-zahl { color: var(--ink-faint); font-weight: 500; }
+
+@media (max-width: 720px) {
+  .td-item { grid-template-columns: auto minmax(0, 1fr); padding: 12px; }
+  /* Werkzeuge unter den Text, damit der Titel nicht auf zwei Zeichen
+     zusammenschrumpft */
+  .td-werkzeuge { grid-column: 2; margin-top: 8px; }
+}

@@ -2222,6 +2222,63 @@ route('GET', '/api/inhalte', null, function () {
     antwortJson(200, ladeInhalte());
 });
 
+/* ---------- Aufgabenliste fuer uns Entwickler ----------
+   Bewusst als eine Einstellung gespeichert statt als eigene Tabelle:
+   Es ist eine kurze, interne Liste, die immer komplett gelesen und
+   geschrieben wird - eine Tabelle waere hier nur Mehraufwand. */
+
+function saeubereAufgaben($liste): array
+{
+    if (!is_array($liste)) {
+        return [];
+    }
+    $erlaubtePrio = ['hoch', 'mittel', 'tief'];
+    $sauber = [];
+    foreach (array_slice($liste, 0, 200) as $a) {
+        if (!is_array($a)) {
+            continue;
+        }
+        $titel = s($a['titel'] ?? '', 200);
+        if ($titel === '') {
+            continue;
+        }
+        $sauber[] = [
+            'id' => s($a['id'] ?? '', 40) ?: ('A-' . bin2hex(random_bytes(6))),
+            'titel' => $titel,
+            'notiz' => s($a['notiz'] ?? '', 600),
+            'prio' => in_array($a['prio'] ?? '', $erlaubtePrio, true) ? $a['prio'] : 'mittel',
+            'wer' => s($a['wer'] ?? '', 60),
+            'erledigt' => !empty($a['erledigt']),
+            'erstellt' => s($a['erstellt'] ?? '', 30) ?: heute(),
+        ];
+    }
+    return $sauber;
+}
+
+function ladeAufgaben(): array
+{
+    $roh = einstellung('dev_aufgaben');
+    if ($roh === null || $roh === '') {
+        return [];
+    }
+    return saeubereAufgaben(json_decode($roh, true));
+}
+
+route('GET', '/api/admin/aufgaben', 'admin', function () {
+    antwortJson(200, ['aufgaben' => ladeAufgaben()]);
+});
+
+route('PUT', '/api/admin/aufgaben', 'admin', function ($p, $body) {
+    /* Fehlt der Rumpf (z. B. ungueltiges JSON), niemals stillschweigend
+       eine leere Liste speichern - das wuerde alle Aufgaben loeschen. */
+    if (!is_array($body['aufgaben'] ?? null)) {
+        fehler(400, 'Ungültige Daten: aufgaben muss eine Liste sein.');
+    }
+    $aufgaben = saeubereAufgaben($body['aufgaben']);
+    setzeEinstellung('dev_aufgaben', json_encode($aufgaben, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+    antwortJson(200, ['aufgaben' => $aufgaben]);
+});
+
 route('PUT', '/api/admin/inhalte', 'admin', function ($p, $body) {
     /* Schutz vor kaputten Anfragen: fehlt der Rumpf (z. B. ungültiges JSON),
        niemals stillschweigend leere Listen speichern. */

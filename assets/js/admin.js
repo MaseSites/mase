@@ -75,7 +75,7 @@
 
   /* ---------- Routing über den Hash ---------- */
 
-  var HAUPTROUTEN = ["uebersicht", "kunden", "projekte", "tickets", "nachrichten", "ki", "termine", "inhalte", "mitarbeiter", "protokoll", "einstellungen"];
+  var HAUPTROUTEN = ["uebersicht", "kunden", "projekte", "tickets", "nachrichten", "ki", "termine", "inhalte", "mitarbeiter", "aufgaben", "protokoll", "einstellungen"];
   var neuProjektVorwahl = "";
 
   function navigiere(pfad) {
@@ -261,6 +261,230 @@
       }).catch(function (f) { zeigeFehler("merker-fehler", f.message); });
     });
   }
+
+  /* ---------- To-do: interne Aufgabenliste ----------
+     Reihenfolge = Bearbeitungsreihenfolge. Verschieben per Ziehen und
+     zusaetzlich ueber Pfeil-Knoepfe: Ziehen ist auf dem Handy fummelig
+     und mit Tastatur gar nicht bedienbar. */
+
+  var tdForm = document.getElementById("td-form");
+  if (tdForm) (function () {
+    var aufgaben = [];
+    var zeigeErledigte = false;
+    var offenListe = document.getElementById("td-offen");
+    var fertigListe = document.getElementById("td-fertig");
+    var gezogen = null;
+
+    var PRIO_TEXT = { hoch: "Hoch", mittel: "Mittel", tief: "Tief" };
+
+    function speichern() {
+      return D.api("/api/admin/aufgaben", "PUT", { aufgaben: aufgaben })
+        .then(function (antwort) {
+          if (antwort && antwort.aufgaben) aufgaben = antwort.aufgaben;
+          zeichne();
+        })
+        .catch(function (f) { zeigeFehler("td-fehler", f.message); });
+    }
+
+    function zeile(a, index) {
+      var li = document.createElement("li");
+      li.className = "td-item prio-" + a.prio + (a.erledigt ? " ist-fertig" : "");
+      li.setAttribute("data-id", a.id);
+      if (!a.erledigt) li.setAttribute("draggable", "true");
+
+      var haken = document.createElement("button");
+      haken.type = "button";
+      haken.className = "td-haken";
+      haken.setAttribute("aria-label", a.erledigt ? "Wieder offen setzen" : "Als erledigt abhaken");
+      haken.innerHTML = a.erledigt
+        ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>'
+        : "";
+      haken.addEventListener("click", function () {
+        a.erledigt = !a.erledigt;
+        speichern();
+      });
+
+      var mitte = document.createElement("div");
+      mitte.className = "td-mitte";
+      var titel = document.createElement("div");
+      titel.className = "td-titel";
+      titel.textContent = a.titel;
+      mitte.appendChild(titel);
+      if (a.notiz) {
+        var n = document.createElement("p");
+        n.className = "td-notiz";
+        n.textContent = a.notiz;
+        mitte.appendChild(n);
+      }
+      var meta = document.createElement("div");
+      meta.className = "td-meta";
+      /* Bewusst per textContent statt innerHTML: Name und Datum sind
+         freie Eingaben und wuerden als HTML sonst mitgerendert. */
+      var pSpan = document.createElement("span");
+      pSpan.className = "td-prio";
+      pSpan.textContent = PRIO_TEXT[a.prio];
+      var wSpan = document.createElement("span");
+      wSpan.className = a.wer ? "td-wer" : "td-wer offen";
+      wSpan.textContent = a.wer || "Noch offen";
+      var dSpan = document.createElement("span");
+      dSpan.className = "td-datum";
+      dSpan.textContent = a.erstellt;
+      meta.appendChild(pSpan); meta.appendChild(wSpan); meta.appendChild(dSpan);
+      mitte.appendChild(meta);
+
+      var werkzeuge = document.createElement("div");
+      werkzeuge.className = "td-werkzeuge";
+      if (!a.erledigt) {
+        var hoch = document.createElement("button");
+        hoch.type = "button"; hoch.className = "td-pfeil";
+        hoch.setAttribute("aria-label", "Nach oben schieben");
+        hoch.textContent = "↑";
+        hoch.disabled = index === 0;
+        hoch.addEventListener("click", function () { verschiebe(a.id, -1); });
+
+        var runter = document.createElement("button");
+        runter.type = "button"; runter.className = "td-pfeil";
+        runter.setAttribute("aria-label", "Nach unten schieben");
+        runter.textContent = "↓";
+        runter.addEventListener("click", function () { verschiebe(a.id, 1); });
+
+        werkzeuge.appendChild(hoch);
+        werkzeuge.appendChild(runter);
+      }
+      var weg = document.createElement("button");
+      weg.type = "button"; weg.className = "td-weg";
+      weg.setAttribute("aria-label", "Aufgabe löschen");
+      weg.textContent = "×";
+      weg.addEventListener("click", function () {
+        if (!confirm("Aufgabe «" + a.titel + "» löschen?")) return;
+        aufgaben = aufgaben.filter(function (x) { return x.id !== a.id; });
+        speichern();
+      });
+      werkzeuge.appendChild(weg);
+
+      li.appendChild(haken);
+      li.appendChild(mitte);
+      li.appendChild(werkzeuge);
+
+      /* Ziehen: nur offene Aufgaben, nur untereinander */
+      li.addEventListener("dragstart", function (e) {
+        gezogen = a.id;
+        li.classList.add("wird-gezogen");
+        try { e.dataTransfer.effectAllowed = "move"; e.dataTransfer.setData("text/plain", a.id); } catch (x) {}
+      });
+      li.addEventListener("dragend", function () {
+        gezogen = null;
+        li.classList.remove("wird-gezogen");
+        [].forEach.call(offenListe.children, function (k) { k.classList.remove("ziel-oben", "ziel-unten"); });
+      });
+      li.addEventListener("dragover", function (e) {
+        if (!gezogen || gezogen === a.id) return;
+        e.preventDefault();
+        var r = li.getBoundingClientRect();
+        var obenHalb = e.clientY < r.top + r.height / 2;
+        li.classList.toggle("ziel-oben", obenHalb);
+        li.classList.toggle("ziel-unten", !obenHalb);
+      });
+      li.addEventListener("dragleave", function () { li.classList.remove("ziel-oben", "ziel-unten"); });
+      li.addEventListener("drop", function (e) {
+        e.preventDefault();
+        if (!gezogen || gezogen === a.id) return;
+        var r = li.getBoundingClientRect();
+        var vorDiese = e.clientY < r.top + r.height / 2;
+        setzeVor(gezogen, a.id, vorDiese);
+      });
+
+      return li;
+    }
+
+    /* Verschiebt innerhalb der offenen Aufgaben um eine Position */
+    function verschiebe(id, richtung) {
+      var offen = aufgaben.filter(function (a) { return !a.erledigt; });
+      var i = offen.findIndex(function (a) { return a.id === id; });
+      var j = i + richtung;
+      if (i < 0 || j < 0 || j >= offen.length) return;
+      var h = offen[i]; offen[i] = offen[j]; offen[j] = h;
+      aufgaben = offen.concat(aufgaben.filter(function (a) { return a.erledigt; }));
+      speichern();
+    }
+
+    function setzeVor(id, zielId, davor) {
+      var offen = aufgaben.filter(function (a) { return !a.erledigt; });
+      var quelle = offen.findIndex(function (a) { return a.id === id; });
+      if (quelle < 0) return;
+      var bewegt = offen.splice(quelle, 1)[0];
+      var ziel = offen.findIndex(function (a) { return a.id === zielId; });
+      if (ziel < 0) ziel = offen.length;
+      offen.splice(davor ? ziel : ziel + 1, 0, bewegt);
+      aufgaben = offen.concat(aufgaben.filter(function (a) { return a.erledigt; }));
+      speichern();
+    }
+
+    function zeichne() {
+      var offen = aufgaben.filter(function (a) { return !a.erledigt; });
+      var fertig = aufgaben.filter(function (a) { return a.erledigt; });
+
+      offenListe.innerHTML = "";
+      if (!offen.length) {
+        var leer = document.createElement("li");
+        leer.className = "td-leer";
+        leer.textContent = "Nichts offen. Zeit für etwas Neues.";
+        offenListe.appendChild(leer);
+      } else {
+        offen.forEach(function (a, i) { offenListe.appendChild(zeile(a, i)); });
+      }
+
+      fertigListe.innerHTML = "";
+      fertig.forEach(function (a, i) { fertigListe.appendChild(zeile(a, i)); });
+
+      document.getElementById("td-zahl-offen").textContent = offen.length ? "(" + offen.length + ")" : "";
+      document.getElementById("td-zahl-fertig").textContent = fertig.length ? "(" + fertig.length + ")" : "";
+      document.getElementById("td-erledigt-block").hidden = !zeigeErledigte || !fertig.length;
+      var knopf = document.getElementById("td-erledigte-zeigen");
+      knopf.textContent = zeigeErledigte ? "Erledigte ausblenden" : "Erledigte anzeigen (" + fertig.length + ")";
+      knopf.hidden = !fertig.length;
+
+      /* Zahl im Seitenmenue: offene Aufgaben */
+      var badge = document.querySelector('[data-badge="aufgaben"]');
+      if (badge) {
+        badge.textContent = offen.length || "";
+        badge.classList.toggle("hidden", !offen.length);
+      }
+    }
+
+    tdForm.addEventListener("submit", function (e) {
+      e.preventDefault();
+      zeigeFehler("td-fehler", "");
+      var titel = document.getElementById("td-titel").value.trim();
+      if (!titel) { zeigeFehler("td-fehler", "Bitte beschreibe kurz, was zu tun ist."); return; }
+      /* Neue Aufgaben oben einreihen: Was gerade eingefaellt, ist meist
+         das, woran man als Naechstes denkt. */
+      aufgaben.unshift({
+        id: "A-" + Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
+        titel: titel,
+        notiz: document.getElementById("td-notiz").value.trim(),
+        prio: document.getElementById("td-prio").value,
+        wer: document.getElementById("td-wer").value.trim(),
+        erledigt: false,
+        erstellt: D.heute()
+      });
+      speichern().then(function () {
+        tdForm.reset();
+        document.getElementById("td-prio").value = "mittel";
+        document.getElementById("td-titel").focus();
+      });
+    });
+
+    document.getElementById("td-erledigte-zeigen").addEventListener("click", function () {
+      zeigeErledigte = !zeigeErledigte;
+      zeichne();
+    });
+
+    D.api("/api/admin/aufgaben", "GET").then(function (a) {
+      aufgaben = (a && a.aufgaben) || [];
+      zeichne();
+    }).catch(function () { zeichne(); });
+  })();
 
   /* ---------- Übersicht ---------- */
 

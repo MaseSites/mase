@@ -473,6 +473,9 @@ window.MSDaten = (function () {
     AUFTRAG_STATUS: AUFTRAG_STATUS,
     TICKET_STATUS: TICKET_STATUS,
     datumText: datumText,
+    /* Direkter API-Zugriff fuer Bereiche ohne eigenen Helfer
+       (z. B. die To-do-Liste im Admin) */
+    api: api,
     heute: heute,
     gestern: gestern,
     uhrzeit: uhrzeit,

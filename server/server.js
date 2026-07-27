@@ -1295,6 +1295,55 @@ route("PUT", "/api/admin/ki", "admin", (req, res, p, body) => {
   antwortJson(res, 200, { ok: true, ki: { provider: ki.provider, modell: einstellung("ki_modell") || "", standard: kiStandardModell(ki.provider), an: ki.an, konfiguriert: ki.konfiguriert, systemZusatz: einstellung("ki_system_zusatz") || "" } });
 });
 
+/* ---------- Aufgabenliste fuer uns Entwickler ----------
+   Gegenstueck zur PHP-Fassung: eine Einstellung statt eigener Tabelle,
+   weil die Liste kurz ist und immer komplett gelesen/geschrieben wird. */
+
+function saeubereAufgaben(liste) {
+  if (!Array.isArray(liste)) return [];
+  const erlaubtePrio = ["hoch", "mittel", "tief"];
+  const sauber = [];
+  for (const a of liste.slice(0, 200)) {
+    if (!a || typeof a !== "object") continue;
+    const titel = s(a.titel, 200);
+    if (!titel) continue;
+    sauber.push({
+      id: s(a.id, 40) || ("A-" + crypto.randomBytes(6).toString("hex")),
+      titel,
+      notiz: s(a.notiz, 600),
+      prio: erlaubtePrio.includes(a.prio) ? a.prio : "mittel",
+      wer: s(a.wer, 60),
+      erledigt: !!a.erledigt,
+      erstellt: s(a.erstellt, 30) || heute()
+    });
+  }
+  return sauber;
+}
+
+function ladeAufgaben() {
+  const roh = einstellung("dev_aufgaben");
+  if (!roh) return [];
+  try {
+    return saeubereAufgaben(JSON.parse(roh));
+  } catch (e) {
+    return [];
+  }
+}
+
+route("GET", "/api/admin/aufgaben", "admin", (req, res) => {
+  antwortJson(res, 200, { aufgaben: ladeAufgaben() });
+});
+
+route("PUT", "/api/admin/aufgaben", "admin", (req, res, p, body) => {
+  /* Fehlt der Rumpf, niemals stillschweigend eine leere Liste speichern. */
+  if (!Array.isArray(body.aufgaben)) {
+    return fehler(res, 400, "Ungültige Daten: aufgaben muss eine Liste sein.");
+  }
+  const aufgaben = saeubereAufgaben(body.aufgaben);
+  setzeEinstellung("dev_aufgaben", JSON.stringify(aufgaben));
+  antwortJson(res, 200, { aufgaben });
+});
+
 route("PUT", "/api/admin/termine/:id", "admin", (req, res, p, body) => {
   const ok = aktualisiereTermin(parseInt(p.id, 10), s(body.status, 20), s(body.antwort, 600));
   if (!ok) return fehler(res, 404, "Termin nicht gefunden.");
