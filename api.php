@@ -2474,7 +2474,9 @@ function assistentSystemPrompt(): string
         '',
         'WAS DU WIRKLICH TUN KANNST:',
         '- Aufgaben anlegen, erledigen, blockieren (Werkzeuge oben)',
-        '- Texte der Beispiel-Vorlagen auf der Website aendern: beschreibung_setzen. Verfuegbare Beispiele: ' . (implode('; ', $namen) ?: 'keine'),
+        '- Texte der Beispiel-Vorlagen VORSCHLAGEN: beschreibung_setzen. Verfuegbare Beispiele: ' . (implode('; ', $namen) ?: 'keine'),
+        '  WICHTIG: Solche Textaenderungen gehen NICHT sofort live. Sie landen in einer Freigabe-Liste, und Matteo oder Severin entscheiden, ob sie veroeffentlicht werden. Sag das auch so - behaupte nie, ein Text sei schon geaendert. Formuliere es als Vorschlag, der zur Freigabe bereitliegt.',
+        '- Terminwuensche erfassen: termin_notieren. Das ist intern und wird sofort gespeichert.',
         '',
         'WAS DU NICHT KANNST - sag es klar, statt es zu versuchen:',
         '- Code schreiben, Dateien aendern, etwas veroeffentlichen oder deployen',
@@ -2482,6 +2484,95 @@ function assistentSystemPrompt(): string
         'Solche Aufgaben legst du an und markierst sie als blockiert mit dem Hinweis, dass Matteo oder Severin sie uebernehmen muessen.',
     ]);
 }
+
+/* ---------- Freigabe von oeffentlichen Aenderungen ----------
+   Alles, was Besucher zu sehen bekommen, geht erst live, wenn ein
+   Mensch es bestaetigt. Interne Dinge (Aufgaben, Termine) darf der
+   Assistent dagegen direkt schreiben - dort richtet ein Fehler keinen
+   oeffentlichen Schaden an und laesst sich leicht korrigieren. */
+
+function ladeEntwuerfe(): array
+{
+    $roh = einstellung('ki_entwuerfe');
+    $liste = $roh ? (json_decode($roh, true) ?: []) : [];
+    return is_array($liste) ? $liste : [];
+}
+
+function speichereEntwuerfe(array $liste): void
+{
+    setzeEinstellung('ki_entwuerfe', json_encode(array_slice($liste, 0, 100), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+}
+
+function legeEntwurfAn(array $e): void
+{
+    $liste = ladeEntwuerfe();
+    /* Schlaegt der Assistent fuer dasselbe Ziel erneut etwas vor,
+       ersetzt der neue Vorschlag den alten - sonst sammeln sich
+       widerspruechliche Entwuerfe an. */
+    $liste = array_values(array_filter($liste, function ($x) use ($e) {
+        return !(($x['art'] ?? '') === $e['art'] && ($x['ziel'] ?? '') === $e['ziel']);
+    }));
+    $e['id'] = 'E-' . bin2hex(random_bytes(6));
+    $e['zeit'] = time() * 1000;
+    array_unshift($liste, $e);
+    speichereEntwuerfe($liste);
+}
+
+/* Uebernimmt einen Entwurf wirklich in die Website. */
+function wendeEntwurfAn(array $e): bool
+{
+    if (($e['art'] ?? '') !== 'beispiel-beschreibung') {
+        return false;
+    }
+    $inhalte = ladeInhalte();
+    $gefunden = false;
+    foreach ($inhalte['beispiele'] as &$b) {
+        if ($b['id'] === ($e['ziel'] ?? '')) {
+            $b['beschreibung'] = (string)($e['neu'] ?? '');
+            $gefunden = true;
+            break;
+        }
+    }
+    unset($b);
+    if (!$gefunden) {
+        return false;
+    }
+    setzeEinstellung('inhalte_beispiele', json_encode($inhalte['beispiele'], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+    return true;
+}
+
+route('POST', '/api/admin/entwuerfe/:id/uebernehmen', 'admin', function ($p) {
+    $id = $p['id'] ?? '';
+    $liste = ladeEntwuerfe();
+    foreach ($liste as $i => $e) {
+        if (($e['id'] ?? '') === $id) {
+            if (!wendeEntwurfAn($e)) {
+                kiProtokollEintrag('Freigabe fehlgeschlagen', 'Ziel nicht mehr vorhanden: ' . ($e['zielName'] ?? $e['ziel']), true);
+                fehler(400, 'Das Ziel gibt es nicht mehr. Der Vorschlag wurde nicht übernommen.');
+            }
+            array_splice($liste, $i, 1);
+            speichereEntwuerfe($liste);
+            kiProtokollEintrag('Freigegeben', ($e['zielName'] ?? $e['ziel']) . ': Text ist jetzt live');
+            schreibeLog('Admin', clientIp(), 'admin', 'KI-Vorschlag freigegeben', (string)($e['zielName'] ?? $e['ziel']));
+            antwortJson(200, ['ok' => true, 'entwuerfe' => ladeEntwuerfe()]);
+        }
+    }
+    fehler(404, 'Vorschlag nicht gefunden.');
+});
+
+route('POST', '/api/admin/entwuerfe/:id/verwerfen', 'admin', function ($p) {
+    $id = $p['id'] ?? '';
+    $liste = ladeEntwuerfe();
+    foreach ($liste as $i => $e) {
+        if (($e['id'] ?? '') === $id) {
+            array_splice($liste, $i, 1);
+            speichereEntwuerfe($liste);
+            kiProtokollEintrag('Verworfen', ($e['zielName'] ?? $e['ziel']) . ': Vorschlag abgelehnt');
+            antwortJson(200, ['ok' => true, 'entwuerfe' => ladeEntwuerfe()]);
+        }
+    }
+    fehler(404, 'Vorschlag nicht gefunden.');
+});
 
 function assistentWerkzeuge(): array
 {
@@ -2531,6 +2622,20 @@ function assistentWerkzeuge(): array
                     'grund' => ['type' => 'string', 'description' => 'Warum es nicht geht und was ein Mensch tun muss.'],
                 ],
                 'required' => ['id', 'grund'],
+            ],
+        ]],
+        ['type' => 'function', 'function' => [
+            'name' => 'termin_notieren',
+            'description' => 'Legt einen Termin oder Rueckruf in der internen Terminliste an. Wird sofort gespeichert, ohne Freigabe.',
+            'parameters' => [
+                'type' => 'object',
+                'properties' => [
+                    'name' => ['type' => 'string', 'description' => 'Um wen es geht.'],
+                    'kontakt' => ['type' => 'string', 'description' => 'E-Mail oder Telefon.'],
+                    'wunsch' => ['type' => 'string', 'description' => 'Wann, auch grob.'],
+                    'thema' => ['type' => 'string', 'description' => 'Worum es geht.'],
+                ],
+                'required' => ['name', 'wunsch'],
             ],
         ]],
         ['type' => 'function', 'function' => [
@@ -2610,6 +2715,28 @@ function assistentWerkzeug(string $name, array $args): array
         return ['ok' => true];
     }
 
+    if ($name === 'termin_notieren') {
+        /* Intern: geht direkt in die Terminliste. Ein falscher Eintrag
+           faellt dort sofort auf und ist schnell geloescht - anders als
+           ein oeffentlicher Text, den Besucher zu sehen bekaemen. */
+        $nameT = s($args['name'] ?? '', 120);
+        $wunsch = s($args['wunsch'] ?? '', 200);
+        if ($nameT === '' || $wunsch === '') {
+            return ['ok' => false, 'grund' => 'Name und Wunschtermin werden gebraucht.'];
+        }
+        speichereTermin([
+            'name' => $nameT,
+            'kontakt' => s($args['kontakt'] ?? '', 160),
+            'wunsch' => $wunsch,
+            'thema' => s($args['thema'] ?? '', 200),
+            'anmerkung' => 'Vom Assistenten im Admin angelegt.',
+            'quelle' => 'assistent', 'chatId' => '', 'seite' => 'admin',
+            'kontoLabel' => 'Admin', 'status' => 'offen', 'antwort' => '',
+        ]);
+        kiProtokollEintrag('Termin angelegt', $nameT . ' – ' . $wunsch);
+        return ['ok' => true, 'hinweis' => 'Termin ist in der Terminliste gespeichert.'];
+    }
+
     if ($name === 'beschreibung_setzen') {
         $id = s($args['id'] ?? '', 40);
         $text = s($args['beschreibung'] ?? '', 400);
@@ -2617,23 +2744,35 @@ function assistentWerkzeug(string $name, array $args): array
             return ['ok' => false, 'grund' => 'Kennung und Beschreibung werden beide gebraucht.'];
         }
         $inhalte = ladeInhalte();
-        $gefunden = false;
-        foreach ($inhalte['beispiele'] as &$b) {
+        $altText = null;
+        $name_ = '';
+        foreach ($inhalte['beispiele'] as $b) {
             if ($b['id'] === $id) {
-                $alt = $b['beschreibung'];
-                $b['beschreibung'] = $text;
-                $gefunden = true;
-                kiProtokollEintrag('Website-Text geaendert', $id . ': "' . mb_substr($alt, 0, 60) . '" → "' . mb_substr($text, 0, 60) . '"');
+                $altText = $b['beschreibung'];
+                $name_ = $b['name'];
                 break;
             }
         }
-        unset($b);
-        if (!$gefunden) {
-            kiProtokollEintrag('Website-Text nicht geaendert', 'Kein Beispiel mit Kennung ' . $id, true);
+        if ($altText === null) {
+            kiProtokollEintrag('Vorschlag nicht moeglich', 'Kein Beispiel mit Kennung ' . $id, true);
             return ['ok' => false, 'grund' => 'Kein Beispiel mit dieser Kennung.'];
         }
-        setzeEinstellung('inhalte_beispiele', json_encode($inhalte['beispiele'], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
-        return ['ok' => true, 'hinweis' => 'Text ist auf der Website geaendert.'];
+        if (trim($altText) === trim($text)) {
+            return ['ok' => false, 'grund' => 'Der Text ist bereits so. Nichts zu aendern.'];
+        }
+        /* Nichts wird sofort veroeffentlicht: Der Vorschlag wandert in
+           die Freigabe-Liste. Erst ein Mensch entscheidet, ob er live
+           geht - oeffentliche Texte sollen nie unbemerkt wechseln. */
+        legeEntwurfAn([
+            'art' => 'beispiel-beschreibung',
+            'ziel' => $id,
+            'zielName' => $name_,
+            'feld' => 'Beschreibung',
+            'alt' => $altText,
+            'neu' => $text,
+        ]);
+        kiProtokollEintrag('Textvorschlag eingereicht', $name_ . ': "' . mb_substr($text, 0, 70) . '" - wartet auf Freigabe');
+        return ['ok' => true, 'hinweis' => 'Vorschlag zur Freigabe eingereicht. Er ist NICHT live, bis ein Mensch ihn bestaetigt.'];
     }
 
     return ['ok' => false, 'grund' => 'Unbekanntes Werkzeug.'];
@@ -2643,12 +2782,14 @@ route('GET', '/api/admin/assistent', 'admin', function () {
     antwortJson(200, [
         'aufgaben' => ladeKiAufgaben(),
         'protokoll' => ladeKiProtokoll(),
+        'entwuerfe' => ladeEntwuerfe(),
     ]);
 });
 
 route('DELETE', '/api/admin/assistent', 'admin', function () {
     setzeEinstellung('ki_aufgaben', '');
     setzeEinstellung('ki_protokoll', '');
+    setzeEinstellung('ki_entwuerfe', '');
     antwortJson(200, ['ok' => true]);
 });
 
@@ -2689,6 +2830,7 @@ route('POST', '/api/admin/assistent', 'admin', function ($p, $body) {
         'antwort' => $antwort,
         'aufgaben' => ladeKiAufgaben(),
         'protokoll' => ladeKiProtokoll(),
+        'entwuerfe' => ladeEntwuerfe(),
     ]);
 });
 

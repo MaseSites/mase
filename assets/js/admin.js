@@ -635,7 +635,9 @@
       var offen = (aufgaben || []).filter(function (a) { return a.status === "offen" || a.status === "laeuft"; }).length;
       document.getElementById("ka-zahl").textContent = aufgaben && aufgaben.length ? "(" + aufgaben.length + ")" : "";
       var tabZahl = document.getElementById("td-tab-ki");
-      tabZahl.textContent = offen ? offen : "";
+      tabZahl.setAttribute("data-offen", String(offen));
+      var wartend = document.querySelectorAll("#ka-entwuerfe .ka-entwurf").length;
+      tabZahl.textContent = (offen + wartend) ? (offen + wartend) : "";
     }
 
     function zeichneProtokoll(eintraege) {
@@ -668,9 +670,89 @@
       });
     }
 
+    function zeichneEntwuerfe(liste) {
+      var karte = document.getElementById("ka-freigabe-karte");
+      var ul = document.getElementById("ka-entwuerfe");
+      ul.innerHTML = "";
+      liste = liste || [];
+      karte.hidden = !liste.length;
+      document.getElementById("ka-freigabe-zahl").textContent = liste.length ? "(" + liste.length + ")" : "";
+      var tabZahl = document.getElementById("td-tab-ki");
+
+      liste.forEach(function (e) {
+        var li = document.createElement("li");
+        li.className = "ka-entwurf";
+
+        var kopf = document.createElement("div");
+        kopf.className = "ka-e-kopf";
+        var wo = document.createElement("b");
+        wo.textContent = (e.zielName || e.ziel) + " · " + (e.feld || "Text");
+        kopf.appendChild(wo);
+        li.appendChild(kopf);
+
+        /* Vorher und Nachher nebeneinander: Man soll auf einen Blick
+           sehen, was sich aendert, bevor man freigibt. */
+        var verg = document.createElement("div");
+        verg.className = "ka-e-vergleich";
+        var altBox = document.createElement("div");
+        altBox.className = "ka-e-alt";
+        altBox.innerHTML = '<span class="ka-e-label">Jetzt auf der Website</span>';
+        var altP = document.createElement("p");
+        altP.textContent = e.alt || "(leer)";
+        altBox.appendChild(altP);
+        var neuBox = document.createElement("div");
+        neuBox.className = "ka-e-neu";
+        neuBox.innerHTML = '<span class="ka-e-label">Vorschlag</span>';
+        var neuP = document.createElement("p");
+        neuP.textContent = e.neu || "(leer)";
+        neuBox.appendChild(neuP);
+        verg.appendChild(altBox);
+        verg.appendChild(neuBox);
+        li.appendChild(verg);
+
+        var knoepfe = document.createElement("div");
+        knoepfe.className = "ka-e-knoepfe";
+        var ja = document.createElement("button");
+        ja.type = "button"; ja.className = "btn btn-primary";
+        ja.textContent = "Übernehmen und live stellen";
+        ja.addEventListener("click", function () {
+          ja.disabled = true;
+          D.api("/api/admin/entwuerfe/" + encodeURIComponent(e.id) + "/uebernehmen", "POST", {})
+            .then(function (a) { zeichneEntwuerfe(a.entwuerfe); ladeNeu(); })
+            .catch(function (f) { ja.disabled = false; zeigeFehler("ka-fehler", f.message); });
+        });
+        var nein = document.createElement("button");
+        nein.type = "button"; nein.className = "btn btn-ghost";
+        nein.textContent = "Verwerfen";
+        nein.addEventListener("click", function () {
+          nein.disabled = true;
+          D.api("/api/admin/entwuerfe/" + encodeURIComponent(e.id) + "/verwerfen", "POST", {})
+            .then(function (a) { zeichneEntwuerfe(a.entwuerfe); ladeNeu(); })
+            .catch(function (f) { nein.disabled = false; zeigeFehler("ka-fehler", f.message); });
+        });
+        knoepfe.appendChild(ja);
+        knoepfe.appendChild(nein);
+        li.appendChild(knoepfe);
+        ul.appendChild(li);
+      });
+
+      /* Offene Freigaben zaehlen mit in die Zahl am Reiter: Sie sind
+         das, was am dringendsten Aufmerksamkeit braucht. */
+      if (tabZahl) {
+        var offeneAufgaben = parseInt(tabZahl.getAttribute("data-offen") || "0", 10);
+        var summe = offeneAufgaben + liste.length;
+        tabZahl.textContent = summe ? summe : "";
+      }
+    }
+
+    function ladeNeu() {
+      D.api("/api/admin/assistent", "GET").then(uebernimm).catch(function () {});
+    }
+
     function uebernimm(a) {
       if (a && a.aufgaben) zeichneListe(a.aufgaben);
       if (a && a.protokoll) zeichneProtokoll(a.protokoll);
+      zeichneEntwuerfe(a && a.entwuerfe);
     }
 
     function frage(text) {
@@ -717,6 +799,7 @@
         chat.innerHTML = "";
         zeichneListe([]);
         zeichneProtokoll([]);
+        zeichneEntwuerfe([]);
       }).catch(function (f) { zeigeFehler("ka-fehler", f.message); });
     });
 

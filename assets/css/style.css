@@ -3736,3 +3736,39 @@ body.ms-cookie-offen .widget-panel { bottom: calc(var(--ms-cookie-h, 90px) + 90p
   .ka-eingabe { flex-wrap: wrap; }
   .ka-eingabe .btn { width: 100%; justify-content: center; }
 }
+
+/* ---------- Freigabe von KI-Vorschlaegen ---------- */
+#ka-freigabe-karte { border-color: #D9A441; background: #FFFDF6; }
+.ka-entwuerfe { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
+.ka-entwurf {
+  border: 1px solid var(--line-strong);
+  border-radius: 10px;
+  padding: 14px;
+  background: #fff;
+}
+.ka-e-kopf { margin-bottom: 10px; font-size: 0.95rem; }
+.ka-e-vergleich { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.ka-e-alt, .ka-e-neu { padding: 11px 13px; border-radius: 8px; }
+.ka-e-alt { background: var(--bg-warm); border: 1px solid var(--line); }
+.ka-e-neu { background: #EAF3EC; border: 1px solid #B7D4BF; }
+.ka-e-label {
+  display: block;
+  font-size: 0.68rem; font-weight: 700; letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-bottom: 5px;
+}
+.ka-e-neu .ka-e-label { color: #2C4A37; }
+.ka-e-alt p, .ka-e-neu p {
+  margin: 0; font-size: 0.9rem; line-height: 1.55;
+  word-break: break-word;
+}
+.ka-e-alt p { color: var(--ink-soft); }
+.ka-e-neu p { color: var(--ink); }
+.ka-e-knoepfe { display: flex; gap: 9px; margin-top: 12px; flex-wrap: wrap; }
+.ka-e-knoepfe .btn { padding: 9px 18px; font-size: 0.88rem; }
+
+@media (max-width: 720px) {
+  .ka-e-vergleich { grid-template-columns: 1fr; }
+  .ka-e-knoepfe .btn { flex: 1 1 100%; justify-content: center; }
+}
