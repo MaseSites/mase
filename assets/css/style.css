@@ -2675,6 +2675,39 @@ input[type="file"]::file-selector-button:hover { border-color: var(--ink); backg
 }
 .arbeitsplatz-bild img { display: block; width: 100%; height: auto; }
 
+/* Echtes Büro: zwei Fotos nebeneinander (ersetzt die frühere Illustration) */
+.buero-galerie {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 22px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+.buero-bild {
+  margin: 0;
+  border-radius: var(--radius-l);
+  overflow: hidden;
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow-l);
+  background: var(--card);
+}
+.buero-bild img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+.buero-unterzeile {
+  text-align: center;
+  color: var(--ink-faint);
+  font-size: 0.9rem;
+  margin-top: 20px;
+}
+@media (max-width: 720px) {
+  .buero-galerie { grid-template-columns: 1fr; gap: 16px; max-width: 460px; }
+}
+
 .team-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
