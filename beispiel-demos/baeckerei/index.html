@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="de-CH">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Lebendige Demo-Vorlage für Schweizer Bäckereien und Konditoreien mit Sortiment, Anlassbestellungen und Abholanfrage.">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#ffe34f">
+<title>Brot & Butter — Bäckerei Vorlage</title>
+<!--
+  MaseSites Branchenvorlage · Bäckerei & Konditorei · Stand Juli 2026
+  Musterangaben, Sortiment und Öffnungszeiten vor Livegang ersetzen.
+  Designimpulse: 21st.dev Marketing-Blocks und Bento Cards; eigenständig als Single-File umgesetzt.
+  Fotos (Unsplash):
+  Mohamed Hassouna — https://unsplash.com/photos/1608198093002-ad4e005484ec
+  Yeh Xintong — https://unsplash.com/photos/1568254183919-78a4f43a2877
+-->
+<style>
+:root{
+  --butter:#ffe34f;--cream:#fff8e9;--ink:#1d1d1b;--red:#e9432f;--blue:#2141d8;
+  --green:#39734b;--line:rgba(29,29,27,.24);--sans:Arial,"Helvetica Neue",sans-serif;
+  --condensed:"Arial Narrow","Roboto Condensed",Arial,sans-serif;--serif:Georgia,serif;
+  --ease:cubic-bezier(.23,1,.32,1)
+}
+*{box-sizing:border-box;margin:0}
+html{scroll-behavior:smooth;scrollbar-gutter:stable;overflow-x:hidden}
+body{background:var(--cream);color:var(--ink);font-family:var(--sans);line-height:1.45;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}button,input,select,textarea{font:inherit;color:inherit}button{cursor:pointer}img{display:block;width:100%}
+::selection{background:var(--blue);color:white}:focus-visible{outline:3px solid var(--blue);outline-offset:4px}
+.wrap{width:min(100% - 36px,1380px);margin-inline:auto}
+.top{position:relative;min-height:100svh;background:var(--butter);overflow:hidden;border-bottom:2px solid var(--ink)}
+.top::before{content:"";position:absolute;inset:0;opacity:.13;background:repeating-linear-gradient(90deg,transparent 0 59px,var(--ink) 60px)}
+.nav{position:relative;z-index:10;border-bottom:2px solid var(--ink)}.nav-inner{min-height:76px;display:flex;align-items:center;gap:28px}.logo{font:900 1.55rem/1 var(--condensed);letter-spacing:-.07em;text-transform:uppercase}.logo span{color:var(--red)}
+.nav-links{display:flex;margin-left:auto;gap:25px;font-size:.75rem;font-weight:800;text-transform:uppercase;letter-spacing:.07em}.nav-links a{border-bottom:2px solid transparent;padding:10px 0}.nav-links a:hover{border-color:var(--ink)}
+.nav-order,.btn{border:2px solid var(--ink);background:var(--ink);color:#fff;border-radius:999px;padding:12px 18px;font-weight:800;font-size:.8rem;display:inline-flex;align-items:center;justify-content:center;gap:9px;transition:transform .16s var(--ease),background-color .18s ease,color .18s ease}.nav-order:active,.btn:active,.tab:active,.qty:active{transform:scale(.97)}
+.menu{display:none;margin-left:auto;border:2px solid var(--ink);background:transparent;border-radius:999px;padding:9px 12px;font-weight:800}
+.hero{position:relative;z-index:2;display:grid;grid-template-columns:1.14fr .86fr;gap:clamp(28px,5vw,70px);padding:clamp(70px,10vw,125px) 0 55px;align-items:end}
+.hero-copy .small{font-size:.7rem;font-weight:900;letter-spacing:.16em;text-transform:uppercase;border:2px solid var(--ink);border-radius:999px;display:inline-flex;padding:8px 12px;background:var(--cream)}
+h1{font:900 clamp(5.2rem,13vw,12.8rem)/.72 var(--condensed);letter-spacing:-.095em;text-transform:uppercase;margin:35px 0 40px;max-width:6ch}h1 .line2{color:var(--red);-webkit-text-stroke:2px var(--ink);text-shadow:4px 4px 0 var(--ink)}
+.hero-bottom{display:flex;gap:20px;align-items:center;flex-wrap:wrap}.hero-bottom p{max-width:39ch;font-weight:650}.btn.alt{background:transparent;color:var(--ink)}.btn.alt:hover{background:var(--ink);color:#fff}
+.hero-image{position:relative;transform:rotate(2.5deg);align-self:center}.hero-image::before{content:"";position:absolute;inset:-13px;background:var(--cream);border:2px solid var(--ink);box-shadow:12px 12px 0 var(--blue)}
+.hero-image img{position:relative;height:min(56vw,630px);object-fit:cover;filter:saturate(.92) contrast(1.04)}.hero-image .stamp{position:absolute;z-index:3;right:-23px;top:-30px;width:134px;aspect-ratio:1;border-radius:50%;display:grid;place-content:center;text-align:center;background:var(--red);color:#fff;border:2px solid var(--ink);font:900 .75rem/1.2 var(--sans);letter-spacing:.06em;text-transform:uppercase;transform:rotate(9deg)}
+.statusbar{border-bottom:2px solid var(--ink);background:var(--ink);color:#fff;overflow:hidden}.status-track{display:flex;width:max-content;gap:35px;padding:13px 0;animation:ticker 26s linear infinite;text-transform:uppercase;font-size:.72rem;font-weight:800;letter-spacing:.11em}.status-track span::after{content:"✹";color:var(--butter);margin-left:35px}@keyframes ticker{to{transform:translateX(-50%)}}
+.section{padding:clamp(85px,10vw,145px) 0}.intro{display:grid;grid-template-columns:.7fr 1.3fr;gap:clamp(35px,8vw,120px);align-items:start}.label{font-size:.68rem;font-weight:900;letter-spacing:.16em;text-transform:uppercase;display:flex;align-items:center;gap:10px}.label::before{content:"";width:28px;height:8px;background:var(--red)}
+.intro h2,.order h2{font:900 clamp(3.3rem,7.5vw,7.4rem)/.82 var(--condensed);letter-spacing:-.075em;text-transform:uppercase}.intro h2 em{font-family:var(--serif);font-weight:400;text-transform:none;color:var(--red)}
+.intro-copy>p{font-size:1.1rem;max-width:50ch;margin:28px 0;color:#4d4a42}
+.promise-grid{display:grid;grid-template-columns:repeat(3,1fr);border:2px solid var(--ink);margin-top:45px}.promise{padding:24px;border-right:2px solid var(--ink);min-height:170px;display:flex;flex-direction:column}.promise:last-child{border-right:0}.promise span{font-size:.66rem;font-weight:900;color:var(--blue)}.promise strong{font:900 1.65rem/1 var(--condensed);text-transform:uppercase;margin-top:auto}
+.sortiment{background:var(--blue);color:#fff}.sort-head{display:grid;grid-template-columns:1fr auto;gap:30px;align-items:end;margin-bottom:45px}.sort-head h2{font:900 clamp(3.5rem,8vw,8rem)/.8 var(--condensed);letter-spacing:-.08em;text-transform:uppercase;max-width:8ch}.sort-head p{max-width:42ch;color:rgba(255,255,255,.72)}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}.tab{border:2px solid #fff;background:transparent;color:#fff;border-radius:999px;padding:10px 15px;font-weight:800;transition:transform .16s var(--ease),background-color .18s ease,color .18s ease}.tab[aria-selected="true"]{background:var(--butter);color:var(--ink);border-color:var(--ink);box-shadow:3px 3px 0 var(--ink)}
+.product-panel{display:none}.product-panel.active{display:grid;grid-template-columns:repeat(12,1fr);gap:12px}.product-card{grid-column:span 4;background:var(--cream);color:var(--ink);border:2px solid var(--ink);min-height:270px;padding:25px;display:flex;flex-direction:column;position:relative}.product-card.wide{grid-column:span 8;background:var(--butter)}.product-card.tall{grid-row:span 2;min-height:552px;background:var(--red);color:#fff}.product-card .no{font-size:.67rem;font-weight:900;opacity:.6}.product-card h3{font:900 clamp(2rem,4vw,4.3rem)/.88 var(--condensed);text-transform:uppercase;letter-spacing:-.055em;margin-top:auto;max-width:9ch}.product-card p{margin-top:13px;max-width:38ch;opacity:.72}.product-card .availability{display:inline-flex;align-self:flex-start;border:1px solid currentColor;border-radius:999px;padding:6px 9px;font-size:.64rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;margin-top:16px}
+.story{display:grid;grid-template-columns:1.1fr .9fr;gap:clamp(35px,7vw,100px);align-items:center}.story-image{position:relative}.story-image img{height:min(65vw,680px);object-fit:cover;border:2px solid var(--ink)}.story-image::before{content:"TÄGLICH";position:absolute;z-index:2;left:-20px;bottom:40px;background:var(--butter);border:2px solid var(--ink);padding:13px 18px;font:900 1.4rem var(--condensed);transform:rotate(-4deg)}
+.story-copy h2{font:900 clamp(3.2rem,7vw,7rem)/.83 var(--condensed);text-transform:uppercase;letter-spacing:-.075em}.story-copy h2 span{color:var(--red)}.story-copy>p{max-width:48ch;margin:25px 0;color:#514c43}.story-list{border-top:2px solid var(--ink)}.story-row{display:grid;grid-template-columns:50px 1fr;padding:17px 0;border-bottom:2px solid var(--ink)}.story-row span{color:var(--red);font-weight:900}
+.order{background:var(--butter);border-block:2px solid var(--ink)}.order-grid{display:grid;grid-template-columns:.85fr 1.15fr;gap:clamp(35px,7vw,100px)}.order-copy p{max-width:44ch;margin:25px 0}.order-copy .note{font-size:.74rem;border-top:2px solid var(--ink);padding-top:14px}
+.order-card{background:var(--cream);border:2px solid var(--ink);box-shadow:10px 10px 0 var(--red);padding:clamp(24px,4vw,42px)}.order-card h3{font:900 2rem/1 var(--condensed);text-transform:uppercase;margin-bottom:23px}.fields{display:grid;grid-template-columns:1fr 1fr;gap:12px}.field{display:grid;gap:7px}.field.full{grid-column:1/-1}.field label{font-size:.65rem;font-weight:900;text-transform:uppercase;letter-spacing:.09em}.field input,.field select,.field textarea{width:100%;border:2px solid var(--ink);background:#fff;padding:13px;border-radius:0}.field textarea{min-height:90px;resize:vertical}
+.basket{display:grid;grid-template-columns:1fr auto auto;gap:10px;align-items:center;border-block:2px solid var(--ink);padding:14px 0;margin:20px 0}.qty{width:36px;height:36px;border:2px solid var(--ink);background:var(--butter);font-weight:900}.qty-value{min-width:24px;text-align:center;font-weight:900}.success{display:none;margin-top:15px;padding:14px;background:var(--green);color:#fff;font-weight:700}.success.show{display:block}
+.rhythm{background:var(--green);color:#fff;border-block:2px solid var(--ink)}.rhythm-head{display:grid;grid-template-columns:1fr 1fr;gap:35px;align-items:end;margin-bottom:42px}.rhythm-head h2{font:900 clamp(3.4rem,7.5vw,7.3rem)/.8 var(--condensed);letter-spacing:-.075em;text-transform:uppercase}.rhythm-head p{max-width:45ch;justify-self:end;color:rgba(255,255,255,.75)}.rhythm-grid{display:grid;grid-template-columns:repeat(4,1fr);border:2px solid var(--ink);background:var(--ink);gap:2px}.rhythm-card{min-height:260px;padding:24px;background:var(--cream);color:var(--ink);display:flex;flex-direction:column}.rhythm-card:nth-child(2){background:var(--butter)}.rhythm-card:nth-child(3){background:var(--red);color:#fff}.rhythm-card:nth-child(4){background:var(--blue);color:#fff}.rhythm-card span{font-size:.65rem;font-weight:900;letter-spacing:.1em}.rhythm-card h3{font:900 2rem/.95 var(--condensed);text-transform:uppercase;margin-top:auto}.rhythm-card p{font-size:.84rem;margin-top:12px;opacity:.75}
+.faq{background:var(--cream)}.faq-grid{display:grid;grid-template-columns:.72fr 1.28fr;gap:clamp(35px,7vw,100px)}.faq-copy h2{font:900 clamp(3.4rem,7vw,7rem)/.82 var(--condensed);text-transform:uppercase;letter-spacing:-.075em}.faq-copy p{max-width:40ch;margin-top:24px;color:#514c43}.faq-list{border-top:2px solid var(--ink)}.faq-list details{border-bottom:2px solid var(--ink)}.faq-list summary{list-style:none;display:flex;justify-content:space-between;gap:20px;padding:20px 0;font-weight:900;text-transform:uppercase;cursor:pointer}.faq-list summary::-webkit-details-marker{display:none}.faq-list summary::after{content:"+";color:var(--red);font-size:1.4rem;transition:transform .18s var(--ease)}.faq-list details[open] summary::after{transform:rotate(45deg)}.faq-list details p{padding:0 45px 21px 0;color:#514c43}.faq-list summary:active{transform:scale(.99)}
+.contact{background:var(--red);color:#fff;padding:50px 0}.contact-grid{display:flex;align-items:end;justify-content:space-between;gap:35px;flex-wrap:wrap}.contact h2{font:900 clamp(3rem,7vw,7rem)/.8 var(--condensed);text-transform:uppercase;letter-spacing:-.075em}.contact address{font-style:normal;text-align:right}.contact small{opacity:.72}
+footer{background:var(--ink);color:#fff;padding:25px 0}.foot{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;font-size:.72rem;color:rgba(255,255,255,.65)}
+.reveal{opacity:0;transform:translateY(18px);transition:opacity .55s var(--ease),transform .55s var(--ease)}.reveal.in{opacity:1;transform:none}
+@media(hover:hover) and (pointer:fine){.product-card{transition:transform .22s var(--ease),box-shadow .22s var(--ease)}.product-card:hover{transform:translate(-4px,-4px);box-shadow:7px 7px 0 var(--ink)}}
+@media(max-width:900px){.nav-links,.nav-order{display:none}.menu{display:block}.nav-links.open{position:absolute;display:grid;top:68px;left:18px;right:18px;background:var(--cream);border:2px solid var(--ink);padding:20px;box-shadow:8px 8px 0 var(--red)}.hero,.intro,.story,.order-grid,.rhythm-head,.faq-grid{grid-template-columns:1fr}.hero>*,.intro>*,.story>*,.order-grid>*{min-width:0}.hero-image{width:min(90%,620px);margin-inline:auto}.sort-head{grid-template-columns:1fr}.product-card,.product-card.wide{grid-column:span 6}.product-card.tall{grid-row:auto}.story-image{order:2}.promise-grid{grid-template-columns:1fr}.promise{border-right:0;border-bottom:2px solid var(--ink);min-height:120px}.promise:last-child{border-bottom:0}.rhythm-head p{justify-self:start}.rhythm-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:620px){.wrap{width:min(100% - 24px,1380px)}h1{font-size:clamp(5rem,26vw,7.5rem);max-width:100%}h1 .line2{display:block;font-size:.92em}.hero-image{width:84%}.hero-image .stamp{right:-6px}.hero-image img{height:440px}.product-panel.active{display:block}.product-card,.product-card.wide,.product-card.tall{min-height:250px;margin-bottom:10px}.rhythm-grid{grid-template-columns:1fr}.rhythm-card{min-height:210px}.fields{grid-template-columns:1fr}.field.full{grid-column:auto}.contact address{text-align:left}.status-track{animation-duration:20s}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}.reveal{opacity:1;transform:none}}
+</style>
+
+<style id="quality-pass">
+html{scroll-padding-top:96px}
+section[id],main[id]{scroll-margin-top:96px}
+h1,h2,h3{text-wrap:balance}
+p{text-wrap:pretty}
+img{max-width:100%}
+:where(button,.btn,.button,.nav-cta,.menu,.burger,.menu-button,.menu-toggle,.mobile-cta,.mobile-call){
+  min-height:44px;
+  -webkit-tap-highlight-color:transparent;
+  touch-action:manipulation
+}
+:where(button,.btn,.button,.nav-cta,.menu,.burger,.menu-button,.menu-toggle,.mobile-cta,.mobile-call):active{
+  transform:scale(.97)
+}
+:where(a,button,input,select,textarea,summary):focus-visible{
+  outline:3px solid currentColor!important;
+  outline-offset:4px!important
+}
+.quality-skip{
+  position:fixed;
+  z-index:9999;
+  top:10px;
+  left:10px;
+  padding:.75rem 1rem;
+  background:#fff;
+  color:#111;
+  border:2px solid currentColor;
+  border-radius:8px;
+  font:700 .9rem/1.2 system-ui,sans-serif;
+  transform:translateY(calc(-100% - 20px));
+  transition:transform 160ms cubic-bezier(.23,1,.32,1)
+}
+.quality-skip:focus{transform:translateY(0)}
+.hero .reveal,.hero [data-reveal]{opacity:1!important;transform:none!important;transition:none!important}
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto!important}
+  *,*::before,*::after{
+    animation-duration:.01ms!important;
+    animation-iteration-count:1!important;
+    scroll-behavior:auto!important;
+    transition-duration:.01ms!important
+  }
+}
+
+.hero-copy>p{color:#514c31}
+.success{min-height:1.5em}
+@media(max-width:620px){h1{font-size:clamp(3.9rem,18vw,5.5rem)}}
+</style>
+</head>
+<body>
+<a class="quality-skip" href="#main-content">Zum Inhalt springen</a>
+<section class="top" id="top">
+  <header class="nav"><div class="wrap nav-inner"><a class="logo" href="#top">Brot<span>&amp;</span>Butter</a><nav class="nav-links" id="navLinks" aria-label="Hauptnavigation"><a href="#sortiment">Sortiment</a><a href="#handwerk">Handwerk</a><a href="#bestellen">Vorbestellen</a><a href="#kontakt">Kontakt</a></nav><a class="nav-order" href="#bestellen">Bestellung anfragen ↗</a><button class="menu" id="menu" type="button" aria-expanded="false">Menü</button></div></header>
+  <div class="wrap hero">
+    <div class="hero-copy reveal"><span class="small">Bäckerei · Konditorei · Musterbetrieb</span><h1>Morgen<span class="line2">frisch.</span></h1><div class="hero-bottom"><p>Eine charaktervolle Vorlage für Brot, Patisserie und Bestellungen zu Anlässen – ohne erfundene Preise oder leere Versprechen.</p><a class="btn alt" href="#sortiment">Heute im Sortiment ↓</a></div></div>
+    <div class="hero-image reveal"><img src="assets/images/image-01.webp" alt="Auswahl verschiedener frisch gebackener Brote" width="1600" height="900" decoding="async"><span class="stamp">Vorbestellen<br>&amp; entspannt<br>abholen</span></div>
+  </div>
+</section>
+<div class="statusbar" aria-hidden="true"><div class="status-track"><span>Brot</span><span>Gipfeli</span><span>Patisserie</span><span>Torten</span><span>Apéro</span><span>Zopf</span><span>Brot</span><span>Gipfeli</span><span>Patisserie</span><span>Torten</span><span>Apéro</span><span>Zopf</span></div></div>
+<main id="main-content">
+  <section class="section"><div class="wrap intro"><p class="label reveal">Die Backstube</p><div class="intro-copy reveal"><h2>Was gut ist, braucht <em>Zeit.</em></h2><p>Die Startseite erklärt auf einen Blick, was täglich erhältlich ist und was Kundinnen und Kunden für einen Anlass vorbestellen können. Das Sortiment bleibt flexibel und wird vom echten Betrieb bestätigt.</p><div class="promise-grid"><article class="promise"><span>01</span><strong>Täglich frisch gedacht</strong></article><article class="promise"><span>02</span><strong>Vorbestellung ohne Telefonwarteschleife</strong></article><article class="promise"><span>03</span><strong>Abholung klar vereinbart</strong></article></div></div></div></section>
+
+  <section class="section sortiment" id="sortiment"><div class="wrap">
+    <header class="sort-head reveal"><h2>Aus der Theke.</h2><p>Kantige, plakative Karten geben Brot, Patisserie und Anlassbestellungen eine eigene Bühne – direkt, handwerklich und leicht zu pflegen.</p></header>
+    <div class="tabs reveal" role="tablist" aria-label="Sortimentsbereiche"><button class="tab" type="button" role="tab" aria-selected="true" data-tab="brot">Brot &amp; Morgen</button><button class="tab" type="button" role="tab" aria-selected="false" data-tab="fein">Patisserie</button><button class="tab" type="button" role="tab" aria-selected="false" data-tab="anlass">Für Anlässe</button></div>
+    <div class="product-panel active reveal" data-panel="brot"><article class="product-card tall"><span class="no">01 · BACKSTUBE</span><h3>Sauerteig &amp; Hausbrot</h3><p>Das tatsächlich verfügbare Brotsortiment wird mit dem Betrieb gepflegt.</p><span class="availability">Sortiment wechselt</span></article><article class="product-card wide"><span class="no">02 · MORGEN</span><h3>Gipfeli, Weggli, Zopf</h3><p>Für den schnellen Morgen oder zum Vorbestellen fürs Büro.</p></article><article class="product-card"><span class="no">03</span><h3>Sandwiches</h3><p>Belegte Angebote nach Tageskarte.</p></article><article class="product-card"><span class="no">04</span><h3>Kaffee &amp; Pause</h3><p>Nur zeigen, wenn der Betrieb Café oder Take-away anbietet.</p></article></div>
+    <div class="product-panel reveal" data-panel="fein"><article class="product-card wide"><span class="no">01 · KONDITOREI</span><h3>Torten &amp; Feingebäck</h3><p>Individuelle Wünsche werden als Anfrage aufgenommen und persönlich bestätigt.</p></article><article class="product-card"><span class="no">02</span><h3>Saisonales</h3><p>Fasnacht, Ostern, Sommer und Advent erhalten ihren eigenen Platz.</p></article><article class="product-card"><span class="no">03</span><h3>Kleine Freude</h3><p>Patisserie und süsse Stücke aus der aktuellen Auslage.</p></article></div>
+    <div class="product-panel reveal" data-panel="anlass"><article class="product-card tall"><span class="no">01 · AUF BESTELLUNG</span><h3>Geburtstag &amp; Fest</h3><p>Grösse, Stil und Abholtag werden erst nach Rücksprache verbindlich.</p></article><article class="product-card wide"><span class="no">02 · APÉRO</span><h3>Herzhaft fürs Team</h3><p>Brötli, Gebäck und Zusammenstellungen für kleine oder grössere Runden.</p></article><article class="product-card"><span class="no">03</span><h3>Firmen&shy;frühstück</h3><p>Eine einfache Anfrage für Mengen und Abholzeit.</p></article></div>
+  </div></section>
+
+  <section class="section" id="handwerk"><div class="wrap story"><div class="story-image reveal"><img src="assets/images/image-02.webp" alt="Brote und Gebäck in einer Bäckerei-Auslage" width="1400" height="935" decoding="async"></div><div class="story-copy reveal"><p class="label">Ein klarer Ablauf</p><h2>Vom Wunsch zur <span>Abholung.</span></h2><p>Statt eines komplizierten Shops führt die Vorlage zu einer persönlichen Bestellung. So bleiben Verfügbarkeit, Preis und Sonderwünsche ehrlich.</p><div class="story-list"><div class="story-row"><span>01</span><p><strong>Auswählen</strong><br>Produktart und ungefähre Menge nennen.</p></div><div class="story-row"><span>02</span><p><strong>Bestätigen lassen</strong><br>Die Backstube klärt Details und Preis.</p></div><div class="story-row"><span>03</span><p><strong>Frisch abholen</strong><br>Zum vereinbarten Zeitpunkt bereit.</p></div></div></div></div></section>
+
+  <section class="section rhythm"><div class="wrap">
+    <header class="rhythm-head reveal"><h2>Was wann auf die Seite gehört.</h2><p>Eine gute Bäckerei-Seite unterscheidet zwischen täglicher Auslage, Vorbestellung und Anlassgeschäft. So wissen Gäste sofort, wann eine Anfrage sinnvoll ist.</p></header>
+    <div class="rhythm-grid reveal">
+      <article class="rhythm-card"><span>01 · HEUTE</span><h3>Aktuelle Auslage</h3><p>Nur Produkte zeigen, die der Betrieb zuverlässig aktuell halten kann.</p></article>
+      <article class="rhythm-card"><span>02 · MORGEN</span><h3>Brot &amp; Zopf</h3><p>Wiederkehrende Wünsche unkompliziert und unverbindlich vorbestellen.</p></article>
+      <article class="rhythm-card"><span>03 · ANLASS</span><h3>Torte &amp; Apéro</h3><p>Datum, Personenzahl und Stil zuerst klären; das Angebot folgt persönlich.</p></article>
+      <article class="rhythm-card"><span>04 · WICHTIG</span><h3>Zutaten &amp; Allergene</h3><p>Nur bestätigte Informationen veröffentlichen und individuelle Fragen direkt beantworten.</p></article>
+    </div>
+  </div></section>
+
+  <section class="section order" id="bestellen"><div class="wrap order-grid">
+    <div class="order-copy reveal"><p class="label">Vorbestellung</p><h2>Heute anfragen. Später abholen.</h2><p>Dieses Formular ist eine interaktive Demo. Beim echten Betrieb wird die Anfrage per E-Mail oder an das gewünschte System übermittelt.</p><p class="note">Keine sofortige Kaufzusage: Verfügbarkeit und Preis werden durch die Bäckerei bestätigt.</p></div>
+    <form class="order-card reveal" id="orderForm"><h3>Unverbindlich anfragen</h3><div class="fields"><div class="field"><label for="product">Wunsch</label><select id="product"><option>Brot &amp; Zopf</option><option>Patisserie</option><option>Torte</option><option>Apéro</option><option>Firmenfrühstück</option></select></div><div class="field"><label for="pickup">Abholtag</label><input id="pickup" type="date"></div><div class="field full"><label>Menge</label><div class="basket"><span id="basketLabel">Ungefähr 1 Einheit</span><button class="qty" id="minus" type="button" aria-label="Menge reduzieren">−</button><span class="qty-value" id="qtyValue">1</span><button class="qty" id="plus" type="button" aria-label="Menge erhöhen">+</button></div></div><div class="field"><label for="orderName">Name</label><input id="orderName" required autocomplete="name"></div><div class="field"><label for="orderPhone">Telefon</label><input id="orderPhone" required autocomplete="tel"></div><div class="field full"><label for="orderNote">Wünsche / Allergien (optional)</label><textarea id="orderNote" placeholder="Bitte nur verlässliche Angaben eintragen; die Bäckerei bestätigt die Möglichkeiten."></textarea></div></div><button class="btn" type="submit">Anfrage vorbereiten</button><div class="success" id="success" role="status">Danke – in der Kundenversion würde die Anfrage jetzt übermittelt.</div></form>
+  </div></section>
+
+  <section class="section faq" id="fragen"><div class="wrap faq-grid">
+    <div class="faq-copy reveal"><p class="label">Kurz beantwortet</p><h2>Bevor Sie bestellen.</h2><p>Diese Antworten machen aus einer schönen Seite ein nützliches Werkzeug – ohne feste Zusagen vorzutäuschen.</p></div>
+    <div class="faq-list reveal">
+      <details><summary>Wie früh sollte ich anfragen?</summary><p>Die benötigte Vorlaufzeit hängt vom Produkt, der Menge und der Auslastung ab. Der echte Betrieb ergänzt hier seine bestätigten Fristen.</p></details>
+      <details><summary>Können Allergien berücksichtigt werden?</summary><p>Zutaten und mögliche Spuren müssen individuell geklärt werden. Die Vorlage macht deshalb keine pauschale Zusage.</p></details>
+      <details><summary>Ist eine individuelle Torte möglich?</summary><p>Motiv, Grösse, Geschmack und Termin werden zuerst angefragt. Machbarkeit und Preis bestätigt die Konditorei persönlich.</p></details>
+      <details><summary>Kann meine Bestellung geliefert werden?</summary><p>Lieferung wird nur angeboten, wenn Gebiet, Mindestmenge, Zeitfenster und Kosten mit dem Betrieb verbindlich festgelegt sind.</p></details>
+    </div>
+  </div></section>
+  <section class="contact" id="kontakt"><div class="wrap contact-grid"><h2>Früh dran.<br>Gut gebacken.</h2><address>Musterstrasse 12 · 8000 Zürich<br>044 000 00 00 · hallo@beispiel.ch<br><small>Beispielzeiten und Kontaktdaten vor Livegang ersetzen.</small></address></div></section>
+</main>
+<footer><div class="wrap foot"><span>© 2026 Brot &amp; Butter · MaseSites Demo-Vorlage</span><span>Impressum · Datenschutz · Bildrechte dokumentiert</span><a href="#top">Nach oben ↑</a></div></footer>
+<script>
+(function(){
+  var menu=document.getElementById('menu'),links=document.getElementById('navLinks');menu.addEventListener('click',function(){var open=links.classList.toggle('open');menu.setAttribute('aria-expanded',String(open))});links.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){links.classList.remove('open');menu.setAttribute('aria-expanded','false')})});
+  var reveals=document.querySelectorAll('.reveal');if(!('IntersectionObserver'in window)){reveals.forEach(function(el){el.classList.add('in')})}else{var io=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{threshold:.08,rootMargin:'0px 0px -6%'});reveals.forEach(function(el){io.observe(el)})}
+  var tabs=document.querySelectorAll('.tab'),panels=document.querySelectorAll('.product-panel');tabs.forEach(function(tab){tab.addEventListener('click',function(){tabs.forEach(function(t){t.setAttribute('aria-selected',String(t===tab))});panels.forEach(function(panel){panel.classList.toggle('active',panel.dataset.panel===tab.dataset.tab)})})});
+  var qty=1,value=document.getElementById('qtyValue'),label=document.getElementById('basketLabel');function renderQty(){value.textContent=qty;label.textContent='Ungefähr '+qty+' Einheit'+(qty===1?'':'en')}document.getElementById('minus').addEventListener('click',function(){qty=Math.max(1,qty-1);renderQty()});document.getElementById('plus').addEventListener('click',function(){qty=Math.min(50,qty+1);renderQty()});
+  var now=new Date(),minDate=new Date(now.getTime()-now.getTimezoneOffset()*60000).toISOString().slice(0,10);document.querySelectorAll('input[type="date"]').forEach(function(input){input.min=minDate});
+  document.getElementById('orderForm').addEventListener('submit',function(e){e.preventDefault();document.getElementById('success').classList.add('show')});
+})();
+</script>
+</body>
+</html>

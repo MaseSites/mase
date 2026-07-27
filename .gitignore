@@ -22,6 +22,20 @@ beispiel-demos/*
 !beispiel-demos/.htaccess
 # tavolo ist KEIN Upload, sondern fest ausgeliefert (Beispiel-Webapp)
 !beispiel-demos/tavolo.html
+# Branchen-Vorlagen: fest ausgeliefert (per scripts/vorlagen-sync gepflegt,
+# NICHT per Admin hochgeladen). Slugs muessen zur $map in vorlagen-sync.ps1 passen.
+!beispiel-demos/restaurant/
+!beispiel-demos/reinigung/
+!beispiel-demos/coiffeur/
+!beispiel-demos/bauunternehmen/
+!beispiel-demos/gartenbau/
+!beispiel-demos/maler-gipser/
+!beispiel-demos/autogarage/
+!beispiel-demos/kosmetik/
+!beispiel-demos/baeckerei/
+!beispiel-demos/fahrschule/
+!beispiel-demos/optik/
+!beispiel-demos/metzgerei/
 
 # Node
 node_modules/

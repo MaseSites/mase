@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="de-CH">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Charaktervolle Demo-Vorlage für Schweizer Metzgereien und Feinkostläden mit Sortiment, Partyservice und Vorbestellung.">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#651d24">
+<title>Die Werkbank — Metzgerei Vorlage</title>
+<!--
+  MaseSites Branchenvorlage · Metzgerei & Feinkost · Stand Juli 2026
+  Herkunft, Labels, Preise, Verfügbarkeit und Hygieneaussagen vor Livegang mit dem Betrieb prüfen.
+  Designimpulse: 21st.dev Bento, Tabs und CTA-Blocks; eigener Single-File-Aufbau.
+  Fotos (Unsplash):
+  Tommao Wang — https://unsplash.com/photos/1625643269470-5d3e7b69fa34
+  Amy Vann — https://unsplash.com/photos/1700478934617-75d2d4f01a04
+-->
+<style>
+:root{
+  --wine:#651d24;--wine-2:#48151a;--paper:#efe4cf;--cream:#fbf3e3;--ink:#241a17;
+  --mustard:#e8b640;--green:#526447;--line:rgba(36,26,23,.24);--white:#fff;
+  --serif:Georgia,"Times New Roman",serif;--sans:"Segoe UI",Arial,sans-serif;
+  --condensed:"Arial Narrow","Helvetica Neue",Arial,sans-serif;--ease:cubic-bezier(.23,1,.32,1)
+}
+*{box-sizing:border-box;margin:0}
+html{scroll-behavior:smooth;scrollbar-gutter:stable}
+body{background:var(--paper);color:var(--ink);font-family:var(--sans);line-height:1.5;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;z-index:-1;inset:0;pointer-events:none;opacity:.18;background-image:radial-gradient(rgba(36,26,23,.28) .55px,transparent .55px);background-size:5px 5px}
+a{color:inherit;text-decoration:none}button,input,select,textarea{font:inherit;color:inherit}button{cursor:pointer}img{display:block;width:100%}
+::selection{background:var(--mustard);color:var(--ink)}:focus-visible{outline:3px solid var(--mustard);outline-offset:4px}
+.wrap{width:min(100% - 40px,1320px);margin-inline:auto}
+.nav{position:fixed;z-index:50;inset:0 0 auto;color:#fff;border-bottom:1px solid rgba(255,255,255,.22);transition:background-color .2s ease}.nav.scrolled{background:rgba(72,21,26,.92);backdrop-filter:blur(14px)}
+.nav-inner{height:80px;display:flex;align-items:center;gap:28px}.brand{font:700 1.45rem/1 var(--serif);letter-spacing:-.04em}.brand span{color:var(--mustard)}.brand small{display:block;font:700 .54rem/1 var(--sans);letter-spacing:.17em;text-transform:uppercase;margin-top:6px;color:rgba(255,255,255,.65)}
+.nav-links{display:flex;margin-left:auto;gap:24px;font-size:.7rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase}.nav-links a{padding:10px 0}.nav-links a:hover{color:var(--mustard)}
+.btn,.nav-cta{display:inline-flex;align-items:center;justify-content:center;gap:9px;background:var(--mustard);color:var(--ink);border:1px solid var(--mustard);border-radius:999px;padding:13px 19px;font-size:.8rem;font-weight:900;transition:transform .16s var(--ease),background-color .18s ease,color .18s ease}.btn:active,.nav-cta:active,.tab:active,.item:active{transform:scale(.97)}.btn.light{background:transparent;color:#fff;border-color:rgba(255,255,255,.55)}
+.menu{display:none;margin-left:auto;border:1px solid var(--mustard);background:transparent;color:var(--mustard);border-radius:999px;padding:10px 13px}
+.hero{min-height:100svh;background:var(--wine);color:#fff;padding:130px 0 65px;position:relative;overflow:hidden}.hero::before{content:"WERKBANK";position:absolute;left:-.04em;bottom:-.18em;font:900 17vw/.8 var(--condensed);letter-spacing:-.08em;color:rgba(255,255,255,.035);white-space:nowrap}
+.hero-grid{position:relative;display:grid;grid-template-columns:1.02fr .98fr;gap:clamp(35px,7vw,95px);align-items:center}.kicker{display:flex;align-items:center;gap:10px;color:var(--mustard);font-size:.68rem;font-weight:900;letter-spacing:.17em;text-transform:uppercase}.kicker::before{content:"";width:35px;height:1px;background:currentColor}
+h1{font:500 clamp(4.2rem,9.5vw,9.3rem)/.78 var(--serif);letter-spacing:-.065em;margin:31px 0}h1 em{display:block;color:var(--mustard);font-weight:400}.hero-copy>p{max-width:49ch;color:rgba(255,255,255,.68);font-size:1.03rem}.hero-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:30px}
+.hero-visual{position:relative;min-height:660px}.hero-visual::before{content:"";position:absolute;inset:7% 3% 0 12%;background:var(--mustard);transform:rotate(3deg)}.hero-visual img{position:absolute;inset:0 9% 4% 0;height:92%;object-fit:cover;filter:saturate(.72) contrast(1.05);border:6px solid var(--cream)}
+.ticket{position:absolute;z-index:3;right:-12px;bottom:6%;background:var(--cream);color:var(--ink);padding:20px 22px;width:210px;transform:rotate(-5deg);box-shadow:0 20px 55px rgba(0,0,0,.28)}.ticket::before,.ticket::after{content:"";position:absolute;left:0;right:0;height:8px;background:radial-gradient(circle at 4px 0,transparent 4px,var(--cream) 4.5px);background-size:16px 8px}.ticket::before{top:-8px;transform:rotate(180deg)}.ticket::after{bottom:-8px}.ticket small{font-size:.61rem;font-weight:900;text-transform:uppercase;letter-spacing:.13em;color:var(--wine)}.ticket strong{display:block;font:700 1.55rem/1.05 var(--serif);margin-top:9px}
+.ticker{background:var(--mustard);color:var(--ink);border-bottom:1px solid var(--ink);overflow:hidden}.ticker-track{display:flex;width:max-content;gap:40px;padding:14px 0;animation:ticker 27s linear infinite;font-size:.7rem;font-weight:900;letter-spacing:.12em;text-transform:uppercase}.ticker-track span::after{content:"✦";color:var(--wine);margin-left:40px}@keyframes ticker{to{transform:translateX(-50%)}}
+.section{padding:clamp(85px,10vw,145px) 0}.section-head{display:grid;grid-template-columns:.72fr 1.28fr;gap:40px;align-items:end;margin-bottom:55px}.section-head h2{font:500 clamp(3.1rem,7vw,7rem)/.83 var(--serif);letter-spacing:-.06em}.section-head h2 em{color:var(--wine);font-weight:400}.section-head p{justify-self:end;max-width:47ch;color:#6e5f59}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}.tab{border:1px solid var(--ink);background:transparent;border-radius:999px;padding:10px 15px;font-weight:800;transition:transform .16s var(--ease),background-color .18s ease,color .18s ease}.tab[aria-selected="true"]{background:var(--wine);border-color:var(--wine);color:#fff}
+.board{border:1px solid var(--ink);background:var(--cream)}.board-panel{display:none}.board-panel.active{display:grid;grid-template-columns:repeat(12,1fr)}.product{grid-column:span 4;min-height:270px;padding:25px;border-right:1px solid var(--ink);border-bottom:1px solid var(--ink);display:flex;flex-direction:column}.product:nth-child(3n){border-right:0}.product.wide{grid-column:span 8;background:var(--mustard)}.product.dark{background:var(--wine);color:#fff}.product span{font-size:.63rem;font-weight:900;letter-spacing:.13em;text-transform:uppercase;opacity:.56}.product h3{font:700 clamp(2rem,3.7vw,3.8rem)/.92 var(--serif);margin-top:auto;max-width:9ch}.product p{margin-top:13px;max-width:38ch;opacity:.68}.product .tag{align-self:flex-start;border:1px solid currentColor;border-radius:999px;padding:6px 9px;margin-top:15px;font-size:.62rem}
+.craft{background:var(--wine-2);color:#fff}.craft-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(38px,7vw,100px);align-items:center}.craft-image{position:relative}.craft-image img{height:min(68vw,720px);object-fit:cover;filter:saturate(.7)}.craft-image::after{content:"Handwerk sichtbar machen";position:absolute;left:-20px;bottom:35px;background:var(--mustard);color:var(--ink);padding:12px 17px;font:700 1rem var(--serif);transform:rotate(-4deg)}
+.craft-copy h2{font:500 clamp(3.2rem,7vw,7rem)/.82 var(--serif);letter-spacing:-.06em}.craft-copy h2 em{color:var(--mustard);font-weight:400}.craft-copy>p{max-width:48ch;color:rgba(255,255,255,.66);margin:25px 0}.craft-list{border-top:1px solid rgba(255,255,255,.22)}.craft-row{display:grid;grid-template-columns:42px 1fr;gap:15px;padding:17px 0;border-bottom:1px solid rgba(255,255,255,.22)}.craft-row span{color:var(--mustard);font-weight:900}
+.service-grid{display:grid;grid-template-columns:repeat(12,1fr);gap:12px}.service-card{grid-column:span 4;min-height:320px;border:1px solid var(--line);background:var(--cream);padding:26px;display:flex;flex-direction:column}.service-card.big{grid-column:span 8;background:var(--green);color:#fff}.service-card span{font-size:.64rem;font-weight:900;letter-spacing:.13em;text-transform:uppercase;opacity:.55}.service-card h3{font:700 clamp(2.1rem,4vw,4rem)/.92 var(--serif);margin-top:auto;max-width:9ch}.service-card p{margin-top:14px;color:#75655e}.service-card.big p{color:rgba(255,255,255,.68)}
+.order{background:var(--mustard);border-block:1px solid var(--ink)}.order-grid{display:grid;grid-template-columns:.8fr 1.2fr;gap:clamp(38px,7vw,100px)}.order-copy h2{font:500 clamp(3.2rem,7vw,7rem)/.82 var(--serif);letter-spacing:-.06em}.order-copy p{max-width:45ch;margin:25px 0}.order-copy small{display:block;border-top:1px solid var(--ink);padding-top:14px;opacity:.7}
+.order-card{background:var(--cream);border:1px solid var(--ink);padding:clamp(24px,4vw,42px);box-shadow:11px 11px 0 var(--wine)}.order-card h3{font:700 2rem/1 var(--serif);margin-bottom:23px}.items{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}.item{border:1px solid var(--ink);background:transparent;border-radius:999px;padding:10px 13px;font-weight:800;transition:transform .16s var(--ease),background-color .18s ease,color .18s ease}.item[aria-pressed="true"]{background:var(--wine);color:#fff}.fields{display:grid;grid-template-columns:1fr 1fr;gap:12px}.field{display:grid;gap:7px}.field.full{grid-column:1/-1}.field label{font-size:.64rem;font-weight:900;letter-spacing:.1em;text-transform:uppercase}.field input,.field select,.field textarea{width:100%;border:1px solid var(--ink);background:#fff;padding:13px}.field textarea{min-height:95px;resize:vertical}.summary{background:var(--paper);padding:13px;margin:18px 0;font-size:.82rem}.success{display:none;margin-top:14px;background:var(--green);color:#fff;padding:13px;font-weight:800}.success.show{display:block}
+.plan{background:var(--green);color:#fff}.plan-head{display:grid;grid-template-columns:.8fr 1.2fr;gap:40px;align-items:end;margin-bottom:48px}.plan-head h2{font:500 clamp(3.2rem,7vw,7rem)/.82 var(--serif);letter-spacing:-.06em}.plan-head p{justify-self:end;max-width:47ch;color:rgba(255,255,255,.72)}.plan-grid{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid rgba(255,255,255,.35)}.plan-card{min-height:255px;padding:24px;border-right:1px solid rgba(255,255,255,.35);display:flex;flex-direction:column}.plan-card:last-child{border-right:0}.plan-card span{font-size:.64rem;font-weight:900;color:var(--mustard)}.plan-card h3{font:700 1.8rem/1 var(--serif);margin-top:auto}.plan-card p{font-size:.85rem;color:rgba(255,255,255,.68);margin-top:12px}
+.faq{background:var(--cream)}.faq-grid{display:grid;grid-template-columns:.72fr 1.28fr;gap:clamp(38px,7vw,100px)}.faq-copy h2{font:500 clamp(3.2rem,7vw,7rem)/.82 var(--serif);letter-spacing:-.06em}.faq-copy p{max-width:42ch;margin-top:24px;color:#75655e}.faq-list{border-top:1px solid var(--ink)}.faq-list details{border-bottom:1px solid var(--ink)}.faq-list summary{list-style:none;display:flex;justify-content:space-between;gap:20px;padding:20px 0;font-weight:900;cursor:pointer}.faq-list summary::-webkit-details-marker{display:none}.faq-list summary::after{content:"+";color:var(--wine);font-size:1.4rem;transition:transform .18s var(--ease)}.faq-list details[open] summary::after{transform:rotate(45deg)}.faq-list details p{padding:0 45px 21px 0;color:#75655e}.faq-list summary:active{transform:scale(.99)}
+.contact{background:var(--wine);color:#fff;padding:48px 0}.contact-grid{display:flex;justify-content:space-between;align-items:end;gap:35px;flex-wrap:wrap}.contact h2{font:500 clamp(3.1rem,7vw,7rem)/.82 var(--serif);letter-spacing:-.06em}.contact address{font-style:normal;text-align:right;color:rgba(255,255,255,.75)}
+footer{background:var(--wine-2);color:#fff;padding:25px 0}.foot{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;font-size:.72rem;color:rgba(255,255,255,.58)}
+.mobile-cta{display:none;position:fixed;z-index:40;left:12px;right:12px;bottom:12px;background:var(--mustard);color:var(--ink);padding:14px 18px;border-radius:999px;text-align:center;font-weight:900;box-shadow:0 15px 40px rgba(0,0,0,.3)}
+.reveal{opacity:0;transform:translateY(20px);transition:opacity .6s var(--ease),transform .6s var(--ease)}.reveal.in{opacity:1;transform:none}
+@media(hover:hover) and (pointer:fine){.btn:hover,.nav-cta:hover{background:#fff;border-color:#fff}.btn.light:hover{background:var(--mustard);border-color:var(--mustard);color:var(--ink)}.service-card{transition:transform .22s var(--ease)}.service-card:hover{transform:translateY(-5px)}}
+@media(max-width:900px){.nav-links,.nav-cta{display:none}.menu{display:block}.nav-links.open{position:absolute;display:grid;top:80px;left:18px;right:18px;background:var(--wine-2);border:1px solid rgba(255,255,255,.2);padding:20px}.hero-grid,.section-head,.craft-grid,.order-grid,.plan-head,.faq-grid{grid-template-columns:1fr}.hero-visual{min-height:570px}.section-head p,.plan-head p{justify-self:start}.product,.product.wide{grid-column:span 6}.product:nth-child(3n){border-right:1px solid var(--ink)}.product:nth-child(2n){border-right:0}.craft-image{order:2}.service-card,.service-card.big{grid-column:span 6}.plan-grid{grid-template-columns:1fr 1fr}.plan-card:nth-child(2){border-right:0}}
+@media(max-width:620px){.wrap{width:min(100% - 26px,1320px)}.hero-visual{min-height:450px}.ticket{width:175px}.board-panel.active{display:block}.product,.product.wide{min-height:245px;border-right:0}.service-grid{display:block}.service-card,.service-card.big{min-height:280px;margin-bottom:10px}.plan-grid{grid-template-columns:1fr}.plan-card{min-height:205px;border-right:0;border-bottom:1px solid rgba(255,255,255,.35)}.plan-card:last-child{border-bottom:0}.fields{grid-template-columns:1fr}.field.full{grid-column:auto}.contact address{text-align:left}.mobile-cta{display:block}footer{padding-bottom:85px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}.reveal{opacity:1;transform:none}}
+</style>
+
+<style id="quality-pass">
+html{scroll-padding-top:96px}
+section[id],main[id]{scroll-margin-top:96px}
+h1,h2,h3{text-wrap:balance}
+p{text-wrap:pretty}
+img{max-width:100%}
+:where(button,.btn,.button,.nav-cta,.menu,.burger,.menu-button,.menu-toggle,.mobile-cta,.mobile-call){
+  min-height:44px;
+  -webkit-tap-highlight-color:transparent;
+  touch-action:manipulation
+}
+:where(button,.btn,.button,.nav-cta,.menu,.burger,.menu-button,.menu-toggle,.mobile-cta,.mobile-call):active{
+  transform:scale(.97)
+}
+:where(a,button,input,select,textarea,summary):focus-visible{
+  outline:3px solid currentColor!important;
+  outline-offset:4px!important
+}
+.quality-skip{
+  position:fixed;
+  z-index:9999;
+  top:10px;
+  left:10px;
+  padding:.75rem 1rem;
+  background:#fff;
+  color:#111;
+  border:2px solid currentColor;
+  border-radius:8px;
+  font:700 .9rem/1.2 system-ui,sans-serif;
+  transform:translateY(calc(-100% - 20px));
+  transition:transform 160ms cubic-bezier(.23,1,.32,1)
+}
+.quality-skip:focus{transform:translateY(0)}
+.hero .reveal,.hero [data-reveal]{opacity:1!important;transform:none!important;transition:none!important}
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto!important}
+  *,*::before,*::after{
+    animation-duration:.01ms!important;
+    animation-iteration-count:1!important;
+    scroll-behavior:auto!important;
+    transition-duration:.01ms!important
+  }
+}
+
+.brand small{color:rgba(255,255,255,.84)}
+.hero-copy>p,.craft-copy>p{color:rgba(255,255,255,.86)}
+.service-card.big p,.plan-head p,.plan-card p{color:rgba(255,255,255,.84)}
+.contact address{color:rgba(255,255,255,.9)}
+.foot{color:rgba(255,255,255,.76)}
+.success{min-height:1.5em}
+</style>
+</head>
+<body>
+<a class="quality-skip" href="#main-content">Zum Inhalt springen</a>
+<header class="nav" id="nav"><div class="wrap nav-inner"><a class="brand" href="#top">Die <span>Werkbank</span><small>Metzgerei &amp; Feinkost · Muster</small></a><nav class="nav-links" id="navLinks" aria-label="Hauptnavigation"><a href="#sortiment">Sortiment</a><a href="#handwerk">Handwerk</a><a href="#partyservice">Partyservice</a><a href="#bestellen">Vorbestellen</a></nav><a class="nav-cta" href="#bestellen">Bestellung anfragen ↗</a><button class="menu" id="menu" type="button" aria-expanded="false">Menü</button></div></header>
+<main id="main-content">
+  <section class="hero" id="top"><div class="wrap hero-grid"><div class="hero-copy reveal"><p class="kicker">Metzgerei · Feinkost · Zürich</p><h1>Von Hand.<em>Für den Tisch.</em></h1><p>Eine eigenständige Vorlage für Sortiment, Beratung, Partyservice und Vorbestellungen – ohne erfundene Herkunftslabels oder Preise.</p><div class="hero-actions"><a class="btn" href="#bestellen">Vorbestellung anfragen</a><a class="btn light" href="#sortiment">Sortiment ansehen</a></div></div><div class="hero-visual reveal"><img src="assets/images/image-01.webp" alt="Handwerkliche Verarbeitung in einer Metzgerei" width="1200" height="1800" decoding="async"><div class="ticket"><small>Heute wichtig</small><strong>Verfügbarkeit persönlich bestätigen lassen.</strong></div></div></div></section>
+  <div class="ticker" aria-hidden="true"><div class="ticker-track"><span>Frischfleisch</span><span>Wurstwaren</span><span>Feinkost</span><span>Grill</span><span>Apéro</span><span>Partyservice</span><span>Frischfleisch</span><span>Wurstwaren</span><span>Feinkost</span><span>Grill</span><span>Apéro</span><span>Partyservice</span></div></div>
+
+  <section class="section" id="sortiment"><div class="wrap"><header class="section-head reveal"><h2>Was in die <em>Theke</em> gehört.</h2><p>Die Kategorien sind flexibel. Der echte Betrieb entscheidet, welche Produkte, Herkunftsangaben und saisonalen Angebote online erscheinen.</p></header><div class="tabs reveal" role="tablist" aria-label="Sortimentsbereiche"><button class="tab" type="button" role="tab" aria-selected="true" data-tab="fleisch">Fleisch</button><button class="tab" type="button" role="tab" aria-selected="false" data-tab="wurst">Wurst &amp; Feinkost</button><button class="tab" type="button" role="tab" aria-selected="false" data-tab="saison">Saisonal</button></div><div class="board reveal"><div class="board-panel active" data-panel="fleisch"><article class="product dark"><span>01 · BERATUNG</span><h3>Der passende Zuschnitt</h3><p>Verwendung, Menge und Zubereitung gemeinsam klären.</p><span class="tag">Auf Anfrage</span></article><article class="product wide"><span>02 · THEKE</span><h3>Rind, Kalb, Schwein &amp; Geflügel</h3><p>Nur Produkte nennen, die der Betrieb wirklich führt.</p></article><article class="product"><span>03</span><h3>Grill&shy;sortiment</h3><p>Saisonale Auswahl nach aktueller Verfügbarkeit.</p></article></div><div class="board-panel" data-panel="wurst"><article class="product wide"><span>01 · HAUSANGEBOT</span><h3>Wurstwaren &amp; Aufschnitt</h3><p>Eigenproduktion nur behaupten, wenn sie bestätigt ist.</p></article><article class="product dark"><span>02</span><h3>Feinkost</h3><p>Salate, Saucen und Spezialitäten passend zum Betrieb.</p></article><article class="product"><span>03</span><h3>Apéro</h3><p>Platten und Zusammenstellungen unverbindlich anfragen.</p></article></div><div class="board-panel" data-panel="saison"><article class="product dark"><span>01 · SAISON</span><h3>Grill, Wild &amp; Festtage</h3><p>Die Website wechselt mit dem tatsächlichen Jahresangebot.</p></article><article class="product wide"><span>02 · VORBESTELLEN</span><h3>Für Sonntag und besondere Tage</h3><p>Menge und Abholzeit werden persönlich bestätigt.</p></article><article class="product"><span>03</span><h3>Geschenke</h3><p>Nur zeigen, wenn Gutscheine oder Körbe angeboten werden.</p></article></div></div></div></section>
+
+  <section class="section craft" id="handwerk"><div class="wrap craft-grid"><div class="craft-image reveal"><img src="assets/images/image-02.webp" alt="Frischfleisch in einer Metzgerei-Theke" width="1600" height="1068" decoding="async"></div><div class="craft-copy reveal"><p class="kicker">Ehrlich beschrieben</p><h2>Qualität braucht <em>konkrete Angaben.</em></h2><p>Statt allgemeiner Superlative zeigt die Seite später echte Informationen: Herkunft, Lieferanten, Verarbeitung und was davon für das aktuelle Sortiment gilt.</p><div class="craft-list"><div class="craft-row"><span>01</span><p><strong>Herkunft belegen</strong><br>Nur geprüfte Angaben und Labels veröffentlichen.</p></div><div class="craft-row"><span>02</span><p><strong>Handwerk zeigen</strong><br>Eigene Arbeitsweise und echte Bilder verwenden.</p></div><div class="craft-row"><span>03</span><p><strong>Beratung anbieten</strong><br>Menge, Zuschnitt und Zubereitung gemeinsam klären.</p></div></div></div></div></section>
+
+  <section class="section" id="partyservice"><div class="wrap"><header class="section-head reveal"><h2>Mehr als die <em>Theke.</em></h2><p>Partyservice und Anlassangebote können für Metzgereien ein starkes Anfrage-Thema sein. Die Vorlage bleibt offen genug für das tatsächliche Angebot.</p></header><div class="service-grid reveal"><article class="service-card big"><span>01 · ANLASS</span><h3>Partyservice</h3><p>Personenzahl, Anlass und Wunschrichtung werden erfasst. Das konkrete Angebot folgt persönlich.</p></article><article class="service-card"><span>02</span><h3>Apéroplatten</h3><p>Grösse und Zusammenstellung auf Anfrage.</p></article><article class="service-card"><span>03</span><h3>Grillpakete</h3><p>Nur mit bestätigtem saisonalem Sortiment.</p></article><article class="service-card"><span>04</span><h3>Beratung</h3><p>Für Menge, Zuschnitt und Zubereitung.</p></article></div></div></section>
+
+  <section class="section order" id="bestellen"><div class="wrap order-grid"><div class="order-copy reveal"><p class="kicker" style="color:var(--wine)">Vorbestellung</p><h2>Wunsch nennen. Frisch abholen.</h2><p>Die Vorbestellung bleibt unverbindlich, bis Menge, Preis und Abholzeit von der Metzgerei bestätigt wurden.</p><small>Demo ohne Versand. Vor Livegang an E-Mail oder das gewünschte Bestellsystem anbinden.</small></div><form class="order-card reveal" id="orderForm"><h3>Was möchten Sie anfragen?</h3><div class="items" id="items"><button class="item" type="button" aria-pressed="true">Fleisch</button><button class="item" type="button" aria-pressed="false">Wurstwaren</button><button class="item" type="button" aria-pressed="false">Apéro</button><button class="item" type="button" aria-pressed="false">Partyservice</button><button class="item" type="button" aria-pressed="false">Saisonales</button></div><div class="fields"><div class="field"><label for="date">Gewünschter Abholtag</label><input id="date" type="date"></div><div class="field"><label for="people">Menge / Personen</label><input id="people" placeholder="z. B. 8 Personen"></div><div class="field"><label for="name">Name</label><input id="name" required autocomplete="name"></div><div class="field"><label for="phone">Telefon</label><input id="phone" required autocomplete="tel"></div><div class="field full"><label for="details">Wunsch / Details</label><textarea id="details" placeholder="Produkt, ungefähre Menge und offene Fragen"></textarea></div></div><div class="summary" id="summary">Auswahl: Fleisch</div><button class="btn" type="submit">Anfrage vorbereiten</button><div class="success" id="success" role="status">Danke – in der Kundenversion würde die Anfrage jetzt übermittelt.</div></form></div></section>
+  <section class="section plan"><div class="wrap">
+    <header class="plan-head reveal"><h2>Gut vorbereitet an die Theke.</h2><p>Je genauer der Anlass beschrieben ist, desto besser kann der Betrieb beraten. Diese Sektion hilft bei der Vorbereitung, ohne starre Mengen oder Produkte vorzugeben.</p></header>
+    <div class="plan-grid reveal">
+      <article class="plan-card"><span>01 · ANLASS</span><h3>Wofür wird geplant?</h3><p>Alltag, Grillabend, Apéro oder Fest unterscheiden sich bei Auswahl und Vorbereitung.</p></article>
+      <article class="plan-card"><span>02 · PERSONEN</span><h3>Für wen ist es?</h3><p>Personenzahl, Vorlieben und besondere Wünsche möglichst konkret nennen.</p></article>
+      <article class="plan-card"><span>03 · KÜCHE</span><h3>Wie wird gekocht?</h3><p>Grill, Ofen, Pfanne und verfügbare Zeit helfen bei Zuschnitt und Empfehlung.</p></article>
+      <article class="plan-card"><span>04 · ABHOLUNG</span><h3>Wann wird es gebraucht?</h3><p>Wunschtag anfragen und erst nach persönlicher Bestätigung verbindlich planen.</p></article>
+    </div>
+  </div></section>
+  <section class="section faq" id="fragen"><div class="wrap faq-grid">
+    <div class="faq-copy reveal"><p class="kicker">Kurz geklärt</p><h2>Vor der Bestellung.</h2><p>Die wichtigsten Fragen zu Sortiment, Mengen und Partyservice – bewusst ohne unbestätigte Zusagen.</p></div>
+    <div class="faq-list reveal">
+      <details><summary>Wie viel sollte ich pro Person einplanen?</summary><p>Das hängt von Anlass, Beilagen, Produkt und Gästen ab. Die Vorlage verweist deshalb auf eine persönliche Mengenberatung.</p></details>
+      <details><summary>Woher stammen die angebotenen Produkte?</summary><p>Herkunft, Lieferanten und Labels werden erst ergänzt, wenn sie für das konkrete Sortiment belegt und aktuell sind.</p></details>
+      <details><summary>Kann ich einen bestimmten Zuschnitt bestellen?</summary><p>Wunsch, Verwendung und Menge können angefragt werden. Verfügbarkeit und Ausführung bestätigt die Metzgerei persönlich.</p></details>
+      <details><summary>Ist Partyservice auch mit Lieferung möglich?</summary><p>Liefergebiet, Umfang, Zeitfenster und Kosten erscheinen erst, wenn der echte Betrieb diese Leistung verbindlich definiert hat.</p></details>
+    </div>
+  </div></section>
+  <section class="contact"><div class="wrap contact-grid"><h2>Gute Beratung beginnt hier.</h2><address>Musterstrasse 12 · 8000 Zürich<br>044 000 00 00 · hallo@beispiel.ch<br><small>Alle Angaben, Herkunft und Verfügbarkeit vor Livegang prüfen.</small></address></div></section>
+</main>
+<footer><div class="wrap foot"><span>© 2026 Die Werkbank · MaseSites Demo-Vorlage</span><span>Impressum · Datenschutz · Herkunftsangaben verifizieren</span><a href="#top">Nach oben ↑</a></div></footer>
+<a class="mobile-cta" href="#bestellen">Vorbestellung anfragen</a>
+<script>
+(function(){
+  var nav=document.getElementById('nav'),menu=document.getElementById('menu'),links=document.getElementById('navLinks');function scrollState(){nav.classList.toggle('scrolled',scrollY>25)}scrollState();addEventListener('scroll',scrollState,{passive:true});menu.addEventListener('click',function(){var open=links.classList.toggle('open');menu.setAttribute('aria-expanded',String(open))});links.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){links.classList.remove('open');menu.setAttribute('aria-expanded','false')})});
+  var reveals=document.querySelectorAll('.reveal');if(!('IntersectionObserver'in window)){reveals.forEach(function(el){el.classList.add('in')})}else{var io=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{threshold:.08,rootMargin:'0px 0px -6%'});reveals.forEach(function(el){io.observe(el)})}
+  var tabs=document.querySelectorAll('.tab'),panels=document.querySelectorAll('.board-panel');tabs.forEach(function(tab){tab.addEventListener('click',function(){tabs.forEach(function(t){t.setAttribute('aria-selected',String(t===tab))});panels.forEach(function(panel){panel.classList.toggle('active',panel.dataset.panel===tab.dataset.tab)})})});
+  var items=document.querySelectorAll('.item'),summary=document.getElementById('summary');function updateSummary(){var picked=[];items.forEach(function(item){if(item.getAttribute('aria-pressed')==='true')picked.push(item.textContent)});summary.textContent='Auswahl: '+(picked.join(', ')||'noch offen')}items.forEach(function(item){item.addEventListener('click',function(){item.setAttribute('aria-pressed',String(item.getAttribute('aria-pressed')!=='true'));updateSummary()})});
+  var now=new Date(),minDate=new Date(now.getTime()-now.getTimezoneOffset()*60000).toISOString().slice(0,10);document.querySelectorAll('input[type="date"]').forEach(function(input){input.min=minDate});
+  document.getElementById('orderForm').addEventListener('submit',function(e){e.preventDefault();document.getElementById('success').classList.add('show')});
+})();
+</script>
+</body>
+</html>

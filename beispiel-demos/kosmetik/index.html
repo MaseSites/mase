@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="de-CH">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Hochwertige Demo-Vorlage für ein Schweizer Kosmetikstudio mit Leistungen, Behandlungsablauf und Terminanfrage.">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#f2e9df">
+<title>Hautnah Atelier — Kosmetikstudio Vorlage</title>
+<!--
+  MaseSites Branchenvorlage · Kosmetik & Beauty · Stand Juli 2026
+  Musterangaben vor Livegang ersetzen. Keine Bewertungen, Preise oder Resultate erfunden.
+  Designimpulse: 21st.dev Bento-/Stepper-Komponenten, als eigener HTML/CSS/JS-Aufbau umgesetzt.
+  Fotos (Unsplash):
+  Sunny Ng — https://unsplash.com/photos/1555820585-c5ae44394b79
+  Rosa Rafael — https://unsplash.com/photos/1570172619644-dfd03ed5d881
+-->
+<style>
+:root{
+  --paper:#f2e9df;--paper-2:#fbf7f1;--ink:#241c1a;--muted:#746763;
+  --clay:#b95f4d;--rose:#e4b8a6;--sage:#aeb9a6;--line:rgba(36,28,26,.18);
+  --serif:Georgia,"Times New Roman",serif;--sans:"Segoe UI",Arial,sans-serif;
+  --ease:cubic-bezier(.23,1,.32,1);--radius:28px
+}
+*{box-sizing:border-box;margin:0}
+html{scroll-behavior:smooth;scrollbar-gutter:stable}
+body{background:var(--paper);color:var(--ink);font-family:var(--sans);line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body::before{content:"";position:fixed;z-index:-1;inset:0;opacity:.2;pointer-events:none;background-image:radial-gradient(rgba(36,28,26,.23) .55px,transparent .55px);background-size:5px 5px}
+a{color:inherit;text-decoration:none}button,input,select,textarea{font:inherit;color:inherit}button{cursor:pointer}img{display:block;width:100%}
+::selection{background:var(--clay);color:white}:focus-visible{outline:3px solid var(--clay);outline-offset:4px}
+.wrap{width:min(100% - 40px,1240px);margin-inline:auto}
+.nav{position:fixed;z-index:40;inset:0 0 auto;padding:18px 0;transition:background-color .2s ease,border-color .2s ease,padding .2s var(--ease);border-bottom:1px solid transparent}
+.nav.scrolled{background:rgba(242,233,223,.88);backdrop-filter:blur(16px);border-color:var(--line);padding:10px 0}
+.nav-inner{display:flex;align-items:center;gap:28px}.brand{font:italic 700 1.35rem/1 var(--serif);letter-spacing:-.04em}.brand span{display:block;font:600 .58rem/1 var(--sans);letter-spacing:.19em;text-transform:uppercase;margin-top:5px}
+.nav-links{display:flex;gap:25px;margin-left:auto;font-size:.76rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase}.nav-links a{padding:10px 0;position:relative}.nav-links a::after{content:"";position:absolute;inset:auto 0 4px;height:1px;background:var(--ink);transform:scaleX(0);transform-origin:right;transition:transform .2s var(--ease)}
+.nav-cta,.button{display:inline-flex;align-items:center;justify-content:center;gap:10px;border:1px solid var(--ink);background:var(--ink);color:#fff;border-radius:999px;padding:13px 19px;font-weight:700;font-size:.82rem;transition:transform .16s var(--ease),background-color .2s ease,color .2s ease}
+.nav-cta:active,.button:active,.chip:active,.step-tab:active{transform:scale(.97)}.button.light{background:transparent;color:var(--ink)}
+.menu{display:none;margin-left:auto;background:transparent;border:1px solid var(--ink);border-radius:999px;padding:10px 13px}
+.hero{min-height:100svh;padding:130px 0 70px;display:grid;align-items:center}.hero-grid{display:grid;grid-template-columns:1.04fr .96fr;gap:clamp(35px,7vw,95px);align-items:center}
+.eyebrow{font-size:.68rem;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:var(--clay);display:flex;align-items:center;gap:10px}.eyebrow::before{content:"";width:34px;height:1px;background:currentColor}
+h1{font:italic 500 clamp(4.2rem,9vw,8.7rem)/.78 var(--serif);letter-spacing:-.075em;margin:32px 0;max-width:7ch}h1 span{display:block;margin-left:.72em;color:var(--clay)}
+.hero-copy>p{max-width:48ch;color:var(--muted);font-size:1.06rem}.hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:30px}
+.hero-visual{position:relative;min-height:650px}.hero-visual::before{content:"";position:absolute;inset:7% 4% 0 16%;border-radius:48% 48% 7px 7px;background:var(--rose);transform:rotate(4deg)}
+.hero-visual img{position:absolute;inset:0 9% 3% 4%;height:92%;object-fit:cover;border-radius:48% 48% 6px 6px;filter:saturate(.82) contrast(.95);box-shadow:0 28px 70px rgba(57,34,29,.2)}
+.note{position:absolute;right:-8px;bottom:8%;z-index:2;width:175px;aspect-ratio:1;background:var(--paper-2);border-radius:50%;display:grid;place-content:center;text-align:center;transform:rotate(-8deg);box-shadow:0 15px 50px rgba(57,34,29,.18);font:italic 1.1rem/1.15 var(--serif)}.note small{display:block;font:700 .55rem/1.2 var(--sans);letter-spacing:.16em;text-transform:uppercase;margin-bottom:7px;color:var(--clay)}
+.marquee{border-block:1px solid var(--line);overflow:hidden}.marquee-track{width:max-content;display:flex;gap:38px;padding:15px 0;animation:marquee 25s linear infinite;font:italic 1.05rem var(--serif)}.marquee-track span::after{content:"✦";margin-left:38px;color:var(--clay)}@keyframes marquee{to{transform:translateX(-50%)}}
+.section{padding:clamp(85px,11vw,150px) 0}.section-head{display:grid;grid-template-columns:.8fr 1.2fr;gap:40px;align-items:end;margin-bottom:55px}.section-head h2{font:500 clamp(2.9rem,6.5vw,6.4rem)/.88 var(--serif);letter-spacing:-.06em;max-width:10ch}.section-head h2 em{color:var(--clay);font-weight:400}.section-head p{max-width:48ch;color:var(--muted);justify-self:end}
+.care-grid{display:grid;grid-template-columns:repeat(12,1fr);gap:12px}.care-card{grid-column:span 4;min-height:300px;background:var(--paper-2);border:1px solid var(--line);border-radius:var(--radius);padding:28px;display:flex;flex-direction:column;position:relative;overflow:hidden}
+.care-card.big{grid-column:span 8;grid-row:span 2;min-height:610px;background:var(--ink);color:#fff}.care-card.wide{grid-column:span 8;background:var(--sage)}
+.care-card .num{font-size:.65rem;letter-spacing:.15em;font-weight:800;opacity:.55}.care-card h3{font:italic 500 clamp(2rem,3.4vw,3.8rem)/.94 var(--serif);margin-top:auto;max-width:8ch}.care-card p{max-width:34ch;margin-top:15px;color:var(--muted)}.care-card.big p{color:rgba(255,255,255,.65)}
+.care-card.big::after{content:"";position:absolute;width:260px;aspect-ratio:1;border:1px solid rgba(255,255,255,.18);border-radius:50%;right:-70px;top:-70px;box-shadow:0 0 0 45px rgba(255,255,255,.025),0 0 0 90px rgba(255,255,255,.02)}
+.care-card .pill{align-self:flex-start;margin-top:18px;border:1px solid currentColor;border-radius:999px;padding:7px 11px;font-size:.68rem;text-transform:uppercase;letter-spacing:.09em}
+.ritual{background:var(--ink);color:#fff}.ritual-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(35px,8vw,110px);align-items:center}.ritual-image{position:relative}.ritual-image img{height:min(74vw,720px);object-fit:cover;border-radius:var(--radius);filter:saturate(.75)}.ritual-image::after{content:"Zeit für Sie";position:absolute;left:-20px;bottom:35px;background:var(--rose);color:var(--ink);padding:12px 18px;border-radius:999px;font:italic 1.1rem var(--serif);transform:rotate(-5deg)}
+.ritual h2{font:italic 500 clamp(3.2rem,7vw,6.7rem)/.87 var(--serif);letter-spacing:-.06em}.ritual-copy>p{color:rgba(255,255,255,.63);max-width:48ch;margin:25px 0 45px}
+.ritual-list{border-top:1px solid rgba(255,255,255,.2)}.ritual-row{display:grid;grid-template-columns:48px 1fr;gap:15px;padding:17px 0;border-bottom:1px solid rgba(255,255,255,.2)}.ritual-row span{color:var(--rose);font-size:.75rem}.ritual-row p{color:rgba(255,255,255,.76)}
+.booking{background:var(--paper-2)}.booking-shell{display:grid;grid-template-columns:.72fr 1.28fr;gap:clamp(35px,8vw,110px)}.booking-copy h2{font:italic 500 clamp(3.1rem,6vw,6rem)/.88 var(--serif);letter-spacing:-.06em}.booking-copy p{color:var(--muted);margin:22px 0;max-width:40ch}.booking-copy .demo{font-size:.72rem;border-top:1px solid var(--line);padding-top:15px}
+.stepper{background:#fff;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden}.step-tabs{display:grid;grid-template-columns:repeat(3,1fr);border-bottom:1px solid var(--line)}.step-tab{border:0;border-right:1px solid var(--line);background:transparent;padding:17px 12px;font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;transition:background-color .18s ease,color .18s ease,transform .16s var(--ease)}.step-tab:last-child{border-right:0}.step-tab[aria-selected="true"]{background:var(--ink);color:#fff}
+.step-panel{padding:30px;display:none}.step-panel.active{display:block}.step-panel h3{font:italic 500 2rem var(--serif);margin-bottom:22px}.chips{display:flex;flex-wrap:wrap;gap:10px}.chip{border:1px solid var(--line);background:var(--paper-2);border-radius:999px;padding:11px 15px;transition:transform .16s var(--ease),background-color .18s ease,color .18s ease}.chip[aria-pressed="true"]{background:var(--clay);border-color:var(--clay);color:#fff}
+.fields{display:grid;grid-template-columns:1fr 1fr;gap:12px}.field{display:grid;gap:7px}.field.full{grid-column:1/-1}.field label{font-size:.67rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase}.field input,.field select,.field textarea{width:100%;border:1px solid var(--line);background:var(--paper-2);border-radius:14px;padding:14px}.field textarea{min-height:100px;resize:vertical}
+.panel-next{margin-top:25px}.summary{background:var(--paper);border-radius:15px;padding:15px;margin-bottom:18px;color:var(--muted);font-size:.88rem}.success{display:none;background:var(--sage);padding:18px;border-radius:15px;margin-top:15px}.success.show{display:block}
+.prep{background:var(--rose)}.prep-head{display:grid;grid-template-columns:.8fr 1.2fr;gap:40px;align-items:end;margin-bottom:48px}.prep-head h2{font:italic 500 clamp(3rem,6.5vw,6.2rem)/.87 var(--serif);letter-spacing:-.06em}.prep-head p{max-width:48ch;justify-self:end;color:#5f4038}.prep-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.prep-card{min-height:245px;padding:24px;border:1px solid rgba(36,28,26,.22);border-radius:22px;background:rgba(255,255,255,.38);display:flex;flex-direction:column}.prep-card span{font-size:.64rem;font-weight:800;letter-spacing:.14em}.prep-card h3{font:italic 500 1.85rem/1 var(--serif);margin-top:auto}.prep-card p{font-size:.86rem;color:#654a42;margin-top:12px}
+.faq{background:var(--paper)}.faq-shell{display:grid;grid-template-columns:.72fr 1.28fr;gap:clamp(35px,8vw,110px)}.faq-copy h2{font:italic 500 clamp(3rem,6vw,5.8rem)/.88 var(--serif);letter-spacing:-.06em}.faq-copy p{max-width:38ch;color:var(--muted);margin-top:22px}.faq-list{border-top:1px solid var(--line)}.faq-list details{border-bottom:1px solid var(--line);padding:0}.faq-list summary{list-style:none;display:flex;justify-content:space-between;gap:20px;padding:21px 0;font-weight:750;cursor:pointer}.faq-list summary::-webkit-details-marker{display:none}.faq-list summary::after{content:"+";font:italic 1.5rem var(--serif);color:var(--clay);transition:transform .18s var(--ease)}.faq-list details[open] summary::after{transform:rotate(45deg)}.faq-list details p{padding:0 45px 22px 0;color:var(--muted);max-width:60ch}.faq-list summary:active{transform:scale(.99)}
+.contact{padding:48px 0;background:var(--clay);color:#fff}.contact-grid{display:grid;grid-template-columns:1.3fr .7fr;gap:30px;align-items:end}.contact h2{font:italic 500 clamp(2.8rem,7vw,7rem)/.84 var(--serif);letter-spacing:-.06em}.contact address{font-style:normal;justify-self:end;text-align:right;color:rgba(255,255,255,.78)}
+footer{background:var(--ink);color:#fff;padding:26px 0}.foot{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;font-size:.73rem;color:rgba(255,255,255,.55)}.foot a{color:#fff}
+.mobile-cta{display:none;position:fixed;z-index:35;left:12px;right:12px;bottom:12px;background:var(--ink);color:#fff;border-radius:999px;padding:14px 18px;text-align:center;font-weight:800;box-shadow:0 15px 40px rgba(0,0,0,.25)}
+.reveal{opacity:0;transform:translateY(20px);transition:opacity .6s var(--ease),transform .6s var(--ease)}.reveal.in{opacity:1;transform:none}
+@media(hover:hover) and (pointer:fine){.nav-links a:hover::after{transform:scaleX(1);transform-origin:left}.button:hover{background:var(--clay);border-color:var(--clay)}.button.light:hover{color:#fff}.care-card{transition:transform .22s var(--ease)}.care-card:hover{transform:translateY(-5px)}}
+@media(max-width:900px){.nav-links,.nav>.wrap>.nav-inner>.nav-cta{display:none}.menu{display:block}.nav-links.open{position:absolute;display:grid;inset:100% 16px auto;background:var(--paper-2);border:1px solid var(--line);border-radius:20px;padding:20px;box-shadow:0 20px 50px rgba(36,28,26,.15)}.hero-grid,.section-head,.ritual-grid,.booking-shell,.prep-head,.faq-shell,.contact-grid{grid-template-columns:1fr}.hero-visual{min-height:560px}.section-head p,.prep-head p{justify-self:start}.care-card,.care-card.big,.care-card.wide{grid-column:span 6;grid-row:auto;min-height:350px}.prep-grid{grid-template-columns:1fr 1fr}.ritual-image{order:2}.contact address{justify-self:start;text-align:left}}
+@media(max-width:620px){.wrap{width:min(100% - 26px,1240px)}.hero{padding-top:105px}.hero-visual{min-height:430px}.note{width:130px;right:-5px}.care-grid{display:block}.care-card,.care-card.big,.care-card.wide{min-height:300px;margin-bottom:10px}.prep-grid{grid-template-columns:1fr}.prep-card{min-height:205px}.step-tabs{grid-template-columns:1fr}.step-tab{border-right:0;border-bottom:1px solid var(--line)}.fields{grid-template-columns:1fr}.field.full{grid-column:auto}.mobile-cta{display:block}footer{padding-bottom:85px}.booking-copy h2,.ritual h2,.faq-copy h2{font-size:3.4rem}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}.reveal{opacity:1;transform:none}}
+</style>
+
+<style id="quality-pass">
+html{scroll-padding-top:96px}
+section[id],main[id]{scroll-margin-top:96px}
+h1,h2,h3{text-wrap:balance}
+p{text-wrap:pretty}
+img{max-width:100%}
+:where(button,.btn,.button,.nav-cta,.menu,.burger,.menu-button,.menu-toggle,.mobile-cta,.mobile-call){
+  min-height:44px;
+  -webkit-tap-highlight-color:transparent;
+  touch-action:manipulation
+}
+:where(button,.btn,.button,.nav-cta,.menu,.burger,.menu-button,.menu-toggle,.mobile-cta,.mobile-call):active{
+  transform:scale(.97)
+}
+:where(a,button,input,select,textarea,summary):focus-visible{
+  outline:3px solid currentColor!important;
+  outline-offset:4px!important
+}
+.quality-skip{
+  position:fixed;
+  z-index:9999;
+  top:10px;
+  left:10px;
+  padding:.75rem 1rem;
+  background:#fff;
+  color:#111;
+  border:2px solid currentColor;
+  border-radius:8px;
+  font:700 .9rem/1.2 system-ui,sans-serif;
+  transform:translateY(calc(-100% - 20px));
+  transition:transform 160ms cubic-bezier(.23,1,.32,1)
+}
+.quality-skip:focus{transform:translateY(0)}
+.hero .reveal,.hero [data-reveal]{opacity:1!important;transform:none!important;transition:none!important}
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto!important}
+  *,*::before,*::after{
+    animation-duration:.01ms!important;
+    animation-iteration-count:1!important;
+    scroll-behavior:auto!important;
+    transition-duration:.01ms!important
+  }
+}
+
+:root{--muted:#5d4f4b;--clay:#a64d3d;--line:rgba(36,28,26,.26)}
+.hero-copy>p,.section-head p,.booking-copy p,.faq-copy p{color:#584946}
+.care-card.big p,.ritual-copy>p{color:rgba(255,255,255,.82)}
+.contact address{color:rgba(255,255,255,.9)}
+.success{min-height:1.5em}
+</style>
+</head>
+<body>
+<a class="quality-skip" href="#top">Zum Inhalt springen</a>
+<header class="nav" id="nav"><div class="wrap nav-inner">
+  <a class="brand" href="#top">hautnah.<span>Kosmetik Atelier · Muster</span></a>
+  <nav class="nav-links" id="navLinks" aria-label="Hauptnavigation"><a href="#pflege">Behandlungen</a><a href="#ablauf">Ablauf</a><a href="#termin">Termin</a><a href="#kontakt">Kontakt</a></nav>
+  <a class="nav-cta" href="#termin">Termin anfragen <span>↗</span></a>
+  <button class="menu" id="menu" type="button" aria-expanded="false" aria-controls="navLinks">Menü</button>
+</div></header>
+<main id="top">
+  <section class="hero"><div class="wrap hero-grid">
+    <div class="hero-copy reveal"><p class="eyebrow">Kosmetik · Pflege · Ruhe</p><h1>Ihre Haut.<span>Ihr Moment.</span></h1><p>Eine ruhige, persönliche Studio-Vorlage für Behandlungen, die mit Beratung beginnen und mit einem guten Gefühl enden.</p><div class="hero-actions"><a class="button" href="#termin">Wunschtermin anfragen</a><a class="button light" href="#pflege">Leistungen ansehen</a></div></div>
+    <div class="hero-visual reveal"><img src="assets/images/image-01.webp" alt="Entspannter Moment während einer Kosmetikbehandlung" width="1318" height="1800" decoding="async"><div class="note"><small>Atelier-Zeit</small>Beratung.<br>Behandlung.<br>Nachpflege.</div></div>
+  </div></section>
+  <div class="marquee" aria-hidden="true"><div class="marquee-track"><span>Gesichtspflege</span><span>Maniküre</span><span>Wimpern &amp; Brauen</span><span>Fusspflege</span><span>Massage</span><span>Gesichtspflege</span><span>Maniküre</span><span>Wimpern &amp; Brauen</span><span>Fusspflege</span><span>Massage</span></div></div>
+
+  <section class="section" id="pflege"><div class="wrap">
+    <header class="section-head reveal"><h2>Pflege, die zu <em>Ihnen</em> passt.</h2><p>Die Karten sind bewusst modular: Ein Studio zeigt nur die Behandlungen, die es tatsächlich anbietet. Inhalte und Dauer werden vor dem Livegang mit dem Betrieb abgestimmt.</p></header>
+    <div class="care-grid reveal">
+      <article class="care-card big"><span class="num">01 · SIGNATURE</span><h3>Gesichts&shy;pflege</h3><p>Reinigung, Peeling, Pflege und ein ruhiger Ablauf – abgestimmt auf Hautbild und Tagesform.</p><span class="pill">Beratung inklusive</span></article>
+      <article class="care-card"><span class="num">02</span><h3>Wimpern &amp; Brauen</h3><p>Form, Farbe und Pflege für einen klaren, natürlichen Ausdruck.</p></article>
+      <article class="care-card"><span class="num">03</span><h3>Maniküre</h3><p>Gepflegte Hände, sorgfältige Arbeit und ein Finish nach Wunsch.</p></article>
+      <article class="care-card"><span class="num">04</span><h3>Fuss&shy;pflege</h3><p>Entlastend, hygienisch und mit Zeit für individuelle Bedürfnisse.</p></article>
+      <article class="care-card wide"><span class="num">05 · RUHE</span><h3>Massage &amp; Entspannung</h3><p>Ein bewusst langsamer Termin für Rücken, Nacken und Schultern.</p></article>
+    </div>
+  </div></section>
+
+  <section class="section ritual" id="ablauf"><div class="wrap ritual-grid">
+    <div class="ritual-image reveal"><img src="assets/images/image-02.webp" alt="Auftragen einer Gesichtsmaske im Kosmetikstudio" width="1400" height="933" decoding="async"></div>
+    <div class="ritual-copy reveal"><p class="eyebrow">Ein Termin, drei ruhige Schritte</p><h2>Keine Hektik. Kein Schema F.</h2><p>Die Vorlage erklärt den Ablauf so, wie Kundinnen und Kunden ihn erleben. Das schafft Vertrauen, bevor der erste Termin überhaupt beginnt.</p><div class="ritual-list"><div class="ritual-row"><span>01</span><p><strong>Ankommen &amp; besprechen</strong><br>Wünsche, Hautbild und offene Fragen klären.</p></div><div class="ritual-row"><span>02</span><p><strong>Behandeln</strong><br>Konzentrierte Arbeit in einer ruhigen Umgebung.</p></div><div class="ritual-row"><span>03</span><p><strong>Nachpflegen</strong><br>Klare Hinweise für die Zeit nach dem Termin.</p></div></div></div>
+  </div></section>
+
+  <section class="section prep"><div class="wrap">
+    <header class="prep-head reveal"><div><p class="eyebrow">Gut vorbereitet</p><h2>Damit der Termin ruhig beginnt.</h2></div><p>Kurze Hinweise nehmen Unsicherheit aus dem ersten Besuch. Der echte Salon ergänzt hier nur das, was für seine Behandlungen tatsächlich gilt.</p></header>
+    <div class="prep-grid reveal">
+      <article class="prep-card"><span>01 · VORHER</span><h3>Wünsche notieren</h3><p>Behandlung, Anlass und offene Fragen dürfen schon bei der Anfrage genannt werden.</p></article>
+      <article class="prep-card"><span>02 · HAUT</span><h3>Besonderheiten nennen</h3><p>Empfindlichkeiten oder relevante Pflegegewohnheiten persönlich ansprechen.</p></article>
+      <article class="prep-card"><span>03 · ZEIT</span><h3>Ohne Eile planen</h3><p>Die tatsächliche Dauer wird vom Studio bestätigt und nicht pauschal versprochen.</p></article>
+      <article class="prep-card"><span>04 · DANACH</span><h3>Nachpflege verstehen</h3><p>Individuelle Empfehlungen gehören in die Beratung, nicht in allgemeine Werbeversprechen.</p></article>
+    </div>
+  </div></section>
+
+  <section class="section booking" id="termin"><div class="wrap booking-shell">
+    <div class="booking-copy reveal"><p class="eyebrow">Terminanfrage</p><h2>Was darf es für Sie sein?</h2><p>Drei klare Schritte führen von der gewünschten Behandlung bis zu den Kontaktdaten – angenehm kurz und ohne unnötige Felder.</p><p class="demo">Demo-Funktion: Die Anfrage wird nicht versendet. Beim echten Kunden wird sie an E-Mail oder ein Buchungssystem angebunden.</p></div>
+    <div class="stepper reveal">
+      <div class="step-tabs" role="tablist" aria-label="Schritte der Terminanfrage"><button class="step-tab" type="button" role="tab" aria-selected="true" data-step="1">1 · Behandlung</button><button class="step-tab" type="button" role="tab" aria-selected="false" data-step="2">2 · Wunschzeit</button><button class="step-tab" type="button" role="tab" aria-selected="false" data-step="3">3 · Kontakt</button></div>
+      <div class="step-panel active" data-panel="1"><h3>Behandlung wählen</h3><div class="chips" id="treatments"><button class="chip" type="button" aria-pressed="false">Gesichtspflege</button><button class="chip" type="button" aria-pressed="false">Wimpern &amp; Brauen</button><button class="chip" type="button" aria-pressed="false">Maniküre</button><button class="chip" type="button" aria-pressed="false">Fusspflege</button><button class="chip" type="button" aria-pressed="false">Massage</button></div><button class="button panel-next" type="button" data-next="2">Weiter zur Wunschzeit</button></div>
+      <div class="step-panel" data-panel="2"><h3>Wann passt es?</h3><div class="fields"><div class="field"><label for="date">Wunschtag</label><input id="date" type="date"></div><div class="field"><label for="time">Tageszeit</label><select id="time"><option value="">Bitte wählen</option><option>Vormittag</option><option>Nachmittag</option><option>Abend</option></select></div><div class="field full"><label for="note">Hinweis (optional)</label><textarea id="note" placeholder="Zum Beispiel: empfindliche Haut oder Terminflexibilität"></textarea></div></div><button class="button panel-next" type="button" data-next="3">Weiter zum Kontakt</button></div>
+      <form class="step-panel" data-panel="3" id="requestForm"><h3>Wie erreichen wir Sie?</h3><div class="summary" id="summary">Noch keine Behandlung oder Wunschzeit gewählt.</div><div class="fields"><div class="field"><label for="name">Name</label><input id="name" required autocomplete="name"></div><div class="field"><label for="phone">Telefon</label><input id="phone" required autocomplete="tel"></div><div class="field full"><label for="email">E-Mail</label><input id="email" type="email" autocomplete="email"></div></div><button class="button panel-next" type="submit">Anfrage vorbereiten</button><div class="success" id="success" role="status">Danke – in der Kundenversion würde die Anfrage jetzt übermittelt.</div></form>
+    </div>
+  </div></section>
+
+  <section class="section faq" id="fragen"><div class="wrap faq-shell">
+    <div class="faq-copy reveal"><p class="eyebrow">Häufige Fragen</p><h2>Vor dem ersten Termin.</h2><p>Eine ruhige Antwort auf praktische Fragen schafft Vertrauen – ohne Diagnosen, Heilversprechen oder erfundene Ergebnisse.</p></div>
+    <div class="faq-list reveal">
+      <details><summary>Welche Behandlung passt zu mir?</summary><p>Bei Unsicherheit wird zuerst ein Beratungswunsch gesendet. Die konkrete Behandlung entscheidet der echte Betrieb nach dem persönlichen Gespräch.</p></details>
+      <details><summary>Kann ich Empfindlichkeiten vorab mitteilen?</summary><p>Ja. Das Notizfeld ist genau dafür gedacht. Medizinisch relevante Fragen müssen jedoch direkt mit einer geeigneten Fachperson geklärt werden.</p></details>
+      <details><summary>Ist die Terminanfrage bereits verbindlich?</summary><p>Nein. In dieser Vorlage bestätigt das Studio Behandlung, Dauer und Termin persönlich.</p></details>
+      <details><summary>Kann ein Gutschein angefragt werden?</summary><p>Ein Gutscheinbereich kann ergänzt werden, sobald Angebot, Gültigkeit und Einlösung mit dem Betrieb verbindlich geklärt sind.</p></details>
+    </div>
+  </div></section>
+
+  <section class="contact" id="kontakt"><div class="wrap contact-grid"><h2>Raum für Pflege.<br>Mitten in Zürich.</h2><address>Musterstrasse 12 · 8000 Zürich<br>044 000 00 00 · hallo@beispiel.ch<br><small>Beispielangaben vor Veröffentlichung ersetzen.</small></address></div></section>
+</main>
+<footer><div class="wrap foot"><span>© 2026 Hautnah Atelier · MaseSites Demo-Vorlage</span><span>Impressum · Datenschutz · Angaben ersetzen</span><a href="#top">Nach oben ↑</a></div></footer>
+<a class="mobile-cta" href="#termin">Termin anfragen</a>
+<script>
+(function(){
+  var nav=document.getElementById('nav'),menu=document.getElementById('menu'),links=document.getElementById('navLinks');
+  function onScroll(){nav.classList.toggle('scrolled',scrollY>24)}onScroll();addEventListener('scroll',onScroll,{passive:true});
+  menu.addEventListener('click',function(){var open=links.classList.toggle('open');menu.setAttribute('aria-expanded',String(open))});
+  links.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){links.classList.remove('open');menu.setAttribute('aria-expanded','false')})});
+  var reveals=document.querySelectorAll('.reveal');
+  if(!('IntersectionObserver'in window)){reveals.forEach(function(el){el.classList.add('in')})}else{var io=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{threshold:.1,rootMargin:'0px 0px -7%'});reveals.forEach(function(el){io.observe(el)})}
+  var chosen='',tabs=document.querySelectorAll('.step-tab'),panels=document.querySelectorAll('.step-panel');
+  function showStep(step){tabs.forEach(function(tab){tab.setAttribute('aria-selected',String(tab.dataset.step===String(step)))});panels.forEach(function(panel){panel.classList.toggle('active',panel.dataset.panel===String(step))});if(step===3)updateSummary()}
+  tabs.forEach(function(tab){tab.addEventListener('click',function(){showStep(tab.dataset.step)})});
+  document.querySelectorAll('[data-next]').forEach(function(button){button.addEventListener('click',function(){showStep(button.dataset.next)})});
+  document.getElementById('treatments').addEventListener('click',function(event){var chip=event.target.closest('.chip');if(!chip)return;this.querySelectorAll('.chip').forEach(function(item){item.setAttribute('aria-pressed','false')});chip.setAttribute('aria-pressed','true');chosen=chip.textContent});
+  function updateSummary(){var date=document.getElementById('date').value,time=document.getElementById('time').value;document.getElementById('summary').textContent=(chosen||'Behandlung offen')+' · '+(date||'Tag offen')+' · '+(time||'Tageszeit offen')}
+  var now=new Date(),minDate=new Date(now.getTime()-now.getTimezoneOffset()*60000).toISOString().slice(0,10);document.querySelectorAll('input[type="date"]').forEach(function(input){input.min=minDate});
+  document.getElementById('requestForm').addEventListener('submit',function(e){e.preventDefault();document.getElementById('success').classList.add('show')});
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,769 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Farbwerk — Maler &amp; Gipser</title>
+<meta name="description" content="Innen- und Fassadenanstrich, Verputz und Gipserarbeiten — sauber, termintreu und zum fairen Preis.">
+<script>document.documentElement.classList.add('js')</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#f5f2ec; --surface:#ffffff; --surface-2:#efeae1; --line:#e5ded2;
+    --ink:#1c1815; --muted:#736c62; --accent:#c1492a; --accent-soft:#f1e4dd;
+    --radius:14px; --radius-lg:26px; --maxw:1320px;
+    --disp:"Fraunces",Georgia,serif; --body:"Inter",system-ui,-apple-system,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0}
+  html{scroll-behavior:smooth;scrollbar-gutter:stable;overflow-x:clip}
+  body{background:var(--bg);color:var(--ink);font-family:var(--body);line-height:1.65;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  a{color:inherit;text-decoration:none}
+  img{max-width:100%;display:block}
+  h1,h2,h3{font-family:var(--disp);font-weight:500;line-height:1.05;letter-spacing:-.015em}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+  .btn{display:inline-flex;align-items:center;gap:.55rem;font-weight:600;font-size:.97rem;padding:.9rem 1.6rem;border-radius:999px;cursor:pointer;border:0;transition:transform .15s, background .2s, color .2s}
+  .btn.primary{background:var(--accent);color:#fff}
+  .btn.primary:hover{background:#a93d22;transform:translateY(-2px)}
+  .btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+  .btn.ghost:hover{background:var(--surface);transform:translateY(-2px)}
+  .btn.block{width:100%;justify-content:center}
+  .btn.light{background:#fff;color:var(--ink)} .btn.light:hover{background:#f3ede4}
+  .btn:active{transform:scale(.97)!important}
+  :focus-visible{outline:3px solid var(--accent);outline-offset:4px}
+  ::selection{background:var(--accent);color:#fff}
+
+  html.js [data-reveal]{opacity:0;transform:translateY(24px);transition:opacity .7s cubic-bezier(.2,.7,.2,1), transform .7s cubic-bezier(.2,.7,.2,1)}
+  html.js [data-reveal].in{opacity:1;transform:none}
+  [data-reveal][data-delay="1"]{transition-delay:.08s}[data-reveal][data-delay="2"]{transition-delay:.16s}[data-reveal][data-delay="3"]{transition-delay:.24s}
+
+  header.nav{position:fixed;inset:0 0 auto 0;z-index:50;transition:background .3s, border-color .3s;border-bottom:1px solid transparent}
+  header.nav.scrolled{background:rgba(245,242,236,.86);backdrop-filter:blur(14px);border-bottom-color:var(--line)}
+  .nav-inner{max-width:var(--maxw);margin:0 auto;padding:16px 24px;display:flex;align-items:center;gap:2rem}
+  .brand{display:flex;align-items:center;gap:.6rem;font-family:var(--disp);font-weight:600;font-size:1.32rem}
+  .brand .dot{width:12px;height:12px;border-radius:50%;background:var(--accent);flex:none}
+  .nav-links{display:flex;gap:1.7rem;margin-left:auto;font-weight:500;font-size:.95rem}
+  .nav-links a{color:var(--muted);transition:color .2s}.nav-links a:hover{color:var(--ink)}
+  .nav-cta{display:flex;align-items:center;gap:1.1rem}
+  .nav-phone{font-weight:600}
+  .burger{display:none;flex:0 0 44px;width:44px;height:44px;border:1px solid var(--line);background:var(--surface);border-radius:11px;cursor:pointer;padding:0;place-items:center}
+  .burger span,.burger span::before,.burger span::after{content:"";display:block;width:18px;height:2px;background:var(--ink);position:relative;transition:.25s}
+  .burger span::before{position:absolute;top:-6px}.burger span::after{position:absolute;top:6px}
+  .mobile-menu{display:none}
+
+  /* Hero — redaktionell: grosse Headline, darunter breites Bild */
+  .hero{padding:150px 0 0}
+  .hero h1{font-size:clamp(3.2rem,7.6vw,6.7rem);max-width:14ch;font-weight:500;text-wrap:balance}
+  .hero .row{display:flex;justify-content:space-between;align-items:flex-end;gap:2rem;flex-wrap:wrap;margin-top:1.6rem}
+  .hero p.lead{font-size:clamp(1.08rem,1.6vw,1.28rem);color:var(--muted);max-width:44ch}
+  .hero-actions{display:flex;gap:.8rem;flex-wrap:wrap}
+  .hero .banner{margin-top:3rem;border-radius:var(--radius-lg);overflow:hidden;position:relative;aspect-ratio:16/6.4}
+  .hero .banner img{width:100%;height:100%;object-fit:cover}
+  .hero .trust{position:absolute;left:24px;bottom:24px;background:rgba(255,255,255,.92);backdrop-filter:blur(6px);border-radius:14px;padding:.9rem 1.2rem;display:flex;align-items:center;gap:1rem;font-size:.92rem}
+  .hero .trust .stars{color:var(--accent)} .hero .trust b{font-family:var(--disp)}
+
+  .stats{margin-top:0;border-bottom:1px solid var(--line)}
+  .stats-inner{max-width:var(--maxw);margin:0 auto;padding:2.6rem 24px;display:grid;grid-template-columns:repeat(4,1fr);gap:1rem}
+  .stats .n{font-family:var(--disp);font-weight:500;font-size:2.4rem;line-height:1}
+  .stats .l{color:var(--muted);font-size:.9rem;margin-top:.3rem}
+
+  .sec{padding:clamp(88px,11vw,152px) 0}
+  .head{max-width:60ch}
+  .head h2{font-size:clamp(2.2rem,4.6vw,3.5rem)}
+  .head p{color:var(--muted);font-size:1.06rem;margin-top:.7rem}
+  .head.center{margin:0 auto;text-align:center}
+
+  .svc{display:grid;grid-template-columns:repeat(3,1fr);gap:1.1rem;margin-top:3rem}
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:2rem 1.8rem;transition:transform .2s, box-shadow .2s}
+  .card:hover{transform:translateY(-5px);box-shadow:0 18px 40px rgba(28,24,21,.08)}
+  .card .ic{color:var(--accent);margin-bottom:1.2rem}
+  .card h3{font-size:1.4rem;margin-bottom:.5rem;font-weight:500}
+  .card p{color:var(--muted);font-size:.98rem}
+
+  .split{display:grid;grid-template-columns:1fr 1fr;gap:clamp(2rem,5vw,4.5rem);align-items:center}
+  .split .media{border-radius:var(--radius-lg);overflow:hidden}
+  .split .media img{width:100%;height:100%;object-fit:cover;aspect-ratio:4/3.6}
+  .split h2{font-size:clamp(2rem,3.8vw,2.9rem);margin-bottom:1rem}
+  .split p{color:var(--muted);font-size:1.06rem}
+  .ticks{list-style:none;padding:0;margin:1.7rem 0 0;display:grid;gap:.9rem}
+  .ticks li{display:flex;gap:.75rem;align-items:flex-start}
+  .ticks svg{flex:none;color:var(--accent);margin-top:3px}
+
+  /* Farbstudio — kleine, echte Interaktion statt Dekoration */
+  .palette-studio{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(320px,.65fr);min-height:680px;background:var(--ink);border-radius:var(--radius-lg);overflow:hidden;color:#fff}
+  .room{position:relative;isolation:isolate;min-height:560px;background:#b4593f;transition:background-color .28s ease}
+  .room::before{content:"";position:absolute;inset:8% 9% 14%;z-index:-1;background:linear-gradient(115deg,rgba(255,255,255,.34),transparent 40%),currentColor;box-shadow:inset 0 -14px 30px rgba(55,34,25,.12)}
+  .room::after{content:"";position:absolute;left:0;right:0;bottom:0;height:17%;background:repeating-linear-gradient(90deg,#8c674d 0 92px,#73513b 93px 95px);box-shadow:0 -12px 25px rgba(0,0,0,.15)}
+  .room-art{position:absolute;left:12%;top:18%;width:28%;aspect-ratio:4/5;border:12px solid #efe9df;background:linear-gradient(145deg,#222 0 28%,#c38b55 29% 54%,#ede4d9 55%);box-shadow:0 18px 35px rgba(43,26,20,.18)}
+  .room-console{position:absolute;left:9%;right:9%;bottom:16%;height:14%;z-index:2;background:#352d29;border-radius:3px 3px 0 0;box-shadow:0 22px 35px rgba(0,0,0,.2)}
+  .room-vase{position:absolute;right:19%;bottom:30%;z-index:3;width:64px;height:86px;border-radius:42% 42% 24% 24%;background:#e6d6c5}
+  .room-vase::before{content:"";position:absolute;width:2px;height:92px;background:#273c2e;left:32px;bottom:70px;transform:rotate(-18deg);box-shadow:18px 5px 0 #273c2e,-14px 7px 0 #273c2e}
+  .palette-copy{padding:clamp(2.6rem,5vw,5rem);display:flex;flex-direction:column;justify-content:center}
+  .palette-copy .eyebrow{color:#d8ad93;font-size:.73rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase}
+  .palette-copy h2{font-size:clamp(2.2rem,4vw,3.8rem);margin:1rem 0 1.2rem;max-width:10ch;color:#fff}
+  .palette-copy p{color:#c8c1bc;max-width:40ch}
+  .swatches{display:flex;gap:.75rem;flex-wrap:wrap;margin-top:2rem}
+  .swatch{width:50px;height:50px;border-radius:50%;border:2px solid transparent;background:var(--sw);cursor:pointer;box-shadow:0 0 0 1px rgba(255,255,255,.26);transition:transform .16s cubic-bezier(.23,1,.32,1),border-color .16s ease}
+  .swatch[aria-pressed="true"]{border-color:#fff;transform:scale(.9)}
+  .swatch:active{transform:scale(.84)}
+  .tone-name{margin-top:1rem;font-size:.86rem;color:#ece8e4;min-height:1.4em}
+
+  .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:1.4rem;margin-top:3rem}
+  .step{padding-top:1.5rem;border-top:2px solid var(--accent)}
+  .step .n{font-family:var(--disp);font-weight:600;color:var(--accent);font-size:1.05rem}
+  .step h3{font-size:1.4rem;margin:.6rem 0 .5rem;font-weight:500}
+  .step p{color:var(--muted);font-size:.98rem}
+
+  .gallery{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:200px;gap:12px;margin-top:3rem}
+  .gallery a{overflow:hidden;border-radius:14px;display:block}
+  .gallery img{width:100%;height:100%;object-fit:cover;transition:transform .5s cubic-bezier(.2,.7,.2,1)}
+  .gallery a:hover img{transform:scale(1.07)}
+  .gallery .tall{grid-row:span 2}.gallery .wide{grid-column:span 2}
+
+  .quotes{display:grid;grid-template-columns:repeat(3,1fr);gap:1.1rem;margin-top:3rem}
+  .quote{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:1.9rem 1.7rem;display:flex;flex-direction:column;gap:1.1rem}
+  .quote .stars{color:var(--accent);letter-spacing:2px}
+  .quote p{font-size:1.06rem}
+  .quote .who{display:flex;align-items:center;gap:.8rem;margin-top:auto}
+  .quote .av{width:44px;height:44px;border-radius:50%;background:var(--accent-soft);display:grid;place-items:center;font-family:var(--disp);font-weight:600;color:var(--accent)}
+  .quote .who b{font-family:var(--disp);font-weight:500}
+  .quote .who span{color:var(--muted);font-size:.85rem}
+
+  .cta{background:var(--ink);color:#fff;border-radius:var(--radius-lg);padding:clamp(2.6rem,5vw,3.8rem);display:flex;align-items:center;justify-content:space-between;gap:2rem;flex-wrap:wrap}
+  .cta h2{font-size:clamp(1.9rem,3.4vw,2.7rem);max-width:20ch;color:#fff}
+  .cta p{color:rgba(255,255,255,.65);margin-top:.5rem}
+
+  .contact{display:grid;grid-template-columns:1fr 1fr;gap:1.1rem;margin-top:3rem}
+  .panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:2rem 1.9rem}
+  .panel h3{font-family:var(--disp);font-size:1.4rem;font-weight:500;margin-bottom:.5rem}
+  .hours{list-style:none;padding:0;margin:1.1rem 0 0}
+  .hours li{display:flex;justify-content:space-between;padding:.72rem 0;border-bottom:1px solid var(--line);font-size:.98rem}
+  .hours li:last-child{border-bottom:0}
+  .hours .cl{color:var(--muted)}.hours .hl{color:var(--accent);font-weight:600}
+  .cinfo{display:grid;gap:1.2rem;margin-top:1rem}
+  .cinfo .row{display:flex;gap:.9rem;align-items:flex-start}
+  .cinfo .ic{color:var(--accent);margin-top:2px}
+  .cinfo b{font-family:var(--disp);font-weight:500}.cinfo span{color:var(--muted);font-size:.95rem}
+
+  .faq{max-width:820px;margin:3rem auto 0}
+  .faq details{border:1px solid var(--line);border-radius:12px;background:var(--surface);margin-bottom:.8rem;overflow:hidden}
+  .faq summary{list-style:none;cursor:pointer;padding:1.2rem 1.4rem;display:flex;justify-content:space-between;align-items:center;gap:1rem;font-family:var(--disp);font-weight:500;font-size:1.12rem}
+  .faq summary::-webkit-details-marker{display:none}
+  .faq .plus{width:24px;height:24px;flex:none;position:relative}
+  .faq .plus::before,.faq .plus::after{content:"";position:absolute;background:var(--accent);top:50%;left:50%;transform:translate(-50%,-50%);transition:.25s}
+  .faq .plus::before{width:13px;height:2px}.faq .plus::after{width:2px;height:13px}
+  .faq details[open] .plus::after{transform:translate(-50%,-50%) rotate(90deg);opacity:0}
+  .faq .a{padding:0 1.4rem 1.3rem;color:var(--muted)}
+
+  /* Interaktiver Vorher/Nachher-Vergleich — aus dem 21st-Vergleichsmuster abgeleitet */
+  .paint-progress{position:fixed;inset:0 0 auto;z-index:80;height:3px;pointer-events:none}.paint-progress span{display:block;width:100%;height:100%;background:var(--accent);transform:scaleX(0);transform-origin:left;will-change:transform}
+  .compare-shell{display:grid;grid-template-columns:.72fr 1.28fr;gap:clamp(2rem,6vw,6rem);align-items:center}
+  .compare-copy .eyebrow{color:var(--accent);font-size:.72rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;margin-bottom:1rem}
+  .compare-copy h2{font-size:clamp(2.3rem,4.8vw,4.5rem);max-width:9ch}
+  .compare-copy>p{color:var(--muted);max-width:39ch;margin-top:1.2rem}
+  .compare-hint{display:flex;align-items:center;gap:.7rem;margin-top:2rem;font-size:.82rem;color:var(--muted)}
+  .compare-hint i{width:34px;height:1px;background:var(--accent)}
+  .paint-compare{--split:56%;position:relative;overflow:hidden;aspect-ratio:16/11;border-radius:var(--radius-lg);background:#d8d0c5;box-shadow:0 32px 70px -44px rgba(28,24,21,.55)}
+  .paint-compare>img,.paint-after,.paint-after img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  .paint-compare>img{filter:grayscale(1) brightness(.72) contrast(.92)}
+  .paint-after{clip-path:inset(0 calc(100% - var(--split)) 0 0);will-change:clip-path}
+  .paint-after img{filter:saturate(.93) contrast(1.03)}
+  .compare-line{position:absolute;z-index:3;top:0;bottom:0;left:var(--split);width:2px;background:#fff;transform:translateX(-1px);pointer-events:none;box-shadow:0 0 0 1px rgba(0,0,0,.15)}
+  .compare-knob{position:absolute;left:50%;top:50%;width:46px;height:46px;border-radius:50%;background:var(--accent);color:#fff;display:grid;place-items:center;transform:translate(-50%,-50%);font-weight:700;box-shadow:0 8px 24px rgba(28,24,21,.25)}
+  .paint-compare input{position:absolute;z-index:4;inset:0;width:100%;height:100%;opacity:0;cursor:ew-resize}
+  .compare-tag{position:absolute;z-index:2;top:1rem;padding:.45rem .7rem;background:rgba(255,255,255,.88);backdrop-filter:blur(8px);font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;border-radius:4px}.compare-tag.before{left:1rem}.compare-tag.after{right:1rem;background:var(--accent);color:#fff}
+
+  footer{border-top:1px solid var(--line);background:var(--surface-2)}
+  .foot{display:grid;grid-template-columns:1.7fr 1fr 1fr 1.2fr;gap:2rem;padding:clamp(3rem,6vw,4.5rem) 24px 2rem;max-width:var(--maxw);margin:0 auto}
+  .foot h4{font-family:var(--disp);font-size:1rem;font-weight:500;margin-bottom:1rem}
+  .foot a{color:var(--muted);display:block;padding:.3rem 0;font-size:.95rem}.foot a:hover{color:var(--accent)}
+  .foot p{color:var(--muted);font-size:.95rem;margin-top:1rem;max-width:32ch}
+  .foot-bottom{border-top:1px solid var(--line);padding:1.4rem 24px;max-width:var(--maxw);margin:0 auto;display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;color:var(--muted);font-size:.85rem}
+
+  @media(max-width:1000px){
+    .svc,.gallery{grid-template-columns:repeat(2,1fr)}
+    .stats-inner{grid-template-columns:repeat(2,1fr);gap:1.6rem}
+    .split,.steps{grid-template-columns:1fr}.gallery{grid-auto-rows:180px}.foot{grid-template-columns:1fr 1fr}
+    .hero .banner{aspect-ratio:16/9}
+    .compare-shell{grid-template-columns:1fr}
+  }
+  @media(max-width:720px){
+    .nav-links,.nav-phone{display:none}.burger{display:grid}
+    .mobile-menu{display:block;position:fixed;inset:64px 12px auto 12px;z-index:49;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:1.1rem;transform:translateY(-12px);opacity:0;pointer-events:none;transition:.25s;box-shadow:0 20px 50px rgba(28,24,21,.14)}
+    .mobile-menu.open{transform:none;opacity:1;pointer-events:auto}
+    .mobile-menu a{display:block;padding:.8rem .4rem;color:var(--ink);border-bottom:1px solid var(--line);font-weight:500}
+    .mobile-menu a:last-of-type{border-bottom:0}.mobile-menu .btn{margin-top:1rem}
+    .svc,.gallery,.contact,.foot{grid-template-columns:1fr}
+    .quotes{grid-template-columns:1fr}
+    .stats-inner{grid-template-columns:1fr 1fr}.gallery{grid-template-columns:1fr 1fr;grid-auto-rows:150px}
+    .cta{flex-direction:column;align-items:flex-start}
+    .palette-studio{grid-template-columns:1fr}.room{min-height:58svh}.palette-copy{padding:2.5rem 1.5rem}
+    .paint-compare{aspect-ratio:4/5}
+  }
+  @media (hover:hover) and (pointer:fine){.swatch:hover{transform:translateY(-3px)}.btn{transition:transform .16s cubic-bezier(.23,1,.32,1),background-color .2s ease,color .2s ease,box-shadow .2s ease}}
+  @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}.paint-progress{display:none}}
+</style>
+<style id="mobile-polish">
+html,body{max-width:100%;overflow-x:clip}
+.btn,.burger,.swatch{touch-action:manipulation}
+@media(max-width:720px){
+  .field input,.field textarea,.field select{font-size:16px}
+}
+@media(max-width:420px){
+  .nav-inner{padding-inline:12px;gap:.5rem}
+  .nav-cta{margin-left:auto}
+  .nav-cta .btn{min-height:44px;padding:.7rem .9rem}
+  .brand{font-size:1.12rem}
+  .hero{padding-top:126px}
+}
+</style>
+
+<style id="quality-pass">
+html{scroll-padding-top:96px}
+section[id],main[id]{scroll-margin-top:96px}
+h1,h2,h3{text-wrap:balance}
+p{text-wrap:pretty}
+img{max-width:100%}
+:where(button,.btn,.button,.nav-cta,.menu,.burger,.menu-button,.menu-toggle,.mobile-cta,.mobile-call){
+  min-height:44px;
+  -webkit-tap-highlight-color:transparent;
+  touch-action:manipulation
+}
+:where(button,.btn,.button,.nav-cta,.menu,.burger,.menu-button,.menu-toggle,.mobile-cta,.mobile-call):active{
+  transform:scale(.97)
+}
+:where(a,button,input,select,textarea,summary):focus-visible{
+  outline:3px solid currentColor!important;
+  outline-offset:4px!important
+}
+.quality-skip{
+  position:fixed;
+  z-index:9999;
+  top:10px;
+  left:10px;
+  padding:.75rem 1rem;
+  background:#fff;
+  color:#111;
+  border:2px solid currentColor;
+  border-radius:8px;
+  font:700 .9rem/1.2 system-ui,sans-serif;
+  transform:translateY(calc(-100% - 20px));
+  transition:transform 160ms cubic-bezier(.23,1,.32,1)
+}
+.quality-skip:focus{transform:translateY(0)}
+.hero .reveal,.hero [data-reveal]{opacity:1!important;transform:none!important;transition:none!important}
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto!important}
+  *,*::before,*::after{
+    animation-duration:.01ms!important;
+    animation-iteration-count:1!important;
+    scroll-behavior:auto!important;
+    transition-duration:.01ms!important
+  }
+}
+
+:root{--muted:#5b554d;--line:#d5cec2}
+.hero p.lead,.head p,.stats .l{color:#5b554d}
+.hero .trust{color:#332c27}
+</style>
+<style id="atelier-upgrade">
+:root{
+  --bg:#f1efe9;
+  --surface:#fbfaf6;
+  --surface-2:#ded8cc;
+  --line:#cfc7b9;
+  --ink:#172019;
+  --muted:#535a51;
+  --accent:#d45131;
+  --accent-soft:#f2d7ca;
+  --moss:#304235;
+  --lime:#dce866;
+  --radius:18px;
+  --radius-lg:38px;
+}
+body{
+  background:
+    radial-gradient(circle at 88% 3%,rgba(220,232,102,.18),transparent 28rem),
+    var(--bg);
+}
+header.nav.scrolled{background:rgba(241,239,233,.9)}
+.brand{letter-spacing:-.02em}
+.brand .dot{width:15px;height:15px;border-radius:3px;transform:rotate(9deg)}
+.nav-links a{position:relative}
+.nav-links a::after{content:"";position:absolute;left:0;right:100%;bottom:-6px;height:2px;background:var(--accent);transition:right 180ms cubic-bezier(.23,1,.32,1)}
+@media(hover:hover) and (pointer:fine){.nav-links a:hover::after{right:0}}
+
+.hero{padding:132px 0 0}
+.hero-stage{
+  display:grid;
+  grid-template-columns:minmax(0,.92fr) minmax(420px,1.08fr);
+  gap:clamp(2rem,5vw,6rem);
+  align-items:center;
+  min-height:min(830px,88svh);
+}
+.hero-copy{position:relative;z-index:2;padding-block:3rem}
+.hero-eyebrow{
+  display:flex;
+  align-items:center;
+  gap:.7rem;
+  margin-bottom:1.8rem;
+  color:var(--moss);
+  font-size:.72rem;
+  font-weight:700;
+  letter-spacing:.17em;
+  text-transform:uppercase;
+}
+.hero-eyebrow::before{content:"";width:30px;height:2px;background:var(--accent)}
+.hero h1{font-size:clamp(4rem,7.2vw,7.4rem);line-height:.86;max-width:8ch;letter-spacing:-.055em}
+.hero h1 em{color:var(--accent);font-weight:500}
+.hero .row{display:block;margin-top:2rem}
+.hero p.lead{font-size:clamp(1.05rem,1.45vw,1.22rem);max-width:38ch;color:var(--muted)}
+.hero-actions{margin-top:2rem}
+.hero-actions .btn{min-height:50px}
+.hero-proof{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:1px;
+  margin-top:3.2rem;
+  border-block:1px solid var(--line);
+}
+.hero-proof span{display:grid;gap:.18rem;padding:1rem .8rem 1rem 0;font-size:.78rem;color:var(--muted)}
+.hero-proof span+span{border-left:1px solid var(--line);padding-left:1rem}
+.hero-proof b{color:var(--ink);font-family:var(--disp);font-size:1.1rem;font-weight:600}
+.hero-visual{position:relative;min-width:0;padding:34px 24px 26px 42px}
+.hero-visual::before{
+  content:"";
+  position:absolute;
+  inset:8px 0 66px 72px;
+  border:1px solid var(--moss);
+  border-radius:110px 20px 110px 20px;
+  transform:rotate(2deg);
+}
+.hero-image{
+  position:relative;
+  z-index:1;
+  overflow:hidden;
+  min-height:650px;
+  border-radius:100px 18px 100px 18px;
+  background:var(--surface-2);
+  box-shadow:0 36px 80px -48px rgba(23,32,25,.65);
+}
+.hero-image img{width:100%;height:100%;min-height:650px;object-fit:cover;object-position:center 42%}
+.hero-label{
+  position:absolute;
+  left:18px;
+  right:18px;
+  bottom:18px;
+  display:grid;
+  gap:.2rem;
+  padding:1rem 1.1rem;
+  border:1px solid rgba(255,255,255,.38);
+  border-radius:14px;
+  background:rgba(23,32,25,.78);
+  color:#fff;
+  backdrop-filter:blur(12px);
+}
+.hero-label small{font-size:.64rem;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.68)}
+.hero-label b{font-family:var(--disp);font-size:1.05rem;font-weight:500}
+.hero-chip{
+  position:absolute;
+  z-index:3;
+  top:2px;
+  right:-16px;
+  width:116px;
+  aspect-ratio:1;
+  display:grid;
+  place-content:center;
+  text-align:center;
+  border-radius:50%;
+  background:var(--lime);
+  color:var(--moss);
+  font-size:.68rem;
+  font-weight:800;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  transform:rotate(7deg);
+  box-shadow:0 18px 40px -24px rgba(23,32,25,.7);
+}
+.paint-mark{position:absolute;z-index:2;right:-4px;bottom:18px;width:94px;height:18px;background:var(--accent);transform:rotate(-8deg)}
+
+.stats{margin-top:2rem;background:var(--moss);border:0;color:#fff}
+.stats-inner{padding-block:2rem;gap:0}
+.stats-inner>div{display:grid;grid-template-columns:42px 1fr;gap:.8rem;align-items:center;padding:0 1.2rem;border-right:1px solid rgba(255,255,255,.16)}
+.stats-inner>div:first-child{padding-left:0}.stats-inner>div:last-child{border-right:0}
+.stats .n{font-size:1rem;color:var(--lime)}
+.stats .l{display:grid;gap:.15rem;margin:0;color:rgba(255,255,255,.68);line-height:1.35}
+.stats .l b{color:#fff;font-family:var(--disp);font-size:1.05rem;font-weight:500}
+.stats .l span{font-size:.76rem}
+
+.sec{padding:clamp(90px,10vw,140px) 0}
+.head{max-width:none;display:grid;grid-template-columns:minmax(0,1fr) minmax(260px,.55fr);gap:2rem;align-items:end}
+.head h2{font-size:clamp(2.8rem,5.2vw,5.2rem);max-width:10ch;line-height:.94;letter-spacing:-.045em}
+.head p{justify-self:end;max-width:36ch;margin:0}
+.head.center{display:block;max-width:780px}.head.center h2{max-width:none}
+.svc{grid-template-columns:repeat(12,1fr);gap:14px}
+.card{
+  position:relative;
+  grid-column:span 4;
+  min-height:285px;
+  display:flex;
+  flex-direction:column;
+  overflow:hidden;
+  padding:2rem;
+  border-radius:22px;
+  box-shadow:none;
+}
+.card:nth-child(1),.card:nth-child(2){grid-column:span 6;min-height:340px}
+.card:nth-child(1){background:var(--moss);color:#fff;border-color:var(--moss)}
+.card:nth-child(2){background:var(--accent-soft);border-color:transparent}
+.card:nth-child(6){background:var(--lime);border-color:transparent}
+.card::after{
+  content:attr(data-no);
+  position:absolute;
+  right:1rem;
+  top:.55rem;
+  color:currentColor;
+  opacity:.09;
+  font:500 5.5rem/1 var(--disp);
+}
+.card .ic{width:48px;height:48px;display:grid;place-items:center;border:1px solid currentColor;border-radius:50%}
+.card h3{font-size:clamp(1.55rem,2.3vw,2.35rem);margin-top:auto;margin-bottom:.65rem}
+.card p{color:var(--muted);max-width:34ch}
+.card:nth-child(1) p{color:rgba(255,255,255,.7)}
+@media(hover:hover) and (pointer:fine){
+  .card:hover{transform:translateY(-4px);box-shadow:0 20px 46px -30px rgba(23,32,25,.55)}
+}
+
+.split .media{position:relative;border-radius:90px 18px 90px 18px;box-shadow:0 32px 70px -48px rgba(23,32,25,.65)}
+.split .media::after{content:"Oberfläche / 01";position:absolute;left:18px;bottom:18px;padding:.65rem .8rem;background:var(--lime);color:var(--moss);font-size:.68rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase}
+.split h2{font-size:clamp(2.7rem,4.7vw,4.8rem);line-height:.94;letter-spacing:-.045em}
+.ticks li{padding:1rem 0;border-bottom:1px solid var(--line)}
+.palette-studio{border-radius:44px 18px 44px 18px;box-shadow:0 40px 90px -60px rgba(23,32,25,.72)}
+.paint-compare{border-radius:70px 16px 70px 16px}
+
+.gallery{grid-auto-rows:230px;gap:16px}
+.gallery a{position:relative;border-radius:24px 8px 24px 8px}
+.gallery a::after{
+  content:attr(data-label);
+  position:absolute;
+  inset:auto 12px 12px;
+  padding:.7rem .8rem;
+  background:rgba(23,32,25,.8);
+  color:#fff;
+  border:1px solid rgba(255,255,255,.25);
+  border-radius:9px;
+  backdrop-filter:blur(10px);
+  font-size:.7rem;
+  font-weight:700;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+.quotes{gap:14px}
+.quote{position:relative;border-radius:24px 8px 24px 8px;padding-top:2.8rem}
+.quote::before{content:"“";position:absolute;top:.45rem;right:1.2rem;color:var(--accent);font:500 4rem/1 var(--disp)}
+.sample-note{display:block;margin-top:.8rem;color:var(--muted);font-size:.82rem}
+.cta{position:relative;overflow:hidden;background:var(--moss);border-radius:70px 18px 70px 18px}
+.cta::after{content:"";position:absolute;right:-80px;top:-110px;width:260px;aspect-ratio:1;border:38px solid var(--lime);border-radius:50%;opacity:.2;pointer-events:none}
+.cta>*{position:relative;z-index:1}
+.panel{border-radius:24px 8px 24px 8px}
+
+@media(max-width:1000px){
+  .hero-stage{grid-template-columns:minmax(0,.9fr) minmax(340px,1.1fr);gap:2rem}
+  .hero h1{font-size:clamp(3.8rem,8vw,5.8rem)}
+  .hero-image,.hero-image img{min-height:570px}
+  .stats-inner>div{border-right:0}
+  .svc .card{grid-column:span 6}
+}
+@media(max-width:720px){
+  .hero{padding-top:104px}
+  .hero-stage{display:flex;flex-direction:column;align-items:stretch;min-height:0;gap:1.4rem}
+  .hero-copy{padding-block:2rem 0}
+  .hero h1{font-size:clamp(3.7rem,17vw,5.1rem);max-width:8ch}
+  .hero-eyebrow{font-size:.64rem}
+  .hero-proof{display:none}
+  .hero-visual{padding:22px 8px 22px 18px}
+  .hero-visual::before{inset:0 0 46px 38px;border-radius:64px 14px 64px 14px}
+  .hero-image{min-height:0;aspect-ratio:4/5;border-radius:58px 12px 58px 12px}
+  .hero-image img{min-height:0}
+  .hero-chip{width:88px;right:-3px;font-size:.56rem}
+  .paint-mark{right:4px;bottom:10px;width:70px}
+  .stats{margin-top:1rem}
+  .stats-inner{grid-template-columns:1fr;padding-block:1rem}
+  .stats-inner>div,.stats-inner>div:first-child{padding:1rem 0;border-bottom:1px solid rgba(255,255,255,.16)}
+  .stats-inner>div:last-child{border-bottom:0}
+  .head{grid-template-columns:1fr;gap:1rem}
+  .head h2{font-size:clamp(2.8rem,13vw,4rem)}
+  .head p{justify-self:start}
+  .svc .card,.card:nth-child(1),.card:nth-child(2){grid-column:1/-1;min-height:250px}
+  .gallery{grid-auto-rows:180px}
+  .gallery a{border-radius:18px 6px 18px 6px}
+  .palette-studio{border-radius:30px 10px 30px 10px}
+  .paint-compare{border-radius:38px 10px 38px 10px}
+  .cta{border-radius:38px 10px 38px 10px}
+}
+</style>
+</head>
+<body>
+<a class="quality-skip" href="#main-content">Zum Inhalt springen</a>
+
+<div class="paint-progress" aria-hidden="true"><span id="paintProgress"></span></div>
+
+<header class="nav" id="nav">
+  <div class="nav-inner">
+    <a href="#top" class="brand"><span class="dot"></span>Farbwerk</a>
+    <nav class="nav-links"><a href="#leistungen">Leistungen</a><a href="#ablauf">Ablauf</a><a href="#arbeiten">Arbeiten</a><a href="#stimmen">Stimmen</a><a href="#kontakt">Kontakt</a></nav>
+    <div class="nav-cta"><a href="tel:+41440000000" class="nav-phone">044 000 00 00</a><a href="#kontakt" class="btn primary">Offerte</a></div>
+    <button class="burger" id="burger" aria-controls="mobileMenu" aria-label="Menü öffnen" aria-expanded="false"><span></span></button>
+  </div>
+</header>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#leistungen">Leistungen</a><a href="#ablauf">Ablauf</a><a href="#arbeiten">Arbeiten</a><a href="#stimmen">Stimmen</a><a href="#kontakt">Kontakt</a>
+  <a href="#kontakt" class="btn primary block">Offerte anfragen</a>
+</div>
+
+<main id="main-content">
+<!-- HERO -->
+<section class="hero" id="top">
+  <div class="wrap hero-stage">
+    <div class="hero-copy">
+      <p class="hero-eyebrow" data-reveal>Farb- &amp; Oberflächenatelier · Zürich</p>
+      <h1 data-reveal>Farbe, die <em>Räume</em> verwandelt.</h1>
+      <div class="row">
+      <p class="lead" data-reveal data-delay="1">Innen- und Fassadenanstrich, Verputz und Gipserarbeiten — sauber ausgeführt, termintreu und zum fairen Preis. Von der Beratung bis zum letzten Pinselstrich.</p>
+      <div class="hero-actions" data-reveal data-delay="2">
+        <a href="#kontakt" class="btn primary">Kostenlose Offerte</a>
+        <a href="tel:+41440000000" class="btn ghost">044 000 00 00</a>
+      </div>
+      </div>
+      <div class="hero-proof" data-reveal data-delay="2">
+        <span><b>01</b> Fix kalkuliert</span>
+        <span><b>02</b> Sauber geschützt</span>
+        <span><b>03</b> Klar übergeben</span>
+      </div>
+    </div>
+    <div class="hero-visual" data-reveal data-delay="1">
+      <div class="hero-image">
+        <img src="assets/images/image-01.webp" alt="Frisch gestalteter Wohnraum mit warmen Wandflächen" width="1200" height="1800" decoding="async">
+        <div class="hero-label"><small>Beispielprojekt</small><b>Wohnraum · mineralische Oberfläche</b></div>
+      </div>
+      <div class="hero-chip">Farbe<br>Gips<br>Struktur</div>
+      <span class="paint-mark" aria-hidden="true"></span>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats">
+  <div class="stats-inner">
+    <div data-reveal><div class="n">01</div><div class="l"><b>Bestand verstehen</b><span>Untergrund, Licht und Nutzung prüfen</span></div></div>
+    <div data-reveal data-delay="1"><div class="n">02</div><div class="l"><b>Oberfläche planen</b><span>Farbe und Aufbau klar bemustern</span></div></div>
+    <div data-reveal data-delay="2"><div class="n">03</div><div class="l"><b>Präzise ausführen</b><span>Abdecken, aufbauen, sauber arbeiten</span></div></div>
+    <div data-reveal data-delay="3"><div class="n">04</div><div class="l"><b>Sauber übergeben</b><span>Kontrolliert und verständlich dokumentiert</span></div></div>
+  </div>
+</div>
+
+<!-- LEISTUNGEN -->
+<section class="sec" id="leistungen">
+  <div class="wrap">
+    <div class="head" data-reveal><h2>Was wir für Sie machen.</h2><p>Ein Ansprechpartner für Farbe, Wand und Decke — innen wie aussen.</p></div>
+    <div class="svc">
+      <div class="card" data-no="01" data-reveal><div class="ic"><svg width="30" height="30" viewBox="0 0 24 24" fill="none"><path d="M4 7h13v5H4zM17 9h3v3a2 2 0 0 1-2 2h-1M9 14v6M7 20h4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div><h3>Innenanstrich</h3><p>Wände und Decken in makelloser Deckung — sauber abgeklebt, sauber übergeben.</p></div>
+      <div class="card" data-no="02" data-reveal data-delay="1"><div class="ic"><svg width="30" height="30" viewBox="0 0 24 24" fill="none"><path d="M3 21V9l9-6 9 6v12M9 21v-6h6v6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div><h3>Fassadenanstrich</h3><p>Wetterfester Schutz und ein frischer Auftritt für Ihr Gebäude.</p></div>
+      <div class="card" data-no="03" data-reveal data-delay="2"><div class="ic"><svg width="30" height="30" viewBox="0 0 24 24" fill="none"><path d="M3 17l7-7 4 4 7-7M14 7h4v4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div><h3>Verputz &amp; Gips</h3><p>Glatte Untergründe, Trockenbau und Gipserarbeiten für perfekte Flächen.</p></div>
+      <div class="card" data-no="04" data-reveal><div class="ic"><svg width="30" height="30" viewBox="0 0 24 24" fill="none"><path d="M5 3h14v6H5zM8 9v12M16 9v12M8 15h8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div><h3>Tapezieren</h3><p>Von Raufaser bis Designtapete — faltenfrei und passgenau verlegt.</p></div>
+      <div class="card" data-no="05" data-reveal data-delay="1"><div class="ic"><svg width="30" height="30" viewBox="0 0 24 24" fill="none"><path d="M6 3l12 12-3 3L3 6zM14 11l4-4 3 3-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div><h3>Spachtel &amp; Glätttechnik</h3><p>Feinste Oberflächen für Wände, die sich sehen lassen können.</p></div>
+      <div class="card" data-no="06" data-reveal data-delay="2"><div class="ic"><svg width="30" height="30" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.6"/><circle cx="9" cy="9" r="1.3" fill="currentColor"/><circle cx="15" cy="9" r="1.3" fill="currentColor"/><circle cx="15.5" cy="14" r="1.3" fill="currentColor"/></svg></div><h3>Farbberatung</h3><p>Wir finden mit Ihnen den Ton, der zu Raum und Licht passt.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ÜBER -->
+<section class="sec" style="padding-top:0">
+  <div class="wrap split">
+    <div class="media" data-reveal><img src="assets/images/image-02.webp" alt="Maler bei der Arbeit" width="1100" height="733" decoding="async"></div>
+    <div data-reveal data-delay="1">
+      <h2>Handwerk mit Sinn fürs Detail.</h2>
+      <p>Seit 18 Jahren streichen, verputzen und tapezieren wir in der Region — für Private, Verwaltungen und Unternehmen. Was uns wichtig ist: saubere Arbeit, klare Absprachen und ein Zuhause, das nach uns schöner ist als vorher.</p>
+      <ul class="ticks">
+        <li><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg> Fixe Offerte — keine bösen Überraschungen</li>
+        <li><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg> Saubere Baustelle, Möbel geschützt, besenrein übergeben</li>
+        <li><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg> Umweltschonende Farben auf Wunsch</li>
+      </ul>
+      <a href="#kontakt" class="btn primary" style="margin-top:2rem">Offerte anfragen</a>
+    </div>
+  </div>
+</section>
+
+<!-- FARBSTUDIO -->
+<section class="sec" aria-labelledby="farbstudio-title">
+  <div class="wrap">
+    <div class="palette-studio" data-reveal>
+      <div class="room" id="roomPreview" aria-label="Interaktive Vorschau einer gestrichenen Wand">
+        <span class="room-art"></span><span class="room-console"></span><span class="room-vase"></span>
+      </div>
+      <div class="palette-copy">
+        <p class="eyebrow">Farbberatung vor Ort</p>
+        <h2 id="farbstudio-title">Welcher Ton fühlt sich richtig an?</h2>
+        <p>Licht verändert Farbe. Probieren Sie eine Richtung aus — die definitive Auswahl treffen wir mit echten Mustern direkt in Ihrem Raum.</p>
+        <div class="swatches" aria-label="Farbton auswählen">
+          <button class="swatch" type="button" style="--sw:#b4593f" data-color="#b4593f" data-name="Terrakotta 42" aria-label="Terrakotta 42" aria-pressed="true"></button>
+          <button class="swatch" type="button" style="--sw:#556352" data-color="#556352" data-name="Salbeigrün 18" aria-label="Salbeigrün 18" aria-pressed="false"></button>
+          <button class="swatch" type="button" style="--sw:#c8b89d" data-color="#c8b89d" data-name="Kalkstein 07" aria-label="Kalkstein 07" aria-pressed="false"></button>
+          <button class="swatch" type="button" style="--sw:#334653" data-color="#334653" data-name="Abendblau 31" aria-label="Abendblau 31" aria-pressed="false"></button>
+        </div>
+        <p class="tone-name" id="toneName">Terrakotta 42</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VORHER / NACHHER -->
+<section class="sec" style="padding-top:0" aria-labelledby="compare-title">
+  <div class="wrap compare-shell">
+    <div class="compare-copy" data-reveal><p class="eyebrow">Wirkung sichtbar machen</p><h2 id="compare-title">Eine Fläche. Ein völlig anderer Raum.</h2><p>Farbe verändert Licht, Tiefe und Stimmung. Ziehen Sie den Regler und erleben Sie, was ein präziser Anstrich aus derselben Architektur herausholt.</p><div class="compare-hint"><i></i> Regler mit Maus oder Finger bewegen</div></div>
+    <div class="paint-compare" id="paintCompare" data-reveal data-delay="1">
+      <img src="assets/images/image-03.webp" alt="Wohnraum vor der farblichen Gestaltung" loading="lazy" width="1500" height="791" decoding="async">
+      <div class="paint-after"><img src="assets/images/image-03.webp" alt="Wohnraum nach der farblichen Gestaltung" loading="lazy" width="1500" height="791" decoding="async"></div>
+      <span class="compare-tag before">Vorher</span><span class="compare-tag after">Nachher</span>
+      <div class="compare-line"><span class="compare-knob">↔</span></div>
+      <input id="compareRange" type="range" min="0" max="100" value="56" aria-label="Vorher-Nachher-Vergleich verschieben">
+    </div>
+  </div>
+</section>
+
+<!-- ABLAUF -->
+<section class="sec" id="ablauf" style="padding-top:0">
+  <div class="wrap">
+    <div class="head" data-reveal><h2>So läuft's ab.</h2><p>Klar, transparent und ohne Stress — von der Anfrage bis zur Übergabe.</p></div>
+    <div class="steps">
+      <div class="step" data-reveal><div class="n">01</div><h3>Beratung vor Ort</h3><p>Wir schauen uns alles an, beraten zu Farbe und Technik — kostenlos und unverbindlich.</p></div>
+      <div class="step" data-reveal data-delay="1"><div class="n">02</div><h3>Fixe Offerte</h3><p>Sie erhalten einen klaren Preis und einen verbindlichen Termin. Erst dann geht's los.</p></div>
+      <div class="step" data-reveal data-delay="2"><div class="n">03</div><h3>Saubere Ausführung</h3><p>Wir arbeiten termintreu, schützen Ihre Möbel und übergeben besenrein.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ARBEITEN -->
+<section class="sec" id="arbeiten" style="padding-top:0">
+  <div class="wrap">
+    <div class="head" data-reveal><h2>Ausgewählte Arbeiten.</h2><p>Ein kleiner Einblick in Räume und Fassaden, die wir zum Strahlen gebracht haben.</p></div>
+    <div class="gallery">
+      <a href="#arbeiten" class="tall wide" data-label="Wohnraum · Kalkputz" data-reveal><img src="assets/images/image-04.webp" alt="Wohnraum mit fein abgestimmter Wandgestaltung" loading="lazy" width="1200" height="633" decoding="async"></a>
+      <a href="#arbeiten" data-label="Innenraum · Farbkonzept" data-reveal data-delay="1"><img src="assets/images/image-05.webp" alt="Innenraum mit abgestimmtem Farbkonzept" loading="lazy" width="700" height="467" decoding="async"></a>
+      <a href="#arbeiten" data-label="Akzentwand · Struktur" data-reveal data-delay="2"><img src="assets/images/image-06.webp" alt="Strukturierte Akzentwand" loading="lazy" width="700" height="467" decoding="async"></a>
+      <a href="#arbeiten" data-label="Wohnung · Neuanstrich" data-reveal><img src="assets/images/image-07.webp" alt="Neu gestrichener Wohnraum" loading="lazy" width="700" height="467" decoding="async"></a>
+      <a href="#arbeiten" class="wide" data-label="Detail · Oberflächenfinish" data-reveal data-delay="1"><img src="assets/images/image-08.webp" alt="Detail einer präzise ausgeführten Oberfläche" loading="lazy" width="1200" height="801" decoding="async"></a>
+      <a href="#arbeiten" data-label="Fassade · Schutzanstrich" data-reveal data-delay="2"><img src="assets/images/image-09.webp" alt="Fläche mit sauberem Schutzanstrich" loading="lazy" width="700" height="467" decoding="async"></a>
+    </div>
+  </div>
+</section>
+
+<!-- STIMMEN -->
+<section class="sec" id="stimmen" style="padding-top:0">
+  <div class="wrap">
+    <div class="head center" data-reveal><h2>So klingt gute Zusammenarbeit.</h2><span class="sample-note">Beispieltexte für die Vorlage – vor Veröffentlichung durch echte Rückmeldungen ersetzen.</span></div>
+    <div class="quotes">
+      <div class="quote" data-reveal><div class="stars">★★★★★</div><p>„Saubere Arbeit, freundliches Team und alles pünktlich fertig. Die Wohnung sieht aus wie neu."</p><div class="who"><div class="av">AB</div><div><b>Anita B.</b><span>Wohnung, Zürich</span></div></div></div>
+      <div class="quote" data-reveal data-delay="1"><div class="stars">★★★★★</div><p>„Die Fassade strahlt wieder. Faire Offerte, top Beratung bei der Farbwahl. Sehr empfehlenswert."</p><div class="who"><div class="av">MK</div><div><b>Markus K.</b><span>Einfamilienhaus</span></div></div></div>
+      <div class="quote" data-reveal data-delay="2"><div class="stars">★★★★★</div><p>„Vom Verputz bis zum Anstrich alles aus einer Hand. Termintreu und makellos umgesetzt."</p><div class="who"><div class="av">RS</div><div><b>Rita S.</b><span>Büroumbau</span></div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="sec" style="padding-top:0">
+  <div class="wrap">
+    <div class="cta" data-reveal>
+      <div><h2>Bereit für frische Farbe?</h2><p>Fordern Sie Ihre kostenlose Offerte an — wir melden uns schnell.</p></div>
+      <div style="display:flex;gap:.8rem;flex-wrap:wrap"><a href="tel:+41440000000" class="btn light">044 000 00 00</a><a href="#kontakt" class="btn light">Offerte anfragen</a></div>
+    </div>
+  </div>
+</section>
+
+<!-- KONTAKT -->
+<section class="sec" id="kontakt" style="padding-top:0">
+  <div class="wrap">
+    <div class="head" data-reveal><h2>Sprechen wir über Ihr Projekt.</h2></div>
+    <div class="contact">
+      <div class="panel" data-reveal>
+        <h3>Erreichbarkeit</h3>
+        <ul class="hours">
+          <li><span class="cl">Montag – Freitag</span> <span>07:00 – 18:00</span></li>
+          <li><span class="cl">Samstag</span> <span>nach Vereinbarung</span></li>
+          <li><span class="cl">Sonntag</span> <span class="hl">Geschlossen</span></li>
+          <li><span class="cl">Offerte</span> <span class="hl">kostenlos</span></li>
+        </ul>
+      </div>
+      <div class="panel" data-reveal data-delay="1">
+        <h3>Kontakt</h3>
+        <div class="cinfo">
+          <div class="row"><span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 21s-7-6.3-7-11a7 7 0 0 1 14 0c0 4.7-7 11-7 11z" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="10" r="2.4" stroke="currentColor" stroke-width="1.8"/></svg></span><div><b>Musterstrasse 12</b><br><span>8000 Musterstadt</span></div></div>
+          <div class="row"><span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M3 5.5C3 4.7 3.7 4 4.5 4H7l2 5-2.5 1.5a11 11 0 0 0 5 5L13 13l5 2v2.5c0 .8-.7 1.5-1.5 1.5A14 14 0 0 1 3 5.5z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg></span><div><b>044 000 00 00</b><br><span>Mo–Fr, 07:00 – 18:00</span></div></div>
+          <div class="row"><span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4 5h16v14H4z" stroke="currentColor" stroke-width="1.8"/><path d="M4 6l8 6 8-6" stroke="currentColor" stroke-width="1.8"/></svg></span><div><b>hallo@farbwerk.ch</b><br><span>Antwort meist innert 24 h</span></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="sec" style="padding-top:0">
+  <div class="wrap">
+    <div class="head center" data-reveal><h2>Häufige Fragen.</h2></div>
+    <div class="faq" data-reveal>
+      <details open><summary>Ist die Offerte wirklich kostenlos? <span class="plus"></span></summary><div class="a">Ja. Wir schauen uns Ihr Projekt vor Ort an und erstellen eine unverbindliche, kostenlose Offerte mit fixem Preis.</div></details>
+      <details><summary>Schützt ihr meine Möbel und den Boden? <span class="plus"></span></summary><div class="a">Selbstverständlich. Wir decken sorgfältig ab, arbeiten sauber und übergeben den Raum besenrein.</div></details>
+      <details><summary>Verwendet ihr umweltschonende Farben? <span class="plus"></span></summary><div class="a">Auf Wunsch setzen wir emissionsarme und umweltschonende Produkte ein — sprechen Sie uns einfach darauf an.</div></details>
+      <details><summary>Wie schnell könnt ihr starten? <span class="plus"></span></summary><div class="a">Je nach Auslastung meist innerhalb von ein bis zwei Wochen. Für dringende Fälle finden wir oft eine schnellere Lösung.</div></details>
+    </div>
+  </div>
+</section>
+
+</main>
+<footer>
+  <div class="foot">
+    <div>
+      <a href="#top" class="brand" style="font-size:1.35rem"><span class="dot"></span>Farbwerk</a>
+      <p>Maler- und Gipserarbeiten für Innen und Fassade — sauber, termintreu und fair.</p>
+    </div>
+    <div><h4>Leistungen</h4><a href="#leistungen">Innenanstrich</a><a href="#leistungen">Fassade</a><a href="#leistungen">Verputz &amp; Gips</a><a href="#leistungen">Tapezieren</a></div>
+    <div><h4>Betrieb</h4><a href="#ablauf">Ablauf</a><a href="#arbeiten">Arbeiten</a><a href="#stimmen">Stimmen</a><a href="#kontakt">Kontakt</a></div>
+    <div><h4>Kontakt</h4><a href="tel:+41440000000">044 000 00 00</a><a href="mailto:hallo@farbwerk.ch">hallo@farbwerk.ch</a><a href="#kontakt">Musterstrasse 12, 8000 Musterstadt</a></div>
+  </div>
+  <div class="foot-bottom"><span>© 2026 Farbwerk. Alle Rechte vorbehalten.</span><span>Impressum · Datenschutz</span></div>
+</footer>
+
+<script>
+(function(){
+  var nav=document.getElementById('nav');
+  var onScroll=function(){ nav.classList.toggle('scrolled', window.scrollY>30); };
+  onScroll(); window.addEventListener('scroll',onScroll,{passive:true});
+  var burger=document.getElementById('burger'), menu=document.getElementById('mobileMenu');
+  var setMenu=function(open){ menu.classList.toggle('open',open); burger.setAttribute('aria-expanded',open?'true':'false'); burger.setAttribute('aria-label',open?'Menü schliessen':'Menü öffnen'); };
+  burger.addEventListener('click',function(){ setMenu(!menu.classList.contains('open')); });
+  menu.querySelectorAll('a').forEach(function(a){ a.addEventListener('click',function(){ setMenu(false); }); });
+  var io=new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } }); },{threshold:.12,rootMargin:'0px 0px -40px 0px'});
+  document.querySelectorAll('[data-reveal]').forEach(function(el){ io.observe(el); });
+})();
+</script>
+<script>
+(function(){
+  var room=document.getElementById('roomPreview'),name=document.getElementById('toneName');
+  document.querySelectorAll('.swatch').forEach(function(button){button.addEventListener('click',function(){
+    document.querySelectorAll('.swatch').forEach(function(item){item.setAttribute('aria-pressed','false')});
+    button.setAttribute('aria-pressed','true');room.style.backgroundColor=button.dataset.color;name.textContent=button.dataset.name;
+  })});
+})();
+</script>
+<script>
+(function(){
+  var compare=document.getElementById('paintCompare'),range=document.getElementById('compareRange');
+  if(compare&&range){range.addEventListener('input',function(){compare.style.setProperty('--split',range.value+'%')})}
+  var bar=document.getElementById('paintProgress');
+  function progress(){var max=document.documentElement.scrollHeight-innerHeight;bar.style.transform='scaleX('+(max>0?Math.min(1,scrollY/max):0)+')'}
+  progress();addEventListener('scroll',progress,{passive:true});addEventListener('resize',progress,{passive:true});
+})();
+</script>
+</body>
+</html>

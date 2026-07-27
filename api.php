@@ -1462,6 +1462,19 @@ function stelleInhalteSicher(): void
         'startseite' => true,
     ];
 
+    /* Fünf Branchen-Vorlagen (Kosmetik, Bäckerei, Fahrschule, Optik, Metzgerei)
+       kamen später dazu. Wie tavolo werden sie bestehenden Installationen genau
+       EINMAL hinzugefügt (Merker), damit im Admin gelöschte Einträge nicht wieder
+       auftauchen. startseite=false: nur auf der Beispiele-Seite, nicht im
+       Demo-Fenster der Startseite. */
+    $vorlagen5 = [
+        ['id' => 'B-kosmetik',  'name' => 'Hautnah Atelier', 'branche' => 'Kosmetik & Beauty', 'beschreibung' => 'Editorialer Look mit Behandlungsfilter und dreistufiger Terminanfrage.',        'url' => '/beispiel-demos/kosmetik/',  'bild' => 'assets/img/demos/kosmetik.jpg',  'startseite' => false],
+        ['id' => 'B-baeckerei', 'name' => 'Brot & Butter',   'branche' => 'Bäckerei',           'beschreibung' => 'Plakative Backstuben-Optik mit Sortiment und unverbindlicher Vorbestellung.', 'url' => '/beispiel-demos/baeckerei/', 'bild' => 'assets/img/demos/baeckerei.jpg', 'startseite' => false],
+        ['id' => 'B-fahrschule','name' => 'Vorwärts',        'branche' => 'Fahrschule',         'beschreibung' => 'Dynamischer Auftritt mit Lernziel-Auswahl, Weg-Stepper und Erstlektion-Anfrage.', 'url' => '/beispiel-demos/fahrschule/', 'bild' => 'assets/img/demos/fahrschule.jpg', 'startseite' => false],
+        ['id' => 'B-optik',     'name' => 'Klar Optik',      'branche' => 'Optiker',            'beschreibung' => 'Swiss-Minimal mit Fassungsfilter, Schärfe-Regler und Terminanfrage.',        'url' => '/beispiel-demos/optik/',     'bild' => 'assets/img/demos/optik.jpg',     'startseite' => false],
+        ['id' => 'B-metzgerei', 'name' => 'Die Werkbank',    'branche' => 'Metzgerei',          'beschreibung' => 'Handwerklich-editorial mit Sortiments-Tabs und Partyservice-Vorbestellung.',  'url' => '/beispiel-demos/metzgerei/', 'bild' => 'assets/img/demos/metzgerei.jpg', 'startseite' => false],
+    ];
+
     if (einstellung('inhalte_beispiele') !== null) {
         if (einstellung('inhalte_tavolo_ergaenzt') === null) {
             $liste = json_decode((string)einstellung('inhalte_beispiele'), true);
@@ -1480,16 +1493,122 @@ function stelleInhalteSicher(): void
             }
             setzeEinstellung('inhalte_tavolo_ergaenzt', '1');
         }
+        /* Fünf Branchen-Vorlagen einmalig ergänzen (nur fehlende IDs, damit im
+           Admin bewusst gelöschte nicht wiederkommen). */
+        if (einstellung('inhalte_vorlagen5_ergaenzt') === null) {
+            $liste = json_decode((string)einstellung('inhalte_beispiele'), true);
+            if (is_array($liste)) {
+                $vorhandene = [];
+                foreach ($liste as $e) {
+                    if (is_array($e) && isset($e['id'])) {
+                        $vorhandene[$e['id']] = true;
+                    }
+                }
+                $geaendert = false;
+                foreach ($vorlagen5 as $v) {
+                    if (!isset($vorhandene[$v['id']])) {
+                        $liste[] = $v;
+                        $geaendert = true;
+                    }
+                }
+                if ($geaendert) {
+                    setzeEinstellung('inhalte_beispiele', json_encode(saeubereBeispiele($liste), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+                }
+            }
+            setzeEinstellung('inhalte_vorlagen5_ergaenzt', '1');
+        }
+        /* Die sieben zuerst hochgeladenen Vorlagen hatten leere Beschreibungen
+           (und bei vieren war Name/Branche der ganze Ordnername). Einmalig
+           griffige Texte setzen - danach im Admin frei editierbar. Gematcht
+           wird über die aktuellen IDs der Live-Einträge. */
+        if (einstellung('inhalte_texte7_gesetzt') === null) {
+            $texte7 = [
+                'B-95369c68' => ['Restaurant',     'Gastronomie',         'Warmes Gold-auf-Creme-Design mit Speisekarte in Kategorie-Tabs und Bewertungs-Laufband.'],
+                'B-5e3f34c6' => ['Reinigung',      'Reinigung',           'Frisches Orange mit Vorher/Nachher-Regler und Offerte nach Reinigungsart.'],
+                'B-30c72769' => ['Coiffeur',       'Coiffeur',            'Eleganter Salon-Look mit Leistungen und Preisen für Damen, Herren und Kinder.'],
+                'B-dde68005' => ['Bauunternehmen', 'Handwerk & Bau',      'Grosser Firmenauftritt mit Projektreferenzen, Bau-Blog und Leistungsübersicht.'],
+                'B-9edf0bce' => ['Gartenbau',      'Garten & Landschaft', 'Ruhiger Naturlook mit eigenen Icons für Gartenbau, Unterhalt und Bepflanzung.'],
+                'B-0a6deea6' => ['Maler & Gipser', 'Handwerk',            'Handwerklicher Ocker-Auftritt mit Referenzfotos, Leistungen und FAQ.'],
+                'B-eceb26cd' => ['Autogarage',     'Auto & Garage',       'Kompletter Garagen-Auftritt mit Vorher/Nachher-Regler, MFK, Reifenhotel und TWINT.'],
+            ];
+            $liste = json_decode((string)einstellung('inhalte_beispiele'), true);
+            if (is_array($liste)) {
+                $geaendert = false;
+                foreach ($liste as $i => $e) {
+                    if (is_array($e) && isset($e['id'], $texte7[$e['id']])) {
+                        $liste[$i]['name'] = $texte7[$e['id']][0];
+                        $liste[$i]['branche'] = $texte7[$e['id']][1];
+                        $liste[$i]['beschreibung'] = $texte7[$e['id']][2];
+                        $geaendert = true;
+                    }
+                }
+                if ($geaendert) {
+                    setzeEinstellung('inhalte_beispiele', json_encode(saeubereBeispiele($liste), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+                }
+            }
+            setzeEinstellung('inhalte_texte7_gesetzt', '1');
+        }
+        /* Das tavolo-Startbild wurde im Admin auf tavolo_gute.jpg gesetzt - diese
+           Datei liegt aber nicht im Repo (404 -> leere Karte). Einmalig auf die
+           ausgelieferte tavolo.jpg zurücksetzen (enthält jetzt das gute Bild). */
+        if (einstellung('inhalte_tavolo_bild_fix') === null) {
+            $liste = json_decode((string)einstellung('inhalte_beispiele'), true);
+            if (is_array($liste)) {
+                $geaendert = false;
+                foreach ($liste as $i => $e) {
+                    if (is_array($e) && ($e['id'] ?? '') === 'B-tavolo'
+                        && ($e['bild'] ?? '') !== 'assets/img/demos/tavolo.jpg') {
+                        $liste[$i]['bild'] = 'assets/img/demos/tavolo.jpg';
+                        $geaendert = true;
+                    }
+                }
+                if ($geaendert) {
+                    setzeEinstellung('inhalte_beispiele', json_encode(saeubereBeispiele($liste), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+                }
+            }
+            setzeEinstellung('inhalte_tavolo_bild_fix', '1');
+        }
+        /* Die 7 Original-Demos lagen auf Admin-Upload-Zufallsslugs
+           (/beispiel-demos/index-xxxx). Ab jetzt werden sie fest via
+           scripts/vorlagen-sync als /beispiel-demos/<slug>/ ausgeliefert.
+           Einmalig die URLs der 7 Eintraege (per Live-ID) auf die sauberen
+           Slugs umstellen. */
+        if (einstellung('inhalte_slugs7_gesetzt') === null) {
+            $slugs7 = [
+                'B-95369c68' => '/beispiel-demos/restaurant/',
+                'B-5e3f34c6' => '/beispiel-demos/reinigung/',
+                'B-30c72769' => '/beispiel-demos/coiffeur/',
+                'B-dde68005' => '/beispiel-demos/bauunternehmen/',
+                'B-9edf0bce' => '/beispiel-demos/gartenbau/',
+                'B-0a6deea6' => '/beispiel-demos/maler-gipser/',
+                'B-eceb26cd' => '/beispiel-demos/autogarage/',
+            ];
+            $liste = json_decode((string)einstellung('inhalte_beispiele'), true);
+            if (is_array($liste)) {
+                $geaendert = false;
+                foreach ($liste as $i => $e) {
+                    if (is_array($e) && isset($e['id'], $slugs7[$e['id']])) {
+                        $liste[$i]['url'] = $slugs7[$e['id']];
+                        $geaendert = true;
+                    }
+                }
+                if ($geaendert) {
+                    setzeEinstellung('inhalte_beispiele', json_encode(saeubereBeispiele($liste), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+                }
+            }
+            setzeEinstellung('inhalte_slugs7_gesetzt', '1');
+        }
         return;
     }
     setzeEinstellung('inhalte_tavolo_ergaenzt', '1');
-    setzeEinstellung('inhalte_beispiele', json_encode([
+    setzeEinstellung('inhalte_vorlagen5_ergaenzt', '1');
+    setzeEinstellung('inhalte_beispiele', json_encode(array_merge([
         $tavolo,
         ['id' => 'B-kebab', 'name' => 'Kebab Palace', 'branche' => 'Gastronomie', 'beschreibung' => 'Speisekarte, Bestellung und Standort im Fokus.', 'url' => 'https://masesites.ch/demo/doener-site/index.html', 'bild' => 'assets/img/demos/kebab.jpg'],
         ['id' => 'B-nails', 'name' => 'Nails & Co.', 'branche' => 'Beauty', 'beschreibung' => 'Elegantes Einseiten-Design mit Galerie und Terminbuchung.', 'url' => 'https://masesites.ch/demo/nagelstudio-site/index.html', 'bild' => 'assets/img/demos/nagelstudio.jpg'],
         ['id' => 'B-praxis', 'name' => 'Praxis Dr. Müller', 'branche' => 'Gesundheit', 'beschreibung' => 'Seriöser Auftritt mit ruhiger Typografie und Terminbuchung.', 'url' => 'https://masesites.ch/demo/praxis-site/index.html', 'bild' => 'assets/img/demos/praxis.jpg'],
         ['id' => 'B-bowling', 'name' => 'Strike Zone Bowling', 'branche' => 'Freizeit', 'beschreibung' => 'Klares Layout mit Fokus auf Bahnreservierung und Events.', 'url' => 'https://masesites.ch/demo/bowling-site/index.html', 'bild' => 'assets/img/demos/bowling.jpg'],
-    ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+    ], $vorlagen5), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
     if (einstellung('inhalte_projekte') === null) {
         setzeEinstellung('inhalte_projekte', '[]');
     }

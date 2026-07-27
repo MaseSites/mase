@@ -6,6 +6,15 @@
 
   var grid = document.getElementById("demo-grid");
   if (!grid) return;
+  var webappGrid = document.getElementById("webapp-grid");
+  var demoSektion = document.getElementById("demo-sektion");
+  var webappSektion = document.getElementById("webapp-sektion");
+
+  /* Webapps (bedienbare Software) werden getrennt von den Websites gezeigt,
+     damit klar ist, dass es sich nicht um eine einfache Website handelt. */
+  function istWebapp(demo) {
+    return (demo.branche || "").trim().toLowerCase() === "webapp";
+  }
 
   /* ---------- Vollbild-Ansicht ---------- */
 
@@ -107,7 +116,7 @@
     if (demo.bild) {
       var img = document.createElement("img");
       img.src = demo.bild;
-      img.alt = "Website " + demo.name + ", echtes Live-Demo von masesites";
+      img.alt = demo.name + " – Live-Demo von masesites";
       img.loading = "lazy";
       img.decoding = "async";
       /* Masse angeben, damit die Karte nicht springt, waehrend das Bild laedt */
@@ -155,21 +164,31 @@
     grid.appendChild(p);
   }
 
+  /* Eine Gruppe (Websites bzw. Webapps) in ihr Grid rendern und die Sektion
+     ein- oder ausblenden, je nachdem ob es Einträge gibt. */
+  function fuelleGrid(container, sektion, liste) {
+    if (!container) return;
+    container.innerHTML = "";
+    if (!liste.length) {
+      if (sektion) sektion.classList.add("hidden");
+      return;
+    }
+    if (sektion) sektion.classList.remove("hidden");
+    liste.forEach(function (demo, i) {
+      var c = karte(demo);
+      c.style.setProperty("--sx", i); /* Listen-Kaskade auch für nachgeladene Karten */
+      container.appendChild(c);
+    });
+  }
+
   fetch("/api/inhalte", { credentials: "same-origin" })
     .then(function (r) { return r.ok ? r.json() : null; })
     .then(function (daten) {
       if (!daten || !Array.isArray(daten.beispiele)) { zeigeLadefehler(); return; }
-      grid.innerHTML = "";
-      if (!daten.beispiele.length) {
-        var sektion = document.getElementById("demo-sektion");
-        if (sektion) sektion.classList.add("hidden");
-        return;
-      }
-      daten.beispiele.forEach(function (demo, i) {
-        var c = karte(demo);
-        c.style.setProperty("--sx", i); /* Listen-Kaskade auch für nachgeladene Karten */
-        grid.appendChild(c);
-      });
+      var webapps = daten.beispiele.filter(istWebapp);
+      var websites = daten.beispiele.filter(function (d) { return !istWebapp(d); });
+      fuelleGrid(grid, demoSektion, websites);
+      fuelleGrid(webappGrid, webappSektion, webapps);
     })
     .catch(zeigeLadefehler);
 })();
