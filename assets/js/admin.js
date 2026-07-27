@@ -75,7 +75,7 @@
 
   /* ---------- Routing über den Hash ---------- */
 
-  var HAUPTROUTEN = ["uebersicht", "kunden", "projekte", "tickets", "nachrichten", "ki", "termine", "inhalte", "mitarbeiter", "aufgaben", "protokoll", "einstellungen"];
+  var HAUPTROUTEN = ["uebersicht", "kunden", "projekte", "tickets", "nachrichten", "ki", "termine", "inhalte", "mitarbeiter", "assistent", "aufgaben", "protokoll", "einstellungen"];
   var neuProjektVorwahl = "";
 
   function navigiere(pfad) {
@@ -115,6 +115,12 @@
     document.querySelectorAll(".dash-panel").forEach(function (p) {
       p.classList.toggle("active", p.id === "panel-" + panelName);
     });
+    /* Assistent und To-do teilen denselben Datenstand. Geladen wird
+       erst beim Oeffnen - beim Seitenaufbau ist man noch nicht
+       angemeldet, der Aufruf liefe in einen 401. */
+    if ((panelName === "assistent" || panelName === "aufgaben") && window.msAssistentLaden) {
+      window.msAssistentLaden();
+    }
     document.querySelectorAll(".side-item[data-route]").forEach(function (b) {
       b.classList.toggle("active", b.getAttribute("data-route") === name);
     });
@@ -743,6 +749,13 @@
         var summe = offeneAufgaben + liste.length;
         tabZahl.textContent = summe ? summe : "";
       }
+      /* Im Seitenmenue zaehlt nur, was auf eine Entscheidung wartet -
+         die eigenen Aufgaben des Assistenten sind kein Handlungsbedarf. */
+      var seiteBadge = document.querySelector('[data-badge="assistent"]');
+      if (seiteBadge) {
+        seiteBadge.textContent = liste.length || "";
+        seiteBadge.classList.toggle("hidden", !liste.length);
+      }
     }
 
     function ladeNeu() {
@@ -803,6 +816,13 @@
       }).catch(function (f) { zeigeFehler("ka-fehler", f.message); });
     });
 
+    /* Verweis aus der To-do-Liste zum Assistenten */
+    [].forEach.call(document.querySelectorAll(".ka-sprung[data-route]"), function (k) {
+      k.addEventListener("click", function () {
+        location.hash = "#" + k.getAttribute("data-route");
+      });
+    });
+
     /* Umschalter zwischen den beiden Listen */
     [].forEach.call(document.querySelectorAll(".td-tab"), function (tab) {
       tab.addEventListener("click", function () {
@@ -815,6 +835,7 @@
         document.getElementById("td-bereich-dev").hidden = ki;
         document.getElementById("td-bereich-ki").hidden = !ki;
         if (ki && window.msAssistentLaden) window.msAssistentLaden();
+
       });
     });
 
