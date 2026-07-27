@@ -6,7 +6,7 @@
   <title>Admin | masesites</title>
   <meta name="robots" content="noindex, nofollow">
   <link rel="icon" href="../assets/img/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../assets/css/style.css?v=55">
+  <link rel="stylesheet" href="../assets/css/style.css?v=56">
 </head>
 <body class="app" data-no-widget>
 
@@ -476,13 +476,11 @@
             <div class="panel-kopf">
               <div>
                 <h1>KI-Assistent</h1>
-                <p>Frag ihn etwas oder gib ihm eine Aufgabe. Was er selbst erledigen kann, macht er – Änderungen an der Website legt er dir zur Freigabe vor.</p>
+                <p>Reiner Chat. Sag ihm, was er tun soll – seine Aufgaben und Vorschläge findest du unter To-do beim Reiter «KI-Assistent».</p>
               </div>
             </div>
 
               <div class="dash-card">
-                <h3>Assistent</h3>
-                <p class="dash-hinweis" style="margin-top: 0;">Gib ihm eine grössere Aufgabe – er zerlegt sie in kleine Schritte und arbeitet ab, was er selbst kann. Was er nicht kann, markiert er als blockiert und schreibt hin, warum.</p>
                 <div class="ka-chat" id="ka-chat"></div>
                 <form id="ka-form" class="ka-eingabe">
                   <input id="ka-frage" type="text" maxlength="2000" autocomplete="off"
@@ -491,22 +489,11 @@
                 </form>
                 <div class="ka-schnell">
                   <button type="button" class="mini-knopf" data-frage="Schau dir die offenen Aufgaben an und arbeite ab, was du selbst erledigen kannst.">Offene abarbeiten</button>
-                  <button type="button" class="mini-knopf" data-frage="Prüfe die Beschreibungen der Beispiel-Vorlagen auf der Website und verbessere sie, wo sie schwach sind.">Vorlagentexte prüfen</button>
+                  <button type="button" class="mini-knopf" data-frage="Schau dir unsere Entwickler-Aufgaben an, zerlege sie in kleine Schritte und übernimm sie in deine Liste.">Unsere To-dos übernehmen</button>
                 </div>
                 <p class="form-error" id="ka-fehler" role="alert"></p>
               </div>
 
-              <div class="dash-card" id="ka-freigabe-karte" hidden>
-                <h3>Wartet auf deine Freigabe <span class="td-zahl" id="ka-freigabe-zahl"></span></h3>
-                <p class="dash-hinweis" style="margin-top: 0;">Diese Texte hat der Assistent vorgeschlagen. Sie sind <b>noch nicht auf der Website</b> – erst wenn du übernimmst, sehen Besucher sie.</p>
-                <ul class="ka-entwuerfe" id="ka-entwuerfe"></ul>
-              </div>
-
-              <div class="dash-card">
-                <h3>Protokoll</h3>
-                <p class="dash-hinweis" style="margin-top: 0;">Jeder Schritt, den er gemacht hat – auch was schiefging.</p>
-                <ul class="ka-protokoll" id="ka-protokoll"></ul>
-              </div>
           </section>
 
           <section class="dash-panel" id="panel-aufgaben" aria-label="To-do">
@@ -576,6 +563,17 @@
 
             <div id="td-bereich-ki" hidden>
               <p class="dash-hinweis" style="margin-top: 0;">Das sind die Aufgaben, die der Assistent sich selbst angelegt hat. Ihm etwas auftragen kannst du unter <button type="button" class="ka-sprung" data-route="assistent">KI-Assistent</button>.</p>
+              <div class="dash-card" id="ka-freigabe-karte" hidden>
+                <h3>Wartet auf deine Freigabe <span class="td-zahl" id="ka-freigabe-zahl"></span></h3>
+                <p class="dash-hinweis" style="margin-top: 0;">Diese Texte hat der Assistent vorgeschlagen. Sie sind <b>noch nicht auf der Website</b> – erst wenn du übernimmst, sehen Besucher sie.</p>
+                <ul class="ka-entwuerfe" id="ka-entwuerfe"></ul>
+              </div>
+
+              <div class="dash-card">
+                <h3>Protokoll</h3>
+                <p class="dash-hinweis" style="margin-top: 0;">Jeder Schritt, den er gemacht hat – auch was schiefging.</p>
+                <ul class="ka-protokoll" id="ka-protokoll"></ul>
+              </div>
               <div class="dash-card">
                 <div class="filter-zeile">
                   <h3 style="margin: 0; flex: 1;">Seine Aufgaben <span class="td-zahl" id="ka-zahl"></span></h3>
@@ -805,6 +803,6 @@
 
   <script src="../assets/js/sanft.js?v=1"></script>
   <script src="../assets/js/daten.js?v=24"></script>
-  <script src="../assets/js/admin.js?v=33"></script>
+  <script src="../assets/js/admin.js?v=34"></script>
 </body>
 </html>

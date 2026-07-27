@@ -2477,6 +2477,7 @@ function assistentSystemPrompt(): string
         '- Texte der Beispiel-Vorlagen VORSCHLAGEN: beschreibung_setzen. Verfuegbare Beispiele: ' . (implode('; ', $namen) ?: 'keine'),
         '  WICHTIG: Solche Textaenderungen gehen NICHT sofort live. Sie landen in einer Freigabe-Liste, und Matteo oder Severin entscheiden, ob sie veroeffentlicht werden. Sag das auch so - behaupte nie, ein Text sei schon geaendert. Formuliere es als Vorschlag, der zur Freigabe bereitliegt.',
         '- Terminwuensche erfassen: termin_notieren. Das ist intern und wird sofort gespeichert.',
+        '- Die Entwickler-Aufgaben lesen: entwickler_aufgaben_lesen. Wirst du gebeten, unsere To-dos zu uebernehmen oder zu vereinfachen, lies sie zuerst, zerlege jede in kleine Schritte und lege diese mit aufgaben_anlegen in DEINER Liste an. Die Entwickler-Liste selbst aenderst du dabei nicht - sie gehoert Matteo und Severin.',
         '',
         'WAS DU NICHT KANNST - sag es klar, statt es zu versuchen:',
         '- Code schreiben, Dateien aendern, etwas veroeffentlichen oder deployen',
@@ -2625,6 +2626,11 @@ function assistentWerkzeuge(): array
             ],
         ]],
         ['type' => 'function', 'function' => [
+            'name' => 'entwickler_aufgaben_lesen',
+            'description' => 'Liest die offenen Aufgaben der Entwickler-Liste (Matteo und Severin). Nutze das, bevor du sie zerlegst oder uebernimmst.',
+            'parameters' => ['type' => 'object', 'properties' => (object)[]],
+        ]],
+        ['type' => 'function', 'function' => [
             'name' => 'termin_notieren',
             'description' => 'Legt einen Termin oder Rueckruf in der internen Terminliste an. Wird sofort gespeichert, ohne Freigabe.',
             'parameters' => [
@@ -2713,6 +2719,18 @@ function assistentWerkzeug(string $name, array $args): array
         }
         speichereKiAufgaben($liste);
         return ['ok' => true];
+    }
+
+    if ($name === 'entwickler_aufgaben_lesen') {
+        $offen = array_values(array_filter(ladeAufgaben(), function ($a) {
+            return empty($a['erledigt']);
+        }));
+        if (!$offen) {
+            return ['ok' => true, 'aufgaben' => [], 'hinweis' => 'Die Entwickler-Liste hat gerade nichts Offenes.'];
+        }
+        return ['ok' => true, 'aufgaben' => array_map(function ($a) {
+            return ['titel' => $a['titel'], 'notiz' => $a['notiz'], 'prio' => $a['prio'], 'wer' => $a['wer']];
+        }, array_slice($offen, 0, 30))];
     }
 
     if ($name === 'termin_notieren') {

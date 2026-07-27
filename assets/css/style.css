@@ -3781,3 +3781,7 @@ body.ms-cookie-offen .widget-panel { bottom: calc(var(--ms-cookie-h, 90px) + 90p
   text-decoration: underline; text-underline-offset: 2px;
   cursor: pointer;
 }
+
+/* Reiner Chat-Bereich: mehr Platz, damit er sich wie ein Gespräch
+   anfühlt und nicht wie ein Formularfeld am Seitenrand. */
+#panel-assistent .ka-chat { max-height: none; min-height: 340px; }
