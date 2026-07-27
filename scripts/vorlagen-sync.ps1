@@ -60,9 +60,12 @@ foreach ($ordner in $map.Keys) {
   Write-Host ("  ok  {0,-52} -> beispiel-demos\{1}\" -f $ordner, $slug)
 }
 
-# --- Git: nur beispiel-demos committen, andere Aenderungen bleiben unberuehrt ---
+# --- Git: NUR die gespiegelten Slug-Ordner committen. Bewusst nicht
+#     "git add beispiel-demos", weil dort auch tavolo.html (Hand-gepflegt)
+#     und evtl. Admin-Uploads liegen, die hier nicht mit sollen. ---
 Set-Location $repo
-git add -- beispiel-demos
+$slugPfade = @($map.Values | ForEach-Object { "beispiel-demos/$_" })
+git add -- $slugPfade
 git diff --cached --quiet
 if ($LASTEXITCODE -eq 0) {
   Write-Host "`nKeine Aenderungen an den Vorlagen - nichts zu pushen." -ForegroundColor Green
