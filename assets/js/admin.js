@@ -351,6 +351,13 @@
         werkzeuge.appendChild(hoch);
         werkzeuge.appendChild(runter);
       }
+      var stift = document.createElement("button");
+      stift.type = "button"; stift.className = "td-pfeil td-stift";
+      stift.setAttribute("aria-label", "Aufgabe bearbeiten");
+      stift.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>';
+      stift.addEventListener("click", function () { bearbeite(li, a); });
+      werkzeuge.appendChild(stift);
+
       var weg = document.createElement("button");
       weg.type = "button"; weg.className = "td-weg";
       weg.setAttribute("aria-label", "Aufgabe löschen");
@@ -395,6 +402,76 @@
       });
 
       return li;
+    }
+
+    /* Bearbeiten direkt in der Zeile: Die Zeile wird durch ein kleines
+       Formular ersetzt. Ein eigenes Fenster waere hier zu schwer - man
+       will meist nur einen Tippfehler oder den Bearbeiter aendern. */
+    function bearbeite(li, a) {
+      if (li.classList.contains("wird-bearbeitet")) return;
+      li.classList.add("wird-bearbeitet");
+      li.removeAttribute("draggable");
+      var vorher = li.innerHTML;
+
+      var box = document.createElement("div");
+      box.className = "td-edit";
+      box.innerHTML =
+        '<input type="text" class="te-titel" maxlength="200">' +
+        '<textarea class="te-notiz" rows="2" maxlength="600" placeholder="Notiz (optional)"></textarea>' +
+        '<div class="td-edit-zeile">' +
+          '<select class="te-prio">' +
+            '<option value="hoch">Hoch</option>' +
+            '<option value="mittel">Mittel</option>' +
+            '<option value="tief">Tief</option>' +
+          '</select>' +
+          '<input type="text" class="te-wer" maxlength="60" list="td-namen" placeholder="Wer macht es?">' +
+        '</div>' +
+        '<div class="td-edit-knoepfe">' +
+          '<button type="button" class="btn btn-primary te-ok">Speichern</button>' +
+          '<button type="button" class="btn btn-ghost te-weg">Abbrechen</button>' +
+        '</div>';
+
+      li.innerHTML = "";
+      li.appendChild(box);
+
+      var fTitel = box.querySelector(".te-titel");
+      var fNotiz = box.querySelector(".te-notiz");
+      var fPrio = box.querySelector(".te-prio");
+      var fWer = box.querySelector(".te-wer");
+      fTitel.value = a.titel;
+      fNotiz.value = a.notiz || "";
+      fPrio.value = a.prio;
+      fWer.value = a.wer || "";
+      fTitel.focus();
+      fTitel.select();
+
+      function abbrechen() {
+        li.classList.remove("wird-bearbeitet");
+        /* Neu zeichnen statt altes HTML zurueckzusetzen: Die alten
+           Knoepfe haetten sonst keine Ereignisse mehr. */
+        zeichne();
+      }
+
+      function sichern() {
+        var neuerTitel = fTitel.value.trim();
+        if (!neuerTitel) { fTitel.focus(); return; }
+        a.titel = neuerTitel;
+        a.notiz = fNotiz.value.trim();
+        a.prio = fPrio.value;
+        a.wer = fWer.value.trim();
+        li.classList.remove("wird-bearbeitet");
+        speichern();
+      }
+
+      box.querySelector(".te-ok").addEventListener("click", sichern);
+      box.querySelector(".te-weg").addEventListener("click", abbrechen);
+      /* Enter speichert im Titelfeld, Escape bricht ueberall ab */
+      fTitel.addEventListener("keydown", function (e) {
+        if (e.key === "Enter") { e.preventDefault(); sichern(); }
+      });
+      box.addEventListener("keydown", function (e) {
+        if (e.key === "Escape") { e.preventDefault(); abbrechen(); }
+      });
     }
 
     /* Verschiebt innerhalb der offenen Aufgaben um eine Position */

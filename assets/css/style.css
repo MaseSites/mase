@@ -3610,3 +3610,38 @@ body.ms-cookie-offen .widget-panel { bottom: calc(var(--ms-cookie-h, 90px) + 90p
      zusammenschrumpft */
   .td-werkzeuge { grid-column: 2; margin-top: 8px; }
 }
+
+/* Bearbeiten direkt in der Zeile */
+.td-item.wird-bearbeitet {
+  grid-template-columns: 1fr;
+  background: #fff;
+  border-color: var(--ink-soft);
+  cursor: default;
+}
+.td-edit { display: grid; gap: 8px; }
+.td-edit input, .td-edit textarea, .td-edit select {
+  width: 100%;
+  font-family: inherit;
+  font-size: 0.94rem;
+  padding: 9px 12px;
+  border: 1.5px solid var(--line);
+  border-radius: 8px;
+  background: var(--bg-soft);
+  color: var(--ink);
+}
+.td-edit .te-titel { font-weight: 600; }
+.td-edit input:focus, .td-edit textarea:focus, .td-edit select:focus {
+  outline: none;
+  border-color: var(--ink);
+  background: #fff;
+}
+.td-edit textarea { resize: vertical; line-height: 1.5; }
+.td-edit-zeile { display: grid; grid-template-columns: 130px minmax(0, 1fr); gap: 8px; }
+.td-edit-knoepfe { display: flex; gap: 8px; flex-wrap: wrap; }
+.td-edit-knoepfe .btn { padding: 8px 18px; font-size: 0.88rem; }
+.td-stift svg { width: 14px; height: 14px; }
+
+@media (max-width: 720px) {
+  .td-edit-zeile { grid-template-columns: 1fr; }
+  .td-edit-knoepfe .btn { flex: 1 1 0; justify-content: center; }
+}
