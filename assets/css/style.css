@@ -3645,3 +3645,94 @@ body.ms-cookie-offen .widget-panel { bottom: calc(var(--ms-cookie-h, 90px) + 90p
   .td-edit-zeile { grid-template-columns: 1fr; }
   .td-edit-knoepfe .btn { flex: 1 1 0; justify-content: center; }
 }
+
+/* ---------- To-do: Umschalter Entwickler / KI ---------- */
+.td-schalter { display: flex; gap: 6px; margin-bottom: 18px; border-bottom: 1px solid var(--line); }
+.td-tab {
+  border: none; background: none;
+  font: inherit; font-weight: 600;
+  padding: 10px 16px;
+  color: var(--ink-faint);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  display: inline-flex; align-items: center; gap: 7px;
+}
+.td-tab:hover { color: var(--ink-soft); }
+.td-tab.aktiv { color: var(--ink); border-bottom-color: var(--ink); }
+.td-tab-zahl:not(:empty) {
+  min-width: 19px; height: 19px; padding: 0 5px;
+  border-radius: 999px;
+  background: var(--ki); color: #fff;
+  font-size: 0.68rem; font-weight: 700;
+  display: inline-grid; place-items: center;
+}
+
+/* ---------- Assistenten-Chat im Admin ---------- */
+.ka-chat {
+  max-height: 320px; overflow-y: auto;
+  display: grid; gap: 9px;
+  padding: 4px 2px 12px;
+}
+.ka-msg {
+  max-width: 82%;
+  padding: 10px 13px;
+  border-radius: 13px;
+  font-size: 0.92rem; line-height: 1.5;
+  white-space: pre-wrap; word-break: break-word;
+}
+.ka-msg.ich { justify-self: end; background: var(--ink); color: #fff; border-bottom-right-radius: 4px; }
+.ka-msg.bot { justify-self: start; background: var(--bg-soft); border: 1px solid var(--line); border-bottom-left-radius: 4px; }
+.ka-msg.denkt { opacity: 0.6; font-style: italic; }
+
+.ka-eingabe { display: flex; gap: 8px; }
+.ka-eingabe input {
+  flex: 1; min-width: 0;
+  font-family: inherit; font-size: 0.94rem;
+  padding: 11px 14px;
+  border: 1.5px solid var(--line);
+  border-radius: 999px;
+  background: var(--bg-soft);
+}
+.ka-eingabe input:focus { outline: none; border-color: var(--ink); background: #fff; }
+.ka-eingabe .btn { flex: none; padding: 10px 22px; }
+.ka-schnell { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+
+/* Status der KI-Aufgaben */
+.ka-status { font-weight: 700; }
+.ka-status-offen { background: var(--bg-warm); }
+.ka-status-laeuft { background: #FBEFDC; border-color: #E0C68F; color: #6B4E16; }
+.ka-status-fertig { background: #E6EEE8; border-color: #B7CDBE; color: #33543D; }
+.ka-status-blockiert { background: #F7E2DE; border-color: #E3B6AC; color: #8A2F1F; }
+.td-item.ka-fertig { border-left-color: #4C7A5A; }
+.td-item.ka-blockiert { border-left-color: #C0442F; }
+.td-item.ka-offen { border-left-color: var(--line-strong); }
+.ka-ergebnis {
+  margin: 6px 0 0;
+  font-size: 0.86rem; line-height: 1.5;
+  color: var(--ink-soft);
+  padding: 7px 10px;
+  background: var(--bg-warm);
+  border-radius: 7px;
+}
+.ka-ergebnis.ist-problem { background: #F7E2DE; color: #8A2F1F; }
+
+/* Protokoll */
+.ka-protokoll { list-style: none; margin: 0; padding: 0; display: grid; gap: 7px; }
+.ka-p-zeile {
+  padding: 10px 12px;
+  background: var(--bg-soft);
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--line-strong);
+  border-radius: 8px;
+}
+.ka-p-zeile.ist-problem { border-left-color: #C0442F; background: #FDF6F4; }
+.ka-p-kopf { display: flex; justify-content: space-between; gap: 12px; font-size: 0.88rem; }
+.ka-p-kopf span { color: var(--ink-faint); font-size: 0.78rem; flex: none; }
+.ka-p-zeile p { margin: 4px 0 0; font-size: 0.85rem; line-height: 1.5; color: var(--ink-soft); word-break: break-word; }
+
+@media (max-width: 720px) {
+  .ka-msg { max-width: 92%; }
+  .ka-eingabe { flex-wrap: wrap; }
+  .ka-eingabe .btn { width: 100%; justify-content: center; }
+}

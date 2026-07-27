@@ -2383,6 +2383,377 @@ function ladeAufgaben(): array
     return saeubereAufgaben(json_decode($roh, true));
 }
 
+/* ---------- KI-Assistent im Admin ----------
+   Der Assistent hat eine eigene Aufgabenliste (getrennt von unserer
+   Entwickler-Liste) und echte Werkzeuge. Was er damit tatsaechlich tun
+   kann, ist bewusst eng gefasst: Aufgaben anlegen, abarbeiten,
+   blockieren - und Website-Texte aendern. Er kann KEINEN Code
+   schreiben und nichts veroeffentlichen; ein Sprachmodell im Browser
+   hat keinen Zugriff auf das Repository oder den Server. Jeder
+   Werkzeugeinsatz wird protokolliert, auch das Scheitern. */
+
+function ladeKiAufgaben(): array
+{
+    $roh = einstellung('ki_aufgaben');
+    if ($roh === null || $roh === '') {
+        return [];
+    }
+    return saeubereKiAufgaben(json_decode($roh, true));
+}
+
+function saeubereKiAufgaben($liste): array
+{
+    if (!is_array($liste)) {
+        return [];
+    }
+    $erlaubtStatus = ['offen', 'laeuft', 'fertig', 'blockiert'];
+    $sauber = [];
+    foreach (array_slice($liste, 0, 300) as $a) {
+        if (!is_array($a)) {
+            continue;
+        }
+        $titel = s($a['titel'] ?? '', 200);
+        if ($titel === '') {
+            continue;
+        }
+        $sauber[] = [
+            'id' => s($a['id'] ?? '', 40) ?: ('K-' . bin2hex(random_bytes(6))),
+            'titel' => $titel,
+            'schritt' => s($a['schritt'] ?? '', 600),
+            'ergebnis' => s($a['ergebnis'] ?? '', 1500),
+            'status' => in_array($a['status'] ?? '', $erlaubtStatus, true) ? $a['status'] : 'offen',
+            'quelle' => s($a['quelle'] ?? '', 200),
+            'erstellt' => s($a['erstellt'] ?? '', 30) ?: heute(),
+        ];
+    }
+    return $sauber;
+}
+
+function speichereKiAufgaben(array $liste): void
+{
+    setzeEinstellung('ki_aufgaben', json_encode(saeubereKiAufgaben($liste), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+}
+
+/* Protokoll: was der Assistent getan hat, und woran er gescheitert ist. */
+function kiProtokollEintrag(string $was, string $detail, bool $fehler = false): void
+{
+    $roh = einstellung('ki_protokoll');
+    $liste = $roh ? (json_decode($roh, true) ?: []) : [];
+    array_unshift($liste, [
+        'zeit' => time() * 1000,
+        'was' => s($was, 120),
+        'detail' => s($detail, 800),
+        'fehler' => $fehler,
+    ]);
+    $liste = array_slice($liste, 0, 200);
+    setzeEinstellung('ki_protokoll', json_encode($liste, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+}
+
+function ladeKiProtokoll(): array
+{
+    $roh = einstellung('ki_protokoll');
+    return $roh ? (json_decode($roh, true) ?: []) : [];
+}
+
+function assistentSystemPrompt(): string
+{
+    $inhalte = ladeInhalte();
+    $namen = [];
+    foreach ($inhalte['beispiele'] as $b) {
+        $namen[] = $b['id'] . ' = ' . $b['name'];
+    }
+    return implode("\n", [
+        'Du bist der Arbeits-Assistent im Admin-Bereich von masesites, einem Schweizer Studio fuer Websites und Webapps (Matteo und Severin).',
+        'Heute ist ' . heute() . '. Sprich Deutsch, per Du, knapp und sachlich. Keine Floskeln.',
+        '',
+        'DEINE ARBEITSWEISE:',
+        '- Bekommst du eine groessere Aufgabe, zerlege sie SOFORT mit dem Werkzeug aufgaben_anlegen in viele kleine, konkrete Schritte. Jeder Schritt ist eine Sache, die man in wenigen Minuten erledigen kann. Lieber zehn kleine als drei grosse.',
+        '- Wirst du gebeten, die Liste abzuarbeiten, nimm dir die offenen Aufgaben vor und erledige, was du selbst tun kannst - mit deinen Werkzeugen.',
+        '- Was du erledigt hast, markierst du mit aufgabe_erledigen und schreibst das Ergebnis dazu.',
+        '- Was du NICHT selbst tun kannst, markierst du mit aufgabe_blockiert und schreibst genau hin, warum und was ein Mensch tun muss. Rate nie, erfinde keine Ergebnisse.',
+        '',
+        'WAS DU WIRKLICH TUN KANNST:',
+        '- Aufgaben anlegen, erledigen, blockieren (Werkzeuge oben)',
+        '- Texte der Beispiel-Vorlagen auf der Website aendern: beschreibung_setzen. Verfuegbare Beispiele: ' . (implode('; ', $namen) ?: 'keine'),
+        '',
+        'WAS DU NICHT KANNST - sag es klar, statt es zu versuchen:',
+        '- Code schreiben, Dateien aendern, etwas veroeffentlichen oder deployen',
+        '- Bilder erstellen, E-Mails versenden, auf fremde Systeme zugreifen',
+        'Solche Aufgaben legst du an und markierst sie als blockiert mit dem Hinweis, dass Matteo oder Severin sie uebernehmen muessen.',
+    ]);
+}
+
+function assistentWerkzeuge(): array
+{
+    return [
+        ['type' => 'function', 'function' => [
+            'name' => 'aufgaben_anlegen',
+            'description' => 'Legt mehrere kleine Teilaufgaben in der KI-Aufgabenliste an. Nutze das, um eine groessere Aufgabe zu zerlegen.',
+            'parameters' => [
+                'type' => 'object',
+                'properties' => [
+                    'quelle' => ['type' => 'string', 'description' => 'Die urspruengliche Aufgabe, aus der die Schritte stammen.'],
+                    'aufgaben' => [
+                        'type' => 'array',
+                        'description' => 'Die einzelnen Schritte, je einer in wenigen Minuten erledigbar.',
+                        'items' => [
+                            'type' => 'object',
+                            'properties' => [
+                                'titel' => ['type' => 'string', 'description' => 'Was genau zu tun ist.'],
+                                'schritt' => ['type' => 'string', 'description' => 'Wie es konkret geht.'],
+                            ],
+                            'required' => ['titel'],
+                        ],
+                    ],
+                ],
+                'required' => ['aufgaben'],
+            ],
+        ]],
+        ['type' => 'function', 'function' => [
+            'name' => 'aufgabe_erledigen',
+            'description' => 'Markiert eine Aufgabe als erledigt und haelt das Ergebnis fest.',
+            'parameters' => [
+                'type' => 'object',
+                'properties' => [
+                    'id' => ['type' => 'string', 'description' => 'Die Kennung der Aufgabe.'],
+                    'ergebnis' => ['type' => 'string', 'description' => 'Was dabei herausgekommen ist.'],
+                ],
+                'required' => ['id', 'ergebnis'],
+            ],
+        ]],
+        ['type' => 'function', 'function' => [
+            'name' => 'aufgabe_blockiert',
+            'description' => 'Markiert eine Aufgabe als blockiert, weil du sie nicht selbst erledigen kannst.',
+            'parameters' => [
+                'type' => 'object',
+                'properties' => [
+                    'id' => ['type' => 'string', 'description' => 'Die Kennung der Aufgabe.'],
+                    'grund' => ['type' => 'string', 'description' => 'Warum es nicht geht und was ein Mensch tun muss.'],
+                ],
+                'required' => ['id', 'grund'],
+            ],
+        ]],
+        ['type' => 'function', 'function' => [
+            'name' => 'beschreibung_setzen',
+            'description' => 'Aendert den Beschreibungstext einer Beispiel-Vorlage auf der Website. Wirkt sofort und oeffentlich.',
+            'parameters' => [
+                'type' => 'object',
+                'properties' => [
+                    'id' => ['type' => 'string', 'description' => 'Die Kennung des Beispiels, z. B. B-tavolo.'],
+                    'beschreibung' => ['type' => 'string', 'description' => 'Der neue Text, hoechstens zwei Saetze.'],
+                ],
+                'required' => ['id', 'beschreibung'],
+            ],
+        ]],
+    ];
+}
+
+/* Fuehrt ein Werkzeug wirklich aus und protokolliert das Ergebnis. */
+function assistentWerkzeug(string $name, array $args): array
+{
+    if ($name === 'aufgaben_anlegen') {
+        $neue = is_array($args['aufgaben'] ?? null) ? $args['aufgaben'] : [];
+        if (!$neue) {
+            kiProtokollEintrag('Zerlegen fehlgeschlagen', 'Keine Teilaufgaben geliefert.', true);
+            return ['ok' => false, 'grund' => 'Es wurden keine Aufgaben uebergeben.'];
+        }
+        $liste = ladeKiAufgaben();
+        $quelle = s($args['quelle'] ?? '', 200);
+        $angelegt = [];
+        foreach (array_slice($neue, 0, 40) as $a) {
+            $titel = s($a['titel'] ?? '', 200);
+            if ($titel === '') {
+                continue;
+            }
+            $eintrag = [
+                'id' => 'K-' . bin2hex(random_bytes(6)),
+                'titel' => $titel,
+                'schritt' => s($a['schritt'] ?? '', 600),
+                'ergebnis' => '',
+                'status' => 'offen',
+                'quelle' => $quelle,
+                'erstellt' => heute(),
+            ];
+            $liste[] = $eintrag;
+            $angelegt[] = ['id' => $eintrag['id'], 'titel' => $eintrag['titel']];
+        }
+        speichereKiAufgaben($liste);
+        kiProtokollEintrag('Aufgabe zerlegt', count($angelegt) . ' Teilaufgaben angelegt' . ($quelle ? ' aus: ' . $quelle : ''));
+        return ['ok' => true, 'angelegt' => $angelegt];
+    }
+
+    if ($name === 'aufgabe_erledigen' || $name === 'aufgabe_blockiert') {
+        $id = s($args['id'] ?? '', 40);
+        $liste = ladeKiAufgaben();
+        $gefunden = false;
+        foreach ($liste as &$a) {
+            if ($a['id'] === $id) {
+                $gefunden = true;
+                if ($name === 'aufgabe_erledigen') {
+                    $a['status'] = 'fertig';
+                    $a['ergebnis'] = s($args['ergebnis'] ?? '', 1500);
+                    kiProtokollEintrag('Aufgabe erledigt', $a['titel'] . ' – ' . $a['ergebnis']);
+                } else {
+                    $a['status'] = 'blockiert';
+                    $a['ergebnis'] = s($args['grund'] ?? '', 1500);
+                    kiProtokollEintrag('Aufgabe blockiert', $a['titel'] . ' – ' . $a['ergebnis'], true);
+                }
+                break;
+            }
+        }
+        unset($a);
+        if (!$gefunden) {
+            kiProtokollEintrag('Aufgabe nicht gefunden', 'Kennung ' . $id, true);
+            return ['ok' => false, 'grund' => 'Keine Aufgabe mit dieser Kennung.'];
+        }
+        speichereKiAufgaben($liste);
+        return ['ok' => true];
+    }
+
+    if ($name === 'beschreibung_setzen') {
+        $id = s($args['id'] ?? '', 40);
+        $text = s($args['beschreibung'] ?? '', 400);
+        if ($id === '' || $text === '') {
+            return ['ok' => false, 'grund' => 'Kennung und Beschreibung werden beide gebraucht.'];
+        }
+        $inhalte = ladeInhalte();
+        $gefunden = false;
+        foreach ($inhalte['beispiele'] as &$b) {
+            if ($b['id'] === $id) {
+                $alt = $b['beschreibung'];
+                $b['beschreibung'] = $text;
+                $gefunden = true;
+                kiProtokollEintrag('Website-Text geaendert', $id . ': "' . mb_substr($alt, 0, 60) . '" → "' . mb_substr($text, 0, 60) . '"');
+                break;
+            }
+        }
+        unset($b);
+        if (!$gefunden) {
+            kiProtokollEintrag('Website-Text nicht geaendert', 'Kein Beispiel mit Kennung ' . $id, true);
+            return ['ok' => false, 'grund' => 'Kein Beispiel mit dieser Kennung.'];
+        }
+        setzeEinstellung('inhalte_beispiele', json_encode($inhalte['beispiele'], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+        return ['ok' => true, 'hinweis' => 'Text ist auf der Website geaendert.'];
+    }
+
+    return ['ok' => false, 'grund' => 'Unbekanntes Werkzeug.'];
+}
+
+route('GET', '/api/admin/assistent', 'admin', function () {
+    antwortJson(200, [
+        'aufgaben' => ladeKiAufgaben(),
+        'protokoll' => ladeKiProtokoll(),
+    ]);
+});
+
+route('DELETE', '/api/admin/assistent', 'admin', function () {
+    setzeEinstellung('ki_aufgaben', '');
+    setzeEinstellung('ki_protokoll', '');
+    antwortJson(200, ['ok' => true]);
+});
+
+route('POST', '/api/admin/assistent', 'admin', function ($p, $body) {
+    $cfg = kiEinstellungen();
+    if (!$cfg['konfiguriert'] || !$cfg['an']) {
+        fehler(400, 'Der KI-Bot ist nicht eingerichtet oder ausgeschaltet. Das lässt sich unter Einstellungen ändern.');
+    }
+    $turns = is_array($body['verlauf'] ?? null) ? array_slice($body['verlauf'], -12) : [];
+    $frage = s($body['frage'] ?? '', 2000);
+    if ($frage === '') {
+        fehler(400, 'Keine Frage übergeben.');
+    }
+
+    /* Aktueller Stand der Liste als Kontext, damit der Assistent weiss,
+       welche Aufgaben offen sind und welche Kennungen sie haben. */
+    $offen = array_values(array_filter(ladeKiAufgaben(), function ($a) {
+        return $a['status'] === 'offen' || $a['status'] === 'laeuft';
+    }));
+    $stand = $offen
+        ? "AKTUELL OFFENE AUFGABEN:\n" . implode("\n", array_map(function ($a) {
+            return '- [' . $a['id'] . '] ' . $a['titel'] . ($a['schritt'] ? ' (' . $a['schritt'] . ')' : '');
+        }, array_slice($offen, 0, 40)))
+        : 'AKTUELL OFFENE AUFGABEN: keine.';
+
+    $nachrichten = [];
+    foreach ($turns as $t) {
+        $nachrichten[] = ['von' => ($t['von'] ?? '') === 'bot' ? 'bot' : 'user', 'text' => s($t['text'] ?? '', 2000)];
+    }
+    $nachrichten[] = ['von' => 'user', 'text' => $frage];
+
+    $antwort = assistentAntwort($cfg, assistentSystemPrompt() . "\n\n" . $stand, $nachrichten);
+    if ($antwort === null) {
+        kiProtokollEintrag('Assistent nicht erreichbar', 'Der KI-Anbieter hat nicht geantwortet.', true);
+        fehler(502, 'Der KI-Anbieter hat nicht geantwortet. Versuch es gleich nochmal.');
+    }
+    antwortJson(200, [
+        'antwort' => $antwort,
+        'aufgaben' => ladeKiAufgaben(),
+        'protokoll' => ladeKiProtokoll(),
+    ]);
+});
+
+/* Wie kiOpenAI, aber mit den Werkzeugen des Assistenten und mehr
+   Runden: Zerlegen und Abarbeiten brauchen oft mehrere Schritte
+   hintereinander. */
+function assistentAntwort(array $cfg, string $system, array $turns): ?string
+{
+    $urls = [
+        'groq'       => 'https://api.groq.com/openai/v1/chat/completions',
+        'mistral'    => 'https://api.mistral.ai/v1/chat/completions',
+        'openai'     => 'https://api.openai.com/v1/chat/completions',
+        'openrouter' => 'https://openrouter.ai/api/v1/chat/completions',
+    ];
+    /* MS_KI_URL erlaubt es, den Anbieter im Test durch einen lokalen
+       Nachbau zu ersetzen. In der Produktion ist die Variable nicht
+       gesetzt, dann gilt die echte Adresse. */
+    $url = getenv('MS_KI_URL') ?: ($urls[$cfg['provider']] ?? $urls['groq']);
+    $headers = ['Content-Type: application/json', 'Authorization: Bearer ' . $cfg['key']];
+    if ($cfg['provider'] === 'openrouter') {
+        $headers[] = 'HTTP-Referer: https://masesites.ch';
+        $headers[] = 'X-Title: masesites';
+    }
+    $nachrichten = [['role' => 'system', 'content' => $system]];
+    foreach ($turns as $t) {
+        $nachrichten[] = ['role' => ($t['von'] === 'bot' ? 'assistant' : 'user'), 'content' => (string)$t['text']];
+    }
+    $tools = assistentWerkzeuge();
+
+    for ($runde = 0; $runde < 6; $runde++) {
+        $payload = json_encode([
+            'model' => $cfg['modell'], 'messages' => $nachrichten,
+            'tools' => $tools, 'temperature' => 0.3, 'max_tokens' => 1200,
+        ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+        $res = httpPostJson($url, $headers, $payload);
+        if ($res['status'] < 200 || $res['status'] >= 300) {
+            error_log('masesites Assistent HTTP ' . $res['status'] . ': ' . substr($res['body'], 0, 400));
+            return null;
+        }
+        $daten = json_decode($res['body'], true);
+        $msg = $daten['choices'][0]['message'] ?? null;
+        if (!is_array($msg)) {
+            return null;
+        }
+        $toolCalls = $msg['tool_calls'] ?? null;
+        if (is_array($toolCalls) && count($toolCalls) > 0) {
+            $nachrichten[] = ['role' => 'assistant', 'content' => $msg['content'] ?? '', 'tool_calls' => $toolCalls];
+            foreach ($toolCalls as $tc) {
+                $argsRoh = $tc['function']['arguments'] ?? '{}';
+                $args = is_array($argsRoh) ? $argsRoh : (json_decode((string)$argsRoh, true) ?: []);
+                $ergebnis = assistentWerkzeug((string)($tc['function']['name'] ?? ''), $args);
+                $nachrichten[] = [
+                    'role' => 'tool', 'tool_call_id' => $tc['id'] ?? '',
+                    'content' => json_encode($ergebnis, JSON_UNESCAPED_UNICODE),
+                ];
+            }
+            continue;
+        }
+        return trim((string)($msg['content'] ?? ''));
+    }
+    /* Runden aufgebraucht: das ist ein Ergebnis, kein Absturz. */
+    kiProtokollEintrag('Abgebrochen', 'Nach sechs Schritten noch nicht fertig - bitte kleiner aufteilen.', true);
+    return 'Ich habe nach mehreren Schritten abgebrochen. Gib mir die Aufgabe bitte kleiner.';
+}
+
 route('GET', '/api/admin/aufgaben', 'admin', function () {
     antwortJson(200, ['aufgaben' => ladeAufgaben()]);
 });

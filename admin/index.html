@@ -6,7 +6,7 @@
   <title>Admin | masesites</title>
   <meta name="robots" content="noindex, nofollow">
   <link rel="icon" href="../assets/img/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../assets/css/style.css?v=52">
+  <link rel="stylesheet" href="../assets/css/style.css?v=53">
 </head>
 <body class="app" data-no-widget>
 
@@ -475,6 +475,14 @@
               </div>
             </div>
 
+            <div class="td-schalter" role="tablist">
+              <button class="td-tab aktiv" type="button" data-liste="dev" role="tab" aria-selected="true">Entwickler</button>
+              <button class="td-tab" type="button" data-liste="ki" role="tab" aria-selected="false">
+                KI-Assistent <span class="td-tab-zahl" id="td-tab-ki"></span>
+              </button>
+            </div>
+
+            <div id="td-bereich-dev">
             <div class="dash-card">
               <h3>Neue Aufgabe</h3>
               <form id="td-form" class="auth-form">
@@ -520,6 +528,39 @@
               <div id="td-erledigt-block" hidden>
                 <h3 style="margin: 26px 0 10px;">Erledigt <span class="td-zahl" id="td-zahl-fertig"></span></h3>
                 <ul class="td-liste td-liste-fertig" id="td-fertig"></ul>
+              </div>
+            </div>
+            </div><!-- /td-bereich-dev -->
+
+            <div id="td-bereich-ki" hidden>
+              <div class="dash-card">
+                <h3>Assistent</h3>
+                <p class="dash-hinweis" style="margin-top: 0;">Gib ihm eine grössere Aufgabe – er zerlegt sie in kleine Schritte und arbeitet ab, was er selbst kann. Was er nicht kann, markiert er als blockiert und schreibt hin, warum.</p>
+                <div class="ka-chat" id="ka-chat"></div>
+                <form id="ka-form" class="ka-eingabe">
+                  <input id="ka-frage" type="text" maxlength="2000" autocomplete="off"
+                         placeholder="z. B. «Beschreibungen aller Vorlagen überarbeiten»">
+                  <button class="btn btn-primary" type="submit" id="ka-senden">Senden</button>
+                </form>
+                <div class="ka-schnell">
+                  <button type="button" class="mini-knopf" data-frage="Schau dir die offenen Aufgaben an und arbeite ab, was du selbst erledigen kannst.">Offene abarbeiten</button>
+                  <button type="button" class="mini-knopf" data-frage="Prüfe die Beschreibungen der Beispiel-Vorlagen auf der Website und verbessere sie, wo sie schwach sind.">Vorlagentexte prüfen</button>
+                </div>
+                <p class="form-error" id="ka-fehler" role="alert"></p>
+              </div>
+
+              <div class="dash-card">
+                <div class="filter-zeile">
+                  <h3 style="margin: 0; flex: 1;">Seine Aufgaben <span class="td-zahl" id="ka-zahl"></span></h3>
+                  <button class="mini-knopf gefahr" type="button" id="ka-leeren">Liste und Protokoll leeren</button>
+                </div>
+                <ul class="td-liste" id="ka-liste"></ul>
+              </div>
+
+              <div class="dash-card">
+                <h3>Protokoll</h3>
+                <p class="dash-hinweis" style="margin-top: 0;">Jeder Schritt, den er gemacht hat – auch was schiefging.</p>
+                <ul class="ka-protokoll" id="ka-protokoll"></ul>
               </div>
             </div>
           </section>
@@ -742,6 +783,6 @@
 
   <script src="../assets/js/sanft.js?v=1"></script>
   <script src="../assets/js/daten.js?v=24"></script>
-  <script src="../assets/js/admin.js?v=30"></script>
+  <script src="../assets/js/admin.js?v=31"></script>
 </body>
 </html>

@@ -563,6 +563,192 @@
     }).catch(function () { zeichne(); });
   })();
 
+  /* ---------- KI-Assistent im Admin ----------
+     Eigene Aufgabenliste, getrennt von unserer Entwickler-Liste. Der
+     Assistent hat echte Werkzeuge (Aufgaben anlegen, erledigen,
+     blockieren, Website-Texte aendern) - was er nicht kann, markiert er
+     als blockiert, statt es zu behaupten. */
+
+  var kaForm = document.getElementById("ka-form");
+  if (kaForm) (function () {
+    var verlauf = [];
+    var laeuft = false;
+    var chat = document.getElementById("ka-chat");
+    var STATUS_TEXT = { offen: "Offen", laeuft: "Läuft", fertig: "Erledigt", blockiert: "Blockiert" };
+
+    function blase(text, von) {
+      var d = document.createElement("div");
+      d.className = "ka-msg " + von;
+      d.textContent = text;
+      chat.appendChild(d);
+      chat.scrollTop = chat.scrollHeight;
+      return d;
+    }
+
+    function zeichneListe(aufgaben) {
+      var ul = document.getElementById("ka-liste");
+      ul.innerHTML = "";
+      if (!aufgaben || !aufgaben.length) {
+        var leer = document.createElement("li");
+        leer.className = "td-leer";
+        leer.textContent = "Noch keine Aufgaben. Gib ihm oben etwas zu tun.";
+        ul.appendChild(leer);
+      } else {
+        aufgaben.forEach(function (a) {
+          var li = document.createElement("li");
+          li.className = "td-item ka-" + a.status;
+          var mitte = document.createElement("div");
+          mitte.className = "td-mitte";
+          var t = document.createElement("div");
+          t.className = "td-titel";
+          t.textContent = a.titel;
+          mitte.appendChild(t);
+          if (a.schritt) {
+            var sch = document.createElement("p");
+            sch.className = "td-notiz";
+            sch.textContent = a.schritt;
+            mitte.appendChild(sch);
+          }
+          if (a.ergebnis) {
+            var e = document.createElement("p");
+            e.className = "ka-ergebnis" + (a.status === "blockiert" ? " ist-problem" : "");
+            e.textContent = (a.status === "blockiert" ? "Blockiert: " : "Ergebnis: ") + a.ergebnis;
+            mitte.appendChild(e);
+          }
+          var meta = document.createElement("div");
+          meta.className = "td-meta";
+          var st = document.createElement("span");
+          st.className = "ka-status ka-status-" + a.status;
+          st.textContent = STATUS_TEXT[a.status] || a.status;
+          meta.appendChild(st);
+          if (a.quelle) {
+            var q = document.createElement("span");
+            q.className = "td-wer";
+            q.textContent = a.quelle;
+            meta.appendChild(q);
+          }
+          mitte.appendChild(meta);
+          li.appendChild(mitte);
+          ul.appendChild(li);
+        });
+      }
+      var offen = (aufgaben || []).filter(function (a) { return a.status === "offen" || a.status === "laeuft"; }).length;
+      document.getElementById("ka-zahl").textContent = aufgaben && aufgaben.length ? "(" + aufgaben.length + ")" : "";
+      var tabZahl = document.getElementById("td-tab-ki");
+      tabZahl.textContent = offen ? offen : "";
+    }
+
+    function zeichneProtokoll(eintraege) {
+      var ul = document.getElementById("ka-protokoll");
+      ul.innerHTML = "";
+      if (!eintraege || !eintraege.length) {
+        var leer = document.createElement("li");
+        leer.className = "td-leer";
+        leer.textContent = "Noch nichts passiert.";
+        ul.appendChild(leer);
+        return;
+      }
+      eintraege.slice(0, 40).forEach(function (p) {
+        var li = document.createElement("li");
+        li.className = "ka-p-zeile" + (p.fehler ? " ist-problem" : "");
+        var kopf = document.createElement("div");
+        kopf.className = "ka-p-kopf";
+        var was = document.createElement("b");
+        was.textContent = p.was;
+        var zeit = document.createElement("span");
+        zeit.textContent = new Date(p.zeit).toLocaleString("de-CH", { day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit" });
+        kopf.appendChild(was); kopf.appendChild(zeit);
+        li.appendChild(kopf);
+        if (p.detail) {
+          var d = document.createElement("p");
+          d.textContent = p.detail;
+          li.appendChild(d);
+        }
+        ul.appendChild(li);
+      });
+    }
+
+    function uebernimm(a) {
+      if (a && a.aufgaben) zeichneListe(a.aufgaben);
+      if (a && a.protokoll) zeichneProtokoll(a.protokoll);
+    }
+
+    function frage(text) {
+      if (laeuft || !text) return;
+      laeuft = true;
+      zeigeFehler("ka-fehler", "");
+      blase(text, "ich");
+      document.getElementById("ka-frage").value = "";
+      var denkt = blase("Denkt nach …", "bot denkt");
+      document.getElementById("ka-senden").disabled = true;
+
+      D.api("/api/admin/assistent", "POST", { frage: text, verlauf: verlauf })
+        .then(function (a) {
+          denkt.remove();
+          blase(a.antwort || "(keine Antwort)", "bot");
+          verlauf.push({ von: "user", text: text });
+          verlauf.push({ von: "bot", text: a.antwort || "" });
+          if (verlauf.length > 12) verlauf = verlauf.slice(-12);
+          uebernimm(a);
+        })
+        .catch(function (f) {
+          denkt.remove();
+          zeigeFehler("ka-fehler", f.message);
+        })
+        .then(function () {
+          laeuft = false;
+          document.getElementById("ka-senden").disabled = false;
+        });
+    }
+
+    kaForm.addEventListener("submit", function (e) {
+      e.preventDefault();
+      frage(document.getElementById("ka-frage").value.trim());
+    });
+
+    [].forEach.call(document.querySelectorAll(".ka-schnell [data-frage]"), function (k) {
+      k.addEventListener("click", function () { frage(k.getAttribute("data-frage")); });
+    });
+
+    document.getElementById("ka-leeren").addEventListener("click", function () {
+      if (!confirm("Aufgabenliste und Protokoll des Assistenten löschen?")) return;
+      D.api("/api/admin/assistent", "DELETE").then(function () {
+        verlauf = [];
+        chat.innerHTML = "";
+        zeichneListe([]);
+        zeichneProtokoll([]);
+      }).catch(function (f) { zeigeFehler("ka-fehler", f.message); });
+    });
+
+    /* Umschalter zwischen den beiden Listen */
+    [].forEach.call(document.querySelectorAll(".td-tab"), function (tab) {
+      tab.addEventListener("click", function () {
+        var ki = tab.getAttribute("data-liste") === "ki";
+        [].forEach.call(document.querySelectorAll(".td-tab"), function (t) {
+          var aktiv = t === tab;
+          t.classList.toggle("aktiv", aktiv);
+          t.setAttribute("aria-selected", String(aktiv));
+        });
+        document.getElementById("td-bereich-dev").hidden = ki;
+        document.getElementById("td-bereich-ki").hidden = !ki;
+        if (ki && window.msAssistentLaden) window.msAssistentLaden();
+      });
+    });
+
+    /* Erst laden, wenn der Bereich geoeffnet wird. Beim Seitenaufbau
+       ist man noch nicht angemeldet - der Aufruf lief dort in einen
+       401, den niemand sah, und Liste wie Protokoll blieben leer. */
+    var schonGeladen = false;
+    function ladeStand() {
+      if (schonGeladen) return;
+      schonGeladen = true;
+      D.api("/api/admin/assistent", "GET")
+        .then(uebernimm)
+        .catch(function () { schonGeladen = false; uebernimm({ aufgaben: [], protokoll: [] }); });
+    }
+    window.msAssistentLaden = ladeStand;
+  })();
+
   /* ---------- Übersicht ---------- */
 
   function renderUebersicht() {
