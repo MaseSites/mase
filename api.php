@@ -1517,6 +1517,37 @@ function stelleInhalteSicher(): void
             }
             setzeEinstellung('inhalte_vorlagen5_ergaenzt', '1');
         }
+        /* Die sieben zuerst hochgeladenen Vorlagen hatten leere Beschreibungen
+           (und bei vieren war Name/Branche der ganze Ordnername). Einmalig
+           griffige Texte setzen - danach im Admin frei editierbar. Gematcht
+           wird über die aktuellen IDs der Live-Einträge. */
+        if (einstellung('inhalte_texte7_gesetzt') === null) {
+            $texte7 = [
+                'B-95369c68' => ['Restaurant',     'Gastronomie',         'Warmes Gold-auf-Creme-Design mit Speisekarte in Kategorie-Tabs und Bewertungs-Laufband.'],
+                'B-5e3f34c6' => ['Reinigung',      'Reinigung',           'Frisches Orange mit Vorher/Nachher-Regler und Offerte nach Reinigungsart.'],
+                'B-30c72769' => ['Coiffeur',       'Coiffeur',            'Eleganter Salon-Look mit Leistungen und Preisen für Damen, Herren und Kinder.'],
+                'B-dde68005' => ['Bauunternehmen', 'Handwerk & Bau',      'Grosser Firmenauftritt mit Projektreferenzen, Bau-Blog und Leistungsübersicht.'],
+                'B-9edf0bce' => ['Gartenbau',      'Garten & Landschaft', 'Ruhiger Naturlook mit eigenen Icons für Gartenbau, Unterhalt und Bepflanzung.'],
+                'B-0a6deea6' => ['Maler & Gipser', 'Handwerk',            'Handwerklicher Ocker-Auftritt mit Referenzfotos, Leistungen und FAQ.'],
+                'B-eceb26cd' => ['Autogarage',     'Auto & Garage',       'Kompletter Garagen-Auftritt mit Vorher/Nachher-Regler, MFK, Reifenhotel und TWINT.'],
+            ];
+            $liste = json_decode((string)einstellung('inhalte_beispiele'), true);
+            if (is_array($liste)) {
+                $geaendert = false;
+                foreach ($liste as $i => $e) {
+                    if (is_array($e) && isset($e['id'], $texte7[$e['id']])) {
+                        $liste[$i]['name'] = $texte7[$e['id']][0];
+                        $liste[$i]['branche'] = $texte7[$e['id']][1];
+                        $liste[$i]['beschreibung'] = $texte7[$e['id']][2];
+                        $geaendert = true;
+                    }
+                }
+                if ($geaendert) {
+                    setzeEinstellung('inhalte_beispiele', json_encode(saeubereBeispiele($liste), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+                }
+            }
+            setzeEinstellung('inhalte_texte7_gesetzt', '1');
+        }
         return;
     }
     setzeEinstellung('inhalte_tavolo_ergaenzt', '1');
