@@ -36,6 +36,7 @@ beispiel-demos/*
 !beispiel-demos/fahrschule/
 !beispiel-demos/optik/
 !beispiel-demos/metzgerei/
+!beispiel-demos/praxis/
 
 # Node
 node_modules/

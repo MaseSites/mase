@@ -1,0 +1,389 @@
+<!doctype html>
+<html lang="de-CH">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Warme, vertrauensvolle Demo-Vorlage für Schweizer Hausarztpraxen mit Leistungsübersicht, Anliegen-Navigation und Terminanfrage.">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#f4f0e7">
+<title>Praxis am Park — Hausarztpraxis Vorlage</title>
+<!--
+  MaseSites Branchenvorlage · Arztpraxis & Hausarztmedizin · Stand Juli 2026
+  Alle Namen, Leistungen, Sprechzeiten und Kontaktdaten sind Beispielangaben und vor Livegang zu ersetzen.
+  Die Seite bietet keine medizinische Beratung. In der Schweiz gilt bei medizinischen Notfällen die Notrufnummer 144.
+  Designimpulse: 21st.dev Appointment Scheduler, Bento Cards und zugängliche Formulare; eigener statischer Aufbau.
+  Bildmotive: mit OpenAI ImageGen für diese Demo erzeugt; vor produktiver Kundennutzung Bildrechte und Freigaben prüfen.
+-->
+<style>
+:root{
+  --cream:#f4f0e7;--paper:#fbfaf6;--ink:#14231b;--muted:#5e6b63;--forest:#173e31;
+  --forest-2:#0e2e24;--mint:#cde7d8;--mint-2:#e4f2e9;--coral:#f07958;--sun:#eef276;
+  --line:rgba(20,35,27,.18);--white:#fff;--serif:Georgia,"Times New Roman",serif;
+  --sans:"Aptos","Segoe UI",Arial,sans-serif;--mono:"Courier New",monospace;
+  --ease:cubic-bezier(.23,1,.32,1);--radius:30px
+}
+*{box-sizing:border-box;margin:0}
+html{scroll-behavior:smooth;scrollbar-gutter:stable;overflow-x:hidden;scroll-padding-top:96px}
+body{background:var(--cream);color:var(--ink);font-family:var(--sans);line-height:1.55;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}button,input,select,textarea{font:inherit;color:inherit}button{cursor:pointer}img{display:block;width:100%;max-width:100%}
+h1,h2,h3{text-wrap:balance}p{text-wrap:pretty}
+::selection{background:var(--sun);color:var(--ink)}
+:where(a,button,input,select,textarea,summary):focus-visible{outline:3px solid var(--coral);outline-offset:4px}
+.skip-link{position:fixed;z-index:999;top:10px;left:10px;padding:.8rem 1rem;background:var(--white);border:2px solid currentColor;border-radius:10px;font-weight:800;transform:translateY(calc(-100% - 24px));transition:transform 160ms var(--ease)}
+.skip-link:focus{transform:none}
+.wrap{width:min(100% - 40px,1380px);margin-inline:auto}
+.progress{position:fixed;z-index:80;inset:0 0 auto;height:3px;background:var(--coral);transform:scaleX(0);transform-origin:left;pointer-events:none}
+.nav{position:fixed;z-index:60;inset:0 0 auto;background:rgba(244,240,231,.88);backdrop-filter:blur(16px);border-bottom:1px solid transparent;transition:border-color .2s ease,background-color .2s ease}
+.nav.scrolled{border-color:var(--line);background:rgba(251,250,246,.94)}
+.nav-inner{height:78px;display:flex;align-items:center;gap:28px}
+.brand{display:inline-flex;align-items:center;gap:10px;min-height:44px;font:700 1.12rem/1 var(--serif);letter-spacing:-.025em}
+.brand-mark{width:27px;height:27px;border-radius:50%;background:var(--forest);position:relative;flex:none}.brand-mark::before,.brand-mark::after{content:"";position:absolute;background:var(--mint)}.brand-mark::before{width:12px;height:3px;left:7.5px;top:12px}.brand-mark::after{width:3px;height:12px;left:12px;top:7.5px}
+.brand small{font:700 .55rem/1 var(--mono);letter-spacing:.11em;text-transform:uppercase;color:var(--muted)}
+.nav-links{display:flex;align-items:center;gap:24px;margin-left:auto;font-size:.69rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase}
+.nav-links a{position:relative;padding:12px 0}.nav-links a::after{content:"";position:absolute;left:0;right:0;bottom:5px;height:1px;background:var(--forest);transform:scaleX(0);transform-origin:right;transition:transform .2s var(--ease)}
+.button,.nav-cta{display:inline-flex;align-items:center;justify-content:center;gap:9px;min-height:46px;border:1px solid var(--forest);border-radius:999px;background:var(--forest);color:#fff;padding:12px 18px;font-weight:800;font-size:.78rem;transition:transform 160ms var(--ease),background-color 180ms ease,color 180ms ease,border-color 180ms ease}
+.button:active,.nav-cta:active,.menu:active,.choice:active,.day:active,.time-chip:active{transform:scale(.97)}
+.button.light{background:transparent;color:var(--forest)}.button.coral{background:var(--coral);border-color:var(--coral);color:var(--ink)}
+.menu{display:none;margin-left:auto;min-height:44px;border:1px solid var(--forest);border-radius:999px;background:transparent;padding:9px 14px;font-weight:800}
+.hero{min-height:100svh;padding:122px 0 42px;display:grid;align-items:end;position:relative;overflow:hidden}
+.hero::before{content:"";position:absolute;left:-12vw;top:14%;width:34vw;aspect-ratio:1;border-radius:50%;border:1px solid var(--line);box-shadow:0 0 0 5vw rgba(205,231,216,.22),0 0 0 10vw rgba(205,231,216,.11);z-index:-1}
+.hero-grid{display:grid;grid-template-columns:.82fr 1.18fr;gap:clamp(34px,6vw,90px);align-items:end}
+.eyebrow{display:flex;align-items:center;gap:10px;font:700 .65rem/1 var(--mono);letter-spacing:.13em;text-transform:uppercase;color:var(--forest)}
+.eyebrow::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--coral);box-shadow:0 0 0 5px rgba(240,121,88,.14)}
+.hero-copy{padding-bottom:clamp(10px,4vw,52px)}
+.hero h1{font:500 clamp(4.2rem,8.4vw,8.4rem)/.84 var(--serif);letter-spacing:-.068em;max-width:7.7ch;margin:26px 0 30px}
+.hero h1 em{display:block;color:var(--forest);font-weight:400}
+.hero-lead{max-width:46ch;color:var(--muted);font-size:clamp(1rem,1.35vw,1.16rem)}
+.hero-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:28px}
+.hero-note{display:flex;gap:12px;align-items:flex-start;margin-top:34px;padding-top:18px;border-top:1px solid var(--line);max-width:47ch;color:var(--muted);font-size:.78rem}.hero-note strong{color:var(--ink)}
+.hero-note .cross{display:grid;place-items:center;width:25px;height:25px;background:var(--coral);border-radius:50%;color:var(--ink);font-weight:900;flex:none}
+.hero-visual{position:relative;min-height:min(72vw,730px)}
+.hero-image{position:absolute;inset:0 0 0 3%;height:100%;object-fit:cover;border-radius:160px 18px 18px 18px;filter:saturate(.86) contrast(1.01)}
+.hero-visual::after{content:"";position:absolute;inset:0 0 0 3%;border-radius:160px 18px 18px 18px;box-shadow:inset 0 0 0 1px rgba(20,35,27,.14);pointer-events:none}
+.availability{position:absolute;z-index:3;right:-10px;top:9%;width:min(245px,42%);background:rgba(251,250,246,.92);backdrop-filter:blur(14px);border:1px solid rgba(20,35,27,.22);border-radius:22px;padding:18px;box-shadow:0 20px 45px rgba(14,46,36,.14)}
+.availability small{display:flex;align-items:center;gap:7px;font:700 .59rem/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}.availability small::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--coral)}
+.availability strong{display:block;font:500 1.35rem/1.08 var(--serif);margin:10px 0 5px}.availability span{font-size:.7rem;color:var(--muted)}
+.listen-card{position:absolute;z-index:3;left:-35px;bottom:5%;width:min(310px,58%);background:var(--forest);color:#fff;border-radius:18px;padding:22px;box-shadow:0 22px 55px rgba(14,46,36,.2)}
+.listen-card span{font:700 .58rem var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--mint)}.listen-card p{font:400 1.32rem/1.2 var(--serif);margin-top:10px}
+.trust-strip{background:var(--forest);color:#fff;border-block:1px solid rgba(255,255,255,.12)}
+.trust-grid{display:grid;grid-template-columns:repeat(3,1fr)}.trust-item{min-height:132px;padding:28px;border-right:1px solid rgba(255,255,255,.18);display:flex;align-items:flex-end;gap:18px}.trust-item:last-child{border-right:0}
+.trust-item span{font:700 .63rem var(--mono);color:var(--mint)}.trust-item strong{font:500 clamp(1.25rem,2vw,1.8rem)/1.08 var(--serif);max-width:12ch}
+.section{padding:clamp(86px,10vw,150px) 0}
+.section-head{display:grid;grid-template-columns:.85fr 1.15fr;gap:40px;align-items:end;margin-bottom:clamp(40px,6vw,70px)}
+.section-head h2{font:500 clamp(3.3rem,6.8vw,7rem)/.88 var(--serif);letter-spacing:-.06em;max-width:9.5ch}.section-head h2 em{color:var(--forest);font-weight:400}
+.section-head p{justify-self:end;max-width:47ch;color:var(--muted)}
+.services{background:var(--paper)}
+.service-grid{display:grid;grid-template-columns:repeat(12,1fr);grid-auto-rows:minmax(220px,auto);gap:12px}
+.service-card{grid-column:span 4;border:1px solid var(--line);border-radius:var(--radius);padding:clamp(22px,3vw,34px);display:flex;flex-direction:column;background:var(--cream);position:relative;overflow:hidden}
+.service-card.big{grid-column:span 8;grid-row:span 2;min-height:470px;background:var(--forest);color:#fff}.service-card.wide{grid-column:span 8;background:var(--mint)}
+.service-card.coral{background:var(--coral)}.service-card.sun{background:var(--sun)}
+.service-card .number{font:700 .62rem var(--mono);letter-spacing:.11em;text-transform:uppercase;color:var(--muted)}.service-card.big .number{color:var(--mint)}
+.service-card h3{font:500 clamp(1.8rem,3.2vw,3.1rem)/.94 var(--serif);letter-spacing:-.04em;margin-top:auto;max-width:9ch}.service-card.big h3{font-size:clamp(3.3rem,6vw,6.2rem);max-width:8ch}
+.service-card p{color:var(--muted);max-width:37ch;margin-top:13px;font-size:.87rem}.service-card.big p{color:rgba(255,255,255,.67);font-size:.95rem}
+.service-card .symbol{position:absolute;right:24px;top:22px;width:54px;height:54px;border:1px solid currentColor;border-radius:50%;display:grid;place-items:center;font:400 1.8rem var(--serif);opacity:.65}
+.pulse-line{position:absolute;inset:auto -5% 20% 45%;height:110px;opacity:.3}.pulse-line::before{content:"";position:absolute;inset:50% 0 auto;border-top:1px solid var(--mint)}.pulse-line::after{content:"";position:absolute;left:25%;top:21%;width:78px;height:55px;border-left:2px solid var(--mint);border-bottom:2px solid var(--mint);transform:skewX(-25deg) rotate(-38deg)}
+.router{background:var(--mint)}
+.router-grid{display:grid;grid-template-columns:.72fr 1.28fr;gap:clamp(38px,7vw,100px);align-items:start}
+.router-copy{position:sticky;top:120px}.router-copy h2{font:500 clamp(3.4rem,6.5vw,6.7rem)/.87 var(--serif);letter-spacing:-.06em;max-width:8ch;margin:22px 0}.router-copy p{max-width:42ch;color:#40584c}
+.router-card{background:var(--paper);border:1px solid var(--ink);border-radius:34px;overflow:hidden;box-shadow:14px 14px 0 var(--forest)}
+.router-card-head{padding:28px;border-bottom:1px solid var(--line)}.router-card-head span{font:700 .64rem var(--mono);letter-spacing:.11em;text-transform:uppercase;color:var(--muted)}.router-card-head h3{font:500 2rem/1 var(--serif);margin-top:10px}
+.choice-list{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:18px}.choice{min-height:108px;border:1px solid var(--line);border-radius:20px;background:var(--cream);padding:18px;text-align:left;font-weight:800;transition:transform 160ms var(--ease),background-color 180ms ease,color 180ms ease,border-color 180ms ease}.choice small{display:block;margin-top:5px;color:var(--muted);font-weight:500}.choice[aria-pressed="true"]{background:var(--forest);border-color:var(--forest);color:#fff}.choice[aria-pressed="true"] small{color:rgba(255,255,255,.66)}
+.route-result{margin:0 18px 18px;padding:24px;border-radius:20px;background:var(--mint-2)}.route-result small{font:700 .62rem var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}.route-result h3{font:500 1.75rem/1.05 var(--serif);margin:9px 0}.route-result p{color:var(--muted);font-size:.88rem}.route-result a{display:inline-flex;margin-top:14px;font-weight:800;text-decoration:underline;text-underline-offset:4px}
+.care{background:var(--forest);color:#fff}.care-grid{display:grid;grid-template-columns:1.08fr .92fr;gap:clamp(38px,8vw,110px);align-items:center}
+.care-image{position:relative}.care-image img{height:min(68vw,700px);object-fit:cover;border-radius:18px 150px 18px 18px;filter:saturate(.8)}.care-image::after{content:"Persönlich statt pauschal";position:absolute;right:-24px;bottom:32px;background:var(--sun);color:var(--ink);border-radius:999px;padding:13px 18px;font:800 .68rem var(--mono);letter-spacing:.05em;transform:rotate(-3deg)}
+.care-copy .eyebrow{color:var(--mint)}.care-copy h2{font:500 clamp(3.4rem,6.7vw,6.8rem)/.88 var(--serif);letter-spacing:-.06em;margin:22px 0;max-width:9ch}.care-copy>p{color:rgba(255,255,255,.65);max-width:46ch}
+.care-list{margin-top:38px;border-top:1px solid rgba(255,255,255,.22)}.care-row{display:grid;grid-template-columns:42px 1fr;gap:16px;padding:18px 0;border-bottom:1px solid rgba(255,255,255,.22)}.care-row span{font:700 .64rem var(--mono);color:var(--mint)}.care-row p{color:rgba(255,255,255,.67)}.care-row strong{color:#fff}
+.visit{background:var(--cream)}.visit-head{display:grid;grid-template-columns:.75fr 1.25fr;gap:40px;align-items:end;margin-bottom:55px}.visit-head h2{font:500 clamp(3.3rem,6.8vw,7rem)/.88 var(--serif);letter-spacing:-.06em;max-width:9ch}.visit-head p{justify-self:end;max-width:46ch;color:var(--muted)}
+.visit-grid{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--line);border-radius:30px;overflow:hidden}
+.visit-card{min-height:330px;padding:28px;border-right:1px solid var(--line);display:flex;flex-direction:column;background:var(--paper)}.visit-card:last-child{border-right:0}.visit-card:nth-child(2){background:var(--mint-2)}.visit-card:nth-child(4){background:var(--sun)}
+.visit-card span{font:700 .64rem var(--mono);color:var(--coral)}.visit-card h3{font:500 2rem/1 var(--serif);margin-top:auto}.visit-card p{font-size:.84rem;color:var(--muted);margin-top:12px}
+.booking{background:var(--coral);color:var(--ink)}
+.booking-grid{display:grid;grid-template-columns:.7fr 1.3fr;gap:clamp(38px,7vw,100px);align-items:start}
+.booking-copy{position:sticky;top:120px}.booking-copy .eyebrow::before{background:var(--forest);box-shadow:0 0 0 5px rgba(23,62,49,.14)}.booking-copy h2{font:500 clamp(3.5rem,6.8vw,7rem)/.87 var(--serif);letter-spacing:-.06em;max-width:8ch;margin:22px 0}.booking-copy p{max-width:42ch;color:#54372f}.booking-copy small{display:block;border-top:1px solid rgba(20,35,27,.25);padding-top:16px;margin-top:24px;color:#68473d}
+.scheduler{background:var(--paper);border:1px solid var(--ink);border-radius:32px;overflow:hidden;box-shadow:14px 14px 0 var(--forest)}
+.step-tabs{display:grid;grid-template-columns:repeat(3,1fr);border-bottom:1px solid var(--line)}.step-tab{min-height:64px;border:0;border-right:1px solid var(--line);background:transparent;padding:12px;font:800 .66rem var(--mono);letter-spacing:.08em;text-transform:uppercase}.step-tab:last-child{border-right:0}.step-tab[aria-selected="true"]{background:var(--forest);color:#fff}
+.step-panel{display:none;padding:clamp(22px,4vw,38px)}.step-panel.active{display:block}.step-panel h3{font:500 2.2rem/1 var(--serif);margin-bottom:22px}.step-panel>p{color:var(--muted);font-size:.88rem;margin:-10px 0 22px}
+.reason-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:22px}.reason{min-height:92px;border:1px solid var(--line);border-radius:18px;background:var(--cream);padding:16px;text-align:left;font-weight:800}.reason small{display:block;color:var(--muted);font-weight:500;margin-top:4px}.reason[aria-pressed="true"]{background:var(--mint);border-color:var(--forest)}
+.urgent-note{display:none;background:#fee8df;border:1px solid #b3482e;border-radius:16px;padding:14px;margin-bottom:18px;color:#6f2a1a;font-size:.84rem}.urgent-note.show{display:block}
+.days{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:20px}.day{min-height:86px;border:1px solid var(--line);border-radius:16px;background:var(--cream);display:grid;place-items:center;padding:9px}.day span{font:700 .58rem var(--mono);text-transform:uppercase;color:var(--muted)}.day strong{font:500 1.35rem var(--serif)}.day[aria-pressed="true"]{background:var(--forest);border-color:var(--forest);color:#fff}.day[aria-pressed="true"] span{color:var(--mint)}
+.time-list{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:22px}.time-chip{min-height:44px;border:1px solid var(--line);border-radius:999px;background:transparent;padding:10px 14px;font-weight:800}.time-chip[aria-pressed="true"]{background:var(--mint);border-color:var(--forest)}
+.fields{display:grid;grid-template-columns:1fr 1fr;gap:12px}.field{display:grid;gap:7px}.field.full{grid-column:1/-1}.field label{font:700 .62rem var(--mono);letter-spacing:.06em;text-transform:uppercase}.field input,.field textarea,.field select{width:100%;border:1px solid #a9afa9;border-radius:12px;background:#fff;padding:13px}.field textarea{min-height:96px;resize:vertical}
+.summary{background:var(--mint-2);border-radius:14px;padding:14px;margin-bottom:18px;font-size:.84rem}.success{display:none;background:var(--sun);border-radius:14px;padding:15px;margin-top:15px;font-weight:800}.success.show{display:block}
+.faq{background:var(--paper)}.faq-grid{display:grid;grid-template-columns:.7fr 1.3fr;gap:clamp(38px,7vw,100px)}
+.faq-copy h2{font:500 clamp(3.4rem,6.8vw,7rem)/.87 var(--serif);letter-spacing:-.06em;max-width:8ch;margin:22px 0}.faq-copy p{max-width:40ch;color:var(--muted)}
+.faq-list{border-top:1px solid var(--ink)}.faq-list details{border-bottom:1px solid var(--ink)}.faq-list summary{list-style:none;display:flex;justify-content:space-between;gap:20px;padding:22px 0;font-weight:800;cursor:pointer}.faq-list summary::-webkit-details-marker{display:none}.faq-list summary::after{content:"+";font:400 1.6rem/1 var(--serif);color:var(--coral);transition:transform 180ms var(--ease)}.faq-list details[open] summary::after{transform:rotate(45deg)}.faq-list details p{padding:0 48px 22px 0;color:var(--muted)}
+.contact{background:var(--sun);padding:clamp(70px,9vw,120px) 0}.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(30px,7vw,90px)}.contact h2{font:500 clamp(3.6rem,7.5vw,8rem)/.84 var(--serif);letter-spacing:-.07em;max-width:7ch}
+.contact-card{border-top:1px solid var(--ink)}.contact-row{display:grid;grid-template-columns:150px 1fr;gap:20px;padding:17px 0;border-bottom:1px solid rgba(20,35,27,.25)}.contact-row span{font:700 .62rem var(--mono);letter-spacing:.08em;text-transform:uppercase}.contact-row p,.contact-row address{font-style:normal}.contact-card small{display:block;margin-top:15px;color:#566125}
+footer{background:var(--forest-2);color:#fff;padding:28px 0}.foot{display:flex;justify-content:space-between;gap:22px;flex-wrap:wrap;font-size:.72rem;color:rgba(255,255,255,.58)}.foot a{color:#fff}
+.reveal{opacity:0;transform:translateY(18px);transition:opacity .58s var(--ease),transform .58s var(--ease)}.reveal.in{opacity:1;transform:none}
+.hero .reveal{opacity:1;transform:none}
+.mobile-cta{display:none}
+@media(hover:hover) and (pointer:fine){
+  .nav-links a:hover::after{transform:scaleX(1);transform-origin:left}.button:hover,.nav-cta:hover{background:var(--coral);border-color:var(--coral);color:var(--ink)}.button.light:hover{background:var(--forest);color:#fff}
+  .service-card{transition:transform .22s var(--ease),box-shadow .22s var(--ease)}.service-card:hover{transform:translateY(-5px);box-shadow:0 16px 36px rgba(14,46,36,.1)}
+  .choice:hover,.reason:hover,.day:hover,.time-chip:hover{border-color:var(--forest)}
+}
+@media(max-width:980px){
+  .nav-links,.nav-cta{display:none}.menu{display:block}.nav-links.open{position:absolute;display:grid;top:78px;left:18px;right:18px;background:var(--paper);border:1px solid var(--line);border-radius:20px;padding:18px;box-shadow:0 20px 55px rgba(14,46,36,.16)}
+  .hero-grid,.section-head,.router-grid,.care-grid,.visit-head,.booking-grid,.faq-grid,.contact-grid{grid-template-columns:1fr}.hero-copy{padding-bottom:0}.hero h1{max-width:10ch}.hero-visual{min-height:690px}.section-head p,.visit-head p{justify-self:start}.router-copy,.booking-copy{position:static}
+  .service-card{grid-column:span 6}.service-card.big,.service-card.wide{grid-column:span 12}.visit-grid{grid-template-columns:1fr 1fr}.visit-card:nth-child(2){border-right:0}.visit-card{border-bottom:1px solid var(--line)}
+  .care-image{order:2}.care-image img{height:620px}.contact h2{max-width:10ch}
+}
+@media(max-width:660px){
+  .wrap{width:min(100% - 26px,1380px)}.brand small{display:none}.hero{padding-top:108px}.hero h1{font-size:clamp(4rem,18vw,6.2rem)}.hero-visual{min-height:500px}.hero-image,.hero-visual::after{left:0;border-radius:105px 14px 14px 14px}.availability{right:-5px;width:48%;padding:14px}.availability strong{font-size:1.05rem}.listen-card{left:-4px;bottom:-12px;padding:17px;width:65%}.listen-card p{font-size:1.05rem}
+  .trust-grid{grid-template-columns:1fr}.trust-item{min-height:100px;border-right:0;border-bottom:1px solid rgba(255,255,255,.18)}.trust-item:last-child{border-bottom:0}
+  .section{padding:80px 0}.section-head h2,.visit-head h2,.router-copy h2,.care-copy h2,.booking-copy h2,.faq-copy h2{font-size:clamp(3.2rem,15vw,5rem)}
+  .service-grid{display:block}.service-card,.service-card.big,.service-card.wide{min-height:270px;margin-bottom:10px}.service-card.big{min-height:420px}.service-card.big h3{font-size:3.4rem}
+  .choice-list,.reason-grid{grid-template-columns:1fr}.choice{min-height:88px}.router-card{box-shadow:8px 8px 0 var(--forest)}
+  .care-image img{height:480px}.care-image::after{right:-5px}.visit-grid{grid-template-columns:1fr}.visit-card{min-height:240px;border-right:0}.booking-grid{gap:40px}.scheduler{box-shadow:8px 8px 0 var(--forest)}
+  .step-tabs{grid-template-columns:1fr}.step-tab{border-right:0;border-bottom:1px solid var(--line);min-height:52px}.step-tab:last-child{border-bottom:0}.days{grid-template-columns:repeat(3,1fr)}.fields{grid-template-columns:1fr}.field.full{grid-column:auto}.contact-row{grid-template-columns:1fr;gap:7px}
+  .mobile-cta{display:flex;position:fixed;z-index:55;left:12px;right:12px;bottom:12px;background:var(--forest);color:#fff;border:1px solid rgba(255,255,255,.3);border-radius:999px;min-height:54px;align-items:center;justify-content:center;font-weight:800;box-shadow:0 12px 40px rgba(14,46,36,.3);opacity:0;transform:translateY(calc(100% + 26px));pointer-events:none;transition:opacity 180ms ease,transform 220ms var(--ease)}.mobile-cta.is-visible{opacity:1;transform:none;pointer-events:auto}footer{padding-bottom:90px}
+}
+@media(max-width:380px){.wrap{width:min(100% - 20px,1380px)}.hero h1{font-size:3.65rem}.availability{width:51%}.listen-card{width:70%}.days{grid-template-columns:1fr 1fr}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}.reveal{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main-content">Zum Inhalt springen</a>
+<div class="progress" id="progress" aria-hidden="true"></div>
+<header class="nav" id="nav">
+  <div class="wrap nav-inner">
+    <a class="brand" href="#top"><span class="brand-mark" aria-hidden="true"></span><span>Praxis am Park</span><small>Hausarztmedizin · Muster</small></a>
+    <nav class="nav-links" id="navLinks" aria-label="Hauptnavigation">
+      <a href="#leistungen">Leistungen</a><a href="#anliegen">Ihr Anliegen</a><a href="#besuch">Ablauf</a><a href="#termin">Termin</a><a href="#kontakt">Kontakt</a>
+    </nav>
+    <a class="nav-cta" href="#termin">Termin anfragen ↗</a>
+    <button class="menu" id="menu" type="button" aria-expanded="false" aria-controls="navLinks">Menü</button>
+  </div>
+</header>
+
+<main id="main-content">
+  <section class="hero" id="top">
+    <div class="wrap hero-grid">
+      <div class="hero-copy reveal">
+        <p class="eyebrow">Hausarztmedizin · Zürich</p>
+        <h1>Medizin, die <em>zuerst zuhört.</em></h1>
+        <p class="hero-lead">Eine ruhige, zugängliche Praxis-Vorlage für Menschen, die Orientierung suchen – mit klaren Leistungen, verständlichen Abläufen und einem direkten Weg zur Terminanfrage.</p>
+        <div class="hero-actions"><a class="button" href="#termin">Termin anfragen</a><a class="button light" href="#leistungen">Leistungen ansehen</a></div>
+        <p class="hero-note"><span class="cross" aria-hidden="true">+</span><span><strong>Medizinischer Notfall?</strong><br>In der Schweiz erreichen Sie den Sanitätsnotruf unter 144.</span></p>
+      </div>
+      <div class="hero-visual reveal">
+        <img class="hero-image" src="assets/images/image-01.webp" alt="Ärztin hört einer Patientin in einem hellen Sprechzimmer aufmerksam zu" width="1536" height="1024" decoding="async">
+        <div class="availability"><small>Terminanfrage</small><strong>In drei ruhigen Schritten.</strong><span>Die Praxis bestätigt den Termin persönlich.</span></div>
+        <div class="listen-card"><span>Der erste Schritt</span><p>Erzählen Sie uns, worum es geht.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="trust-strip" aria-label="Stärken der Vorlage">
+    <div class="wrap trust-grid">
+      <article class="trust-item"><span>01</span><strong>Ein klarer Weg zum Termin.</strong></article>
+      <article class="trust-item"><span>02</span><strong>Information ohne Fachjargon.</strong></article>
+      <article class="trust-item"><span>03</span><strong>Für jedes Alter gut bedienbar.</strong></article>
+    </div>
+  </section>
+
+  <section class="section services" id="leistungen">
+    <div class="wrap">
+      <header class="section-head reveal"><h2>Für vieles die <em>erste Adresse.</em></h2><p>Die Leistungen sind modular aufgebaut. Vor Veröffentlichung erscheinen nur Angebote, Fachgebiete und Untersuchungen, die von der jeweiligen Praxis tatsächlich bestätigt wurden.</p></header>
+      <div class="service-grid reveal">
+        <article class="service-card big"><span class="number">01 · Sprechstunde</span><span class="symbol" aria-hidden="true">+</span><div class="pulse-line" aria-hidden="true"></div><h3>Hausärztliche Betreuung</h3><p>Beschwerden einordnen, offene Fragen besprechen und die nächsten Schritte gemeinsam planen – ohne pauschale Versprechen.</p></article>
+        <article class="service-card coral"><span class="number">02 · Akut</span><span class="symbol" aria-hidden="true">↗</span><h3>Akute Anliegen</h3><p>Die Praxis erklärt, wie kurzfristige Anliegen gemeldet und priorisiert werden.</p></article>
+        <article class="service-card"><span class="number">03 · Vorsorge</span><span class="symbol" aria-hidden="true">○</span><h3>Kontrollen &amp; Vorsorge</h3><p>Umfang und medizinische Eignung werden individuell besprochen.</p></article>
+        <article class="service-card sun"><span class="number">04 · Langfristig</span><span class="symbol" aria-hidden="true">∞</span><h3>Verlauf &amp; Begleitung</h3><p>Wiederkehrende Termine und relevante Unterlagen strukturiert vorbereiten.</p></article>
+        <article class="service-card wide"><span class="number">05 · Koordination</span><span class="symbol" aria-hidden="true">→</span><h3>Abklärung &amp; Zuweisung</h3><p>Wenn weitere Fachstellen nötig sind, werden Befunde und nächste Schritte nachvollziehbar koordiniert.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section router" id="anliegen">
+    <div class="wrap router-grid">
+      <div class="router-copy reveal"><p class="eyebrow">Schnell orientiert</p><h2>Welcher Weg passt zu Ihrem Anliegen?</h2><p>Diese Auswahl stellt keine Diagnose. Sie hilft nur dabei, die passende Kontaktart für die Anfrage vorzubereiten.</p></div>
+      <div class="router-card reveal">
+        <header class="router-card-head"><span>Schritt 1 von 1</span><h3>Anliegen auswählen</h3></header>
+        <div class="choice-list" id="routeChoices">
+          <button class="choice" type="button" aria-pressed="true" data-route="neu">Neues Anliegen<small>Beschwerden oder Fragen erstmals besprechen</small></button>
+          <button class="choice" type="button" aria-pressed="false" data-route="kontrolle">Kontrolle<small>Bestehenden Verlauf gemeinsam ansehen</small></button>
+          <button class="choice" type="button" aria-pressed="false" data-route="vorsorge">Vorsorge<small>Abklären, was persönlich sinnvoll ist</small></button>
+          <button class="choice" type="button" aria-pressed="false" data-route="dokumente">Dokumente &amp; Rezept<small>Organisatorische Anfrage vorbereiten</small></button>
+        </div>
+        <div class="route-result" aria-live="polite"><small>Empfohlener Kontaktweg</small><h3 id="routeTitle">Termin in der Sprechstunde anfragen</h3><p id="routeText">Beschreiben Sie das Anliegen kurz im Formular. Die Praxis entscheidet nach Sichtung, welcher Terminrahmen geeignet ist.</p><a href="#termin" id="routeLink">Anfrage starten →</a></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section care">
+    <div class="wrap care-grid">
+      <div class="care-image reveal"><img src="assets/images/image-02.webp" alt="Arzt misst bei einer älteren Patientin sorgfältig den Blutdruck" width="1536" height="1024" decoding="async" loading="lazy"></div>
+      <div class="care-copy reveal"><p class="eyebrow">Kontinuität schafft Vertrauen</p><h2>Nicht nur der Termin zählt.</h2><p>Eine gute Praxis-Website bereitet den Besuch vor und erklärt, was danach geschieht. So entsteht Orientierung, bevor persönliche medizinische Beratung beginnt.</p>
+        <div class="care-list">
+          <div class="care-row"><span>01</span><p><strong>Zuhören</strong><br>Anliegen, Alltag und vorhandene Unterlagen gemeinsam einordnen.</p></div>
+          <div class="care-row"><span>02</span><p><strong>Verstehen</strong><br>Untersuchungen und Optionen in nachvollziehbarer Sprache besprechen.</p></div>
+          <div class="care-row"><span>03</span><p><strong>Weitergehen</strong><br>Folgetermine, Resultate und Zuständigkeiten klar festhalten.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section visit" id="besuch">
+    <div class="wrap">
+      <header class="visit-head reveal"><h2>Gut vorbereitet in die Praxis.</h2><p>Vier kurze Schritte nehmen Unsicherheit aus dem ersten Besuch. Die Kundenversion wird an die echten Abläufe der Praxis angepasst.</p></header>
+      <div class="visit-grid reveal">
+        <article class="visit-card"><span>01 / ANFRAGE</span><h3>Anliegen nennen</h3><p>Kurze Beschreibung, gewünschter Zeitraum und bevorzugter Kontaktweg.</p></article>
+        <article class="visit-card"><span>02 / BESTÄTIGUNG</span><h3>Termin erhalten</h3><p>Die Praxis bestätigt Zeitpunkt und passende Terminart persönlich.</p></article>
+        <article class="visit-card"><span>03 / MITBRINGEN</span><h3>Unterlagen bereithalten</h3><p>Versicherungskarte sowie relevante Medikamenten- oder Befundangaben, sofern vorhanden.</p></article>
+        <article class="visit-card"><span>04 / NÄCHSTER SCHRITT</span><h3>Weiteres klären</h3><p>Resultate, Rückmeldungen und Folgetermine werden verbindlich vereinbart.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section booking" id="termin">
+    <div class="wrap booking-grid">
+      <div class="booking-copy reveal"><p class="eyebrow">Terminanfrage</p><h2>Was dürfen wir für Sie einplanen?</h2><p>Eine kompakte Anfrage mit Anliegen, bevorzugtem Wochentag und Kontaktangaben. Es werden keine medizinischen Angaben ausgewertet.</p><small>Demo-Funktion ohne Versand oder Speicherung. In der Kundenversion werden Datenschutz, Empfänger und Praxisablauf verbindlich eingerichtet.</small></div>
+      <div class="scheduler reveal">
+        <div class="step-tabs" role="tablist" aria-label="Schritte der Terminanfrage">
+          <button class="step-tab" type="button" role="tab" aria-selected="true" data-step="1">1 · Anliegen</button>
+          <button class="step-tab" type="button" role="tab" aria-selected="false" data-step="2">2 · Wunschzeit</button>
+          <button class="step-tab" type="button" role="tab" aria-selected="false" data-step="3">3 · Kontakt</button>
+        </div>
+        <section class="step-panel active" data-panel="1" aria-label="Anliegen auswählen">
+          <h3>Worum geht es?</h3><p>Wählen Sie den Bereich, der am ehesten passt.</p>
+          <div class="reason-grid" id="reasons">
+            <button class="reason" type="button" aria-pressed="true">Neues Anliegen<small>Erster Termin zum Thema</small></button>
+            <button class="reason" type="button" aria-pressed="false">Kontrolle<small>Verlauf oder Resultate</small></button>
+            <button class="reason" type="button" aria-pressed="false">Vorsorge<small>Persönlich abklären</small></button>
+            <button class="reason" type="button" aria-pressed="false">Dringendes Anliegen<small>Bitte zusätzlich anrufen</small></button>
+          </div>
+          <div class="urgent-note" id="urgentNote">Bei dringenden Beschwerden bitte die Praxis direkt telefonisch kontaktieren. Bei einem medizinischen Notfall wählen Sie 144.</div>
+          <button class="button" type="button" data-next="2">Weiter zur Wunschzeit</button>
+        </section>
+        <section class="step-panel" data-panel="2" aria-label="Wunschzeit auswählen">
+          <h3>Wann passt es?</h3><p>Die angezeigten Tage sind Wünsche, keine bestätigten freien Termine.</p>
+          <div class="days" id="days" aria-label="Nächste Werktage"></div>
+          <div class="time-list" id="times" aria-label="Bevorzugte Tageszeit">
+            <button class="time-chip" type="button" aria-pressed="true">Vormittag</button>
+            <button class="time-chip" type="button" aria-pressed="false">Mittagszeit</button>
+            <button class="time-chip" type="button" aria-pressed="false">Nachmittag</button>
+          </div>
+          <button class="button" type="button" data-next="3">Weiter zum Kontakt</button>
+        </section>
+        <form class="step-panel" data-panel="3" id="bookingForm">
+          <h3>Wie erreichen wir Sie?</h3>
+          <div class="summary" id="summary">Neues Anliegen · Wunschzeit noch offen</div>
+          <div class="fields">
+            <div class="field"><label for="name">Vor- und Nachname</label><input id="name" name="name" required autocomplete="name"></div>
+            <div class="field"><label for="phone">Telefon</label><input id="phone" name="phone" type="tel" required autocomplete="tel"></div>
+            <div class="field"><label for="email">E-Mail</label><input id="email" name="email" type="email" autocomplete="email"></div>
+            <div class="field"><label for="reply">Bevorzugte Rückmeldung</label><select id="reply" name="reply"><option>Telefon</option><option>E-Mail</option></select></div>
+            <div class="field full"><label for="note">Kurzer Hinweis (optional)</label><textarea id="note" name="note" placeholder="Bitte keine ausführlichen medizinischen oder besonders sensiblen Angaben eingeben."></textarea></div>
+          </div>
+          <button class="button" type="submit">Anfrage vorbereiten</button>
+          <div class="success" id="success" role="status">Danke – in der Kundenversion würde Ihre Anfrage jetzt sicher an die Praxis übermittelt.</div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <section class="section faq" id="fragen">
+    <div class="wrap faq-grid">
+      <div class="faq-copy reveal"><p class="eyebrow">Kurz erklärt</p><h2>Vor dem ersten Besuch.</h2><p>Sachliche Antworten auf häufige organisatorische Fragen – ohne Diagnosen, individuelle Empfehlungen oder unbestätigte Leistungsversprechen.</p></div>
+      <div class="faq-list reveal">
+        <details><summary>Nimmt die Praxis neue Patientinnen und Patienten auf?</summary><p>Die aktuelle Aufnahmesituation wird von der Praxis persönlich bestätigt. Eine Anfrage über die Website ist noch keine Anmeldung.</p></details>
+        <details><summary>Was soll ich zum Termin mitbringen?</summary><p>In der Regel helfen die Versicherungskarte und – sofern vorhanden und relevant – eine aktuelle Medikamentenliste oder frühere Befunde. Die Praxis nennt bei der Bestätigung die konkreten Unterlagen.</p></details>
+        <details><summary>Ist die Online-Anfrage bereits ein Termin?</summary><p>Nein. Wunschtag und Tageszeit werden erst verbindlich, wenn die Praxis den Termin persönlich bestätigt.</p></details>
+        <details><summary>Kann ich medizinische Unterlagen über das Formular senden?</summary><p>Diese Demo nimmt keine Dateien an. In der Kundenversion werden sensible Unterlagen nur über einen dafür vorgesehenen, datenschutzkonformen Kanal übermittelt.</p></details>
+        <details><summary>Was mache ich bei einem medizinischen Notfall?</summary><p>Die Website ist nicht für Notfälle bestimmt. In der Schweiz erreichen Sie den Sanitätsnotruf unter 144.</p></details>
+      </div>
+    </div>
+  </section>
+
+  <section class="contact" id="kontakt">
+    <div class="wrap contact-grid">
+      <div><p class="eyebrow">Kontakt &amp; Anreise</p><h2>Wir sind gut erreichbar.</h2></div>
+      <div class="contact-card">
+        <div class="contact-row"><span>Adresse</span><address>Musterstrasse 12<br>8000 Zürich</address></div>
+        <div class="contact-row"><span>Kontakt</span><p>044 000 00 00<br>praxis@beispiel.ch</p></div>
+        <div class="contact-row"><span>Beispielzeiten</span><p>Mo–Fr · 08:00–12:00<br>Mo–Fr · 13:30–17:30</p></div>
+        <div class="contact-row"><span>Anreise</span><p>ÖV-Haltestelle und hindernisfreien Zugang in der Kundenversion konkret ergänzen.</p></div>
+        <small>Alle Namen, Zeiten, Leistungen und Kontaktdaten vor Veröffentlichung ersetzen und medizinisch prüfen.</small>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer><div class="wrap foot"><span>© 2026 Praxis am Park · MaseSites Demo-Vorlage</span><span>Keine medizinische Beratung · Impressum · Datenschutz</span><a href="#top">Nach oben ↑</a></div></footer>
+<a class="mobile-cta" href="#termin">Termin anfragen</a>
+
+<script>
+(function(){
+  var nav=document.getElementById('nav'),menu=document.getElementById('menu'),links=document.getElementById('navLinks'),progress=document.getElementById('progress');
+  function scrollState(){
+    nav.classList.toggle('scrolled',scrollY>22);
+    var max=document.documentElement.scrollHeight-innerHeight;
+    progress.style.transform='scaleX('+(max>0?Math.min(scrollY/max,1):0)+')';
+  }
+  scrollState();addEventListener('scroll',scrollState,{passive:true});addEventListener('resize',scrollState);
+  menu.addEventListener('click',function(){var open=links.classList.toggle('open');menu.setAttribute('aria-expanded',String(open))});
+  links.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){links.classList.remove('open');menu.setAttribute('aria-expanded','false')})});
+
+  var reveals=document.querySelectorAll('.reveal');
+  if(!('IntersectionObserver'in window)){reveals.forEach(function(el){el.classList.add('in')})}
+  else{var io=new IntersectionObserver(function(entries){entries.forEach(function(entry){if(entry.isIntersecting){entry.target.classList.add('in');io.unobserve(entry.target)}})},{threshold:.08,rootMargin:'0px 0px -6%'});reveals.forEach(function(el){io.observe(el)})}
+
+  var routeContent={
+    neu:['Termin in der Sprechstunde anfragen','Beschreiben Sie das Anliegen kurz im Formular. Die Praxis entscheidet nach Sichtung, welcher Terminrahmen geeignet ist.'],
+    kontrolle:['Kontrolltermin vorbereiten','Nennen Sie kurz, worauf sich die Kontrolle bezieht. Relevante Unterlagen können nach der Terminbestätigung über den vorgesehenen Kanal angefragt werden.'],
+    vorsorge:['Vorsorgegespräch anfragen','Die Praxis klärt persönlich, welche Themen und Untersuchungen für Ihre Situation geeignet sind.'],
+    dokumente:['Organisatorische Anfrage senden','Rezept-, Zeugnis- und Dokumentenanfragen werden nach den echten Praxisregeln eingerichtet und persönlich geprüft.']
+  };
+  document.getElementById('routeChoices').addEventListener('click',function(event){
+    var button=event.target.closest('.choice');if(!button)return;
+    this.querySelectorAll('.choice').forEach(function(item){item.setAttribute('aria-pressed',String(item===button))});
+    var content=routeContent[button.dataset.route];document.getElementById('routeTitle').textContent=content[0];document.getElementById('routeText').textContent=content[1];
+  });
+
+  var tabs=document.querySelectorAll('.step-tab'),panels=document.querySelectorAll('.step-panel'),chosenReason='Neues Anliegen',chosenDay='',chosenTime='Vormittag';
+  function showStep(step){
+    tabs.forEach(function(tab){tab.setAttribute('aria-selected',String(tab.dataset.step===String(step)))});
+    panels.forEach(function(panel){panel.classList.toggle('active',panel.dataset.panel===String(step))});
+    if(String(step)==='3')updateSummary();
+  }
+  tabs.forEach(function(tab){tab.addEventListener('click',function(){showStep(tab.dataset.step)})});
+  document.querySelectorAll('[data-next]').forEach(function(button){button.addEventListener('click',function(){showStep(button.dataset.next)})});
+
+  document.getElementById('reasons').addEventListener('click',function(event){
+    var button=event.target.closest('.reason');if(!button)return;
+    this.querySelectorAll('.reason').forEach(function(item){item.setAttribute('aria-pressed',String(item===button))});
+    chosenReason=button.childNodes[0].textContent.trim();
+    document.getElementById('urgentNote').classList.toggle('show',chosenReason==='Dringendes Anliegen');
+  });
+
+  var dayWrap=document.getElementById('days'),cursor=new Date(),added=0,dayNames=['So','Mo','Di','Mi','Do','Fr','Sa'];
+  cursor.setHours(12,0,0,0);
+  while(added<5){
+    cursor.setDate(cursor.getDate()+1);
+    if(cursor.getDay()===0||cursor.getDay()===6)continue;
+    var iso=cursor.getFullYear()+'-'+String(cursor.getMonth()+1).padStart(2,'0')+'-'+String(cursor.getDate()).padStart(2,'0');
+    var button=document.createElement('button');button.type='button';button.className='day';button.dataset.date=iso;button.setAttribute('aria-pressed','false');
+    button.setAttribute('aria-label',cursor.toLocaleDateString('de-CH',{weekday:'long',day:'numeric',month:'long'}));
+    button.innerHTML='<span>'+dayNames[cursor.getDay()]+'</span><strong>'+String(cursor.getDate()).padStart(2,'0')+'.'+String(cursor.getMonth()+1).padStart(2,'0')+'.</strong>';
+    dayWrap.appendChild(button);added++;
+  }
+  dayWrap.addEventListener('click',function(event){
+    var button=event.target.closest('.day');if(!button)return;
+    this.querySelectorAll('.day').forEach(function(item){item.setAttribute('aria-pressed',String(item===button))});
+    chosenDay=new Date(button.dataset.date+'T12:00:00').toLocaleDateString('de-CH',{weekday:'long',day:'numeric',month:'long'});
+  });
+  document.getElementById('times').addEventListener('click',function(event){
+    var button=event.target.closest('.time-chip');if(!button)return;
+    this.querySelectorAll('.time-chip').forEach(function(item){item.setAttribute('aria-pressed',String(item===button))});chosenTime=button.textContent;
+  });
+  function updateSummary(){document.getElementById('summary').textContent=chosenReason+' · '+(chosenDay||'Wunschtag offen')+' · '+chosenTime}
+  document.getElementById('bookingForm').addEventListener('submit',function(event){event.preventDefault();updateSummary();document.getElementById('success').classList.add('show')});
+
+  var sticky=document.querySelector('.mobile-cta'),trigger=document.querySelector('.hero-actions');
+  if(sticky&&trigger&&'IntersectionObserver'in window){new IntersectionObserver(function(entries){sticky.classList.toggle('is-visible',!entries[0].isIntersecting)},{threshold:.08}).observe(trigger)}
+})();
+</script>
+</body>
+</html>
