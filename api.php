@@ -1548,6 +1548,26 @@ function stelleInhalteSicher(): void
             }
             setzeEinstellung('inhalte_texte7_gesetzt', '1');
         }
+        /* Das tavolo-Startbild wurde im Admin auf tavolo_gute.jpg gesetzt - diese
+           Datei liegt aber nicht im Repo (404 -> leere Karte). Einmalig auf die
+           ausgelieferte tavolo.jpg zurücksetzen (enthält jetzt das gute Bild). */
+        if (einstellung('inhalte_tavolo_bild_fix') === null) {
+            $liste = json_decode((string)einstellung('inhalte_beispiele'), true);
+            if (is_array($liste)) {
+                $geaendert = false;
+                foreach ($liste as $i => $e) {
+                    if (is_array($e) && ($e['id'] ?? '') === 'B-tavolo'
+                        && ($e['bild'] ?? '') !== 'assets/img/demos/tavolo.jpg') {
+                        $liste[$i]['bild'] = 'assets/img/demos/tavolo.jpg';
+                        $geaendert = true;
+                    }
+                }
+                if ($geaendert) {
+                    setzeEinstellung('inhalte_beispiele', json_encode(saeubereBeispiele($liste), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+                }
+            }
+            setzeEinstellung('inhalte_tavolo_bild_fix', '1');
+        }
         return;
     }
     setzeEinstellung('inhalte_tavolo_ergaenzt', '1');
