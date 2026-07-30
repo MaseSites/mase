@@ -7,7 +7,7 @@
   <meta name="description" content="Alle Preise auf einen Blick: neue Website ab CHF 750.-, Ueberarbeitung ab CHF 250.-, Webapp ab CHF 3500.-, KI-Assistent ab CHF 200.-. Feste Offerte vor Projektstart.">
   <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="assets/css/style.css?v=56">
-  <link rel="stylesheet" href="assets/css/preisliste.css?v=3">
+  <link rel="stylesheet" href="assets/css/preisliste.css?v=4">
 </head>
 <body>
 
@@ -299,21 +299,58 @@
           </div>
           <a class="pl-mehr" href="/leistungen#ki">Alles im Detail <span class="arrow">→</span></a>
         </div>
-        <div class="pl-stufen pl-stufen-eins">
-          <article class="pl-stufe" data-anfrage="KI-Assistent (CHF 200.– Einrichtung, CHF 40.–/Monat)" data-interesse="KI-Assistent">
+        <!-- Ein einzelnes Paket, deshalb nicht als Karten-Raster:
+             links steht wie im Rest der Seite, was man bekommt,
+             rechts der Preis. Der zweiteilige Preis (einmalig +
+             monatlich) ist die haeufigste Rueckfrage - die Karte
+             sortiert deshalb nach Einrichtung und Betrieb, statt
+             alles in eine Liste zu werfen. -->
+        <div class="pl-ki">
+          <div class="pl-ki-was">
+            <ol class="pl-ki-ablauf">
+              <li>
+                <b>Wissen sammeln</b>
+                <span>Wir übernehmen deine Angebote, Preise und Öffnungszeiten. Du musst nichts aufbereiten.</span>
+              </li>
+              <li>
+                <b>Gemeinsam testen</b>
+                <span>Du schreibst mit ihm und sagst, was er anders formulieren soll.</span>
+              </li>
+              <li>
+                <b>Live in Tagen</b>
+                <span>Eine Code-Zeile auf deiner Seite – fertig. Kein Umbau, keine Ausfallzeit.</span>
+              </li>
+            </ol>
+            <ul class="pl-ki-fakten">
+              <li><b>Braucht keine neue Website</b><span>Läuft auf deiner bestehenden Seite mit, egal wer sie gebaut hat.</span></li>
+              <li><b>Erfindet nichts</b><span>Was er nicht weiss, gibt er zu und leitet die Frage an dich weiter.</span></li>
+              <li><b>Anfragen landen bei dir</b><span>Anliegen und Kontaktdaten sortiert im Postfach – auch um drei Uhr nachts.</span></li>
+            </ul>
+          </div>
+
+          <article class="pl-stufe hervor pl-ki-karte" data-anfrage="KI-Assistent (CHF 200.– Einrichtung, CHF 40.–/Monat)" data-interesse="KI-Assistent">
             <h3>KI-Assistent</h3>
             <p class="pl-fuer-wen">Rund um die Uhr erreichbar.</p>
             <p class="pl-tarif"><b>CHF 200.–</b><span>einmalig · dann CHF 40.– pro Monat</span></p>
+
+            <p class="pl-ki-teil">Einrichtung <em>einmalig</em></p>
             <ul class="pl-check">
               <li>Training auf deine Inhalte</li>
               <li>Gestaltung in deinen Farben</li>
-              <li>Einbau in deine Website</li>
-              <li>Betrieb, Wartung und Nachtraining</li>
+              <li>Einbau und gemeinsamer Test</li>
+            </ul>
+
+            <p class="pl-ki-teil">Betrieb <em>CHF 40.– / Monat</em></p>
+            <ul class="pl-check">
+              <li>Server, Wartung und Updates</li>
+              <li>Laufendes Nachtraining</li>
               <li>Monatlich kündbar</li>
             </ul>
+
             <button class="pl-anfragen" type="button">Anfragen</button>
           </article>
         </div>
+        <p class="pl-notiz">Rechne selbst: Eine einzige Anfrage, die nicht verloren geht, zahlt den Monatspreis meist schon.</p>
       </section>
 
     <section class="tight" id="betrieb">

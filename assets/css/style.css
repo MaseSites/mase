@@ -3537,10 +3537,6 @@ body.ms-cookie-offen .widget-panel { bottom: calc(var(--ms-cookie-h, 90px) + 90p
   .personen { gap: 44px; }
 }
 
-/* Einzelne Preis-Karte (KI-Assistent) nicht auf volle Breite ziehen -
-   sie soll wie eine Karte aussehen, nicht wie ein Banner. */
-.pl-stufen-eins { max-width: 400px; margin-inline: auto; }
-
 /* ---------- To-do-Liste im Admin ----------
    Prioritaet zeigt sich als farbiger Balken links. Bewusst nicht die
    ganze Zeile einfaerben: Bei zwanzig Aufgaben waere die Liste sonst

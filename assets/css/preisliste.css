@@ -293,6 +293,84 @@
 .pl-check .pl-plus::before { display: none; }
 .pl-stufe .pl-anfragen { margin-top: auto; width: 100%; }
 
+/* ---------- KI-Assistent: ein einzelnes Angebot ----------
+   Ein Paket in ein Dreier-Raster zu setzen ergab eine handschmale
+   Karte. Stattdessen die Grundordnung dieser Seite: links, was man
+   bekommt, rechts der Preis. */
+
+.pl-ki {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 370px;
+  gap: 40px;
+  align-items: start;
+  margin-top: 26px;
+}
+
+/* Ablauf als gezaehlte Schritte. Die Nummer liegt absolut, damit
+   Titel und Text im selben Textfluss bleiben. */
+.pl-ki-ablauf {
+  counter-reset: ki-schritt;
+  list-style: none;
+  margin: 0; padding: 0;
+  display: grid; gap: 20px;
+}
+.pl-ki-ablauf li {
+  counter-increment: ki-schritt;
+  position: relative;
+  padding-left: 46px;
+}
+.pl-ki-ablauf li::before {
+  content: counter(ki-schritt);
+  position: absolute; left: 0; top: -1px;
+  width: 30px; height: 30px;
+  border: 1.5px solid var(--line-strong);
+  border-radius: 999px;
+  display: grid; place-items: center;
+  font-family: var(--font-display);
+  font-size: 0.95rem; font-weight: 750;
+  color: var(--ink);
+}
+.pl-ki-ablauf b { display: block; font-size: 1.05rem; margin-bottom: 3px; }
+.pl-ki-ablauf span { font-size: 0.95rem; color: var(--ink-soft); }
+
+.pl-ki-fakten {
+  list-style: none;
+  margin: 26px 0 0; padding: 22px 0 0;
+  border-top: 1px solid var(--line);
+  display: grid; gap: 14px;
+}
+.pl-ki-fakten b { display: block; font-size: 0.98rem; font-weight: 650; }
+.pl-ki-fakten span { font-size: 0.93rem; color: var(--ink-soft); }
+
+/* Zwischentitel in der Karte: trennt den einmaligen Teil vom
+   monatlichen, ohne die Zahlen doppelt zu nennen. */
+.pl-ki-teil {
+  display: flex; align-items: baseline; justify-content: space-between;
+  gap: 10px;
+  margin: 0 0 12px;
+  font-size: 0.7rem; font-weight: 700;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--ink-faint);
+}
+.pl-ki-teil em {
+  font-style: normal;
+  font-family: var(--font-display);
+  font-size: 0.88rem; font-weight: 700;
+  letter-spacing: 0; text-transform: none;
+  color: var(--ink);
+  white-space: nowrap;
+}
+.pl-ki-teil ~ .pl-ki-teil {
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+}
+.pl-ki-karte .pl-check { margin-bottom: 20px; }
+
+@media (max-width: 900px) {
+  /* Karte zuerst - die Reihenfolge uebernimmt .pl-stufe.hervor weiter unten */
+  .pl-ki { grid-template-columns: 1fr; gap: 26px; }
+}
+
 /* ---------- Lotse: Pfeil zum Assistenten ---------- */
 
 .pl-lotse {
