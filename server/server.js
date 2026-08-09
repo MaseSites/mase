@@ -192,7 +192,32 @@ db.exec(`
     status TEXT NOT NULL DEFAULT 'offen',
     daten  TEXT NOT NULL           -- verschlüsselt: name, kontakt, wunsch, thema, …
   );
+  CREATE TABLE IF NOT EXISTS lizenzen (
+    code_hash TEXT PRIMARY KEY,   -- SHA-256 des Codes, nie im Klartext
+    geraet    TEXT,               -- historisch: erstes Gerät (siehe Tabelle geraete)
+    status    TEXT NOT NULL DEFAULT 'aktiv',
+    ablauf    TEXT,               -- ISO-Datum oder NULL = unbegrenzt
+    notiz     TEXT,
+    erstellt  INTEGER NOT NULL,
+    gesehen   INTEGER
+  );
+  CREATE TABLE IF NOT EXISTS geraete (
+    id         TEXT PRIMARY KEY,
+    code_hash  TEXT NOT NULL,     -- zu welcher Lizenz
+    geraet     TEXT NOT NULL,     -- Fingerabdruck (SHA-256)
+    name       TEXT,              -- Rechnername zur Wiedererkennung
+    status     TEXT NOT NULL,     -- aktiv | wartet
+    token_hash TEXT,              -- Geräte-Token für die stille Anmeldung
+    erstellt   INTEGER NOT NULL,
+    gesehen    INTEGER
+  );
+  CREATE UNIQUE INDEX IF NOT EXISTS geraete_je_lizenz ON geraete (code_hash, geraet);
 `);
+
+/* Nachrüstung für bestehende Datenbanken: Sitzungen merken sich, mit welcher
+   Lizenz sie erzeugt wurden. Beim zweiten Start meldet SQLite "duplicate
+   column" — das ist der Normalfall und wird geschluckt. */
+try { db.exec("ALTER TABLE sitzungen ADD COLUMN lizenz TEXT"); } catch { /* schon vorhanden */ }
 
 function einstellung(schluessel) {
   const zeile = db.prepare("SELECT wert FROM einstellungen WHERE schluessel = ?").get(schluessel);
@@ -687,16 +712,137 @@ const COOKIE_NAMEN = {
 function tokenHash(token) {
   return crypto.createHash("sha256").update(token).digest("hex");
 }
-function erstelleSitzung(typ, wer) {
+
+/* ---------- Lizenzen (Desktop-App) ---------- */
+
+/* So viele Geräte dürfen gleichzeitig an einer Lizenz hängen. Jedes weitere
+   braucht die Bestätigung eines Geräts, das schon drin ist. */
+const GERAETE_MAX = 2;
+
+/* Der Code steht nie im Klartext in der Datenbank — wie beim Sitzungstoken
+   liegt nur sein SHA-256-Hash dort. */
+function lizenzHash(code) {
+  return crypto.createHash("sha256").update("lizenz|" + String(code).trim().toUpperCase()).digest("hex");
+}
+function lizenzMuster(code) {
+  return /^MASE-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}$/.test(code);
+}
+function ladeLizenz(codeHash) {
+  return db.prepare("SELECT * FROM lizenzen WHERE code_hash = ?").get(codeHash) || null;
+}
+/* Ohne leicht verwechselbare Zeichen (0/O, 1/I). */
+function neuerLizenzcode() {
+  const alphabet = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+  const block = () => Array.from({ length: 4 }, () => alphabet[crypto.randomInt(alphabet.length)]).join("");
+  return "MASE-" + [block(), block(), block()].join("-");
+}
+/* Liefert die Lizenzzeile oder eine Klartextmeldung. Prüft NUR die Lizenz —
+   ob das Gerät darf, klärt geraetPruefen(). */
+function pruefeLizenz(code, geraet) {
+  if (!lizenzMuster(code)) return "Dieser Lizenzcode hat nicht das erwartete Format.";
+  if (!/^[a-f0-9]{64}$/.test(geraet)) return "Die Gerätekennung ist ungültig.";
+  const lizenz = ladeLizenz(lizenzHash(code));
+  if (!lizenz) return "Dieser Lizenzcode ist nicht bekannt.";
+  if (lizenz.status !== "aktiv") return "Dieser Lizenzcode ist gesperrt.";
+  if (lizenz.ablauf && Date.parse(lizenz.ablauf) < Date.now()) return "Diese Lizenz ist abgelaufen.";
+  db.prepare("UPDATE lizenzen SET gesehen = ? WHERE code_hash = ?").run(Date.now(), lizenz.code_hash);
+  return lizenz;
+}
+
+/* ---------- Geräte einer Lizenz ---------- */
+
+function ladeGeraet(codeHash, geraet) {
+  return db.prepare("SELECT * FROM geraete WHERE code_hash = ? AND geraet = ?").get(codeHash, geraet) || null;
+}
+function ladeGeraetNachId(id) {
+  return db.prepare("SELECT * FROM geraete WHERE id = ?").get(id) || null;
+}
+function zaehleAktiveGeraete(codeHash) {
+  return db.prepare("SELECT COUNT(*) AS n FROM geraete WHERE code_hash = ? AND status = 'aktiv'").get(codeHash).n;
+}
+function geraetFuerClient(g) {
+  return {
+    id: g.id,
+    name: g.name || "Unbenanntes Gerät",
+    kennung: String(g.geraet).slice(0, 8),
+    status: g.status,
+    erstellt: g.erstellt,
+    gesehen: g.gesehen ?? null
+  };
+}
+
+/* Meldet ein Gerät an einer Lizenz an. Die ersten GERAETE_MAX kommen sofort
+   durch; jedes weitere wartet auf die Bestätigung eines Geräts, das drin ist. */
+function geraetPruefen(lizenz, geraet, name) {
+  const codeHash = lizenz.code_hash;
+  const vorhanden = ladeGeraet(codeHash, geraet);
+  if (vorhanden) {
+    db.prepare("UPDATE geraete SET gesehen = ?, name = ? WHERE id = ?")
+      .run(Date.now(), name || vorhanden.name, vorhanden.id);
+    return { status: vorhanden.status, id: vorhanden.id };
+  }
+  const status = zaehleAktiveGeraete(codeHash) < GERAETE_MAX ? "aktiv" : "wartet";
+  const id = crypto.randomBytes(8).toString("hex");
+  db.prepare(`INSERT INTO geraete (id, code_hash, geraet, name, status, token_hash, erstellt, gesehen)
+              VALUES (?, ?, ?, ?, ?, NULL, ?, ?)`)
+    .run(id, codeHash, geraet, name, status, Date.now(), Date.now());
+  return { status, id, neu: true };
+}
+
+/* Der Geräte-Token ersetzt später das Passwort. Er entsteht deshalb NUR nach
+   einer erfolgreichen Passwort-Anmeldung — nie allein aus dem Lizenzcode. */
+function erzeugeGeraetToken(id) {
   const token = crypto.randomBytes(32).toString("hex");
-  db.prepare("INSERT INTO sitzungen (token_hash, typ, wer, ablauf) VALUES (?, ?, ?, ?)")
-    .run(tokenHash(token), typ, wer, Date.now() + SITZUNG_DAUER[typ]);
+  db.prepare("UPDATE geraete SET token_hash = ? WHERE id = ?").run(tokenHash(token), id);
+  return token;
+}
+function loescheGeraetToken(id) {
+  db.prepare("UPDATE geraete SET token_hash = NULL WHERE id = ?").run(id);
+}
+/* Der Fingerabdruck muss zusätzlich passen — ein kopierter Token allein
+   nützt auf einem anderen Rechner nichts. */
+function geraetAusToken(token, geraet) {
+  if (!token || !/^[a-f0-9]{64}$/.test(geraet)) return null;
+  const g = db.prepare("SELECT * FROM geraete WHERE token_hash = ? AND status = 'aktiv'").get(tokenHash(token));
+  if (!g || g.geraet !== geraet) return null;
+  const lizenz = ladeLizenz(g.code_hash);
+  if (!lizenz || lizenz.status !== "aktiv") return null;
+  if (lizenz.ablauf && Date.parse(lizenz.ablauf) < Date.now()) return null;
+  db.prepare("UPDATE geraete SET gesehen = ? WHERE id = ?").run(Date.now(), g.id);
+  return { geraet: g, lizenz };
+}
+function lizenzFuerClient(lizenz) {
+  return {
+    kennung: String(lizenz.code_hash).slice(0, 12),
+    gebunden: !!lizenz.geraet,
+    geraet: lizenz.geraet ? String(lizenz.geraet).slice(0, 8) : null,
+    status: lizenz.status,
+    ablauf: lizenz.ablauf,
+    notiz: lizenz.notiz,
+    erstellt: lizenz.erstellt,
+    gesehen: lizenz.gesehen ?? null
+  };
+}
+/* Standard aus, damit sich niemand aus dem eigenen Adminbereich aussperrt. */
+function lizenzpflicht() {
+  return einstellung("lizenzpflicht") === "1";
+}
+function sitzungslizenzGueltig(sitzung) {
+  if (!sitzung || !sitzung.lizenz) return false;
+  const lizenz = ladeLizenz(sitzung.lizenz);
+  if (!lizenz || lizenz.status !== "aktiv") return false;
+  return !lizenz.ablauf || Date.parse(lizenz.ablauf) >= Date.now();
+}
+function erstelleSitzung(typ, wer, lizenz = null) {
+  const token = crypto.randomBytes(32).toString("hex");
+  db.prepare("INSERT INTO sitzungen (token_hash, typ, wer, ablauf, lizenz) VALUES (?, ?, ?, ?, ?)")
+    .run(tokenHash(token), typ, wer, Date.now() + SITZUNG_DAUER[typ], lizenz);
   return token;
 }
 function findeSitzung(req, typ) {
   const token = lesecookie(req, COOKIE_NAMEN[typ]);
   if (!token) return null;
-  const zeile = db.prepare("SELECT token_hash, typ, wer, ablauf FROM sitzungen WHERE token_hash = ?")
+  const zeile = db.prepare("SELECT token_hash, typ, wer, ablauf, lizenz FROM sitzungen WHERE token_hash = ?")
     .get(tokenHash(token));
   if (!zeile || zeile.typ !== typ) return null;
   if (zeile.ablauf < Date.now()) {
@@ -1215,19 +1361,40 @@ route("POST", "/api/admin/anmelden", null, async (req, res, p, body) => {
     schreibeLog("Gast", clientIp(req), "admin", "Admin-Anmeldung fehlgeschlagen", "");
     return fehler(res, 401, "Falsches Passwort.");
   }
-  const token = erstelleSitzung("admin", "admin");
+  /* Die Desktop-App schickt ihren Lizenznachweis mit. Erst hier — nach dem
+     richtigen Passwort — bekommt das Gerät seinen Token für die stille
+     Anmeldung. */
+  let lizenzHashWert = null;
+  let geraetToken = null;
+  const code = s(body.lizenz, 40).toUpperCase();
+  if (code) {
+    const geraetKennung = s(body.geraet, 64);
+    const ergebnis = pruefeLizenz(code, geraetKennung);
+    if (typeof ergebnis === "string") return fehler(res, 403, ergebnis);
+    const stand = geraetPruefen(ergebnis, geraetKennung, s(body.geraetName, 60));
+    if (stand.status !== "aktiv") {
+      return fehler(res, 403, "Dieses Gerät wartet noch auf die Bestätigung eines freigeschalteten Geräts.");
+    }
+    lizenzHashWert = ergebnis.code_hash;
+    geraetToken = erzeugeGeraetToken(stand.id);
+  } else if (lizenzpflicht()) {
+    return fehler(res, 403, "Dieser Adminbereich ist nur über die MaseSites-Admin-App erreichbar.");
+  }
+
+  const token = erstelleSitzung("admin", "admin", lizenzHashWert);
   setzeSitzungscookie(res, req, token, "admin");
-  /* Nur auf ausdruecklichen Wunsch. Bestehende Merker zuerst widerrufen,
-     damit nicht unbemerkt alte Zugaenge gueltig bleiben. */
+  /* "Angemeldet bleiben" nur auf ausdruecklichen Wunsch. Bestehende Merker
+     zuerst widerrufen, damit nicht unbemerkt alte Zugaenge gueltig bleiben.
+     Die App nutzt das nicht — sie hat ihren geraetegebundenen Token. */
   if (body.merken) {
     loescheAlleMerker("admin");
     erstelleMerker(res, req, "admin");
     schreibeLog("Admin", clientIp(req), "admin", "Admin angemeldet", 'mit "angemeldet bleiben"');
   } else {
     loescheMerkerCookie(res);
-    schreibeLog("Admin", clientIp(req), "admin", "Admin angemeldet", "");
+    schreibeLog("Admin", clientIp(req), "admin", "Admin angemeldet", lizenzHashWert ? "über App" : "");
   }
-  antwortJson(res, 200, { ok: true });
+  antwortJson(res, 200, { ok: true, lizenzpflicht: lizenzpflicht(), geraetToken });
 });
 
 /* Auf allen Geraeten abmelden: widerruft jeden Merker sofort. */
@@ -1236,6 +1403,170 @@ route("POST", "/api/admin/merker-loeschen", "admin", (req, res) => {
   loescheMerkerCookie(res);
   schreibeLog("Admin", clientIp(req), "admin", "Angemeldet-bleiben auf allen Geräten aufgehoben", "");
   antwortJson(res, 200, { ok: true });
+});
+
+/* --- Lizenzen und Geräte --- */
+
+/* Offen wie die Anmeldung: Die App fragt hier, ob ihr Code auf diesem Gerät
+   gilt. Achtung: Hier gibt es bewusst KEINEN Token — der Lizenzcode allein
+   darf niemals in den Adminbereich führen. */
+route("POST", "/api/lizenz/pruefen", null, (req, res, p, body) => {
+  if (!ratenbegrenzung("lizenz", clientIp(req), 30, 10 * 60000)) {
+    return fehler(res, 429, "Zu viele Versuche. Warte ein paar Minuten.");
+  }
+  const geraet = s(body.geraet, 64);
+  const ergebnis = pruefeLizenz(s(body.code, 40).toUpperCase(), geraet);
+  if (typeof ergebnis === "string") {
+    schreibeLog("Gast", clientIp(req), "app", "Lizenzprüfung abgelehnt", ergebnis);
+    return fehler(res, 403, ergebnis);
+  }
+  const stand = geraetPruefen(ergebnis, geraet, s(body.geraetName, 60));
+  if (stand.neu) schreibeLog("Gast", clientIp(req), "app", "Gerät angemeldet", stand.status);
+  antwortJson(res, 200, {
+    ok: stand.status === "aktiv",
+    status: stand.status,
+    ablauf: ergebnis.ablauf,
+    geraeteMax: GERAETE_MAX,
+    geraeteAktiv: zaehleAktiveGeraete(ergebnis.code_hash)
+  });
+});
+
+/* Stille Anmeldung: Das Gerät weist sich mit seinem Token aus und bekommt
+   eine Admin-Sitzung — ohne Passwort. */
+route("POST", "/api/geraet/anmelden", null, (req, res, p, body) => {
+  if (!ratenbegrenzung("geraetanmelden", clientIp(req), 40, 10 * 60000)) {
+    return fehler(res, 429, "Zu viele Versuche. Warte ein paar Minuten.");
+  }
+  const treffer = geraetAusToken(s(body.token, 64), s(body.geraet, 64));
+  if (!treffer) return fehler(res, 401, "Dieses Gerät ist nicht mehr freigeschaltet.");
+  const token = erstelleSitzung("admin", "admin", treffer.lizenz.code_hash);
+  setzeSitzungscookie(res, req, token, "admin");
+  schreibeLog("Admin", clientIp(req), "admin", "Admin angemeldet", "stille App-Anmeldung");
+  antwortJson(res, 200, { ok: true, lizenzpflicht: lizenzpflicht() });
+});
+
+/* Sperren (Schloss in der App): Sitzung weg UND Token weg, damit das nächste
+   Öffnen wirklich wieder das Passwort verlangt. */
+route("POST", "/api/geraet/sperren", null, (req, res, p, body) => {
+  const treffer = geraetAusToken(s(body.token, 64), s(body.geraet, 64));
+  if (treffer) loescheGeraetToken(treffer.geraet.id);
+  loescheSitzung(req, "admin");
+  loescheSitzungscookie(res, ["admin"]);
+  /* Auch ein "angemeldet bleiben" darf das Schloss nicht aushebeln. */
+  loescheMerkerCookie(res);
+  antwortJson(res, 200, { ok: true });
+});
+
+/* Welche Geräte hängen an meiner Lizenz, und wartet gerade eines? */
+route("POST", "/api/geraet/liste", null, (req, res, p, body) => {
+  const treffer = geraetAusToken(s(body.token, 64), s(body.geraet, 64));
+  if (!treffer) return fehler(res, 401, "Dieses Gerät ist nicht mehr freigeschaltet.");
+  const alle = db.prepare("SELECT * FROM geraete WHERE code_hash = ? ORDER BY erstellt ASC")
+    .all(treffer.lizenz.code_hash);
+  antwortJson(res, 200, {
+    ok: true,
+    eigenes: treffer.geraet.id,
+    max: GERAETE_MAX,
+    geraete: alle.map(geraetFuerClient)
+  });
+});
+
+/* Ein freigeschaltetes Gerät entscheidet über ein wartendes. */
+route("POST", "/api/geraet/entscheiden", null, (req, res, p, body) => {
+  const treffer = geraetAusToken(s(body.token, 64), s(body.geraet, 64));
+  if (!treffer) return fehler(res, 401, "Dieses Gerät ist nicht mehr freigeschaltet.");
+  const ziel = ladeGeraetNachId(s(body.id, 32));
+  if (!ziel || ziel.code_hash !== treffer.lizenz.code_hash) return fehler(res, 404, "Unbekanntes Gerät.");
+  if (body.erlauben) {
+    if (ziel.status !== "aktiv" && zaehleAktiveGeraete(ziel.code_hash) >= GERAETE_MAX) {
+      return fehler(res, 409, "Es sind schon " + GERAETE_MAX + " Geräte freigeschaltet. Zuerst eines entfernen.");
+    }
+    db.prepare("UPDATE geraete SET status = 'aktiv' WHERE id = ?").run(ziel.id);
+    schreibeLog("Admin", clientIp(req), "app", "Gerät bestätigt", ziel.name || "");
+  } else {
+    db.prepare("DELETE FROM geraete WHERE id = ?").run(ziel.id);
+    schreibeLog("Admin", clientIp(req), "app", "Gerät entfernt", ziel.name || "");
+  }
+  antwortJson(res, 200, { ok: true });
+});
+
+route("GET", "/api/admin/lizenzen", "admin", (req, res) => {
+  const zeilen = db.prepare("SELECT * FROM lizenzen ORDER BY erstellt DESC").all();
+  const geraete = db.prepare("SELECT * FROM geraete ORDER BY erstellt ASC").all();
+  const liste = zeilen.map((lizenz) => ({
+    ...lizenzFuerClient(lizenz),
+    geraete: geraete.filter((g) => g.code_hash === lizenz.code_hash).map(geraetFuerClient)
+  }));
+  antwortJson(res, 200, { lizenzen: liste, geraeteMax: GERAETE_MAX, lizenzpflicht: lizenzpflicht() });
+});
+
+/* Notausgang aus dem Adminbereich: Gerät bestätigen oder entfernen, falls
+   gerade kein freigeschaltetes Gerät zur Hand ist. */
+route("POST", "/api/admin/geraete/:id", "admin", (req, res, p, body) => {
+  const ziel = ladeGeraetNachId(s(p.id, 32));
+  if (!ziel) return fehler(res, 404, "Unbekanntes Gerät.");
+  if (body.erlauben) {
+    if (ziel.status !== "aktiv" && zaehleAktiveGeraete(ziel.code_hash) >= GERAETE_MAX) {
+      return fehler(res, 409, "Es sind schon " + GERAETE_MAX + " Geräte freigeschaltet.");
+    }
+    db.prepare("UPDATE geraete SET status = 'aktiv' WHERE id = ?").run(ziel.id);
+  } else {
+    db.prepare("DELETE FROM geraete WHERE id = ?").run(ziel.id);
+  }
+  schreibeLog("Admin", clientIp(req), "admin", "Gerät verwaltet", ziel.name || "");
+  antwortJson(res, 200, { ok: true });
+});
+
+/* Der neue Code wird genau einmal zurückgegeben. */
+route("POST", "/api/admin/lizenzen", "admin", (req, res, p, body) => {
+  const ablauf = s(body.ablauf, 10);
+  if (ablauf && !/^\d{4}-\d{2}-\d{2}$/.test(ablauf)) {
+    return fehler(res, 400, "Das Ablaufdatum braucht die Form JJJJ-MM-TT.");
+  }
+  const code = neuerLizenzcode();
+  db.prepare("INSERT INTO lizenzen (code_hash, geraet, status, ablauf, notiz, erstellt) VALUES (?, NULL, ?, ?, ?, ?)")
+    .run(lizenzHash(code), "aktiv", ablauf || null, s(body.notiz, 120), Date.now());
+  schreibeLog("Admin", clientIp(req), "admin", "Lizenz erstellt", s(body.notiz, 120));
+  antwortJson(res, 200, { ok: true, code, lizenz: lizenzFuerClient(ladeLizenz(lizenzHash(code))) });
+});
+
+/* Sperren, wieder freigeben oder die Gerätebindung lösen. */
+route("PUT", "/api/admin/lizenzen/:kennung", "admin", (req, res, p, body) => {
+  const kennung = String(p.kennung).replace(/[^a-f0-9]/g, "");
+  const lizenz = kennung.length === 12
+    ? db.prepare("SELECT * FROM lizenzen WHERE substr(code_hash, 1, 12) = ?").get(kennung)
+    : null;
+  if (!lizenz) return fehler(res, 404, "Unbekannte Lizenz.");
+  if (body.status === "aktiv" || body.status === "gesperrt") {
+    db.prepare("UPDATE lizenzen SET status = ? WHERE code_hash = ?").run(body.status, lizenz.code_hash);
+  }
+  if (body.geraetLoesen) {
+    /* Alle Geräte abmelden: die Lizenz ist danach wieder frei. */
+    db.prepare("DELETE FROM geraete WHERE code_hash = ?").run(lizenz.code_hash);
+    db.prepare("UPDATE lizenzen SET geraet = NULL WHERE code_hash = ?").run(lizenz.code_hash);
+  }
+  schreibeLog("Admin", clientIp(req), "admin", "Lizenz geändert", kennung);
+  antwortJson(res, 200, { ok: true, lizenz: lizenzFuerClient(ladeLizenz(lizenz.code_hash)) });
+});
+
+route("DELETE", "/api/admin/lizenzen/:kennung", "admin", (req, res, p) => {
+  const kennung = String(p.kennung).replace(/[^a-f0-9]/g, "");
+  db.prepare("DELETE FROM lizenzen WHERE substr(code_hash, 1, 12) = ?").run(kennung);
+  schreibeLog("Admin", clientIp(req), "admin", "Lizenz gelöscht", kennung);
+  antwortJson(res, 200, { ok: true });
+});
+
+/* Scharfschalten: ab jetzt kommt nur noch die App in den Adminbereich.
+   Nur möglich, wenn die eigene Sitzung schon eine Lizenz hat — sonst wäre
+   der nächste Klick die eigene Aussperrung. */
+route("POST", "/api/admin/lizenzpflicht", "admin", (req, res, p, body, sitzung) => {
+  const an = !!body.an;
+  if (an && !sitzungslizenzGueltig(sitzung)) {
+    return fehler(res, 409, "Erst über die App anmelden, sonst sperrst du dich selbst aus.");
+  }
+  setzeEinstellung("lizenzpflicht", an ? "1" : "0");
+  schreibeLog("Admin", clientIp(req), "admin", "Lizenzpflicht " + (an ? "an" : "aus"), "");
+  antwortJson(res, 200, { ok: true, lizenzpflicht: an });
 });
 
 route("GET", "/api/admin/daten", "admin", (req, res) => {
@@ -1771,6 +2102,11 @@ async function behandle(req, res) {
     }
     if (r.schutz && !sitzung) {
       return fehler(res, 401, "Nicht angemeldet.");
+    }
+    /* Ist die Lizenzpflicht an, reicht die Sitzung allein nicht: sie muss
+       aus einer Anmeldung über die lizenzierte App stammen. */
+    if (r.schutz === "admin" && lizenzpflicht() && !sitzungslizenzGueltig(sitzung)) {
+      return fehler(res, 403, "Dieser Adminbereich ist nur über die MaseSites-Admin-App erreichbar.");
     }
 
     let body = {};

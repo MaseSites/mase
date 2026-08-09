@@ -45,6 +45,9 @@ const COOKIE_NAMEN = [
 const MERKER_COOKIE = 'ms_merker_admin';
 const MERKER_DAUER = 14 * 24 * 3600;   /* 14 Tage ohne Nutzung */
 const MERKER_MAX   = 90 * 24 * 3600;   /* 90 Tage absolut */
+/* So viele Geräte dürfen gleichzeitig an einer Lizenz hängen. Jedes weitere
+   braucht die Bestätigung eines Geräts, das schon drin ist. */
+const GERAETE_MAX = 2;
 const LOG_LIMIT = 5000;
 const BOTLOG_LIMIT = 2000;
 const KOERPER_LIMIT = 256 * 1024;
@@ -315,12 +318,37 @@ try {
     n          INTEGER NOT NULL,
     bis        INTEGER NOT NULL
   );
+  CREATE TABLE IF NOT EXISTS lizenzen (
+    code_hash TEXT PRIMARY KEY,   -- SHA-256 des Codes, nie im Klartext
+    geraet    TEXT,               -- historisch: erstes Gerät (siehe Tabelle geraete)
+    status    TEXT NOT NULL DEFAULT \'aktiv\',   -- aktiv | gesperrt
+    ablauf    TEXT,               -- ISO-Datum oder NULL = unbegrenzt
+    notiz     TEXT,               -- wem der Code gehört
+    erstellt  INTEGER NOT NULL,
+    gesehen   INTEGER             -- letzte erfolgreiche Prüfung
+  );
+  CREATE TABLE IF NOT EXISTS geraete (
+    id         TEXT PRIMARY KEY,
+    code_hash  TEXT NOT NULL,     -- zu welcher Lizenz
+    geraet     TEXT NOT NULL,     -- Fingerabdruck (SHA-256), nie die Rohkennung
+    name       TEXT,              -- Rechnername zur Wiedererkennung
+    status     TEXT NOT NULL,     -- aktiv | wartet
+    token_hash TEXT,              -- Geräte-Token für die stille Anmeldung
+    erstellt   INTEGER NOT NULL,
+    gesehen    INTEGER
+  );
+  CREATE UNIQUE INDEX IF NOT EXISTS geraete_je_lizenz ON geraete (code_hash, geraet);
     ');
 } catch (Throwable $e) {
     error_log('masesites DB-Tabellen: ' . $e->getMessage());
     fehlerAbbruch('Datenbank-Schreibzugriff fehlgeschlagen: ' . $e->getMessage()
         . ' (meist fehlende Schreibrechte in daten/ oder eine alte Datei dort). Test: /api/status?deep=1');
 }
+
+/* Nachrüstung für bestehende Datenbanken: Sitzungen merken sich, mit welcher
+   Lizenz sie erzeugt wurden. Läuft genau einmal, danach wirft SQLite einen
+   Fehler ("duplicate column"), den wir bewusst schlucken. */
+try { $db->exec('ALTER TABLE sitzungen ADD COLUMN lizenz TEXT'); } catch (Throwable $e) { /* schon vorhanden */ }
 
 function einstellung(string $schluessel): ?string
 {
@@ -936,18 +964,211 @@ function stelleAdminPasswortSicher(string $ordner): void
     @chmod($ordner . '/admin-startpasswort.txt', 0600);
 }
 
+/* ---------- Lizenzen (Desktop-App) ---------- */
+
+/* Der Code steht nie im Klartext in der Datenbank — wie beim Sitzungstoken
+   liegt nur sein SHA-256-Hash dort. Verloren gegangene Codes werden neu
+   ausgestellt, nicht nachgeschlagen. */
+function lizenzHash(string $code): string
+{
+    return hash('sha256', 'lizenz|' . mb_strtoupper(trim($code)));
+}
+function lizenzMuster(string $code): bool
+{
+    return (bool)preg_match('/^MASE-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}$/', $code);
+}
+function ladeLizenz(string $codeHash): ?array
+{
+    global $db;
+    $s = $db->prepare('SELECT * FROM lizenzen WHERE code_hash = ?');
+    $s->execute([$codeHash]);
+    $zeile = $s->fetch();
+    return $zeile ?: null;
+}
+/* Erzeugt einen Code im Format MASE-XXXX-XXXX-XXXX ohne leicht
+   verwechselbare Zeichen (0/O, 1/I). */
+function neuerLizenzcode(): string
+{
+    $alphabet = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+    $bloecke = [];
+    for ($b = 0; $b < 3; $b++) {
+        $block = '';
+        for ($i = 0; $i < 4; $i++) {
+            $block .= $alphabet[random_int(0, strlen($alphabet) - 1)];
+        }
+        $bloecke[] = $block;
+    }
+    return 'MASE-' . implode('-', $bloecke);
+}
+/* Gibt bei Erfolg die Lizenzzeile zurück, sonst eine Klartextmeldung.
+   Prüft NUR die Lizenz — ob das Gerät darf, klärt geraetPruefen(). */
+function pruefeLizenz(string $code, string $geraet)
+{
+    global $db;
+    if (!lizenzMuster($code)) {
+        return 'Dieser Lizenzcode hat nicht das erwartete Format.';
+    }
+    if (!preg_match('/^[a-f0-9]{64}$/', $geraet)) {
+        return 'Die Gerätekennung ist ungültig.';
+    }
+    $lizenz = ladeLizenz(lizenzHash($code));
+    if (!$lizenz) {
+        return 'Dieser Lizenzcode ist nicht bekannt.';
+    }
+    if ($lizenz['status'] !== 'aktiv') {
+        return 'Dieser Lizenzcode ist gesperrt.';
+    }
+    if ($lizenz['ablauf'] && strtotime((string)$lizenz['ablauf']) < time()) {
+        return 'Diese Lizenz ist abgelaufen.';
+    }
+    $db->prepare('UPDATE lizenzen SET gesehen = ? WHERE code_hash = ?')
+        ->execute([jetztMs(), $lizenz['code_hash']]);
+    return $lizenz;
+}
+
+/* ---------- Geräte einer Lizenz ---------- */
+
+function ladeGeraet(string $codeHash, string $geraet): ?array
+{
+    global $db;
+    $s = $db->prepare('SELECT * FROM geraete WHERE code_hash = ? AND geraet = ?');
+    $s->execute([$codeHash, $geraet]);
+    $zeile = $s->fetch();
+    return $zeile ?: null;
+}
+function ladeGeraetNachId(string $id): ?array
+{
+    global $db;
+    $s = $db->prepare('SELECT * FROM geraete WHERE id = ?');
+    $s->execute([$id]);
+    $zeile = $s->fetch();
+    return $zeile ?: null;
+}
+function zaehleAktiveGeraete(string $codeHash): int
+{
+    global $db;
+    $s = $db->prepare("SELECT COUNT(*) AS n FROM geraete WHERE code_hash = ? AND status = 'aktiv'");
+    $s->execute([$codeHash]);
+    return (int)$s->fetch()['n'];
+}
+function geraetFuerClient(array $g): array
+{
+    return [
+        'id' => $g['id'],
+        'name' => $g['name'] ?: 'Unbenanntes Gerät',
+        'kennung' => substr((string)$g['geraet'], 0, 8),
+        'status' => $g['status'],
+        'erstellt' => (int)$g['erstellt'],
+        'gesehen' => $g['gesehen'] !== null ? (int)$g['gesehen'] : null,
+    ];
+}
+
+/* Meldet ein Gerät an einer Lizenz an.
+   Die ersten GERAETE_MAX Geräte kommen sofort durch; jedes weitere wartet auf
+   die Bestätigung eines Geräts, das schon drin ist. */
+function geraetPruefen(array $lizenz, string $geraet, string $name): array
+{
+    global $db;
+    $codeHash = (string)$lizenz['code_hash'];
+    $vorhanden = ladeGeraet($codeHash, $geraet);
+
+    if ($vorhanden) {
+        $db->prepare('UPDATE geraete SET gesehen = ?, name = ? WHERE id = ?')
+            ->execute([jetztMs(), $name ?: $vorhanden['name'], $vorhanden['id']]);
+        return ['status' => $vorhanden['status'], 'id' => $vorhanden['id']];
+    }
+
+    $status = zaehleAktiveGeraete($codeHash) < GERAETE_MAX ? 'aktiv' : 'wartet';
+    $id = bin2hex(random_bytes(8));
+    $db->prepare('INSERT INTO geraete (id, code_hash, geraet, name, status, token_hash, erstellt, gesehen)
+                  VALUES (?, ?, ?, ?, ?, NULL, ?, ?)')
+        ->execute([$id, $codeHash, $geraet, $name, $status, jetztMs(), jetztMs()]);
+    return ['status' => $status, 'id' => $id, 'neu' => true];
+}
+
+/* Der Geräte-Token ersetzt später das Passwort. Er entsteht deshalb NUR nach
+   einer erfolgreichen Passwort-Anmeldung — nie allein aus dem Lizenzcode. */
+function erzeugeGeraetToken(string $id): string
+{
+    global $db;
+    $token = bin2hex(random_bytes(32));
+    $db->prepare('UPDATE geraete SET token_hash = ? WHERE id = ?')->execute([tokenHash($token), $id]);
+    return $token;
+}
+function loescheGeraetToken(string $id): void
+{
+    global $db;
+    $db->prepare('UPDATE geraete SET token_hash = NULL WHERE id = ?')->execute([$id]);
+}
+/* Gerät über seinen Token ausweisen. Der Fingerabdruck muss zusätzlich
+   passen — ein kopierter Token allein nützt auf einem anderen Rechner nichts. */
+function geraetAusToken(string $token, string $geraet): ?array
+{
+    global $db;
+    if ($token === '' || !preg_match('/^[a-f0-9]{64}$/', $geraet)) {
+        return null;
+    }
+    $s = $db->prepare("SELECT * FROM geraete WHERE token_hash = ? AND status = 'aktiv'");
+    $s->execute([tokenHash($token)]);
+    $g = $s->fetch();
+    if (!$g || !hash_equals((string)$g['geraet'], $geraet)) {
+        return null;
+    }
+    $lizenz = ladeLizenz((string)$g['code_hash']);
+    if (!$lizenz || $lizenz['status'] !== 'aktiv') {
+        return null;
+    }
+    if ($lizenz['ablauf'] && strtotime((string)$lizenz['ablauf']) < time()) {
+        return null;
+    }
+    $db->prepare('UPDATE geraete SET gesehen = ? WHERE id = ?')->execute([jetztMs(), $g['id']]);
+    return ['geraet' => $g, 'lizenz' => $lizenz];
+}
+/* Kurzkennung für die Verwaltung — der Code selbst bleibt geheim. */
+function lizenzFuerClient(array $lizenz): array
+{
+    return [
+        'kennung' => substr((string)$lizenz['code_hash'], 0, 12),
+        'gebunden' => !empty($lizenz['geraet']),
+        'geraet' => $lizenz['geraet'] ? substr((string)$lizenz['geraet'], 0, 8) : null,
+        'status' => $lizenz['status'],
+        'ablauf' => $lizenz['ablauf'],
+        'notiz' => $lizenz['notiz'],
+        'erstellt' => (int)$lizenz['erstellt'],
+        'gesehen' => $lizenz['gesehen'] !== null ? (int)$lizenz['gesehen'] : null,
+    ];
+}
+/* Schalter: erst wenn er an ist, verlangen die Admin-Endpunkte zusätzlich
+   zur Sitzung einen gültigen Lizenznachweis. Standard aus, damit sich
+   niemand aus dem eigenen Adminbereich aussperrt. */
+function lizenzpflicht(): bool
+{
+    return einstellung('lizenzpflicht') === '1';
+}
+function sitzungslizenzGueltig(?array $sitzung): bool
+{
+    if (!$sitzung || empty($sitzung['lizenz'])) {
+        return false;
+    }
+    $lizenz = ladeLizenz((string)$sitzung['lizenz']);
+    if (!$lizenz || $lizenz['status'] !== 'aktiv') {
+        return false;
+    }
+    return !$lizenz['ablauf'] || strtotime((string)$lizenz['ablauf']) >= time();
+}
+
 /* ---------- Sitzungen ---------- */
 
 function tokenHash(string $token): string
 {
     return hash('sha256', $token);
 }
-function erstelleSitzung(string $typ, string $wer): string
+function erstelleSitzung(string $typ, string $wer, ?string $lizenz = null): string
 {
     global $db;
     $token = bin2hex(random_bytes(32));
-    $db->prepare('INSERT INTO sitzungen (token_hash, typ, wer, ablauf) VALUES (?, ?, ?, ?)')
-        ->execute([tokenHash($token), $typ, $wer, time() + SITZUNG_DAUER[$typ]]);
+    $db->prepare('INSERT INTO sitzungen (token_hash, typ, wer, ablauf, lizenz) VALUES (?, ?, ?, ?, ?)')
+        ->execute([tokenHash($token), $typ, $wer, time() + SITZUNG_DAUER[$typ], $lizenz]);
     return $token;
 }
 function findeSitzung(string $typ): ?array
@@ -957,7 +1178,7 @@ function findeSitzung(string $typ): ?array
     if (!$token) {
         return null;
     }
-    $s = $db->prepare('SELECT token_hash, typ, wer, ablauf FROM sitzungen WHERE token_hash = ?');
+    $s = $db->prepare('SELECT token_hash, typ, wer, ablauf, lizenz FROM sitzungen WHERE token_hash = ?');
     $s->execute([tokenHash($token)]);
     $zeile = $s->fetch();
     if (!$zeile || $zeile['typ'] !== $typ) {
@@ -1993,19 +2214,45 @@ route('POST', '/api/admin/anmelden', null, function ($p, $body) {
         schreibeLog('Gast', clientIp(), 'admin', 'Admin-Anmeldung fehlgeschlagen', '');
         fehler(401, 'Falsches Passwort.');
     }
-    setzeSitzungscookie(erstelleSitzung('admin', 'admin'), 'admin');
-    /* Nur auf ausdruecklichen Wunsch: bestehende Merker dieses Kontos
-       zuerst widerrufen, damit nicht unbemerkt mehrere alte Zugaenge
-       gueltig bleiben. */
+
+    /* Die Desktop-App schickt ihren Lizenznachweis mit. Die Sitzung merkt
+       sich ihn, damit die Admin-Endpunkte ihn später verlangen können.
+       Erst hier — nach dem richtigen Passwort — bekommt das Gerät seinen
+       Token für die stille Anmeldung. */
+    $lizenzHash = null;
+    $geraetToken = null;
+    $code = s($body['lizenz'] ?? '', 40);
+    if ($code !== '') {
+        $geraetKennung = s($body['geraet'] ?? '', 64);
+        $ergebnis = pruefeLizenz(mb_strtoupper($code), $geraetKennung);
+        if (is_string($ergebnis)) {
+            fehler(403, $ergebnis);
+        }
+        $geraetStand = geraetPruefen($ergebnis, $geraetKennung, s($body['geraetName'] ?? '', 60));
+        if ($geraetStand['status'] !== 'aktiv') {
+            fehler(403, 'Dieses Gerät wartet noch auf die Bestätigung eines freigeschalteten Geräts.');
+        }
+        $lizenzHash = (string)$ergebnis['code_hash'];
+        $geraetToken = erzeugeGeraetToken((string)$geraetStand['id']);
+    } elseif (lizenzpflicht()) {
+        fehler(403, 'Dieser Adminbereich ist nur über die MaseSites-Admin-App erreichbar.');
+    }
+
+    setzeSitzungscookie(erstelleSitzung('admin', 'admin', $lizenzHash), 'admin');
+
+    /* "Angemeldet bleiben" nur auf ausdruecklichen Wunsch: bestehende Merker
+       dieses Kontos zuerst widerrufen, damit nicht unbemerkt mehrere alte
+       Zugaenge gueltig bleiben. Die App nutzt das nicht — sie hat ihren
+       geraetegebundenen Token. */
     if (!empty($body['merken'])) {
         loescheAlleMerker('admin');
         erstelleMerker('admin');
         schreibeLog('Admin', clientIp(), 'admin', 'Admin angemeldet', 'mit "angemeldet bleiben"');
     } else {
         loescheMerkerCookie();
-        schreibeLog('Admin', clientIp(), 'admin', 'Admin angemeldet', '');
+        schreibeLog('Admin', clientIp(), 'admin', 'Admin angemeldet', $lizenzHash ? 'über App' : '');
     }
-    antwortJson(200, ['ok' => true]);
+    antwortJson(200, ['ok' => true, 'lizenzpflicht' => lizenzpflicht(), 'geraetToken' => $geraetToken]);
 });
 
 /* Auf allen Geraeten abmelden: widerruft jeden Merker sofort. */
@@ -2014,6 +2261,206 @@ route('POST', '/api/admin/merker-loeschen', 'admin', function () {
     loescheMerkerCookie();
     schreibeLog('Admin', clientIp(), 'admin', 'Angemeldet-bleiben auf allen Geräten aufgehoben', '');
     antwortJson(200, ['ok' => true]);
+});
+
+/* --- Lizenzen und Geräte --- */
+
+/* Offen wie die Anmeldung: Die App fragt hier, ob ihr Code auf diesem Gerät
+   gilt. Ratenbegrenzt, damit niemand Codes durchprobieren kann.
+   Achtung: Hier gibt es bewusst KEINEN Token — der Lizenzcode allein darf
+   niemals in den Adminbereich führen. */
+route('POST', '/api/lizenz/pruefen', null, function ($p, $body) {
+    if (!ratenbegrenzung('lizenz', clientIp(), 30, 10 * 60000)) {
+        fehler(429, 'Zu viele Versuche. Warte ein paar Minuten.');
+    }
+    $geraet = s($body['geraet'] ?? '', 64);
+    $ergebnis = pruefeLizenz(mb_strtoupper(s($body['code'] ?? '', 40)), $geraet);
+    if (is_string($ergebnis)) {
+        schreibeLog('Gast', clientIp(), 'app', 'Lizenzprüfung abgelehnt', $ergebnis);
+        fehler(403, $ergebnis);
+    }
+    $stand = geraetPruefen($ergebnis, $geraet, s($body['geraetName'] ?? '', 60));
+    if (!empty($stand['neu'])) {
+        schreibeLog('Gast', clientIp(), 'app', 'Gerät angemeldet', $stand['status']);
+    }
+    antwortJson(200, [
+        'ok' => $stand['status'] === 'aktiv',
+        'status' => $stand['status'],
+        'ablauf' => $ergebnis['ablauf'],
+        'geraeteMax' => GERAETE_MAX,
+        'geraeteAktiv' => zaehleAktiveGeraete((string)$ergebnis['code_hash']),
+    ]);
+});
+
+/* Stille Anmeldung: Das Gerät weist sich mit seinem Token aus und bekommt
+   eine Admin-Sitzung — ohne Passwort. Genau das macht die App nach dem
+   ersten Mal. */
+route('POST', '/api/geraet/anmelden', null, function ($p, $body) {
+    if (!ratenbegrenzung('geraetanmelden', clientIp(), 40, 10 * 60000)) {
+        fehler(429, 'Zu viele Versuche. Warte ein paar Minuten.');
+    }
+    $treffer = geraetAusToken(s($body['token'] ?? '', 64), s($body['geraet'] ?? '', 64));
+    if (!$treffer) {
+        fehler(401, 'Dieses Gerät ist nicht mehr freigeschaltet.');
+    }
+    setzeSitzungscookie(erstelleSitzung('admin', 'admin', (string)$treffer['lizenz']['code_hash']), 'admin');
+    schreibeLog('Admin', clientIp(), 'admin', 'Admin angemeldet', 'stille App-Anmeldung');
+    antwortJson(200, ['ok' => true, 'lizenzpflicht' => lizenzpflicht()]);
+});
+
+/* Sperren (Schloss in der App): Sitzung weg UND Token weg, damit das nächste
+   Öffnen wirklich wieder das Passwort verlangt. */
+route('POST', '/api/geraet/sperren', null, function ($p, $body) {
+    $treffer = geraetAusToken(s($body['token'] ?? '', 64), s($body['geraet'] ?? '', 64));
+    if ($treffer) {
+        loescheGeraetToken((string)$treffer['geraet']['id']);
+    }
+    loescheSitzung('admin');
+    loescheSitzungscookie(['admin']);
+    /* Auch ein "angemeldet bleiben" darf das Schloss nicht aushebeln. */
+    loescheMerkerCookie();
+    antwortJson(200, ['ok' => true]);
+});
+
+/* Welche Geräte hängen an meiner Lizenz, und wartet gerade eines? */
+route('POST', '/api/geraet/liste', null, function ($p, $body) {
+    global $db;
+    $treffer = geraetAusToken(s($body['token'] ?? '', 64), s($body['geraet'] ?? '', 64));
+    if (!$treffer) {
+        fehler(401, 'Dieses Gerät ist nicht mehr freigeschaltet.');
+    }
+    $s = $db->prepare('SELECT * FROM geraete WHERE code_hash = ? ORDER BY erstellt ASC');
+    $s->execute([(string)$treffer['lizenz']['code_hash']]);
+    $alle = $s->fetchAll();
+    antwortJson(200, [
+        'ok' => true,
+        'eigenes' => $treffer['geraet']['id'],
+        'max' => GERAETE_MAX,
+        'geraete' => array_map('geraetFuerClient', $alle),
+    ]);
+});
+
+/* Ein freigeschaltetes Gerät entscheidet über ein wartendes. */
+route('POST', '/api/geraet/entscheiden', null, function ($p, $body) {
+    global $db;
+    $treffer = geraetAusToken(s($body['token'] ?? '', 64), s($body['geraet'] ?? '', 64));
+    if (!$treffer) {
+        fehler(401, 'Dieses Gerät ist nicht mehr freigeschaltet.');
+    }
+    $ziel = ladeGeraetNachId(s($body['id'] ?? '', 32));
+    if (!$ziel || $ziel['code_hash'] !== $treffer['lizenz']['code_hash']) {
+        fehler(404, 'Unbekanntes Gerät.');
+    }
+    if (!empty($body['erlauben'])) {
+        if ($ziel['status'] !== 'aktiv' && zaehleAktiveGeraete((string)$ziel['code_hash']) >= GERAETE_MAX) {
+            fehler(409, 'Es sind schon ' . GERAETE_MAX . ' Geräte freigeschaltet. Zuerst eines entfernen.');
+        }
+        $db->prepare("UPDATE geraete SET status = 'aktiv' WHERE id = ?")->execute([$ziel['id']]);
+        schreibeLog('Admin', clientIp(), 'app', 'Gerät bestätigt', (string)$ziel['name']);
+    } else {
+        /* Ablehnen oder Entfernen: Zeile weg, damit der Platz frei wird. */
+        $db->prepare('DELETE FROM geraete WHERE id = ?')->execute([$ziel['id']]);
+        schreibeLog('Admin', clientIp(), 'app', 'Gerät entfernt', (string)$ziel['name']);
+    }
+    antwortJson(200, ['ok' => true]);
+});
+
+route('GET', '/api/admin/lizenzen', 'admin', function () {
+    global $db;
+    $zeilen = $db->query('SELECT * FROM lizenzen ORDER BY erstellt DESC')->fetchAll();
+    $geraete = $db->query('SELECT * FROM geraete ORDER BY erstellt ASC')->fetchAll();
+    $liste = array_map(function ($lizenz) use ($geraete) {
+        $eigene = array_values(array_filter($geraete, function ($g) use ($lizenz) {
+            return $g['code_hash'] === $lizenz['code_hash'];
+        }));
+        return array_merge(lizenzFuerClient($lizenz), ['geraete' => array_map('geraetFuerClient', $eigene)]);
+    }, $zeilen);
+    antwortJson(200, [
+        'lizenzen' => $liste,
+        'geraeteMax' => GERAETE_MAX,
+        'lizenzpflicht' => lizenzpflicht(),
+    ]);
+});
+
+/* Notausgang aus dem Adminbereich: Gerät bestätigen oder entfernen, falls
+   gerade kein freigeschaltetes Gerät zur Hand ist. */
+route('POST', '/api/admin/geraete/:id', 'admin', function ($p, $body) {
+    global $db;
+    $ziel = ladeGeraetNachId(s($p['id'], 32));
+    if (!$ziel) {
+        fehler(404, 'Unbekanntes Gerät.');
+    }
+    if (!empty($body['erlauben'])) {
+        if ($ziel['status'] !== 'aktiv' && zaehleAktiveGeraete((string)$ziel['code_hash']) >= GERAETE_MAX) {
+            fehler(409, 'Es sind schon ' . GERAETE_MAX . ' Geräte freigeschaltet.');
+        }
+        $db->prepare("UPDATE geraete SET status = 'aktiv' WHERE id = ?")->execute([$ziel['id']]);
+    } else {
+        $db->prepare('DELETE FROM geraete WHERE id = ?')->execute([$ziel['id']]);
+    }
+    schreibeLog('Admin', clientIp(), 'admin', 'Gerät verwaltet', (string)$ziel['name']);
+    antwortJson(200, ['ok' => true]);
+});
+
+/* Der neue Code wird genau einmal zurückgegeben — danach kennt ihn nur noch
+   die Person, die ihn bekommen hat. */
+route('POST', '/api/admin/lizenzen', 'admin', function ($p, $body) {
+    global $db;
+    $ablauf = s($body['ablauf'] ?? '', 10);
+    if ($ablauf !== '' && !preg_match('/^\d{4}-\d{2}-\d{2}$/', $ablauf)) {
+        fehler(400, 'Das Ablaufdatum braucht die Form JJJJ-MM-TT.');
+    }
+    $code = neuerLizenzcode();
+    $db->prepare('INSERT INTO lizenzen (code_hash, geraet, status, ablauf, notiz, erstellt) VALUES (?, NULL, ?, ?, ?, ?)')
+        ->execute([lizenzHash($code), 'aktiv', $ablauf !== '' ? $ablauf : null, s($body['notiz'] ?? '', 120), jetztMs()]);
+    schreibeLog('Admin', clientIp(), 'admin', 'Lizenz erstellt', s($body['notiz'] ?? '', 120));
+    antwortJson(200, ['ok' => true, 'code' => $code, 'lizenz' => lizenzFuerClient(ladeLizenz(lizenzHash($code)))]);
+});
+
+/* Sperren, wieder freigeben oder die Gerätebindung lösen. */
+route('PUT', '/api/admin/lizenzen/:kennung', 'admin', function ($p, $body) {
+    global $db;
+    $kennung = preg_replace('/[^a-f0-9]/', '', (string)$p['kennung']);
+    if (strlen($kennung) !== 12) {
+        fehler(400, 'Unbekannte Lizenz.');
+    }
+    $s = $db->prepare('SELECT * FROM lizenzen WHERE substr(code_hash, 1, 12) = ?');
+    $s->execute([$kennung]);
+    $lizenz = $s->fetch();
+    if (!$lizenz) {
+        fehler(404, 'Unbekannte Lizenz.');
+    }
+    if (isset($body['status']) && in_array($body['status'], ['aktiv', 'gesperrt'], true)) {
+        $db->prepare('UPDATE lizenzen SET status = ? WHERE code_hash = ?')->execute([$body['status'], $lizenz['code_hash']]);
+    }
+    if (!empty($body['geraetLoesen'])) {
+        /* Alle Geräte abmelden: die Lizenz ist danach wieder frei. */
+        $db->prepare('DELETE FROM geraete WHERE code_hash = ?')->execute([$lizenz['code_hash']]);
+        $db->prepare('UPDATE lizenzen SET geraet = NULL WHERE code_hash = ?')->execute([$lizenz['code_hash']]);
+    }
+    schreibeLog('Admin', clientIp(), 'admin', 'Lizenz geändert', $kennung);
+    antwortJson(200, ['ok' => true, 'lizenz' => lizenzFuerClient(ladeLizenz((string)$lizenz['code_hash']))]);
+});
+
+route('DELETE', '/api/admin/lizenzen/:kennung', 'admin', function ($p) {
+    global $db;
+    $kennung = preg_replace('/[^a-f0-9]/', '', (string)$p['kennung']);
+    $db->prepare('DELETE FROM lizenzen WHERE substr(code_hash, 1, 12) = ?')->execute([$kennung]);
+    schreibeLog('Admin', clientIp(), 'admin', 'Lizenz gelöscht', $kennung);
+    antwortJson(200, ['ok' => true]);
+});
+
+/* Scharfschalten: ab jetzt kommt nur noch die App in den Adminbereich.
+   Absichtlich nur möglich, wenn die eigene Sitzung schon eine Lizenz hat —
+   sonst wäre der nächste Klick die eigene Aussperrung. */
+route('POST', '/api/admin/lizenzpflicht', 'admin', function ($p, $body, $sitzung) {
+    $an = !empty($body['an']);
+    if ($an && !sitzungslizenzGueltig($sitzung)) {
+        fehler(409, 'Erst über die App anmelden, sonst sperrst du dich selbst aus.');
+    }
+    setzeEinstellung('lizenzpflicht', $an ? '1' : '0');
+    schreibeLog('Admin', clientIp(), 'admin', 'Lizenzpflicht ' . ($an ? 'an' : 'aus'), '');
+    antwortJson(200, ['ok' => true, 'lizenzpflicht' => $an]);
 });
 
 route('GET', '/api/admin/daten', 'admin', function () {
@@ -3415,6 +3862,11 @@ foreach ($ROUTEN as $r) {
     }
     if ($r['schutz'] && !$sitzung) {
         fehler(401, 'Nicht angemeldet.');
+    }
+    /* Ist die Lizenzpflicht an, reicht die Sitzung allein nicht: sie muss
+       aus einer Anmeldung über die lizenzierte App stammen. */
+    if ($r['schutz'] === 'admin' && lizenzpflicht() && !sitzungslizenzGueltig($sitzung)) {
+        fehler(403, 'Dieser Adminbereich ist nur über die MaseSites-Admin-App erreichbar.');
     }
     try {
         $r['handler']($params, $body, $sitzung);
