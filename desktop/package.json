@@ -1,0 +1,45 @@
+{
+  "name": "masesites-admin",
+  "version": "0.2.0",
+  "private": true,
+  "description": "MaseSites Admin als Windows-Desktop-App. Lizenz, Anmeldung, Bereichsauswahl und der gekapselte Admin-Bereich von masesites.ch.",
+  "main": "src/main/main.js",
+  "scripts": {
+    "start": "electron .",
+    "dist": "electron-builder --win nsis"
+  },
+  "devDependencies": {
+    "electron": "^43.3.0",
+    "electron-builder": "^26.15.3"
+  },
+  "build": {
+    "appId": "ch.masesites.admin",
+    "productName": "MaseSites Admin",
+    "copyright": "masesites",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "src/**/*",
+      "package.json"
+    ],
+    "win": {
+      "target": [
+        "nsis"
+      ],
+      "icon": "build/icon.ico",
+      "artifactName": "MaseSites-Admin-Setup-${version}.${ext}"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "MaseSites Admin",
+      "installerIcon": "build/icon.ico",
+      "uninstallerIcon": "build/icon.ico",
+      "installerHeaderIcon": "build/icon.ico"
+    }
+  }
+}

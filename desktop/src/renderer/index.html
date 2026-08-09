@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="de" data-erscheinung="hell">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'none'; form-action 'none'; base-uri 'none'">
+  <title>MaseSites Admin</title>
+  <link rel="stylesheet" href="css/basis.css">
+  <link rel="stylesheet" href="css/komponenten.css">
+  <link rel="stylesheet" href="css/bildschirme.css">
+</head>
+<body class="laedt">
+
+  <!-- Ruhiger, langsam wandernder Hintergrund -->
+  <div class="aura" aria-hidden="true">
+    <span class="aura-fleck aura-1"></span>
+    <span class="aura-fleck aura-2"></span>
+    <span class="aura-fleck aura-3"></span>
+    <span class="aura-korn"></span>
+  </div>
+
+  <!-- ===== Eigene Titelzeile ===== -->
+  <header class="titelzeile" id="titelzeile">
+    <div class="titel-links">
+      <svg class="marke" viewBox="0 0 32 32" aria-hidden="true">
+        <rect class="marke-grund" x="0" y="0" width="32" height="32" rx="7.5"/>
+        <rect class="marke-teil" x="5" y="5" width="10" height="10" rx="3"/>
+        <rect class="marke-teil" x="17" y="5" width="10" height="10" rx="3"/>
+        <rect class="marke-teil marke-leise" x="5" y="17" width="10" height="10" rx="3"/>
+        <rect class="marke-teil" x="17" y="17" width="10" height="10" rx="3"/>
+      </svg>
+      <span class="marke-wort">masesites</span>
+    </div>
+
+    <nav class="titel-spur" id="titel-spur" aria-label="Fortschritt">
+      <span class="spur-punkt" data-spur="lizenz" title="Lizenz"></span>
+      <span class="spur-linie"></span>
+      <span class="spur-punkt" data-spur="login" title="Anmeldung"></span>
+      <span class="spur-linie"></span>
+      <span class="spur-punkt" data-spur="auswahl" title="Bereich"></span>
+      <span class="spur-linie"></span>
+      <span class="spur-punkt" data-spur="bereich" title="Dashboard"></span>
+    </nav>
+
+    <div class="titel-rechts">
+      <button class="kopf-knopf kopf-schloss" id="knopf-schloss" type="button" title="Sperren (Strg + L)" aria-label="Sperren" hidden>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4.5" y="10.5" width="15" height="10" rx="2.5"/><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3"/></svg>
+      </button>
+      <button class="kopf-knopf" id="knopf-einstellungen" type="button" title="Einstellungen (Strg + ,)" aria-label="Einstellungen">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Z"/><path d="M19.4 13a7.6 7.6 0 0 0 0-2l2-1.6-2-3.4-2.4 1a7.6 7.6 0 0 0-1.7-1L15 3.5h-4l-.3 2.5a7.6 7.6 0 0 0-1.7 1l-2.4-1-2 3.4L6.6 11a7.6 7.6 0 0 0 0 2l-2 1.6 2 3.4 2.4-1c.5.4 1.1.7 1.7 1l.3 2.5h4l.3-2.5c.6-.3 1.2-.6 1.7-1l2.4 1 2-3.4-2-1.6Z"/></svg>
+      </button>
+      <div class="fensterknoepfe">
+        <button class="fk" data-fenster="minimieren" type="button" aria-label="Minimieren"><svg viewBox="0 0 12 12"><path d="M2 6h8"/></svg></button>
+        <button class="fk" data-fenster="umschalten" type="button" aria-label="Maximieren"><svg viewBox="0 0 12 12"><rect x="2.5" y="2.5" width="7" height="7" rx="1.5"/></svg></button>
+        <button class="fk fk-zu" data-fenster="schliessen" type="button" aria-label="Schliessen"><svg viewBox="0 0 12 12"><path d="M3 3l6 6M9 3l-6 6"/></svg></button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== Startsequenz ===== -->
+  <div class="start" id="start">
+    <div class="start-mitte">
+      <svg class="start-marke" viewBox="0 0 32 32" aria-hidden="true">
+        <rect class="sm-grund" x="0" y="0" width="32" height="32" rx="7.5"/>
+        <rect class="sm-teil" x="5" y="5" width="10" height="10" rx="3"/>
+        <rect class="sm-teil" x="17" y="5" width="10" height="10" rx="3"/>
+        <rect class="sm-teil sm-leise" x="5" y="17" width="10" height="10" rx="3"/>
+        <rect class="sm-teil" x="17" y="17" width="10" height="10" rx="3"/>
+      </svg>
+      <h1 class="start-wort" aria-label="masesites">
+        <span>m</span><span>a</span><span>s</span><span>e</span><span>s</span><span>i</span><span>t</span><span>e</span><span>s</span>
+      </h1>
+      <p class="start-zeile" id="start-zeile">Gerät wird geprüft</p>
+      <div class="start-balken"><i id="start-fortschritt"></i></div>
+    </div>
+    <div class="start-vorhang" id="start-vorhang"></div>
+  </div>
+
+  <!-- ===== Bühne: Bildschirme 1 bis 3 ===== -->
+  <main class="buehne" id="buehne">
+
+    <!-- Bildschirm 1 · Lizenz -->
+    <section class="bildschirm" id="bs-lizenz" hidden>
+      <div class="saeule">
+        <h2 class="titel" data-stufe="2">Gerät freischalten</h2>
+        <p class="unter" data-stufe="3">Dein Lizenzcode bindet MaseSites Admin an diesen Rechner. Das ist einmalig — danach startet die App direkt durch.</p>
+
+        <div class="karte karte-gross" data-stufe="4">
+          <form id="lizenz-form" autocomplete="off">
+            <label class="feldtitel" for="lz-1">Lizenzcode</label>
+            <div class="codefeld" id="codefeld">
+              <span class="code-praefix">MASE</span>
+              <span class="code-trenner">–</span>
+              <input id="lz-1" class="code-teil" maxlength="4" inputmode="latin" spellcheck="false" aria-label="Codeblock 1">
+              <span class="code-trenner">–</span>
+              <input id="lz-2" class="code-teil" maxlength="4" inputmode="latin" spellcheck="false" aria-label="Codeblock 2">
+              <span class="code-trenner">–</span>
+              <input id="lz-3" class="code-teil" maxlength="4" inputmode="latin" spellcheck="false" aria-label="Codeblock 3">
+            </div>
+            <p class="fehler" id="lizenz-fehler" role="alert"></p>
+            <button class="knopf knopf-voll" id="lizenz-senden" type="submit">
+              <span>Freischalten</span>
+              <svg class="pfeil" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg>
+            </button>
+          </form>
+
+          <div class="karte-fuss">
+            <div class="minifeld">
+              <span class="minititel">Gerät</span>
+              <span class="miniwert" id="lizenz-geraet">—</span>
+            </div>
+            <div class="minifeld">
+              <span class="minititel">Speicherung</span>
+              <span class="miniwert" id="lizenz-tresor">verschlüsselt</span>
+            </div>
+            <div class="minifeld">
+              <span class="minititel">Prüfung</span>
+              <span class="miniwert" id="lizenz-modus">—</span>
+            </div>
+          </div>
+        </div>
+
+        <p class="hinweis" data-stufe="5">Kein Code zur Hand? <button class="link" type="button" id="lizenz-hilfe">Was ist das?</button></p>
+      </div>
+    </section>
+
+    <!-- Bildschirm 1b · Gerät wartet auf Bestätigung -->
+    <section class="bildschirm" id="bs-warten" hidden>
+      <div class="saeule">
+        <h2 class="titel" data-stufe="2">Warten auf Bestätigung</h2>
+        <p class="unter" data-stufe="3">Auf dieser Lizenz sind bereits zwei Geräte freigeschaltet. Öffne MaseSites Admin auf einem davon — dort erscheint die Anfrage.</p>
+
+        <div class="karte" data-stufe="4">
+          <div class="warten-zeile">
+            <span class="warten-ring"></span>
+            <div class="warten-text">
+              <span class="warten-titel" id="warten-name">Dieses Gerät</span>
+              <span class="warten-unter" id="warten-kennung">—</span>
+            </div>
+          </div>
+          <p class="warten-hinweis">Sobald du dort auf <b>Erlauben</b> tippst, geht es hier automatisch weiter.</p>
+        </div>
+
+        <div class="zeile-unten" data-stufe="5">
+          <span class="statuspunkt laedt"></span>
+          <span class="statustext" id="warten-status">Wird geprüft …</span>
+          <button class="link" type="button" id="warten-zurueck">Anderen Code eingeben</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Bildschirm 2 · Anmeldung -->
+    <section class="bildschirm" id="bs-login" hidden>
+      <div class="saeule">
+        <h2 class="titel" data-stufe="2" id="login-titel">Anmelden</h2>
+        <p class="unter" data-stufe="3" id="login-unter">Dein Admin-Passwort von masesites.ch. Die App speichert es nie — nur die Sitzung, und die läuft nach 12 Stunden ab.</p>
+
+        <div class="karte" data-stufe="4">
+          <form id="login-form" autocomplete="off">
+            <label class="feldtitel" for="lg-pw">Admin-Passwort</label>
+            <div class="eingabe-huelle">
+              <input id="lg-pw" class="eingabe" type="password" autocomplete="current-password" placeholder="••••••••••" aria-label="Admin-Passwort">
+              <button class="augen" id="lg-zeigen" type="button" aria-label="Passwort anzeigen">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.8-6.5 10-6.5S22 12 22 12s-3.8 6.5-10 6.5S2 12 2 12Z"/><circle cx="12" cy="12" r="2.8"/></svg>
+              </button>
+            </div>
+            <p class="fehler" id="login-fehler" role="alert"></p>
+            <button class="knopf knopf-voll" id="login-senden" type="submit">
+              <span>Anmelden</span>
+              <svg class="pfeil" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg>
+            </button>
+          </form>
+        </div>
+
+        <div class="zeile-unten" data-stufe="5">
+          <span class="statuspunkt" id="server-punkt"></span>
+          <span class="statustext" id="server-text">Server wird geprüft …</span>
+          <button class="link" type="button" id="login-zurueck">Lizenz ändern</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Bildschirm 3 · Bereichsauswahl -->
+    <section class="bildschirm" id="bs-auswahl" hidden>
+      <div class="saeule saeule-breit">
+        <h2 class="titel" data-stufe="2">Womit möchtest du arbeiten?</h2>
+        <p class="unter" data-stufe="3">Angemeldet und freigeschaltet. Wähle deinen Bereich.</p>
+
+        <div class="kacheln" id="kacheln" data-stufe="4"></div>
+
+        <div class="zeile-unten" data-stufe="5">
+          <span class="statuspunkt gut"></span>
+          <span class="statustext" id="sitzung-text">Sitzung aktiv</span>
+          <button class="link" type="button" id="auswahl-abmelden">Abmelden</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ===== Bildschirm 4 · Leiste über dem Admin-Bereich ===== -->
+  <div class="bereichsleiste" id="bereichsleiste" hidden>
+    <div class="bl-links">
+      <button class="bl-zurueck" id="bl-zurueck" type="button" title="Zur Bereichsauswahl">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H6M11 6l-6 6 6 6"/></svg>
+      </button>
+      <nav class="bl-tabs" id="bl-tabs" aria-label="Bereiche">
+        <span class="bl-tab-laeufer" id="bl-tab-laeufer"></span>
+      </nav>
+    </div>
+    <div class="bl-rechts">
+      <span class="bl-pfad" id="bl-pfad">/admin</span>
+      <span class="bl-uhr" id="bl-uhr"></span>
+      <button class="bl-knopf" id="bl-neuladen" type="button" title="Neu laden (Strg + R)">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11a8 8 0 1 0-2.3 5.7"/><path d="M20 5v6h-6"/></svg>
+      </button>
+      <button class="bl-knopf" id="bl-einstellungen" type="button" title="Einstellungen">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Platzhalter für Reiter, die es noch nicht gibt -->
+  <div class="platzhalter" id="platzhalter" hidden>
+    <div class="platzhalter-mitte">
+      <svg class="platzhalter-bild" viewBox="0 0 24 24" aria-hidden="true">
+        <rect x="3" y="4" width="18" height="16" rx="3"/>
+        <path d="M3 9h18M8 14h8"/>
+      </svg>
+      <h3 id="platzhalter-titel">Akquise-Tool</h3>
+      <p>Noch nicht eingebunden. Sobald das Programm im Git liegt, hängt es hier drin — der Platz steht schon.</p>
+    </div>
+  </div>
+
+  <!-- ===== Einstellungen ===== -->
+  <div class="ueberlagerung" id="einstellungen" hidden>
+    <div class="ue-standbild" id="ue-standbild" aria-hidden="true"></div>
+    <div class="ue-schatten" id="ue-schatten"></div>
+    <aside class="blatt" role="dialog" aria-modal="true" aria-label="Einstellungen">
+      <header class="blatt-kopf">
+        <h3>Einstellungen</h3>
+        <button class="blatt-zu" id="einstellungen-zu" type="button" aria-label="Schliessen">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+        </button>
+      </header>
+
+      <nav class="blatt-reiter" id="blatt-reiter">
+        <button class="reiter aktiv" data-reiter="verbindung" type="button">Verbindung</button>
+        <button class="reiter" data-reiter="lizenz" type="button">Lizenz</button>
+        <button class="reiter" data-reiter="darstellung" type="button">Darstellung</button>
+        <button class="reiter" data-reiter="system" type="button">System</button>
+        <button class="reiter" data-reiter="info" type="button">Info</button>
+        <span class="reiter-laeufer" id="reiter-laeufer"></span>
+      </nav>
+
+      <div class="blatt-inhalt">
+
+        <section class="tafel aktiv" data-tafel="verbindung">
+          <div class="posten">
+            <div class="posten-text">
+              <span class="posten-titel">Serveradresse</span>
+              <span class="posten-unter">Die Website, mit der sich die App verbindet.</span>
+            </div>
+          </div>
+          <div class="eingabe-huelle">
+            <input id="ein-server" class="eingabe" type="text" spellcheck="false" placeholder="https://masesites.ch">
+            <button class="knopf knopf-klein" id="ein-server-speichern" type="button">Übernehmen</button>
+          </div>
+          <div class="pruefkasten" id="pruefkasten">
+            <span class="statuspunkt" id="ein-server-punkt"></span>
+            <span class="statustext" id="ein-server-text">Noch nicht geprüft</span>
+            <button class="knopf knopf-leer knopf-klein" id="ein-server-test" type="button">Verbindung testen</button>
+          </div>
+          <div class="schnellwahl" id="schnellwahl">
+            <button class="chip" data-adresse="https://masesites.ch" type="button">masesites.ch</button>
+            <button class="chip" data-adresse="http://127.0.0.1:8091" type="button">PHP lokal :8091</button>
+            <button class="chip" data-adresse="http://127.0.0.1:8080" type="button">Node lokal :8080</button>
+          </div>
+        </section>
+
+        <section class="tafel" data-tafel="lizenz">
+          <div class="posten">
+            <div class="posten-text">
+              <span class="posten-titel">Aktive Lizenz</span>
+              <span class="posten-unter" id="ein-lizenz-code">—</span>
+            </div>
+            <span class="plakette" id="ein-lizenz-status">—</span>
+          </div>
+          <div class="posten">
+            <div class="posten-text">
+              <span class="posten-titel">Gebundenes Gerät</span>
+              <span class="posten-unter" id="ein-lizenz-geraet">—</span>
+            </div>
+          </div>
+          <div class="posten">
+            <div class="posten-text">
+              <span class="posten-titel">Prüfmodus</span>
+              <span class="posten-unter">Simuliert = im Programm. Server = deine API entscheidet.</span>
+            </div>
+            <div class="segment" id="ein-modus">
+              <button data-wert="simuliert" type="button">Simuliert</button>
+              <button data-wert="server" type="button">Server</button>
+              <span class="segment-laeufer"></span>
+            </div>
+          </div>
+          <div class="posten posten-block">
+            <div class="posten-text">
+              <span class="posten-titel">Freigeschaltete Geräte</span>
+              <span class="posten-unter" id="ein-geraete-zahl">Höchstens zwei gleichzeitig.</span>
+            </div>
+            <div class="geraeteliste" id="ein-geraete"></div>
+          </div>
+          <div class="posten">
+            <div class="posten-text">
+              <span class="posten-titel">Nur noch über diese App</span>
+              <span class="posten-unter" id="ein-pflicht-unter">Sperrt den Adminbereich im Browser aus. Geht erst, wenn dieses Gerät über die App angemeldet ist.</span>
+            </div>
+            <button class="schalter" id="ein-pflicht" type="button" role="switch" aria-checked="false"><i></i></button>
+          </div>
+          <div class="posten">
+            <div class="posten-text">
+              <span class="posten-titel">Lizenz vom Gerät lösen</span>
+              <span class="posten-unter">Die App fragt beim nächsten Start wieder nach dem Code.</span>
+            </div>
+            <button class="knopf knopf-warn knopf-klein" id="ein-lizenz-loesen" type="button">Lösen</button>
+          </div>
+        </section>
+
+        <section class="tafel" data-tafel="darstellung">
+          <div class="posten">
+            <div class="posten-text">
+              <span class="posten-titel">Erscheinung</span>
+              <span class="posten-unter">Hell, dunkel oder wie Windows.</span>
+            </div>
+            <div class="segment" id="ein-erscheinung">
+              <button data-wert="system" type="button">System</button>
+              <button data-wert="hell" type="button">Hell</button>
+              <button data-wert="dunkel" type="button">Dunkel</button>
+              <span class="segment-laeufer"></span>
+            </div>
+          </div>
+          <div class="posten">
+            <div class="posten-text">
+              <span class="posten-titel">Zoom im Admin-Bereich</span>
+              <span class="posten-unter">Grösse der eingebetteten Seite.</span>
+            </div>
+            <div class="regler">
+              <input id="ein-zoom" type="range" min="80" max="140" step="5">
+              <span class="reglerwert" id="ein-zoom-wert">100 %</span>
+            </div>
+          </div>
+          <div class="posten">
+            <div class="posten-text">
+              <span class="posten-titel">Bewegung</span>
+              <span class="posten-unter">Übergänge und Animationen in der App.</span>
+            </div>
+            <button class="schalter" id="ein-bewegung" type="button" role="switch" aria-checked="true"><i></i></button>
+          </div>
+          <div class="posten">
+            <div class="posten-text">
+              <span class="posten-titel">Startsequenz</span>
+              <span class="posten-unter">Die Animation beim Öffnen der App.</span>
+            </div>
+            <button class="schalter" id="ein-start" type="button" role="switch" aria-checked="true"><i></i></button>
+          </div>
+        </section>
+
+        <section class="tafel" data-tafel="system">
+          <div class="posten">
+            <div class="posten-text">
+              <span class="posten-titel">Mit Windows starten</span>
+              <span class="posten-unter">Startet die App nach der Anmeldung im Hintergrund.</span>
+            </div>
+            <button class="schalter" id="ein-autostart" type="button" role="switch" aria-checked="false"><i></i></button>
+          </div>
+          <div class="posten">
+            <div class="posten-text">
+              <span class="posten-titel">Datenordner</span>
+              <span class="posten-unter" id="ein-ordner">—</span>
+            </div>
+            <button class="knopf knopf-leer knopf-klein" id="ein-ordner-oeffnen" type="button">Öffnen</button>
+          </div>
+          <div class="posten">
+            <div class="posten-text">
+              <span class="posten-titel">Tastenkürzel</span>
+              <span class="posten-unter">Strg + , Einstellungen · Strg + R neu laden · F11 Vollbild · Esc zurück</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="tafel" data-tafel="info">
+          <div class="infoblock" id="ein-infos"></div>
+          <p class="kleingedruckt">MaseSites Admin — gebaut für masesites.ch. Alle Daten bleiben auf deinem Server.</p>
+        </section>
+
+      </div>
+    </aside>
+  </div>
+
+  <!-- ===== Ein anderes Gerät möchte herein ===== -->
+  <div class="ueberlagerung" id="geraet-frage" hidden>
+    <div class="ue-schatten" id="frage-schatten"></div>
+    <div class="frage" role="dialog" aria-modal="true" aria-labelledby="frage-titel">
+      <svg class="frage-bild" viewBox="0 0 24 24" aria-hidden="true">
+        <rect x="4" y="3" width="16" height="18" rx="3"/>
+        <path d="M9 7h6M12 17h.01"/>
+      </svg>
+      <h3 id="frage-titel">Neues Gerät möchte zugreifen</h3>
+      <p class="frage-text">
+        <b id="frage-name">Unbekanntes Gerät</b> versucht, sich mit deiner Lizenz anzumelden.
+        Erlaube es nur, wenn du das selbst bist.
+      </p>
+      <div class="frage-daten">
+        <span class="minititel">Kennung</span>
+        <span class="miniwert" id="frage-kennung">—</span>
+      </div>
+      <p class="frage-warnung" id="frage-warnung" hidden>
+        Es sind schon zwei Geräte freigeschaltet. Erlauben geht erst, wenn du eines entfernst.
+      </p>
+      <div class="frage-knoepfe">
+        <button class="knopf knopf-leer" id="frage-nein" type="button">Ablehnen</button>
+        <button class="knopf" id="frage-ja" type="button">Erlauben</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toasts" id="toasts" aria-live="polite"></div>
+
+  <script src="js/animation.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/lizenzfeld.js"></script>
+  <script src="js/einstellungen.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
