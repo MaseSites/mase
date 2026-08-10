@@ -1,5 +1,5 @@
 /* masesites – Leistungsseite: Weltenwechsel mit Lichtwechsel,
-   Vorher/Nachher-Schieber, zählende Kennzahlen und Chat-Schleife. */
+   zählende Kennzahlen und Chat-Schleife. */
 
 (function () {
   "use strict";
@@ -15,7 +15,6 @@
 
   var WELT_FARBEN = {
     website: "#F6F1E7",
-    ueberarbeitung: "#F2EDE2",
     webapp: "#EDF1F5",
     ki: "#06060B"
   };
@@ -78,35 +77,6 @@
   tabs.forEach(function (t) {
     t.addEventListener("click", function () { wechsleZu(t.dataset.welt, t); });
   });
-
-  /* ---------- Vorher/Nachher-Schieber ---------- */
-
-  var vergleich = document.getElementById("dio-vergleich");
-  var griff = document.getElementById("vg-griff");
-  if (vergleich && griff) {
-    function setzePos(clientX) {
-      var r = vergleich.getBoundingClientRect();
-      var p = Math.max(6, Math.min(94, ((clientX - r.left) / r.width) * 100));
-      vergleich.style.setProperty("--pos", p + "%");
-      griff.setAttribute("aria-valuenow", Math.round(p));
-    }
-    vergleich.addEventListener("pointerdown", function (e) {
-      vergleich.setPointerCapture(e.pointerId);
-      setzePos(e.clientX);
-    });
-    vergleich.addEventListener("pointermove", function (e) {
-      if (e.buttons) setzePos(e.clientX);
-    });
-    griff.addEventListener("keydown", function (e) {
-      var jetzt = parseFloat(griff.getAttribute("aria-valuenow")) || 55;
-      if (e.key === "ArrowLeft") { e.preventDefault(); jetzt -= 5; }
-      else if (e.key === "ArrowRight") { e.preventDefault(); jetzt += 5; }
-      else return;
-      jetzt = Math.max(6, Math.min(94, jetzt));
-      vergleich.style.setProperty("--pos", jetzt + "%");
-      griff.setAttribute("aria-valuenow", Math.round(jetzt));
-    });
-  }
 
   /* ---------- Chat-Schleife (Welt KI) ---------- */
 

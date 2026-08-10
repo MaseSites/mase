@@ -1,4 +1,4 @@
-/* masesites – Leistungsseite «Vier Welten, eine Bühne».
+/* masesites – Leistungsseite «Drei Welten, eine Bühne».
    Jede Leistung setzt über [data-welt] am <main> ihr eigenes Farbklima
    (Eigenschaften --lw-*). Der Wechsel läuft als Lichtwechsel: eine Fläche
    in der Zielfarbe rollt vom angeklickten Knopf über die Seite (siehe
@@ -22,16 +22,6 @@
   min-height: 100vh;
   padding-top: calc(var(--header-h) + 34px);
   transition: background-color 0.5s ease, color 0.5s ease;
-}
-
-.lw[data-welt="ueberarbeitung"] {
-  --lw-bg: #F2EDE2;
-  --lw-bg-tief: #E4DCCB;
-  --lw-ink: #33291D;
-  --lw-ink-soft: #77684F;
-  --lw-linie: #DCD2BC;
-  --lw-karte: #FFFDF7;
-  --lw-punkt: #A96A32;
 }
 
 .lw[data-welt="webapp"] {
@@ -163,7 +153,7 @@
 }
 .lw-wipe.weg { opacity: 0; transition: opacity 0.35s ease; }
 
-/* ---------- Diorama: Mini-Website (Welt Website + «Nachher») ---------- */
+/* ---------- Diorama: Mini-Website ---------- */
 
 .dio-browser {
   background: var(--lw-karte);
@@ -201,77 +191,6 @@
 .ds-cta { width: 108px; height: 26px; border-radius: 999px; background: var(--lw-ink); margin-top: 4px; }
 .ds-karten { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
 .ds-karten i { height: 58px; border-radius: 12px; background: var(--lw-bg); border: 1px solid var(--lw-linie); }
-
-/* ---------- Diorama: Vorher/Nachher-Schieber ---------- */
-
-.dio-vergleich {
-  position: relative;
-  border-radius: 22px;
-  overflow: hidden;
-  border: 1.5px solid var(--lw-linie);
-  box-shadow: var(--shadow-l);
-  height: 380px;
-  touch-action: none;
-  cursor: ew-resize;
-  --pos: 55%;
-}
-.vg-seite { position: absolute; inset: 0; padding: 22px; }
-.vg-nachher { background: var(--lw-karte); padding: 0; }
-.vg-vorher {
-  /* z-index 2: liegt sicher ueber Text und Knopf der Nachher-Seite,
-     die wegen des Foto-Verlaufs selbst z-index 1 tragen */
-  z-index: 2;
-  background: #E9E4D6;
-  clip-path: inset(0 calc(100% - var(--pos)) 0 0);
-  font-family: Georgia, "Times New Roman", serif;
-  color: #6E6455;
-}
-.alt-titel { font-size: 1.05rem; font-weight: 700; color: #504736; text-decoration: underline; margin-bottom: 12px; }
-.alt-zeile { height: 9px; background: #CFC7B2; margin-bottom: 8px; }
-.alt-zeile.kurz { width: 62%; }
-.alt-bild {
-  height: 96px; margin: 12px 0;
-  border: 2px dashed #B4AA90;
-  display: grid; place-items: center;
-  font-size: 0.78rem; color: #8B8069;
-}
-.vg-tag {
-  position: absolute; top: 12px; right: 12px;
-  font-family: var(--font-sans);
-  font-size: 0.7rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
-  background: var(--lw-ink); color: var(--lw-bg);
-  border-radius: 999px; padding: 4px 10px;
-}
-.vg-vorher .vg-tag { left: 12px; right: auto; background: #6E6455; color: #F4F0E4; }
-.vg-griff {
-  z-index: 3;
-  position: absolute; top: 0; bottom: 0;
-  left: var(--pos);
-  width: 40px; margin-left: -20px;
-  display: grid; place-items: center;
-  cursor: ew-resize;
-  background: none; border: none;
-}
-.vg-griff::before {
-  content: "";
-  position: absolute; top: 0; bottom: 0; left: 50%;
-  width: 2.5px; margin-left: -1.25px;
-  background: var(--lw-ink);
-}
-.vg-griff span {
-  position: relative; z-index: 1;
-  width: 34px; height: 34px; border-radius: 50%;
-  background: var(--lw-ink);
-  box-shadow: var(--shadow-m);
-}
-.vg-griff span::before {
-  content: "⟷";
-  display: grid; place-items: center;
-  width: 100%; height: 100%;
-  color: var(--lw-bg);
-  font-size: 0.9rem;
-}
-.vg-griff:focus-visible { outline: 2px solid var(--lw-punkt); outline-offset: -4px; }
 
 /* ---------- Diorama: Webapp-Dashboard ---------- */
 
@@ -482,7 +401,6 @@
   .lw-kopf { padding-bottom: 24px; }
   .lw-tabs { border-radius: 24px; }
   .lw-tab { padding: 9px 14px; font-size: 0.88rem; }
-  .dio-vergleich { height: 320px; }
   .dio-app { grid-template-columns: 48px 1fr; min-height: 0; }
   .da-haupt { padding: 14px; }
   .kp-chip { font-size: 0.84rem; }

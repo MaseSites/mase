@@ -3,10 +3,31 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>masesites | Persönliche Websites &amp; KI-Bots aus der Schweiz</title>
-  <meta name="description" content="masesites baut personalisierte, professionelle Websites für Firmen und Privatpersonen. Jede Branche, jeder Stil, auf Wunsch mit KI-Bot.">
+  <title>Webdesign für Schweizer KMU | MASESites</title>
+  <meta name="description" content="MASESites baut Websites für Schweizer KMU, die mehr Anfragen bringen und Verwaltungsarbeit abnehmen. Persönlich, zum Fixpreis und ohne Anbieter-Lock-in.">
+  <link rel="canonical" href="https://masesites.ch/">
+  <meta property="og:title" content="Mehr Anfragen. Weniger Admin. | MASESites">
+  <meta property="og:description" content="Websites für Schweizer KMU, die nicht nur gut aussehen, sondern für den Betrieb arbeiten.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://masesites.ch/">
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "MASESites",
+      "url": "https://masesites.ch/",
+      "email": "info@masesites.ch",
+      "description": "Webdesign und digitale Lösungen für Schweizer KMU.",
+      "areaServed": ["Kloten", "Wetzikon", "Zürich", "Schweiz"],
+      "founder": [
+        {"@type": "Person", "name": "Matteo Cocetrone"},
+        {"@type": "Person", "name": "Severin Bürki"}
+      ],
+      "knowsAbout": ["Webdesign", "Webentwicklung", "Web-Apps", "KI-Assistenten"]
+    }
+  </script>
   <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="assets/css/style.css?v=56">
+  <link rel="stylesheet" href="assets/css/style.css?v=58">
 </head>
 <body>
   <script src="assets/js/sanft.js?v=1"></script>
@@ -18,23 +39,13 @@
         masesites
       </a>
       <nav class="main-nav" aria-label="Hauptnavigation">
-        <a href="/" class="active">Startseite</a>
         <a href="/leistungen">Leistungen</a>
-        <div class="nav-gruppe">
-          <button class="nav-gruppe-knopf" type="button">Arbeiten
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
-          </button>
-          <div class="nav-gruppe-menu">
-            <a href="/beispiele">Beispiele</a>
-            <a href="/projekte">Projekte</a>
-          </div>
-        </div>
+        <a href="/beispiele">Live-Demos</a>
         <a href="/preise">Preise</a>
         <a href="/ueber-uns">Über uns</a>
       </nav>
       <div class="header-cta">
-        <a class="btn btn-primary header-start" href="/kontakt">Projekt starten</a>
-        <a class="konto-link" href="/dashboard">Dashboard</a>
+        <a class="btn btn-primary header-start" href="/kontakt">Erstgespräch anfragen</a>
         <button class="burger" aria-label="Menü öffnen" aria-expanded="false">
           <span></span><span></span><span></span>
         </button>
@@ -43,14 +54,13 @@
   </header>
 
   <div class="mobile-menu">
-    <a href="/" class="active">Startseite</a>
     <a href="/leistungen">Leistungen</a>
-    <a href="/beispiele">Beispiele</a>
-    <a href="/projekte">Projekte</a>
+    <a href="/beispiele">Live-Demos</a>
     <a href="/preise">Preise</a>
     <a href="/ueber-uns">Über uns</a>
-    <a href="/dashboard" class="konto-link">Dashboard</a>
-    <a class="btn btn-primary" href="/kontakt">Projekt starten →</a>
+    <a href="/webdesign-kloten">Webdesign Kloten</a>
+    <a href="/dashboard" class="konto-link">Kundenlogin</a>
+    <a class="btn btn-primary" href="/kontakt">Kostenloses Erstgespräch →</a>
   </div>
 
   <main>
@@ -76,16 +86,17 @@
         <span class="flieger quadrat q1"></span>
       </div>
       <div class="wrap hero-mitte">
-        <h1>Deine Website für<br><span class="rotor"><span class="rotor-word" id="rotor-word">dein Restaurant</span></span></h1>
-        <p class="lead">Persönlich gebaut, professionell gestaltet, auf Wunsch mit KI-Bot.</p>
+        <span class="hero-kicker">Webdesign für Schweizer KMU</span>
+        <h1>Mehr Anfragen.<br><span class="hero-outcome">Weniger Admin.</span></h1>
+        <p class="lead">Wir bauen Websites, die Vertrauen schaffen, Interessenten zu Kunden machen und deinem Betrieb mit Buchungen, Zahlungen oder KI Arbeit abnehmen.</p>
         <div class="hero-ctas">
-          <a class="btn btn-primary" href="/kontakt">Projekt starten <span class="arrow">→</span></a>
-          <a class="btn btn-ghost" href="#beispiel">Beispiele ansehen</a>
+          <a class="btn btn-primary" href="/kontakt">Kostenloses Erstgespräch <span class="arrow">→</span></a>
+          <a class="btn btn-ghost" href="#beispiel">Live-Demos testen</a>
         </div>
         <p class="trust-zeile">
-          <span>Aus der Schweiz</span><span class="punkt" aria-hidden="true"></span>
-          <span>Für Firmen &amp; Privatpersonen</span><span class="punkt" aria-hidden="true"></span>
-          <span>Feste Offerte vor Projektstart</span>
+          <span>Fixpreis vor Projektstart</span><span class="punkt" aria-hidden="true"></span>
+          <span>Direkt mit den Gründern</span><span class="punkt" aria-hidden="true"></span>
+          <span>Website und Code gehören dir</span>
         </p>
       </div>
       <a class="scroll-cue" href="#beispiel" aria-label="Weiter zu den Live-Demos">
@@ -103,11 +114,38 @@
       <div class="deko-wort">mase<i>sites</i></div>
     </div>
 
-    <!-- ===== Live-Demos im Beispiel-Fenster: echte Websites, unten die Taskbar ===== -->
+    <!-- ===== Geschäftlicher Nutzen ===== -->
+    <section class="tight outcome-section" id="wirkung">
+      <div class="wrap outcome-layout">
+        <div class="outcome-intro reveal">
+          <span class="kicker">Was du davon hast</span>
+          <h2>Deine Website soll arbeiten. Nicht nur existieren.</h2>
+          <p class="lead">Darum beginnen wir nicht bei Farben oder Funktionen, sondern bei der Frage: Was soll für deinen Betrieb einfacher oder erfolgreicher werden?</p>
+        </div>
+        <div class="outcome-list">
+          <article class="outcome-row reveal" data-delay="60">
+            <span>01</span>
+            <div><h3>Mehr passende Anfragen</h3><p>Klare Botschaften, überzeugende Seiten und kurze Kontaktwege führen Interessenten zum nächsten Schritt.</p></div>
+          </article>
+          <article class="outcome-row reveal" data-delay="120">
+            <span>02</span>
+            <div><h3>Weniger Rückfragen und Telefonate</h3><p>FAQ, Buchungen, Reservationen und ein sinnvoll eingesetzter KI-Assistent beantworten, erfassen und sortieren.</p></div>
+          </article>
+          <article class="outcome-row reveal" data-delay="180">
+            <span>03</span>
+            <div><h3>Kein Technikstress</h3><p>Wir kümmern uns um Aufbau, Mobilansicht, Formulare, Aufschaltung und auf Wunsch den laufenden Betrieb.</p></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Live-Demos im Beispiel-Fenster ===== -->
     <section class="showcase" id="beispiel">
       <div class="wrap">
         <div class="section-head center">
-          <h2 class="reveal">Echte Websites, live im Fenster.</h2>
+          <span class="kicker reveal">Interaktive Konzept-Demos</span>
+          <h2 class="reveal">Nicht nur anschauen. Gleich ausprobieren.</h2>
+          <p class="lead reveal" data-delay="70">Diese Beispielprojekte zeigen unsere gestalterische und technische Bandbreite. Es sind bewusst als Demos gekennzeichnete Konzepte – keine erfundenen Kundenreferenzen.</p>
         </div>
         <div class="demo-fenster reveal" data-delay="140" id="demo-fenster" hidden>
           <div class="frame-bar" aria-hidden="true">
@@ -131,11 +169,12 @@
     <section class="tight" id="angebot">
       <div class="wrap">
         <div class="section-head center">
-          <h2 class="reveal">Unsere Leistungen</h2>
+          <span class="kicker reveal">Klar eingeordnet</span>
+          <h2 class="reveal">Ein klarer Kern. Zwei Ausbaustufen.</h2>
+          <p class="lead reveal" data-delay="70">Unser Kerngeschäft sind Websites für KMU. Web-Apps und KI kommen nur dazu, wenn sie nachweisbar Zeit sparen oder Umsatz ermöglichen.</p>
         </div>
-        <!-- Reihenfolge wie auf der Leistungsseite: erst der Neubau, dann
-             die Überarbeitung, dann die Webapp – der KI-Assistent als
-             Ergänzung zum Schluss. Jede Zeile führt in die passende Welt
+        <!-- Reihenfolge wie auf der Leistungsseite: Website, Webapp und
+             der KI-Assistent als Ergänzung. Jede Zeile führt in die passende Welt
              auf /leistungen, wo die Leistung erklärt wird; die Preise
              stehen dort ebenfalls. -->
         <!-- Redaktionelle Liste statt Preistabelle: Nummer, grosser Titel,
@@ -144,26 +183,20 @@
         <div class="offer-list">
           <a class="offer-row reveal" href="/leistungen#website">
             <span class="offer-nr" aria-hidden="true">01</span>
-            <h3>Neue Website</h3>
-            <p>Persönlich gestaltet, sauber gebaut, für Mobilgeräte optimiert.</p>
+            <h3>Website, die überzeugt</h3>
+            <p>Damit du professionell gefunden wirst und aus Besuchern leichter Anfragen werden.</p>
             <span class="offer-pfeil" aria-hidden="true">→</span>
           </a>
-          <a class="offer-row reveal" data-delay="80" href="/leistungen#ueberarbeitung">
+          <a class="offer-row reveal" data-delay="80" href="/leistungen#webapp">
             <span class="offer-nr" aria-hidden="true">02</span>
-            <h3>Website-Überarbeitung</h3>
-            <p>Deine bestehende Seite, aufgefrischt und technisch auf Stand gebracht.</p>
+            <h3>Web-App, die Arbeit abnimmt</h3>
+            <p>Wenn Listen, WhatsApp und wiederkehrende Handarbeit durch einen klaren Ablauf ersetzt werden sollen.</p>
             <span class="offer-pfeil" aria-hidden="true">→</span>
           </a>
-          <a class="offer-row reveal" data-delay="160" href="/leistungen#webapp">
+          <a class="offer-row reveal" data-delay="160" href="/leistungen#ki">
             <span class="offer-nr" aria-hidden="true">03</span>
-            <h3>Webapp</h3>
-            <p>Login, Datenbank und Dashboard: eine Anwendung im Browser, massgeschneidert für deine Abläufe.</p>
-            <span class="offer-pfeil" aria-hidden="true">→</span>
-          </a>
-          <a class="offer-row reveal" data-delay="240" href="/leistungen#ki">
-            <span class="offer-nr" aria-hidden="true">04</span>
-            <h3><span class="ki-glow">KI-Assistent</span></h3>
-            <p>Ein smarter Chat, der Fragen beantwortet und Anfragen annimmt. Rund um die Uhr.</p>
+            <h3><span class="ki-glow">KI-Assistent als Ergänzung</span></h3>
+            <p>Beantwortet Routinefragen und erfasst Anfragen – ohne deine persönliche Beratung zu ersetzen.</p>
             <span class="offer-pfeil" aria-hidden="true">→</span>
           </a>
         </div>
@@ -176,7 +209,8 @@
         <div class="bot-section">
           <div class="bot-grid">
             <div>
-              <h2 class="reveal">Ein <span class="ki-glow">KI-Bot</span>, der rund um die Uhr für dich arbeitet.</h2>
+              <span class="kicker reveal">Weniger Unterbrechungen</span>
+              <h2 class="reveal">Routinefragen beantwortet. Gute Anfragen sortiert.</h2>
               <ul class="bot-benefits">
                 <li class="reveal" data-delay="100">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>
@@ -191,13 +225,30 @@
                   <span><b>Qualifiziert Anfragen</b> und leitet ernsthafte Interessenten an dich weiter.</span>
                 </li>
               </ul>
-              <p class="reveal" data-delay="320" style="color: var(--ink-soft); margin-bottom: 26px;">Und das Beste: <strong>Bei einer masesites-Website ist der Bot schon eingebaut.</strong></p>
-              <a class="btn btn-primary reveal" data-delay="360" href="/leistungen#ki">Mehr über den KI-Bot <span class="arrow">→</span></a>
+              <p class="reveal" data-delay="320" style="color: var(--ink-soft); margin-bottom: 26px;">Der Assistent ist optional, monatlich kündbar und lässt sich auch in eine bestehende Website einbauen.</p>
+              <a class="btn btn-primary reveal" data-delay="360" href="/leistungen#ki">Prüfen, ob KI sinnvoll ist <span class="arrow">→</span></a>
             </div>
             <div class="reveal" data-delay="150">
               <div class="chat-demo" data-chat data-chat-greeting="Hallo! Probier mich aus, ich bin die Live-Demo. Frag mich zum Beispiel, was eine Website kostet."></div>
             </div>
           </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Warum MASESites ===== -->
+    <section class="tight">
+      <div class="wrap proof-panel reveal">
+        <div class="proof-heading">
+          <span class="kicker">Warum MASESites?</span>
+          <h2>Weniger Agenturtheater. Mehr Verantwortung.</h2>
+          <p>Bei uns kaufst du keinen anonymen Prozess, sondern ein klar begrenztes Ergebnis mit direkter Verantwortung.</p>
+        </div>
+        <div class="proof-points">
+          <div><b>Die Gründer bauen selbst</b><span>Kein Verkaufsgespräch mit anschliessender Übergabe an ein unbekanntes Team.</span></div>
+          <div><b>Die kleinste sinnvolle Lösung</b><span>Wenn eine Website reicht, verkaufen wir dir keine Web-App.</span></div>
+          <div><b>Fixpreis statt offene Rechnung</b><span>Umfang und Preis stehen in der Offerte, bevor wir starten.</span></div>
+          <div><b>Kein Anbieter-Lock-in</b><span>Nach vollständiger Bezahlung gehören Website, Gestaltung und Quellcode dir.</span></div>
         </div>
       </div>
     </section>
@@ -210,8 +261,9 @@
             <img src="assets/img/team-zwei-maenner.jpg?v=2" alt="Illustration: zwei Männer arbeiten gemeinsam an einem Laptop" loading="lazy" decoding="async" width="1200" height="900">
           </div>
           <div>
-            <h2 style="margin-bottom: 14px;">Die Menschen hinter deiner Website</h2>
-            <p class="lead" style="margin-bottom: 26px;">Wir sind ein kleines Schweizer Team, das Websites für Firmen und Privatpersonen baut und designt. Mit Sorgfalt, Geschmack und moderner Technik.</p>
+            <span class="kicker">Persönlich verantwortlich</span>
+            <h2 style="margin-bottom: 14px;">Matteo gestaltet. Severin entwickelt.</h2>
+            <p class="lead" style="margin-bottom: 26px;">Zwei Gründer, zwei klare Schwerpunkte und eine direkte Ansprechperson – von Kloten und Wetzikon aus für Schweizer KMU.</p>
             <a class="btn btn-ghost" href="/ueber-uns">Mehr über uns <span class="arrow">→</span></a>
           </div>
         </div>
@@ -222,10 +274,10 @@
     <section class="tight">
       <div class="wrap">
         <div class="big-cta reveal">
-          <h2>Lass uns deine Website bauen.</h2>
-          <p>Erzähl uns kurz von deinem Projekt. Wir melden uns und sagen dir ehrlich, was du brauchst.</p>
+          <h2>Was soll deine Website für dich leisten?</h2>
+          <p>Erzähl uns kurz von deinem Betrieb. Wir melden uns persönlich, ordnen die sinnvollste Lösung ein und nennen dir den nächsten Schritt.</p>
           <div class="hero-ctas">
-            <a class="btn btn-primary" href="/kontakt">Projekt starten <span class="arrow">→</span></a>
+            <a class="btn btn-primary" href="/kontakt">Kostenloses Erstgespräch <span class="arrow">→</span></a>
             <a class="btn btn-ghost" href="/preise">Preise ansehen</a>
           </div>
         </div>
@@ -242,15 +294,15 @@
           <a class="logo" href="/">
             masesites
           </a>
-          <p>Personalisierte, professionelle Websites aus der Schweiz.</p>
+          <p>Websites für Schweizer KMU, die mehr Anfragen bringen und Arbeit abnehmen.</p>
           <a class="mail" href="mailto:info@masesites.ch">info@masesites.ch</a>
         </div>
         <div class="footer-col">
           <h4>Angebot</h4>
           <ul>
-            <li><a href="/preise">Neue Website</a></li>
-            <li><a href="/preise#ueberarbeitung">Website-Überarbeitung</a></li>
-            <li></li>
+            <li><a href="/preise#website">Neue Website</a></li>
+            <li><a href="/preise#webapp">Web-Apps</a></li>
+            <li><a href="/preise#ki">KI-Assistent</a></li>
           </ul>
         </div>
         <div class="footer-col">
@@ -262,6 +314,8 @@
             <li><a href="/projekte">Projekte</a></li>
             <li><a href="/ueber-uns">Über uns</a></li>
             <li><a href="/kontakt">Kontakt</a></li>
+            <li><a href="/webdesign-kloten">Webdesign Kloten</a></li>
+            <li><a href="/dashboard">Kundenlogin</a></li>
           </ul>
         </div>
         <div class="footer-col">
@@ -287,7 +341,7 @@
 
   <script src="assets/js/protokoll.js?v=20"></script>
   <script src="assets/js/cookie.js?v=4"></script>
-  <script src="assets/js/site.js?v=32"></script>
+  <script src="assets/js/site.js?v=33"></script>
   <script src="assets/js/hero.js?v=22"></script>
 </body>
 </html>

@@ -110,8 +110,8 @@
     var thumb = document.createElement("div");
     thumb.className = "work-thumb shot";
     var badge = document.createElement("span");
-    badge.className = "work-badge real";
-    badge.textContent = "Live-Demo";
+    badge.className = "work-badge demo";
+    badge.textContent = "Konzept-Demo";
     thumb.appendChild(badge);
     if (demo.bild) {
       var img = document.createElement("img");

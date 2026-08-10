@@ -141,7 +141,7 @@
   /* Interne Links (/preise, /kontakt …) und die E-Mail im Bot-Text klickbar
      machen, ohne HTML aus der Antwort zu interpretieren (kein XSS-Risiko). */
   function botTextInDom(ziel, text) {
-    var muster = /(\bhttps?:\/\/[^\s]+|\/(?:preise|kontakt|beispiele|projekte|ki-bot|ueber-uns)\b|[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/g;
+    var muster = /(\bhttps?:\/\/[^\s]+|\/(?:preise|kontakt|beispiele|projekte|leistungen|ki-bot|ueber-uns|webdesign-kloten)\b|[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/g;
     var pos = 0, treffer;
     while ((treffer = muster.exec(text)) !== null) {
       if (treffer.index > pos) ziel.appendChild(document.createTextNode(text.slice(pos, treffer.index)));
@@ -512,7 +512,7 @@
     if (!teaserSchonWeg) setTimeout(function () { zeigeTeaser(0); }, 4500);
   }
 
-  /* ---------- Kontaktformular: mailto-Versand + Honeypot ---------- */
+  /* ---------- Kontaktformular: direkter API-Versand + Honeypot ---------- */
 
   var contactForm = document.getElementById("contact-form");
   if (contactForm) {
@@ -534,9 +534,16 @@
     contactForm.addEventListener("submit", function (e) {
       e.preventDefault();
 
-      /* Honeypot: Bots füllen das unsichtbare Feld, dann still "ok" melden */
-      var hp = contactForm.querySelector('[name="firma_website"]');
       var success = document.getElementById("form-success");
+      var error = document.getElementById("form-error");
+      var submit = contactForm.querySelector('[type="submit"]');
+
+      if (!contactForm.reportValidity()) return;
+      if (submit && submit.disabled) return;
+      if (error) { error.textContent = ""; error.classList.remove("show"); }
+
+      /* Honeypot: Bots füllen das unsichtbare Feld, dann still "ok" melden. */
+      var hp = contactForm.querySelector('[name="firma_website"]');
       if (hp && hp.value) {
         if (success) success.classList.add("show");
         contactForm.reset();
@@ -552,23 +559,57 @@
         interessen.push(c.value);
       });
 
-      var body =
-        "Name: " + get("name") + "\n" +
-        "E-Mail: " + get("email") + "\n" +
-        (get("telefon") ? "Telefon: " + get("telefon") + "\n" : "") +
-        (get("branche") ? "Branche: " + get("branche") + "\n" : "") +
-        "Interesse: " + (interessen.join(", ") || "keine Angabe") + "\n\n" +
-        get("nachricht");
+      var payload = {
+        name: get("name"),
+        email: get("email"),
+        telefon: get("telefon"),
+        branche: get("branche"),
+        interessen: interessen,
+        nachricht: get("nachricht"),
+        firma_website: hp ? hp.value : ""
+      };
 
-      var mailto = "mailto:info@masesites.ch" +
-        "?subject=" + encodeURIComponent("Projektanfrage von " + get("name")) +
-        "&body=" + encodeURIComponent(body);
-
-      window.location.href = mailto;
-      if (success) {
-        success.classList.add("show");
-        success.scrollIntoView({ behavior: reducedMotion ? "auto" : "smooth", block: "nearest" });
+      var controller = window.AbortController ? new AbortController() : null;
+      var timer = controller ? setTimeout(function () { controller.abort(); }, 15000) : null;
+      if (submit) {
+        submit.disabled = true;
+        submit.setAttribute("aria-busy", "true");
+        submit.textContent = submit.getAttribute("data-loading-label") || "Wird gesendet …";
       }
+
+      fetch("/api/kontakt", {
+        method: "POST",
+        credentials: "same-origin",
+        headers: { "Content-Type": "application/json", "X-Requested-With": "fetch" },
+        body: JSON.stringify(payload),
+        signal: controller ? controller.signal : undefined
+      }).then(function (r) {
+        return r.json().catch(function () { return {}; }).then(function (daten) {
+          if (!r.ok) throw new Error(daten.fehler || "Die Anfrage konnte nicht gesendet werden.");
+          return daten;
+        });
+      }).then(function () {
+        contactForm.reset();
+        contactForm.hidden = true;
+        if (success) {
+          success.classList.add("show");
+          success.scrollIntoView({ behavior: reducedMotion ? "auto" : "smooth", block: "nearest" });
+        }
+      }).catch(function (err) {
+        if (error) {
+          error.textContent = err && err.name === "AbortError"
+            ? "Das Senden dauert gerade zu lange. Bitte probier es nochmals oder schreib an info@masesites.ch."
+            : (err.message || "Das hat nicht geklappt. Bitte probier es nochmals oder schreib an info@masesites.ch.");
+          error.classList.add("show");
+        }
+      }).finally(function () {
+        if (timer) clearTimeout(timer);
+        if (submit && !contactForm.hidden) {
+          submit.disabled = false;
+          submit.removeAttribute("aria-busy");
+          submit.innerHTML = (submit.getAttribute("data-label") || "Anfrage senden") + ' <span class="arrow">→</span>';
+        }
+      });
     });
   }
 

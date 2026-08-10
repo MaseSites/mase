@@ -3,11 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Preise | masesites</title>
-  <meta name="description" content="Alle Preise auf einen Blick: neue Website ab CHF 750.-, Ueberarbeitung ab CHF 250.-, Webapp ab CHF 3500.-, KI-Assistent ab CHF 200.-. Feste Offerte vor Projektstart.">
+  <title>Website-Preise Schweiz | MASESites</title>
+  <meta name="description" content="Transparente Website-Preise ab CHF 790.– für Schweizer KMU. Klar begrenzter Umfang, Fixpreis vor Projektstart und keine versteckten Pflicht-Abos.">
+  <link rel="canonical" href="https://masesites.ch/preise">
   <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="assets/css/style.css?v=56">
-  <link rel="stylesheet" href="assets/css/preisliste.css?v=4">
+  <link rel="stylesheet" href="assets/css/style.css?v=58">
+  <link rel="stylesheet" href="assets/css/preisliste.css?v=7">
 </head>
 <body>
 
@@ -17,23 +18,13 @@
         masesites
       </a>
       <nav class="main-nav" aria-label="Hauptnavigation">
-        <a href="/">Startseite</a>
         <a href="/leistungen">Leistungen</a>
-        <div class="nav-gruppe">
-          <button class="nav-gruppe-knopf" type="button">Arbeiten
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
-          </button>
-          <div class="nav-gruppe-menu">
-            <a href="/beispiele">Beispiele</a>
-            <a href="/projekte">Projekte</a>
-          </div>
-        </div>
+        <a href="/beispiele">Live-Demos</a>
         <a href="/preise" class="active">Preise</a>
         <a href="/ueber-uns">Über uns</a>
       </nav>
       <div class="header-cta">
-        <a class="btn btn-primary header-start" href="/kontakt">Projekt starten</a>
-        <a class="konto-link" href="/dashboard">Dashboard</a>
+        <a class="btn btn-primary header-start" href="/kontakt">Erstgespräch anfragen</a>
         <button class="burger" aria-label="Menü öffnen" aria-expanded="false">
           <span></span><span></span><span></span>
         </button>
@@ -42,14 +33,13 @@
   </header>
 
   <div class="mobile-menu">
-    <a href="/">Startseite</a>
-        <a href="/leistungen">Leistungen</a>
-    <a href="/beispiele">Beispiele</a>
-    <a href="/projekte">Projekte</a>
+    <a href="/leistungen">Leistungen</a>
+    <a href="/beispiele">Live-Demos</a>
     <a href="/preise" class="active">Preise</a>
     <a href="/ueber-uns">Über uns</a>
-    <a href="/dashboard" class="konto-link">Dashboard</a>
-    <a class="btn btn-primary" href="/kontakt">Projekt starten →</a>
+    <a href="/webdesign-kloten">Webdesign Kloten</a>
+    <a href="/dashboard" class="konto-link">Kundenlogin</a>
+    <a class="btn btn-primary" href="/kontakt">Kostenloses Erstgespräch →</a>
   </div>
 
   <main class="pl">
@@ -57,254 +47,192 @@
     <!-- ===== Kopf ===== -->
     <section class="page-hero">
       <div class="wrap">
-        <h1>Was es kostet.</h1>
-        <p class="lead">Alle Preise auf einen Blick. Was draufsteht, gilt für den üblichen Umfang – vor Projektstart bekommst du eine feste Offerte.</p>
+        <span class="kicker">Transparent kalkuliert</span>
+        <h1>Klare Preise. Kein versteckter Haken.</h1>
+        <p class="lead">Du bezahlst für ein klar definiertes Ergebnis – nicht für Agenturhierarchie. Vor Projektstart stehen Umfang, Fixpreis und mögliche laufende Kosten schriftlich fest.</p>
       </div>
     </section>
 
-    <!-- ===== Paket-Finder =====
-         Ersetzt die frueheren Erklaer-Karten und den Assistenten-Hinweis.
-         Beides zusammen waren rund 450 Woerter, bevor der erste Preis
-         kam - auf dem Handy fast sieben Bildschirme. Eine Frage genuegt,
-         um die passende Leistung zu bestimmen; die Erklaerung steht
-         kompakt im Ergebnis statt vorab fuer alle. -->
-    <section class="tight" id="finder">
-      <div class="wrap">
-        <div class="pf" data-schritt="frage">
-
-          <div class="pf-frage">
-            <span class="pf-label">In 10 Sekunden zum richtigen Paket</span>
-            <h2>Was trifft auf dich zu?</h2>
-            <div class="pf-optionen">
-              <button type="button" class="pf-opt" data-ziel="website">
-                <span class="pf-opt-titel">Ich habe noch keine Website</span>
-                <span class="pf-opt-text">Oder sie soll komplett ersetzt werden.</span>
-              </button>
-              <button type="button" class="pf-opt" data-ziel="ueberarbeitung">
-                <span class="pf-opt-titel">Meine Website ist veraltet</span>
-                <span class="pf-opt-text">Sieht alt aus oder klemmt auf dem Handy.</span>
-              </button>
-              <button type="button" class="pf-opt" data-ziel="webapp">
-                <span class="pf-opt-titel">Ich brauche ein Werkzeug zum Arbeiten</span>
-                <span class="pf-opt-text">Mit Login, Daten und Abläufen.</span>
-              </button>
-              <button type="button" class="pf-opt" data-ziel="ki">
-                <span class="pf-opt-titel">Ich will einen KI-Assistenten</span>
-                <span class="pf-opt-text">Beantwortet Fragen, nimmt Anfragen auf.</span>
-              </button>
-            </div>
-            <p class="pf-unsicher">
-              Unsicher? <button type="button" id="pf-bot">Frag unseren Assistenten</button> –
-              oder scroll weiter, alle Preise stehen unten.
-            </p>
-          </div>
-
-          <div class="pf-ergebnis" hidden>
-            <span class="pf-label">Das passt zu dir</span>
-            <h2 class="pf-titel"></h2>
-            <p class="pf-text"></p>
-            <p class="pf-ab"></p>
-            <div class="pf-aktionen">
-              <a class="btn btn-primary pf-hin" href="#website">Preise ansehen <span class="arrow">→</span></a>
-              <button type="button" class="btn btn-ghost pf-zurueck">Andere Auswahl</button>
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </section>
-
-    <!-- ===== Preisliste: Neue Website ===== -->
+    <!-- ===== Website-Pakete ===== -->
     <section class="tight" id="website">
       <div class="wrap">
+        <div class="price-rationale reveal">
+          <div class="price-rationale-intro">
+            <span class="pl-kategorie">Warum diese Preise realistisch sind</span>
+            <h2>Individuell muss nicht unnötig teuer sein.</h2>
+            <p>Wir arbeiten als schlankes Zweierteam, nutzen eine erprobte technische Basis und begrenzen jedes Paket sauber. Dein Auftritt wird individuell gestaltet; du finanzierst aber keine Projektleitung, Verkaufsabteilung oder teure Innenstadtagentur mit.</p>
+          </div>
+          <div class="price-rationale-points">
+            <div><b>Direkte Arbeit</b><span>Die Personen im Gespräch gestalten und entwickeln auch dein Projekt.</span></div>
+            <div><b>Definierter Rahmen</b><span>Komplexe Sonderfunktionen sind nicht im kleinen Paket versteckt, sondern werden separat offeriert.</span></div>
+            <div><b>Erprobte Grundlage</b><span>Wir lösen Standards nicht jedes Mal neu, investieren die Zeit aber dort, wo deine Marke sichtbar wird.</span></div>
+          </div>
+        </div>
+
         <div class="pl-block-kopf">
           <div>
-            <h2>Neue Website</h2>
-            <p>Der Preis richtet sich nach Umfang, nicht nach Branche.</p>
+            <span class="pl-kategorie">Webauftritt</span>
+            <h2>Website-Pakete</h2>
+            <p>Für einen professionellen Auftritt, der dein Angebot verständlich macht und Interessenten sicher zur Anfrage führt.</p>
           </div>
           <a class="pl-mehr" href="/leistungen#website">Alles im Detail <span class="arrow">→</span></a>
         </div>
 
         <div class="pl-stufen">
-          <article class="pl-stufe" data-anfrage="Neue Website: Starter (ab CHF 750.–)" data-interesse="Neue Website">
+          <article class="pl-stufe" data-anfrage="Neue Website: Starter (CHF 790.–)" data-interesse="Neue Website">
             <h3>Starter</h3>
-            <p class="pl-fuer-wen">Eine Seite, alles Wichtige drauf.</p>
-            <p class="pl-tarif"><b>ab CHF 750.–</b><span>einmalig · 1–2 Wochen</span></p>
+            <p class="pl-fuer-wen">Für kleine Unternehmen, die online professionell auftreten und direkt Anfragen erhalten wollen.</p>
+            <p class="pl-tarif"><b>CHF 790.–</b><span>einmalig</span></p>
             <ul class="pl-check">
-              <li>Eine lange Seite</li>
-              <li>Design in deinen Farben</li>
-              <li>Kontaktformular und Karte</li>
-              <li>Handy-Ansicht</li>
-              <li>Bei Google eingetragen</li>
-              <li>1 Feedback-Runde</li>
+              <li>Eine klare Seite für Angebot, Vertrauen und Kontakt</li>
+              <li>Individueller Auftritt passend zu deiner Firma</li>
+              <li>Anfrageformular mit direkter Zustellung</li>
+              <li>Optimiert für Smartphone, Tablet und Desktop</li>
+              <li>Basis-SEO und saubere technische Grundlage</li>
+              <li>Einbau deiner gelieferten Texte und Bilder</li>
             </ul>
-            <button class="pl-anfragen" type="button">Anfragen</button>
+            <button class="pl-anfragen" type="button">Projekt anfragen</button>
           </article>
 
-          <article class="pl-stufe hervor" data-anfrage="Neue Website: Business (ab CHF 1'300.–)" data-interesse="Neue Website">
-            <span class="pl-marke">Am häufigsten gewählt</span>
-            <h3>Business</h3>
-            <p class="pl-fuer-wen">Der komplette Firmenauftritt.</p>
-            <p class="pl-tarif"><b>ab CHF 1'300.–</b><span>einmalig · 2–4 Wochen</span></p>
+          <article class="pl-stufe hervor" data-anfrage="Neue Website: Pro (CHF 1'490.–)" data-interesse="Neue Website">
+            <span class="pl-marke">Beliebt</span>
+            <h3>Pro</h3>
+            <p class="pl-fuer-wen">Für KMU mit mehreren Leistungen, die bei Google und im Verkauf mehr Raum brauchen.</p>
+            <p class="pl-tarif"><b>CHF 1'490.–</b><span>einmalig</span></p>
             <ul class="pl-check">
               <li class="pl-plus">Alles aus Starter, dazu:</li>
-              <li>Bis 5 Unterseiten</li>
-              <li>Eigenes Design statt Vorlage</li>
-              <li>Galerie und Kundenstimmen</li>
-              <li>Google-Unternehmensprofil</li>
-              <li>Besucherstatistik</li>
-              <li>2 Feedback-Runden</li>
+              <li>Eigene Seiten für deine wichtigsten Leistungen</li>
+              <li>Mehr Platz für Team, Ablauf, Referenzen und FAQ</li>
+              <li>Stärkere Struktur für lokale Suchanfragen</li>
+              <li>Gezielte Kontaktwege je Angebot</li>
+              <li>Klare Navigation auch bei mehr Inhalt</li>
             </ul>
-            <button class="pl-anfragen" type="button">Anfragen</button>
+            <button class="pl-anfragen" type="button">Projekt anfragen</button>
           </article>
 
-          <article class="pl-stufe" data-anfrage="Neue Website: Premium (ab CHF 2'500.–)" data-interesse="Neue Website">
-            <h3>Premium</h3>
-            <p class="pl-fuer-wen">Wenn die Seite auch verkaufen soll.</p>
-            <p class="pl-tarif"><b>ab CHF 2'500.–</b><span>einmalig · 4–6 Wochen</span></p>
+          <article class="pl-stufe" data-anfrage="Neue Website: Smart (ab CHF 2'990.–)" data-interesse="Neue Website">
+            <h3>Smart</h3>
+            <p class="pl-fuer-wen">Für KMU, deren Website zusätzlich Buchungen, Zahlungen oder Verwaltungsarbeit übernehmen soll.</p>
+            <p class="pl-tarif"><b>ab CHF 2'990.–</b><span>je nach Funktionsumfang</span></p>
             <ul class="pl-check">
-              <li class="pl-plus">Alles aus Business, dazu:</li>
-              <li>Beliebig viele Seiten</li>
-              <li>Online-Terminbuchung</li>
-              <li>Shop mit Twint und Karte</li>
-              <li>Admin-Bereich zum Selberändern</li>
-              <li>Mehrsprachig auf Wunsch</li>
+              <li class="pl-plus">Alles aus Pro, dazu:</li>
+              <li>Inhalte und Anfragen selbst verwalten</li>
+              <li>Buchungs-, Reservations- oder Terminsystem</li>
+              <li>Online-Zahlungen auf Wunsch</li>
+              <li>Weniger Telefonate und manuelle Übertragung</li>
+              <li>Eine individuelle Hauptfunktion für deinen Ablauf</li>
             </ul>
-            <button class="pl-anfragen" type="button">Anfragen</button>
+            <button class="pl-anfragen" type="button">Projekt besprechen</button>
           </article>
         </div>
-      </div>
-    </section>
 
-    <!-- ===== Preisliste: Überarbeitung ===== -->
-    <section class="tight" id="ueberarbeitung">
-      <div class="wrap">
-        <div class="pl-block-kopf">
-          <div>
-            <h2>Überarbeitung</h2>
-            <p>Deine Inhalte und deine Adresse bleiben. Der Check vorher ist gratis.</p>
+        <div class="pl-vergleich" aria-labelledby="vergleich-titel">
+          <div class="pl-vergleich-kopf">
+            <span class="pl-kategorie">Direkter Vergleich</span>
+            <h3 id="vergleich-titel">Welches Website-Paket passt?</h3>
+            <p>Alle Pakete sind individuell gestaltet, mehrsprachig und für Smartphone, Tablet sowie Desktop optimiert.</p>
           </div>
-          <a class="pl-mehr" href="/leistungen#ueberarbeitung">Alles im Detail <span class="arrow">→</span></a>
+          <table>
+            <thead>
+              <tr>
+                <th scope="col">Leistung</th>
+                <th scope="col"><b>Starter</b><span>CHF 790.–</span></th>
+                <th scope="col" class="pl-v-pro"><b>Pro</b><span>CHF 1'490.–</span></th>
+                <th scope="col"><b>Smart</b><span>ab CHF 2'990.–</span></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><th scope="row">Individueller Auftritt</th><td data-paket="Starter"><span class="pl-ja" aria-label="Enthalten">✓</span></td><td data-paket="Pro"><span class="pl-ja" aria-label="Enthalten">✓</span></td><td data-paket="Smart"><span class="pl-ja" aria-label="Enthalten">✓</span></td></tr>
+              <tr><th scope="row">Mobil optimiert</th><td data-paket="Starter"><span class="pl-ja" aria-label="Enthalten">✓</span></td><td data-paket="Pro"><span class="pl-ja" aria-label="Enthalten">✓</span></td><td data-paket="Smart"><span class="pl-ja" aria-label="Enthalten">✓</span></td></tr>
+              <tr><th scope="row">Direktes Anfrageformular</th><td data-paket="Starter"><span class="pl-ja" aria-label="Enthalten">✓</span></td><td data-paket="Pro"><span class="pl-ja" aria-label="Enthalten">✓</span></td><td data-paket="Smart"><span class="pl-ja" aria-label="Enthalten">✓</span></td></tr>
+              <tr><th scope="row">Mehrere Leistungsseiten</th><td data-paket="Starter"><span class="pl-nein" aria-label="Nicht enthalten">–</span></td><td data-paket="Pro"><span class="pl-ja" aria-label="Enthalten">✓</span></td><td data-paket="Smart"><span class="pl-ja" aria-label="Enthalten">✓</span></td></tr>
+              <tr><th scope="row">Lokale SEO-Struktur</th><td data-paket="Starter"><span class="pl-nein" aria-label="Nicht enthalten">–</span></td><td data-paket="Pro"><span class="pl-ja" aria-label="Enthalten">✓</span></td><td data-paket="Smart"><span class="pl-ja" aria-label="Enthalten">✓</span></td></tr>
+              <tr><th scope="row">Inhalte selbst verwalten</th><td data-paket="Starter"><span class="pl-nein" aria-label="Nicht enthalten">–</span></td><td data-paket="Pro"><span class="pl-nein" aria-label="Nicht enthalten">–</span></td><td data-paket="Smart"><span class="pl-ja" aria-label="Enthalten">✓</span></td></tr>
+              <tr><th scope="row">Buchung oder Reservation</th><td data-paket="Starter"><span class="pl-nein" aria-label="Nicht enthalten">–</span></td><td data-paket="Pro"><span class="pl-nein" aria-label="Nicht enthalten">–</span></td><td data-paket="Smart"><span class="pl-ja" aria-label="Enthalten">✓</span></td></tr>
+              <tr><th scope="row">Online-Zahlung</th><td data-paket="Starter"><span class="pl-nein" aria-label="Nicht enthalten">–</span></td><td data-paket="Pro"><span class="pl-nein" aria-label="Nicht enthalten">–</span></td><td data-paket="Smart"><span class="pl-ja" aria-label="Enthalten">✓</span></td></tr>
+            </tbody>
+          </table>
         </div>
-
-        <div class="pl-stufen">
-          <article class="pl-stufe" data-anfrage="Überarbeitung: Quick Fix (ab CHF 250.–)" data-interesse="Überarbeitung">
-            <h3>Quick Fix</h3>
-            <p class="pl-fuer-wen">Im Kern gut, nur unaufgeräumt.</p>
-            <p class="pl-tarif"><b>ab CHF 250.–</b><span>einmalig · wenige Tage</span></p>
-            <ul class="pl-check">
-              <li>Farben und Schriften auffrischen</li>
-              <li>Texte und Bilder tauschen</li>
-              <li>Kaputte Links beheben</li>
-            </ul>
-            <button class="pl-anfragen" type="button">Anfragen</button>
-          </article>
-
-          <article class="pl-stufe hervor" data-anfrage="Überarbeitung: Plus (ab CHF 500.–)" data-interesse="Überarbeitung">
-            <span class="pl-marke">Meist gewählt</span>
-            <h3>Plus</h3>
-            <p class="pl-fuer-wen">Mühsam auf dem Handy, langsam.</p>
-            <p class="pl-tarif"><b>ab CHF 500.–</b><span>einmalig · 1–2 Wochen</span></p>
-            <ul class="pl-check">
-              <li class="pl-plus">Alles aus Quick Fix, dazu:</li>
-              <li>Design im ganzen Auftritt neu</li>
-              <li>Für Handys überarbeitet</li>
-              <li>Ladezeit verkürzt</li>
-              <li>2 Feedback-Runden</li>
-            </ul>
-            <button class="pl-anfragen" type="button">Anfragen</button>
-          </article>
-
-          <article class="pl-stufe" data-anfrage="Überarbeitung: Pro (ab CHF 800.–)" data-interesse="Überarbeitung">
-            <h3>Pro</h3>
-            <p class="pl-fuer-wen">Mehr als Kosmetik nötig.</p>
-            <p class="pl-tarif"><b>ab CHF 800.–</b><span>einmalig · 2–3 Wochen</span></p>
-            <ul class="pl-check">
-              <li class="pl-plus">Alles aus Plus, dazu:</li>
-              <li>Seiten komplett neu gestaltet</li>
-              <li>Struktur neu gedacht</li>
-              <li>Technik auf aktuellem Stand</li>
-            </ul>
-            <button class="pl-anfragen" type="button">Anfragen</button>
-          </article>
+        <div class="price-clarity reveal">
+          <b>Was «Fixpreis» bei uns bedeutet</b>
+          <span>Die Hälfte wird bei Projektstart, die Hälfte bei Fertigstellung fällig. Zusatzwünsche setzen wir erst nach einer separaten Offerte um. Hosting und Service sind freiwillig; nach vollständiger Bezahlung gehören Website, Gestaltung und Quellcode dir.</span>
         </div>
-
-        <p class="pl-notiz">Läuft deine Seite auf sehr alter Technik, ist eine <a href="#website">neue Website</a> oft günstiger als Flickwerk. Wir sagen es dir nach dem Gratis-Check.</p>
       </div>
     </section>
 
-    <!-- ===== Webapp, KI, Betrieb: kompakte Zeilen ===== -->
+    <!-- ===== Web-App-Pakete ===== -->
     <section class="tight" id="webapp">
       <div class="wrap">
         <div class="pl-block-kopf">
           <div>
-            <h2>Webapp</h2>
-            <p>Software zum Arbeiten statt einer Seite zum Lesen. Der Preis richtet sich danach, wie viele Abläufe zusammenspielen müssen.</p>
+            <span class="pl-kategorie">Individuelle Software</span>
+            <h2>Web-App-Pakete</h2>
+            <p>Eine Web-App ist keine grössere Website, sondern eine individuelle Anwendung im Browser, mit der dein Unternehmen arbeitet.</p>
           </div>
           <a class="pl-mehr" href="/leistungen#webapp">Alles im Detail <span class="arrow">→</span></a>
         </div>
         <div class="pl-stufen">
-          <article class="pl-stufe" data-anfrage="Webapp: Ein Ablauf (ab CHF 3'500.–)" data-interesse="Webapp">
-            <h3>Ein Ablauf</h3>
-            <p class="pl-fuer-wen">Ein Bereich, sauber gelöst.</p>
-            <p class="pl-tarif"><b>ab CHF 3'500.–</b><span>einmalig · ab 6 Wochen</span></p>
+          <article class="pl-stufe" data-anfrage="Web-App: Starter (CHF 2'990.–)" data-interesse="Webapp">
+            <h3>Starter WebApp</h3>
+            <p class="pl-fuer-wen">Für KMU, die einen klaren manuellen Ablauf durch ein einfaches digitales Werkzeug ersetzen wollen.</p>
+            <p class="pl-tarif"><b>CHF 2'990.–</b><span>einmalig</span></p>
             <ul class="pl-check">
-              <li>Ein Ablauf, zum Beispiel Termine</li>
-              <li>Kunden buchen selbst</li>
-              <li>Du verwaltest alles an einem Ort</li>
-              <li>Eine Team-Ansicht</li>
-              <li>Login und Datenbank</li>
+              <li>Sicherer Login und Benutzerprofile</li>
+              <li>Zentrale Daten statt verteilter Listen</li>
+              <li>Eine individuelle Hauptfunktion</li>
+              <li>Formulare und automatische E-Mails</li>
+              <li>Responsiv für Büro und unterwegs</li>
+              <li>Technische Einrichtung und Einführung</li>
             </ul>
-            <button class="pl-anfragen" type="button">Anfragen</button>
+            <button class="pl-anfragen" type="button">Projekt anfragen</button>
           </article>
 
-          <article class="pl-stufe hervor" data-anfrage="Webapp: Mehrere Abläufe (ab CHF 7'500.–)" data-interesse="Webapp">
-            <span class="pl-marke">Für Firmen</span>
-            <h3>Mehrere Abläufe</h3>
-            <p class="pl-fuer-wen">Bereiche, die zusammenhängen.</p>
-            <p class="pl-tarif"><b>ab CHF 7'500.–</b><span>einmalig · ab 10 Wochen</span></p>
+          <article class="pl-stufe hervor" data-anfrage="Web-App: Pro (CHF 5'990.–)" data-interesse="Webapp">
+            <span class="pl-marke">Umfangreich</span>
+            <h3>Pro WebApp</h3>
+            <p class="pl-fuer-wen">Für Unternehmen, die mehrere Funktionen und eine eigene Verwaltung benötigen.</p>
+            <p class="pl-tarif"><b>CHF 5'990.–</b><span>einmalig</span></p>
             <ul class="pl-check">
-              <li>Etwa Aufträge, Kunden und Lager</li>
-              <li>Rollen und Rechte fürs Team</li>
-              <li>Auswertungen</li>
-              <li>Login und Datenbank</li>
-              <li>Mehrere Team-Ansichten</li>
+              <li class="pl-plus">Alles aus Starter WebApp, dazu:</li>
+              <li>Mehrere zusammenhängende Abläufe</li>
+              <li>Rollen und eigenes Admin-Dashboard</li>
+              <li>Buchungen, Reservationen oder Zahlungen</li>
+              <li>Suche, Filter sowie Datei-Uploads</li>
+              <li>Statistiken und klare Übersichten</li>
             </ul>
-            <button class="pl-anfragen" type="button">Anfragen</button>
+            <button class="pl-anfragen" type="button">Projekt anfragen</button>
           </article>
 
-          <article class="pl-stufe" data-anfrage="Webapp: KI-Assistent (CHF 200.– Einrichtung, CHF 40.–/Monat)" data-interesse="KI-Assistent">
-            <span class="pl-marke">Optional</span>
-            <h3>KI-Assistent</h3>
-            <p class="pl-fuer-wen">Sagen statt klicken.</p>
-            <p class="pl-tarif"><b>CHF 200.–</b><span>einmalig · dann CHF 40.– pro Monat</span></p>
+          <article class="pl-stufe" data-anfrage="Web-App: Smart (ab CHF 9'990.–)" data-interesse="Webapp">
+            <h3>Smart WebApp</h3>
+            <p class="pl-fuer-wen">Für Unternehmen, die eine individuelle Plattform oder ein komplettes digitales System benötigen.</p>
+            <p class="pl-tarif"><b>ab CHF 9'990.–</b><span>je nach Funktionsumfang</span></p>
             <ul class="pl-check">
-              <li>«Trag Familie Meier am Freitag ein»</li>
-              <li>Legt Einträge an und ändert sie</li>
-              <li>Fasst zusammen: «Wie lief letzte Woche?»</li>
-              <li>Immer im Rahmen deiner Rechte</li>
-              <li>Gleicher Preis wie auf der Website</li>
+              <li class="pl-plus">Alles aus Pro WebApp, dazu:</li>
+              <li>Komplexe Abläufe und Automatisierungen</li>
+              <li>Detaillierte Benutzer- und Rechteverwaltung</li>
+              <li>Kunden-, Buchungs- und Zahlungsverwaltung</li>
+              <li>Externe Schnittstellen und API-Integrationen</li>
+              <li>Skalierbare Plattform passend zum Geschäftsmodell</li>
             </ul>
-            <button class="pl-anfragen" type="button">Anfragen</button>
+            <button class="pl-anfragen" type="button">Projekt besprechen</button>
           </article>
         </div>
-      </section>
+        <p class="pl-notiz">Der definitive Preis richtet sich nach dem gewünschten Funktionsumfang und der Komplexität der Web-App.</p>
+      </div>
+    </section>
 
     <section class="tight" id="ki">
       <div class="wrap">
         <div class="pl-block-kopf">
           <div>
-            <h2>KI-Assistent</h2>
+            <h2>MASE AI</h2>
             <p>Ein Chat, der deine Firma kennt und Anfragen entgegennimmt – auch nachts. Auch auf fremden Websites einbaubar.</p>
           </div>
           <a class="pl-mehr" href="/leistungen#ki">Alles im Detail <span class="arrow">→</span></a>
         </div>
-        <!-- Ein einzelnes Paket, deshalb nicht als Karten-Raster:
-             links steht wie im Rest der Seite, was man bekommt,
-             rechts der Preis. Der zweiteilige Preis (einmalig +
-             monatlich) ist die haeufigste Rueckfrage - die Karte
-             sortiert deshalb nach Einrichtung und Betrieb, statt
-             alles in eine Liste zu werfen. -->
+        <!-- Ein einzelnes Paket: links der kurze Ablauf, rechts der
+             vollständige Umfang von Einrichtung und laufendem Betrieb. -->
         <div class="pl-ki">
           <div class="pl-ki-was">
             <ol class="pl-ki-ablauf">
@@ -328,30 +256,50 @@
             </ul>
           </div>
 
-          <article class="pl-stufe hervor pl-ki-karte" data-anfrage="KI-Assistent (CHF 200.– Einrichtung, CHF 40.–/Monat)" data-interesse="KI-Assistent">
-            <h3>KI-Assistent</h3>
+          <article class="pl-stufe hervor pl-ki-karte" data-anfrage="MASE AI (CHF 490 einmalig, CHF 39/Monat)" data-interesse="KI-Assistent">
+            <h3>MASE AI</h3>
             <p class="pl-fuer-wen">Rund um die Uhr erreichbar.</p>
-            <p class="pl-tarif"><b>CHF 200.–</b><span>einmalig · dann CHF 40.– pro Monat</span></p>
+            <div class="pl-ki-tarif" aria-label="CHF 490 einmalig, CHF 39 pro Monat">
+              <span class="pl-ki-preis"><b>CHF 490</b><small>einmalig</small></span>
+              <span class="pl-ki-preis-trenner" aria-hidden="true">–</span>
+              <span class="pl-ki-preis"><b>CHF 39</b><small>/ Monat</small></span>
+            </div>
 
-            <p class="pl-ki-teil">Einrichtung <em>einmalig</em></p>
+            <p class="pl-ki-teil">Einmalig enthalten</p>
             <ul class="pl-check">
-              <li>Training auf deine Inhalte</li>
-              <li>Gestaltung in deinen Farben</li>
-              <li>Einbau und gemeinsamer Test</li>
+              <li>Individuelle Einrichtung des KI-Assistenten</li>
+              <li>Einbindung der Unternehmensinformationen</li>
+              <li>Anpassung an Branche und Unternehmen</li>
+              <li>Design passend zur Website</li>
+              <li>Integration in die Website</li>
+              <li>Mehrsprachigkeit</li>
+              <li>Lead-Erfassung</li>
+              <li>Kontaktanfragen aufnehmen</li>
+              <li>Dashboard einrichten</li>
+              <li>Tests und Optimierung vor Veröffentlichung</li>
             </ul>
 
-            <p class="pl-ki-teil">Betrieb <em>CHF 40.– / Monat</em></p>
+            <p class="pl-ki-teil">Monatlich enthalten</p>
             <ul class="pl-check">
-              <li>Server, Wartung und Updates</li>
-              <li>Laufendes Nachtraining</li>
-              <li>Monatlich kündbar</li>
+              <li>Betrieb des KI-Assistenten</li>
+              <li>KI-Nutzung</li>
+              <li>Hosting</li>
+              <li>Dashboard</li>
+              <li>Speicherung der Anfragen</li>
+              <li>Wartung</li>
+              <li>Technische Updates</li>
+              <li>Support</li>
+              <li>Kleinere laufende Anpassungen</li>
             </ul>
+
+            <p class="pl-ki-fair"><b>Fair Use</b>Der Monatspreis deckt die übliche Nutzung eines KMU ab. Bei aussergewöhnlich hoher Nutzung melden wir uns vorab und vereinbaren ein passendes Nutzungspaket. Es entstehen keine zusätzlichen Kosten ohne deine Zustimmung.</p>
 
             <button class="pl-anfragen" type="button">Anfragen</button>
           </article>
         </div>
         <p class="pl-notiz">Rechne selbst: Eine einzige Anfrage, die nicht verloren geht, zahlt den Monatspreis meist schon.</p>
-      </section>
+      </div>
+    </section>
 
     <section class="tight" id="betrieb">
       <div class="wrap">
@@ -413,7 +361,8 @@
             <button class="pl-anfragen" type="button">Anfragen</button>
           </article>
         </div>
-      </section>
+      </div>
+    </section>
 
     <!-- ===== Bedingungen ===== -->
     <section class="tight" id="bedingungen">
@@ -432,7 +381,7 @@
           <details class="pl-faq-item">
             <summary>Wie läuft die Zahlung?</summary>
             <div class="pl-faq-a">
-              <p>Bei Websites und Überarbeitungen die Hälfte bei Projektstart, die Hälfte bei Fertigstellung. Bei Webapps in Etappen nach vereinbarten Zwischenzielen. Rechnung auf 30 Tage, keine Vorauszahlung des ganzen Betrags.</p>
+              <p>Bei Websites die Hälfte bei Projektstart, die Hälfte bei Fertigstellung. Bei Web-Apps in Etappen nach vereinbarten Zwischenzielen. Rechnung auf 30 Tage, keine Vorauszahlung des ganzen Betrags.</p>
             </div>
           </details>
           <details class="pl-faq-item">
@@ -455,10 +404,10 @@
     <section class="tight">
       <div class="wrap">
         <div class="big-cta">
-          <h2>Sag uns, was du brauchst.</h2>
-          <p>Du musst dich nicht auf ein Paket festlegen. Beschreib in ein paar Sätzen, was du vorhast – wir melden uns innert 24 Stunden mit einer ehrlichen Einschätzung und einer festen Offerte.</p>
+          <h2>Unsicher, welches Paket passt?</h2>
+          <p>Schilder uns dein Ziel. Wir empfehlen die kleinste Lösung, die es zuverlässig erreicht – unverbindlich und ohne Verkaufsdruck.</p>
           <div class="hero-ctas">
-            <a class="btn btn-primary" href="/kontakt">Unverbindlich anfragen <span class="arrow">→</span></a>
+            <a class="btn btn-primary" href="/kontakt">Kostenlos einordnen lassen <span class="arrow">→</span></a>
             <a class="btn btn-ghost" href="/leistungen">Leistungen im Detail</a>
           </div>
         </div>
@@ -474,15 +423,15 @@
           <a class="logo" href="/">
             masesites
           </a>
-          <p>Personalisierte, professionelle Websites aus der Schweiz.</p>
+          <p>Websites für Schweizer KMU, die mehr Anfragen bringen und Arbeit abnehmen.</p>
           <a class="mail" href="mailto:info@masesites.ch">info@masesites.ch</a>
         </div>
         <div class="footer-col">
           <h4>Angebot</h4>
           <ul>
-            <li><a href="/preise">Neue Website</a></li>
-            <li><a href="/preise#ueberarbeitung">Website-Überarbeitung</a></li>
-            <li></li>
+            <li><a href="/preise#website">Neue Website</a></li>
+            <li><a href="/preise#webapp">Web-Apps</a></li>
+            <li><a href="/preise#ki">KI-Assistent</a></li>
           </ul>
         </div>
         <div class="footer-col">
@@ -494,6 +443,8 @@
             <li><a href="/projekte">Projekte</a></li>
             <li><a href="/ueber-uns">Über uns</a></li>
             <li><a href="/kontakt">Kontakt</a></li>
+            <li><a href="/webdesign-kloten">Webdesign Kloten</a></li>
+            <li><a href="/dashboard">Kundenlogin</a></li>
           </ul>
         </div>
         <div class="footer-col">
@@ -520,7 +471,7 @@
   <script src="assets/js/sanft.js?v=1"></script>
   <script src="assets/js/protokoll.js?v=20"></script>
   <script src="assets/js/cookie.js?v=4"></script>
-  <script src="assets/js/site.js?v=32"></script>
-  <script src="assets/js/preisliste.js?v=4"></script>
+  <script src="assets/js/site.js?v=33"></script>
+  <script src="assets/js/preisliste.js?v=5"></script>
 </body>
 </html>

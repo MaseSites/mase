@@ -1254,7 +1254,7 @@
     var paketInput = document.createElement("input");
     paketInput.type = "text";
     paketInput.value = p.paket || "";
-    paketInput.placeholder = "Zum Beispiel: Neue Website: Business";
+    paketInput.placeholder = "Zum Beispiel: Neue Website: Pro";
 
     var schrittSelect = document.createElement("select");
     D.SCHRITTE.forEach(function (name, i) {

@@ -61,7 +61,7 @@ STAND = {
         {"zeit": _jetzt_minus(3600), "konto": "Gast ab12cd", "seite": "index.html",
          "von": "besucher", "text": "Was kostet eine Website?"},
         {"zeit": _jetzt_minus(3599), "konto": "Gast ab12cd", "seite": "index.html",
-         "von": "bot", "text": "Eine neue Website gibt es ab CHF 750. Auf /preise stellst du dein Paket zusammen."},
+         "von": "bot", "text": "Eine neue Website gibt es ab CHF 790. Auf /preise findest du alle Pakete im Vergleich."},
     ],
     "naechste_id": 4,
 }
@@ -123,7 +123,7 @@ def _bot_antwort(body):
     reply = ("Gern! Frag mich zu Websites, Preisen oder wuensch dir einen Termin. "
              "Mehr auf /preise oder schreib an info@masesites.ch.")
     if "kost" in letzte or "preis" in letzte:
-        reply = "Eine neue Website gibt es ab CHF 750. Auf /preise stellst du dein Paket zusammen."
+        reply = "Eine neue Website gibt es ab CHF 790. Auf /preise findest du alle Pakete im Vergleich."
     elif "termin" in letzte or "beratung" in letzte or "rueckruf" in letzte or "rückruf" in letzte:
         reply = "Sehr gern! Wie heisst du, wie erreiche ich dich (E-Mail oder Telefon), und wann wuerde dir passen?"
     elif "@" in letzte or any(z.isdigit() for z in letzte):
@@ -235,6 +235,22 @@ class Handler(BaseHTTPRequestHandler):
                                     "neu": ["Baeckerei"], "ohneHtml": []})
         if pfad == "/api/bot" and methode == "POST":
             return self._json(200, _bot_antwort(body))
+        if pfad == "/api/kontakt" and methode == "POST":
+            if body.get("firma_website"):
+                return self._json(200, {"ok": True})
+            name = str(body.get("name", "")).strip()[:120]
+            email = str(body.get("email", "")).strip()[:200]
+            nachricht = str(body.get("nachricht", "")).strip()[:4000]
+            if not name or "@" not in email or len(nachricht) < 10:
+                return self._json(400, {"fehler": "Bitte prüfe Name, E-Mail und Nachricht."})
+            STAND["termine"].insert(0, {
+                "db_id": STAND["naechste_id"], "id": "T-100%d" % STAND["naechste_id"],
+                "zeit": int(time.time() * 1000), "status": "offen", "name": name,
+                "kontakt": email, "wunsch": "Persönliche Rückmeldung zur Projektanfrage",
+                "thema": " · ".join(body.get("interessen", [])[:8]) or "Website-Projekt",
+                "anmerkung": nachricht, "kontoLabel": "Kontaktformular"})
+            STAND["naechste_id"] += 1
+            return self._json(200, {"ok": True})
         if pfad in ("/api/log", "/api/bot-log"):
             return self._json(200, {"ok": True})
         if pfad == "/api/ich":

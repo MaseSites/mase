@@ -680,18 +680,20 @@ function botSystemPrompt(string $heute): string
 {
     $kern = implode("\n", [
         "Du bist der masesites-Bot, der freundliche KI-Assistent auf der Website von MASESites (masesites.ch).",
-        "MASESites ist ein Schweizer Studio von Matteo und Severin für Websites, Webapps und KI-Integration für KMU.",
+        "MASESites ist ein Schweizer Webstudio von Matteo und Severin. Im Zentrum stehen Websites für Schweizer KMU, die mehr Anfragen bringen und Verwaltungsarbeit abnehmen; Webapps und KI sind sinnvolle Erweiterungen, wenn sie einen konkreten Nutzen haben.",
         "Heutiges Datum: {$heute}. Antworte in der Sprache der Besucherin oder des Besuchers (Standard Deutsch, sonst Englisch, Französisch oder Italienisch). Sprich per Du, freundlich, kurz und ehrlich – meist 2 bis 5 Sätze.",
         "",
         "WISSEN über MASESites:",
-        "- Angebot: professionelle, mobil-optimierte Websites; Webapps (z. B. Buchungs- und Firmensysteme); KI-Assistenten wie dieser Chat.",
-        "- Preise Website: Starter ab CHF 750, Business CHF 1'300, Premium CHF 2'500.",
-        "- Preise Überarbeitung einer bestehenden Seite: Quick Fix CHF 250, Plus CHF 500, Pro CHF 800.",
-        "- Preise Webapps: 'Buchung & System' ab CHF 3'500, 'Firmen-Webapp' ab CHF 7'500.",
-        "- KI-Assistent: CHF 200 Einrichtung + CHF 40/Monat. Optional Domain CHF 20/Jahr, Hosting CHF 15/Monat, Bundle CHF 160/Jahr.",
+        "- Angebot: professionelle, mobil-optimierte Websites als Kernangebot; Webapps (z. B. Buchungs- und Firmensysteme) und KI-Assistenten als optionale Erweiterungen.",
+        "- Die Beispiele unter /beispiele sind interaktive Konzept-Demos und keine ausgegebenen Kundenprojekte. Unter /projekte werden erst echte, freigegebene Kundenarbeiten gezeigt.",
+        "- Zusammenarbeit: direkte Ansprechpartner sind die Gründer Matteo und Severin; vor Projektstart gibt es eine Offerte mit klar definiertem Umfang und Fixpreis.",
+        "- Preise Website: Starter CHF 790, Pro CHF 1'490, Smart ab CHF 2'990.",
+        "- Preise Web-Apps: Starter WebApp CHF 2'990, Pro WebApp CHF 5'990, Smart WebApp ab CHF 9'990.",
+        "- MASE AI: CHF 490 einmalig + CHF 39/Monat. Enthalten sind individuelle Einrichtung, Unternehmenswissen, Branchenanpassung, passendes Design, Website-Integration, Mehrsprachigkeit, Lead-Erfassung, Kontaktanfragen, Dashboard sowie Tests und Optimierung. Monatlich enthalten sind Betrieb, KI-Nutzung, Hosting, Dashboard, Speicherung der Anfragen, Wartung, technische Updates, Support und kleinere laufende Anpassungen. Fair Use: Der Monatspreis deckt die übliche Nutzung eines KMU ab; bei aussergewöhnlich hoher Nutzung vereinbaren wir vorab ein passendes Nutzungspaket. Keine Zusatzkosten ohne Zustimmung.",
+        "- Optional für Websites: Domain CHF 20/Jahr, Hosting CHF 15/Monat, Bundle CHF 160/Jahr.",
         "- Der KI-Bot lässt sich auch nachträglich in bestehende Seiten (auch WordPress, Wix usw.) einbauen, ist mehrsprachig und kann Terminwünsche entgegennehmen.",
         "- Ablauf: unverbindliches Gespräch, dann Offerte mit Fixpreis vor Projektstart.",
-        "- Seiten: /preise (Rechner), /beispiele (Demos), /projekte, /leistungen, /ueber-uns, /kontakt, /agb, /datenschutz, /impressum. Kontakt: info@masesites.ch.",
+        "- Seiten: /preise (Pakete und Vergleich), /beispiele (Konzept-Demos), /projekte (echte Referenzen, sobald freigegeben), /leistungen, /webdesign-kloten, /ueber-uns, /kontakt, /agb, /datenschutz, /impressum. Kontakt: info@masesites.ch.",
         "- Wir sind nicht mehrwertsteuerpflichtig: alle Preise sind Endpreise, es kommt keine MWST dazu.",
         "- Bei Fragen zu Vertrag, Zahlung, Rechten an der Website oder Haftung verweise auf die AGB unter /agb, ohne sie auszulegen.",
         "",
@@ -1648,7 +1650,7 @@ function botZusatzStandard(): string
     return implode("\n", [
         "ROLLE: Du bist nicht nur ein Nachschlagewerk, sondern ein aktiver, mitdenkender Berater. Dein Ziel: jedem Besucher helfen, die für ihn passende Lösung zu finden, statt nur Fragen abzuarbeiten.",
         "",
-        "BERATEN STATT NUR ANTWORTEN: Zeigt jemand allgemeines Interesse oder ist unsicher, was er braucht, stell zuerst 1-2 gezielte Rückfragen, bevor du empfiehlst - zum Beispiel: Gibt es schon eine Website oder ist es die erste? In welcher Branche ist die Person tätig? Was soll die Website oder Webapp können? Empfiehl danach konkret eine der vier Leistungen (Neue Website, Überarbeitung, Webapp, KI-Assistent) und begründe kurz, warum sie passt. Bist du zwischen zwei Optionen unsicher, nenne zuerst die einfachere und günstigere - lieber ehrlich zu klein empfehlen als zu gross.",
+        "BERATEN STATT NUR ANTWORTEN: Zeigt jemand allgemeines Interesse oder ist unsicher, was er braucht, stell zuerst 1-2 gezielte Rückfragen, bevor du empfiehlst - zum Beispiel: Braucht die Person einen Webauftritt oder eine Anwendung zum täglichen Arbeiten? In welcher Branche ist sie tätig? Was soll die Website oder Web-App können? Empfiehl danach konkret eine der drei Leistungen (Neue Website, Web-App, KI-Assistent) und begründe kurz, warum sie passt. Bist du zwischen zwei Optionen unsicher, nenne zuerst die einfachere und günstigere - lieber ehrlich zu klein empfehlen als zu gross.",
         "",
         "ANFRAGEN AKTIV AUFNEHMEN: Zeigt jemand konkretes Interesse, moechte ein Angebot oder will loslegen, biete von dir aus an, die Anfrage gleich hier aufzunehmen, statt nur auf das Kontaktformular zu verweisen. Frag nach Name, Kontakt (E-Mail oder Telefon) und kurz worum es geht, und nutze dafuer das Werkzeug termin_erfassen - auch wenn es kein klassischer Termin ist, sondern eine Projektanfrage. Sag danach kurz, dass sich das Team meldet.",
     ]);
@@ -3777,6 +3779,67 @@ route('POST', '/api/bot-log', null, function ($p, $body, $sitzung) {
         fehler(400, 'Leer.');
     }
     schreibeBotlog(logLabel($sitzung), s($body['seite'] ?? '', 60), $von, $text);
+    antwortJson(200, ['ok' => true]);
+});
+
+/* Kontaktformular: Die Anfrage wird serverseitig und verschlüsselt in der
+   bestehenden Termin-/Anfragenliste gespeichert. Ein Mail an das Team ist
+   nur eine zusätzliche Benachrichtigung; selbst wenn mail() beim Hoster nicht
+   eingerichtet ist, geht die Anfrage in der Verwaltung nicht verloren. */
+route('POST', '/api/kontakt', null, function ($p, $body) {
+    if (!ratenbegrenzung('kontakt', clientIp(), 8, 60 * 60 * 1000)) {
+        fehler(429, 'Zu viele Anfragen. Bitte probier es später nochmals.');
+    }
+    if (s($body['firma_website'] ?? '', 200) !== '') {
+        antwortJson(200, ['ok' => true]);
+    }
+
+    $name = s($body['name'] ?? '', 120);
+    $email = mb_strtolower(s($body['email'] ?? '', 200));
+    $telefon = s($body['telefon'] ?? '', 80);
+    $branche = s($body['branche'] ?? '', 80);
+    $nachricht = s($body['nachricht'] ?? '', 4000);
+    if ($name === '') { fehler(400, 'Bitte gib deinen Namen ein.'); }
+    if (!preg_match(EMAIL_MUSTER, $email)) { fehler(400, 'Diese E-Mail-Adresse sieht nicht gültig aus.'); }
+    if (mb_strlen($nachricht) < 10) { fehler(400, 'Beschreib dein Projekt bitte in mindestens einem kurzen Satz.'); }
+
+    $interessen = [];
+    foreach (array_slice(is_array($body['interessen'] ?? null) ? $body['interessen'] : [], 0, 8) as $wert) {
+        $wert = s($wert, 60);
+        if ($wert !== '' && !in_array($wert, $interessen, true)) { $interessen[] = $wert; }
+    }
+    $themaTeile = $interessen;
+    if ($branche !== '') { $themaTeile[] = 'Branche: ' . $branche; }
+    $thema = $themaTeile ? implode(' · ', $themaTeile) : 'Website-Projekt';
+    $kontakt = $email . ($telefon !== '' ? ' · ' . $telefon : '');
+    speichereTermin([
+        'name' => $name,
+        'kontakt' => $kontakt,
+        'wunsch' => 'Persönliche Rückmeldung zur Projektanfrage',
+        'thema' => $thema,
+        'anmerkung' => $nachricht,
+        'quelle' => 'kontaktformular',
+        'chatId' => 'kontakt-' . substr(hash('sha256', $email . "\n" . $nachricht), 0, 16),
+        'kontoLabel' => 'Kontaktformular',
+        'status' => 'offen',
+        'antwort' => '',
+    ]);
+
+    /* Best-effort-Benachrichtigung. Reply-To bleibt die geprüfte Adresse;
+       Zeilenumbrüche im Namen werden entfernt, damit keine Header-Injection
+       möglich ist. */
+    $sichererName = preg_replace('/[\r\n]+/', ' ', $name);
+    $betreff = 'Neue Projektanfrage von ' . $sichererName;
+    $mailText = "Name: {$name}\nE-Mail: {$email}\n"
+        . ($telefon !== '' ? "Telefon: {$telefon}\n" : '')
+        . ($branche !== '' ? "Branche: {$branche}\n" : '')
+        . 'Interesse: ' . ($interessen ? implode(', ', $interessen) : 'keine Angabe')
+        . "\n\n{$nachricht}";
+    $mailBetreff = function_exists('mb_encode_mimeheader') ? mb_encode_mimeheader($betreff, 'UTF-8') : $betreff;
+    @mail('info@masesites.ch', $mailBetreff, $mailText,
+        "Content-Type: text/plain; charset=UTF-8\r\nReply-To: {$email}\r\n");
+
+    schreibeLog('Kontaktformular', clientIp(), 'kontakt', 'Projektanfrage eingegangen', $thema);
     antwortJson(200, ['ok' => true]);
 });
 
