@@ -1670,6 +1670,26 @@ function stelleBotZusatzSicher(): void
 
 function stelleInhalteSicher(): void
 {
+    /* Einheitliche Portfolio-Mockups fuer die Vorschaukarten. Die Kennungen
+       entsprechen den Eintraegen im Admin; so koennen auch bestehende
+       Installationen einmalig auf die neuen Bilder umgestellt werden. */
+    $portfolioBilder = [
+        'B-95369c68' => 'assets/img/demos/restaurant-portfolio.webp',
+        'B-5e3f34c6' => 'assets/img/demos/reinigung-portfolio.webp',
+        'B-30c72769' => 'assets/img/demos/coiffeur-portfolio.webp',
+        'B-dde68005' => 'assets/img/demos/bauunternehmen-portfolio.webp',
+        'B-9edf0bce' => 'assets/img/demos/gartenbau-portfolio.webp',
+        'B-0a6deea6' => 'assets/img/demos/maler-gipser-portfolio.webp',
+        'B-eceb26cd' => 'assets/img/demos/autogarage-portfolio.webp',
+        'B-tavolo' => 'assets/img/demos/tavolo-portfolio.webp',
+        'B-kosmetik' => 'assets/img/demos/kosmetik-portfolio.webp',
+        'B-baeckerei' => 'assets/img/demos/baeckerei-portfolio.webp',
+        'B-fahrschule' => 'assets/img/demos/fahrschule-portfolio.webp',
+        'B-optik' => 'assets/img/demos/optik-portfolio.webp',
+        'B-metzgerei' => 'assets/img/demos/metzgerei-portfolio.webp',
+        'B-arztpraxis' => 'assets/img/demos/praxis-portfolio.webp',
+    ];
+
     /* Die Webapp-Demo kam später dazu. Sie wird deshalb auch bestehenden
        Installationen genau EINMAL hinzugefügt (per Merker), damit sie nicht
        wieder auftaucht, wenn sie im Admin bewusst gelöscht wurde. */
@@ -1679,7 +1699,7 @@ function stelleInhalteSicher(): void
         'branche' => 'Webapp',
         'beschreibung' => 'Bedienbare Webapp: Reservierungen, Kalender, Menüs, Schichten und Preisrechner.',
         'url' => '/beispiel-demos/tavolo',
-        'bild' => 'assets/img/demos/tavolo.jpg',
+        'bild' => $portfolioBilder['B-tavolo'],
         'startseite' => true,
     ];
 
@@ -1689,11 +1709,11 @@ function stelleInhalteSicher(): void
        auftauchen. startseite=false: nur auf der Beispiele-Seite, nicht im
        Demo-Fenster der Startseite. */
     $vorlagen5 = [
-        ['id' => 'B-kosmetik',  'name' => 'Hautnah Atelier', 'branche' => 'Kosmetik & Beauty', 'beschreibung' => 'Editorialer Look mit Behandlungsfilter und dreistufiger Terminanfrage.',        'url' => '/beispiel-demos/kosmetik/',  'bild' => 'assets/img/demos/kosmetik.jpg',  'startseite' => false],
-        ['id' => 'B-baeckerei', 'name' => 'Brot & Butter',   'branche' => 'Bäckerei',           'beschreibung' => 'Plakative Backstuben-Optik mit Sortiment und unverbindlicher Vorbestellung.', 'url' => '/beispiel-demos/baeckerei/', 'bild' => 'assets/img/demos/baeckerei.jpg', 'startseite' => false],
-        ['id' => 'B-fahrschule','name' => 'Vorwärts',        'branche' => 'Fahrschule',         'beschreibung' => 'Dynamischer Auftritt mit Lernziel-Auswahl, Weg-Stepper und Erstlektion-Anfrage.', 'url' => '/beispiel-demos/fahrschule/', 'bild' => 'assets/img/demos/fahrschule.jpg', 'startseite' => false],
-        ['id' => 'B-optik',     'name' => 'Klar Optik',      'branche' => 'Optiker',            'beschreibung' => 'Swiss-Minimal mit Fassungsfilter, Schärfe-Regler und Terminanfrage.',        'url' => '/beispiel-demos/optik/',     'bild' => 'assets/img/demos/optik.jpg',     'startseite' => false],
-        ['id' => 'B-metzgerei', 'name' => 'Die Werkbank',    'branche' => 'Metzgerei',          'beschreibung' => 'Handwerklich-editorial mit Sortiments-Tabs und Partyservice-Vorbestellung.',  'url' => '/beispiel-demos/metzgerei/', 'bild' => 'assets/img/demos/metzgerei.jpg', 'startseite' => false],
+        ['id' => 'B-kosmetik',  'name' => 'Hautnah Atelier', 'branche' => 'Kosmetik & Beauty', 'beschreibung' => 'Editorialer Look mit Behandlungsfilter und dreistufiger Terminanfrage.',        'url' => '/beispiel-demos/kosmetik/',  'bild' => $portfolioBilder['B-kosmetik'],  'startseite' => false],
+        ['id' => 'B-baeckerei', 'name' => 'Brot & Butter',   'branche' => 'Bäckerei',           'beschreibung' => 'Plakative Backstuben-Optik mit Sortiment und unverbindlicher Vorbestellung.', 'url' => '/beispiel-demos/baeckerei/', 'bild' => $portfolioBilder['B-baeckerei'], 'startseite' => false],
+        ['id' => 'B-fahrschule','name' => 'Vorwärts',        'branche' => 'Fahrschule',         'beschreibung' => 'Dynamischer Auftritt mit Lernziel-Auswahl, Weg-Stepper und Erstlektion-Anfrage.', 'url' => '/beispiel-demos/fahrschule/', 'bild' => $portfolioBilder['B-fahrschule'], 'startseite' => false],
+        ['id' => 'B-optik',     'name' => 'Klar Optik',      'branche' => 'Optiker',            'beschreibung' => 'Swiss-Minimal mit Fassungsfilter, Schärfe-Regler und Terminanfrage.',        'url' => '/beispiel-demos/optik/',     'bild' => $portfolioBilder['B-optik'],     'startseite' => false],
+        ['id' => 'B-metzgerei', 'name' => 'Die Werkbank',    'branche' => 'Metzgerei',          'beschreibung' => 'Handwerklich-editorial mit Sortiments-Tabs und Partyservice-Vorbestellung.',  'url' => '/beispiel-demos/metzgerei/', 'bild' => $portfolioBilder['B-metzgerei'], 'startseite' => false],
     ];
 
     if (einstellung('inhalte_beispiele') !== null) {
@@ -1769,17 +1789,17 @@ function stelleInhalteSicher(): void
             }
             setzeEinstellung('inhalte_texte7_gesetzt', '1');
         }
-        /* Das tavolo-Startbild wurde im Admin auf tavolo_gute.jpg gesetzt - diese
-           Datei liegt aber nicht im Repo (404 -> leere Karte). Einmalig auf die
-           ausgelieferte tavolo.jpg zurücksetzen (enthält jetzt das gute Bild). */
+        /* Historischer tavolo-Bildfix: alte Installationen koennen noch auf die
+           nicht ausgelieferte tavolo_gute.jpg zeigen. Direkt das aktuelle
+           Portfolio-Mockup eintragen. */
         if (einstellung('inhalte_tavolo_bild_fix') === null) {
             $liste = json_decode((string)einstellung('inhalte_beispiele'), true);
             if (is_array($liste)) {
                 $geaendert = false;
                 foreach ($liste as $i => $e) {
                     if (is_array($e) && ($e['id'] ?? '') === 'B-tavolo'
-                        && ($e['bild'] ?? '') !== 'assets/img/demos/tavolo.jpg') {
-                        $liste[$i]['bild'] = 'assets/img/demos/tavolo.jpg';
+                        && ($e['bild'] ?? '') !== $portfolioBilder['B-tavolo']) {
+                        $liste[$i]['bild'] = $portfolioBilder['B-tavolo'];
                         $geaendert = true;
                     }
                 }
@@ -1823,7 +1843,7 @@ function stelleInhalteSicher(): void
            (nur wenn nicht schon vorhanden). Wird via scripts/vorlagen-sync
            unter /beispiel-demos/praxis/ ausgeliefert. */
         if (einstellung('inhalte_praxis_ergaenzt') === null) {
-            $praxis = ['id' => 'B-arztpraxis', 'name' => 'Praxis am Park', 'branche' => 'Arztpraxis', 'beschreibung' => 'Ruhiger, vertrauensvoller Auftritt mit Leistungen, Sprechzeiten und Online-Terminanfrage.', 'url' => '/beispiel-demos/praxis/', 'bild' => 'assets/img/demos/praxis.jpg', 'startseite' => false];
+            $praxis = ['id' => 'B-arztpraxis', 'name' => 'Praxis am Park', 'branche' => 'Arztpraxis', 'beschreibung' => 'Ruhiger, vertrauensvoller Auftritt mit Leistungen, Sprechzeiten und Online-Terminanfrage.', 'url' => '/beispiel-demos/praxis/', 'bild' => $portfolioBilder['B-arztpraxis'], 'startseite' => false];
             $liste = json_decode((string)einstellung('inhalte_beispiele'), true);
             if (is_array($liste)) {
                 $vorhanden = false;
@@ -1839,6 +1859,26 @@ function stelleInhalteSicher(): void
                 }
             }
             setzeEinstellung('inhalte_praxis_ergaenzt', '1');
+        }
+        /* Die neuen Portfolio-Mockups einmalig fuer alle vorhandenen Beispiele
+           eintragen. Danach bleiben die Bildpfade im Admin wieder frei
+           editierbar und werden nicht bei jedem Aufruf ueberschrieben. */
+        if (einstellung('inhalte_portfolio_bilder_20260810') === null) {
+            $liste = json_decode((string)einstellung('inhalte_beispiele'), true);
+            if (is_array($liste)) {
+                $geaendert = false;
+                foreach ($liste as $i => $e) {
+                    $id = is_array($e) ? ($e['id'] ?? '') : '';
+                    if (isset($portfolioBilder[$id]) && ($e['bild'] ?? '') !== $portfolioBilder[$id]) {
+                        $liste[$i]['bild'] = $portfolioBilder[$id];
+                        $geaendert = true;
+                    }
+                }
+                if ($geaendert) {
+                    setzeEinstellung('inhalte_beispiele', json_encode(saeubereBeispiele($liste), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+                }
+            }
+            setzeEinstellung('inhalte_portfolio_bilder_20260810', '1');
         }
         return;
     }
