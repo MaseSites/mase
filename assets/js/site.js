@@ -32,6 +32,11 @@
   var burger = document.querySelector(".burger");
   var mobileMenu = document.querySelector(".mobile-menu");
   if (burger && mobileMenu) {
+    mobileMenu.id = mobileMenu.id || "mobile-navigation";
+    burger.setAttribute("aria-controls", mobileMenu.id);
+    burger.setAttribute("aria-expanded", "false");
+    mobileMenu.setAttribute("aria-hidden", "true");
+    mobileMenu.inert = true;
     /* Die Links liegen flach im Markup – hier wandern sie in eine Karte,
        damit das Menü als aufklappende Kapsel unter der Kopfzeile erscheint
        und der Rest des Bildschirms sichtbar bleibt. */
@@ -40,26 +45,39 @@
     while (mobileMenu.firstChild) karte.appendChild(mobileMenu.firstChild);
     mobileMenu.appendChild(karte);
 
-    function schliesseMenue() {
+    function schliesseMenue(fokusZurueck) {
       mobileMenu.classList.remove("open");
       burger.classList.remove("open");
       burger.setAttribute("aria-expanded", "false");
+      burger.setAttribute("aria-label", "Menü öffnen");
+      mobileMenu.setAttribute("aria-hidden", "true");
+      mobileMenu.inert = true;
       document.body.classList.remove("menue-offen");
       document.body.style.overflow = "";
+      if (fokusZurueck) burger.focus();
     }
     burger.addEventListener("click", function () {
       var open = mobileMenu.classList.toggle("open");
       burger.classList.toggle("open", open);
       burger.setAttribute("aria-expanded", open ? "true" : "false");
+      burger.setAttribute("aria-label", open ? "Menü schliessen" : "Menü öffnen");
+      mobileMenu.setAttribute("aria-hidden", open ? "false" : "true");
+      mobileMenu.inert = !open;
       document.body.classList.toggle("menue-offen", open);
       document.body.style.overflow = open ? "hidden" : "";
     });
     /* Tipp auf den abgedunkelten Hintergrund neben der Karte schliesst */
     mobileMenu.addEventListener("click", function (e) {
-      if (e.target === mobileMenu) schliesseMenue();
+      if (e.target === mobileMenu) schliesseMenue(true);
     });
     mobileMenu.querySelectorAll("a").forEach(function (a) {
-      a.addEventListener("click", schliesseMenue);
+      a.addEventListener("click", function () { schliesseMenue(false); });
+    });
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && mobileMenu.classList.contains("open")) schliesseMenue(true);
+    });
+    window.matchMedia("(min-width: 721px)").addEventListener("change", function (e) {
+      if (e.matches && mobileMenu.classList.contains("open")) schliesseMenue(false);
     });
   }
 
@@ -195,7 +213,7 @@
         '<div class="ps-avatar ms-hat-bild">' + avatarSvg + '<span class="online" aria-hidden="true"></span></div>' +
         '<div><div class="name">masesites-Bot</div><div class="status"><i></i>online</div></div>' +
         '<span class="ki-badge">KI</span>' +
-        (opts.closable ? '<button class="widget-close" aria-label="Chat schließen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>' : '') +
+        (opts.closable ? '<button class="widget-close" aria-label="Chat schliessen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>' : '') +
       '</div>' +
       '<div class="chat-body" aria-live="polite"></div>' +
       '<div class="chat-chips">' +
@@ -244,6 +262,7 @@
     function tippeMsg(text, fertig) {
       var div = document.createElement("div");
       div.className = "msg bot";
+      div.setAttribute("aria-hidden", "true");
       var span = document.createElement("span");
       div.appendChild(span);
       var caret = document.createElement("span");
@@ -259,6 +278,7 @@
         if (timer) { clearTimeout(timer); timer = null; }
         div.textContent = "";
         botTextInDom(div, text);        /* jetzt mit klickbaren Links */
+        div.removeAttribute("aria-hidden");
         body.scrollTop = body.scrollHeight;
         tippenGerade = null;
         if (typeof fertig === "function") fertig();
@@ -320,6 +340,7 @@
       verlauf.push({ von: "user", text: text });
       var typing = document.createElement("div");
       typing.className = "msg bot typing";
+      typing.setAttribute("aria-hidden", "true");
       typing.innerHTML = "<i></i><i></i><i></i>";
       body.appendChild(typing);
       body.scrollTop = body.scrollHeight;
@@ -360,7 +381,7 @@
       b.addEventListener("click", function () { respond(b.textContent); });
     });
 
-    addMsg(opts.greeting || "Hallo! Ich bin der masesites-Bot. Frag mich etwas, zum Beispiel was eine Website kostet.", "bot");
+    addMsg(opts.greeting || "Hallo! Ich bin der masesites-Bot. Frag mich zu Websites, WebApps oder KI-Lösungen.", "bot");
     return { respond: respond };
   }
 
@@ -386,12 +407,12 @@
         "body .widget-launcher{background:var(--ink,#2C2118);box-shadow:0 8px 24px rgba(44,33,24,.22)}" +
         "body .widget-launcher:hover{background:#1A130C;box-shadow:0 12px 30px rgba(44,33,24,.28)}" +
         "body .chat-head .ps-avatar{background:var(--ink,#2C2118);box-shadow:none}" +
-        ".widget-launcher.ms-pop{animation:msPop .55s cubic-bezier(.22,1,.36,1) both}" +
-        "@keyframes msPop{0%{transform:scale(.5);opacity:0}60%{transform:scale(1.1)}100%{transform:scale(1);opacity:1}}" +
+        ".widget-launcher.ms-pop{animation:msPop .24s cubic-bezier(.22,1,.36,1) both}" +
+        "@keyframes msPop{0%{transform:scale(.94);opacity:0}100%{transform:scale(1);opacity:1}}" +
         ".widget-launcher.ms-ping::before,.widget-launcher.ms-ping::after{content:\"\";position:absolute;inset:0;border-radius:999px;border:1.5px solid rgba(44,33,24,.28);pointer-events:none;animation:msPing 1.9s ease-out 2}" +
         ".widget-launcher.ms-ping::after{animation-delay:.65s}" +
         "@keyframes msPing{0%{transform:scale(1);opacity:.7}100%{transform:scale(1.5);opacity:0}}" +
-        ".ms-teaser{position:fixed;right:22px;bottom:96px;z-index:80;max-width:min(290px,calc(100vw - 44px));background:var(--card,#fff);color:var(--ink,#2C2118);border:1px solid var(--line,#E4D9C6);border-radius:16px;border-bottom-right-radius:6px;padding:12px 30px 12px 12px;box-shadow:0 12px 32px rgba(44,33,24,.14);display:flex;gap:10px;align-items:flex-start;cursor:pointer;opacity:0;transform:translateY(8px) scale(.96);transition:opacity .35s ease, transform .35s cubic-bezier(.22,1,.36,1)}" +
+        ".ms-teaser{position:fixed;right:22px;bottom:96px;z-index:80;max-width:min(290px,calc(100vw - 44px));background:var(--card,#fff);color:var(--ink,#2C2118);border:1px solid var(--line,#E4D9C6);border-radius:16px;border-bottom-right-radius:6px;padding:12px 30px 12px 12px;box-shadow:0 12px 32px rgba(44,33,24,.14);display:flex;gap:10px;align-items:flex-start;cursor:pointer;opacity:0;transform:translateY(8px) scale(.96);transition:opacity .2s ease, transform .2s cubic-bezier(.22,1,.36,1)}" +
         ".ms-teaser.ms-an{opacity:1;transform:none}" +
         ".ms-teaser .ms-av{flex:0 0 auto;width:30px;height:30px;border-radius:50%;background:transparent;display:grid;place-items:center;box-shadow:none;overflow:hidden}" +
         ".ms-teaser .ms-av svg{width:100%;height:100%;border-radius:50%}" +
@@ -407,6 +428,8 @@
     var launcher = document.createElement("button");
     launcher.className = "widget-launcher";
     launcher.setAttribute("aria-label", "Chat mit dem masesites-Bot öffnen");
+    launcher.setAttribute("aria-expanded", "false");
+    launcher.setAttribute("aria-controls", "masesites-chat");
     /* Pille mit Funke und Text statt runder Sprechblase - man sieht
        sofort, dass hier ein Assistent wartet, statt es raten zu muessen. */
     /* Kein Online-Punkt am Knopf: Auf der Pille sass er halb ausserhalb
@@ -417,9 +440,12 @@
       '<span class="wl-text">Frag mich</span>';
 
     var panel = document.createElement("div");
+    panel.id = "masesites-chat";
     panel.className = "widget-panel chat-demo";
     panel.setAttribute("role", "dialog");
     panel.setAttribute("aria-label", "masesites-Bot Chat");
+    panel.setAttribute("aria-hidden", "true");
+    panel.inert = true;
 
     document.body.appendChild(panel);
     document.body.appendChild(launcher);
@@ -427,7 +453,7 @@
     /* Sanfter Auftritt beim ersten Erscheinen. */
     if (!reducedMotion) {
       launcher.classList.add("ms-pop");
-      setTimeout(function () { launcher.classList.remove("ms-pop"); }, 650);
+      setTimeout(function () { launcher.classList.remove("ms-pop"); }, 300);
     }
 
     var built = false, chatBeruehrt = false, teaserEl = null, teaserTimer = null;
@@ -438,10 +464,24 @@
       if (teaserEl) {
         teaserEl.classList.remove("ms-an");
         var t = teaserEl; teaserEl = null;
-        setTimeout(function () { if (t.parentNode) t.remove(); }, 350);
+        setTimeout(function () { if (t.parentNode) t.remove(); }, 220);
       }
     }
     function teaserWeg() { try { sessionStorage.setItem("ms_teaser_weg", "1"); } catch (e) {} }
+
+    function setzeChatOffen(open, fokusZurueck) {
+      panel.classList.toggle("open", open);
+      panel.setAttribute("aria-hidden", open ? "false" : "true");
+      panel.inert = !open;
+      launcher.setAttribute("aria-expanded", open ? "true" : "false");
+      launcher.setAttribute("aria-label", open ? "Chat mit dem masesites-Bot schliessen" : "Chat mit dem masesites-Bot öffnen");
+      if (open) {
+        var inp = panel.querySelector(".chat-input input");
+        if (inp && window.matchMedia("(pointer: fine)").matches) inp.focus();
+      } else if (fokusZurueck) {
+        launcher.focus();
+      }
+    }
 
     launcher.addEventListener("click", function () {
       chatBeruehrt = true;
@@ -450,19 +490,18 @@
       if (!built) {
         buildChatUI(panel, {
           closable: true,
-          greeting: "Hallo! Ich bin die masesites-KI. Womit kann ich helfen? Frag mich zu Websites, Preisen oder wünsch dir einen Termin.",
-          note: "Echte KI · für Fragen und Terminwünsche da."
+          greeting: "Hallo! Ich bin die masesites-KI. Frag mich zu Websites, WebApps, KI-Lösungen oder wünsch dir einen Termin.",
+          note: "KI-Demo · für Fragen und Terminwünsche da."
         });
         panel.querySelector(".widget-close").addEventListener("click", function () {
-          panel.classList.remove("open");
+          setzeChatOffen(false, true);
         });
         built = true;
       }
-      panel.classList.toggle("open");
-      if (panel.classList.contains("open")) {
-        var inp = panel.querySelector(".chat-input input");
-        if (inp && window.matchMedia("(pointer: fine)").matches) inp.focus();
-      }
+      setzeChatOffen(!panel.classList.contains("open"), false);
+    });
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && panel.classList.contains("open")) setzeChatOffen(false, true);
     });
 
     /* ---------- Aufmerksamkeit: einmal pro Sitzung, wenn der Chat ungenutzt bleibt ---------- */
@@ -484,12 +523,11 @@
       }
       teaserEl = document.createElement("div");
       teaserEl.className = "ms-teaser";
-      teaserEl.setAttribute("role", "button");
-      teaserEl.setAttribute("tabindex", "0");
+      teaserEl.setAttribute("role", "status");
       teaserEl.innerHTML =
         '<span class="ms-av ms-hat-bild" aria-hidden="true">' + avatarSvg + '</span>' +
-        '<span class="ms-txt"><b>Hoi!</b> Ich bin die masesites-KI. 👋 Frag mich zu Websites &amp; Preisen – oder wünsch dir gleich einen Termin.</span>' +
-        '<button class="ms-zu" type="button" aria-label="Hinweis schließen">×</button>';
+        '<span class="ms-txt"><b>Hoi!</b> Ich bin die masesites-KI. 👋 Frag mich zu Websites, WebApps, KI &amp; Preisen – oder wünsch dir einen Termin.</span>' +
+        '<button class="ms-zu" type="button" aria-label="Hinweis schliessen">×</button>';
       document.body.appendChild(teaserEl);
       if (!reducedMotion) {
         launcher.classList.add("ms-ping");
@@ -504,9 +542,6 @@
         e.stopPropagation(); teaserWeg(); teaserSchonWeg = true; entferneTeaser();
       });
       teaserEl.addEventListener("click", function () { launcher.click(); });
-      teaserEl.addEventListener("keydown", function (e) {
-        if (e.key === "Enter" || e.key === " ") { e.preventDefault(); launcher.click(); }
-      });
       teaserTimer = setTimeout(entferneTeaser, 15000);   /* von selbst wieder weg */
     }
     if (!teaserSchonWeg) setTimeout(function () { zeigeTeaser(0); }, 4500);

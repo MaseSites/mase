@@ -1,33 +1,58 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="de-CH">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Webdesign für Schweizer KMU | MASESites</title>
-  <meta name="description" content="MASESites baut Websites für Schweizer KMU, die mehr Anfragen bringen und Verwaltungsarbeit abnehmen. Persönlich, zum Fixpreis und ohne Anbieter-Lock-in.">
+  <title>Digitale Lösungen für Schweizer KMU | MASESites</title>
+  <meta name="description" content="MASESites entwickelt Websites, WebApps und KI-Lösungen für Schweizer KMU – individuell entwickelt, persönlich betreut und klar offeriert.">
   <link rel="canonical" href="https://masesites.ch/">
-  <meta property="og:title" content="Mehr Anfragen. Weniger Admin. | MASESites">
-  <meta property="og:description" content="Websites für Schweizer KMU, die nicht nur gut aussehen, sondern für den Betrieb arbeiten.">
+  <meta property="og:title" content="Websites. WebApps. KI. Für Schweizer KMU. | MASESites">
+  <meta property="og:description" content="Individuell entwickelt. Persönlich betreut. Klar offeriert.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://masesites.ch/">
+  <meta property="og:site_name" content="MASESites">
+  <meta property="og:locale" content="de_CH">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Websites. WebApps. KI. Für Schweizer KMU. | MASESites">
+  <meta name="twitter:description" content="Individuell entwickelt. Persönlich betreut. Klar offeriert.">
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "Organization",
-      "name": "MASESites",
-      "url": "https://masesites.ch/",
-      "email": "info@masesites.ch",
-      "description": "Webdesign und digitale Lösungen für Schweizer KMU.",
-      "areaServed": ["Kloten", "Wetzikon", "Zürich", "Schweiz"],
-      "founder": [
-        {"@type": "Person", "name": "Matteo Cocetrone"},
-        {"@type": "Person", "name": "Severin Bürki"}
-      ],
-      "knowsAbout": ["Webdesign", "Webentwicklung", "Web-Apps", "KI-Assistenten"]
+      "@graph": [
+        {
+          "@type": "Organization",
+          "@id": "https://masesites.ch/#organization",
+          "name": "MASESites",
+          "url": "https://masesites.ch/",
+          "email": "info@masesites.ch",
+          "description": "Digitale Lösungen für Schweizer KMU: Websites, WebApps und KI-Lösungen.",
+          "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "Zipfelstrasse 22",
+            "postalCode": "8302",
+            "addressLocality": "Kloten",
+            "addressCountry": "CH"
+          },
+          "areaServed": ["Kloten", "Wetzikon", "Zürich", "Schweiz"],
+          "founder": [
+            {"@type": "Person", "name": "Matteo Cocetrone"},
+            {"@type": "Person", "name": "Severin Bürki"}
+          ],
+          "knowsAbout": ["Webdesign", "Webentwicklung", "WebApps", "KI-Lösungen"]
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://masesites.ch/#website",
+          "url": "https://masesites.ch/",
+          "name": "MASESites",
+          "inLanguage": "de-CH",
+          "publisher": {"@id": "https://masesites.ch/#organization"}
+        }
+      ]
     }
   </script>
   <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="assets/css/style.css?v=58">
+  <link rel="stylesheet" href="assets/css/style.css?v=60">
 </head>
 <body>
   <script src="assets/js/sanft.js?v=1"></script>
@@ -45,7 +70,8 @@
         <a href="/ueber-uns">Über uns</a>
       </nav>
       <div class="header-cta">
-        <a class="btn btn-primary header-start" href="/kontakt">Erstgespräch anfragen</a>
+        <a class="header-dashboard" href="/dashboard" aria-label="Kundendashboard öffnen">Dashboard</a>
+        <a class="btn btn-primary header-start" href="/kontakt">Projekt anfragen</a>
         <button class="burger" aria-label="Menü öffnen" aria-expanded="false">
           <span></span><span></span><span></span>
         </button>
@@ -59,8 +85,8 @@
     <a href="/preise">Preise</a>
     <a href="/ueber-uns">Über uns</a>
     <a href="/webdesign-kloten">Webdesign Kloten</a>
-    <a href="/dashboard" class="konto-link">Kundenlogin</a>
-    <a class="btn btn-primary" href="/kontakt">Kostenloses Erstgespräch →</a>
+    <a href="/dashboard" class="konto-link">Kundendashboard</a>
+    <a class="btn btn-primary" href="/kontakt">Projekt anfragen →</a>
   </div>
 
   <main>
@@ -86,15 +112,16 @@
         <span class="flieger quadrat q1"></span>
       </div>
       <div class="wrap hero-mitte">
-        <span class="hero-kicker">Webdesign für Schweizer KMU</span>
-        <h1>Mehr Anfragen.<br><span class="hero-outcome">Weniger Admin.</span></h1>
-        <p class="lead">Wir bauen Websites, die Vertrauen schaffen, Interessenten zu Kunden machen und deinem Betrieb mit Buchungen, Zahlungen oder KI Arbeit abnehmen.</p>
+        <span class="hero-kicker">Digitale Lösungen für Schweizer KMU</span>
+        <h1>Websites. WebApps. KI.<br><span class="hero-outcome">Für Schweizer KMU.</span></h1>
+        <p class="hero-promise">Individuell entwickelt. Persönlich betreut. Klar offeriert.</p>
+        <p class="lead hero-explain">Von der professionellen Firmenwebsite bis zur individuellen WebApp und KI-Lösung – direkt mit uns entwickelt.</p>
         <div class="hero-ctas">
-          <a class="btn btn-primary" href="/kontakt">Kostenloses Erstgespräch <span class="arrow">→</span></a>
-          <a class="btn btn-ghost" href="#beispiel">Live-Demos testen</a>
+          <a class="btn btn-primary" href="/kontakt">Projekt anfragen <span class="arrow">→</span></a>
+          <a class="btn btn-ghost" href="#beispiel">Live-Demos ansehen</a>
         </div>
         <p class="trust-zeile">
-          <span>Fixpreis vor Projektstart</span><span class="punkt" aria-hidden="true"></span>
+          <span>Klare Offerte vor Projektstart</span><span class="punkt" aria-hidden="true"></span>
           <span>Direkt mit den Gründern</span><span class="punkt" aria-hidden="true"></span>
           <span>Website und Code gehören dir</span>
         </p>
@@ -118,22 +145,22 @@
     <section class="tight outcome-section" id="wirkung">
       <div class="wrap outcome-layout">
         <div class="outcome-intro reveal">
-          <span class="kicker">Was du davon hast</span>
-          <h2>Deine Website soll arbeiten. Nicht nur existieren.</h2>
-          <p class="lead">Darum beginnen wir nicht bei Farben oder Funktionen, sondern bei der Frage: Was soll für deinen Betrieb einfacher oder erfolgreicher werden?</p>
+          <span class="kicker">Passend zum Betrieb</span>
+          <h2>Die Technik folgt der Aufgabe.</h2>
+          <p class="lead">Wir klären zuerst, was dein Unternehmen digital braucht. Danach entscheiden wir gemeinsam, ob eine Website, eine WebApp, eine KI-Lösung oder eine Kombination sinnvoll ist.</p>
         </div>
         <div class="outcome-list">
           <article class="outcome-row reveal" data-delay="60">
             <span>01</span>
-            <div><h3>Mehr passende Anfragen</h3><p>Klare Botschaften, überzeugende Seiten und kurze Kontaktwege führen Interessenten zum nächsten Schritt.</p></div>
+            <div><h3>Professioneller digitaler Auftritt</h3><p>Websites erklären dein Angebot verständlich, schaffen Vertrauen und machen den nächsten Schritt klar.</p></div>
           </article>
           <article class="outcome-row reveal" data-delay="120">
             <span>02</span>
-            <div><h3>Weniger Rückfragen und Telefonate</h3><p>FAQ, Buchungen, Reservationen und ein sinnvoll eingesetzter KI-Assistent beantworten, erfassen und sortieren.</p></div>
+            <div><h3>Werkzeuge für echte Abläufe</h3><p>WebApps bündeln Daten, Buchungen, Zahlungen oder interne Prozesse in einer Anwendung.</p></div>
           </article>
           <article class="outcome-row reveal" data-delay="180">
             <span>03</span>
-            <div><h3>Kein Technikstress</h3><p>Wir kümmern uns um Aufbau, Mobilansicht, Formulare, Aufschaltung und auf Wunsch den laufenden Betrieb.</p></div>
+            <div><h3>Automatisierte Unterstützung</h3><p>KI-Lösungen beantworten wiederkehrende Fragen, erfassen Anliegen und unterstützen dein Team dort, wo es sinnvoll ist.</p></div>
           </article>
         </div>
       </div>
@@ -170,8 +197,8 @@
       <div class="wrap">
         <div class="section-head center">
           <span class="kicker reveal">Klar eingeordnet</span>
-          <h2 class="reveal">Ein klarer Kern. Zwei Ausbaustufen.</h2>
-          <p class="lead reveal" data-delay="70">Unser Kerngeschäft sind Websites für KMU. Web-Apps und KI kommen nur dazu, wenn sie nachweisbar Zeit sparen oder Umsatz ermöglichen.</p>
+          <h2 class="reveal">Drei Bereiche. Ein direkter Partner.</h2>
+          <p class="lead reveal" data-delay="70">Website, WebApp und KI sind gleichwertige Werkzeuge. Entscheidend ist, welche Lösung zu deinem Betrieb und deinem Ziel passt.</p>
         </div>
         <!-- Reihenfolge wie auf der Leistungsseite: Website, Webapp und
              der KI-Assistent als Ergänzung. Jede Zeile führt in die passende Welt
@@ -183,20 +210,20 @@
         <div class="offer-list">
           <a class="offer-row reveal" href="/leistungen#website">
             <span class="offer-nr" aria-hidden="true">01</span>
-            <h3>Website, die überzeugt</h3>
-            <p>Damit du professionell gefunden wirst und aus Besuchern leichter Anfragen werden.</p>
+            <h3>Websites</h3>
+            <p>Professionelle Firmenauftritte, die Angebot, Unternehmen und Kontaktwege klar darstellen.</p>
             <span class="offer-pfeil" aria-hidden="true">→</span>
           </a>
           <a class="offer-row reveal" data-delay="80" href="/leistungen#webapp">
             <span class="offer-nr" aria-hidden="true">02</span>
-            <h3>Web-App, die Arbeit abnimmt</h3>
-            <p>Wenn Listen, WhatsApp und wiederkehrende Handarbeit durch einen klaren Ablauf ersetzt werden sollen.</p>
+            <h3>WebApps</h3>
+            <p>Individuelle Anwendungen für Benutzerkonten, Daten, Buchungen und wiederkehrende Geschäftsprozesse.</p>
             <span class="offer-pfeil" aria-hidden="true">→</span>
           </a>
           <a class="offer-row reveal" data-delay="160" href="/leistungen#ki">
             <span class="offer-nr" aria-hidden="true">03</span>
-            <h3><span class="ki-glow">KI-Assistent als Ergänzung</span></h3>
-            <p>Beantwortet Routinefragen und erfasst Anfragen – ohne deine persönliche Beratung zu ersetzen.</p>
+            <h3><span class="ki-glow">KI-Lösungen</span></h3>
+            <p>Automatisierte Unterstützung für Kundenanliegen und interne Aufgaben – mit klar definiertem Wissen und Zweck.</p>
             <span class="offer-pfeil" aria-hidden="true">→</span>
           </a>
         </div>
@@ -226,7 +253,7 @@
                 </li>
               </ul>
               <p class="reveal" data-delay="320" style="color: var(--ink-soft); margin-bottom: 26px;">Der Assistent ist optional, monatlich kündbar und lässt sich auch in eine bestehende Website einbauen.</p>
-              <a class="btn btn-primary reveal" data-delay="360" href="/leistungen#ki">Prüfen, ob KI sinnvoll ist <span class="arrow">→</span></a>
+              <a class="btn btn-primary reveal" data-delay="360" href="/leistungen#ki">KI-Leistung ansehen <span class="arrow">→</span></a>
             </div>
             <div class="reveal" data-delay="150">
               <div class="chat-demo" data-chat data-chat-greeting="Hallo! Probier mich aus, ich bin die Live-Demo. Frag mich zum Beispiel, was eine Website kostet."></div>
@@ -241,8 +268,8 @@
       <div class="wrap proof-panel reveal">
         <div class="proof-heading">
           <span class="kicker">Warum MASESites?</span>
-          <h2>Weniger Agenturtheater. Mehr Verantwortung.</h2>
-          <p>Bei uns kaufst du keinen anonymen Prozess, sondern ein klar begrenztes Ergebnis mit direkter Verantwortung.</p>
+          <h2>Kleines Team. Klare Verantwortung.</h2>
+          <p>Du arbeitest direkt mit den beiden Personen, die beraten, gestalten und entwickeln.</p>
         </div>
         <div class="proof-points">
           <div><b>Die Gründer bauen selbst</b><span>Kein Verkaufsgespräch mit anschliessender Übergabe an ein unbekanntes Team.</span></div>
@@ -264,7 +291,7 @@
             <span class="kicker">Persönlich verantwortlich</span>
             <h2 style="margin-bottom: 14px;">Matteo gestaltet. Severin entwickelt.</h2>
             <p class="lead" style="margin-bottom: 26px;">Zwei Gründer, zwei klare Schwerpunkte und eine direkte Ansprechperson – von Kloten und Wetzikon aus für Schweizer KMU.</p>
-            <a class="btn btn-ghost" href="/ueber-uns">Mehr über uns <span class="arrow">→</span></a>
+            <a class="btn btn-ghost" href="/ueber-uns">Über uns <span class="arrow">→</span></a>
           </div>
         </div>
       </div>
@@ -274,10 +301,10 @@
     <section class="tight">
       <div class="wrap">
         <div class="big-cta reveal">
-          <h2>Was soll deine Website für dich leisten?</h2>
-          <p>Erzähl uns kurz von deinem Betrieb. Wir melden uns persönlich, ordnen die sinnvollste Lösung ein und nennen dir den nächsten Schritt.</p>
+          <h2>Welche digitale Lösung braucht dein Betrieb?</h2>
+          <p>Erzähl uns kurz von deinem Ziel. Wir ordnen ein, welche Lösung sinnvoll ist, und halten Umfang und Preis in einer klaren Offerte fest.</p>
           <div class="hero-ctas">
-            <a class="btn btn-primary" href="/kontakt">Kostenloses Erstgespräch <span class="arrow">→</span></a>
+            <a class="btn btn-primary" href="/kontakt">Projekt anfragen <span class="arrow">→</span></a>
             <a class="btn btn-ghost" href="/preise">Preise ansehen</a>
           </div>
         </div>
@@ -294,15 +321,15 @@
           <a class="logo" href="/">
             masesites
           </a>
-          <p>Websites für Schweizer KMU, die mehr Anfragen bringen und Arbeit abnehmen.</p>
+          <p>Digitale Lösungen für Schweizer KMU: Websites, WebApps und KI – direkt mit uns entwickelt.</p>
           <a class="mail" href="mailto:info@masesites.ch">info@masesites.ch</a>
         </div>
         <div class="footer-col">
           <h4>Angebot</h4>
           <ul>
-            <li><a href="/preise#website">Neue Website</a></li>
-            <li><a href="/preise#webapp">Web-Apps</a></li>
-            <li><a href="/preise#ki">KI-Assistent</a></li>
+            <li><a href="/preise#website">Website</a></li>
+            <li><a href="/preise#webapp">WebApps</a></li>
+            <li><a href="/preise#ki">KI-Lösungen</a></li>
           </ul>
         </div>
         <div class="footer-col">
@@ -315,7 +342,7 @@
             <li><a href="/ueber-uns">Über uns</a></li>
             <li><a href="/kontakt">Kontakt</a></li>
             <li><a href="/webdesign-kloten">Webdesign Kloten</a></li>
-            <li><a href="/dashboard">Kundenlogin</a></li>
+            <li><a href="/dashboard">Kundendashboard</a></li>
           </ul>
         </div>
         <div class="footer-col">
@@ -341,7 +368,7 @@
 
   <script src="assets/js/protokoll.js?v=20"></script>
   <script src="assets/js/cookie.js?v=4"></script>
-  <script src="assets/js/site.js?v=33"></script>
+  <script src="assets/js/site.js?v=35"></script>
   <script src="assets/js/hero.js?v=22"></script>
 </body>
 </html>

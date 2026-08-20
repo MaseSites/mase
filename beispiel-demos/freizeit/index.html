@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="AB Park — rides, water, food and unforgettable days together.">
+  <meta name="theme-color" content="#050505">
+  <title>AB Park — Discovery &amp; Adventure</title>
+  <link rel="icon" type="image/jpeg" href="assets/images/dining.jpg">
+  <script>document.documentElement.classList.add('js')</script>
+  <style>
+    @font-face{font-family:"Inter Local";src:url("assets/fonts/inter-latin.woff2") format("woff2");font-style:normal;font-weight:100 900;font-display:swap}
+    :root{
+      --ink:#111112;--black:#050505;--paper:#fff;--soft:#f5f5f5;--line:#d9d9d9;--muted:#6f6f71;
+      --sans:"Inter Local",Arial,sans-serif;--serif:"Times New Roman",Georgia,serif;--ease:cubic-bezier(.22,1,.36,1)
+    }
+    *{box-sizing:border-box;margin:0}
+    html{scroll-behavior:smooth;scrollbar-gutter:stable}
+    body{font-family:var(--sans);background:var(--paper);color:var(--ink);line-height:1.45;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+    body.menu-open,body.modal-open{overflow:hidden}
+    img{display:block;width:100%}a{color:inherit;text-decoration:none}button,input{font:inherit}
+    button{color:inherit}.wrap{width:min(100% - 64px,1280px);margin-inline:auto}
+    .eyebrow{font-size:.72rem;line-height:1;font-weight:500;letter-spacing:.13em;text-transform:uppercase}
+    .title{font-size:clamp(3.3rem,4.55vw,4.35rem);font-weight:400;line-height:1.04;letter-spacing:-.055em}
+    .arrow{display:inline-flex;align-items:center;gap:1.1rem;border:0;border-radius:999px;background:#fff;color:#111;padding:.9rem 1.35rem;cursor:pointer;transition:transform .25s var(--ease),background .2s,color .2s}
+    .arrow::after{content:"→";font-size:1.05em}.arrow.dark{background:var(--ink);color:#fff}.arrow:active{transform:scale(.97)}
+    :focus-visible{outline:2px solid currentColor;outline-offset:4px}
+    ::selection{background:#111;color:#fff}
+
+    /* Hero */
+    .hero{height:100svh;min-height:700px;position:relative;isolation:isolate;overflow:hidden;background:#020202;color:#fff}
+    .hero-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 58%;z-index:-2;transform:scale(1.002)}
+    .hero::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(0,0,0,.18),rgba(0,0,0,.05) 40%,rgba(0,0,0,.58))}
+    .topbar{position:absolute;z-index:40;top:32px;left:32px;right:32px;height:72px;background:rgba(255,255,255,.96);color:#111;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:0 28px;border-radius:2px}
+    .brand{font:400 2rem/1 var(--serif);letter-spacing:-.11em;width:max-content}.brand span{font-size:.75em;margin-left:-.06em}
+    .navlinks{display:flex;align-items:center;gap:42px;font-size:1rem}.navlinks a{position:relative;padding:.35rem 0}.navlinks a::after{content:"";position:absolute;left:0;right:0;bottom:0;height:1px;background:#111;transform:scaleX(0);transform-origin:right;transition:transform .35s var(--ease)}
+    .navlinks a:hover::after{transform:scaleX(1);transform-origin:left}
+    .menu-button{justify-self:end;border:0;background:none;display:flex;align-items:center;gap:13px;cursor:pointer;padding:10px 0}
+    .menu-lines{width:27px;display:grid;gap:6px}.menu-lines i{height:1px;background:#111;display:block}
+    .hero-copy{position:absolute;left:32px;bottom:calc(clamp(3.3rem,13vw,12rem) + 54px);width:min(470px,40vw)}
+    .hero-copy p{font-size:clamp(1rem,1.45vw,1.35rem);line-height:1.3;letter-spacing:-.03em;margin-bottom:26px;text-wrap:balance}
+    .hero-word{position:absolute;left:32px;bottom:-.045em;font-size:clamp(8rem,17.3vw,16.25rem);line-height:.74;letter-spacing:-.092em;font-weight:400;white-space:nowrap}
+    .visit-card{position:absolute;right:32px;bottom:32px;background:rgba(255,255,255,.97);color:#111;width:320px;min-height:151px;padding:18px 18px 18px 20px;border-radius:2px;display:flex;flex-direction:column;box-shadow:0 18px 50px rgba(0,0,0,.18)}
+    .visit-card .avatar{width:52px;height:47px;object-fit:cover;border-radius:3px;margin-bottom:auto;filter:saturate(.7)}
+    .visit-card small{font-size:.79rem;color:#58585a}.visit-card strong{font-weight:500;font-size:1.02rem}.square-arrow{position:absolute;right:18px;bottom:18px;width:46px;height:46px;border:0;border-radius:3px;background:#111;color:#fff;font-size:1.3rem;cursor:pointer;transition:transform .2s var(--ease)}
+    .square-arrow:hover{transform:translateX(3px)}
+
+    /* Experience */
+    .experience{background:#111;color:#fff;padding:150px 0 140px;min-height:920px}
+    .experience-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(420px,1.09fr);gap:60px;align-items:stretch}
+    .experience-copy{display:flex;flex-direction:column;min-height:632px}.experience-copy .eyebrow{color:#aaa;margin-bottom:28px}
+    .experience-copy .title{max-width:8.8ch}.experience-copy>.lede{margin-top:24px;color:#aaa;font-size:1rem;max-width:45ch}
+    .experience-notes{margin-top:auto;display:grid;grid-template-columns:1fr 1fr;gap:25px;border-top:1px solid #4a4a4b;padding-top:24px}
+    .experience-note span{display:block;font-size:.8rem;margin-bottom:12px}.experience-note p{font-size:.86rem;color:#aaa;max-width:24ch}
+    .experience-image{min-height:632px;overflow:hidden}.experience-image img{height:100%;object-fit:cover}
+
+    /* Glance */
+    .glance{position:relative;height:382px;margin:0 32px;background:#111;color:#fff;overflow:hidden}
+    .glance>img{position:absolute;inset:0;height:100%;object-fit:cover;filter:brightness(.38) saturate(.6)}
+    .glance-inner{position:relative;height:100%;padding:34px 38px;display:flex;flex-direction:column;justify-content:space-between}
+    .glance-top{display:flex;justify-content:space-between;gap:2rem}.glance-top p:last-child{font-size:1.05rem}
+    .stats{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid rgba(255,255,255,.45)}
+    .stat{padding:25px 24px 0 0;border-right:1px solid rgba(255,255,255,.28);min-height:122px}.stat:not(:first-child){padding-left:24px}.stat:last-child{border:0}
+    .stat strong{font-size:clamp(2.9rem,4.5vw,4.2rem);line-height:1;font-weight:400;letter-spacing:-.065em}.stat p{margin-top:9px;color:#d4d4d4;font-size:.8rem}
+
+    /* Explorer */
+    .explorer{padding:126px 0 116px}.section-heading{display:flex;justify-content:space-between;align-items:end;gap:2rem;margin-bottom:40px}.section-heading .eyebrow{margin-bottom:25px;color:#737375}
+    .filter-switch{display:flex;gap:8px}.filter-switch button{border:0;padding:9px 22px;background:#f3f3f3;cursor:pointer;font-size:.8rem}.filter-switch button.active{background:#111;color:#fff}
+    .card-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
+    .experience-card{min-width:0}.card-image{height:203px;overflow:hidden;position:relative;background:#ddd}.card-image img{height:100%;object-fit:cover;transition:transform .7s var(--ease)}
+    .card-image .tags{position:absolute;left:10px;top:10px;display:flex;gap:5px}.tag{background:#fff;padding:6px 9px;font-size:.62rem;text-transform:uppercase;letter-spacing:.07em}.tag.dark{background:#111;color:#fff}
+    .card-body{padding:17px 6px 0}.card-body h3{font-size:1.05rem;line-height:1.25;font-weight:400;letter-spacing:-.025em}.card-meta{margin-top:14px;padding-top:14px;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:1rem;color:#777;font-size:.7rem}.card-meta b{color:#111;font-weight:500}
+    .experience-card:hover .card-image img{transform:scale(1.035)}
+
+    /* Story */
+    .story{padding:132px 0;background:#f7f7f7}.story-head{text-align:center;margin-bottom:62px}.story-head .eyebrow{margin-bottom:25px;color:#777}.story-head .title{max-width:12ch;margin:auto}
+    .story-grid{display:grid;grid-template-columns:minmax(350px,.95fr) minmax(0,1.05fr);gap:70px;align-items:stretch}
+    .story-image{min-height:680px;overflow:hidden}.story-image img{height:100%;object-fit:cover;object-position:center bottom}
+    .story-copy{display:flex;flex-direction:column}.story-label{font-size:.74rem;color:#777;margin-bottom:54px}.story-copy h3{font-size:clamp(2.3rem,4vw,4.1rem);line-height:.97;letter-spacing:-.055em;font-weight:400;max-width:9ch}.story-copy h3 span{color:#a3a3a5}.story-copy>.lede{font-size:1rem;color:#6c6c6f;margin-top:25px;max-width:48ch}
+    .proofs{margin-top:auto;border-top:1px solid #bdbdbd}.proof{display:grid;grid-template-columns:170px 1fr;gap:30px;padding:20px 0;border-bottom:1px solid #bdbdbd}.proof strong{font-size:.82rem;font-weight:500}.proof p{font-size:.82rem;color:#777}
+
+    /* Services */
+    .services{padding:136px 0 120px;background:#111;color:#fff}.services-head{text-align:center;margin-bottom:67px}.services-head .eyebrow{color:#aaa;margin-bottom:25px}.services-head .title{max-width:19ch;margin:auto}.services-head p:last-child{color:#aaa;margin-top:20px}
+    .service-grid{display:grid;grid-template-columns:1fr 1fr;gap:28px}.service-card{position:relative}.service-card img{height:440px;object-fit:cover}.service-text{display:flex;justify-content:space-between;gap:2rem;padding:21px 0 20px;border-bottom:1px solid #444}.service-text h3{font-size:1.3rem;font-weight:400}.service-text p{max-width:30ch;color:#aaa;font-size:.8rem}.service-link{display:inline-flex;align-items:center;gap:15px;margin-top:18px;color:#ddd;font-size:.78rem}.service-link::after{content:"→"}
+
+    /* Tickets */
+    .tickets{padding:145px 0}.tickets-head{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:end;margin-bottom:62px}.tickets-head p{max-width:47ch;color:#6d6d70;justify-self:end}.price-grid{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid #cfcfcf}.price-card{padding:30px;min-height:425px;display:flex;flex-direction:column;border-right:1px solid #cfcfcf;position:relative}.price-card:last-child{border:0}.price-card.featured{background:#111;color:#fff}.price-card .plan{font-size:.76rem;text-transform:uppercase;letter-spacing:.12em}.price-card .price{font-size:clamp(3.2rem,5vw,4.7rem);letter-spacing:-.07em;line-height:1;margin:38px 0 8px}.price-card .price span{font-size:.8rem;letter-spacing:0;color:#777}.price-card>p{font-size:.84rem;color:#777;max-width:29ch}.price-card.featured>p{color:#aaa}.price-card ul{list-style:none;padding:20px 0 0;margin-top:25px;border-top:1px solid currentColor;font-size:.78rem;display:grid;gap:11px}.price-card li::before{content:"—";margin-right:10px}.price-card .select-ticket{margin-top:auto;width:100%;border:1px solid #111;background:#fff;padding:13px;cursor:pointer}.price-card:not(.featured) .select-ticket{background:#111;color:#fff}.price-card.featured .select-ticket{border-color:#fff}
+
+    /* Map */
+    .park-map{background:#f4f4f4;padding:140px 0}.map-layout{display:grid;grid-template-columns:.75fr 1.25fr;gap:65px;align-items:start}.map-copy .eyebrow{color:#747477;margin-bottom:25px}.map-copy .title{max-width:8ch}.map-copy>p{color:#737376;max-width:38ch;margin-top:24px}.map-detail{margin-top:48px;border-top:1px solid #bababa;padding-top:22px;min-height:125px}.map-detail small{font-size:.68rem;letter-spacing:.11em;text-transform:uppercase;color:#777}.map-detail h3{font-weight:400;font-size:1.4rem;margin:8px 0}.map-detail p{color:#777;font-size:.82rem}
+    .map-canvas{height:570px;background:#fff;position:relative;overflow:hidden;border:1px solid #c8c8c8;background-image:linear-gradient(#ececec 1px,transparent 1px),linear-gradient(90deg,#ececec 1px,transparent 1px);background-size:42px 42px}
+    .map-canvas::before{content:"";position:absolute;left:14%;right:12%;top:15%;bottom:14%;border:2px solid #111;border-radius:48% 30% 43% 34%;transform:rotate(-4deg)}
+    .map-path{position:absolute;left:22%;top:32%;width:56%;height:38%;border:23px solid #efefef;border-radius:50%;transform:rotate(11deg);pointer-events:none}
+    .map-lake{position:absolute;left:42%;top:35%;width:29%;height:26%;border:1px solid #111;border-radius:62% 38% 55% 45%;background:#dadada;transform:rotate(-18deg);pointer-events:none}
+    .map-point{position:absolute;width:42px;height:42px;border-radius:50%;border:1px solid #111;background:#fff;cursor:pointer;display:grid;place-items:center;font-size:.7rem;transition:background .2s,color .2s,transform .2s}.map-point:hover,.map-point.active{background:#111;color:#fff;transform:scale(1.08)}
+    .point-1{left:20%;top:24%}.point-2{left:65%;top:22%}.point-3{left:71%;top:66%}.point-4{left:27%;top:69%}.point-5{left:48%;top:57%}
+    .map-legend{position:absolute;left:20px;bottom:18px;font-size:.68rem;text-transform:uppercase;letter-spacing:.08em;background:#fff;border:1px solid #bbb;padding:11px 13px}
+
+    /* Reviews */
+    .reviews{padding:120px 0 136px}.reviews-grid{display:grid;grid-template-columns:.58fr 1.42fr;gap:95px}.reviews-copy .eyebrow{color:#777;margin-bottom:25px}.reviews-copy .title{max-width:6ch}.quote-wrap{min-height:370px;display:flex;flex-direction:column}.quote{font-size:clamp(1.75rem,3vw,2.75rem);line-height:1.22;letter-spacing:-.04em;max-width:30ch}.reviewer{display:flex;align-items:center;gap:15px;margin-top:40px}.reviewer img{width:70px;height:64px;object-fit:cover}.reviewer strong{font-size:.84rem;font-weight:500}.reviewer span{display:block;font-size:.74rem;color:#777;margin-top:2px}.stars{letter-spacing:.15em;margin-top:15px;font-size:.76rem}.review-controls{margin-top:auto;display:flex;gap:8px}.review-controls button{width:46px;height:46px;border:1px solid #bbb;background:#fff;cursor:pointer}.review-controls button:hover{background:#111;color:#fff}
+
+    /* FAQ */
+    .faq{background:#f5f5f5;padding:135px 0}.faq-grid{display:grid;grid-template-columns:.7fr 1.3fr;gap:100px}.faq-copy .eyebrow{color:#777;margin-bottom:25px}.faq-copy .title{max-width:7ch}.faq-copy>p{color:#777;font-size:.85rem;margin:28px 0}.faq-list{border-top:1px solid #a9a9a9}.faq-item{border-bottom:1px solid #a9a9a9}.faq-question{width:100%;border:0;background:none;display:flex;justify-content:space-between;align-items:center;text-align:left;padding:25px 0;cursor:pointer;font-size:1rem}.faq-question span:last-child{font-size:1.25rem;transition:transform .3s var(--ease)}.faq-answer{display:grid;grid-template-rows:0fr;transition:grid-template-rows .4s var(--ease)}.faq-answer p{overflow:hidden;color:#777;font-size:.86rem;max-width:60ch}.faq-item.open .faq-answer{grid-template-rows:1fr}.faq-item.open .faq-answer p{padding-bottom:25px}.faq-item.open .faq-question span:last-child{transform:rotate(45deg)}
+
+    /* Contact / CTA */
+    .contact{padding:125px 0}.contact-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:70px}.contact-copy .eyebrow{color:#777;margin-bottom:25px}.contact-copy .title{max-width:8ch}.contact-details{margin-top:55px;border-top:1px solid #bbb}.contact-row{display:grid;grid-template-columns:130px 1fr;padding:18px 0;border-bottom:1px solid #bbb;font-size:.8rem}.contact-row span{color:#777}.contact-form{display:grid;grid-template-columns:1fr 1fr;gap:14px}.field{display:grid;gap:8px}.field.full{grid-column:1/-1}.field label{font-size:.72rem;color:#777}.field input{border:0;border-bottom:1px solid #aaa;padding:13px 0;background:none;border-radius:0}.contact-form button{grid-column:1/-1;margin-top:20px;border:0;background:#111;color:#fff;padding:16px;cursor:pointer}.form-status{grid-column:1/-1;font-size:.78rem;min-height:1.2em;color:#555}
+    .final-cta{position:relative;height:591px;color:#fff;display:grid;place-items:center;text-align:center;overflow:hidden}.final-cta>img{position:absolute;inset:0;height:100%;object-fit:cover;object-position:left center;filter:brightness(.35)}.final-inner{position:relative}.final-inner .title{font-size:clamp(3.7rem,6vw,6rem);max-width:10ch;margin:auto}.final-inner p{color:#ddd;margin:20px 0 30px;font-style:italic}
+
+    /* Footer */
+    footer{background:#111;color:#fff;padding:70px 0 30px}.footer-grid{display:grid;grid-template-columns:1.2fr .55fr .75fr 1fr;gap:50px;padding-bottom:75px}.footer-brand{font:400 3.8rem/1 var(--serif);letter-spacing:-.1em}.footer-col h3{font-size:.72rem;text-transform:uppercase;letter-spacing:.12em;font-weight:400;color:#888;margin-bottom:20px}.footer-col a,.footer-col p{display:block;font-size:.8rem;color:#bbb;margin-bottom:9px}.footer-news p{font-size:.82rem;color:#bbb;max-width:29ch}.subscribe{margin-top:22px;display:flex;border-bottom:1px solid #666}.subscribe input{border:0;background:none;color:#fff;width:100%;padding:12px 0}.subscribe button{border:0;background:none;color:#fff;cursor:pointer}.footer-bottom{border-top:1px solid #3d3d3e;padding-top:22px;display:flex;justify-content:space-between;color:#777;font-size:.68rem}
+
+    /* Menu & modal */
+    .menu-overlay{position:fixed;z-index:100;inset:0;background:#111;color:#fff;padding:32px;display:grid;grid-template-rows:auto 1fr auto;opacity:0;visibility:hidden;transition:opacity .35s ease,visibility .35s}.menu-overlay.open{opacity:1;visibility:visible}.menu-top{display:flex;justify-content:space-between;align-items:center}.menu-top .brand{font-size:2.5rem}.close-menu{border:1px solid #555;background:none;color:#fff;width:50px;height:50px;font-size:1.5rem;cursor:pointer}.menu-main{align-self:center;display:grid;gap:8px}.menu-main a{font-size:clamp(3.5rem,8vw,7rem);line-height:.96;letter-spacing:-.06em;width:max-content}.menu-main a:hover{color:#777}.menu-foot{display:flex;justify-content:space-between;color:#888;font-size:.75rem}
+    .ticket-modal{position:fixed;z-index:110;inset:0;background:rgba(0,0,0,.62);display:grid;place-items:center;padding:20px;opacity:0;visibility:hidden;transition:.25s}.ticket-modal.open{opacity:1;visibility:visible}.ticket-dialog{background:#fff;width:min(530px,100%);padding:35px;position:relative}.ticket-dialog h2{font-size:2.4rem;line-height:1;letter-spacing:-.05em;font-weight:400;margin:18px 0}.ticket-dialog p{color:#6d6d70;font-size:.86rem}.ticket-summary{margin:28px 0;border-top:1px solid #bbb;border-bottom:1px solid #bbb;padding:17px 0;display:flex;justify-content:space-between;font-size:.82rem}.modal-close{position:absolute;right:20px;top:20px;border:0;background:none;font-size:1.4rem;cursor:pointer}.ticket-dialog .arrow{background:#111;color:#fff;width:100%;justify-content:space-between}
+    .toast{position:fixed;z-index:150;left:50%;bottom:24px;transform:translate(-50%,20px);background:#111;color:#fff;padding:13px 18px;font-size:.78rem;opacity:0;pointer-events:none;transition:.3s}.toast.show{opacity:1;transform:translate(-50%,0)}
+    .reveal{opacity:0;transform:translateY(24px);transition:opacity .7s var(--ease),transform .7s var(--ease)}.reveal.in{opacity:1;transform:none}
+
+    @media(max-width:900px){
+      .wrap{width:min(100% - 40px,1280px)}.topbar{left:20px;right:20px;top:20px;padding:0 20px}.navlinks{display:none}.topbar{grid-template-columns:1fr 1fr}.menu-button{grid-column:2}.hero-copy{left:20px;width:min(520px,70vw)}.hero-word{left:20px}.visit-card{right:20px;bottom:20px}
+      .experience-grid,.story-grid,.tickets-head,.map-layout,.reviews-grid,.faq-grid,.contact-grid{grid-template-columns:1fr}.experience-copy{min-height:500px}.experience-image{min-height:560px}.glance{margin:0 20px}.card-grid{grid-template-columns:1fr 1fr}.story-image{min-height:620px}.story-copy{min-height:610px}.service-grid{grid-template-columns:1fr}.price-grid{grid-template-columns:1fr}.price-card{border-right:0;border-bottom:1px solid #cfcfcf;min-height:390px}.map-copy .title{max-width:12ch}.reviews-grid,.faq-grid{gap:60px}.reviews-copy .title,.faq-copy .title{max-width:12ch}.contact-grid{gap:60px}.footer-grid{grid-template-columns:1fr 1fr}.footer-brand{grid-column:1/-1}
+    }
+    @media(max-width:620px){
+      .wrap{width:min(100% - 28px,1280px)}.title{font-size:clamp(2.7rem,13vw,4rem)}.eyebrow{font-size:.65rem}
+      .hero{height:820px;min-height:0}.hero-bg{object-position:56% center}.topbar{left:14px;right:14px;top:14px;height:62px;padding:0 16px}.brand{font-size:1.7rem}.menu-button>span:last-child{display:none}.hero-copy{left:14px;right:14px;bottom:245px;width:auto}.hero-copy p{font-size:1rem;max-width:34ch}.hero-word{left:12px;bottom:106px;font-size:clamp(5.3rem,25vw,8.7rem);line-height:.8}.visit-card{left:14px;right:14px;bottom:14px;width:auto;min-height:110px;padding:14px 72px 14px 14px}.visit-card .avatar{width:42px;height:37px;margin-bottom:10px}.square-arrow{right:14px;bottom:16px}
+      .experience{padding:95px 0}.experience-grid{gap:45px}.experience-copy{min-height:570px}.experience-notes{grid-template-columns:1fr;gap:20px}.experience-image{min-height:430px}.glance{margin:0;height:auto;min-height:600px}.glance-inner{padding:24px 20px}.glance-top{display:block}.glance-top p:last-child{margin-top:10px}.stats{grid-template-columns:1fr 1fr;margin-top:80px}.stat{border-bottom:1px solid rgba(255,255,255,.3);min-height:118px}.stat:nth-child(2){border-right:0}.stat:not(:first-child){padding-left:14px}.stat:nth-child(3){padding-left:0}.stat strong{font-size:3rem}
+      .explorer,.story,.services,.tickets,.park-map,.reviews,.faq,.contact{padding:90px 0}.section-heading{display:block}.filter-switch{margin-top:25px}.card-grid{grid-template-columns:1fr}.card-image{height:250px}.story-head{text-align:left}.story-head .title{margin:0}.story-image{min-height:490px}.story-copy{min-height:650px}.proof{grid-template-columns:120px 1fr}.service-card img{height:330px}.service-text{display:block}.service-text p{margin-top:10px}.tickets-head{gap:25px}.tickets-head p{justify-self:start}.price-card{padding:24px}.map-layout{gap:45px}.map-canvas{height:470px}.map-point{width:38px;height:38px}.reviews-grid{gap:50px}.quote-wrap{min-height:430px}.faq-grid{gap:50px}.contact-form{grid-template-columns:1fr}.field.full{grid-column:auto}.contact-form button,.form-status{grid-column:auto}.contact-row{grid-template-columns:100px 1fr}.final-cta{height:560px}.footer-grid{grid-template-columns:1fr}.footer-brand{grid-column:auto}.footer-bottom{display:block}.footer-bottom span:last-child{display:block;margin-top:7px}.menu-overlay{padding:20px}.menu-main a{font-size:3.6rem}.menu-foot{display:block}.menu-foot span:last-child{display:block;margin-top:7px}
+    }
+    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;animation-iteration-count:1!important}.reveal{opacity:1;transform:none}}
+  </style>
+</head>
+<body>
+  <div class="menu-overlay" id="menuOverlay" aria-hidden="true">
+    <div class="menu-top"><a class="brand" href="#home">A<span>B</span></a><button class="close-menu" id="closeMenu" type="button" aria-label="Close menu">×</button></div>
+    <nav class="menu-main" aria-label="Expanded navigation"><a href="#home">Home</a><a href="#about">About</a><a href="#tickets">Pricing</a><a href="#contact">Contact</a></nav>
+    <div class="menu-foot"><span>Discovery &amp; Adventure</span><span>Bouira · Algeria</span></div>
+  </div>
+
+  <header class="hero" id="home">
+    <img class="hero-bg" src="assets/images/hero.jpg" alt="AB Park lit up at night" width="3024" height="4032" fetchpriority="high" decoding="async">
+    <nav class="topbar" aria-label="Primary navigation">
+      <a class="brand" href="#home" aria-label="AB Park home">A<span>B</span></a>
+      <div class="navlinks"><a href="#home">Home</a><a href="#about">About</a><a href="#tickets">Pricing</a><a href="#contact">Contact</a></div>
+      <button class="menu-button" id="openMenu" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="menuOverlay"><span class="menu-lines" aria-hidden="true"><i></i><i></i></span><span>Menu</span></button>
+    </nav>
+    <div class="hero-copy"><p>Discover AB Park in Bouira — where water, adventure, and unforgettable experiences come together.</p><a class="arrow" href="#experiences">Explore AB Park</a></div>
+    <h1 class="hero-word">AB PARK</h1>
+    <button class="visit-card" type="button" data-ticket="Day Pass" aria-label="Plan your visit">
+      <img class="avatar" src="assets/images/dining.jpg" alt="AB Park guest host" width="562" height="570">
+      <small>Plan your visit</small><strong>Discover your experience</strong><span class="square-arrow" aria-hidden="true">→</span>
+    </button>
+  </header>
+
+  <main>
+    <section class="experience" id="about">
+      <div class="wrap experience-grid">
+        <div class="experience-copy reveal"><p class="eyebrow">The AB Park experience</p><h2 class="title">More than a park.<br>A place to experience.</h2><p class="lede">Discover a destination where adventure, water, entertainment, and unforgettable moments come together in the heart of Bouira.</p><div class="experience-notes"><article class="experience-note"><span>Water</span><p>Cool down in generous pools and discover slides made for every age.</p></article><article class="experience-note"><span>Adventure</span><p>From classic rides to exciting attractions, there is always more to discover.</p></article></div></div>
+        <figure class="experience-image reveal"><img src="assets/images/feature-square.jpg" alt="Aerial view of the AB Park water attractions" width="3274" height="3139" loading="lazy" decoding="async"></figure>
+      </div>
+    </section>
+
+    <section class="glance" aria-label="AB Park at a glance">
+      <img src="assets/images/feature-wide.jpg" alt="AB Park water park from above" width="1500" height="1071" loading="lazy" decoding="async">
+      <div class="glance-inner"><div class="glance-top"><p class="eyebrow">AB Park at a glance</p><p>One destination. Endless experiences.</p></div><div class="stats"><article class="stat"><strong data-count="12" data-suffix="+">0</strong><p>Signature attractions</p></article><article class="stat"><strong data-count="80" data-suffix="k+">0</strong><p>Visitors welcomed</p></article><article class="stat"><strong data-count="4" data-suffix="★">0</strong><p>Family experience</p></article><article class="stat"><strong data-count="100" data-suffix="%">0</strong><p>Fun to discover</p></article></div></div>
+    </section>
+
+    <section class="explorer" id="experiences">
+      <div class="wrap"><header class="section-heading reveal"><div><p class="eyebrow">Explore AB Park</p><h2 class="title">Find your perfect experience.</h2></div><div class="filter-switch" role="group" aria-label="Filter experiences"><button type="button" data-filter="play" class="active" aria-pressed="true">Play</button><button type="button" data-filter="stay" aria-pressed="false">Stay</button></div></header>
+        <div class="card-grid" id="cardGrid" aria-live="polite">
+          <article class="experience-card reveal" data-group="play"><div class="card-image"><img src="assets/images/feature-wide.jpg" alt="Water World pools and slides" width="1500" height="1071" loading="lazy"><div class="tags"><span class="tag dark">Play</span><span class="tag">Water</span></div></div><div class="card-body"><h3>Water World</h3><div class="card-meta"><span>All ages</span><b>Included</b></div></div></article>
+          <article class="experience-card reveal" data-group="play"><div class="card-image"><img src="assets/images/experience-adventure.jpg" alt="Classic carousel at AB Park" width="3024" height="4032" loading="lazy"><div class="tags"><span class="tag dark">Play</span><span class="tag">Family</span></div></div><div class="card-body"><h3>Grand Carousel</h3><div class="card-meta"><span>From 3 years</span><b>Included</b></div></div></article>
+          <article class="experience-card reveal" data-group="play"><div class="card-image"><img src="assets/images/hero.jpg" alt="Ferris wheel at night" width="3024" height="4032" loading="lazy"><div class="tags"><span class="tag dark">Play</span><span class="tag">View</span></div></div><div class="card-body"><h3>Bouira Sky Wheel</h3><div class="card-meta"><span>All ages</span><b>Included</b></div></div></article>
+          <article class="experience-card reveal" data-group="play"><div class="card-image"><img src="assets/images/feature-square.jpg" alt="Colorful water slides" width="3274" height="3139" loading="lazy"><div class="tags"><span class="tag dark">Play</span><span class="tag">Thrill</span></div></div><div class="card-body"><h3>Discovery Slides</h3><div class="card-meta"><span>120 cm minimum</span><b>Included</b></div></div></article>
+          <article class="experience-card" data-group="stay" hidden><div class="card-image"><img src="assets/images/room-standard.jpg" alt="AB Hotel standard room" width="1440" height="1440" loading="lazy"><div class="tags"><span class="tag dark">Stay</span><span class="tag">Hotel</span></div></div><div class="card-body"><h3>Standard Room</h3><div class="card-meta"><span>2 guests</span><b>9,800 DZD</b></div></div></article>
+          <article class="experience-card" data-group="stay" hidden><div class="card-image"><img src="assets/images/room-twin.jpg" alt="AB Hotel twin room" width="1440" height="1440" loading="lazy"><div class="tags"><span class="tag dark">Stay</span><span class="tag">Hotel</span></div></div><div class="card-body"><h3>Twin Room</h3><div class="card-meta"><span>2 guests</span><b>9,000 DZD</b></div></div></article>
+          <article class="experience-card" data-group="stay" hidden><div class="card-image"><img src="assets/images/room-deluxe.jpg" alt="AB Hotel deluxe room" width="1440" height="1439" loading="lazy"><div class="tags"><span class="tag dark">Stay</span><span class="tag">Hotel</span></div></div><div class="card-body"><h3>Deluxe Room</h3><div class="card-meta"><span>2 guests</span><b>11,000 DZD</b></div></div></article>
+          <article class="experience-card" data-group="stay" hidden><div class="card-image"><img src="assets/images/room-suite.jpg" alt="AB Hotel suite" width="1440" height="1440" loading="lazy"><div class="tags"><span class="tag dark">Stay</span><span class="tag">Suite</span></div></div><div class="card-body"><h3>AB Hotel Suite</h3><div class="card-meta"><span>4 guests</span><b>18,000 DZD</b></div></div></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="story" id="story"><div class="wrap"><header class="story-head reveal"><p class="eyebrow">Why AB Park</p><h2 class="title">A complete day, made effortless.</h2></header><div class="story-grid"><figure class="story-image reveal"><img src="assets/images/experience-adventure.jpg" alt="The AB Park carousel at sunset" width="3024" height="4032" loading="lazy"></figure><div class="story-copy reveal"><p class="story-label">AB Park · Bouira</p><h3>Feel alive.<br><span>Water. Rides. Together.</span></h3><p class="lede">Clear routes, welcoming teams, and experiences for every pace — designed so families can simply enjoy the day.</p><div class="proofs"><article class="proof"><strong>Open daily</strong><p>Long summer hours with attractions into the evening.</p></article><article class="proof"><strong>12+ attractions</strong><p>Water slides, pools, rides and calm spaces for younger guests.</p></article><article class="proof"><strong>All in one place</strong><p>Food, lockers, parking, hotel and entertainment close together.</p></article><article class="proof"><strong>Guest first</strong><p>Trained teams, clear safety guidance and attentive service.</p></article></div></div></div></div></section>
+
+    <section class="services"><div class="wrap"><header class="services-head reveal"><p class="eyebrow">Our services</p><h2 class="title">Everything you need for an unforgettable visit</h2><p>Thoughtful services designed to make every day easier.</p></header><div class="service-grid"><article class="service-card reveal"><img src="assets/images/feature-square.jpg" alt="Pools and water attractions at AB Park" width="3274" height="3139" loading="lazy"><div class="service-text"><h3>Water &amp; attractions</h3><p>Pools, slides, rides and play areas for every kind of energy.</p></div><a class="service-link" href="#map">Explore the park</a></article><article class="service-card reveal"><img src="assets/images/gallery-square.jpg" alt="Restaurant at AB Park" width="1440" height="1440" loading="lazy"><div class="service-text"><h3>Food &amp; breaks</h3><p>Comfortable places to sit, refuel and take your time together.</p></div><a class="service-link" href="#contact">Plan your day</a></article></div></div></section>
+
+    <section class="tickets" id="tickets"><div class="wrap"><header class="tickets-head reveal"><h2 class="title">Choose your way into the adventure.</h2><p>Simple tickets for one perfect day or a whole season of return visits. Children under three enter free with an adult.</p></header><div class="price-grid reveal"><article class="price-card"><p class="plan">Child day pass</p><p class="price">1,400 <span>DZD</span></p><p>A full day of family attractions and water play for guests aged 3–12.</p><ul><li>Park entry</li><li>Water attractions</li><li>Family rides</li></ul><button class="select-ticket" type="button" data-ticket="Child Day Pass" data-price="1,400 DZD">Select ticket</button></article><article class="price-card featured"><p class="plan">All-access day</p><p class="price">2,200 <span>DZD</span></p><p>One ticket for every open attraction — our easiest complete experience.</p><ul><li>Full park entry</li><li>All open rides</li><li>Water park access</li></ul><button class="select-ticket" type="button" data-ticket="All-Access Day" data-price="2,200 DZD">Select ticket</button></article><article class="price-card"><p class="plan">Family four</p><p class="price">7,200 <span>DZD</span></p><p>A flexible family ticket for two adults and two children on the same day.</p><ul><li>4 park entries</li><li>All open rides</li><li>Priority entry</li></ul><button class="select-ticket" type="button" data-ticket="Family Four" data-price="7,200 DZD">Select ticket</button></article></div></div></section>
+
+    <section class="park-map" id="map"><div class="wrap map-layout"><div class="map-copy reveal"><p class="eyebrow">Interactive park map</p><h2 class="title">Find your next moment.</h2><p>Choose a point to preview the park’s main zones before you arrive.</p><div class="map-detail" id="mapDetail"><small>01 · Water</small><h3>Water World</h3><p>Large pools, family areas and our signature slides.</p></div></div><div class="map-canvas reveal" role="group" aria-label="Interactive map of AB Park"><div class="map-path" aria-hidden="true"></div><div class="map-lake" aria-hidden="true"></div><button class="map-point point-1 active" type="button" data-index="01" data-label="Water" data-title="Water World" data-copy="Large pools, family areas and our signature slides." aria-label="Show Water World">01</button><button class="map-point point-2" type="button" data-index="02" data-label="Rides" data-title="Sky Wheel" data-copy="Night views over Bouira from the park's luminous landmark." aria-label="Show Sky Wheel">02</button><button class="map-point point-3" type="button" data-index="03" data-label="Family" data-title="Carousel Garden" data-copy="A calm, colourful world made for the park's younger explorers." aria-label="Show Carousel Garden">03</button><button class="map-point point-4" type="button" data-index="04" data-label="Food" data-title="Park Kitchen" data-copy="Meals, cold drinks and shaded tables at the centre of your day." aria-label="Show Park Kitchen">04</button><button class="map-point point-5" type="button" data-index="05" data-label="Guest" data-title="Welcome Hub" data-copy="Tickets, lockers, information and first aid in one easy stop." aria-label="Show Welcome Hub">05</button><span class="map-legend">AB Park · Bouira</span></div></div></section>
+
+    <section class="reviews"><div class="wrap reviews-grid"><header class="reviews-copy reveal"><p class="eyebrow">Guest reviews</p><h2 class="title">What our guests say</h2></header><div class="quote-wrap reveal"><blockquote class="quote" id="quote">“AB Park is a great family destination with fun attractions for all ages. A lively place to enjoy memorable moments together.”</blockquote><div class="reviewer"><img id="reviewImage" src="assets/images/dining.jpg" alt="Portrait of park guest" width="562" height="570" loading="lazy"><p><strong id="reviewName">Djemai Shn</strong><span id="reviewRole">Family guest</span><span class="stars">★★★★★</span></p></div><div class="review-controls"><button id="prevReview" type="button" aria-label="Previous review">←</button><button id="nextReview" type="button" aria-label="Next review">→</button></div></div></div></section>
+
+    <section class="faq"><div class="wrap faq-grid"><div class="faq-copy reveal"><p class="eyebrow">FAQ</p><h2 class="title">Frequently asked questions</h2><p>Have more questions? Our team is happy to help.</p><a class="arrow dark" href="#contact">Plan your visit</a></div><div class="faq-list reveal"><article class="faq-item open"><button class="faq-question" type="button" aria-expanded="true"><span>What are the park opening times?</span><span>+</span></button><div class="faq-answer"><p>AB Park opens daily from 10:00. Closing times vary through the season, with longer evening hours in summer.</p></div></article><article class="faq-item"><button class="faq-question" type="button" aria-expanded="false"><span>Can I buy tickets when I arrive?</span><span>+</span></button><div class="faq-answer"><p>Yes. Tickets are available at the entrance, subject to capacity. Booking ahead is recommended on weekends.</p></div></article><article class="faq-item"><button class="faq-question" type="button" aria-expanded="false"><span>What should I bring for the water park?</span><span>+</span></button><div class="faq-answer"><p>Bring swimwear, towels and suitable footwear. Lockers and changing areas are available near Water World.</p></div></article><article class="faq-item"><button class="faq-question" type="button" aria-expanded="false"><span>Are there attractions for younger children?</span><span>+</span></button><div class="faq-answer"><p>Yes. Carousel Garden, shallow pools and several family rides are designed specifically for younger guests.</p></div></article><article class="faq-item"><button class="faq-question" type="button" aria-expanded="false"><span>Is parking available?</span><span>+</span></button><div class="faq-answer"><p>Yes, visitor parking is available beside the main entrance and is clearly signposted on arrival.</p></div></article></div></div></section>
+
+    <section class="contact" id="contact"><div class="wrap contact-grid"><div class="contact-copy reveal"><p class="eyebrow">Contact &amp; location</p><h2 class="title">Your day starts here.</h2><div class="contact-details"><p class="contact-row"><span>Location</span><strong>Zone OPOW, Bouira, Algeria</strong></p><p class="contact-row"><span>Phone</span><strong>+213 (0) 560 42 23 72</strong></p><p class="contact-row"><span>Hours</span><strong>Daily · 10:00–20:00</strong></p></div></div><form class="contact-form reveal" id="contactForm"><div class="field"><label for="name">Name</label><input id="name" name="name" required autocomplete="name"></div><div class="field"><label for="email">Email</label><input id="email" name="email" type="email" required autocomplete="email"></div><div class="field full"><label for="visitDate">Preferred visit date</label><input id="visitDate" name="visitDate" type="date"></div><div class="field full"><label for="message">Your question</label><input id="message" name="message" placeholder="Tickets, groups, accessibility…"></div><button type="submit">Send visit request →</button><p class="form-status" id="formStatus" aria-live="polite"></p></form></div></section>
+
+    <section class="final-cta"><img src="assets/images/experience-adventure.jpg" alt="Carousel at AB Park" width="3024" height="4032" loading="lazy"><div class="final-inner reveal"><h2 class="title">An unforgettable day starts here</h2><p>Adventure, water, and a warm welcome at AB Park.</p><button class="arrow" type="button" data-ticket="All-Access Day" data-price="2,200 DZD">Book your day</button></div></section>
+  </main>
+
+  <footer><div class="wrap"><div class="footer-grid"><a class="footer-brand" href="#home">AB</a><div class="footer-col"><h3>Nav menu</h3><a href="#home">Home</a><a href="#about">About</a><a href="#tickets">Pricing</a><a href="#contact">Contact</a></div><div class="footer-col"><h3>Contact</h3><a href="mailto:hello@abpark.co">hello@abpark.co</a><p>Bouira, Algeria</p><p>+213 (0) 560 42 23 72</p></div><div class="footer-col footer-news"><h3>Stay in the loop</h3><p>Get park updates, special events and news from AB Park.</p><form class="subscribe" id="subscribeForm"><input type="email" aria-label="Email for park updates" placeholder="Your email address" required><button type="submit" aria-label="Subscribe">→</button></form></div></div><div class="footer-bottom"><span>© 2026 AB Park. All rights reserved.</span><span>Discovery &amp; Adventure · Bouira</span></div></div></footer>
+
+  <div class="ticket-modal" id="ticketModal" aria-hidden="true"><div class="ticket-dialog" role="dialog" aria-modal="true" aria-labelledby="ticketTitle"><button class="modal-close" id="modalClose" type="button" aria-label="Close ticket dialog">×</button><p class="eyebrow">Plan your visit</p><h2 id="ticketTitle">All-Access Day</h2><p>You are one step away from an unforgettable day. The AB Park team will confirm availability and your visit details.</p><div class="ticket-summary"><span id="ticketName">All-Access Day</span><strong id="ticketPrice">2,200 DZD</strong></div><a class="arrow" href="#contact" id="continueBooking">Continue to contact</a></div></div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+  (function(){
+    var body=document.body,menu=document.getElementById('menuOverlay'),openMenu=document.getElementById('openMenu'),closeMenu=document.getElementById('closeMenu');
+    function setMenu(show){menu.classList.toggle('open',show);menu.setAttribute('aria-hidden',String(!show));openMenu.setAttribute('aria-expanded',String(show));body.classList.toggle('menu-open',show);if(show)closeMenu.focus();}
+    openMenu.addEventListener('click',function(){setMenu(true)});closeMenu.addEventListener('click',function(){setMenu(false)});menu.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){setMenu(false)})});
+
+    var filterButtons=document.querySelectorAll('[data-filter]'),cards=document.querySelectorAll('.experience-card');
+    filterButtons.forEach(function(button){button.addEventListener('click',function(){var value=button.dataset.filter;filterButtons.forEach(function(b){var active=b===button;b.classList.toggle('active',active);b.setAttribute('aria-pressed',String(active))});cards.forEach(function(card){card.hidden=card.dataset.group!==value});});});
+
+    var mapDetail=document.getElementById('mapDetail'),points=document.querySelectorAll('.map-point');
+    points.forEach(function(point){point.addEventListener('click',function(){points.forEach(function(p){p.classList.remove('active')});point.classList.add('active');mapDetail.innerHTML='<small>'+point.dataset.index+' · '+point.dataset.label+'</small><h3>'+point.dataset.title+'</h3><p>'+point.dataset.copy+'</p>';});});
+
+    document.querySelectorAll('.faq-question').forEach(function(button){button.addEventListener('click',function(){var item=button.closest('.faq-item'),opening=!item.classList.contains('open');item.classList.toggle('open',opening);button.setAttribute('aria-expanded',String(opening));});});
+
+    var reviews=[
+      {quote:'“AB Park is a great family destination with fun attractions for all ages. A lively place to enjoy memorable moments together.”',name:'Djemai Shn',role:'Family guest',image:'assets/images/dining.jpg'},
+      {quote:'“Super clean pools, friendly staff, and a safe, welcoming atmosphere. We had a wonderful time with our children.”',name:'Meri T',role:'Summer visitor',image:'assets/images/service.jpg'},
+      {quote:'“We came for the water slides and stayed until the lights came on. The Sky Wheel at night was the perfect ending.”',name:'Samir B.',role:'Park guest',image:'assets/images/feature-portrait.jpg'}
+    ],reviewIndex=0,quote=document.getElementById('quote'),reviewName=document.getElementById('reviewName'),reviewRole=document.getElementById('reviewRole'),reviewImage=document.getElementById('reviewImage');
+    function showReview(){var r=reviews[reviewIndex];quote.style.opacity=0;setTimeout(function(){quote.textContent=r.quote;reviewName.textContent=r.name;reviewRole.textContent=r.role;reviewImage.src=r.image;quote.style.opacity=1},160)}
+    quote.style.transition='opacity .2s ease';document.getElementById('prevReview').addEventListener('click',function(){reviewIndex=(reviewIndex+reviews.length-1)%reviews.length;showReview()});document.getElementById('nextReview').addEventListener('click',function(){reviewIndex=(reviewIndex+1)%reviews.length;showReview()});
+
+    var modal=document.getElementById('ticketModal'),modalClose=document.getElementById('modalClose'),ticketName=document.getElementById('ticketName'),ticketPrice=document.getElementById('ticketPrice'),ticketTitle=document.getElementById('ticketTitle');
+    function setModal(show,source){if(source){var name=source.dataset.ticket||'Day Pass',price=source.dataset.price||'Choose at reception';ticketName.textContent=name;ticketTitle.textContent=name;ticketPrice.textContent=price}modal.classList.toggle('open',show);modal.setAttribute('aria-hidden',String(!show));body.classList.toggle('modal-open',show);if(show)modalClose.focus();}
+    document.querySelectorAll('[data-ticket]').forEach(function(button){button.addEventListener('click',function(){setModal(true,button)})});modalClose.addEventListener('click',function(){setModal(false)});modal.addEventListener('click',function(e){if(e.target===modal)setModal(false)});document.getElementById('continueBooking').addEventListener('click',function(){setModal(false)});
+
+    function toast(message){var el=document.getElementById('toast');el.textContent=message;el.classList.add('show');setTimeout(function(){el.classList.remove('show')},2800)}
+    document.getElementById('subscribeForm').addEventListener('submit',function(e){e.preventDefault();toast('Thank you — you are on the AB Park list.');e.currentTarget.reset()});
+    document.getElementById('contactForm').addEventListener('submit',function(e){e.preventDefault();document.getElementById('formStatus').textContent='Thank you. The AB Park team will reply shortly.';e.currentTarget.reset()});
+
+    var counters=document.querySelectorAll('[data-count]'),counted=false;function countStats(){if(counted)return;counted=true;counters.forEach(function(el){var target=Number(el.dataset.count),suffix=el.dataset.suffix||'',start=performance.now();function frame(now){var p=Math.min((now-start)/950,1);el.textContent=Math.round(target*(1-Math.pow(1-p,3)))+suffix;if(p<1)requestAnimationFrame(frame)}requestAnimationFrame(frame)});}
+    var glance=document.querySelector('.glance');if('IntersectionObserver'in window){new IntersectionObserver(function(entries,observer){if(entries[0].isIntersecting){countStats();observer.disconnect()}},{threshold:.25}).observe(glance)}else countStats();
+    var reveal=document.querySelectorAll('.reveal');if('IntersectionObserver'in window){var io=new IntersectionObserver(function(entries){entries.forEach(function(entry){if(entry.isIntersecting){entry.target.classList.add('in');io.unobserve(entry.target)}})},{threshold:.08,rootMargin:'0px 0px -5%'});reveal.forEach(function(el){io.observe(el)})}else reveal.forEach(function(el){el.classList.add('in')});
+    addEventListener('keydown',function(e){if(e.key==='Escape'){setMenu(false);setModal(false)}});
+  })();
+  </script>
+<script src="/assets/js/demo-notice.js?v=1"></script>
+</body>
+</html>

@@ -261,6 +261,33 @@ section.tight { padding: 56px 0; }
 
 .header-cta { display: flex; align-items: center; gap: 14px; }
 .header-cta .btn { padding: 11px 22px; font-size: 0.95rem; }
+.header-dashboard {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 13px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--ink-soft);
+  font-size: 0.9rem;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+}
+.header-dashboard::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 4px var(--accent-soft);
+}
+.header-dashboard:hover,
+.header-dashboard.active {
+  color: var(--ink);
+  border-color: var(--line-strong);
+  background: rgba(255, 255, 255, 0.58);
+}
 
 .burger {
   display: none;
@@ -384,12 +411,14 @@ section.tight { padding: 56px 0; }
   margin: 0 auto;
   transition: opacity 0.7s var(--ease-out), transform 0.7s var(--ease-out);
 }
-.hero-mitte h1 { margin-bottom: 26px; font-size: clamp(2.3rem, 7.5vw, 6rem); line-height: 1.04; letter-spacing: -0.04em; }
+.hero-mitte h1 { margin-bottom: 22px; font-size: clamp(2.3rem, 6.2vw, 5rem); line-height: 1.04; letter-spacing: -0.04em; }
 /* Unterstreichung des Rotor-Worts wächst mit der grossen Schrift mit */
 .hero-mitte .rotor .rotor-word { border-bottom-width: 6px; padding-bottom: 4px; }
 /* Knöpfe proportional zur monumentalen Headline */
 .hero-mitte .hero-ctas .btn { padding: 15px 30px; font-size: 1.02rem; }
 .hero-mitte .lead { margin: 0 auto 34px; max-width: 560px; }
+.hero-promise { margin: 0 auto 10px; color: var(--ink); font-size: clamp(1.02rem, 1.5vw, 1.22rem); font-weight: 650; letter-spacing: -0.01em; }
+.hero-mitte .lead.hero-explain { max-width: 700px; }
 .hero-mitte .hero-ctas { justify-content: center; margin-bottom: 30px; }
 .trust-zeile {
   display: flex; flex-wrap: wrap; justify-content: center; align-items: center;
@@ -1040,9 +1069,11 @@ html.intro-zoom.intro-fahrt .hero-deko {
   border-radius: 999px;
   padding: 10px 20px;
   cursor: pointer;
-  transition: all 0.25s ease;
+  transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, transform 0.16s var(--ease-out);
 }
-.chip:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
+@media (hover: hover) and (pointer: fine) {
+  .chip:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
+}
 .chip.active {
   background: var(--ink);
   border-color: var(--ink);
@@ -1532,7 +1563,7 @@ body.menue-offen .widget-panel { opacity: 0; pointer-events: none; }
   border: 1.5px solid var(--line);
   border-radius: 999px;
   padding: 9px 18px;
-  transition: all 0.2s ease;
+  transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, transform 0.16s var(--ease-out);
 }
 .check-pill input:checked + span { background: var(--accent); border-color: var(--accent); color: #fff; }
 .check-pill input:focus-visible + span { outline: 3px solid var(--accent); outline-offset: 2px; }
@@ -1788,6 +1819,8 @@ body.gescrollt .scroll-cue { opacity: 0; pointer-events: none; }
   .bot-grid, .about-teaser { grid-template-columns: 1fr; gap: 36px; }
   .footer-grid { grid-template-columns: 1fr 1fr; }
   .price-card.featured { transform: none; }
+  .main-nav { gap: 22px; }
+  .header-dashboard { padding-inline: 11px; }
 }
 
 @media (max-width: 720px) {
@@ -1806,6 +1839,7 @@ body.gescrollt .scroll-cue { opacity: 0; pointer-events: none; }
   }
   .main-nav, .header-cta .btn-ghost { display: none; }
   .header-cta .btn-primary { display: none; }
+  .header-dashboard { padding: 8px 11px; font-size: 0.84rem; }
   .burger { display: flex; }
   .site-header { top: 10px; padding: 0 10px; }
   .header-inner { padding: 7px 8px 7px 18px; }
@@ -3776,6 +3810,8 @@ body.ms-cookie-offen .widget-panel { bottom: calc(var(--ms-cookie-h, 90px) + 90p
 .local-usecases span { color: var(--ink-soft); font-size: 0.92rem; }
 .local-demo-link { margin-top: 24px; text-align: center; font-weight: 650; }
 .local-faq { max-width: 800px; }
+.error-page { min-height: calc(100svh - 120px); display: flex; align-items: center; }
+.error-page .hero-ctas { justify-content: center; margin-top: 30px; }
 
 @media (hover: none) {
   .btn:hover, .btn-primary:hover, .btn-ghost:hover, .work-card:hover, .offer-row:hover h3 { transform: none; }
@@ -3796,6 +3832,8 @@ body.ms-cookie-offen .widget-panel { bottom: calc(var(--ms-cookie-h, 90px) + 90p
   .hero-start { min-height: auto; padding-top: calc(var(--header-h) + 72px); padding-bottom: 88px; }
   .hero-kicker { margin-bottom: 16px; font-size: 0.68rem; }
   .hero-mitte h1 { font-size: clamp(2.55rem, 12.5vw, 4rem); }
+  .hero-promise { max-width: 300px; line-height: 1.45; }
+  .hero-mitte .lead.hero-explain { max-width: 330px; }
   .hero-outcome { border-bottom-width: 4px; }
   .hero-mitte .lead { margin-bottom: 28px; }
   .proof-panel { padding: 30px 22px; border-radius: var(--radius-l); }
@@ -3808,6 +3846,7 @@ body.ms-cookie-offen .widget-panel { bottom: calc(var(--ms-cookie-h, 90px) + 90p
   .local-usecases > div, .local-usecases > div:nth-child(even) { padding: 20px 0; border-right: 0; }
   .local-hero { padding-bottom: 52px; }
   .local-hero .trust-zeile { margin-top: 22px; }
+  .error-page { min-height: calc(100svh - 80px); }
   .outcome-row { grid-template-columns: 34px minmax(0, 1fr); gap: 12px; padding: 22px 0; }
   .outcome-row h3 { font-size: 1.14rem; }
   .demo-disclosure { text-align: left; }

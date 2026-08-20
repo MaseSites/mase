@@ -109,6 +109,15 @@ DEMO_BEISPIELE = [
     {"id": "B-arztpraxis", "name": "Praxis am Park", "branche": "Arztpraxis",
      "beschreibung": "Vertrauensvoller Auftritt mit Sprechzeiten und Terminanfrage.",
      "url": "/beispiel-demos/praxis/", "bild": "assets/img/demos/praxis-portfolio.webp"},
+    {"id": "B-hotel", "name": "The Hotel", "branche": "Hotel & Hospitality",
+     "beschreibung": "Cineastischer Auftritt mit Zimmern, Dining und Buchungsanfrage.",
+     "url": "/beispiel-demos/hotel/", "bild": "assets/img/demos/hotel-portfolio.webp"},
+    {"id": "B-fachgeschaeft", "name": "BOUTIQ", "branche": "Fachgeschäft & Retail",
+     "beschreibung": "Editorialer Store-Look mit Video-Hero, Sortiment und Warenkorb.",
+     "url": "/beispiel-demos/fachgeschaeft/", "bild": "assets/img/demos/fachgeschaeft-portfolio.webp"},
+    {"id": "B-freizeit", "name": "AB Park", "branche": "Freizeit & Erlebnis",
+     "beschreibung": "Erlebnispark mit Attraktionen, Parkplan und Ticket-Auswahl.",
+     "url": "/beispiel-demos/freizeit/", "bild": "assets/img/demos/freizeit-portfolio.webp"},
 ]
 
 
@@ -120,10 +129,11 @@ def _bot_antwort(body):
             letzte = str(t.get("text", "")).lower()
             break
     termin = False
-    reply = ("Gern! Frag mich zu Websites, Preisen oder wuensch dir einen Termin. "
+    reply = ("Gern! Frag mich zu Websites, WebApps, KI-Loesungen oder Preisen – oder wuensch dir einen Termin. "
              "Mehr auf /preise oder schreib an info@masesites.ch.")
     if "kost" in letzte or "preis" in letzte:
-        reply = "Eine neue Website gibt es ab CHF 790. Auf /preise findest du alle Pakete im Vergleich."
+        reply = ("Websites starten bei CHF 790, WebApps bei CHF 2'990 und MASE AI kostet "
+                 "CHF 490 einmalig plus CHF 39 pro Monat. Details stehen auf /preise.")
     elif "termin" in letzte or "beratung" in letzte or "rueckruf" in letzte or "rückruf" in letzte:
         reply = "Sehr gern! Wie heisst du, wie erreiche ich dich (E-Mail oder Telefon), und wann wuerde dir passen?"
     elif "@" in letzte or any(z.isdigit() for z in letzte):
@@ -286,13 +296,19 @@ class Handler(BaseHTTPRequestHandler):
         self.send_response(200)
         self.send_header("Content-Type", typ)
         self.send_header("Cache-Control", "no-store")
+        if sauber.startswith("beispiel-demos/") and typ.startswith("text/html"):
+            self.send_header("X-Robots-Tag", "noindex, nofollow")
         self.send_header("Content-Length", str(len(inhalt)))
         self.end_headers()
         self.wfile.write(inhalt)
 
     def _fehlt(self, pfad):
-        text = ("<h1>404</h1><p>Nicht gefunden: %s</p>"
-                "<p>Lokaler masesites-Dev-Mock.</p>" % pfad).encode("utf-8")
+        fehlerseite = os.path.join(WURZEL, "404.html")
+        try:
+            with open(fehlerseite, "rb") as f:
+                text = f.read()
+        except OSError:
+            text = b"<!doctype html><meta charset='utf-8'><title>Nicht gefunden</title><h1>404</h1>"
         self.send_response(404)
         self.send_header("Content-Type", "text/html; charset=utf-8")
         self.send_header("Content-Length", str(len(text)))

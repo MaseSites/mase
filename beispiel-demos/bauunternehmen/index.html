@@ -522,6 +522,44 @@ img{max-width:100%}
   .hero-grid{align-content:end}
 }
 </style>
+<style id="mobile-optimization-v2">
+@media(max-width:1024px){
+  :where(input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="color"]),select,textarea){
+    font-size:16px!important
+  }
+}
+@media(max-width:768px){
+  /* mobile-v2-overflow-guard */
+  html,body{max-width:100%;overflow-x:clip}
+  html{scroll-padding-top:78px}
+  body{overscroll-behavior-x:none}
+  :where(button,[role="button"],summary){min-width:44px;min-height:44px}
+  /* mobile-v2-form-targets */
+  input[type="range"]{min-height:44px}
+  :where(input[type="checkbox"],input[type="radio"]){min-width:24px;min-height:24px}
+  :where(.nav-menu,.mobile-menu,.nav-links.open,.drawer,[role="dialog"]){overscroll-behavior:contain}
+  :where(.nav-menu a,.mobile-menu a,.nav-links.open a,.drawer a){
+    min-height:44px;
+    display:flex;
+    align-items:center
+  }
+  :where(footer a){min-height:40px;display:flex;align-items:center}
+  .mobile-sticky-managed{
+    opacity:0!important;
+    transform:translateY(calc(100% + 28px))!important;
+    pointer-events:none!important;
+    transition:opacity 180ms ease,transform 220ms cubic-bezier(.23,1,.32,1)!important
+  }
+  .mobile-sticky-managed.is-visible{
+    opacity:1!important;
+    transform:none!important;
+    pointer-events:auto!important
+  }
+}
+@media(prefers-reduced-motion:reduce){
+  .mobile-sticky-managed{transition:opacity 120ms ease!important}
+}
+</style>
 </head>
 <body>
 <a class="quality-skip" href="#main">Zum Inhalt springen</a>
@@ -962,6 +1000,8 @@ img{max-width:100%}
         </div>
       </div>
     </section>
+    <style id="mase-extension-styles">.mase-extension-2026{padding:clamp(5rem,9vw,8rem) 0;border-top:1px solid color-mix(in srgb,currentColor 18%,transparent);background:color-mix(in srgb,currentColor 4%,transparent)}.mase-extension-shell{width:min(100% - 40px,1180px);margin-inline:auto}.mase-extension-head{display:grid;grid-template-columns:.8fr 1.2fr;gap:2rem;align-items:end;margin-bottom:2.8rem}.mase-extension-kicker{font-size:.72rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;opacity:.65}.mase-extension-head h2{font:inherit;font-size:clamp(2.4rem,5vw,4.6rem);line-height:.98;letter-spacing:-.05em;max-width:13ch}.mase-extension-head>p:last-child{max-width:50ch;opacity:.68}.mase-extension-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:color-mix(in srgb,currentColor 18%,transparent);border:1px solid color-mix(in srgb,currentColor 18%,transparent)}.mase-extension-card{min-height:245px;padding:1.7rem;background:color-mix(in srgb,currentColor 3%,transparent);display:flex;flex-direction:column}.mase-extension-card span{font-size:.7rem;font-weight:700;opacity:.55}.mase-extension-card h3{font:inherit;font-size:1.25rem;line-height:1.1;margin-top:auto}.mase-extension-card p{font-size:.83rem;opacity:.68;margin-top:.75rem}@media(max-width:850px){.mase-extension-head{grid-template-columns:1fr}.mase-extension-grid{grid-template-columns:1fr 1fr}}@media(max-width:520px){.mase-extension-grid{grid-template-columns:1fr}.mase-extension-card{min-height:210px}}</style>
+    <section class="mase-extension-2026" aria-labelledby="mase-extra-title"><div class="mase-extension-shell"><header class="mase-extension-head"><div><p class="mase-extension-kicker">Baustellendokumentation</p><h2 id="mase-extra-title">Fortschritt, der nachvollziehbar bleibt.</h2></div><p>Entscheidungen, Änderungen und fertige Etappen werden festgehalten – für Bauherrschaft, Planung und spätere Übergabe.</p></header><div class="mase-extension-grid"><article class="mase-extension-card"><span>01 · TAGESRAPPORT</span><h3>Leistung festhalten</h3><p>Team, ausgeführte Arbeiten und besondere Vorkommnisse werden dokumentiert.</p></article><article class="mase-extension-card"><span>02 · FOTOSTAND</span><h3>Verdecktes sichtbar machen</h3><p>Leitungen und Aufbauten bleiben auch nach dem Schliessen nachvollziehbar.</p></article><article class="mase-extension-card"><span>03 · ENTSCHEID</span><h3>Änderungen bestätigen</h3><p>Kosten- und Terminfolgen werden erklärt, bevor eine Anpassung ausgeführt wird.</p></article><article class="mase-extension-card"><span>04 · ÜBERGABE</span><h3>Unterlagen bündeln</h3><p>Protokolle, Garantien und Pflegehinweise kommen geordnet an einen Ort.</p></article></div></div></section>
   </main>
 
   <footer class="footer">
@@ -1089,5 +1129,22 @@ img{max-width:100%}
       document.getElementById('year').textContent=String(new Date().getFullYear());
     })();
   </script>
+<script id="mobile-sticky-behavior-v2">
+(function(){
+  var sticky=document.querySelector('.mobile-cta,.mobile-call,.sticky-call');
+  var trigger=document.querySelector('.hero-actions,.hero__actions,.hero-cta,.hero .btn,.hero .button');
+  if(!sticky||!trigger)return;
+  sticky.classList.add('mobile-sticky-managed');
+  function setVisible(visible){sticky.classList.toggle('is-visible',visible)}
+  if('IntersectionObserver' in window){
+    new IntersectionObserver(function(entries){
+      setVisible(!entries[0].isIntersecting);
+    },{threshold:.08}).observe(trigger);
+  }else{
+    setVisible(true);
+  }
+})();
+</script>
+<script src="/assets/js/demo-notice.js?v=1"></script>
 </body>
 </html>

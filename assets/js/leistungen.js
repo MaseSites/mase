@@ -25,6 +25,7 @@
       var an = t.dataset.welt === name;
       t.classList.toggle("active", an);
       t.setAttribute("aria-selected", an ? "true" : "false");
+      t.tabIndex = an ? 0 : -1;
     });
     panels.forEach(function (p) {
       var an = p.dataset.panel === name;
@@ -76,6 +77,18 @@
 
   tabs.forEach(function (t) {
     t.addEventListener("click", function () { wechsleZu(t.dataset.welt, t); });
+    t.addEventListener("keydown", function (event) {
+      var index = tabs.indexOf(t);
+      var ziel = null;
+      if (event.key === "ArrowRight") ziel = tabs[(index + 1) % tabs.length];
+      if (event.key === "ArrowLeft") ziel = tabs[(index - 1 + tabs.length) % tabs.length];
+      if (event.key === "Home") ziel = tabs[0];
+      if (event.key === "End") ziel = tabs[tabs.length - 1];
+      if (!ziel) return;
+      event.preventDefault();
+      ziel.focus();
+      wechsleZu(ziel.dataset.welt, ziel);
+    });
   });
 
   /* ---------- Chat-Schleife (Welt KI) ---------- */

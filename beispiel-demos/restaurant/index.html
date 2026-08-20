@@ -499,10 +499,16 @@ p { text-wrap: pretty; }
 <style id="mobile-polish">
 html,body{max-width:100%;overflow-x:clip}
 .btn,.nav__burger,.tab,.menu__arrow{touch-action:manipulation}
+@media(max-width:900px){
+  .nav__links,.nav__cta{display:none}
+  .nav__burger{display:flex;width:44px;height:44px;flex:0 0 44px}
+}
 @media(max-width:760px){
   .nav__burger{width:44px;height:44px;flex:0 0 44px}
   .reserve-form input,.reserve-form select{min-height:48px;font-size:16px}
   .reserve-form button,.tab{min-height:44px}
+  .menu__tabs{scroll-snap-type:x proximity;overscroll-behavior-inline:contain}
+  .tab{scroll-snap-align:start}
 }
 @media(max-width:360px){
   .hero{padding-inline:14px}
@@ -568,6 +574,44 @@ img{max-width:100%}
   text-transform:uppercase
 }
 .rating span{font-weight:600}
+</style>
+<style id="mobile-optimization-v2">
+@media(max-width:1024px){
+  :where(input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="color"]),select,textarea){
+    font-size:16px!important
+  }
+}
+@media(max-width:768px){
+  /* mobile-v2-overflow-guard */
+  html,body{max-width:100%;overflow-x:clip}
+  html{scroll-padding-top:78px}
+  body{overscroll-behavior-x:none}
+  :where(button,[role="button"],summary){min-width:44px;min-height:44px}
+  /* mobile-v2-form-targets */
+  input[type="range"]{min-height:44px}
+  :where(input[type="checkbox"],input[type="radio"]){min-width:24px;min-height:24px}
+  :where(.nav-menu,.mobile-menu,.nav-links.open,.drawer,[role="dialog"]){overscroll-behavior:contain}
+  :where(.nav-menu a,.mobile-menu a,.nav-links.open a,.drawer a){
+    min-height:44px;
+    display:flex;
+    align-items:center
+  }
+  :where(footer a){min-height:40px;display:flex;align-items:center}
+  .mobile-sticky-managed{
+    opacity:0!important;
+    transform:translateY(calc(100% + 28px))!important;
+    pointer-events:none!important;
+    transition:opacity 180ms ease,transform 220ms cubic-bezier(.23,1,.32,1)!important
+  }
+  .mobile-sticky-managed.is-visible{
+    opacity:1!important;
+    transform:none!important;
+    pointer-events:auto!important
+  }
+}
+@media(prefers-reduced-motion:reduce){
+  .mobile-sticky-managed{transition:opacity 120ms ease!important}
+}
 </style>
 </head>
 <body>
@@ -845,6 +889,8 @@ img{max-width:100%}
 </div>
 </section>
 <!-- ===== FOOTER ===== -->
+<style id="mase-extension-styles">.mase-extension-2026{padding:clamp(5rem,9vw,8rem) 0;border-top:1px solid color-mix(in srgb,currentColor 18%,transparent);background:color-mix(in srgb,currentColor 4%,transparent)}.mase-extension-shell{width:min(100% - 40px,1180px);margin-inline:auto}.mase-extension-head{display:grid;grid-template-columns:.8fr 1.2fr;gap:2rem;align-items:end;margin-bottom:2.8rem}.mase-extension-kicker{font-size:.72rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;opacity:.65}.mase-extension-head h2{font:inherit;font-size:clamp(2.4rem,5vw,4.6rem);line-height:.98;letter-spacing:-.05em;max-width:13ch}.mase-extension-head>p:last-child{max-width:50ch;opacity:.68}.mase-extension-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:color-mix(in srgb,currentColor 18%,transparent);border:1px solid color-mix(in srgb,currentColor 18%,transparent)}.mase-extension-card{min-height:245px;padding:1.7rem;background:color-mix(in srgb,currentColor 3%,transparent);display:flex;flex-direction:column}.mase-extension-card span{font-size:.7rem;font-weight:700;opacity:.55}.mase-extension-card h3{font:inherit;font-size:1.25rem;line-height:1.1;margin-top:auto}.mase-extension-card p{font-size:.83rem;opacity:.68;margin-top:.75rem}@media(max-width:850px){.mase-extension-head{grid-template-columns:1fr}.mase-extension-grid{grid-template-columns:1fr 1fr}}@media(max-width:520px){.mase-extension-grid{grid-template-columns:1fr}.mase-extension-card{min-height:210px}}</style>
+<section class="mase-extension-2026" aria-labelledby="mase-extra-title"><div class="mase-extension-shell"><header class="mase-extension-head"><div><p class="mase-extension-kicker">Der Rhythmus des Abends</p><h2 id="mase-extra-title">Vier Akte. Ein langer Tisch.</h2></div><p>Die Osteria Sera ist für Abende gebaut, die nicht beschleunigt werden müssen – vom ersten Glas bis zum letzten Espresso.</p></header><div class="mase-extension-grid"><article class="mase-extension-card"><span>18:00 · APERITIVO</span><h3>Ankommen</h3><p>Ein Glas, etwas Knuspriges und Zeit, bis alle am Tisch sind.</p></article><article class="mase-extension-card"><span>19:00 · ANTIPASTI</span><h3>Teilen</h3><p>Kleine Teller in die Mitte bringen Gespräch und Geschmack in Bewegung.</p></article><article class="mase-extension-card"><span>20:00 · PASTA</span><h3>Bleiben</h3><p>Frisch gemacht, kräftig abgeschmeckt und ohne unnötige Eile serviert.</p></article><article class="mase-extension-card"><span>21:30 · DOLCE</span><h3>Ausklang</h3><p>Etwas Süsses, ein Espresso und vielleicht noch ein kleiner Digestivo.</p></article></div></div></section>
 </main>
 <footer class="footer" id="footer">
 <div class="container footer__inner">
@@ -984,5 +1030,22 @@ img{max-width:100%}
   addEventListener("resize", updateProgress);
 })();
 </script>
+<script id="mobile-sticky-behavior-v2">
+(function(){
+  var sticky=document.querySelector('.mobile-cta,.mobile-call,.sticky-call');
+  var trigger=document.querySelector('.hero-actions,.hero__actions,.hero-cta,.hero .btn,.hero .button');
+  if(!sticky||!trigger)return;
+  sticky.classList.add('mobile-sticky-managed');
+  function setVisible(visible){sticky.classList.toggle('is-visible',visible)}
+  if('IntersectionObserver' in window){
+    new IntersectionObserver(function(entries){
+      setVisible(!entries[0].isIntersecting);
+    },{threshold:.08}).observe(trigger);
+  }else{
+    setVisible(true);
+  }
+})();
+</script>
+<script src="/assets/js/demo-notice.js?v=1"></script>
 </body>
 </html>

@@ -7,6 +7,7 @@
 /* ---------- Links zu den ausführlichen Leistungsseiten ---------- */
 .pl-mehr {
   display: inline-flex; align-items: center; gap: 7px;
+  min-height: 36px;
   font-size: 0.9rem; font-weight: 650;
   color: var(--ink);
   white-space: nowrap;

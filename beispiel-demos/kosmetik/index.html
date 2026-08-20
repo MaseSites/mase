@@ -1,208 +1,72 @@
 <!doctype html>
-<html lang="de-CH">
+<html lang="de">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="Hochwertige Demo-Vorlage für ein Schweizer Kosmetikstudio mit Leistungen, Behandlungsablauf und Terminanfrage.">
-<meta name="robots" content="noindex,nofollow">
-<meta name="theme-color" content="#f2e9df">
-<title>Hautnah Atelier — Kosmetikstudio Vorlage</title>
-<!--
-  MaseSites Branchenvorlage · Kosmetik & Beauty · Stand Juli 2026
-  Musterangaben vor Livegang ersetzen. Keine Bewertungen, Preise oder Resultate erfunden.
-  Designimpulse: 21st.dev Bento-/Stepper-Komponenten, als eigener HTML/CSS/JS-Aufbau umgesetzt.
-  Fotos (Unsplash):
-  Sunny Ng — https://unsplash.com/photos/1555820585-c5ae44394b79
-  Rosa Rafael — https://unsplash.com/photos/1570172619644-dfd03ed5d881
--->
-<style>
-:root{
-  --paper:#f2e9df;--paper-2:#fbf7f1;--ink:#241c1a;--muted:#746763;
-  --clay:#b95f4d;--rose:#e4b8a6;--sage:#aeb9a6;--line:rgba(36,28,26,.18);
-  --serif:Georgia,"Times New Roman",serif;--sans:"Segoe UI",Arial,sans-serif;
-  --ease:cubic-bezier(.23,1,.32,1);--radius:28px
-}
-*{box-sizing:border-box;margin:0}
-html{scroll-behavior:smooth;scrollbar-gutter:stable}
-body{background:var(--paper);color:var(--ink);font-family:var(--sans);line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden}
-body::before{content:"";position:fixed;z-index:-1;inset:0;opacity:.2;pointer-events:none;background-image:radial-gradient(rgba(36,28,26,.23) .55px,transparent .55px);background-size:5px 5px}
-a{color:inherit;text-decoration:none}button,input,select,textarea{font:inherit;color:inherit}button{cursor:pointer}img{display:block;width:100%}
-::selection{background:var(--clay);color:white}:focus-visible{outline:3px solid var(--clay);outline-offset:4px}
-.wrap{width:min(100% - 40px,1240px);margin-inline:auto}
-.nav{position:fixed;z-index:40;inset:0 0 auto;padding:18px 0;transition:background-color .2s ease,border-color .2s ease,padding .2s var(--ease);border-bottom:1px solid transparent}
-.nav.scrolled{background:rgba(242,233,223,.88);backdrop-filter:blur(16px);border-color:var(--line);padding:10px 0}
-.nav-inner{display:flex;align-items:center;gap:28px}.brand{font:italic 700 1.35rem/1 var(--serif);letter-spacing:-.04em}.brand span{display:block;font:600 .58rem/1 var(--sans);letter-spacing:.19em;text-transform:uppercase;margin-top:5px}
-.nav-links{display:flex;gap:25px;margin-left:auto;font-size:.76rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase}.nav-links a{padding:10px 0;position:relative}.nav-links a::after{content:"";position:absolute;inset:auto 0 4px;height:1px;background:var(--ink);transform:scaleX(0);transform-origin:right;transition:transform .2s var(--ease)}
-.nav-cta,.button{display:inline-flex;align-items:center;justify-content:center;gap:10px;border:1px solid var(--ink);background:var(--ink);color:#fff;border-radius:999px;padding:13px 19px;font-weight:700;font-size:.82rem;transition:transform .16s var(--ease),background-color .2s ease,color .2s ease}
-.nav-cta:active,.button:active,.chip:active,.step-tab:active{transform:scale(.97)}.button.light{background:transparent;color:var(--ink)}
-.menu{display:none;margin-left:auto;background:transparent;border:1px solid var(--ink);border-radius:999px;padding:10px 13px}
-.hero{min-height:100svh;padding:130px 0 70px;display:grid;align-items:center}.hero-grid{display:grid;grid-template-columns:1.04fr .96fr;gap:clamp(35px,7vw,95px);align-items:center}
-.eyebrow{font-size:.68rem;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:var(--clay);display:flex;align-items:center;gap:10px}.eyebrow::before{content:"";width:34px;height:1px;background:currentColor}
-h1{font:italic 500 clamp(4.2rem,9vw,8.7rem)/.78 var(--serif);letter-spacing:-.075em;margin:32px 0;max-width:7ch}h1 span{display:block;margin-left:.72em;color:var(--clay)}
-.hero-copy>p{max-width:48ch;color:var(--muted);font-size:1.06rem}.hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:30px}
-.hero-visual{position:relative;min-height:650px}.hero-visual::before{content:"";position:absolute;inset:7% 4% 0 16%;border-radius:48% 48% 7px 7px;background:var(--rose);transform:rotate(4deg)}
-.hero-visual img{position:absolute;inset:0 9% 3% 4%;height:92%;object-fit:cover;border-radius:48% 48% 6px 6px;filter:saturate(.82) contrast(.95);box-shadow:0 28px 70px rgba(57,34,29,.2)}
-.note{position:absolute;right:-8px;bottom:8%;z-index:2;width:175px;aspect-ratio:1;background:var(--paper-2);border-radius:50%;display:grid;place-content:center;text-align:center;transform:rotate(-8deg);box-shadow:0 15px 50px rgba(57,34,29,.18);font:italic 1.1rem/1.15 var(--serif)}.note small{display:block;font:700 .55rem/1.2 var(--sans);letter-spacing:.16em;text-transform:uppercase;margin-bottom:7px;color:var(--clay)}
-.marquee{border-block:1px solid var(--line);overflow:hidden}.marquee-track{width:max-content;display:flex;gap:38px;padding:15px 0;animation:marquee 25s linear infinite;font:italic 1.05rem var(--serif)}.marquee-track span::after{content:"✦";margin-left:38px;color:var(--clay)}@keyframes marquee{to{transform:translateX(-50%)}}
-.section{padding:clamp(85px,11vw,150px) 0}.section-head{display:grid;grid-template-columns:.8fr 1.2fr;gap:40px;align-items:end;margin-bottom:55px}.section-head h2{font:500 clamp(2.9rem,6.5vw,6.4rem)/.88 var(--serif);letter-spacing:-.06em;max-width:10ch}.section-head h2 em{color:var(--clay);font-weight:400}.section-head p{max-width:48ch;color:var(--muted);justify-self:end}
-.care-grid{display:grid;grid-template-columns:repeat(12,1fr);gap:12px}.care-card{grid-column:span 4;min-height:300px;background:var(--paper-2);border:1px solid var(--line);border-radius:var(--radius);padding:28px;display:flex;flex-direction:column;position:relative;overflow:hidden}
-.care-card.big{grid-column:span 8;grid-row:span 2;min-height:610px;background:var(--ink);color:#fff}.care-card.wide{grid-column:span 8;background:var(--sage)}
-.care-card .num{font-size:.65rem;letter-spacing:.15em;font-weight:800;opacity:.55}.care-card h3{font:italic 500 clamp(2rem,3.4vw,3.8rem)/.94 var(--serif);margin-top:auto;max-width:8ch}.care-card p{max-width:34ch;margin-top:15px;color:var(--muted)}.care-card.big p{color:rgba(255,255,255,.65)}
-.care-card.big::after{content:"";position:absolute;width:260px;aspect-ratio:1;border:1px solid rgba(255,255,255,.18);border-radius:50%;right:-70px;top:-70px;box-shadow:0 0 0 45px rgba(255,255,255,.025),0 0 0 90px rgba(255,255,255,.02)}
-.care-card .pill{align-self:flex-start;margin-top:18px;border:1px solid currentColor;border-radius:999px;padding:7px 11px;font-size:.68rem;text-transform:uppercase;letter-spacing:.09em}
-.ritual{background:var(--ink);color:#fff}.ritual-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(35px,8vw,110px);align-items:center}.ritual-image{position:relative}.ritual-image img{height:min(74vw,720px);object-fit:cover;border-radius:var(--radius);filter:saturate(.75)}.ritual-image::after{content:"Zeit für Sie";position:absolute;left:-20px;bottom:35px;background:var(--rose);color:var(--ink);padding:12px 18px;border-radius:999px;font:italic 1.1rem var(--serif);transform:rotate(-5deg)}
-.ritual h2{font:italic 500 clamp(3.2rem,7vw,6.7rem)/.87 var(--serif);letter-spacing:-.06em}.ritual-copy>p{color:rgba(255,255,255,.63);max-width:48ch;margin:25px 0 45px}
-.ritual-list{border-top:1px solid rgba(255,255,255,.2)}.ritual-row{display:grid;grid-template-columns:48px 1fr;gap:15px;padding:17px 0;border-bottom:1px solid rgba(255,255,255,.2)}.ritual-row span{color:var(--rose);font-size:.75rem}.ritual-row p{color:rgba(255,255,255,.76)}
-.booking{background:var(--paper-2)}.booking-shell{display:grid;grid-template-columns:.72fr 1.28fr;gap:clamp(35px,8vw,110px)}.booking-copy h2{font:italic 500 clamp(3.1rem,6vw,6rem)/.88 var(--serif);letter-spacing:-.06em}.booking-copy p{color:var(--muted);margin:22px 0;max-width:40ch}.booking-copy .demo{font-size:.72rem;border-top:1px solid var(--line);padding-top:15px}
-.stepper{background:#fff;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden}.step-tabs{display:grid;grid-template-columns:repeat(3,1fr);border-bottom:1px solid var(--line)}.step-tab{border:0;border-right:1px solid var(--line);background:transparent;padding:17px 12px;font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;transition:background-color .18s ease,color .18s ease,transform .16s var(--ease)}.step-tab:last-child{border-right:0}.step-tab[aria-selected="true"]{background:var(--ink);color:#fff}
-.step-panel{padding:30px;display:none}.step-panel.active{display:block}.step-panel h3{font:italic 500 2rem var(--serif);margin-bottom:22px}.chips{display:flex;flex-wrap:wrap;gap:10px}.chip{border:1px solid var(--line);background:var(--paper-2);border-radius:999px;padding:11px 15px;transition:transform .16s var(--ease),background-color .18s ease,color .18s ease}.chip[aria-pressed="true"]{background:var(--clay);border-color:var(--clay);color:#fff}
-.fields{display:grid;grid-template-columns:1fr 1fr;gap:12px}.field{display:grid;gap:7px}.field.full{grid-column:1/-1}.field label{font-size:.67rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase}.field input,.field select,.field textarea{width:100%;border:1px solid var(--line);background:var(--paper-2);border-radius:14px;padding:14px}.field textarea{min-height:100px;resize:vertical}
-.panel-next{margin-top:25px}.summary{background:var(--paper);border-radius:15px;padding:15px;margin-bottom:18px;color:var(--muted);font-size:.88rem}.success{display:none;background:var(--sage);padding:18px;border-radius:15px;margin-top:15px}.success.show{display:block}
-.prep{background:var(--rose)}.prep-head{display:grid;grid-template-columns:.8fr 1.2fr;gap:40px;align-items:end;margin-bottom:48px}.prep-head h2{font:italic 500 clamp(3rem,6.5vw,6.2rem)/.87 var(--serif);letter-spacing:-.06em}.prep-head p{max-width:48ch;justify-self:end;color:#5f4038}.prep-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.prep-card{min-height:245px;padding:24px;border:1px solid rgba(36,28,26,.22);border-radius:22px;background:rgba(255,255,255,.38);display:flex;flex-direction:column}.prep-card span{font-size:.64rem;font-weight:800;letter-spacing:.14em}.prep-card h3{font:italic 500 1.85rem/1 var(--serif);margin-top:auto}.prep-card p{font-size:.86rem;color:#654a42;margin-top:12px}
-.faq{background:var(--paper)}.faq-shell{display:grid;grid-template-columns:.72fr 1.28fr;gap:clamp(35px,8vw,110px)}.faq-copy h2{font:italic 500 clamp(3rem,6vw,5.8rem)/.88 var(--serif);letter-spacing:-.06em}.faq-copy p{max-width:38ch;color:var(--muted);margin-top:22px}.faq-list{border-top:1px solid var(--line)}.faq-list details{border-bottom:1px solid var(--line);padding:0}.faq-list summary{list-style:none;display:flex;justify-content:space-between;gap:20px;padding:21px 0;font-weight:750;cursor:pointer}.faq-list summary::-webkit-details-marker{display:none}.faq-list summary::after{content:"+";font:italic 1.5rem var(--serif);color:var(--clay);transition:transform .18s var(--ease)}.faq-list details[open] summary::after{transform:rotate(45deg)}.faq-list details p{padding:0 45px 22px 0;color:var(--muted);max-width:60ch}.faq-list summary:active{transform:scale(.99)}
-.contact{padding:48px 0;background:var(--clay);color:#fff}.contact-grid{display:grid;grid-template-columns:1.3fr .7fr;gap:30px;align-items:end}.contact h2{font:italic 500 clamp(2.8rem,7vw,7rem)/.84 var(--serif);letter-spacing:-.06em}.contact address{font-style:normal;justify-self:end;text-align:right;color:rgba(255,255,255,.78)}
-footer{background:var(--ink);color:#fff;padding:26px 0}.foot{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;font-size:.73rem;color:rgba(255,255,255,.55)}.foot a{color:#fff}
-.mobile-cta{display:none;position:fixed;z-index:35;left:12px;right:12px;bottom:12px;background:var(--ink);color:#fff;border-radius:999px;padding:14px 18px;text-align:center;font-weight:800;box-shadow:0 15px 40px rgba(0,0,0,.25)}
-.reveal{opacity:0;transform:translateY(20px);transition:opacity .6s var(--ease),transform .6s var(--ease)}.reveal.in{opacity:1;transform:none}
-@media(hover:hover) and (pointer:fine){.nav-links a:hover::after{transform:scaleX(1);transform-origin:left}.button:hover{background:var(--clay);border-color:var(--clay)}.button.light:hover{color:#fff}.care-card{transition:transform .22s var(--ease)}.care-card:hover{transform:translateY(-5px)}}
-@media(max-width:900px){.nav-links,.nav>.wrap>.nav-inner>.nav-cta{display:none}.menu{display:block}.nav-links.open{position:absolute;display:grid;inset:100% 16px auto;background:var(--paper-2);border:1px solid var(--line);border-radius:20px;padding:20px;box-shadow:0 20px 50px rgba(36,28,26,.15)}.hero-grid,.section-head,.ritual-grid,.booking-shell,.prep-head,.faq-shell,.contact-grid{grid-template-columns:1fr}.hero-visual{min-height:560px}.section-head p,.prep-head p{justify-self:start}.care-card,.care-card.big,.care-card.wide{grid-column:span 6;grid-row:auto;min-height:350px}.prep-grid{grid-template-columns:1fr 1fr}.ritual-image{order:2}.contact address{justify-self:start;text-align:left}}
-@media(max-width:620px){.wrap{width:min(100% - 26px,1240px)}.hero{padding-top:105px}.hero-visual{min-height:430px}.note{width:130px;right:-5px}.care-grid{display:block}.care-card,.care-card.big,.care-card.wide{min-height:300px;margin-bottom:10px}.prep-grid{grid-template-columns:1fr}.prep-card{min-height:205px}.step-tabs{grid-template-columns:1fr}.step-tab{border-right:0;border-bottom:1px solid var(--line)}.fields{grid-template-columns:1fr}.field.full{grid-column:auto}.mobile-cta{display:block}footer{padding-bottom:85px}.booking-copy h2,.ritual h2,.faq-copy h2{font-size:3.4rem}}
-@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}.reveal{opacity:1;transform:none}}
-</style>
-
-<style id="quality-pass">
-html{scroll-padding-top:96px}
-section[id],main[id]{scroll-margin-top:96px}
-h1,h2,h3{text-wrap:balance}
-p{text-wrap:pretty}
-img{max-width:100%}
-:where(button,.btn,.button,.nav-cta,.menu,.burger,.menu-button,.menu-toggle,.mobile-cta,.mobile-call){
-  min-height:44px;
-  -webkit-tap-highlight-color:transparent;
-  touch-action:manipulation
-}
-:where(button,.btn,.button,.nav-cta,.menu,.burger,.menu-button,.menu-toggle,.mobile-cta,.mobile-call):active{
-  transform:scale(.97)
-}
-:where(a,button,input,select,textarea,summary):focus-visible{
-  outline:3px solid currentColor!important;
-  outline-offset:4px!important
-}
-.quality-skip{
-  position:fixed;
-  z-index:9999;
-  top:10px;
-  left:10px;
-  padding:.75rem 1rem;
-  background:#fff;
-  color:#111;
-  border:2px solid currentColor;
-  border-radius:8px;
-  font:700 .9rem/1.2 system-ui,sans-serif;
-  transform:translateY(calc(-100% - 20px));
-  transition:transform 160ms cubic-bezier(.23,1,.32,1)
-}
-.quality-skip:focus{transform:translateY(0)}
-.hero .reveal,.hero [data-reveal]{opacity:1!important;transform:none!important;transition:none!important}
-@media(prefers-reduced-motion:reduce){
-  html{scroll-behavior:auto!important}
-  *,*::before,*::after{
-    animation-duration:.01ms!important;
-    animation-iteration-count:1!important;
-    scroll-behavior:auto!important;
-    transition-duration:.01ms!important
-  }
-}
-
-:root{--muted:#5d4f4b;--clay:#a64d3d;--line:rgba(36,28,26,.26)}
-.hero-copy>p,.section-head p,.booking-copy p,.faq-copy p{color:#584946}
-.care-card.big p,.ritual-copy>p{color:rgba(255,255,255,.82)}
-.contact address{color:rgba(255,255,255,.9)}
-.success{min-height:1.5em}
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Hautnah Atelier – ruhige, persönliche Kosmetikbehandlungen in Zürich.">
+  <title>Hautnah Atelier — Kosmetikstudio Zürich</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&amp;family=DM+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet">
+  <style>
+    :root{--paper:#faf8f4;--soft:#f5f2ed;--white:#fff;--ink:#2d2926;--muted:#746c66;--brown:#684b40;--line:#ded8d1;--ease:cubic-bezier(.23,1,.32,1)}
+    *{box-sizing:border-box;margin:0}
+    html{scroll-behavior:smooth;scrollbar-gutter:stable}
+    body{background:var(--paper);color:var(--ink);font-family:"DM Sans",sans-serif;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+    a{color:inherit;text-decoration:none} img{display:block;width:100%;object-fit:cover} button,input,select,textarea{font:inherit}
+    :focus-visible{outline:2px solid var(--brown);outline-offset:4px} ::selection{background:var(--brown);color:#fff}
+    .shell{width:min(100% - 64px,1152px);margin-inline:auto}.serif{font-family:"Cormorant Garamond",serif}.eyebrow{font-size:.72rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--brown)}
+    .nav{height:80px;display:flex;align-items:center;gap:2rem;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:50;background:rgba(250,248,244,.92);backdrop-filter:blur(18px)}
+    .nav .shell{display:flex;align-items:center}.logo{font:600 1.55rem/1 "Cormorant Garamond",serif;letter-spacing:-.03em}.nav-links{margin-left:auto;display:flex;gap:1.8rem;align-items:center;font-size:.86rem}.nav-links a:not(.btn){color:#5d5651}.menu-toggle{display:none;margin-left:auto;border:0;background:transparent;font-size:1.4rem}
+    .btn{display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:.7rem 1.35rem;border:1px solid var(--brown);border-radius:10px;background:var(--brown);color:#fff;font-size:.82rem;font-weight:600;transition:transform 160ms var(--ease),background-color 180ms ease,color 180ms ease}
+    .btn.ghost{background:var(--white);color:var(--brown)}.btn:active{transform:scale(.97)}
+    .hero{min-height:792px;display:grid;align-items:center}.hero-grid{display:grid;grid-template-columns:.94fr 1.06fr;gap:64px;align-items:center;padding:56px 0}
+    .hero h1{font:500 clamp(3.8rem,5.7vw,4.5rem)/1.2 "Cormorant Garamond",serif;letter-spacing:-.02em;max-width:8.2ch;margin:1.5rem 0 1.4rem}.hero-copy{color:var(--muted);max-width:48ch;font-size:1.02rem}.hero-actions{display:flex;gap:16px;margin-top:32px}.hero-image{height:650px;border-radius:16px;overflow:hidden;position:relative;background:#e7ded4}.hero-image img{height:100%;filter:saturate(.82) contrast(.96)}.hero-badge{position:absolute;left:18px;bottom:18px;background:rgba(250,248,244,.94);border-radius:12px;padding:14px 16px;display:flex;align-items:center;gap:12px}.hero-badge strong{font:600 1.55rem/1 "Cormorant Garamond",serif}.hero-badge span{font-size:.72rem;color:var(--muted)}
+    .stats{background:#fff;border-block:1px solid var(--line)}.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);padding:64px 0}.stat{padding:8px 32px;border-right:1px solid var(--line)}.stat:first-child{padding-left:0}.stat:last-child{border:0}.stat strong{display:block;font:500 3rem/1 "Cormorant Garamond",serif}.stat span{font-size:.78rem;color:var(--muted)}
+    .statement{padding:110px 0}.statement .shell{display:grid;grid-template-columns:.45fr 1fr;gap:80px}.statement blockquote{font:500 clamp(2.35rem,4vw,3.55rem)/1.08 "Cormorant Garamond",serif;letter-spacing:-.02em;max-width:20ch}.statement p:last-child{align-self:end;color:var(--muted);max-width:36ch}
+    .quote{background:var(--soft);padding:96px 0}.quote-card{display:grid;grid-template-columns:160px 1fr;gap:48px;align-items:center;max-width:860px;margin:auto}.quote-card img{width:110px;height:110px;border-radius:50%;filter:saturate(.75)}.quote q{font:500 clamp(1.8rem,3vw,2.7rem)/1.2 "Cormorant Garamond",serif}.quote cite{display:block;margin-top:20px;font-size:.8rem;color:var(--muted);font-style:normal}
+    .section{padding:120px 0}.section-head{text-align:center;max-width:760px;margin:0 auto 56px}.section-head h2{font:500 clamp(2.7rem,4.1vw,3rem)/1.15 "Cormorant Garamond",serif;letter-spacing:-.01em;margin:.8rem 0}.section-head p{color:var(--muted)}
+    .process-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:24px}.process-main{height:620px;border-radius:14px;overflow:hidden}.process-main img{height:100%}.steps{display:grid;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:14px;overflow:hidden}.step{background:var(--paper);padding:32px}.step span{display:block;color:var(--brown);font-size:.74rem;margin-bottom:28px}.step h3{font:500 1.75rem/1.1 "Cormorant Garamond",serif}.step p{margin-top:10px;color:var(--muted);font-size:.88rem}
+    .packages{background:#fff}.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}.card{border:1px solid var(--line);border-radius:14px;padding:30px;background:var(--paper);display:flex;flex-direction:column;min-height:430px}.card.featured{background:var(--brown);color:#fff;transform:translateY(-12px)}.card .tag{font-size:.68rem;text-transform:uppercase;letter-spacing:.14em;color:var(--muted)}.card.featured .tag,.card.featured li{color:rgba(255,255,255,.72)}.card h3{font:500 2rem/1 "Cormorant Garamond",serif;margin:20px 0 10px}.price{font:500 2.7rem/1 "Cormorant Garamond",serif;margin-bottom:28px}.card ul{list-style:none;padding:0;border-top:1px solid var(--line)}.card li{padding:10px 0;border-bottom:1px solid color-mix(in srgb,currentColor 18%,transparent);color:var(--muted);font-size:.84rem}.card .btn{margin-top:auto}.card.featured .btn{background:#fff;color:var(--brown);border-color:#fff}
+    .menu-list{border-top:1px solid var(--line)}.menu-row{display:grid;grid-template-columns:1fr 1.6fr auto;gap:28px;align-items:center;padding:24px 0;border-bottom:1px solid var(--line)}.menu-row h3{font:500 1.55rem/1.1 "Cormorant Garamond",serif}.menu-row p{color:var(--muted);font-size:.86rem}.menu-row strong{font-weight:600;color:var(--brown)}
+    .gallery{background:#fff}.gallery-grid{display:grid;grid-template-columns:1.35fr .65fr .65fr;grid-template-rows:240px 240px;gap:16px}.gallery-grid figure{overflow:hidden;border-radius:12px}.gallery-grid figure:first-child{grid-row:span 2}.gallery-grid img{height:100%;transition:transform .8s var(--ease)}
+    .testimonials{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}.review{background:var(--soft);border-radius:14px;padding:30px;min-height:280px;display:flex;flex-direction:column}.stars{color:var(--brown);letter-spacing:.16em}.review p{font:500 1.35rem/1.35 "Cormorant Garamond",serif;margin-top:28px}.review footer{margin-top:auto;font-size:.78rem;color:var(--muted)}
+    .faq{background:var(--soft)}.faq-list{max-width:800px;margin:auto;border-top:1px solid var(--line)}details{border-bottom:1px solid var(--line);padding:22px 0}summary{cursor:pointer;list-style:none;font-weight:600;display:flex;justify-content:space-between;gap:20px}summary::after{content:"+";font:400 1.4rem/1 "Cormorant Garamond",serif}details[open] summary::after{content:"−"}details p{color:var(--muted);max-width:68ch;padding-top:14px}
+    .aftercare{padding:110px 0;background:var(--brown);color:#fff}.aftercare-grid{display:grid;grid-template-columns:.8fr 1.2fr;gap:80px}.aftercare h2{font:500 clamp(2.8rem,5vw,4.4rem)/1 "Cormorant Garamond",serif;max-width:8ch}.care-list{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:rgba(255,255,255,.2)}.care-item{padding:28px;background:var(--brown)}.care-item span{font-size:.7rem;opacity:.62}.care-item h3{font:500 1.45rem/1.1 "Cormorant Garamond",serif;margin:24px 0 8px}.care-item p{font-size:.84rem;color:rgba(255,255,255,.68)}
+    .contact{padding:120px 0}.contact-grid{display:grid;grid-template-columns:.72fr 1.28fr;gap:80px}.contact h2{font:500 clamp(3rem,5vw,4.2rem)/1 "Cormorant Garamond",serif;margin:12px 0 22px}.contact-copy{color:var(--muted)}.contact-meta{margin-top:36px;display:grid;gap:10px;font-size:.86rem}.form{background:#fff;border:1px solid var(--line);border-radius:14px;padding:34px}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}.field{display:grid;gap:8px}.field.full{grid-column:1/-1}.field label{font-size:.72rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em}.field input,.field select,.field textarea{width:100%;border:1px solid var(--line);border-radius:9px;background:var(--paper);padding:13px 14px;color:var(--ink)}.field textarea{min-height:110px;resize:vertical}.form .btn{margin-top:22px;width:100%}.form-note{margin-top:12px;color:var(--muted);font-size:.72rem}.success{display:none;margin-top:14px;color:var(--brown);font-weight:600}.success.show{display:block}
+    .footer{border-top:1px solid var(--line);padding:42px 0}.footer .shell{display:flex;justify-content:space-between;gap:30px;align-items:center}.footer small{color:var(--muted)}
+    .reveal{opacity:0;transform:translateY(18px);transition:opacity 650ms var(--ease),transform 650ms var(--ease)}.reveal.in{opacity:1;transform:none}
+    @media(hover:hover) and (pointer:fine){.nav-links a:not(.btn):hover{color:var(--brown)}.gallery-grid figure:hover img{transform:scale(1.035)}.btn:hover{background:#51382f}.btn.ghost:hover{color:#fff}.card.featured .btn:hover{background:var(--soft);color:var(--brown)}}
+    @media(max-width:900px){.nav-links{display:none}.menu-toggle{display:block}.nav.open .nav-links{display:flex;position:absolute;top:80px;left:0;right:0;background:var(--paper);padding:24px 32px;flex-direction:column;align-items:flex-start;border-bottom:1px solid var(--line)}.hero{min-height:auto}.hero-grid,.statement .shell,.process-grid,.aftercare-grid,.contact-grid{grid-template-columns:1fr}.hero-image{height:540px}.stats-grid{grid-template-columns:1fr 1fr}.stat:nth-child(2){border-right:0}.stat:nth-child(-n+2){border-bottom:1px solid var(--line)}.statement p:last-child{justify-self:end}.cards{grid-template-columns:1fr}.card.featured{transform:none}.gallery-grid{grid-template-columns:1fr 1fr}.gallery-grid figure:first-child{grid-column:1/-1;grid-row:auto;height:400px}.testimonials{grid-template-columns:1fr}.contact-grid{gap:48px}}
+    @media(max-width:620px){.shell{width:min(100% - 32px,1152px)}.hero-grid{gap:34px;padding:42px 0}.hero h1{font-size:3.7rem}.hero-image{height:460px}.hero-actions{flex-direction:column}.stats-grid{padding:32px 0}.stat{padding:24px 16px}.stat strong{font-size:2.25rem}.statement,.section,.contact{padding:82px 0}.statement .shell{gap:28px}.quote-card{grid-template-columns:1fr;gap:24px}.process-main{height:430px}.menu-row{grid-template-columns:1fr auto}.menu-row p{grid-column:1/-1;grid-row:2}.gallery-grid{display:grid;grid-template-columns:1fr}.gallery-grid figure,.gallery-grid figure:first-child{height:300px;grid-column:auto}.care-list,.form-grid{grid-template-columns:1fr}.field.full{grid-column:auto}.footer .shell{align-items:flex-start;flex-direction:column}}
+    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.reveal{opacity:1;transform:none;transition:opacity 160ms ease}.gallery-grid img{transition:none}}
+  </style>
 </head>
 <body>
-<a class="quality-skip" href="#top">Zum Inhalt springen</a>
-<header class="nav" id="nav"><div class="wrap nav-inner">
-  <a class="brand" href="#top">hautnah.<span>Kosmetik Atelier · Muster</span></a>
-  <nav class="nav-links" id="navLinks" aria-label="Hauptnavigation"><a href="#pflege">Behandlungen</a><a href="#ablauf">Ablauf</a><a href="#termin">Termin</a><a href="#kontakt">Kontakt</a></nav>
-  <a class="nav-cta" href="#termin">Termin anfragen <span>↗</span></a>
-  <button class="menu" id="menu" type="button" aria-expanded="false" aria-controls="navLinks">Menü</button>
-</div></header>
-<main id="top">
-  <section class="hero"><div class="wrap hero-grid">
-    <div class="hero-copy reveal"><p class="eyebrow">Kosmetik · Pflege · Ruhe</p><h1>Ihre Haut.<span>Ihr Moment.</span></h1><p>Eine ruhige, persönliche Studio-Vorlage für Behandlungen, die mit Beratung beginnen und mit einem guten Gefühl enden.</p><div class="hero-actions"><a class="button" href="#termin">Wunschtermin anfragen</a><a class="button light" href="#pflege">Leistungen ansehen</a></div></div>
-    <div class="hero-visual reveal"><img src="assets/images/image-01.webp" alt="Entspannter Moment während einer Kosmetikbehandlung" width="1318" height="1800" decoding="async"><div class="note"><small>Atelier-Zeit</small>Beratung.<br>Behandlung.<br>Nachpflege.</div></div>
-  </div></section>
-  <div class="marquee" aria-hidden="true"><div class="marquee-track"><span>Gesichtspflege</span><span>Maniküre</span><span>Wimpern &amp; Brauen</span><span>Fusspflege</span><span>Massage</span><span>Gesichtspflege</span><span>Maniküre</span><span>Wimpern &amp; Brauen</span><span>Fusspflege</span><span>Massage</span></div></div>
-
-  <section class="section" id="pflege"><div class="wrap">
-    <header class="section-head reveal"><h2>Pflege, die zu <em>Ihnen</em> passt.</h2><p>Die Karten sind bewusst modular: Ein Studio zeigt nur die Behandlungen, die es tatsächlich anbietet. Inhalte und Dauer werden vor dem Livegang mit dem Betrieb abgestimmt.</p></header>
-    <div class="care-grid reveal">
-      <article class="care-card big"><span class="num">01 · SIGNATURE</span><h3>Gesichts&shy;pflege</h3><p>Reinigung, Peeling, Pflege und ein ruhiger Ablauf – abgestimmt auf Hautbild und Tagesform.</p><span class="pill">Beratung inklusive</span></article>
-      <article class="care-card"><span class="num">02</span><h3>Wimpern &amp; Brauen</h3><p>Form, Farbe und Pflege für einen klaren, natürlichen Ausdruck.</p></article>
-      <article class="care-card"><span class="num">03</span><h3>Maniküre</h3><p>Gepflegte Hände, sorgfältige Arbeit und ein Finish nach Wunsch.</p></article>
-      <article class="care-card"><span class="num">04</span><h3>Fuss&shy;pflege</h3><p>Entlastend, hygienisch und mit Zeit für individuelle Bedürfnisse.</p></article>
-      <article class="care-card wide"><span class="num">05 · RUHE</span><h3>Massage &amp; Entspannung</h3><p>Ein bewusst langsamer Termin für Rücken, Nacken und Schultern.</p></article>
-    </div>
-  </div></section>
-
-  <section class="section ritual" id="ablauf"><div class="wrap ritual-grid">
-    <div class="ritual-image reveal"><img src="assets/images/image-02.webp" alt="Auftragen einer Gesichtsmaske im Kosmetikstudio" width="1400" height="933" decoding="async"></div>
-    <div class="ritual-copy reveal"><p class="eyebrow">Ein Termin, drei ruhige Schritte</p><h2>Keine Hektik. Kein Schema F.</h2><p>Die Vorlage erklärt den Ablauf so, wie Kundinnen und Kunden ihn erleben. Das schafft Vertrauen, bevor der erste Termin überhaupt beginnt.</p><div class="ritual-list"><div class="ritual-row"><span>01</span><p><strong>Ankommen &amp; besprechen</strong><br>Wünsche, Hautbild und offene Fragen klären.</p></div><div class="ritual-row"><span>02</span><p><strong>Behandeln</strong><br>Konzentrierte Arbeit in einer ruhigen Umgebung.</p></div><div class="ritual-row"><span>03</span><p><strong>Nachpflegen</strong><br>Klare Hinweise für die Zeit nach dem Termin.</p></div></div></div>
-  </div></section>
-
-  <section class="section prep"><div class="wrap">
-    <header class="prep-head reveal"><div><p class="eyebrow">Gut vorbereitet</p><h2>Damit der Termin ruhig beginnt.</h2></div><p>Kurze Hinweise nehmen Unsicherheit aus dem ersten Besuch. Der echte Salon ergänzt hier nur das, was für seine Behandlungen tatsächlich gilt.</p></header>
-    <div class="prep-grid reveal">
-      <article class="prep-card"><span>01 · VORHER</span><h3>Wünsche notieren</h3><p>Behandlung, Anlass und offene Fragen dürfen schon bei der Anfrage genannt werden.</p></article>
-      <article class="prep-card"><span>02 · HAUT</span><h3>Besonderheiten nennen</h3><p>Empfindlichkeiten oder relevante Pflegegewohnheiten persönlich ansprechen.</p></article>
-      <article class="prep-card"><span>03 · ZEIT</span><h3>Ohne Eile planen</h3><p>Die tatsächliche Dauer wird vom Studio bestätigt und nicht pauschal versprochen.</p></article>
-      <article class="prep-card"><span>04 · DANACH</span><h3>Nachpflege verstehen</h3><p>Individuelle Empfehlungen gehören in die Beratung, nicht in allgemeine Werbeversprechen.</p></article>
-    </div>
-  </div></section>
-
-  <section class="section booking" id="termin"><div class="wrap booking-shell">
-    <div class="booking-copy reveal"><p class="eyebrow">Terminanfrage</p><h2>Was darf es für Sie sein?</h2><p>Drei klare Schritte führen von der gewünschten Behandlung bis zu den Kontaktdaten – angenehm kurz und ohne unnötige Felder.</p><p class="demo">Demo-Funktion: Die Anfrage wird nicht versendet. Beim echten Kunden wird sie an E-Mail oder ein Buchungssystem angebunden.</p></div>
-    <div class="stepper reveal">
-      <div class="step-tabs" role="tablist" aria-label="Schritte der Terminanfrage"><button class="step-tab" type="button" role="tab" aria-selected="true" data-step="1">1 · Behandlung</button><button class="step-tab" type="button" role="tab" aria-selected="false" data-step="2">2 · Wunschzeit</button><button class="step-tab" type="button" role="tab" aria-selected="false" data-step="3">3 · Kontakt</button></div>
-      <div class="step-panel active" data-panel="1"><h3>Behandlung wählen</h3><div class="chips" id="treatments"><button class="chip" type="button" aria-pressed="false">Gesichtspflege</button><button class="chip" type="button" aria-pressed="false">Wimpern &amp; Brauen</button><button class="chip" type="button" aria-pressed="false">Maniküre</button><button class="chip" type="button" aria-pressed="false">Fusspflege</button><button class="chip" type="button" aria-pressed="false">Massage</button></div><button class="button panel-next" type="button" data-next="2">Weiter zur Wunschzeit</button></div>
-      <div class="step-panel" data-panel="2"><h3>Wann passt es?</h3><div class="fields"><div class="field"><label for="date">Wunschtag</label><input id="date" type="date"></div><div class="field"><label for="time">Tageszeit</label><select id="time"><option value="">Bitte wählen</option><option>Vormittag</option><option>Nachmittag</option><option>Abend</option></select></div><div class="field full"><label for="note">Hinweis (optional)</label><textarea id="note" placeholder="Zum Beispiel: empfindliche Haut oder Terminflexibilität"></textarea></div></div><button class="button panel-next" type="button" data-next="3">Weiter zum Kontakt</button></div>
-      <form class="step-panel" data-panel="3" id="requestForm"><h3>Wie erreichen wir Sie?</h3><div class="summary" id="summary">Noch keine Behandlung oder Wunschzeit gewählt.</div><div class="fields"><div class="field"><label for="name">Name</label><input id="name" required autocomplete="name"></div><div class="field"><label for="phone">Telefon</label><input id="phone" required autocomplete="tel"></div><div class="field full"><label for="email">E-Mail</label><input id="email" type="email" autocomplete="email"></div></div><button class="button panel-next" type="submit">Anfrage vorbereiten</button><div class="success" id="success" role="status">Danke – in der Kundenversion würde die Anfrage jetzt übermittelt.</div></form>
-    </div>
-  </div></section>
-
-  <section class="section faq" id="fragen"><div class="wrap faq-shell">
-    <div class="faq-copy reveal"><p class="eyebrow">Häufige Fragen</p><h2>Vor dem ersten Termin.</h2><p>Eine ruhige Antwort auf praktische Fragen schafft Vertrauen – ohne Diagnosen, Heilversprechen oder erfundene Ergebnisse.</p></div>
-    <div class="faq-list reveal">
-      <details><summary>Welche Behandlung passt zu mir?</summary><p>Bei Unsicherheit wird zuerst ein Beratungswunsch gesendet. Die konkrete Behandlung entscheidet der echte Betrieb nach dem persönlichen Gespräch.</p></details>
-      <details><summary>Kann ich Empfindlichkeiten vorab mitteilen?</summary><p>Ja. Das Notizfeld ist genau dafür gedacht. Medizinisch relevante Fragen müssen jedoch direkt mit einer geeigneten Fachperson geklärt werden.</p></details>
-      <details><summary>Ist die Terminanfrage bereits verbindlich?</summary><p>Nein. In dieser Vorlage bestätigt das Studio Behandlung, Dauer und Termin persönlich.</p></details>
-      <details><summary>Kann ein Gutschein angefragt werden?</summary><p>Ein Gutscheinbereich kann ergänzt werden, sobald Angebot, Gültigkeit und Einlösung mit dem Betrieb verbindlich geklärt sind.</p></details>
-    </div>
-  </div></section>
-
-  <section class="contact" id="kontakt"><div class="wrap contact-grid"><h2>Raum für Pflege.<br>Mitten in Zürich.</h2><address>Musterstrasse 12 · 8000 Zürich<br>044 000 00 00 · hallo@beispiel.ch<br><small>Beispielangaben vor Veröffentlichung ersetzen.</small></address></div></section>
-</main>
-<footer><div class="wrap foot"><span>© 2026 Hautnah Atelier · MaseSites Demo-Vorlage</span><span>Impressum · Datenschutz · Angaben ersetzen</span><a href="#top">Nach oben ↑</a></div></footer>
-<a class="mobile-cta" href="#termin">Termin anfragen</a>
-<script>
-(function(){
-  var nav=document.getElementById('nav'),menu=document.getElementById('menu'),links=document.getElementById('navLinks');
-  function onScroll(){nav.classList.toggle('scrolled',scrollY>24)}onScroll();addEventListener('scroll',onScroll,{passive:true});
-  menu.addEventListener('click',function(){var open=links.classList.toggle('open');menu.setAttribute('aria-expanded',String(open))});
-  links.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){links.classList.remove('open');menu.setAttribute('aria-expanded','false')})});
-  var reveals=document.querySelectorAll('.reveal');
-  if(!('IntersectionObserver'in window)){reveals.forEach(function(el){el.classList.add('in')})}else{var io=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{threshold:.1,rootMargin:'0px 0px -7%'});reveals.forEach(function(el){io.observe(el)})}
-  var chosen='',tabs=document.querySelectorAll('.step-tab'),panels=document.querySelectorAll('.step-panel');
-  function showStep(step){tabs.forEach(function(tab){tab.setAttribute('aria-selected',String(tab.dataset.step===String(step)))});panels.forEach(function(panel){panel.classList.toggle('active',panel.dataset.panel===String(step))});if(step===3)updateSummary()}
-  tabs.forEach(function(tab){tab.addEventListener('click',function(){showStep(tab.dataset.step)})});
-  document.querySelectorAll('[data-next]').forEach(function(button){button.addEventListener('click',function(){showStep(button.dataset.next)})});
-  document.getElementById('treatments').addEventListener('click',function(event){var chip=event.target.closest('.chip');if(!chip)return;this.querySelectorAll('.chip').forEach(function(item){item.setAttribute('aria-pressed','false')});chip.setAttribute('aria-pressed','true');chosen=chip.textContent});
-  function updateSummary(){var date=document.getElementById('date').value,time=document.getElementById('time').value;document.getElementById('summary').textContent=(chosen||'Behandlung offen')+' · '+(date||'Tag offen')+' · '+(time||'Tageszeit offen')}
-  var now=new Date(),minDate=new Date(now.getTime()-now.getTimezoneOffset()*60000).toISOString().slice(0,10);document.querySelectorAll('input[type="date"]').forEach(function(input){input.min=minDate});
-  document.getElementById('requestForm').addEventListener('submit',function(e){e.preventDefault();document.getElementById('success').classList.add('show')});
-})();
-</script>
+  <header class="nav" id="nav"><div class="shell"><a class="logo" href="#top">Hautnah Atelier</a><button class="menu-toggle" id="menuToggle" aria-label="Navigation öffnen" aria-expanded="false">☰</button><nav class="nav-links" aria-label="Hauptnavigation"><a href="#atelier">Atelier</a><a href="#angebote">Behandlungen</a><a href="#galerie">Galerie</a><a href="#fragen">FAQ</a><a href="#kontakt">Kontakt</a><a class="btn" href="#kontakt">Termin anfragen</a></nav></div></header>
+  <main id="top">
+    <section class="hero"><div class="shell hero-grid"><div class="reveal"><p class="eyebrow">Kosmetikstudio · Zürich</p><h1>Pflege, die sich nach Ihnen richtet.</h1><p class="hero-copy">Individuelle Gesichtsbehandlungen, gepflegte Hände und feine Details – ruhig ausgeführt, ehrlich beraten und ohne Zeitdruck.</p><div class="hero-actions"><a class="btn" href="#kontakt">Termin anfragen</a><a class="btn ghost" href="#angebote">Behandlungen ansehen</a></div></div><figure class="hero-image reveal"><img src="assets/images/image-01.webp" alt="Entspannende Kosmetikbehandlung im Hautnah Atelier"><figcaption class="hero-badge"><strong>4.9</strong><span>Bewertung aus<br>über 180 Besuchen</span></figcaption></figure></div></section>
+    <section class="stats" aria-label="Atelier in Zahlen"><div class="shell stats-grid"><div class="stat"><strong>8+</strong><span>Jahre Erfahrung</span></div><div class="stat"><strong>680+</strong><span>zufriedene Kundinnen</span></div><div class="stat"><strong>100%</strong><span>persönlich abgestimmt</span></div><div class="stat"><strong>45–90</strong><span>Minuten nur für Sie</span></div></div></section>
+    <section class="statement" id="atelier"><div class="shell reveal"><p class="eyebrow">Unsere Haltung</p><blockquote>Wir pflegen, was Ihre Haut bereits mitbringt – statt sie zu überdecken.</blockquote><p>Jede Behandlung beginnt mit Zuhören. Wir besprechen Hautzustand, Alltag und Wünsche, bevor wir Produkte oder Methoden auswählen.</p></div></section>
+    <section class="quote"><div class="shell"><div class="quote-card reveal"><img src="assets/reference/CBfzn5MwbvEccVO7LkAWDDPs1BI.png" alt="Kundin des Hautnah Ateliers"><div><q>Ich bin selten so entspannt aus einem Termin gegangen. Meine Haut fühlte sich ruhig an – und ich wusste endlich, was sie wirklich braucht.</q><cite>Lea M. · Kundin seit 2022</cite></div></div></div></section>
+    <section class="section"><div class="shell"><header class="section-head reveal"><p class="eyebrow">Unser Ablauf</p><h2>Aufmerksamkeit in jedem Schritt</h2><p>Von der ersten Hautanalyse bis zur Empfehlung für zuhause bleibt alles nachvollziehbar und auf Sie abgestimmt.</p></header><div class="process-grid"><figure class="process-main reveal"><img src="assets/images/image-02.webp" alt="Gesichtsbehandlung mit professioneller Hautpflege"></figure><div class="steps reveal"><article class="step"><span>01 · Ankommen</span><h3>Haut verstehen</h3><p>Kurzes Gespräch, ehrliche Analyse und ein gemeinsames Ziel für den Termin.</p></article><article class="step"><span>02 · Behandeln</span><h3>Ruhig arbeiten</h3><p>Sorgfältige Anwendungen, angenehme Texturen und genügend Zeit für jeden Schritt.</p></article><article class="step"><span>03 · Weiterpflegen</span><h3>Klar empfehlen</h3><p>Wenige, passende Hinweise statt einer komplizierten Routine.</p></article></div></div></div></section>
+    <section class="section packages" id="angebote"><div class="shell"><header class="section-head reveal"><p class="eyebrow">Behandlungspakete</p><h2>Zeit für genau das Richtige</h2><p>Alle Preise verstehen sich inklusive Beratung und persönlicher Nachpflege-Empfehlung.</p></header><div class="cards"><article class="card reveal"><span class="tag">Klar &amp; frisch</span><h3>Essential Facial</h3><p class="price">CHF 120</p><ul><li>Hautanalyse</li><li>Sanfte Tiefenreinigung</li><li>Maske und Abschlusspflege</li></ul><a class="btn ghost" href="#kontakt">Essential wählen</a></article><article class="card featured reveal"><span class="tag">Am häufigsten gebucht</span><h3>Signature Ritual</h3><p class="price">CHF 165</p><ul><li>Individuelle Wirkstoffpflege</li><li>Gesichts- und Nackenmassage</li><li>Brauenkorrektur inklusive</li><li>Pflegeplan für zuhause</li></ul><a class="btn" href="#kontakt">Signature wählen</a></article><article class="card reveal"><span class="tag">Intensiv &amp; regenerierend</span><h3>Skin Reset</h3><p class="price">CHF 210</p><ul><li>Erweiterte Hautanalyse</li><li>Enzympeeling und Wirkstoffkur</li><li>Lange Massage und Spezialmaske</li><li>Kontrolltermin nach 14 Tagen</li></ul><a class="btn ghost" href="#kontakt">Skin Reset wählen</a></article></div></div></section>
+    <section class="section"><div class="shell"><header class="section-head reveal"><p class="eyebrow">Preisliste</p><h2>Einzelne Behandlungen</h2><p>Für Pflege zwischendurch, kleine Korrekturen oder Ihre persönliche Routine.</p></header><div class="menu-list reveal"><article class="menu-row"><h3>Wimpernlifting</h3><p>Schwung und Definition für sechs bis acht Wochen.</p><strong>CHF 85</strong></article><article class="menu-row"><h3>Brauen Styling</h3><p>Form, Korrektur und auf Wunsch eine natürliche Tönung.</p><strong>CHF 55</strong></article><article class="menu-row"><h3>Maniküre</h3><p>Pflege, Form und ein klarer oder farbiger Abschluss.</p><strong>CHF 72</strong></article><article class="menu-row"><h3>Fusspflege</h3><p>Entlastende Pflege mit Massage und persönlicher Empfehlung.</p><strong>CHF 95</strong></article><article class="menu-row"><h3>Rückenritual</h3><p>Reinigung, Peeling und eine ruhige Pflegebehandlung.</p><strong>CHF 110</strong></article></div></div></section>
+    <section class="section gallery" id="galerie"><div class="shell"><header class="section-head reveal"><p class="eyebrow">Einblicke</p><h2>Ruhige Räume. Echte Ergebnisse.</h2><p>Keine Filter, keine übertriebenen Versprechen – nur sorgfältige Arbeit.</p></header><div class="gallery-grid reveal"><figure><img src="assets/reference/2kPzeDeFIvYBBJq5N2MZK4Lino.png" alt="Kosmetikbehandlung im warmen Licht"></figure><figure><img src="assets/reference/5BfLp9l1DKy75jSF2sQjqL8dThE.png" alt="Natürliches Ergebnis einer Beauty-Behandlung"></figure><figure><img src="assets/reference/f1sqMvvNAqT1LSixL41pRtrFsE.png" alt="Präzise Anwendung im Kosmetikstudio"></figure><figure><img src="assets/reference/gdNsET0zJbIbyzPq9wJf4HRcboI.png" alt="Gepflegte Haut nach der Behandlung"></figure><figure><img src="assets/reference/J3L1QVB0kM50tKdQbzMX7YxK2Y.png" alt="Porträt einer zufriedenen Kundin"></figure></div></div></section>
+    <section class="section"><div class="shell"><header class="section-head reveal"><p class="eyebrow">Stimmen</p><h2>Was Kundinnen erzählen</h2></header><div class="testimonials"><article class="review reveal"><span class="stars">★★★★★</span><p>„Sehr professionell, aber nie kühl. Alles wurde erklärt und meine empfindliche Haut war danach wunderbar ruhig.“</p><footer>Sarah K. · Zürich</footer></article><article class="review reveal"><span class="stars">★★★★★</span><p>„Das Signature Ritual ist meine kleine Pause im Monat. Genau die richtige Mischung aus Wirkung und Entspannung.“</p><footer>Nina R. · Küsnacht</footer></article><article class="review reveal"><span class="stars">★★★★★</span><p>„Keine Produktflut, sondern drei klare Empfehlungen, die wirklich zu meinem Alltag passen.“</p><footer>Jasmin L. · Zollikon</footer></article></div></div></section>
+    <section class="section faq" id="fragen"><div class="shell"><header class="section-head reveal"><p class="eyebrow">FAQ</p><h2>Vor dem ersten Termin</h2></header><div class="faq-list reveal"><details><summary>Welche Behandlung passt zu meiner Haut?</summary><p>Wenn Sie unsicher sind, wählen Sie beim Formular „Beratung“. Wir planen genügend Zeit ein und entscheiden nach der Hautanalyse gemeinsam.</p></details><details><summary>Muss ich ungeschminkt kommen?</summary><p>Nein. Wir reinigen die Haut zu Beginn gründlich. Wenn es für Sie passt, erleichtert ein ungeschminktes Gesicht lediglich die erste Einschätzung.</p></details><details><summary>Welche Produkte werden verwendet?</summary><p>Wir arbeiten mit reizarmen, professionellen Pflegelinien und wählen Wirkstoffe nach Hautzustand und Verträglichkeit aus.</p></details><details><summary>Wie früh soll ich einen Termin absagen?</summary><p>Bitte geben Sie uns mindestens 24 Stunden vorher Bescheid. So können wir den Termin einer anderen Person anbieten.</p></details></div></div></section>
+    <section class="aftercare"><div class="shell aftercare-grid reveal"><div><p class="eyebrow" style="color:#fff">Mehr als ein Termin</p><h2>Damit gute Pflege weiterwirkt.</h2></div><div class="care-list"><article class="care-item"><span>01</span><h3>Die ersten 24 Stunden</h3><p>Haut in Ruhe lassen, sanft reinigen und starke Hitze vermeiden.</p></article><article class="care-item"><span>02</span><h3>Weniger ist mehr</h3><p>Nur die abgestimmten Produkte verwenden und neue Wirkstoffe langsam einführen.</p></article><article class="care-item"><span>03</span><h3>Schutz am Tag</h3><p>Konsequenter Sonnenschutz hält das Ergebnis länger stabil.</p></article><article class="care-item"><span>04</span><h3>Rhythmus finden</h3><p>Wir empfehlen Folgetermine nur dann, wenn Ihre Haut sie wirklich braucht.</p></article></div></div></section>
+    <section class="contact" id="kontakt"><div class="shell contact-grid"><div class="reveal"><p class="eyebrow">Kontakt</p><h2>Bereit für Ihren Termin?</h2><p class="contact-copy">Schreiben Sie uns, welche Behandlung Sie interessiert. Wir melden uns persönlich mit einem passenden Vorschlag.</p><div class="contact-meta"><a href="tel:+41445551234">+41 44 555 12 34</a><a href="mailto:hallo@hautnah-atelier.ch">hallo@hautnah-atelier.ch</a><span>Seefeldstrasse 82 · 8008 Zürich</span><span>Di–Fr 09:00–19:00 · Sa 09:00–16:00</span></div></div><form class="form reveal" id="bookingForm"><div class="form-grid"><div class="field"><label for="name">Name</label><input id="name" name="name" autocomplete="name" required></div><div class="field"><label for="email">E-Mail</label><input id="email" name="email" type="email" autocomplete="email" required></div><div class="field"><label for="phone">Telefon</label><input id="phone" name="phone" type="tel" autocomplete="tel"></div><div class="field"><label for="service">Behandlung</label><select id="service" name="service"><option>Beratung</option><option>Essential Facial</option><option>Signature Ritual</option><option>Skin Reset</option><option>Wimpern &amp; Brauen</option><option>Maniküre &amp; Fusspflege</option></select></div><div class="field full"><label for="message">Wünsche oder bevorzugte Zeit</label><textarea id="message" name="message"></textarea></div></div><button class="btn" type="submit">Terminanfrage senden</button><p class="form-note">Die Anfrage ist unverbindlich. Wir bestätigen den Termin persönlich.</p><p class="success" id="success">Vielen Dank – wir melden uns so bald wie möglich.</p></form></div></section>
+  </main>
+  <footer class="footer"><div class="shell"><a class="logo" href="#top">Hautnah Atelier</a><small>© 2026 · Kosmetikstudio Zürich · Datenschutz · Impressum</small></div></footer>
+  <script>
+    const nav=document.getElementById('nav'),toggle=document.getElementById('menuToggle');
+    toggle.addEventListener('click',()=>{const open=nav.classList.toggle('open');toggle.setAttribute('aria-expanded',String(open));toggle.textContent=open?'×':'☰'});
+    document.querySelectorAll('.nav-links a').forEach(a=>a.addEventListener('click',()=>{nav.classList.remove('open');toggle.setAttribute('aria-expanded','false');toggle.textContent='☰'}));
+    const reveals=document.querySelectorAll('.reveal');
+    if(!('IntersectionObserver' in window)){reveals.forEach(el=>el.classList.add('in'))}else{const io=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('in');io.unobserve(entry.target)}}),{threshold:.12,rootMargin:'0px 0px -6%'});reveals.forEach(el=>io.observe(el))}
+    document.getElementById('bookingForm').addEventListener('submit',event=>{event.preventDefault();document.getElementById('success').classList.add('show');event.currentTarget.reset()});
+  </script>
+<script src="/assets/js/demo-notice.js?v=1"></script>
 </body>
 </html>

@@ -1,12 +1,31 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="de-CH">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Webdesign, Web-Apps &amp; KI für KMU | MASESites</title>
-  <meta name="description" content="Websites als klarer Kern, Web-Apps und KI als gezielter Ausbau: MASESites zeigt, welche Lösung mehr Anfragen bringt oder Verwaltungsarbeit spart.">
+  <title>Websites, WebApps &amp; KI für Schweizer KMU | MASESites</title>
+  <meta name="description" content="Drei Bereiche, klar erklärt: professionelle Websites, individuelle WebApps und KI-Lösungen für Schweizer KMU – direkt mit MASESites entwickelt.">
   <link rel="canonical" href="https://masesites.ch/leistungen">
-  <link rel="stylesheet" href="assets/css/style.css?v=58">
+  <meta property="og:title" content="Websites, WebApps &amp; KI | MASESites">
+  <meta property="og:description" content="Digitale Lösungen für Schweizer KMU – individuell entwickelt, persönlich betreut und klar offeriert.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://masesites.ch/leistungen">
+  <meta property="og:site_name" content="MASESites">
+  <meta property="og:locale" content="de_CH">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Websites, WebApps &amp; KI | MASESites">
+  <meta name="twitter:description" content="Digitale Lösungen für Schweizer KMU – direkt mit den Gründern entwickelt.">
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {"@type": "Service", "name": "Websites für Schweizer KMU", "serviceType": "Webdesign und Webentwicklung", "url": "https://masesites.ch/leistungen#website", "provider": {"@id": "https://masesites.ch/#organization"}, "areaServed": "CH"},
+        {"@type": "Service", "name": "WebApps für Schweizer KMU", "serviceType": "Individuelle WebApp-Entwicklung", "url": "https://masesites.ch/leistungen#webapp", "provider": {"@id": "https://masesites.ch/#organization"}, "areaServed": "CH"},
+        {"@type": "Service", "name": "KI-Lösungen für Schweizer KMU", "serviceType": "KI-Assistenten und KI-Integration", "url": "https://masesites.ch/leistungen#ki", "provider": {"@id": "https://masesites.ch/#organization"}, "areaServed": "CH"}
+      ]
+    }
+  </script>
+  <link rel="stylesheet" href="assets/css/style.css?v=60">
   <link rel="stylesheet" href="assets/css/leistungen.css?v=12">
 </head>
 <body>
@@ -23,7 +42,8 @@
         <a href="/ueber-uns">Über uns</a>
       </nav>
       <div class="header-cta">
-        <a class="btn btn-primary header-start" href="/kontakt">Erstgespräch anfragen</a>
+        <a class="header-dashboard" href="/dashboard" aria-label="Kundendashboard öffnen">Dashboard</a>
+        <a class="btn btn-primary header-start" href="/kontakt">Projekt anfragen</a>
         <button class="burger" aria-label="Menü öffnen" aria-expanded="false">
           <span></span><span></span><span></span>
         </button>
@@ -37,8 +57,8 @@
     <a href="/preise">Preise</a>
     <a href="/ueber-uns">Über uns</a>
     <a href="/webdesign-kloten">Webdesign Kloten</a>
-    <a href="/dashboard" class="konto-link">Kundenlogin</a>
-    <a class="btn btn-primary" href="/kontakt">Kostenloses Erstgespräch →</a>
+    <a href="/dashboard" class="konto-link">Kundendashboard</a>
+    <a class="btn btn-primary" href="/kontakt">Projekt anfragen →</a>
   </div>
 
   <main class="lw" id="lw" data-welt="website">
@@ -46,25 +66,25 @@
     <!-- Kopf: Titel und die drei Welt-Knöpfe -->
     <section class="lw-kopf">
       <div class="wrap">
-        <span class="kicker">Klar statt beliebig</span>
-        <h1>Website zuerst. Technik, wenn sie sich lohnt.</h1>
-        <p class="lw-untertitel">Unser Kern sind Websites für Schweizer KMU. Web-Apps und KI setzen wir dort ein, wo sie einen konkreten Ablauf verbessern.</p>
+        <span class="kicker">Digitale Lösungen für Schweizer KMU</span>
+        <h1>Websites. WebApps. KI. Passend zu deinem Betrieb.</h1>
+        <p class="lw-untertitel">Drei Bereiche, direkt mit uns entwickelt. Wir klären gemeinsam, welche Lösung dein Unternehmen tatsächlich braucht.</p>
         <div class="lw-tabs" role="tablist" aria-label="Leistung wählen">
-          <button class="lw-tab active" type="button" role="tab" aria-selected="true" data-welt="website" id="tab-website">
-            Website · Kern
+          <button class="lw-tab active" type="button" role="tab" aria-selected="true" aria-controls="website" data-welt="website" id="tab-website">
+            Website
           </button>
-          <button class="lw-tab" type="button" role="tab" aria-selected="false" data-welt="webapp" id="tab-webapp">
-            Web-App · Ausbau
+          <button class="lw-tab" type="button" role="tab" aria-selected="false" aria-controls="webapp" data-welt="webapp" id="tab-webapp" tabindex="-1">
+            WebApp
           </button>
-          <button class="lw-tab" type="button" role="tab" aria-selected="false" data-welt="ki" id="tab-ki">
-            KI · Ergänzung
+          <button class="lw-tab" type="button" role="tab" aria-selected="false" aria-controls="ki" data-welt="ki" id="tab-ki" tabindex="-1">
+            KI-Lösung
           </button>
         </div>
       </div>
     </section>
 
     <!-- ===================== Welt: Website ===================== -->
-    <section class="lw-welt" data-panel="website" role="tabpanel" aria-labelledby="tab-website">
+    <section class="lw-welt" id="website" data-panel="website" role="tabpanel" aria-labelledby="tab-website">
       <div class="wrap lw-buehne">
         <div class="lw-text">
           <h2>Aus Besuchern werden Anfragen.</h2>
@@ -77,7 +97,7 @@
             <li><b>Später erweiterbar</b><span>Buchung, Zahlung oder Assistent kommen nur dazu, wenn dein Betrieb sie braucht.</span></li>
           </ul>
           <div class="lw-aktion">
-            <a class="btn btn-primary" href="/kontakt">Website-Ziel besprechen <span class="arrow">→</span></a>
+            <a class="btn btn-primary" href="/kontakt">Projekt anfragen <span class="arrow">→</span></a>
           </div>
         </div>
         <div class="lw-schau">
@@ -123,7 +143,7 @@
     </section>
 
     <!-- ===================== Welt: Webapp ===================== -->
-    <section class="lw-welt" data-panel="webapp" role="tabpanel" aria-labelledby="tab-webapp" hidden>
+    <section class="lw-welt" id="webapp" data-panel="webapp" role="tabpanel" aria-labelledby="tab-webapp" hidden>
       <div class="wrap lw-buehne">
         <div class="lw-text">
           <h2>Software, die deine Abläufe kennt.</h2>
@@ -157,7 +177,7 @@
             <li><b>Assistent auf Wunsch</b><span>Erfasst Termine auf Zuruf, bedient die App für dich und fasst zusammen, was lief.</span></li>
           </ul>
           <div class="lw-aktion">
-            <a class="btn btn-primary" href="/kontakt">Ablauf besprechen <span class="arrow">→</span></a>
+            <a class="btn btn-primary" href="/kontakt">Projekt besprechen <span class="arrow">→</span></a>
           </div>
         </div>
         <div class="lw-schau">
@@ -315,21 +335,21 @@
     </section>
 
     <!-- ===================== Welt: KI-Bot ===================== -->
-    <section class="lw-welt" data-panel="ki" role="tabpanel" aria-labelledby="tab-ki" hidden>
+    <section class="lw-welt" id="ki" data-panel="ki" role="tabpanel" aria-labelledby="tab-ki" hidden>
       <canvas class="ki-netz" id="ki-netz" aria-hidden="true"></canvas>
       <div class="lw-strahlen" aria-hidden="true"><i></i><i></i></div>
       <div class="wrap lw-buehne">
         <div class="lw-text">
-          <h2>MASE AI.<br>Rund um die Uhr wach.</h2>
+          <h2>MASE AI.<br>Auch ausserhalb der Öffnungszeiten.</h2>
           <p class="lw-kurz">Ein Chat auf deiner Website, der deine Angebote, Preise und Öffnungszeiten kennt. Er nimmt Anfragen entgegen und schickt sie dir sortiert – auch nachts.</p>
           <p class="lw-abgrenzung"><b>Kein Ersatz, sondern eine Ergänzung.</b> Lässt sich auf jede bestehende Seite einbauen, auch auf eine fremde. Monatlich kündbar.</p>
           <ul class="lw-merkmale">
-            <li><b>Antwortet wie dein Team</b><span>Sagt nur, was stimmt – und sonst, dass er es nicht weiss.</span></li>
+            <li><b>Antwortet aus deinem Wissen</b><span>Bei fehlenden Informationen soll er offen an dich oder dein Team weiterleiten.</span></li>
             <li><b>Nimmt Anfragen auf</b><span>Termine und Kontaktdaten landen sortiert in deinem Postfach.</span></li>
             <li><b>Bleibt aktuell</b><span>Neue Preise und Angebote pflegen wir nach. Im Monatspreis drin.</span></li>
           </ul>
           <div class="lw-aktion">
-            <a class="btn btn-primary" href="/kontakt">Bot für meine Firma <span class="arrow">→</span></a>
+            <a class="btn btn-primary" href="/kontakt">Projekt anfragen <span class="arrow">→</span></a>
           </div>
         </div>
         <div class="lw-schau">
@@ -347,7 +367,7 @@
               </div>
             </div>
             <div class="ki-protokoll" aria-hidden="true">
-              <span class="kp-titel">Eine Nacht, drei Anfragen – alle beantwortet</span>
+              <span class="kp-titel">Beispiel: Anfragen ausserhalb der Öffnungszeiten</span>
               <div class="kp-chip"><b>03:12</b>Tisch für 4 reserviert</div>
               <div class="kp-chip"><b>04:47</b>Frage zu Öffnungszeiten beantwortet</div>
               <div class="kp-chip"><b>06:05</b>Rückruf für 9 Uhr notiert</div>
@@ -361,7 +381,7 @@
           <ol class="lw-ablauf">
             <li><b>Wissen sammeln</b>Wir übernehmen deine Inhalte. Du musst nichts aufbereiten.</li>
             <li><b>Testen</b>Du probierst ihn aus und sagst, was er anders sagen soll.</li>
-            <li><b>Live in Tagen</b>Eine Code-Zeile auf deiner Seite – fertig.</li>
+            <li><b>Integrieren</b>Wir bauen den Assistenten ein und testen ihn vor der Veröffentlichung.</li>
           </ol>
         </div>
         <div class="lw-spalte">
@@ -378,7 +398,7 @@
             <li><span><b>Deine Daten bleiben deine</b><em>Anfragen gehören dir und werden nicht weiterverkauft.</em></span></li>
           </ul>
           <p class="lw-notiz"><b>Fair Use:</b> CHF 39 pro Monat deckt die übliche Nutzung eines KMU ab. Bei aussergewöhnlich hoher Nutzung vereinbaren wir vorab ein passendes Nutzungspaket. Keine Zusatzkosten ohne deine Zustimmung.</p>
-          <p class="lw-notiz">Rechne selbst: Eine einzige nicht verpasste Reservation pro Monat zahlt den Bot meist schon.</p>
+          <p class="lw-notiz">Schon eine zusätzliche Anfrage kann den Monatspreis decken. Ob das für deinen Betrieb realistisch ist, hängt von Angebot und Nutzung ab.</p>
         </div>
       </div>
     </section>
@@ -395,15 +415,15 @@
           <a class="logo" href="/">
             masesites
           </a>
-          <p>Websites für Schweizer KMU, die mehr Anfragen bringen und Arbeit abnehmen.</p>
+          <p>Digitale Lösungen für Schweizer KMU: Websites, WebApps und KI – direkt mit uns entwickelt.</p>
           <a class="mail" href="mailto:info@masesites.ch">info@masesites.ch</a>
         </div>
         <div class="footer-col">
           <h4>Angebot</h4>
           <ul>
-            <li><a href="/preise#website">Neue Website</a></li>
-            <li><a href="/preise#webapp">Web-Apps</a></li>
-            <li><a href="/preise#ki">KI-Assistent</a></li>
+            <li><a href="/preise#website">Website</a></li>
+            <li><a href="/preise#webapp">WebApps</a></li>
+            <li><a href="/preise#ki">KI-Lösungen</a></li>
           </ul>
         </div>
         <div class="footer-col">
@@ -414,7 +434,7 @@
             <li><a href="/ueber-uns">Über uns</a></li>
             <li><a href="/kontakt">Kontakt</a></li>
             <li><a href="/webdesign-kloten">Webdesign Kloten</a></li>
-            <li><a href="/dashboard">Kundenlogin</a></li>
+            <li><a href="/dashboard">Kundendashboard</a></li>
           </ul>
         </div>
         <div class="footer-col">
@@ -435,7 +455,7 @@
 
   <script src="assets/js/sanft.js?v=1"></script>
   <script src="assets/js/cookie.js?v=4"></script>
-  <script src="assets/js/site.js?v=33"></script>
-  <script src="assets/js/leistungen.js?v=3"></script>
+  <script src="assets/js/site.js?v=35"></script>
+  <script src="assets/js/leistungen.js?v=4"></script>
 </body>
 </html>

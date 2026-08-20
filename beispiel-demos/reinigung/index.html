@@ -1528,6 +1528,44 @@ img{max-width:100%}
 }
 .review__score{font-size:.68rem;letter-spacing:.08em;text-transform:uppercase}
 </style>
+<style id="mobile-optimization-v2">
+@media(max-width:1024px){
+  :where(input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="color"]),select,textarea){
+    font-size:16px!important
+  }
+}
+@media(max-width:768px){
+  /* mobile-v2-overflow-guard */
+  html,body{max-width:100%;overflow-x:clip}
+  html{scroll-padding-top:78px}
+  body{overscroll-behavior-x:none}
+  :where(button,[role="button"],summary){min-width:44px;min-height:44px}
+  /* mobile-v2-form-targets */
+  input[type="range"]{min-height:44px}
+  :where(input[type="checkbox"],input[type="radio"]){min-width:24px;min-height:24px}
+  :where(.nav-menu,.mobile-menu,.nav-links.open,.drawer,[role="dialog"]){overscroll-behavior:contain}
+  :where(.nav-menu a,.mobile-menu a,.nav-links.open a,.drawer a){
+    min-height:44px;
+    display:flex;
+    align-items:center
+  }
+  :where(footer a){min-height:40px;display:flex;align-items:center}
+  .mobile-sticky-managed{
+    opacity:0!important;
+    transform:translateY(calc(100% + 28px))!important;
+    pointer-events:none!important;
+    transition:opacity 180ms ease,transform 220ms cubic-bezier(.23,1,.32,1)!important
+  }
+  .mobile-sticky-managed.is-visible{
+    opacity:1!important;
+    transform:none!important;
+    pointer-events:auto!important
+  }
+}
+@media(prefers-reduced-motion:reduce){
+  .mobile-sticky-managed{transition:opacity 120ms ease!important}
+}
+</style>
 </head>
 <body>
 <a class="quality-skip" href="#main">Zum Inhalt springen</a>
@@ -2067,6 +2105,8 @@ img{max-width:100%}
 </a>
 </div>
 </section>
+<style id="mase-extension-styles">.mase-extension-2026{padding:clamp(5rem,9vw,8rem) 0;border-top:1px solid color-mix(in srgb,currentColor 18%,transparent);background:color-mix(in srgb,currentColor 4%,transparent)}.mase-extension-shell{width:min(100% - 40px,1180px);margin-inline:auto}.mase-extension-head{display:grid;grid-template-columns:.8fr 1.2fr;gap:2rem;align-items:end;margin-bottom:2.8rem}.mase-extension-kicker{font-size:.72rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;opacity:.65}.mase-extension-head h2{font:inherit;font-size:clamp(2.4rem,5vw,4.6rem);line-height:.98;letter-spacing:-.05em;max-width:13ch}.mase-extension-head>p:last-child{max-width:50ch;opacity:.68}.mase-extension-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:color-mix(in srgb,currentColor 18%,transparent);border:1px solid color-mix(in srgb,currentColor 18%,transparent)}.mase-extension-card{min-height:245px;padding:1.7rem;background:color-mix(in srgb,currentColor 3%,transparent);display:flex;flex-direction:column}.mase-extension-card span{font-size:.7rem;font-weight:700;opacity:.55}.mase-extension-card h3{font:inherit;font-size:1.25rem;line-height:1.1;margin-top:auto}.mase-extension-card p{font-size:.83rem;opacity:.68;margin-top:.75rem}@media(max-width:850px){.mase-extension-head{grid-template-columns:1fr}.mase-extension-grid{grid-template-columns:1fr 1fr}}@media(max-width:520px){.mase-extension-grid{grid-template-columns:1fr}.mase-extension-card{min-height:210px}}</style>
+<section class="mase-extension-2026" aria-labelledby="mase-extra-title"><div class="mase-extension-shell"><header class="mase-extension-head"><div><p class="mase-extension-kicker">Qualitätssicherung</p><h2 id="mase-extra-title">Sauberkeit, die überprüfbar bleibt.</h2></div><p>Klare Zuständigkeiten und dokumentierte Kontrollen sorgen dafür, dass der vereinbarte Standard nicht vom Zufall abhängt.</p></header><div class="mase-extension-grid"><article class="mase-extension-card"><span>01 · OBJEKTPLAN</span><h3>Flächen definieren</h3><p>Rhythmus, Mittel und besondere Anforderungen werden einmal sauber erfasst.</p></article><article class="mase-extension-card"><span>02 · CHECKLISTE</span><h3>Leistung bestätigen</h3><p>Das Team arbeitet mit einer eindeutigen Liste statt mit Annahmen.</p></article><article class="mase-extension-card"><span>03 · RÜCKMELDUNG</span><h3>Direkt erreichbar</h3><p>Eine feste Kontaktperson nimmt Hinweise auf und koordiniert Anpassungen.</p></article><article class="mase-extension-card"><span>04 · NACHBESSERUNG</span><h3>Ohne Diskussion lösen</h3><p>Beanstandete Punkte werden zeitnah geprüft und nachvollziehbar erledigt.</p></article></div></div></section>
 </main>
 <!-- =============================================================== Footer -->
 <footer class="site-footer">
@@ -2368,5 +2408,22 @@ img{max-width:100%}
   $('#year').textContent = new Date().getFullYear();
 })();
 </script>
+<script id="mobile-sticky-behavior-v2">
+(function(){
+  var sticky=document.querySelector('.mobile-cta,.mobile-call,.sticky-call');
+  var trigger=document.querySelector('.hero-actions,.hero__actions,.hero-cta,.hero .btn,.hero .button');
+  if(!sticky||!trigger)return;
+  sticky.classList.add('mobile-sticky-managed');
+  function setVisible(visible){sticky.classList.toggle('is-visible',visible)}
+  if('IntersectionObserver' in window){
+    new IntersectionObserver(function(entries){
+      setVisible(!entries[0].isIntersecting);
+    },{threshold:.08}).observe(trigger);
+  }else{
+    setVisible(true);
+  }
+})();
+</script>
+<script src="/assets/js/demo-notice.js?v=1"></script>
 </body>
 </html>

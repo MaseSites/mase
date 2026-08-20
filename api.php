@@ -680,11 +680,11 @@ function botSystemPrompt(string $heute): string
 {
     $kern = implode("\n", [
         "Du bist der masesites-Bot, der freundliche KI-Assistent auf der Website von MASESites (masesites.ch).",
-        "MASESites ist ein Schweizer Webstudio von Matteo und Severin. Im Zentrum stehen Websites für Schweizer KMU, die mehr Anfragen bringen und Verwaltungsarbeit abnehmen; Webapps und KI sind sinnvolle Erweiterungen, wenn sie einen konkreten Nutzen haben.",
+        "MASESites ist ein Schweizer Digitalpartner von Matteo und Severin für Websites, WebApps und KI-Lösungen für KMU. Alle drei Bereiche sind Kernleistungen und werden individuell, persönlich und mit klarer Offerte entwickelt.",
         "Heutiges Datum: {$heute}. Antworte in der Sprache der Besucherin oder des Besuchers (Standard Deutsch, sonst Englisch, Französisch oder Italienisch). Sprich per Du, freundlich, kurz und ehrlich – meist 2 bis 5 Sätze.",
         "",
         "WISSEN über MASESites:",
-        "- Angebot: professionelle, mobil-optimierte Websites als Kernangebot; Webapps (z. B. Buchungs- und Firmensysteme) und KI-Assistenten als optionale Erweiterungen.",
+        "- Angebot: professionelle Websites; individuelle WebApps (z. B. Buchungs- und Firmensysteme); KI-Lösungen wie Assistenten und Integrationen.",
         "- Die Beispiele unter /beispiele sind interaktive Konzept-Demos und keine ausgegebenen Kundenprojekte. Unter /projekte werden erst echte, freigegebene Kundenarbeiten gezeigt.",
         "- Zusammenarbeit: direkte Ansprechpartner sind die Gründer Matteo und Severin; vor Projektstart gibt es eine Offerte mit klar definiertem Umfang und Fixpreis.",
         "- Preise Website: Starter CHF 790, Pro CHF 1'490, Smart ab CHF 2'990.",
@@ -1650,7 +1650,7 @@ function botZusatzStandard(): string
     return implode("\n", [
         "ROLLE: Du bist nicht nur ein Nachschlagewerk, sondern ein aktiver, mitdenkender Berater. Dein Ziel: jedem Besucher helfen, die für ihn passende Lösung zu finden, statt nur Fragen abzuarbeiten.",
         "",
-        "BERATEN STATT NUR ANTWORTEN: Zeigt jemand allgemeines Interesse oder ist unsicher, was er braucht, stell zuerst 1-2 gezielte Rückfragen, bevor du empfiehlst - zum Beispiel: Braucht die Person einen Webauftritt oder eine Anwendung zum täglichen Arbeiten? In welcher Branche ist sie tätig? Was soll die Website oder Web-App können? Empfiehl danach konkret eine der drei Leistungen (Neue Website, Web-App, KI-Assistent) und begründe kurz, warum sie passt. Bist du zwischen zwei Optionen unsicher, nenne zuerst die einfachere und günstigere - lieber ehrlich zu klein empfehlen als zu gross.",
+        "BERATEN STATT NUR ANTWORTEN: Zeigt jemand allgemeines Interesse oder ist unsicher, was er braucht, stell zuerst 1-2 gezielte Rückfragen, bevor du empfiehlst - zum Beispiel: Braucht die Person einen Webauftritt, eine Anwendung zum täglichen Arbeiten oder automatisierte Unterstützung? In welcher Branche ist sie tätig? Was soll die Lösung können? Empfiehl danach konkret eine der drei Leistungen (Website, WebApp, KI-Lösung) und begründe kurz, warum sie passt. Bist du zwischen zwei Optionen unsicher, nenne zuerst die einfachere und günstigere - lieber ehrlich zu klein empfehlen als zu gross.",
         "",
         "ANFRAGEN AKTIV AUFNEHMEN: Zeigt jemand konkretes Interesse, moechte ein Angebot oder will loslegen, biete von dir aus an, die Anfrage gleich hier aufzunehmen, statt nur auf das Kontaktformular zu verweisen. Frag nach Name, Kontakt (E-Mail oder Telefon) und kurz worum es geht, und nutze dafuer das Werkzeug termin_erfassen - auch wenn es kein klassischer Termin ist, sondern eine Projektanfrage. Sag danach kurz, dass sich das Team meldet.",
     ]);
@@ -1690,6 +1690,9 @@ function stelleInhalteSicher(): void
         'B-optik' => 'assets/img/demos/optik-portfolio.webp',
         'B-metzgerei' => 'assets/img/demos/metzgerei-portfolio.webp',
         'B-arztpraxis' => 'assets/img/demos/praxis-portfolio.webp',
+        'B-hotel' => 'assets/img/demos/hotel-portfolio.webp',
+        'B-fachgeschaeft' => 'assets/img/demos/fachgeschaeft-portfolio.webp',
+        'B-freizeit' => 'assets/img/demos/freizeit-portfolio.webp',
     ];
 
     /* Die Webapp-Demo kam später dazu. Sie wird deshalb auch bestehenden
@@ -1716,6 +1719,15 @@ function stelleInhalteSicher(): void
         ['id' => 'B-fahrschule','name' => 'Vorwärts',        'branche' => 'Fahrschule',         'beschreibung' => 'Dynamischer Auftritt mit Lernziel-Auswahl, Weg-Stepper und Erstlektion-Anfrage.', 'url' => '/beispiel-demos/fahrschule/', 'bild' => $portfolioBilder['B-fahrschule'], 'startseite' => false],
         ['id' => 'B-optik',     'name' => 'Klar Optik',      'branche' => 'Optiker',            'beschreibung' => 'Swiss-Minimal mit Fassungsfilter, Schärfe-Regler und Terminanfrage.',        'url' => '/beispiel-demos/optik/',     'bild' => $portfolioBilder['B-optik'],     'startseite' => false],
         ['id' => 'B-metzgerei', 'name' => 'Die Werkbank',    'branche' => 'Metzgerei',          'beschreibung' => 'Handwerklich-editorial mit Sortiments-Tabs und Partyservice-Vorbestellung.',  'url' => '/beispiel-demos/metzgerei/', 'bild' => $portfolioBilder['B-metzgerei'], 'startseite' => false],
+    ];
+
+    /* Drei neue Branchen-Vorlagen (Hotel, Fachgeschäft, Freizeitpark) vom
+       20.08.2026. Gleiches Muster: bestehenden Installationen genau EINMAL
+       hinzufügen (Merker), im Admin gelöschte Einträge kommen nicht wieder. */
+    $vorlagen3 = [
+        ['id' => 'B-hotel',         'name' => 'The Hotel', 'branche' => 'Hotel & Hospitality', 'beschreibung' => 'Cineastischer Hotel-Auftritt mit Zimmern, Dining, Galerie und Direktbuchungs-Anfrage.', 'url' => '/beispiel-demos/hotel/',         'bild' => $portfolioBilder['B-hotel'],         'startseite' => false],
+        ['id' => 'B-fachgeschaeft', 'name' => 'BOUTIQ',    'branche' => 'Fachgeschäft & Retail', 'beschreibung' => 'Editorialer Store-Auftritt mit Video-Hero, Kollektionen, Sortiment und Warenkorb.',   'url' => '/beispiel-demos/fachgeschaeft/', 'bild' => $portfolioBilder['B-fachgeschaeft'], 'startseite' => false],
+        ['id' => 'B-freizeit',      'name' => 'AB Park',   'branche' => 'Freizeit & Erlebnis', 'beschreibung' => 'Plakativer Erlebnispark-Auftritt mit Attraktionen, interaktivem Parkplan und Tickets.', 'url' => '/beispiel-demos/freizeit/',      'bild' => $portfolioBilder['B-freizeit'],      'startseite' => false],
     ];
 
     if (einstellung('inhalte_beispiele') !== null) {
@@ -1882,17 +1894,42 @@ function stelleInhalteSicher(): void
             }
             setzeEinstellung('inhalte_portfolio_bilder_20260810', '1');
         }
+        /* Drei neue Vorlagen (Hotel, Fachgeschäft, Freizeit) einmalig ergänzen
+           (nur fehlende IDs, damit im Admin bewusst gelöschte nicht wiederkommen). */
+        if (einstellung('inhalte_vorlagen3_ergaenzt') === null) {
+            $liste = json_decode((string)einstellung('inhalte_beispiele'), true);
+            if (is_array($liste)) {
+                $vorhandene = [];
+                foreach ($liste as $e) {
+                    if (is_array($e) && isset($e['id'])) {
+                        $vorhandene[$e['id']] = true;
+                    }
+                }
+                $geaendert = false;
+                foreach ($vorlagen3 as $v) {
+                    if (!isset($vorhandene[$v['id']])) {
+                        $liste[] = $v;
+                        $geaendert = true;
+                    }
+                }
+                if ($geaendert) {
+                    setzeEinstellung('inhalte_beispiele', json_encode(saeubereBeispiele($liste), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+                }
+            }
+            setzeEinstellung('inhalte_vorlagen3_ergaenzt', '1');
+        }
         return;
     }
     setzeEinstellung('inhalte_tavolo_ergaenzt', '1');
     setzeEinstellung('inhalte_vorlagen5_ergaenzt', '1');
+    setzeEinstellung('inhalte_vorlagen3_ergaenzt', '1');
     setzeEinstellung('inhalte_beispiele', json_encode(array_merge([
         $tavolo,
         ['id' => 'B-kebab', 'name' => 'Kebab Palace', 'branche' => 'Gastronomie', 'beschreibung' => 'Speisekarte, Bestellung und Standort im Fokus.', 'url' => 'https://masesites.ch/demo/doener-site/index.html', 'bild' => 'assets/img/demos/kebab.jpg'],
         ['id' => 'B-nails', 'name' => 'Nails & Co.', 'branche' => 'Beauty', 'beschreibung' => 'Elegantes Einseiten-Design mit Galerie und Terminbuchung.', 'url' => 'https://masesites.ch/demo/nagelstudio-site/index.html', 'bild' => 'assets/img/demos/nagelstudio.jpg'],
         ['id' => 'B-praxis', 'name' => 'Praxis Dr. Müller', 'branche' => 'Gesundheit', 'beschreibung' => 'Seriöser Auftritt mit ruhiger Typografie und Terminbuchung.', 'url' => 'https://masesites.ch/demo/praxis-site/index.html', 'bild' => 'assets/img/demos/praxis.jpg'],
         ['id' => 'B-bowling', 'name' => 'Strike Zone Bowling', 'branche' => 'Freizeit', 'beschreibung' => 'Klares Layout mit Fokus auf Bahnreservierung und Events.', 'url' => 'https://masesites.ch/demo/bowling-site/index.html', 'bild' => 'assets/img/demos/bowling.jpg'],
-    ], $vorlagen5), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+    ], $vorlagen5, $vorlagen3), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
     if (einstellung('inhalte_projekte') === null) {
         setzeEinstellung('inhalte_projekte', '[]');
     }
@@ -3877,7 +3914,7 @@ route('POST', '/api/bot', null, function ($p, $body, $sitzung) {
     /* Ohne Schlüssel/aus: freundlicher Hinweis statt Fehler. */
     if (!$cfg['konfiguriert'] || !$cfg['an']) {
         antwortJson(200, [
-            'reply' => 'Hoi! Der KI-Assistent ist gerade noch nicht aktiv. Schreib uns dein Anliegen an info@masesites.ch oder über das Kontaktformular – wir melden uns schnell.',
+            'reply' => 'Hoi! Der KI-Assistent ist gerade nicht aktiv. Schreib uns dein Anliegen an info@masesites.ch oder über das Kontaktformular – wir melden uns persönlich.',
             'konfiguriert' => false,
         ]);
     }

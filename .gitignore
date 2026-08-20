@@ -37,6 +37,9 @@ beispiel-demos/*
 !beispiel-demos/optik/
 !beispiel-demos/metzgerei/
 !beispiel-demos/praxis/
+!beispiel-demos/hotel/
+!beispiel-demos/fachgeschaeft/
+!beispiel-demos/freizeit/
 
 # Node
 node_modules/
@@ -56,3 +59,8 @@ graphify-out/
 # Python-Cache
 __pycache__/
 *.pyc
+
+# Lokales Bild-Tooling und erzeugte Vorschaubilder (die fertigen Portfolio-
+# Bilder werden nach assets/img/demos/ kopiert und DORT committet)
+tmp/
+output/

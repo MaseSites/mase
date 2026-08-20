@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="de-CH">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,8 +7,17 @@
   <meta name="description" content="Veröffentlichte Kundenprojekte von MASESites – nur reale Aufträge und nur mit Freigabe der Kundschaft.">
   <meta name="robots" content="noindex,follow">
   <link rel="canonical" href="https://masesites.ch/projekte">
+  <meta property="og:title" content="Echte Projekte. Echte Ergebnisse. | MASESites">
+  <meta property="og:description" content="Hier zeigt MASESites ausschliesslich Arbeiten, die tatsächlich für Kunden umgesetzt und zur Veröffentlichung freigegeben wurden.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://masesites.ch/projekte">
+  <meta property="og:site_name" content="MASESites">
+  <meta property="og:locale" content="de_CH">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Echte Projekte. Echte Ergebnisse. | MASESites">
+  <meta name="twitter:description" content="Nur reale, freigegebene Kundenarbeiten – keine erfundenen Referenzen.">
   <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="assets/css/style.css?v=58">
+  <link rel="stylesheet" href="assets/css/style.css?v=60">
 </head>
 <body>
 
@@ -24,7 +33,8 @@
         <a href="/ueber-uns">Über uns</a>
       </nav>
       <div class="header-cta">
-        <a class="btn btn-primary header-start" href="/kontakt">Erstgespräch anfragen</a>
+        <a class="header-dashboard" href="/dashboard" aria-label="Kundendashboard öffnen">Dashboard</a>
+        <a class="btn btn-primary header-start" href="/kontakt">Projekt anfragen</a>
         <button class="burger" aria-label="Menü öffnen" aria-expanded="false">
           <span></span><span></span><span></span>
         </button>
@@ -38,8 +48,8 @@
     <a href="/preise">Preise</a>
     <a href="/ueber-uns">Über uns</a>
     <a href="/webdesign-kloten">Webdesign Kloten</a>
-    <a href="/dashboard" class="konto-link">Kundenlogin</a>
-    <a class="btn btn-primary" href="/kontakt">Kostenloses Erstgespräch →</a>
+    <a href="/dashboard" class="konto-link">Kundendashboard</a>
+    <a class="btn btn-primary" href="/kontakt">Projekt anfragen →</a>
   </div>
 
   <main>
@@ -47,9 +57,9 @@
     <!-- ===== Hero ===== -->
     <section class="page-hero" id="projekte-hero">
       <div class="wrap">
-        <span class="kicker">Nur echte Aufträge</span>
-        <h1>Kundenprojekte</h1>
-        <p class="lead">Hier veröffentlichen wir ausschliesslich reale Aufträge – mit Zustimmung der Kundschaft und ohne erfundene Resultate, Logos oder Bewertungen.</p>
+        <span class="kicker">Nur echte, freigegebene Arbeiten</span>
+        <h1>Echte Projekte. Echte Ergebnisse.</h1>
+        <p class="lead">Hier zeigen wir ausschliesslich Arbeiten, die wir tatsächlich für Kunden umgesetzt haben und veröffentlichen dürfen.</p>
       </div>
     </section>
 
@@ -60,11 +70,11 @@
 
         <!-- Leer-Zustand, solange noch kein Projekt eingetragen ist -->
         <div class="big-cta" id="projekte-leer">
-          <h2>Noch keine freigegebenen Referenzen.</h2>
-          <p>MASESites ist jung. Solange wir keine veröffentlichten Kundenprojekte belegen können, behaupten wir auch keine. Unsere gestalterische und technische Arbeit kannst du stattdessen in den klar gekennzeichneten Konzept-Demos prüfen.</p>
+          <h2>Veröffentlicht, sobald wir es belegen dürfen.</h2>
+          <p>Wir zeigen hier nur reale Aufträge mit Zustimmung der Kundschaft. Gestaltung und Funktionen kannst du bis dahin in unseren klar gekennzeichneten Konzept-Demos direkt prüfen.</p>
           <div class="hero-ctas">
-            <a class="btn btn-primary" href="/beispiele">Konzept-Demos testen <span class="arrow">→</span></a>
-            <a class="btn btn-ghost" href="/kontakt">Direkt mit uns sprechen</a>
+            <a class="btn btn-primary" href="/beispiele">Live-Demos ansehen <span class="arrow">→</span></a>
+            <a class="btn btn-ghost" href="/kontakt">Projekt anfragen</a>
           </div>
         </div>
       </div>
@@ -99,15 +109,15 @@
           <a class="logo" href="/">
             masesites
           </a>
-          <p>Websites für Schweizer KMU, die mehr Anfragen bringen und Arbeit abnehmen.</p>
+          <p>Digitale Lösungen für Schweizer KMU: Websites, WebApps und KI – direkt mit uns entwickelt.</p>
           <a class="mail" href="mailto:info@masesites.ch">info@masesites.ch</a>
         </div>
         <div class="footer-col">
           <h4>Angebot</h4>
           <ul>
-            <li><a href="/preise#website">Neue Website</a></li>
-            <li><a href="/preise#webapp">Web-Apps</a></li>
-            <li><a href="/preise#ki">KI-Assistent</a></li>
+            <li><a href="/preise#website">Website</a></li>
+            <li><a href="/preise#webapp">WebApps</a></li>
+            <li><a href="/preise#ki">KI-Lösungen</a></li>
           </ul>
         </div>
         <div class="footer-col">
@@ -120,7 +130,7 @@
             <li><a href="/ueber-uns">Über uns</a></li>
             <li><a href="/kontakt">Kontakt</a></li>
             <li><a href="/webdesign-kloten">Webdesign Kloten</a></li>
-            <li><a href="/dashboard">Kundenlogin</a></li>
+            <li><a href="/dashboard">Kundendashboard</a></li>
           </ul>
         </div>
         <div class="footer-col">
@@ -147,7 +157,7 @@
   <script src="assets/js/sanft.js?v=1"></script>
   <script src="assets/js/protokoll.js?v=20"></script>
   <script src="assets/js/cookie.js?v=4"></script>
-  <script src="assets/js/site.js?v=33"></script>
+  <script src="assets/js/site.js?v=35"></script>
   <script src="assets/js/projekte.js?v=20"></script>
 </body>
 </html>

@@ -35,6 +35,9 @@ $map = [ordered]@{
   "Optiker und Brillengeschäfte Vorlage"                 = "optik"
   "Metzgereien und Feinkostläden Vorlage"                = "metzgerei"
   "Arztpraxen und Hausarztpraxen Vorlage"                = "praxis"
+  "Hotel Vorlage"                                        = "hotel"
+  "Fachgeschäft Vorlage"                                 = "fachgeschaeft"
+  "Freizeit Vorlage"                                     = "freizeit"
 }
 
 if (-not (Test-Path $vorlagen)) { throw "Ordner nicht gefunden: $vorlagen" }
@@ -58,6 +61,23 @@ foreach ($ordner in $map.Keys) {
         *.db *.sqlite *.sqlite3 .htaccess `
     /XD .git node_modules __pycache__ .swarm .claude-flow | Out-Null
   if ($LASTEXITCODE -ge 8) { throw ("robocopy-Fehler bei {0} (Code {1})" -f $ordner, $LASTEXITCODE) }
+
+  # Demo-Hinweis ("Konzept-Demo - fiktiver Musterbetrieb") in jede gespiegelte
+  # index.html injizieren. Der Sync ueberschreibt die Dateien 1:1 aus den
+  # Vorlagen - ohne diesen Schritt waere der Hinweis nach jedem Sync wieder weg.
+  $indexDatei = Join-Path $dst "index.html"
+  if (Test-Path $indexDatei) {
+    $html = [System.IO.File]::ReadAllText($indexDatei)
+    if ($html -notmatch 'assets/js/demo-notice\.js') {
+      $tag = '<script src="/assets/js/demo-notice.js?v=1"></script>'
+      if ($html -match '</body>') {
+        $html = $html -replace '</body>', "$tag`n</body>"
+      } else {
+        $html += "`n$tag`n"
+      }
+      [System.IO.File]::WriteAllText($indexDatei, $html, (New-Object System.Text.UTF8Encoding $false))
+    }
+  }
   Write-Host ("  ok  {0,-52} -> beispiel-demos\{1}\" -f $ordner, $slug)
 }
 
