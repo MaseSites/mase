@@ -3437,6 +3437,103 @@ body.ms-cookie-offen .widget-panel { bottom: calc(var(--ms-cookie-h, 90px) + 90p
 .person-text p { color: var(--ink-soft); line-height: 1.65; margin-bottom: 12px; max-width: 54ch; }
 .person-text p:last-child { margin-bottom: 0; }
 
+/* ---------- Zertifikate unter einer Person ----------
+   Zwei ruhige Karten statt bunter Abzeichen: Aussteller, Datum und
+   Pruef-Link stehen sichtbar dabei, damit die Angabe nachpruefbar ist.
+   Der Aussteller sitzt als Textmarke im Quadrat links - so bleibt der
+   Block ohne fremde Logos in der warmen Hausfarbe. */
+.zerts { margin-top: 26px; padding-top: 22px; border-top: 1px solid var(--line-strong); }
+.zerts-titel {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-bottom: 14px;
+}
+.zerts-titel svg { flex: none; }
+.zert-liste { list-style: none; display: grid; gap: 12px; margin: 0; padding: 0; }
+.zert {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 16px;
+  align-items: start;
+  padding: 18px 20px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-m);
+  box-shadow: var(--shadow-s);
+  transition: transform 0.35s var(--ease-out), box-shadow 0.35s var(--ease-out), border-color 0.35s var(--ease-out);
+}
+.zert:hover { transform: translateY(-3px); box-shadow: var(--shadow-m); border-color: var(--line-strong); }
+/* Echte Ausstellerlogos auf weisser Flaeche: beide Marken sind fuer
+   hellen Grund gemacht, auf dem cremefarbenen Karton wuerden sie
+   schmutzig wirken. Die Kachel ist fuer beide gleich gross, die Hoehe
+   je Logo unterschiedlich - EXIN ist fast quadratisch, SecureFlag ein
+   langer Schriftzug; gleiche Hoehe waere optisch ungleich. */
+.zert-logo {
+  display: grid;
+  place-items: center;
+  width: 108px;
+  height: 58px;
+  padding: 8px 12px;
+  border-radius: 12px;
+  background: #FFFFFF;
+  border: 1px solid var(--line);
+}
+.zert-logo img { display: block; width: auto; max-width: 100%; }
+.zert-logo-exin { height: 30px; }
+.zert-logo-sf { height: 17px; }
+.zert-inhalt h4 {
+  font-size: 1.02rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.35;
+  margin-bottom: 4px;
+}
+/* Innerhalb der Karte sind die Absaetze schmaler und ruhiger als der
+   Fliesstext daneben - sonst konkurrieren sie mit der Personenbeschreibung. */
+.person-text .zert p { margin-bottom: 0; max-width: 46ch; }
+.zert-meta { font-size: 0.79rem; color: var(--ink-faint); font-variant-numeric: tabular-nums; }
+.zert-was { font-size: 0.9rem; margin-top: 7px; }
+.zert-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 10px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--ink);
+  text-decoration: none;
+  border-bottom: 1px solid var(--line-strong);
+  padding-bottom: 2px;
+  transition: border-color 0.25s var(--ease-out), color 0.25s var(--ease-out);
+}
+.zert-link .arrow { transition: transform 0.3s var(--ease-out); }
+.zert-link:hover { border-color: var(--ink); }
+.zert-link:hover .arrow { transform: translateX(3px); }
+
+@media (max-width: 860px) {
+  /* Der Rest der Person ist auf dem Handy zentriert - die Karten
+     bleiben bewusst linksbuendig, damit Datum und ID lesbar bleiben. */
+  .person-text .zerts { text-align: left; max-width: 420px; margin-inline: auto; }
+  .person-text .zert p { margin-inline: 0; }
+  .zert { padding: 16px; gap: 14px; }
+  .zert-logo { width: 88px; height: 48px; padding: 7px 10px; border-radius: 10px; }
+  .zert-logo-exin { height: 25px; }
+  .zert-logo-sf { height: 14px; }
+}
+
+@media (max-width: 560px) {
+  /* Auf schmalen Handys blieben neben der Logokachel nur ~200px Text -
+     der Titel brach dann mitten im Namen um. Darum Logo oben, Text
+     darunter ueber die volle Kartenbreite. */
+  .zert { grid-template-columns: minmax(0, 1fr); gap: 12px; }
+}
+
 @media (max-width: 860px) {
   .person { grid-template-columns: 1fr; gap: 22px; }
   /* Auf dem Handy steht das Bild immer oben - gespiegelt zu stapeln

@@ -1,0 +1,21 @@
+Ausstellerlogos zu den Zertifikaten auf /ueber-uns
+
+exin.svg
+  Wort-/Bildmarke der EXIN Holding B.V. (exin.com)
+  Quelle: https://www.exin.com/app/themes/exin/resources/images/logo/exin-logo-blue.svg
+  Verwendung: rein beschreibend als Hinweis auf das Zertifikat
+  "EXIN Agile Scrum Foundation" von Severin Buerki (ID 6675794.20909256,
+  ausgestellt 04.02.2026). Keine Partnerschaft, Zertifizierung des
+  Unternehmens MASESites oder Befuerwortung durch EXIN behauptet.
+
+secureflag.svg
+  Wort-/Bildmarke der SecureFlag Ltd. (secureflag.com)
+  Quelle: https://www.secureflag.com/assets/img/logo-secureflag.svg
+  Verwendung: rein beschreibend als Hinweis auf das Zertifikat
+  "Working Securely with AI Agents" von Severin Buerki
+  (ID bc870c7a-9f16-435c-bfa4-975c977864eb, ausgestellt 24.08.2026).
+  Keine Partnerschaft oder Befuerwortung durch SecureFlag behauptet.
+
+Beide Marken bleiben Eigentum der jeweiligen Inhaber. Logos unveraendert
+uebernommen (keine Umfaerbung, kein Zuschnitt). Wird ein Zertifikat
+ungueltig oder nicht mehr gefuehrt, ist das jeweilige Logo zu entfernen.
