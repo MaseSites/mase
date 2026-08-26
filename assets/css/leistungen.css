@@ -451,9 +451,11 @@
 
 /* ---------- Details-Band unter der Bühne ---------- */
 
+/* Zwei Spalten statt drei: Pakete und laufende Kosten stehen jetzt nur
+   noch auf der Preisseite, hier bleiben Ablauf und Rahmenbedingungen. */
 .lw-details {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 18px;
   margin-top: clamp(40px, 6vw, 68px);
   position: relative; z-index: 2;
@@ -515,6 +517,21 @@
   border-top: 1px dashed var(--lw-linie);
   padding-top: 14px;
 }
+/* Ein Satz statt einer zweiten Preistabelle - die Preise stehen auf der
+   eigenen Seite, hier reicht der Verweis. */
+.lw-preislink {
+  margin-top: 18px;
+  font-size: 0.9rem;
+  color: var(--lw-ink-soft);
+  position: relative; z-index: 2;
+}
+.lw-preislink a {
+  color: var(--lw-ink);
+  font-weight: 600;
+  border-bottom: 1px solid currentColor;
+  padding-bottom: 1px;
+}
+
 .lw-welt.an .lw-details { animation: lw-rein 0.6s var(--ease-out) 0.2s both; }
 
 /* ---------- KI: Partikelnetz + Neon-Blitz beim Wechsel ---------- */

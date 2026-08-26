@@ -264,8 +264,7 @@ section.tight { padding: 56px 0; }
 .header-dashboard {
   display: inline-flex;
   align-items: center;
-  gap: 7px;
-  padding: 9px 13px;
+  padding: 9px 15px;
   border: 1px solid var(--line);
   border-radius: 999px;
   color: var(--ink-soft);
@@ -273,14 +272,6 @@ section.tight { padding: 56px 0; }
   font-weight: 600;
   white-space: nowrap;
   transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
-}
-.header-dashboard::before {
-  content: "";
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: var(--accent);
-  box-shadow: 0 0 0 4px var(--accent-soft);
 }
 .header-dashboard:hover,
 .header-dashboard.active {
@@ -3379,13 +3370,14 @@ body.ms-cookie-offen .widget-panel { bottom: calc(var(--ms-cookie-h, 90px) + 90p
   .widget-launcher .wl-text { display: none; }
 }
 
-/* "Alles optional" neben der Ueberschrift der laufenden Kosten:
-   ruhiger als die Preis-Marken in der Liste, damit es als Hinweis
-   und nicht als Werbeaufkleber gelesen wird. */
-.pl-marke-frei {
-  background: var(--bg-warm);
-  color: var(--ink-soft);
-  border: 1px solid var(--line-strong);
+/* "optional" neben der Ueberschrift der laufenden Kosten:
+   Bewusst nur ein leises Wort neben der Ueberschrift: als Pille sah es
+   aus wie ein Knopf, den man druecken kann. */
+.pl-optional {
+  font-size: 0.5em;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--ink-faint);
   vertical-align: middle;
   margin-left: 10px;
 }
@@ -3864,11 +3856,13 @@ body.ms-cookie-offen .widget-panel { bottom: calc(var(--ms-cookie-h, 90px) + 90p
 .proof-heading h2 { margin-bottom: 14px; }
 .proof-heading p { color: var(--ink-soft); max-width: 46ch; }
 .proof-points { display: grid; grid-template-columns: 1fr 1fr; gap: 0 28px; }
-.proof-points > div { padding: 19px 0; border-bottom: 1px solid var(--line); }
+/* Nur noch die vier Aussagen ohne Erklaersatz - die Zeilen duerfen
+   darum enger stehen, sonst klafft im Panel eine Luecke. */
+.proof-points > div { padding: 15px 0; border-bottom: 1px solid var(--line); }
 .proof-points > div:nth-last-child(-n+2) { border-bottom: 0; }
 .proof-points b, .proof-points span { display: block; }
-.proof-points b { margin-bottom: 5px; font-size: 1rem; }
-.proof-points span { color: var(--ink-soft); font-size: 0.9rem; line-height: 1.55; }
+.proof-points b { font-size: 1rem; }
+.proof-points span { color: var(--ink-soft); font-size: 0.9rem; line-height: 1.55; margin-top: 5px; }
 
 .about-facts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin-top: 28px; border-top: 1px solid var(--line-strong); border-bottom: 1px solid var(--line-strong); }
 .about-facts > div { padding: 22px 24px; border-right: 1px solid var(--line-strong); }
@@ -3878,8 +3872,6 @@ body.ms-cookie-offen .widget-panel { bottom: calc(var(--ms-cookie-h, 90px) + 90p
 .about-facts b { margin-bottom: 5px; }
 .about-facts span { color: var(--ink-soft); font-size: 0.9rem; }
 
-.demo-disclosure { width: fit-content; max-width: 720px; margin: 24px auto 0; padding: 12px 16px; border: 1px solid var(--line); border-radius: var(--radius-m); background: var(--bg-soft); color: var(--ink-soft); font-size: 0.9rem; }
-.demo-disclosure b { color: var(--ink); }
 .work-badge.demo { background: var(--ink); color: #fff; }
 
 .form-intro { display: flex; justify-content: space-between; gap: 16px; padding-bottom: 20px; margin-bottom: 22px; border-bottom: 1px solid var(--line); }
@@ -3946,7 +3938,6 @@ body.ms-cookie-offen .widget-panel { bottom: calc(var(--ms-cookie-h, 90px) + 90p
   .error-page { min-height: calc(100svh - 80px); }
   .outcome-row { grid-template-columns: 34px minmax(0, 1fr); gap: 12px; padding: 22px 0; }
   .outcome-row h3 { font-size: 1.14rem; }
-  .demo-disclosure { text-align: left; }
   body::after, .hero-aurora, .hero-strahl, .hero-gitter, .flieger { animation: none !important; }
 }
 

@@ -345,11 +345,25 @@
   padding-top: 18px;
   border-top: 1px solid var(--line);
 }
-.pl-ki-karte .pl-check {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  column-gap: 20px;
-  margin-bottom: 20px;
+/* Der Umfang in benannten Gruppen statt als eine lange Haekchenliste.
+   Drei Spalten am Desktop halten die Karte niedrig genug, dass Preis
+   und Anfrage-Knopf zusammen sichtbar bleiben. */
+.pl-ki-gruppen {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px 22px;
+  margin-bottom: 22px;
 }
+.pl-ki-gruppe {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 0.82rem;
+  font-weight: 650;
+  color: var(--ink);
+}
+.pl-ki-gruppen .pl-check { gap: 7px; margin: 0; }
+.pl-ki-gruppen .pl-check li { font-size: 0.86rem; padding-left: 21px; }
+.pl-ki-gruppen .pl-check li::before { top: 5px; }
 .pl-ki-fair {
   margin: 2px 0 18px;
   padding: 14px 16px;
@@ -382,7 +396,10 @@
   .pl-stufe { padding: 24px 20px 20px; }
   .pl-ki-tarif { align-items: flex-start; gap: 10px; }
   .pl-ki-preis b { font-size: clamp(1.3rem, 7vw, 1.65rem); }
-  .pl-ki-karte .pl-check { grid-template-columns: 1fr; }
+  /* Untereinander mit Trennlinie: nebeneinander waeren die Gruppen auf
+     dem Handy zu schmal, ohne Linie liefen sie ineinander. */
+  .pl-ki-gruppen { grid-template-columns: 1fr; gap: 0; }
+  .pl-ki-gruppen > div + div { margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--line); }
 }
 
 /* ---------- Preisvertrauen: Kalkulation und Fixpreis erklären ---------- */
