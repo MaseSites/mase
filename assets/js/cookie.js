@@ -57,7 +57,16 @@
     box.innerHTML =
       '<div class="ms-cookie-inner">' +
         '<div class="ms-cookie-zeile">' +
-          '<span class="ms-cookie-keks" aria-hidden="true">🍪</span>' +
+          '<span class="ms-cookie-keks" aria-hidden="true">' +
+            // Schloss statt Keks-Emoji: sachliches Datenschutz-Symbol,
+            // das auf jedem System gleich aussieht (Emoji tun das nicht).
+            '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" '+
+              'stroke-linecap="round" stroke-linejoin="round">' +
+              '<rect x="4" y="10.5" width="16" height="10.5" rx="2.4"/>' +
+              '<path d="M8 10.5V7.2a4 4 0 0 1 8 0v3.3"/>' +
+              '<circle cx="12" cy="15.6" r="1.5" fill="currentColor" stroke="none"/>' +
+            '</svg>' +
+          '</span>' +
           '<p class="ms-cookie-text">' +
             '<b>Nur das N&ouml;tigste.</b> Wir setzen ein Cookie, damit die Anmeldung ' +
             'funktioniert &ndash; kein Tracking und keine Werbung. ' +

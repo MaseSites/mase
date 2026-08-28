@@ -1,0 +1,24 @@
+Schriften - assets/fonts/
+=========================
+
+Beide Schriften stehen unter der SIL Open Font License 1.1 und werden
+lokal ausgeliefert. Damit geht bei keinem Besuch eine Verbindung an
+Google Fonts oder einen anderen Drittanbieter.
+
+----------------------------------------------
+
+Familie:  Outfit
+Dateien:  outfit-400.woff2 ... outfit-800.woff2 (5 Schnitte, ~84 KB)
+Einsatz:  Fliesstext, Navigation, Knoepfe, Kicker, h3, Preise, Logo
+Lizenz:   SIL Open Font License 1.1
+Bezug:    npm-Paket @fontsource/outfit
+Projekt:  https://github.com/Outfitio/Outfit-Fonts
+
+Familie:  Source Serif 4
+Dateien:  sourceserif-400.woff2, -500.woff2, -600.woff2 (~62 KB)
+Einsatz:  grosse Ueberschriften (h1 und h2) auf den oeffentlichen Seiten
+Lizenz:   SIL Open Font License 1.1
+Bezug:    fontsource (cdn.jsdelivr.net/fontsource/fonts/source-serif-4)
+Projekt:  https://github.com/adobe-fonts/source-serif
+
+Lizenztext: https://openfontlicense.org

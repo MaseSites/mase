@@ -16,7 +16,7 @@
   <meta name="twitter:title" content="Über MASESites | Zwei Gründer, klare Rollen">
   <meta name="twitter:description" content="Websites, WebApps und KI-Lösungen – direkt mit Matteo und Severin entwickelt.">
   <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="assets/css/style.css?v=63">
+  <link rel="stylesheet" href="assets/css/style.css?v=70">
 </head>
 <body>
   <script src="assets/js/sanft.js?v=1"></script>
@@ -129,6 +129,13 @@
           </figure>
         </div>
         <p class="buero-unterzeile reveal" data-delay="260">Von Kloten und Wetzikon aus arbeiten wir persönlich mit KMU in der ganzen Schweiz.</p>
+        <!-- Echtes Bild der Region: zeigt, wo wir arbeiten, statt es nur zu behaupten. -->
+        <figure class="orts-einzelbild reveal" data-delay="300" style="margin-top: 28px;">
+          <picture>
+            <source type="image/webp" srcset="assets/img/schweiz/zuerichsee-alpen-800.webp 800w, assets/img/schweiz/zuerichsee-alpen-1400.webp 1400w" sizes="(max-width: 1180px) 100vw, 1180px">
+            <img src="assets/img/schweiz/zuerichsee-alpen-800.jpg" alt="Blick über den Zürichsee auf die Alpen in der Abenddämmerung" loading="lazy" decoding="async" width="1400" height="1000">
+          </picture>
+        </figure>
         <div class="about-facts reveal" data-delay="300">
           <div><b>Direkter Kontakt</b><span>Keine Übergabe vom Verkauf an ein fremdes Projektteam.</span></div>
           <div><b>Fixpreis vor Start</b><span>Der vereinbarte Umfang wird nicht zur offenen Stundenrechnung.</span></div>
@@ -144,17 +151,20 @@
           <h2 class="reveal">Wer dahintersteckt</h2>
           <p class="lead reveal">Wir sind beide Gründer und arbeiten an jedem Projekt zusammen. Dadurch bleibt Verantwortung sichtbar: Die Menschen, die beraten, gestalten und entwickeln auch selbst.</p>
         </div>
-        <!-- Echte Fotos: assets/img/team/matteo.jpg (Dubai / Burj Khalifa)
-             und severin.jpg (Paris / Eiffelturm). Zuschnitt hochkant
-             (etwa 480x560), object-fit passt den Rest an. Die frueheren
-             Platzhalter-SVGs (matteo.svg / severin.svg) bleiben als
-             Referenz im Ordner liegen. -->
+        <!-- Echte Fotos: matteo-portraet.jpg (Portraet, ersetzt das fruehere
+             Dubai-Bild) und severin.jpg (Paris / Eiffelturm). Zuschnitt
+             hochkant (etwa 480x560), object-fit passt den Rest an. Die
+             frueheren Platzhalter-SVGs (matteo.svg / severin.svg) bleiben
+             als Referenz im Ordner liegen. -->
         <div class="personen">
 
           <article class="person reveal">
             <figure class="person-bild">
-              <img src="assets/img/team/matteo.jpg" alt="Matteo, Gründer von masesites"
-                   width="480" height="560" loading="lazy" decoding="async">
+              <picture>
+                <source type="image/webp" srcset="assets/img/team/matteo-portraet.webp">
+                <img src="assets/img/team/matteo-portraet.jpg" alt="Matteo, Gründer von masesites"
+                     width="480" height="560" loading="lazy" decoding="async">
+              </picture>
             </figure>
             <div class="person-text">
               <span class="person-rolle">Gründer · Design</span>
@@ -294,7 +304,8 @@
   </footer>
 
   <script src="assets/js/protokoll.js?v=20"></script>
-  <script src="assets/js/cookie.js?v=4"></script>
+  <script src="assets/js/cookie.js?v=5"></script>
   <script src="assets/js/site.js?v=35"></script>
+  <script src="assets/js/scrolleffekte.js?v=3"></script>
 </body>
 </html>

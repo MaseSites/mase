@@ -52,7 +52,7 @@
     }
   </script>
   <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="assets/css/style.css?v=63">
+  <link rel="stylesheet" href="assets/css/style.css?v=70">
 </head>
 <body>
   <script src="assets/js/sanft.js?v=1"></script>
@@ -99,17 +99,18 @@
         <span class="hero-aurora a3"></span>
         <span class="hero-strahl"></span>
         <span class="hero-gitter"></span>
+        <!-- Echter Ort statt reiner Grafik: Zürich, Limmat und Altstadt
+             laufen als Horizont nach oben in die Creme-Fläche aus. -->
+        <picture>
+          <source type="image/webp" srcset="assets/img/schweiz/zuerich-limmat-abend-1200.webp 1200w, assets/img/schweiz/zuerich-limmat-abend-2400.webp 2400w" sizes="100vw">
+          <img class="hero-foto" src="assets/img/schweiz/zuerich-limmat-abend-1200.jpg"
+               srcset="assets/img/schweiz/zuerich-limmat-abend-1200.jpg 1200w, assets/img/schweiz/zuerich-limmat-abend-2400.jpg 2400w" sizes="100vw"
+               alt="" width="2400" height="1100" decoding="async" fetchpriority="low">
+        </picture>
         <span class="hero-halo"></span>
-        <span class="flieger ring r1"></span>
-        <span class="flieger ring r2"></span>
-        <span class="flieger ring r3"></span>
-        <span class="flieger punkt p1"></span>
-        <span class="flieger punkt p2"></span>
-        <span class="flieger punkt p3"></span>
-        <span class="flieger punkt p4"></span>
-        <span class="flieger karte k1"></span>
-        <span class="flieger karte k2"></span>
-        <span class="flieger quadrat q1"></span>
+        <!-- Die frueher hier schwebenden Ringe, Punkte, Mini-Fenster und das
+             Quadrat (.flieger) sind bewusst entfernt: mit dem echten
+             Zuerich-Foto im Hintergrund wirkten sie verspielt statt seriös. -->
       </div>
       <div class="wrap hero-mitte">
         <h1>Websites. WebApps. KI.<br><span class="hero-outcome">Für Schweizer KMU.</span></h1>
@@ -271,10 +272,51 @@
           <p>Du arbeitest direkt mit den beiden Personen, die beraten, gestalten und entwickeln.</p>
         </div>
         <div class="proof-points">
-          <div><b>Die Gründer bauen selbst</b></div>
-          <div><b>Die kleinste sinnvolle Lösung</b></div>
-          <div><b>Fixpreis statt offene Rechnung</b></div>
-          <div><b>Kein Anbieter-Lock-in</b></div>
+          <div><b>Die Gründer bauen selbst</b><span>Kein Praktikant, keine Weitergabe an Dritte.</span></div>
+          <div><b>Die kleinste sinnvolle Lösung</b><span>Wir raten ab, was dein Betrieb nicht braucht.</span></div>
+          <div><b>Fixpreis statt offene Rechnung</b><span>Der vereinbarte Umfang bleibt beim vereinbarten Preis.</span></div>
+          <div><b>Kein Anbieter-Lock-in</b><span>Website, Gestaltung und Quellcode gehören dir.</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Regionale Verankerung mit echten Fotos ===== -->
+    <section class="tight" id="region">
+      <div class="wrap">
+        <div class="orts-panel reveal">
+          <div class="orts-kopf">
+            <span class="kicker">Standort Zürich</span>
+            <h2>Hier gebaut. Hier erreichbar.</h2>
+            <p class="lead">Unsere Büros stehen in Kloten und Wetzikon, unsere Kunden sitzen im Kanton Zürich und in der übrigen Schweiz. Termine finden vor Ort oder digital statt – die Ansprechperson bleibt in beiden Fällen dieselbe.</p>
+          </div>
+          <div class="orts-bilder">
+            <figure class="orts-bild">
+              <picture>
+                <source type="image/webp" srcset="assets/img/schweiz/zuerich-limmat-tag-800.webp 800w, assets/img/schweiz/zuerich-limmat-tag-1600.webp 1600w" sizes="(max-width: 900px) 100vw, 33vw">
+                <img src="assets/img/schweiz/zuerich-limmat-tag-800.jpg" alt="Blick von der Quaibrücke auf die Limmat und die Zürcher Altstadt" loading="lazy" decoding="async" width="1600" height="900">
+              </picture>
+              <figcaption>Stadt Zürich<span>Limmat und Altstadt</span></figcaption>
+            </figure>
+            <figure class="orts-bild">
+              <picture>
+                <source type="image/webp" srcset="assets/img/schweiz/kloten-luftbild-800.webp 800w, assets/img/schweiz/kloten-luftbild-1400.webp 1400w" sizes="(max-width: 900px) 100vw, 33vw">
+                <img src="assets/img/schweiz/kloten-luftbild-800.jpg" alt="Luftaufnahme von Kloten mit dem Flughafen Zürich im Hintergrund" loading="lazy" decoding="async" width="1400" height="900">
+              </picture>
+              <figcaption>Kloten<span>Unser Standort im Unterland</span></figcaption>
+            </figure>
+            <figure class="orts-bild">
+              <picture>
+                <source type="image/webp" srcset="assets/img/schweiz/zuerichsee-alpen-800.webp 800w, assets/img/schweiz/zuerichsee-alpen-1400.webp 1400w" sizes="(max-width: 900px) 100vw, 33vw">
+                <img src="assets/img/schweiz/zuerichsee-alpen-800.jpg" alt="Blick über den Zürichsee auf die Alpen bei Sonnenuntergang" loading="lazy" decoding="async" width="1400" height="1000">
+              </picture>
+              <figcaption>Zürichsee<span>Kunden in der ganzen Schweiz</span></figcaption>
+            </figure>
+          </div>
+          <div class="orts-fakten">
+            <div><b>Schweizer Hosting</b><span>Deine Website läuft auf Servern in der Schweiz, nach Schweizer Datenschutzrecht (DSG).</span></div>
+            <div><b>Gespräch nach Wunsch</b><span>Ein Treffen in Kloten oder ein Videocall – beides ist möglich.</span></div>
+            <div><b>Deutsch, direkt</b><span>Kein Callcenter und keine Zwischenstelle: du sprichst mit Matteo oder Severin.</span></div>
+          </div>
         </div>
       </div>
     </section>
@@ -283,8 +325,20 @@
     <section class="tight">
       <div class="wrap">
         <div class="about-teaser reveal">
-          <div class="about-photo">
-            <img src="assets/img/team-zwei-maenner.jpg?v=2" alt="Illustration: zwei Männer arbeiten gemeinsam an einem Laptop" loading="lazy" decoding="async" width="1200" height="900">
+          <!-- Echte Fotos der beiden Gründer statt der früheren Illustration:
+               wer das Projekt umsetzt, soll auch zu sehen sein. -->
+          <div class="gruender-fotos">
+            <figure class="gruender-foto">
+              <picture>
+                <source type="image/webp" srcset="assets/img/team/matteo-portraet.webp">
+                <img src="assets/img/team/matteo-portraet.jpg" alt="Matteo Cocetrone, Mitgründer von MASESites" loading="lazy" decoding="async" width="900" height="1200">
+              </picture>
+              <figcaption>Matteo Cocetrone<span>Gestaltung &amp; Auftritt</span></figcaption>
+            </figure>
+            <figure class="gruender-foto">
+              <img src="assets/img/team/severin.jpg" alt="Severin Bürki, Mitgründer von MASESites" loading="lazy" decoding="async" width="900" height="1200">
+              <figcaption>Severin Bürki<span>Entwicklung &amp; Technik</span></figcaption>
+            </figure>
           </div>
           <div>
             <span class="kicker">Persönlich verantwortlich</span>
@@ -366,8 +420,9 @@
   </footer>
 
   <script src="assets/js/protokoll.js?v=20"></script>
-  <script src="assets/js/cookie.js?v=4"></script>
+  <script src="assets/js/cookie.js?v=5"></script>
   <script src="assets/js/site.js?v=35"></script>
+  <script src="assets/js/scrolleffekte.js?v=3"></script>
   <script src="assets/js/hero.js?v=22"></script>
 </body>
 </html>

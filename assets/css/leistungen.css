@@ -410,7 +410,7 @@
 /* ---------- Bewegung reduzieren ---------- */
 
 @media (prefers-reduced-motion: reduce) {
-  .dio-browser, .lw-strahlen i,
+  .dio-browser, .lw-naturbild, .lw-strahlen i,
   .kc-zeile.tippt i, .da-chart i { animation: none; }
   .lw-wipe { display: none; }
 }
@@ -445,6 +445,28 @@
 .foto-site.klein img { height: 100%; position: absolute; inset: 0; }
 .foto-site.klein { position: absolute; inset: 0; }
 .foto-site.klein .fs-marke { font-size: 1.2rem; }
+
+/* ---------- Naturbild in der Website-Welt ----------
+   Loest das frühere Mini-Browserfenster ab: ein echtes Bild aus der Region
+   statt einer nachgebauten Beispielseite. Gleiche Rundung und Schwebe-
+   Animation wie die anderen Dioramen, damit die drei Welten zusammenpassen.
+   height: auto muss sein, sonst gewinnt das height-Attribut des <img>. */
+.lw-naturbild { margin: 0; animation: dio-schweben 7s ease-in-out infinite; }
+.lw-naturbild img {
+  display: block; width: 100%; height: auto;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+  border-radius: 22px;
+  border: 1.5px solid var(--lw-linie);
+  box-shadow: var(--shadow-l);
+}
+.lw-naturbild figcaption {
+  margin-top: 12px;
+  text-align: center;
+  font-size: 0.84rem;
+  color: var(--lw-ink-soft);
+}
+.lw-naturbild figcaption span { display: block; margin-top: 2px; font-size: 0.76rem; opacity: 0.75; }
 
 /* Echte Bildschirmaufnahme (Webapp) */
 .dio-browser.ruhig { animation: none; }

@@ -7,5 +7,8 @@
   },
   "engines": {
     "node": ">=22.5"
+  },
+  "devDependencies": {
+    "shadcn": "^4.19.0"
   }
 }

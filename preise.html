@@ -39,8 +39,8 @@
     }
   </script>
   <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="assets/css/style.css?v=63">
-  <link rel="stylesheet" href="assets/css/preisliste.css?v=9">
+  <link rel="stylesheet" href="assets/css/style.css?v=70">
+  <link rel="stylesheet" href="assets/css/preisliste.css?v=11">
 </head>
 <body>
 
@@ -78,11 +78,37 @@
   <main class="pl">
 
     <!-- ===== Kopf ===== -->
-    <section class="page-hero">
+    <section class="page-hero pl-hero">
       <div class="wrap">
         <span class="kicker">Transparent kalkuliert</span>
         <h1>Klare Preise. Kein versteckter Haken.</h1>
-        <p class="lead">Du bezahlst für ein klar definiertes Ergebnis – nicht für Agenturhierarchie. Vor Projektstart stehen Umfang, Fixpreis und mögliche laufende Kosten schriftlich fest.</p>
+        <p class="lead">Umfang, Fixpreis und laufende Kosten stehen vor Projektstart schriftlich fest.</p>
+        <!-- Einstiegspreise direkt im Kopf: frueher begann die erste Zahl
+             erst weit unterhalb des Bildschirms - die Seite wirkte, als
+             wuerde sie nicht fertig laden. Jetzt sieht man sofort, worum
+             es geht, und springt von hier in den passenden Block. -->
+        <div class="pl-anker">
+          <a href="#website">
+            <span class="pl-anker-was">Website</span>
+            <b>ab CHF 790.–</b>
+            <span class="pl-anker-dazu">einmalig</span>
+          </a>
+          <a href="#webapp">
+            <span class="pl-anker-was">WebApp</span>
+            <b>ab CHF 2'990.–</b>
+            <span class="pl-anker-dazu">einmalig</span>
+          </a>
+          <a href="#ki">
+            <span class="pl-anker-was">KI-Lösung</span>
+            <b>ab CHF 200.–</b>
+            <span class="pl-anker-dazu">plus CHF 40.– / Monat</span>
+          </a>
+          <a href="#betrieb">
+            <span class="pl-anker-was">Betrieb</span>
+            <b>ab CHF 15.– / Mt.</b>
+            <span class="pl-anker-dazu">Hosting &amp; Domain</span>
+          </a>
+        </div>
       </div>
     </section>
 
@@ -544,8 +570,9 @@
 
   <script src="assets/js/sanft.js?v=1"></script>
   <script src="assets/js/protokoll.js?v=20"></script>
-  <script src="assets/js/cookie.js?v=4"></script>
+  <script src="assets/js/cookie.js?v=5"></script>
   <script src="assets/js/site.js?v=35"></script>
+  <script src="assets/js/scrolleffekte.js?v=3"></script>
   <script src="assets/js/preisliste.js?v=5"></script>
 </body>
 </html>

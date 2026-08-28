@@ -25,8 +25,8 @@
       ]
     }
   </script>
-  <link rel="stylesheet" href="assets/css/style.css?v=63">
-  <link rel="stylesheet" href="assets/css/leistungen.css?v=13">
+  <link rel="stylesheet" href="assets/css/style.css?v=70">
+  <link rel="stylesheet" href="assets/css/leistungen.css?v=15">
 </head>
 <body>
 
@@ -101,21 +101,16 @@
           </div>
         </div>
         <div class="lw-schau">
-          <div class="dio-browser">
-            <!-- Bewusst ein Handwerksbetrieb: Besucher liest, dann meldet er
-                 sich - genau der Fall, den eine Website loest. Das Restaurant
-                 mit "Tisch reservieren" stand hier falsch, das ist eine
-                 Webapp-Funktion und taucht darum unten bei "tavolo" auf. -->
-            <div class="dio-bar"><i></i><i></i><i></i><em>farbwerk.ch</em></div>
-            <div class="foto-site">
-              <img src="assets/img/demos/maler-gipser.jpg" alt="Beispiel: Website für einen Maler- und Gipserbetrieb, gebaut von masesites" loading="lazy" decoding="async" width="1100" height="733">
-              <div class="fs-inhalt">
-                <span class="fs-marke">Farbwerk</span>
-                <span class="fs-claim">Maler &amp; Gipser in Zürich</span>
-                <span class="fs-knopf">Offerte anfragen</span>
-              </div>
-            </div>
-          </div>
+          <!-- Statt eines nachgebauten Browserfensters ein echtes Bild aus der
+               Region: der Albis über dem Nebelmeer, im Hintergrund der
+               Uetliberg. Ruhiges Motiv, das den Auftritt hier verankert,
+               ohne eine Beispiel-Website vorzutäuschen. -->
+          <figure class="lw-naturbild">
+            <picture>
+              <source type="image/webp" srcset="assets/img/schweiz/albis-nebelmeer-800.webp 800w, assets/img/schweiz/albis-nebelmeer-1200.webp 1200w" sizes="(max-width: 900px) 100vw, 580px">
+              <img src="assets/img/schweiz/albis-nebelmeer-800.jpg" alt="Blick über den Albis auf das Nebelmeer im Zürcher Mittelland, rechts der Uetliberg" loading="lazy" decoding="async" width="1200" height="800">
+            </picture>
+          </figure>
         </div>
       </div>
       <div class="wrap lw-details">
@@ -442,8 +437,9 @@
   </footer>
 
   <script src="assets/js/sanft.js?v=1"></script>
-  <script src="assets/js/cookie.js?v=4"></script>
+  <script src="assets/js/cookie.js?v=5"></script>
   <script src="assets/js/site.js?v=35"></script>
+  <script src="assets/js/scrolleffekte.js?v=3"></script>
   <script src="assets/js/leistungen.js?v=4"></script>
 </body>
 </html>

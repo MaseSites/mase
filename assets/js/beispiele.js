@@ -78,24 +78,153 @@
     zu.addEventListener("click", schliesseVollbild);
     kopf.appendChild(zu);
 
-    var frame = document.createElement("iframe");
     /* Interne Demos immer frisch laden (alte Browser-Kopien umgehen) */
-    frame.src = demo.url.indexOf("/beispiel-demos/") === 0
+    var url = demo.url.indexOf("/beispiel-demos/") === 0
       ? demo.url + (demo.url.indexOf("?") > -1 ? "&" : "?") + "nc=" + Date.now()
       : demo.url;
-    frame.title = demo.name + " (Live-Demo)";
-    frame.setAttribute("loading", "eager");
-    /* Sandbox: Demo kann die Hauptseite nicht umleiten; Speicher und fetch
-       funktionieren, damit Demos in allen Browsern vollstaendig laufen */
-    frame.setAttribute("sandbox", "allow-scripts allow-same-origin allow-forms allow-popups");
+
+    function baueRahmen(titel, breite, hoehe) {
+      var f = document.createElement("iframe");
+      f.src = url;
+      f.title = titel;
+      f.setAttribute("loading", "eager");
+      /* Sandbox: Demo kann die Hauptseite nicht umleiten; Speicher und fetch
+         funktionieren, damit Demos in allen Browsern vollstaendig laufen */
+      f.setAttribute("sandbox", "allow-scripts allow-same-origin allow-forms allow-popups");
+      f.style.width = breite + "px";
+      f.style.height = hoehe + "px";
+      return f;
+    }
+
+    /* Zwei Geraete nebeneinander: die Demo laeuft einmal in Desktopbreite
+       und einmal in Handybreite. Wer in einem der beiden scrollt, scrollt
+       im anderen gleich weit mit (siehe koppleScrollen). */
+    var buehne = document.createElement("div");
+    buehne.className = "dv-buehne";
+
+    var laptop = document.createElement("div");
+    laptop.className = "dv-geraet dv-laptop";
+    var laptopSchirm = document.createElement("div");
+    laptopSchirm.className = "dv-schirm";
+    var laptopFrame = baueRahmen(demo.name + " als Live-Demo am Desktop", 1440, 900);
+    laptopSchirm.appendChild(laptopFrame);
+    var laptopFuss = document.createElement("span");
+    laptopFuss.className = "dv-laptop-fuss";
+    laptopFuss.setAttribute("aria-hidden", "true");
+    laptop.appendChild(laptopSchirm);
+    laptop.appendChild(laptopFuss);
+
+    var handy = document.createElement("div");
+    handy.className = "dv-geraet dv-handy";
+    var handySchirm = document.createElement("div");
+    handySchirm.className = "dv-schirm";
+    var handyFrame = baueRahmen(demo.name + " als Live-Demo am Handy", 390, 844);
+    handySchirm.appendChild(handyFrame);
+    var kerbe = document.createElement("span");
+    kerbe.className = "dv-kerbe";
+    kerbe.setAttribute("aria-hidden", "true");
+    handy.appendChild(handySchirm);
+    handy.appendChild(kerbe);
+
+    buehne.appendChild(laptop);
+    buehne.appendChild(handy);
 
     rahmen.appendChild(kopf);
-    rahmen.appendChild(frame);
+    rahmen.appendChild(buehne);
     viewer.appendChild(rahmen);
     document.body.appendChild(viewer);
     document.body.classList.add("demo-offen");
     document.addEventListener("keydown", aufEscape);
     zu.focus();
+
+    passeGroesseAn(laptop, laptopSchirm, 1440, 900);
+    passeGroesseAn(handy, handySchirm, 390, 844);
+    koppleScrollen(laptopFrame, handyFrame);
+  }
+
+  /* ---------- Geraete massstabsgetreu einpassen ----------
+     Die Demo rendert intern in echter Desktop- bzw. Handybreite und wird
+     danach heruntergerechnet. Nur so sieht man das echte Layout - eine
+     schmal gequetschte Desktopseite waere kein ehrliches Bild. */
+  function passeGroesseAn(geraet, schirm, breite, hoehe) {
+    function rechne() {
+      var b = schirm.clientWidth;
+      if (!b) return;
+      var f = b / breite;
+      var frame = schirm.firstChild;
+      frame.style.transformOrigin = "0 0";
+      frame.style.transform = "scale(" + f + ")";
+      schirm.style.height = Math.round(hoehe * f) + "px";
+    }
+    rechne();
+    if ("ResizeObserver" in window) {
+      var ro = new ResizeObserver(rechne);
+      ro.observe(schirm);
+      geraet.__ro = ro;
+    } else {
+      window.addEventListener("resize", rechne);
+    }
+  }
+
+  /* ---------- Scrollen koppeln ----------
+     Wer im Laptop scrollt, scrollt im Handy gleich weit mit und umgekehrt.
+     Uebertragen wird der Anteil (0..1), nicht die Pixelzahl: die beiden
+     Layouts sind unterschiedlich hoch, sonst liefen sie auseinander.
+     Klappt nur bei eigenen Demos - fremde Seiten lassen sich aus
+     Sicherheitsgruenden nicht auslesen, dann scrollt jedes fuer sich. */
+  function koppleScrollen(a, b) {
+    var sperre = false;
+
+    function teil(f) {
+      try {
+        var d = f.contentDocument;
+        if (!d || !d.documentElement) return null;
+        return { win: f.contentWindow, el: d.scrollingElement || d.documentElement, doc: d };
+      } catch (e) {
+        return null; // fremde Domain: nicht auslesbar
+      }
+    }
+
+    function anteil(s) {
+      var weg = s.el.scrollHeight - s.el.clientHeight;
+      return weg > 0 ? s.el.scrollTop / weg : 0;
+    }
+
+    /* WICHTIG: die Demos setzen selbst "scroll-behavior: smooth". Ein
+       schlichtes scrollTop = x wuerde darum animiert nachlaufen und die
+       beiden Geraete schaukeln sich gegenseitig auf. scrollTo mit
+       behavior "instant" ueberschreibt das und springt exakt. */
+    function setze(s, p) {
+      var weg = s.el.scrollHeight - s.el.clientHeight;
+      if (weg <= 0) return;
+      s.win.scrollTo({ top: p * weg, behavior: "instant" });
+    }
+
+    function verbinde(von, nach) {
+      if (!von || !nach) return false;
+      von.doc.addEventListener(
+        "scroll",
+        function () {
+          if (sperre) return;
+          sperre = true;
+          setze(nach, anteil(von));
+          window.requestAnimationFrame(function () { sperre = false; });
+        },
+        { passive: true }
+      );
+      return true;
+    }
+
+    var offen = 2;
+    function beiLaden() {
+      if (--offen > 0) return;
+      var sa = teil(a), sb = teil(b);
+      // Beide Richtungen, damit man in jedem Geraet scrollen kann
+      verbinde(sa, sb);
+      verbinde(sb, sa);
+    }
+    a.addEventListener("load", beiLaden);
+    b.addEventListener("load", beiLaden);
   }
 
   /* ---------- Karten aus den Admin-Inhalten ---------- */
