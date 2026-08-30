@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Digitale Lösungen für Schweizer KMU | MASESites</title>
-  <meta name="description" content="MASESites entwickelt Websites, WebApps und KI-Lösungen für Schweizer KMU – individuell entwickelt, persönlich betreut und klar offeriert.">
+  <meta name="description" content="MASESites entwickelt Websites, WebApps, KI-Lösungen und Automatisierungssysteme für Schweizer KMU – persönlich betreut und klar offeriert.">
   <link rel="canonical" href="https://masesites.ch/">
   <meta property="og:title" content="Websites. WebApps. KI. Für Schweizer KMU. | MASESites">
   <meta property="og:description" content="Individuell entwickelt. Persönlich betreut. Klar offeriert.">
@@ -12,9 +12,12 @@
   <meta property="og:url" content="https://masesites.ch/">
   <meta property="og:site_name" content="MASESites">
   <meta property="og:locale" content="de_CH">
-  <meta name="twitter:card" content="summary">
+  <meta property="og:image" content="https://masesites.ch/assets/img/og-masesites.jpg">
+  <meta property="og:image:alt" content="MASESites – Websites, WebApps, KI und Automatisierung für Schweizer KMU">
+  <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Websites. WebApps. KI. Für Schweizer KMU. | MASESites">
   <meta name="twitter:description" content="Individuell entwickelt. Persönlich betreut. Klar offeriert.">
+  <meta name="twitter:image" content="https://masesites.ch/assets/img/og-masesites.jpg">
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -25,7 +28,7 @@
           "name": "MASESites",
           "url": "https://masesites.ch/",
           "email": "info@masesites.ch",
-          "description": "Digitale Lösungen für Schweizer KMU: Websites, WebApps und KI-Lösungen.",
+          "description": "Digitale Lösungen für Schweizer KMU: Websites, WebApps, KI-Lösungen und Automatisierungssysteme.",
           "address": {
             "@type": "PostalAddress",
             "streetAddress": "Zipfelstrasse 22",
@@ -38,7 +41,7 @@
             {"@type": "Person", "name": "Matteo Cocetrone"},
             {"@type": "Person", "name": "Severin Bürki"}
           ],
-          "knowsAbout": ["Webdesign", "Webentwicklung", "WebApps", "KI-Lösungen"]
+          "knowsAbout": ["Webdesign", "Webentwicklung", "WebApps", "KI-Lösungen", "Automatisierungssysteme"]
         },
         {
           "@type": "WebSite",
@@ -51,10 +54,13 @@
       ]
     }
   </script>
-  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="assets/css/style.css?v=70">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="assets/img/favicon-512.png">
+  <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+  <link rel="stylesheet" href="assets/css/style.css?v=72">
+  <link rel="stylesheet" href="assets/css/redesign.css?v=20">
 </head>
-<body>
+<body class="page-home">
   <script src="assets/js/sanft.js?v=1"></script>
   <script src="assets/js/intro.js?v=20"></script>
 
@@ -68,9 +74,10 @@
         <a href="/beispiele">Live-Demos</a>
         <a href="/preise">Preise</a>
         <a href="/ueber-uns">Über uns</a>
+        <a href="/webdesign-zuerich">Webdesign Zürich</a>
       </nav>
       <div class="header-cta">
-        <a class="header-dashboard" href="/dashboard" aria-label="Kundendashboard öffnen">Dashboard</a>
+        <a class="header-dashboard" href="/dashboard" aria-label="Kundendashboard öffnen">Kundendashboard</a>
         <a class="btn btn-primary header-start" href="/kontakt">Projekt anfragen</a>
         <button class="burger" aria-label="Menü öffnen" aria-expanded="false">
           <span></span><span></span><span></span>
@@ -84,7 +91,7 @@
     <a href="/beispiele">Live-Demos</a>
     <a href="/preise">Preise</a>
     <a href="/ueber-uns">Über uns</a>
-    <a href="/webdesign-kloten">Webdesign Kloten</a>
+    <a href="/webdesign-zuerich">Webdesign Zürich</a>
     <a href="/dashboard" class="konto-link">Kundendashboard</a>
     <a class="btn btn-primary" href="/kontakt">Projekt anfragen →</a>
   </div>
@@ -99,13 +106,12 @@
         <span class="hero-aurora a3"></span>
         <span class="hero-strahl"></span>
         <span class="hero-gitter"></span>
-        <!-- Echter Ort statt reiner Grafik: Zürich, Limmat und Altstadt
-             laufen als Horizont nach oben in die Creme-Fläche aus. -->
+        <!-- Schweizer Alpenpanorama als ruhige, ortsnahe Bildbühne. -->
         <picture>
-          <source type="image/webp" srcset="assets/img/schweiz/zuerich-limmat-abend-1200.webp 1200w, assets/img/schweiz/zuerich-limmat-abend-2400.webp 2400w" sizes="100vw">
-          <img class="hero-foto" src="assets/img/schweiz/zuerich-limmat-abend-1200.jpg"
-               srcset="assets/img/schweiz/zuerich-limmat-abend-1200.jpg 1200w, assets/img/schweiz/zuerich-limmat-abend-2400.jpg 2400w" sizes="100vw"
-               alt="" width="2400" height="1100" decoding="async" fetchpriority="low">
+          <source type="image/webp" srcset="assets/img/schweiz/alpen-footer-1000.webp 1000w, assets/img/schweiz/alpen-footer-2000.webp 2000w" sizes="100vw">
+          <img class="hero-foto" src="assets/img/schweiz/alpen-footer-1000.jpg"
+               srcset="assets/img/schweiz/alpen-footer-1000.jpg 1000w, assets/img/schweiz/alpen-footer-2000.jpg 2000w" sizes="100vw"
+               alt="" width="2000" height="700" decoding="async" fetchpriority="high">
         </picture>
         <span class="hero-halo"></span>
         <!-- Die frueher hier schwebenden Ringe, Punkte, Mini-Fenster und das
@@ -150,18 +156,30 @@
           <p class="lead">Erst klären wir, was dein Betrieb braucht. Dann, womit.</p>
         </div>
         <div class="outcome-list">
-          <article class="outcome-row reveal" data-delay="60">
+          <a class="outcome-row outcome-card outcome-website reveal" data-delay="60" href="/websites">
             <span>01</span>
             <div><h3>Website</h3><p>Erklärt dein Angebot und macht den nächsten Schritt klar.</p></div>
-          </article>
-          <article class="outcome-row reveal" data-delay="120">
+            <span class="outcome-card-media" aria-hidden="true"><img src="assets/img/services/website-card-900.jpg" srcset="assets/img/services/website-card-900.jpg 900w, assets/img/services/website-card-1400.jpg 1400w" sizes="(max-width: 900px) 100vw, 420px" alt="" width="1920" height="1080" loading="lazy" decoding="async"></span>
+            <span class="outcome-card-arrow" aria-hidden="true">→</span>
+          </a>
+          <a class="outcome-row outcome-card outcome-webapp reveal" data-delay="120" href="/webapps">
             <span>02</span>
             <div><h3>WebApp</h3><p>Buchungen, Daten oder Zahlungen in einer Anwendung.</p></div>
-          </article>
-          <article class="outcome-row reveal" data-delay="180">
+            <span class="outcome-card-media" aria-hidden="true"><img src="assets/img/services/webapp-card-900.jpg" srcset="assets/img/services/webapp-card-900.jpg 900w, assets/img/services/webapp-card-1400.jpg 1400w" sizes="(max-width: 900px) 100vw, 420px" alt="" width="1920" height="1080" loading="lazy" decoding="async"></span>
+            <span class="outcome-card-arrow" aria-hidden="true">→</span>
+          </a>
+          <a class="outcome-row outcome-card outcome-ai reveal" data-delay="180" href="/ki-loesungen">
             <span>03</span>
             <div><h3>KI-Lösung</h3><p>Beantwortet wiederkehrende Fragen und erfasst Anliegen.</p></div>
-          </article>
+            <span class="outcome-card-media" aria-hidden="true"><img src="assets/img/services/ai-card-900.jpg" srcset="assets/img/services/ai-card-900.jpg 900w, assets/img/services/ai-card-1400.jpg 1400w" sizes="(max-width: 900px) 100vw, 420px" alt="" width="1920" height="1080" loading="lazy" decoding="async"></span>
+            <span class="outcome-card-arrow" aria-hidden="true">→</span>
+          </a>
+          <a class="outcome-row outcome-card outcome-automation reveal" data-delay="240" href="/automatisierungssysteme">
+            <span>04</span>
+            <div><h3>Automatisierungs<wbr>systeme</h3><p>Verbinden Systeme und erledigen wiederkehrende Abläufe automatisch.</p></div>
+            <span class="outcome-card-media" aria-hidden="true"><img src="assets/img/services/automation-card-900.jpg" srcset="assets/img/services/automation-card-900.jpg 900w, assets/img/services/automation-card-1400.jpg 1400w" sizes="(max-width: 900px) 100vw, 420px" alt="" width="1920" height="1080" loading="lazy" decoding="async"></span>
+            <span class="outcome-card-arrow" aria-hidden="true">→</span>
+          </a>
         </div>
       </div>
     </section>
@@ -192,46 +210,8 @@
       </div>
     </section>
 
-    <!-- ===== Unsere drei Produkte ===== -->
-    <section class="tight" id="angebot">
-      <div class="wrap">
-        <div class="section-head center">
-          <span class="kicker reveal">Klar eingeordnet</span>
-          <h2 class="reveal">Drei Bereiche. Ein direkter Partner.</h2>
-          <p class="lead reveal" data-delay="70">Website, WebApp und KI sind gleichwertige Werkzeuge. Entscheidend ist, welche Lösung zu deinem Betrieb und deinem Ziel passt.</p>
-        </div>
-        <!-- Reihenfolge wie auf der Leistungsseite: Website, Webapp und
-             der KI-Assistent als Ergänzung. Jede Zeile führt in die passende Welt
-             auf /leistungen, wo die Leistung erklärt wird; die Preise
-             stehen dort ebenfalls. -->
-        <!-- Redaktionelle Liste statt Preistabelle: Nummer, grosser Titel,
-             ein Satz, Pfeil. Preise stehen bewusst nicht mehr hier - dafuer
-             gibt es die Leistungs- und die Preisseite. -->
-        <div class="offer-list">
-          <a class="offer-row reveal" href="/leistungen#website">
-            <span class="offer-nr" aria-hidden="true">01</span>
-            <h3>Websites</h3>
-            <p>Professionelle Firmenauftritte, die Angebot, Unternehmen und Kontaktwege klar darstellen.</p>
-            <span class="offer-pfeil" aria-hidden="true">→</span>
-          </a>
-          <a class="offer-row reveal" data-delay="80" href="/leistungen#webapp">
-            <span class="offer-nr" aria-hidden="true">02</span>
-            <h3>WebApps</h3>
-            <p>Individuelle Anwendungen für Benutzerkonten, Daten, Buchungen und wiederkehrende Geschäftsprozesse.</p>
-            <span class="offer-pfeil" aria-hidden="true">→</span>
-          </a>
-          <a class="offer-row reveal" data-delay="160" href="/leistungen#ki">
-            <span class="offer-nr" aria-hidden="true">03</span>
-            <h3><span class="ki-glow">KI-Lösungen</span></h3>
-            <p>Automatisierte Unterstützung für Kundenanliegen und interne Aufgaben – mit klar definiertem Wissen und Zweck.</p>
-            <span class="offer-pfeil" aria-hidden="true">→</span>
-          </a>
-        </div>
-      </div>
-    </section>
-
     <!-- ===== KI-Bot Teaser mit Live-Demo ===== -->
-    <section class="tight">
+    <section class="tight" id="ki-assistent">
       <div class="wrap">
         <div class="bot-section">
           <div class="bot-grid">
@@ -253,7 +233,7 @@
                 </li>
               </ul>
               <p class="reveal" data-delay="320" style="color: var(--ink-soft); margin-bottom: 26px;">Der Assistent ist optional, monatlich kündbar und lässt sich auch in eine bestehende Website einbauen.</p>
-              <a class="btn btn-primary reveal" data-delay="360" href="/leistungen#ki">KI-Leistung ansehen <span class="arrow">→</span></a>
+              <a class="btn btn-primary reveal" data-delay="360" href="/ki-loesungen">KI-Leistung ansehen <span class="arrow">→</span></a>
             </div>
             <div class="reveal" data-delay="150">
               <div class="chat-demo" data-chat data-chat-greeting="Hallo! Probier mich aus, ich bin die Live-Demo. Frag mich zum Beispiel, was eine Website kostet."></div>
@@ -264,7 +244,7 @@
     </section>
 
     <!-- ===== Warum MASESites ===== -->
-    <section class="tight">
+    <section class="tight" id="warum-masesites">
       <div class="wrap proof-panel reveal">
         <div class="proof-heading">
           <span class="kicker">Warum MASESites?</span>
@@ -374,19 +354,21 @@
           <a class="logo" href="/">
             masesites
           </a>
-          <p>Digitale Lösungen für Schweizer KMU: Websites, WebApps und KI – direkt mit uns entwickelt.</p>
+          <p>Digitale Lösungen für Schweizer KMU: Websites, WebApps, KI und Automatisierung – direkt mit uns entwickelt.</p>
           <a class="mail" href="mailto:info@masesites.ch">info@masesites.ch</a>
         </div>
         <div class="footer-col">
-          <h4>Angebot</h4>
+          <h2>Angebot</h2>
           <ul>
-            <li><a href="/preise#website">Website</a></li>
-            <li><a href="/preise#webapp">WebApps</a></li>
-            <li><a href="/preise#ki">KI-Lösungen</a></li>
+            <li><a href="/websites">Websites</a></li>
+            <li><a href="/webapps">WebApps</a></li>
+            <li><a href="/ki-loesungen">KI-Lösungen</a></li>
+            <li><a href="/automatisierungssysteme">Automatisierungssysteme</a></li>
+            <li><a href="/automatisierungssysteme">Automatisierungssysteme</a></li>
           </ul>
         </div>
         <div class="footer-col">
-          <h4>masesites</h4>
+          <h2>masesites</h2>
           <ul>
             <li><a href="/">Startseite</a></li>
             <li><a href="/leistungen">Leistungen</a></li>
@@ -394,12 +376,12 @@
             <li><a href="/projekte">Projekte</a></li>
             <li><a href="/ueber-uns">Über uns</a></li>
             <li><a href="/kontakt">Kontakt</a></li>
-            <li><a href="/webdesign-kloten">Webdesign Kloten</a></li>
+            <li><a href="/webdesign-zuerich">Webdesign Zürich</a></li>
             <li><a href="/dashboard">Kundendashboard</a></li>
           </ul>
         </div>
         <div class="footer-col">
-          <h4>Rechtliches</h4>
+          <h2>Rechtliches</h2>
           <ul>
             <li><a href="/impressum">Impressum</a></li>
             <li><a href="/datenschutz">Datenschutz</a></li>
@@ -421,7 +403,7 @@
 
   <script src="assets/js/protokoll.js?v=20"></script>
   <script src="assets/js/cookie.js?v=5"></script>
-  <script src="assets/js/site.js?v=35"></script>
+  <script src="assets/js/site.js?v=37"></script>
   <script src="assets/js/scrolleffekte.js?v=3"></script>
   <script src="assets/js/hero.js?v=22"></script>
 </body>

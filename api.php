@@ -684,7 +684,7 @@ function botSystemPrompt(string $heute): string
         "Heutiges Datum: {$heute}. Antworte in der Sprache der Besucherin oder des Besuchers (Standard Deutsch, sonst Englisch, Französisch oder Italienisch). Sprich per Du, freundlich, kurz und ehrlich – meist 2 bis 5 Sätze.",
         "",
         "WISSEN über MASESites:",
-        "- Angebot: professionelle Websites; individuelle WebApps (z. B. Buchungs- und Firmensysteme); KI-Lösungen wie Assistenten und Integrationen.",
+        "- Angebot: professionelle Websites; individuelle WebApps (z. B. Buchungs- und Firmensysteme); KI-Lösungen wie Assistenten und Integrationen; Automatisierungssysteme für wiederkehrende Abläufe, Datenabgleich, Freigaben und Systemverbindungen.",
         "- Die Beispiele unter /beispiele sind interaktive Konzept-Demos und keine ausgegebenen Kundenprojekte. Unter /projekte werden erst echte, freigegebene Kundenarbeiten gezeigt.",
         "- Zusammenarbeit: direkte Ansprechpartner sind die Gründer Matteo und Severin; vor Projektstart gibt es eine Offerte mit klar definiertem Umfang und Fixpreis.",
         "- Preise Website: Starter CHF 790, Pro CHF 1'490, Smart ab CHF 2'990.",
@@ -693,7 +693,7 @@ function botSystemPrompt(string $heute): string
         "- Optional für Websites: Domain CHF 20/Jahr, Hosting CHF 15/Monat, Bundle CHF 160/Jahr.",
         "- Der KI-Bot lässt sich auch nachträglich in bestehende Seiten (auch WordPress, Wix usw.) einbauen, ist mehrsprachig und kann Terminwünsche entgegennehmen.",
         "- Ablauf: unverbindliches Gespräch, dann Offerte mit Fixpreis vor Projektstart.",
-        "- Seiten: /preise (Pakete und Vergleich), /beispiele (Konzept-Demos), /projekte (echte Referenzen, sobald freigegeben), /leistungen, /webdesign-kloten, /ueber-uns, /kontakt, /agb, /datenschutz, /impressum. Kontakt: info@masesites.ch.",
+        "- Seiten: /preise (Pakete und Vergleich), /beispiele (Konzept-Demos), /projekte (echte Referenzen, sobald freigegeben), /leistungen (Übersicht aller vier Bereiche), /websites (Firmenwebsites im Detail), /webapps (individuelle Webanwendungen im Detail), /ki-loesungen (KI-Assistent MASE AI im Detail), /automatisierungssysteme (individuelle Prozessautomatisierung und Systemintegration), /webdesign-zuerich (Webdesign im Kanton Zürich, Standorte Kloten und Wetzikon), /webdesign-kloten, /ueber-uns, /kontakt, /agb, /datenschutz, /impressum. Kontakt: info@masesites.ch.",
         "- Wir sind nicht mehrwertsteuerpflichtig: alle Preise sind Endpreise, es kommt keine MWST dazu.",
         "- Bei Fragen zu Vertrag, Zahlung, Rechten an der Website oder Haftung verweise auf die AGB unter /agb, ohne sie auszulegen.",
         "",
@@ -3873,10 +3873,15 @@ route('POST', '/api/kontakt', null, function ($p, $body) {
         . 'Interesse: ' . ($interessen ? implode(', ', $interessen) : 'keine Angabe')
         . "\n\n{$nachricht}";
     $mailBetreff = function_exists('mb_encode_mimeheader') ? mb_encode_mimeheader($betreff, 'UTF-8') : $betreff;
-    @mail('info@masesites.ch', $mailBetreff, $mailText,
+    $mailOk = @mail('info@masesites.ch', $mailBetreff, $mailText,
         "Content-Type: text/plain; charset=UTF-8\r\nReply-To: {$email}\r\n");
 
-    schreibeLog('Kontaktformular', clientIp(), 'kontakt', 'Projektanfrage eingegangen', $thema);
+    /* Der Rueckgabewert wurde frueher verworfen. Ist mail() beim Hoster nicht
+       eingerichtet, sah man das nirgends – die Anfrage lag dann still in der
+       Verwaltung. Jetzt steht im Protokoll, ob die Benachrichtigung rausging. */
+    schreibeLog('Kontaktformular', clientIp(), 'kontakt', 'Projektanfrage eingegangen',
+        $thema . ($mailOk ? ' | Mail an das Team versendet'
+                          : ' | ACHTUNG: Mail-Versand fehlgeschlagen, Anfrage nur in der Verwaltung'));
     antwortJson(200, ['ok' => true]);
 });
 

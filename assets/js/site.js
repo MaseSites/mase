@@ -159,7 +159,7 @@
   /* Interne Links (/preise, /kontakt …) und die E-Mail im Bot-Text klickbar
      machen, ohne HTML aus der Antwort zu interpretieren (kein XSS-Risiko). */
   function botTextInDom(ziel, text) {
-    var muster = /(\bhttps?:\/\/[^\s]+|\/(?:preise|kontakt|beispiele|projekte|leistungen|ki-bot|ueber-uns|webdesign-kloten)\b|[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/g;
+    var muster = /(\bhttps?:\/\/[^\s]+|\/(?:preise|kontakt|beispiele|projekte|leistungen|ki-bot|ueber-uns|webdesign-kloten|webdesign-zuerich)\b|[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/g;
     var pos = 0, treffer;
     while ((treffer = muster.exec(text)) !== null) {
       if (treffer.index > pos) ziel.appendChild(document.createTextNode(text.slice(pos, treffer.index)));
@@ -381,7 +381,7 @@
       b.addEventListener("click", function () { respond(b.textContent); });
     });
 
-    addMsg(opts.greeting || "Hallo! Ich bin der masesites-Bot. Frag mich zu Websites, WebApps oder KI-Lösungen.", "bot");
+    addMsg(opts.greeting || "Hallo! Ich bin der masesites-Bot. Frag mich zu Websites, WebApps, KI-Lösungen oder Automatisierung.", "bot");
     return { respond: respond };
   }
 
@@ -490,7 +490,7 @@
       if (!built) {
         buildChatUI(panel, {
           closable: true,
-          greeting: "Hallo! Ich bin die masesites-KI. Frag mich zu Websites, WebApps, KI-Lösungen oder wünsch dir einen Termin.",
+          greeting: "Hallo! Ich bin die masesites-KI. Frag mich zu Websites, WebApps, KI-Lösungen und Automatisierung – oder wünsch dir einen Termin.",
           note: "KI-Demo · für Fragen und Terminwünsche da."
         });
         panel.querySelector(".widget-close").addEventListener("click", function () {
@@ -526,7 +526,7 @@
       teaserEl.setAttribute("role", "status");
       teaserEl.innerHTML =
         '<span class="ms-av ms-hat-bild" aria-hidden="true">' + avatarSvg + '</span>' +
-        '<span class="ms-txt"><b>Hoi!</b> Ich bin die masesites-KI. 👋 Frag mich zu Websites, WebApps, KI &amp; Preisen – oder wünsch dir einen Termin.</span>' +
+        '<span class="ms-txt"><b>Teste unseren KI-Bot.</b> Er kennt Leistungen, Preise und Abläufe – und nimmt Terminwünsche entgegen.</span>' +
         '<button class="ms-zu" type="button" aria-label="Hinweis schliessen">×</button>';
       document.body.appendChild(teaserEl);
       if (!reducedMotion) {

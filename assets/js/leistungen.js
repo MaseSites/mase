@@ -16,7 +16,8 @@
   var WELT_FARBEN = {
     website: "#F6F1E7",
     webapp: "#EDF1F5",
-    ki: "#06060B"
+    ki: "#06060B",
+    automatisierung: "#101012"
   };
 
   function zeigeWelt(name) {

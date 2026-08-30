@@ -1,0 +1,28 @@
+Bilder in diesem Ordner
+=======================
+
+*-card-4k.jpg  (website / webapp / ai / automation)
+  Einsatz:  Ursprungsdateien. Werden seit 30.08.2026 nicht mehr direkt
+            ausgeliefert, sondern nur noch als Quelle fuer die kleineren
+            Groessen unten.
+  Herkunft: OFFEN - bitte eintragen. Die Dateien kamen vor dem
+            Pruefdurchgang vom 30.08.2026 in den Ordner; die Quelle ist
+            nicht dokumentiert. Solange das offen ist, gilt der Ordner als
+            ungeklaerte Bildrechte-Position.
+
+*-card-900 / -1400 / -1920 .jpg und .webp
+  Einsatz:  Hero der Seiten /websites, /webapps, /ki-loesungen,
+            /automatisierungssysteme sowie die Karten auf der Startseite.
+  Herkunft: Am 30.08.2026 aus den *-card-4k.jpg oben skaliert
+            (Lanczos, JPEG q80 progressiv / WebP q76). Kein neues Motiv.
+  Grund:    Die 4K-Dateien waren 0,5-0,75 MB gross und wurden als Hero UND
+            als Social-Vorschaubild verwendet. Das war fuer beides zu schwer.
+
+og-website.jpg / og-webapp.jpg / og-ai.jpg / og-automation.jpg
+  Einsatz:  og:image und twitter:image der vier Leistungsseiten (1200x630).
+  Herkunft: Am 30.08.2026 aus den *-card-4k.jpg oben zugeschnitten,
+            abgedunkelt und mit Wortmarke + Titel versehen (Schrift Outfit
+            aus assets/fonts/).
+
+Hinweis: ../og-masesites.jpg (allgemeines Vorschaubild) ist vollstaendig
+selbst gesetzt - nur Text auf Flaeche, kein fremdes Bildmaterial.

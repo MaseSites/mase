@@ -1,0 +1,33 @@
+Marke und allgemeine Bilder
+===========================
+
+masesitesLOGO.png
+  Die Originaldatei von Severin (436x180, schwarze Zeichnung auf weissem
+  Grund, ohne Transparenz). Wird NICHT ausgeliefert - sie ist nur die
+  Quelle fuer die Dateien unten. Bitte behalten.
+
+logo-mase.png            600x129, hell (#F6F6F4) auf Transparenz
+logo-mase-dunkel.png     600x129, dunkel (#0A0A0A) auf Transparenz
+  Einsatz:  Wortmarke im Kopf und Fuss aller Seiten (.logo::before in
+            assets/css/redesign.css). Die helle Fassung ist der Normalfall;
+            die dunkle steht fuer helle Flaechen bereit.
+  Herkunft: Am 30.08.2026 aus masesitesLOGO.png erzeugt - weisser Rand mit
+            Schwellwert 24 weggeschnitten, Dunkelheit jedes Pixels wird zur
+            Deckkraft, Graustufen+Alpha-PNG. Kein fremdes Material.
+  Wichtig:  Seitenverhaeltnis 4.643 (Breite/Hoehe) steht im CSS. Wird die
+            Zeichnung je ersetzt, muss der Wert dort mitwandern.
+
+favicon-32.png / favicon-512.png / apple-touch-icon.png
+  Einsatz:  Browser-Symbol und Startbildschirm-Symbol aller Seiten.
+  Herkunft: Am 30.08.2026 aus dem ersten Zeichen der Wortmarke (dem "m")
+            gebaut: hell auf fast schwarzer, gerundeter Flaeche.
+            Ersetzt das fruehere favicon.svg - das war ein generisches
+            Vier-Kachel-Symbol in der alten warmen Palette und passte
+            weder zur Marke noch zum dunklen Auftritt.
+
+og-masesites.jpg
+  Einsatz:  Allgemeines Vorschaubild fuer geteilte Links (1200x630) auf
+            allen Seiten ohne eigenes Motiv.
+  Herkunft: Vollstaendig selbst gesetzt - Wortmarke, Text und ein weicher
+            Lichtverlauf auf schwarzer Flaeche. Schrift Outfit aus
+            assets/fonts/ (siehe CREDITS dort). Kein fremdes Bildmaterial.

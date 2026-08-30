@@ -129,11 +129,24 @@ def _bot_antwort(body):
             letzte = str(t.get("text", "")).lower()
             break
     termin = False
-    reply = ("Gern! Frag mich zu Websites, WebApps, KI-Loesungen oder Preisen – oder wuensch dir einen Termin. "
+    reply = ("Gern! Frag mich zu Websites, WebApps, KI-Loesungen, Automatisierung oder Preisen – oder wuensch dir einen Termin. "
              "Mehr auf /preise oder schreib an info@masesites.ch.")
     if "kost" in letzte or "preis" in letzte:
         reply = ("Websites starten bei CHF 790, WebApps bei CHF 2'990 und MASE AI kostet "
                  "CHF 490 einmalig plus CHF 39 pro Monat. Details stehen auf /preise.")
+    elif "automat" in letzte or "prozess" in letzte or "ablauf" in letzte:
+        reply = ("Automatisierungssysteme verbinden deine bestehenden Werkzeuge und erledigen "
+                 "wiederkehrende Ablaeufe von selbst – Anfragen uebertragen, Freigaben einholen, "
+                 "Daten abgleichen. Alles dazu auf /automatisierungssysteme.")
+    elif "webapp" in letzte or "web-app" in letzte or "anwendung" in letzte:
+        reply = ("Eine WebApp ist ein Werkzeug zum Arbeiten: anmelden, erfassen, verwalten. "
+                 "Im Detail steht das auf /webapps.")
+    elif "website" in letzte or "webseite" in letzte or "homepage" in letzte:
+        reply = ("Eine Website erklaert dein Angebot und fuehrt Besucher zur Anfrage. "
+                 "Im Detail steht das auf /websites.")
+    elif "ki" in letzte or "bot" in letzte or "assistent" in letzte:
+        reply = ("MASE AI beantwortet wiederkehrende Fragen aus deinem eigenen Wissen und nimmt "
+                 "Anliegen auf. Im Detail steht das auf /ki-loesungen.")
     elif "termin" in letzte or "beratung" in letzte or "rueckruf" in letzte or "rückruf" in letzte:
         reply = "Sehr gern! Wie heisst du, wie erreiche ich dich (E-Mail oder Telefon), und wann wuerde dir passen?"
     elif "@" in letzte or any(z.isdigit() for z in letzte):
@@ -146,7 +159,9 @@ def _bot_antwort(body):
             "kontakt": letzte.strip()[:120], "wunsch": "(im Chat genannt)", "thema": "Aus dem Chat",
             "anmerkung": "", "kontoLabel": "Gast " + str(body.get("chatId", "lokal"))[:6]})
         STAND["naechste_id"] += 1
-    return {"reply": reply, "terminAngelegt": termin, "konfiguriert": True}
+    # Der Mock ist KEINE echte KI, sondern eine Stichwort-Antwort.
+    # Wer lokal testet, soll das nicht mit dem echten Bot verwechseln.
+    return {"reply": reply, "terminAngelegt": termin, "konfiguriert": True, "mock": True}
 
 
 class Handler(BaseHTTPRequestHandler):

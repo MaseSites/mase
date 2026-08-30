@@ -1,0 +1,16 @@
+Bilder in diesem Ordner
+=======================
+
+webapp-alltag-800.jpg / .webp
+webapp-alltag-1200.jpg / .webp
+  Motiv:    Dunkler Gastraum am Abend, Tablet auf dem Tisch.
+  Einsatz:  /leistungen, Panel "WebApp" (ersetzt seit 28.08.2026 die
+            nachgebaute Oberflaeche "tavolo").
+  Herkunft: Generiert am 28.08.2026 ueber pollinations.ai (Modell flux,
+            Seed 7) mit dem Skript scripts/genimg.py. Kein Bildmaterial
+            Dritter, keine erkennbaren Personen, keine Marken im Bild.
+  Rechte:   Frei verwendbar. Nachbearbeitung: in Graustufen konvertiert,
+            auf 1200 px und 800 px skaliert, JPEG (q82, progressiv) und
+            WebP (q80).
+  Hinweis:  Das Bild zeigt eine Stimmung, keinen konkreten Betrieb und
+            keine echte Kundenreferenz.

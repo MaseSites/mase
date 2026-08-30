@@ -12,9 +12,12 @@
   <meta property="og:url" content="https://masesites.ch/preise">
   <meta property="og:site_name" content="MASESites">
   <meta property="og:locale" content="de_CH">
-  <meta name="twitter:card" content="summary">
+  <meta property="og:image" content="https://masesites.ch/assets/img/og-masesites.jpg">
+  <meta property="og:image:alt" content="MASESites – Websites, WebApps, KI und Automatisierung für Schweizer KMU">
+  <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Preise für Websites, WebApps &amp; KI | MASESites">
   <meta name="twitter:description" content="Klare Pakete und eine schriftliche Offerte vor Projektstart.">
+  <meta name="twitter:image" content="https://masesites.ch/assets/img/og-masesites.jpg">
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -38,11 +41,14 @@
       ]
     }
   </script>
-  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="assets/css/style.css?v=70">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="assets/img/favicon-512.png">
+  <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+  <link rel="stylesheet" href="assets/css/style.css?v=72">
   <link rel="stylesheet" href="assets/css/preisliste.css?v=11">
+  <link rel="stylesheet" href="assets/css/redesign.css?v=20">
 </head>
-<body>
+<body class="page-pricing">
 
   <header class="site-header">
     <div class="wrap header-inner">
@@ -54,9 +60,10 @@
         <a href="/beispiele">Live-Demos</a>
         <a href="/preise" class="active">Preise</a>
         <a href="/ueber-uns">Über uns</a>
+        <a href="/webdesign-zuerich">Webdesign Zürich</a>
       </nav>
       <div class="header-cta">
-        <a class="header-dashboard" href="/dashboard" aria-label="Kundendashboard öffnen">Dashboard</a>
+        <a class="header-dashboard" href="/dashboard" aria-label="Kundendashboard öffnen">Kundendashboard</a>
         <a class="btn btn-primary header-start" href="/kontakt">Projekt anfragen</a>
         <button class="burger" aria-label="Menü öffnen" aria-expanded="false">
           <span></span><span></span><span></span>
@@ -70,7 +77,7 @@
     <a href="/beispiele">Live-Demos</a>
     <a href="/preise" class="active">Preise</a>
     <a href="/ueber-uns">Über uns</a>
-    <a href="/webdesign-kloten">Webdesign Kloten</a>
+    <a href="/webdesign-zuerich">Webdesign Zürich</a>
     <a href="/dashboard" class="konto-link">Kundendashboard</a>
     <a class="btn btn-primary" href="/kontakt">Projekt anfragen →</a>
   </div>
@@ -121,7 +128,7 @@
             <h2>Website-Pakete</h2>
             <p>Für einen professionellen Auftritt, der dein Angebot verständlich macht und Interessenten sicher zur Anfrage führt.</p>
           </div>
-          <a class="pl-mehr" href="/leistungen#website">Alles im Detail <span class="arrow">→</span></a>
+          <a class="pl-mehr" href="/websites">Alles im Detail <span class="arrow">→</span></a>
         </div>
 
         <div class="pl-stufen">
@@ -215,7 +222,7 @@
             <h2>Web-App-Pakete</h2>
             <p>Eine Web-App ist keine grössere Website, sondern eine individuelle Anwendung im Browser, mit der dein Unternehmen arbeitet.</p>
           </div>
-          <a class="pl-mehr" href="/leistungen#webapp">Alles im Detail <span class="arrow">→</span></a>
+          <a class="pl-mehr" href="/webapps">Alles im Detail <span class="arrow">→</span></a>
         </div>
         <div class="pl-stufen">
           <article class="pl-stufe" data-anfrage="WebApp: Starter (CHF 2'990.–)" data-interesse="WebApp">
@@ -276,7 +283,7 @@
             <h2>MASE AI</h2>
             <p>Ein Chat-Fenster auf deiner Website. Es kennt deine Angebote, Preise und Öffnungszeiten, beantwortet damit die immer gleichen Fragen und nimmt Anfragen entgegen – auch um drei Uhr nachts. Einbaubar auf jeder Website, auch auf einer, die nicht von uns ist.</p>
           </div>
-          <a class="pl-mehr" href="/leistungen#ki">Alles im Detail <span class="arrow">→</span></a>
+          <a class="pl-mehr" href="/ki-loesungen">Alles im Detail <span class="arrow">→</span></a>
         </div>
         <!-- Ein einzelnes Paket: links der kurze Ablauf, rechts der
              vollständige Umfang von Einrichtung und laufendem Betrieb. -->
@@ -527,15 +534,16 @@
           <a class="mail" href="mailto:info@masesites.ch">info@masesites.ch</a>
         </div>
         <div class="footer-col">
-          <h4>Angebot</h4>
+          <h2>Angebot</h2>
           <ul>
-            <li><a href="/preise#website">Website</a></li>
-            <li><a href="/preise#webapp">WebApps</a></li>
-            <li><a href="/preise#ki">KI-Lösungen</a></li>
+            <li><a href="/websites">Websites</a></li>
+            <li><a href="/webapps">WebApps</a></li>
+            <li><a href="/ki-loesungen">KI-Lösungen</a></li>
+            <li><a href="/automatisierungssysteme">Automatisierungssysteme</a></li>
           </ul>
         </div>
         <div class="footer-col">
-          <h4>masesites</h4>
+          <h2>masesites</h2>
           <ul>
             <li><a href="/">Startseite</a></li>
             <li><a href="/leistungen">Leistungen</a></li>
@@ -543,12 +551,12 @@
             <li><a href="/projekte">Projekte</a></li>
             <li><a href="/ueber-uns">Über uns</a></li>
             <li><a href="/kontakt">Kontakt</a></li>
-            <li><a href="/webdesign-kloten">Webdesign Kloten</a></li>
+            <li><a href="/webdesign-zuerich">Webdesign Zürich</a></li>
             <li><a href="/dashboard">Kundendashboard</a></li>
           </ul>
         </div>
         <div class="footer-col">
-          <h4>Rechtliches</h4>
+          <h2>Rechtliches</h2>
           <ul>
             <li><a href="/impressum">Impressum</a></li>
             <li><a href="/datenschutz">Datenschutz</a></li>
@@ -571,7 +579,7 @@
   <script src="assets/js/sanft.js?v=1"></script>
   <script src="assets/js/protokoll.js?v=20"></script>
   <script src="assets/js/cookie.js?v=5"></script>
-  <script src="assets/js/site.js?v=35"></script>
+  <script src="assets/js/site.js?v=37"></script>
   <script src="assets/js/scrolleffekte.js?v=3"></script>
   <script src="assets/js/preisliste.js?v=5"></script>
 </body>
