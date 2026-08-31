@@ -505,6 +505,25 @@ html.intro-zoom .widget-launcher { opacity: 1; pointer-events: auto; }
   color: #efefec;
 }
 .bot-grid .msg.user { background: #efefec; color: #080808; }
+
+/* ---------- Chatblasen global ----------
+   style.css setzt .msg.user auf background:var(--ink) mit color:#fff. Im
+   dunklen Redesign ist --ink fast weiss - die eigene Nachricht war also
+   weiss auf Weiss. Bisher war das nur fuer .bot-grid geflickt, nicht fuer
+   das schwebende Fenster. Darum hier ohne Einschraenkung. */
+.msg.user {
+  background: #efefec;
+  border-color: #efefec;
+  color: #080808;
+}
+.msg.user a { color: #080808; text-decoration-color: #6a6a6a; }
+.msg.bot {
+  background: #0f0f0f;
+  border-color: #343434;
+  color: var(--ink);
+}
+.msg.typing { background: #0f0f0f; border-color: #343434; }
+.msg.typing i { background: var(--ink-soft); }
 .bot-grid .chat-chips {
   padding: 12px 20px 18px;
   background: #080808;
