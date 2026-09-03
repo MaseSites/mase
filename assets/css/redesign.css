@@ -123,7 +123,7 @@ main > section + section { border-top: 1px solid var(--line); }
    Transparenz). Der Text im Markup bleibt als zugaenglicher Name stehen,
    wird aber nicht dargestellt - Screenreader und Google lesen weiter
    "masesites". Die Hoehe steuert alles, die Breite folgt dem
-   Seitenverhaeltnis 4.643 der Zeichnung. */
+   Seitenverhaeltnis 5.822 der Zeichnung (M-Monogramm + MASESITES). */
 .logo {
   --logo-h: 30px;
   gap: 0;
@@ -134,9 +134,9 @@ main > section + section { border-top: 1px solid var(--line); }
 .logo::before {
   content: "";
   display: block;
-  width: calc(var(--logo-h) * 4.643);
+  width: calc(var(--logo-h) * 5.822);
   height: var(--logo-h);
-  background: url("../img/logo-mase.png") left center / contain no-repeat;
+  background: url("../img/logo-mase.png?v=2") left center / contain no-repeat;
 }
 .logo::after { content: none; }
 .logo .app-pill { margin-left: 10px; color: var(--ink-soft); font-size: .7rem; letter-spacing: .04em; }
@@ -652,7 +652,7 @@ html.intro-zoom .widget-launcher { opacity: 1; pointer-events: auto; }
 /* Die Wortmarke ist der wichtigste Link im Kopf - sie darf nicht 23 px hoch sein. */
 .logo { min-height: 34px; align-items: center; }
 /* Auf hellen Flaechen (Admin, Mitarbeiterportal) die dunkle Fassung. */
-.app.hell .logo::before { background-image: url("../img/logo-mase-dunkel.png"); }
+.app.hell .logo::before { background-image: url("../img/logo-mase-dunkel.png?v=2"); }
 .footer-brand .mail { color: #cfcfcb; }
 .footer-col h4,
 .footer-col h2 { color: #c9c9c5; font-size: .74rem; font-weight: 500; text-transform: none; letter-spacing: 0; }

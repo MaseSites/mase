@@ -1,33 +1,59 @@
 Marke und allgemeine Bilder
 ===========================
 
-masesitesLOGO.png
-  Die Originaldatei von Severin (436x180, schwarze Zeichnung auf weissem
-  Grund, ohne Transparenz). Wird NICHT ausgeliefert - sie ist nur die
-  Quelle fuer die Dateien unten. Bitte behalten.
+logowebseite.png / webseite.png / logogoogle.png
+  Die drei Originaldateien von Severin (1254x1254 bzw. 1448x1086, schwarze
+  Zeichnung auf weissem Grund, ohne Transparenz). Werden NICHT ausgeliefert -
+  sie sind nur die Quellen fuer die Dateien unten. Bitte behalten.
+    logowebseite.png  M-Monogramm + "MASE" fett / "SITES" mager  -> Wortmarke
+    webseite.png      duennere Variante derselben Wortmarke      -> Reserve
+    logogoogle.png    App-Kachel: weisses M auf schwarzem Quadrat -> Symbole
+  Loesen die frueheren Dateien masesitesLOGO.png und die alte
+  Fraktur-Wortmarke "MASE" ab (ersetzt am 03.09.2026).
 
-logo-mase.png            600x129, hell (#F6F6F4) auf Transparenz
-logo-mase-dunkel.png     600x129, dunkel (#0A0A0A) auf Transparenz
+logo-mase.png            932x160, hell (#FFFFFF) auf Transparenz
+logo-mase-dunkel.png     932x160, dunkel (#0A0A0A) auf Transparenz
   Einsatz:  Wortmarke im Kopf und Fuss aller Seiten (.logo::before in
             assets/css/redesign.css). Die helle Fassung ist der Normalfall;
-            die dunkle steht fuer helle Flaechen bereit.
-  Herkunft: Am 30.08.2026 aus masesitesLOGO.png erzeugt - weisser Rand mit
-            Schwellwert 24 weggeschnitten, Dunkelheit jedes Pixels wird zur
-            Deckkraft, Graustufen+Alpha-PNG. Kein fremdes Material.
-  Wichtig:  Seitenverhaeltnis 4.643 (Breite/Hoehe) steht im CSS. Wird die
+            die dunkle steht fuer helle Flaechen bereit (.app.hell).
+  Herkunft: Am 03.09.2026 aus logowebseite.png erzeugt - Papierweiss ueber
+            das 90. Perzentil bestimmt, Dunkelheit jedes Pixels wird zur
+            Deckkraft, Rauschen unter 6 % Deckkraft entfernt, Rand mit 8 px
+            Luft beschnitten. Kein fremdes Material.
+  Wichtig:  Seitenverhaeltnis 5.822 (Breite/Hoehe) steht im CSS. Wird die
             Zeichnung je ersetzt, muss der Wert dort mitwandern.
+            Die Bildpfade im CSS tragen ?v=2 - beim naechsten Austausch
+            hochzaehlen, sonst zeigen Browser die alte Wortmarke.
 
-favicon-32.png / favicon-512.png / apple-touch-icon.png
-  Einsatz:  Browser-Symbol und Startbildschirm-Symbol aller Seiten.
-  Herkunft: Am 30.08.2026 aus dem ersten Zeichen der Wortmarke (dem "m")
-            gebaut: hell auf fast schwarzer, gerundeter Flaeche.
-            Ersetzt das fruehere favicon.svg - das war ein generisches
-            Vier-Kachel-Symbol in der alten warmen Palette und passte
-            weder zur Marke noch zum dunklen Auftritt.
+favicon.ico (im Wurzelverzeichnis) / favicon-32.png / favicon-512.png /
+apple-touch-icon.png
+  Einsatz:  Browser-Symbol, Google-Suchtreffer und Startbildschirm-Symbol.
+  Herkunft: Am 03.09.2026 aus der Kachel in logogoogle.png gebaut: das
+            weisse M-Monogramm freigestellt (die abgerundeten Ecken wurden
+            per 16-%-Einzug ausgeschlossen) und mittig auf eine randlose
+            Flaeche #0A0A0A gesetzt, Glyphenbreite 62 %. Randlos, weil
+            Google das Symbol selbst in einen Kreis schneidet.
+            favicon.ico enthaelt 16/32/48 px - Google liest die Datei im
+            Wurzelverzeichnis auch ohne <link>.
 
-og-masesites.jpg
-  Einsatz:  Allgemeines Vorschaubild fuer geteilte Links (1200x630) auf
-            allen Seiten ohne eigenes Motiv.
-  Herkunft: Vollstaendig selbst gesetzt - Wortmarke, Text und ein weicher
-            Lichtverlauf auf schwarzer Flaeche. Schrift Outfit aus
-            assets/fonts/ (siehe CREDITS dort). Kein fremdes Bildmaterial.
+og-masesites.jpg (1200x630) / og-masesites-square.jpg (1200x1200)
+  Einsatz:  Vorschaubild fuer geteilte Links und fuer das Bild neben dem
+            Google-Treffer (quadratische Fassung haengt zusaetzlich in den
+            strukturierten Daten der Startseite als Organization.image).
+  Herkunft: Am 03.09.2026 gesetzt aus schweiz/zuerich-limmat-abend-2400.jpg
+            (Lizenz siehe assets/img/schweiz/CREDITS.txt) mit dunklem
+            Verlauf, der neuen Wortmarke und Text in Outfit aus
+            assets/fonts/ (siehe CREDITS dort).
+  Vorher:   Schwarze Flaeche mit der alten Fraktur-Wortmarke.
+
+buero-empfang.jpg / buero-lounge.jpg
+  Eigene Fotos des Bueros in Kloten. Einsatz: ueber-uns.html.
+
+Entfernt am 03.09.2026
+----------------------
+team-zwei-maenner.jpg   Illustration zweier Maenner am Laptop, kein echtes
+                        Foto. War auf keiner Seite mehr eingebunden, Google
+                        zeigte sie aber weiter als Vorschaubild - deshalb
+                        auch die Datei geloescht.
+arbeitsplatz.svg        Generische Grafik, seit dem Redesign ungenutzt.
+masesitesLOGO.png       Quelle der alten Fraktur-Wortmarke.
